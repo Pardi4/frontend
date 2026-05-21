@@ -18,10 +18,10 @@ import { ShellComponent } from './shell.component';
             <p class="text-secondary">{{ data.subtitle }}</p>
             <div class="btn-group">
               <a class="btn btn-primary btn-lg" [href]="pathFor(pageKey === 'success' ? 'dashboard' : 'home')">
-                {{ data.dashboardCta || data.homeCta }}
+                {{ data.dashboardCta || data.homeCta || (locale === 'pl' ? 'Wroc na start' : 'Back to home') }}
               </a>
               <a class="btn btn-outline btn-lg" [href]="storeUrl" target="_blank" rel="noopener">
-                {{ data.storeCta }}
+                {{ data.storeCta || (locale === 'pl' ? 'Zainstaluj rozszerzenie' : 'Install extension') }}
               </a>
             </div>
           </div>

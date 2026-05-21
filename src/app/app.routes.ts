@@ -8,6 +8,8 @@ export const routes: Routes = [
   { path: 'pl/dashboard', loadComponent: () => import('./pages/dashboard.component').then(m => m.DashboardComponent), data: { locale: 'pl' } },
   { path: 'quiz', loadComponent: () => import('./pages/quiz.component').then(m => m.QuizComponent), data: { locale: 'en' } },
   { path: 'pl/quiz', loadComponent: () => import('./pages/quiz.component').then(m => m.QuizComponent), data: { locale: 'pl' } },
+  { path: 'quiz/shared/:token', loadComponent: () => import('./pages/quiz.component').then(m => m.QuizComponent), data: { locale: 'en' } },
+  { path: 'pl/quiz/shared/:token', loadComponent: () => import('./pages/quiz.component').then(m => m.QuizComponent), data: { locale: 'pl' } },
   { path: 'privacy', loadComponent: () => import('./pages/privacy.component').then(m => m.PrivacyComponent), data: { locale: 'en' } },
   { path: 'pl/privacy', loadComponent: () => import('./pages/privacy.component').then(m => m.PrivacyComponent), data: { locale: 'pl' } },
   { path: 'success', loadComponent: () => import('./pages/status-pages.component').then(m => m.StatusPageComponent), data: { locale: 'en', pageKey: 'success' } },

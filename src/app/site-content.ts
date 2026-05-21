@@ -89,11 +89,19 @@ export interface SiteCopy {
     metaTitle: string;
     metaDescription: string;
     title: string;
+    badge?: string;
+    subtitle?: string;
+    dashboardCta?: string;
+    storeCta?: string;
   };
   notFoundPage: {
     metaTitle: string;
     metaDescription: string;
     title: string;
+    badge?: string;
+    subtitle?: string;
+    homeCta?: string;
+    storeCta?: string;
   };
   platformPages: {
     quizSolverAi: PlatformCopy;
@@ -230,12 +238,20 @@ const en: SiteCopy = {
   successPage: {
     metaTitle: "Payment Successful | QuizSolver",
     metaDescription: "Thank you! Your credit top-up has been successfully completed.",
-    title: "Payment Successful"
+    badge: "Success",
+    title: "Payment Successful",
+    subtitle: "Your credits are ready to use.",
+    dashboardCta: "Open dashboard",
+    storeCta: "Install extension"
   },
   notFoundPage: {
     metaTitle: "404 Page Not Found | QuizSolver",
     metaDescription: "The page you are looking for does not exist on QuizSolver.",
-    title: "Page Not Found"
+    badge: "404",
+    title: "Page Not Found",
+    subtitle: "This page does not exist or the link has expired.",
+    homeCta: "Back to home",
+    storeCta: "Install extension"
   },
   platformPages: {
     quizSolverAi: {
@@ -557,7 +573,11 @@ const pl: SiteCopy = {
   notFoundPage: {
     metaTitle: "Strona nie znaleziona (404) | QuizSolver",
     metaDescription: "Strona, której szukasz, nie istnieje w serwisie QuizSolver.",
-    title: "Strona nie znaleziona"
+    badge: "404",
+    title: "Strona nie znaleziona",
+    subtitle: "Ta strona nie istnieje albo link wygasl.",
+    homeCta: "Wroc na start",
+    storeCta: "Zainstaluj rozszerzenie"
   },
   platformPages: {
     quizSolverAi: {

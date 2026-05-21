@@ -96,17 +96,21 @@ import { ShellComponent } from './shell.component';
               <div class="quiz-toolbar glass">
                 <div class="toolbar-title">
                   <h2>{{ text.historyTitle }}</h2>
-                  <p class="text-secondary">{{ notes().length }} {{ text.historyCount }}</p>
+                  <p class="text-secondary">{{ pagination().total || notes().length }} {{ text.historyCount }}</p>
                 </div>
                 <div class="filter-row">
-                  <input class="form-input" type="search" [(ngModel)]="search" (ngModelChange)="loadNotes()" [placeholder]="text.searchPlaceholder">
-                  <select class="form-select" [(ngModel)]="status" (ngModelChange)="loadNotes()">
+                  <input class="form-input" type="search" [(ngModel)]="search" (ngModelChange)="loadNotes(1)" [placeholder]="text.searchPlaceholder">
+                  <select class="form-select" [(ngModel)]="status" (ngModelChange)="loadNotes(1)">
                     <option value="">{{ text.filterAll }}</option>
                     <option value="favorite">{{ text.filterFavorite }}</option>
                     <option value="new">{{ text.filterNew }}</option>
                     <option value="learning">{{ text.filterLearning }}</option>
                     <option value="mastered">{{ text.filterMastered }}</option>
                   </select>
+                  <label class="page-size-control">
+                    <span>{{ text.perPage }}</span>
+                    <input class="form-input" type="number" min="1" max="100" [(ngModel)]="pageSize" (ngModelChange)="loadNotes(1)">
+                  </label>
                   <button class="btn btn-outline" type="button" (click)="selectVisible()">{{ text.selectVisible }}</button>
                   <button class="btn btn-primary" type="button" (click)="startPractice()">{{ text.startPractice }}</button>
                 </div>
@@ -124,8 +128,8 @@ import { ShellComponent } from './shell.component';
                       <input type="checkbox" [checked]="selected().has(note.id)" (change)="toggleSelected(note.id)">
                       <span>{{ text.selected }}</span>
                     </label>
-                    <button class="btn btn-outline btn-sm" type="button" (click)="updateNote(note, { favorite: !note.favorite })">
-                      {{ note.favorite ? text.favorited : text.favorite }}
+                    <button class="favorite-star-btn" type="button" [class.is-favorite]="note.favorite" (click)="toggleFavorite(note)" [attr.aria-label]="note.favorite ? text.favorited : text.favorite" [title]="note.favorite ? text.favorited : text.favorite">
+                      <span aria-hidden="true">{{ note.favorite ? '★' : '☆' }}</span>
                     </button>
                   </div>
                   
@@ -163,6 +167,16 @@ import { ShellComponent } from './shell.component';
                     </button>
                   </div>
                 </article>
+              </div>
+
+              <div class="quiz-pagination glass" *ngIf="pagination().pages > 1">
+                <button class="btn btn-outline btn-sm" type="button" (click)="loadNotes(currentPage() - 1)" [disabled]="currentPage() <= 1">
+                  {{ text.prevPage }}
+                </button>
+                <span>{{ currentPage() }} / {{ pagination().pages }}</span>
+                <button class="btn btn-outline btn-sm" type="button" (click)="loadNotes(currentPage() + 1)" [disabled]="currentPage() >= pagination().pages">
+                  {{ text.nextPage }}
+                </button>
               </div>
             </section>
 
@@ -360,6 +374,19 @@ import { ShellComponent } from './shell.component';
     .filter-row .form-select {
       width: 160px;
     }
+    .page-size-control {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .page-size-control .form-input {
+      width: 76px;
+      padding-inline: 0.75rem;
+    }
 
     /* Notes Grid */
     .notes-grid {
@@ -379,6 +406,40 @@ import { ShellComponent } from './shell.component';
       justify-content: space-between;
       align-items: center;
       margin-bottom: 1.25rem;
+    }
+    .favorite-star-btn {
+      width: 2.35rem;
+      height: 2.35rem;
+      display: inline-grid;
+      place-items: center;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.03);
+      color: var(--text-secondary);
+      font-size: 1.35rem;
+      line-height: 1;
+      transition: border-color 0.2s var(--ease-out), color 0.2s var(--ease-out), background 0.2s var(--ease-out), transform 0.2s var(--ease-out);
+    }
+    .favorite-star-btn:hover {
+      color: #facc15;
+      border-color: rgba(250, 204, 21, 0.45);
+      transform: translateY(-1px);
+    }
+    .favorite-star-btn.is-favorite {
+      color: #facc15;
+      background: rgba(250, 204, 21, 0.1);
+      border-color: rgba(250, 204, 21, 0.45);
+      animation: favorite-pop 0.55s cubic-bezier(.2, .9, .2, 1.25);
+    }
+    .favorite-star-btn span {
+      display: block;
+      transform-origin: center;
+    }
+    @keyframes favorite-pop {
+      0% { transform: scale(0.82) rotate(0deg); }
+      45% { transform: translateY(-5px) scale(1.18) rotate(170deg); }
+      75% { transform: translateY(1px) scale(0.98) rotate(330deg); }
+      100% { transform: translateY(0) scale(1) rotate(360deg); }
     }
     .note-meta {
       display: flex;
@@ -456,6 +517,21 @@ import { ShellComponent } from './shell.component';
     .empty-panel h3 {
       margin-bottom: 0.75rem;
     }
+    .quiz-pagination {
+      margin: 2rem auto 0;
+      padding: 0.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      width: fit-content;
+    }
+    .quiz-pagination span {
+      min-width: 72px;
+      text-align: center;
+      color: var(--text-secondary);
+      font-weight: 800;
+    }
 
     @media (max-width: 992px) {
       .shared-layout {
@@ -480,7 +556,11 @@ import { ShellComponent } from './shell.component';
       }
       .filter-row .form-input,
       .filter-row .form-select,
+      .page-size-control,
       .filter-row button {
+        width: 100%;
+      }
+      .page-size-control .form-input {
         width: 100%;
       }
     }
@@ -511,8 +591,11 @@ export class QuizComponent implements OnInit {
   protected readonly score = signal(0);
   protected readonly loading = signal(false);
   protected readonly error = signal('');
+  protected readonly currentPage = signal(1);
+  protected readonly pagination = signal({ page: 1, limit: 20, total: 0, pages: 1 });
   protected readonly finished = signal(false);
   protected readonly currentQuestion = computed(() => this.practice()[this.currentIndex()] || null);
+  protected pageSize = 20;
 
   protected readonly sharedQuiz = signal<any>(null);
   protected readonly sharedQuestions = signal<any[]>([]);
@@ -553,16 +636,25 @@ export class QuizComponent implements OnInit {
     this.error.set(result.error || this.text.loginError);
   }
 
-  protected async loadNotes(): Promise<void> {
+  protected async loadNotes(page = this.currentPage()): Promise<void> {
     if (!this.api.token()) return;
     this.loading.set(true);
+    const limit = Math.min(Math.max(Number(this.pageSize) || 20, 1), 100);
+    this.pageSize = limit;
+    const nextPage = Math.max(Number(page) || 1, 1);
     const params = new URLSearchParams();
+    params.set('page', String(nextPage));
+    params.set('limit', String(limit));
     if (this.search.trim()) params.set('search', this.search.trim());
     if (this.status === 'favorite') params.set('favorite', 'true');
     else if (this.status) params.set('status', this.status);
     const result = await this.api.request(`/api/quiz/study-notes${params.size ? `?${params}` : ''}`);
     this.loading.set(false);
-    if (result.success && Array.isArray(result.notes)) this.notes.set(result.notes);
+    if (result.success && Array.isArray(result.notes)) {
+      this.notes.set(result.notes);
+      this.currentPage.set(result.pagination?.page || nextPage);
+      this.pagination.set(result.pagination || { page: nextPage, limit, total: result.notes.length, pages: 1 });
+    }
   }
 
   protected toggleSelected(id: string): void {
@@ -582,6 +674,10 @@ export class QuizComponent implements OnInit {
       method: 'PATCH',
       body: JSON.stringify(patch)
     });
+  }
+
+  protected async toggleFavorite(note: any): Promise<void> {
+    await this.updateNote(note, { favorite: !note.favorite });
   }
 
   protected async startPractice(): Promise<void> {
@@ -740,6 +836,9 @@ const QUIZ_TEXT: Record<Locale, any> = {
     filterNew: 'New',
     filterLearning: 'Learning',
     filterMastered: 'Mastered',
+    perPage: 'Per page',
+    prevPage: 'Prev',
+    nextPage: 'Next',
     selectVisible: 'Select visible',
     startPractice: 'Start history quiz',
     emptyTitle: 'No saved questions yet',
@@ -794,6 +893,9 @@ const QUIZ_TEXT: Record<Locale, any> = {
     filterNew: 'Nowe',
     filterLearning: 'W trakcie nauki',
     filterMastered: 'Opanowane',
+    perPage: 'Na strone',
+    prevPage: 'Poprzednia',
+    nextPage: 'Nastepna',
     selectVisible: 'Zaznacz widoczne',
     startPractice: 'Rozpocznij quiz powtórkowy',
     emptyTitle: 'Brak zapisanych pytań',

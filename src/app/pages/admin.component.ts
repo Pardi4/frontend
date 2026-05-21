@@ -755,7 +755,7 @@ export class AdminComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     if (!this.isBrowser) return;
-    this.token = localStorage.getItem('qs_admin_token') || '';
+    this.token = localStorage.getItem('qs_admin_token') || localStorage.getItem('qs_token') || '';
     if (!this.token) return;
 
     const me = await this.api('/api/auth/me');
@@ -794,6 +794,7 @@ export class AdminComponent implements OnInit {
 
     this.token = result.token;
     localStorage.setItem('qs_admin_token', this.token);
+    localStorage.setItem('qs_token', this.token);
     this.isAuthed.set(true);
     await this.refresh();
   }
@@ -992,11 +993,18 @@ export class AdminComponent implements OnInit {
         this.token = '';
         this.isAuthed.set(false);
         localStorage.removeItem('qs_admin_token');
-        return { success: false, error: data.error || 'Session expired.' };
+        const message = data.error || 'Session expired.';
+        this.error.set(message);
+        return { success: false, error: message };
       }
-      if (!response.ok) return { success: false, error: data.error || `HTTP ${response.status}` };
+      if (!response.ok) {
+        const message = data.error || `HTTP ${response.status}`;
+        this.error.set(message);
+        return { success: false, error: message };
+      }
       return data;
     } catch {
+      this.error.set('Network error.');
       return { success: false, error: 'Network error.' };
     }
   }
