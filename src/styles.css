@@ -296,6 +296,11 @@ textarea { resize: vertical; min-height: 80px; }
   color: #f8fafc;
 }
 
+.form-select option:checked {
+  background: #1d4ed8;
+  color: #ffffff;
+}
+
 .form-error {
   color: var(--accent-rose);
   font-size: 0.875rem;

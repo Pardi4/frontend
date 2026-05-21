@@ -53,6 +53,7 @@ import { ShellComponent } from './shell.component';
                 <button class="btn btn-primary btn-block" type="button" (click)="submitShared()" [disabled]="sharedSubmitting()">
                   {{ sharedSubmitting() ? text.loading : text.checkAnswers }}
                 </button>
+                <div class="form-error" *ngIf="sharedError()">{{ sharedError() }}</div>
                 
                 <div class="score-box glass" *ngIf="sharedResult() as result">
                   <div class="score-num text-gradient-strong">{{ result.score }} / {{ result.totalQuestions }}</div>
@@ -115,8 +116,55 @@ import { ShellComponent } from './shell.component';
                       <option [ngValue]="100">100</option>
                     </select>
                   </label>
-                  <button class="btn btn-outline" type="button" (click)="selectVisible()">{{ text.selectVisible }}</button>
+                  <button class="btn btn-outline" type="button" (click)="toggleVisibleSelection()">
+                    {{ allVisibleSelected() ? text.clearSelection : text.selectVisible }}
+                  </button>
                   <button class="btn btn-primary" type="button" (click)="startPractice()">{{ text.startPractice }}</button>
+                  <button class="btn btn-outline" type="button" (click)="toggleResultsLookup()">{{ text.sharedResultsButton }}</button>
+                </div>
+              </div>
+
+              <div class="shared-results-panel glass" *ngIf="resultsPanelOpen()">
+                <div class="results-header">
+                  <div>
+                    <h3>{{ text.sharedResultsTitle }}</h3>
+                    <p class="text-secondary">{{ text.sharedResultsText }}</p>
+                  </div>
+                </div>
+                <div class="results-lookup-row">
+                  <input class="form-input" [(ngModel)]="resultsQuery" [placeholder]="text.sharedResultsPlaceholder" (keyup.enter)="loadSharedResults()">
+                  <button class="btn btn-primary" type="button" (click)="loadSharedResults()" [disabled]="sharedResultsLoading()">
+                    {{ sharedResultsLoading() ? text.loading : text.loadResults }}
+                  </button>
+                </div>
+                <div class="form-error" *ngIf="sharedResultsError()">{{ sharedResultsError() }}</div>
+
+                <div class="results-board" *ngIf="sharedResults() as board">
+                  <div class="results-summary">
+                    <strong>{{ board.title }}</strong>
+                    <span>{{ board.results?.length || 0 }} {{ text.resultsCount }}</span>
+                  </div>
+                  <div class="empty-results" *ngIf="!board.results?.length">{{ text.noSharedResults }}</div>
+                  <div class="results-table-wrap" *ngIf="board.results?.length">
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>#</th>
+                          <th>{{ text.player }}</th>
+                          <th>{{ text.score }}</th>
+                          <th>{{ text.when }}</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let result of board.results; let i = index">
+                          <td>{{ i + 1 }}</td>
+                          <td>{{ result.displayName }}</td>
+                          <td>{{ result.score }} / {{ result.totalQuestions }} <span>{{ result.percentage }}%</span></td>
+                          <td>{{ result.completedAt | date:'short' }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               </div>
 
@@ -371,25 +419,118 @@ import { ShellComponent } from './shell.component';
       align-items: center;
       gap: 0.75rem;
       flex-wrap: wrap;
+      padding: 0.4rem;
+      border: 1px solid rgba(148, 163, 184, 0.14);
+      border-radius: 12px;
+      background: rgba(15, 23, 42, 0.45);
     }
     .filter-row .form-input {
       width: 240px;
+      min-height: 44px;
+      border-color: transparent;
+      background-color: rgba(255, 255, 255, 0.04);
     }
     .filter-row .form-select {
       width: 160px;
+      min-height: 44px;
+      border-color: transparent;
+      background-color: rgba(255, 255, 255, 0.04);
+    }
+    .filter-row .btn {
+      min-height: 44px;
     }
     .page-size-control {
       display: flex;
       align-items: center;
-      gap: 0.5rem;
       color: var(--text-secondary);
       font-size: 0.85rem;
       font-weight: 700;
       white-space: nowrap;
+      min-height: 44px;
+      overflow: hidden;
+      border: 1px solid rgba(148, 163, 184, 0.16);
+      border-radius: var(--radius-md);
+      background: rgba(255, 255, 255, 0.04);
+    }
+    .page-size-control span {
+      padding: 0 0.8rem;
+      color: var(--text-secondary);
     }
     .page-size-control .form-select {
-      width: 96px;
-      padding-inline: 0.75rem;
+      width: 92px;
+      min-height: 42px;
+      border: 0;
+      border-left: 1px solid rgba(148, 163, 184, 0.16);
+      border-radius: 0;
+      background-color: transparent;
+      padding-left: 0.75rem;
+    }
+
+    .shared-results-panel {
+      margin: -1rem 0 2rem;
+      padding: 1.25rem;
+    }
+    .results-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    .results-header h3 {
+      font-size: 1.15rem;
+      margin-bottom: 0.25rem;
+    }
+    .results-lookup-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 0.75rem;
+    }
+    .results-board {
+      margin-top: 1rem;
+      border: 1px solid rgba(148, 163, 184, 0.14);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      background: rgba(15, 23, 42, 0.32);
+    }
+    .results-summary {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 0.9rem 1rem;
+      border-bottom: 1px solid rgba(148, 163, 184, 0.14);
+    }
+    .results-summary span,
+    .results-table-wrap td span {
+      color: var(--text-secondary);
+    }
+    .empty-results {
+      padding: 1rem;
+      color: var(--text-secondary);
+    }
+    .results-table-wrap {
+      overflow-x: auto;
+    }
+    .results-table-wrap table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 560px;
+    }
+    .results-table-wrap th,
+    .results-table-wrap td {
+      padding: 0.85rem 1rem;
+      text-align: left;
+      border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+      font-size: 0.9rem;
+    }
+    .results-table-wrap th {
+      color: var(--text-secondary);
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .results-table-wrap tr:last-child td {
+      border-bottom: 0;
     }
 
     /* Notes Grid */
@@ -567,6 +708,12 @@ import { ShellComponent } from './shell.component';
       .page-size-control .form-select {
         width: 100%;
       }
+      .results-lookup-row {
+        grid-template-columns: 1fr;
+      }
+      .results-summary {
+        flex-direction: column;
+      }
     }
   `]
 })
@@ -607,6 +754,15 @@ export class QuizComponent implements OnInit {
   protected readonly sharedResult = signal<any>(null);
   protected readonly sharedSubmitting = signal(false);
   protected readonly sharedError = signal('');
+  protected readonly resultsPanelOpen = signal(false);
+  protected readonly sharedResults = signal<any>(null);
+  protected readonly sharedResultsLoading = signal(false);
+  protected readonly sharedResultsError = signal('');
+  protected readonly allVisibleSelected = computed(() => {
+    const notes = this.notes();
+    return notes.length > 0 && notes.every(note => this.selected().has(note.id));
+  });
+  protected resultsQuery = '';
 
   async ngOnInit(): Promise<void> {
     this.locale = (this.route.snapshot.data['locale'] || 'en') as Locale;
@@ -668,7 +824,11 @@ export class QuizComponent implements OnInit {
     this.selected.set(next);
   }
 
-  protected selectVisible(): void {
+  protected toggleVisibleSelection(): void {
+    if (this.allVisibleSelected()) {
+      this.selected.set(new Set());
+      return;
+    }
     this.selected.set(new Set(this.notes().map((note) => note.id)));
   }
 
@@ -799,7 +959,13 @@ export class QuizComponent implements OnInit {
   }
 
   protected async submitShared(): Promise<void> {
+    const displayName = this.sharedDisplayName.trim();
+    if (!displayName) {
+      this.sharedError.set(this.text.displayNameRequired);
+      return;
+    }
     this.sharedSubmitting.set(true);
+    this.sharedError.set('');
     try {
       const orderedAnswers = this.sharedQuestions().map((question) => {
         const value = this.sharedAnswers()[question.id];
@@ -809,7 +975,7 @@ export class QuizComponent implements OnInit {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          displayName: this.sharedDisplayName || this.text.anonymous,
+          displayName,
           answers: orderedAnswers
         })
       });
@@ -820,6 +986,46 @@ export class QuizComponent implements OnInit {
       this.sharedError.set(this.text.sharedError);
     }
     this.sharedSubmitting.set(false);
+  }
+
+  protected toggleResultsLookup(): void {
+    this.resultsPanelOpen.set(!this.resultsPanelOpen());
+  }
+
+  protected async loadSharedResults(): Promise<void> {
+    const token = this.extractSharedToken(this.resultsQuery);
+    if (!token) {
+      this.sharedResultsError.set(this.text.sharedResultsTokenRequired);
+      return;
+    }
+    this.sharedResultsLoading.set(true);
+    this.sharedResultsError.set('');
+    try {
+      const response = await fetch(`/api/quiz/shared/${encodeURIComponent(token)}/results`);
+      const data = await response.json();
+      if (data.success) {
+        this.sharedResults.set(data);
+      } else {
+        this.sharedResults.set(null);
+        this.sharedResultsError.set(data.error || this.text.sharedResultsError);
+      }
+    } catch {
+      this.sharedResults.set(null);
+      this.sharedResultsError.set(this.text.sharedResultsError);
+    }
+    this.sharedResultsLoading.set(false);
+  }
+
+  private extractSharedToken(value: string): string {
+    const raw = String(value || '').trim();
+    if (!raw) return '';
+    try {
+      const url = new URL(raw);
+      const match = url.pathname.match(/\/quiz\/shared\/([^/?#]+)/);
+      if (match?.[1]) return decodeURIComponent(match[1]);
+    } catch {}
+    const match = raw.match(/(?:quiz\/shared\/|shared\/)([^/?#\s]+)/);
+    return decodeURIComponent(match?.[1] || raw);
   }
 }
 
@@ -845,7 +1051,20 @@ const QUIZ_TEXT: Record<Locale, any> = {
     prevPage: 'Prev',
     nextPage: 'Next',
     selectVisible: 'Select visible',
+    clearSelection: 'Clear selection',
     startPractice: 'Start history quiz',
+    sharedResultsButton: 'Check shared results',
+    sharedResultsTitle: 'Shared quiz results',
+    sharedResultsText: 'Paste a shared quiz link or token to see submitted scores.',
+    sharedResultsPlaceholder: 'Paste quiz link or token',
+    sharedResultsTokenRequired: 'Paste a shared quiz link or token first.',
+    sharedResultsError: 'Could not load shared results.',
+    loadResults: 'Load results',
+    resultsCount: 'attempts',
+    noSharedResults: 'No attempts yet.',
+    player: 'Player',
+    score: 'Score',
+    when: 'When',
     emptyTitle: 'No saved questions yet',
     emptyText: 'Solve questions with history saving enabled in the extension, then return here.',
     selected: 'Selected',
@@ -878,6 +1097,7 @@ const QUIZ_TEXT: Record<Locale, any> = {
     displayName: 'Display name',
     loading: 'Loading...',
     checkAnswers: 'Check answers',
+    displayNameRequired: 'Enter a display name before checking answers.',
     sharedError: 'Could not load shared quiz.',
     anonymous: 'Anonymous'
   },
@@ -902,7 +1122,20 @@ const QUIZ_TEXT: Record<Locale, any> = {
     prevPage: 'Poprzednia',
     nextPage: 'Nastepna',
     selectVisible: 'Zaznacz widoczne',
+    clearSelection: 'Odznacz wszystkie',
     startPractice: 'Rozpocznij quiz powtórkowy',
+    sharedResultsButton: 'Sprawdz wyniki',
+    sharedResultsTitle: 'Wyniki udostepnionego quizu',
+    sharedResultsText: 'Wklej link albo token quizu, aby zobaczyc przeslane wyniki.',
+    sharedResultsPlaceholder: 'Wklej link do quizu albo token',
+    sharedResultsTokenRequired: 'Najpierw wklej link do quizu albo token.',
+    sharedResultsError: 'Nie udalo sie wczytac wynikow.',
+    loadResults: 'Wczytaj wyniki',
+    resultsCount: 'podejsc',
+    noSharedResults: 'Brak podejsc.',
+    player: 'Gracz',
+    score: 'Wynik',
+    when: 'Kiedy',
     emptyTitle: 'Brak zapisanych pytań',
     emptyText: 'Rozwiązuj testy za pomocą rozszerzenia z włączonym zapisem historii, a Twoje pytania automatycznie pojawią się w tym panelu.',
     selected: 'Wybrane',
@@ -935,6 +1168,7 @@ const QUIZ_TEXT: Record<Locale, any> = {
     displayName: 'Nazwa użytkownika',
     loading: 'Ładowanie...',
     checkAnswers: 'Sprawdź odpowiedzi',
+    displayNameRequired: 'Wpisz nick przed sprawdzeniem odpowiedzi.',
     sharedError: 'Nie udało się wczytać quizu.',
     anonymous: 'Anonimowy'
   }

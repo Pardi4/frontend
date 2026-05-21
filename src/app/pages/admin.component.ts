@@ -998,7 +998,9 @@ export class AdminComponent implements OnInit {
         return { success: false, error: message };
       }
       if (!response.ok) {
-        const message = data.error || `HTTP ${response.status}`;
+        const message = data.clientIp
+          ? `${data.error || `HTTP ${response.status}`} Detected IP: ${data.clientIp}`
+          : (data.error || `HTTP ${response.status}`);
         this.error.set(message);
         return { success: false, error: message };
       }
