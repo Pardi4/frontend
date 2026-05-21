@@ -109,7 +109,11 @@ import { ShellComponent } from './shell.component';
                   </select>
                   <label class="page-size-control">
                     <span>{{ text.perPage }}</span>
-                    <input class="form-input" type="number" min="1" max="100" [(ngModel)]="pageSize" (ngModelChange)="loadNotes(1)">
+                    <select class="form-select" [(ngModel)]="pageSize" (ngModelChange)="loadNotes(1)">
+                      <option [ngValue]="30">30</option>
+                      <option [ngValue]="50">50</option>
+                      <option [ngValue]="100">100</option>
+                    </select>
                   </label>
                   <button class="btn btn-outline" type="button" (click)="selectVisible()">{{ text.selectVisible }}</button>
                   <button class="btn btn-primary" type="button" (click)="startPractice()">{{ text.startPractice }}</button>
@@ -383,8 +387,8 @@ import { ShellComponent } from './shell.component';
       font-weight: 700;
       white-space: nowrap;
     }
-    .page-size-control .form-input {
-      width: 76px;
+    .page-size-control .form-select {
+      width: 96px;
       padding-inline: 0.75rem;
     }
 
@@ -437,8 +441,8 @@ import { ShellComponent } from './shell.component';
     }
     @keyframes favorite-pop {
       0% { transform: scale(0.82) rotate(0deg); }
-      45% { transform: translateY(-5px) scale(1.18) rotate(170deg); }
-      75% { transform: translateY(1px) scale(0.98) rotate(330deg); }
+      45% { transform: translateY(-7px) scale(1.22) rotate(180deg); }
+      75% { transform: translateY(2px) scale(0.98) rotate(300deg); }
       100% { transform: translateY(0) scale(1) rotate(360deg); }
     }
     .note-meta {
@@ -560,7 +564,7 @@ import { ShellComponent } from './shell.component';
       .filter-row button {
         width: 100%;
       }
-      .page-size-control .form-input {
+      .page-size-control .form-select {
         width: 100%;
       }
     }
@@ -592,10 +596,10 @@ export class QuizComponent implements OnInit {
   protected readonly loading = signal(false);
   protected readonly error = signal('');
   protected readonly currentPage = signal(1);
-  protected readonly pagination = signal({ page: 1, limit: 20, total: 0, pages: 1 });
+  protected readonly pagination = signal({ page: 1, limit: 30, total: 0, pages: 1 });
   protected readonly finished = signal(false);
   protected readonly currentQuestion = computed(() => this.practice()[this.currentIndex()] || null);
-  protected pageSize = 20;
+  protected pageSize = 30;
 
   protected readonly sharedQuiz = signal<any>(null);
   protected readonly sharedQuestions = signal<any[]>([]);
@@ -639,7 +643,8 @@ export class QuizComponent implements OnInit {
   protected async loadNotes(page = this.currentPage()): Promise<void> {
     if (!this.api.token()) return;
     this.loading.set(true);
-    const limit = Math.min(Math.max(Number(this.pageSize) || 20, 1), 100);
+    const allowedLimits = [30, 50, 100];
+    const limit = allowedLimits.includes(Number(this.pageSize)) ? Number(this.pageSize) : 30;
     this.pageSize = limit;
     const nextPage = Math.max(Number(page) || 1, 1);
     const params = new URLSearchParams();
