@@ -98,28 +98,32 @@ import { ShellComponent } from './shell.component';
 
             <section *ngIf="api.token() && !practice().length">
               <div class="quiz-toolbar glass">
-                <div class="toolbar-title">
-                  <h2>{{ text.historyTitle }}</h2>
-                  <p class="text-secondary">{{ pagination().total || notes().length }} {{ text.historyCount }}</p>
-                </div>
-                <div class="toolbar-actions">
+                <div class="toolbar-main">
+                  <div class="toolbar-title">
+                    <h2>{{ resultsPanelOpen() ? text.sharedResultsTitle : text.historyTitle }}</h2>
+                    <p class="text-secondary">
+                      {{ resultsPanelOpen() ? text.sharedResultsText : ((pagination().total || notes().length) + ' ' + text.historyCount) }}
+                    </p>
+                  </div>
                   <div class="primary-actions">
                     <button class="btn btn-primary" type="button" (click)="startPractice()">{{ text.startPractice }}</button>
-                    <button class="btn btn-outline" type="button" (click)="toggleResultsLookup()">{{ text.sharedResultsButton }}</button>
-                  </div>
-                  <div class="filter-row">
-                    <input class="form-input" type="search" [(ngModel)]="search" (ngModelChange)="loadNotes(1)" [placeholder]="text.searchPlaceholder">
-                    <select class="form-select" [(ngModel)]="status" (ngModelChange)="loadNotes(1)">
-                      <option value="">{{ text.filterAll }}</option>
-                      <option value="favorite">{{ text.filterFavorite }}</option>
-                      <option value="new">{{ text.filterNew }}</option>
-                      <option value="learning">{{ text.filterLearning }}</option>
-                      <option value="mastered">{{ text.filterMastered }}</option>
-                    </select>
-                    <button class="btn btn-outline" type="button" (click)="toggleVisibleSelection()">
-                      {{ allVisibleSelected() ? text.clearSelection : text.selectVisible }}
+                    <button class="btn btn-outline" type="button" (click)="toggleResultsLookup()">
+                      {{ resultsPanelOpen() ? text.backToAllQuestions : text.sharedResultsButton }}
                     </button>
                   </div>
+                </div>
+                <div class="filter-row" *ngIf="!resultsPanelOpen()">
+                  <input class="form-input" type="search" [(ngModel)]="search" (ngModelChange)="loadNotes(1)" [placeholder]="text.searchPlaceholder">
+                  <select class="form-select" [(ngModel)]="status" (ngModelChange)="loadNotes(1)">
+                    <option value="">{{ text.filterAll }}</option>
+                    <option value="favorite">{{ text.filterFavorite }}</option>
+                    <option value="new">{{ text.filterNew }}</option>
+                    <option value="learning">{{ text.filterLearning }}</option>
+                    <option value="mastered">{{ text.filterMastered }}</option>
+                  </select>
+                  <button class="btn btn-outline" type="button" (click)="toggleVisibleSelection()">
+                    {{ allVisibleSelected() ? text.clearSelection : text.selectVisible }}
+                  </button>
                 </div>
               </div>
 
@@ -197,13 +201,14 @@ import { ShellComponent } from './shell.component';
                 </ng-template>
               </div>
 
-              <div class="empty-panel glass" *ngIf="!loading() && !notes().length">
-                <h3>{{ text.emptyTitle }}</h3>
-                <p class="text-secondary">{{ text.emptyText }}</p>
-              </div>
+              <ng-container *ngIf="!resultsPanelOpen()">
+                <div class="empty-panel glass" *ngIf="!loading() && !notes().length">
+                  <h3>{{ text.emptyTitle }}</h3>
+                  <p class="text-secondary">{{ text.emptyText }}</p>
+                </div>
 
-              <div class="notes-grid">
-                <article class="note-card glass glass-hover" *ngFor="let note of notes()">
+                <div class="notes-grid">
+                  <article class="note-card glass glass-hover" *ngFor="let note of notes()">
                   <div class="note-head">
                     <label class="pill" [class.active]="selected().has(note.id)">
                       <input type="checkbox" [checked]="selected().has(note.id)" (change)="toggleSelected(note.id)">
@@ -247,28 +252,29 @@ import { ShellComponent } from './shell.component';
                       {{ text.saveNote }}
                     </button>
                   </div>
-                </article>
-              </div>
-
-              <div class="notes-footer-controls glass" *ngIf="notes().length || pagination().total">
-                <label class="page-size-control">
-                  <span>{{ text.perPage }}</span>
-                  <select class="form-select" [(ngModel)]="pageSize" (ngModelChange)="loadNotes(1)">
-                    <option [ngValue]="30">30</option>
-                    <option [ngValue]="50">50</option>
-                    <option [ngValue]="100">100</option>
-                  </select>
-                </label>
-                <div class="quiz-pagination" *ngIf="pagination().pages > 1">
-                  <button class="btn btn-outline btn-sm" type="button" (click)="loadNotes(currentPage() - 1)" [disabled]="currentPage() <= 1">
-                    {{ text.prevPage }}
-                  </button>
-                  <span>{{ currentPage() }} / {{ pagination().pages }}</span>
-                  <button class="btn btn-outline btn-sm" type="button" (click)="loadNotes(currentPage() + 1)" [disabled]="currentPage() >= pagination().pages">
-                    {{ text.nextPage }}
-                  </button>
+                  </article>
                 </div>
-              </div>
+
+                <div class="notes-footer-controls glass" *ngIf="notes().length || pagination().total">
+                  <label class="page-size-control">
+                    <span>{{ text.perPage }}</span>
+                    <select class="form-select" [(ngModel)]="pageSize" (ngModelChange)="loadNotes(1)">
+                      <option [ngValue]="30">30</option>
+                      <option [ngValue]="50">50</option>
+                      <option [ngValue]="100">100</option>
+                    </select>
+                  </label>
+                  <div class="quiz-pagination" *ngIf="pagination().pages > 1">
+                    <button class="btn btn-outline btn-sm" type="button" (click)="loadNotes(currentPage() - 1)" [disabled]="currentPage() <= 1">
+                      {{ text.prevPage }}
+                    </button>
+                    <span>{{ currentPage() }} / {{ pagination().pages }}</span>
+                    <button class="btn btn-outline btn-sm" type="button" (click)="loadNotes(currentPage() + 1)" [disabled]="currentPage() >= pagination().pages">
+                      {{ text.nextPage }}
+                    </button>
+                  </div>
+                </div>
+              </ng-container>
             </section>
 
             <section *ngIf="practice().length" class="practice-container">
@@ -442,23 +448,22 @@ import { ShellComponent } from './shell.component';
 
     /* Toolbar */
     .quiz-toolbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 1.5rem;
+      display: grid;
+      gap: 1.15rem;
       margin: 2.5rem 0;
       padding: 1.5rem 2rem;
     }
-    .toolbar-title h2 {
-      font-size: 1.5rem;
-    }
-    .toolbar-actions {
+    .toolbar-main {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 1rem;
-      flex: 1 1 720px;
+      gap: 1.5rem;
+    }
+    .toolbar-title {
+      min-width: 0;
+    }
+    .toolbar-title h2 {
+      font-size: 1.5rem;
     }
     .primary-actions {
       display: flex;
@@ -469,6 +474,7 @@ import { ShellComponent } from './shell.component';
     .filter-row {
       display: flex;
       align-items: center;
+      justify-content: flex-end;
       gap: 0.75rem;
       flex-wrap: wrap;
       padding: 0.4rem;
@@ -477,13 +483,14 @@ import { ShellComponent } from './shell.component';
       background: rgba(15, 23, 42, 0.45);
     }
     .filter-row .form-input {
-      width: 240px;
+      flex: 1 1 280px;
+      max-width: 420px;
       min-height: 44px;
       border-color: transparent;
       background-color: rgba(255, 255, 255, 0.04);
     }
     .filter-row .form-select {
-      width: 160px;
+      flex: 0 0 180px;
       min-height: 44px;
       border-color: transparent;
       background-color: rgba(255, 255, 255, 0.04);
@@ -519,7 +526,7 @@ import { ShellComponent } from './shell.component';
     }
 
     .shared-results-panel {
-      margin: -1rem 0 2rem;
+      margin: 1.25rem 0 2rem;
       padding: 1.25rem;
     }
     .logged-attempt-note {
@@ -856,7 +863,7 @@ import { ShellComponent } from './shell.component';
         align-items: stretch;
         padding: 1.5rem;
       }
-      .toolbar-actions,
+      .toolbar-main,
       .primary-actions {
         flex-direction: column;
         align-items: stretch;
@@ -1213,6 +1220,7 @@ const QUIZ_TEXT: Record<Locale, any> = {
     clearSelection: 'Clear selection',
     startPractice: 'Start history quiz',
     sharedResultsButton: 'Check results',
+    backToAllQuestions: 'Back to all questions',
     sharedResultsTitle: 'Shared quiz results',
     sharedResultsText: 'Review quizzes you created and your own attempts from shared quizzes.',
     createdQuizzes: 'Created quizzes',
@@ -1293,6 +1301,7 @@ const QUIZ_TEXT: Record<Locale, any> = {
     clearSelection: 'Odznacz wszystkie',
     startPractice: 'Rozpocznij quiz powtórkowy',
     sharedResultsButton: 'Sprawdz wyniki',
+    backToAllQuestions: 'Wroc do wszystkich pytan',
     sharedResultsTitle: 'Wyniki udostepnionego quizu',
     sharedResultsText: 'Przegladaj quizy, ktore stworzyles, oraz swoje podejscia do quizow innych osob.',
     createdQuizzes: 'Moje quizy',

@@ -79,9 +79,35 @@ import { CHROME_WEB_STORE_URL, Locale, PageKey, contentFor, pathFor } from '../s
             <a class="nav-link" [href]="pathFor('quiz')" (click)="mobileMenuOpen.set(false)">
               {{ locale === 'pl' ? 'Historia i quiz' : 'History & quiz' }}
             </a>
-            <div class="mobile-actions" *ngIf="!api.currentUser()">
-              <a class="btn btn-outline auth-action auth-login" [href]="authHref('login')" (click)="openAuthLink($event, 'login')">{{ copy.nav.login }}</a>
-              <a class="btn btn-primary auth-action auth-register" [href]="authHref('register')" (click)="openAuthLink($event, 'register')">{{ copy.nav.signup }}</a>
+            <div class="mobile-utility">
+              <div class="mobile-lang-row" aria-label="Language">
+                <a class="lang-option" [class.active]="locale === 'en'" [href]="alternatePath('en')" (click)="mobileMenuOpen.set(false)">EN</a>
+                <a class="lang-option" [class.active]="locale === 'pl'" [href]="alternatePath('pl')" (click)="mobileMenuOpen.set(false)">PL</a>
+              </div>
+
+              <ng-container *ngIf="api.currentUser(); else mobileGuestActions">
+                <div class="mobile-user-card">
+                  <span class="avatar-btn">{{ userInitial(api.currentUser()) }}</span>
+                  <div>
+                    <strong>{{ api.currentUser()?.displayName || 'User' }}</strong>
+                    <span>{{ api.currentUser()?.email }}</span>
+                  </div>
+                </div>
+                <div class="mobile-actions">
+                  <button class="btn btn-outline" type="button" (click)="goToDashboard()">{{ copy.common.dashboard }}</button>
+                  <button class="btn btn-outline" type="button" (click)="goToDashboard('credits')">
+                    {{ api.currentUser()?.role === 'admin' ? 'Unlimited' : (api.currentUser()?.credits || 0) + ' ' + copy.common.credits }}
+                  </button>
+                  <button class="btn btn-ghost" type="button" (click)="logout()">{{ copy.common.logout }}</button>
+                </div>
+              </ng-container>
+
+              <ng-template #mobileGuestActions>
+                <div class="mobile-actions">
+                  <a class="btn btn-outline auth-action auth-login" [href]="authHref('login')" (click)="openAuthLink($event, 'login')">{{ copy.nav.login }}</a>
+                  <a class="btn btn-primary auth-action auth-register" [href]="authHref('register')" (click)="openAuthLink($event, 'register')">{{ copy.nav.signup }}</a>
+                </div>
+              </ng-template>
             </div>
           </div>
         </nav>
@@ -467,6 +493,62 @@ import { CHROME_WEB_STORE_URL, Locale, PageKey, contentFor, pathFor } from '../s
       min-height: 3rem;
       border-radius: var(--radius-md);
     }
+    .mobile-utility {
+      display: grid;
+      gap: 0.75rem;
+      margin-top: 0.35rem;
+      padding-top: 0.75rem;
+      border-top: 1px solid rgba(148, 163, 184, 0.14);
+    }
+    .mobile-lang-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.5rem;
+    }
+    .mobile-lang-row .lang-option {
+      min-height: 2.75rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid rgba(148, 163, 184, 0.14);
+      border-radius: var(--radius-md);
+      background: rgba(255, 255, 255, 0.035);
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
+    .mobile-lang-row .lang-option.active {
+      background: rgba(6, 182, 212, 0.12);
+      color: var(--accent-cyan);
+      border-color: rgba(6, 182, 212, 0.35);
+    }
+    .mobile-user-card {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
+      gap: 0.8rem;
+      align-items: center;
+      padding: 0.85rem 1rem;
+      border: 1px solid rgba(148, 163, 184, 0.14);
+      border-radius: var(--radius-md);
+      background: rgba(255, 255, 255, 0.035);
+    }
+    .mobile-user-card .avatar-btn {
+      pointer-events: none;
+    }
+    .mobile-user-card strong,
+    .mobile-user-card span {
+      display: block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .mobile-user-card strong {
+      color: var(--text-primary);
+      font-size: 0.95rem;
+    }
+    .mobile-user-card div > span {
+      color: var(--text-tertiary);
+      font-size: 0.8rem;
+    }
 
     /* CTA Section */
     .cta-section {
@@ -777,6 +859,7 @@ export class ShellComponent implements OnInit, AfterViewInit, OnDestroy {
 
   protected async goToDashboard(hash?: string): Promise<void> {
     this.dropdownOpen.set(false);
+    this.mobileMenuOpen.set(false);
     const url = pathFor('dashboard', this.locale);
     await this.router.navigateByUrl(hash ? `${url}#${hash}` : url);
   }
@@ -784,6 +867,7 @@ export class ShellComponent implements OnInit, AfterViewInit, OnDestroy {
   protected logout(): void {
     this.api.clearSession();
     this.dropdownOpen.set(false);
+    this.mobileMenuOpen.set(false);
     this.router.navigateByUrl(pathFor('home', this.locale));
   }
 

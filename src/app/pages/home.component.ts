@@ -18,13 +18,13 @@ import { ShellComponent } from './shell.component';
           <div class="hero-bg-orb orb-violet"></div>
           
           <div class="container hero-container">
-            <p class="eyebrow anim-slide-up">{{ text.hero.eyebrow }}</p>
-            <h1 class="hero-title anim-slide-up delay-1">
+            <p class="eyebrow">{{ text.hero.eyebrow }}</p>
+            <h1 class="hero-title delay-1">
               {{ locale === 'pl' ? 'Rozwiązuj quizy z' : 'Unlock the ultimate' }}
               <span class="text-gradient-strong">{{ locale === 'pl' ? 'mocą AI' : 'Quiz Solving Power' }}</span>
             </h1>
-            <p class="hero-lead anim-slide-up delay-2">{{ text.hero.lead }}</p>
-            <div class="hero-actions anim-slide-up delay-3">
+            <p class="hero-lead delay-2">{{ text.hero.lead }}</p>
+            <div class="hero-actions delay-3">
               <a class="btn btn-primary btn-lg" [href]="storeUrl" target="_blank" rel="noopener">
                 {{ text.hero.primary }}
               </a>
@@ -34,7 +34,7 @@ import { ShellComponent } from './shell.component';
             </div>
             
             <!-- Platform Trust Bar -->
-            <div class="trust-bar anim-slide-up delay-4">
+            <div class="trust-bar delay-4">
               <div class="trust-marquee-wrapper">
                 <div class="trust-marquee">
                   <span class="trust-item" *ngFor="let platform of ['Testportal', 'Moodle', 'Google Forms', 'Canvas', 'MS Forms', 'Blackboard', 'Quizlet', 'Kahoot', 'Quizizz', 'Socrative']">
