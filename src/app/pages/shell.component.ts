@@ -1,7 +1,8 @@
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { Component, Input, OnInit, PLATFORM_ID, inject, signal } from '@angular/core';
+import { AfterViewInit, Component, Input, OnDestroy, OnInit, PLATFORM_ID, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, NavigationEnd } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { ApiService } from '../api.service';
 import { CHROME_WEB_STORE_URL, Locale, PageKey, contentFor, pathFor } from '../site-content';
 
@@ -34,8 +35,8 @@ import { CHROME_WEB_STORE_URL, Locale, PageKey, contentFor, pathFor } from '../s
             </div>
 
             <ng-container *ngIf="!api.currentUser(); else userMenu">
-              <button class="btn btn-ghost btn-sm" type="button" (click)="openModal('login')">{{ copy.nav.login }}</button>
-              <button class="btn btn-primary btn-sm" type="button" (click)="openModal('register')">{{ copy.nav.signup }}</button>
+              <a class="btn btn-outline btn-sm auth-action auth-login" [href]="authHref('login')" (click)="openAuthLink($event, 'login')">{{ copy.nav.login }}</a>
+              <a class="btn btn-primary btn-sm auth-action auth-register" [href]="authHref('register')" (click)="openAuthLink($event, 'register')">{{ copy.nav.signup }}</a>
             </ng-container>
 
             <ng-template #userMenu>
@@ -79,8 +80,8 @@ import { CHROME_WEB_STORE_URL, Locale, PageKey, contentFor, pathFor } from '../s
               {{ locale === 'pl' ? 'Historia i quiz' : 'History & quiz' }}
             </a>
             <div class="mobile-actions" *ngIf="!api.currentUser()">
-              <button class="btn btn-outline" type="button" (click)="openModal('login')">{{ copy.nav.login }}</button>
-              <button class="btn btn-primary" type="button" (click)="openModal('register')">{{ copy.nav.signup }}</button>
+              <a class="btn btn-outline auth-action auth-login" [href]="authHref('login')" (click)="openAuthLink($event, 'login')">{{ copy.nav.login }}</a>
+              <a class="btn btn-primary auth-action auth-register" [href]="authHref('register')" (click)="openAuthLink($event, 'register')">{{ copy.nav.signup }}</a>
             </div>
           </div>
         </nav>
@@ -104,9 +105,9 @@ import { CHROME_WEB_STORE_URL, Locale, PageKey, contentFor, pathFor } from '../s
                 <a class="btn btn-primary btn-lg" [href]="storeUrl" target="_blank" rel="noopener">
                   {{ locale === 'pl' ? 'Otwórz Chrome Web Store' : 'Open Chrome Web Store' }}
                 </a>
-                <button class="btn btn-outline btn-lg" type="button" (click)="openModal('register')">
+                <a class="btn btn-outline btn-lg auth-action" [href]="authHref('register')" (click)="openAuthLink($event, 'register')">
                   {{ copy.common.createAccount }}
-                </button>
+                </a>
               </div>
             </div>
           </div>
@@ -277,6 +278,26 @@ import { CHROME_WEB_STORE_URL, Locale, PageKey, contentFor, pathFor } from '../s
       display: flex;
       align-items: center;
       gap: 1.25rem;
+    }
+
+    .auth-action {
+      min-height: 2.45rem;
+      border-radius: var(--radius-full);
+      position: relative;
+      isolation: isolate;
+    }
+    .auth-login {
+      background: rgba(255, 255, 255, 0.035);
+      border-color: rgba(255, 255, 255, 0.16);
+    }
+    .auth-login:hover {
+      background: rgba(6, 182, 212, 0.09);
+      border-color: var(--accent-cyan);
+      color: var(--text-primary);
+    }
+    .auth-register {
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      box-shadow: 0 6px 24px rgba(6, 182, 212, 0.18);
     }
 
     /* Language switch */
@@ -529,7 +550,7 @@ import { CHROME_WEB_STORE_URL, Locale, PageKey, contentFor, pathFor } from '../s
     }
   `]
 })
-export class ShellComponent implements OnInit {
+export class ShellComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() locale: Locale = 'en';
   @Input() pageKey: PageKey = 'home';
 
@@ -557,9 +578,10 @@ export class ShellComponent implements OnInit {
   }
 
   private revealObserver?: IntersectionObserver;
+  private routerEventsSub?: Subscription;
 
-  async ngOnInit(): Promise<void> {
-    await this.api.restoreSession();
+  ngOnInit(): void {
+    void this.api.restoreSession();
 
     if (!isPlatformBrowser(this.platformId)) return;
 
@@ -567,22 +589,38 @@ export class ShellComponent implements OnInit {
     const ref = params.get('ref');
     if (ref && !this.referralCode) this.referralCode = ref.trim();
 
-    if (this.pageKey === 'home' && window.location.pathname === '/' && navigator.language.startsWith('pl') && !sessionStorage.getItem('lang_redirected')) {
-      sessionStorage.setItem('lang_redirected', 'true');
-      await this.router.navigate(['/pl']);
+    if (this.shouldRedirectToPolish()) {
+      this.markLanguageRedirected();
+      void this.router.navigate(['/pl'], { queryParams: Object.fromEntries(params.entries()) });
+      return;
     }
 
-    // Scroll reveal initialization
+    this.openModalFromAuthQuery(params);
+  }
+
+  ngAfterViewInit(): void {
+    if (!isPlatformBrowser(this.platformId)) return;
+
     this.initScrollReveal();
-    this.router.events.subscribe((event) => {
+    this.queueRevealScan();
+    this.routerEventsSub = this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
-        setTimeout(() => this.scanAndObserveReveals(), 200);
+        this.openModalFromAuthQuery(new URLSearchParams(window.location.search));
+        this.queueRevealScan();
       }
     });
   }
 
+  ngOnDestroy(): void {
+    this.revealObserver?.disconnect();
+    this.routerEventsSub?.unsubscribe();
+  }
+
   private initScrollReveal(): void {
-    if (typeof IntersectionObserver === 'undefined') return;
+    if (typeof IntersectionObserver === 'undefined') {
+      this.revealAll();
+      return;
+    }
 
     this.revealObserver = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
@@ -600,10 +638,26 @@ export class ShellComponent implements OnInit {
   }
 
   private scanAndObserveReveals(): void {
-    if (!this.revealObserver) return;
+    if (!this.revealObserver) {
+      this.revealAll();
+      return;
+    }
     const elements = document.querySelectorAll('.reveal:not(.revealed)');
     elements.forEach((el) => {
       this.revealObserver?.observe(el);
+    });
+  }
+
+  private queueRevealScan(): void {
+    window.requestAnimationFrame(() => {
+      this.scanAndObserveReveals();
+      window.setTimeout(() => this.scanAndObserveReveals(), 150);
+    });
+  }
+
+  private revealAll(): void {
+    document.querySelectorAll('.reveal:not(.revealed)').forEach((el) => {
+      el.classList.add('revealed');
     });
   }
 
@@ -619,8 +673,18 @@ export class ShellComponent implements OnInit {
     return `${pathFor('home', this.locale)}#${hash}`;
   }
 
+  protected authHref(type: 'login' | 'register'): string {
+    return `${pathFor(this.pageKey, this.locale)}?auth=${type}`;
+  }
+
   protected userInitial(user: any): string {
     return (user?.displayName || user?.email || '?').charAt(0).toUpperCase();
+  }
+
+  protected openAuthLink(event: MouseEvent, type: 'login' | 'register'): void {
+    event.preventDefault();
+    this.openModal(type);
+    this.stripAuthQueryParam();
   }
 
   openModal(type: 'login' | 'register'): void {
@@ -631,6 +695,43 @@ export class ShellComponent implements OnInit {
 
   closeModal(): void {
     this.activeModal.set(null);
+  }
+
+  private openModalFromAuthQuery(params: URLSearchParams): void {
+    const auth = params.get('auth');
+    if (auth !== 'login' && auth !== 'register') return;
+    this.openModal(auth);
+    this.stripAuthQueryParam();
+  }
+
+  private stripAuthQueryParam(): void {
+    const url = new URL(window.location.href);
+    if (!url.searchParams.has('auth')) return;
+    url.searchParams.delete('auth');
+    window.history.replaceState(window.history.state, '', `${url.pathname}${url.search}${url.hash}`);
+  }
+
+  private shouldRedirectToPolish(): boolean {
+    return this.pageKey === 'home'
+      && window.location.pathname === '/'
+      && navigator.language.toLowerCase().startsWith('pl')
+      && !this.hasLanguageRedirected();
+  }
+
+  private hasLanguageRedirected(): boolean {
+    try {
+      return sessionStorage.getItem('lang_redirected') === 'true';
+    } catch {
+      return false;
+    }
+  }
+
+  private markLanguageRedirected(): void {
+    try {
+      sessionStorage.setItem('lang_redirected', 'true');
+    } catch {
+      // Redirect still works; this only prevents repeated redirects on root.
+    }
   }
 
   protected async goToDashboard(hash?: string): Promise<void> {

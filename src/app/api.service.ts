@@ -21,7 +21,7 @@ export class ApiService {
   constructor(@Inject(PLATFORM_ID) platformId: object) {
     this.isBrowser = isPlatformBrowser(platformId);
     if (this.isBrowser) {
-      this.token.set(localStorage.getItem('qs_token'));
+      this.token.set(this.getStoredToken());
     }
   }
 
@@ -57,12 +57,36 @@ export class ApiService {
   setSession(token: string, user: any): void {
     this.token.set(token);
     this.currentUser.set(user);
-    if (this.isBrowser) localStorage.setItem('qs_token', token);
+    if (this.isBrowser) this.setStoredToken(token);
   }
 
   clearSession(): void {
     this.token.set(null);
     this.currentUser.set(null);
-    if (this.isBrowser) localStorage.removeItem('qs_token');
+    if (this.isBrowser) this.removeStoredToken();
+  }
+
+  private getStoredToken(): string | null {
+    try {
+      return localStorage.getItem('qs_token');
+    } catch {
+      return null;
+    }
+  }
+
+  private setStoredToken(token: string): void {
+    try {
+      localStorage.setItem('qs_token', token);
+    } catch {
+      // Storage can be unavailable in hardened or file-based browser contexts.
+    }
+  }
+
+  private removeStoredToken(): void {
+    try {
+      localStorage.removeItem('qs_token');
+    } catch {
+      // Ignore storage cleanup failures; in-memory state was already cleared.
+    }
   }
 }
