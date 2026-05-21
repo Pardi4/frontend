@@ -292,12 +292,13 @@ textarea { resize: vertical; min-height: 80px; }
 
 .form-select option,
 .form-select optgroup {
-  background: #0f172a;
+  background: #101827;
   color: #f8fafc;
 }
 
 .form-select option:checked {
-  background: #1d4ed8;
+  background: #101827;
+  box-shadow: 0 0 0 100vmax #101827 inset;
   color: #ffffff;
 }
 

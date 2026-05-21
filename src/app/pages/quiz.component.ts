@@ -46,8 +46,11 @@ import { ShellComponent } from './shell.component';
 
               <aside class="shared-sidebar glass">
                 <h2>{{ text.submitShared }}</h2>
-                <p class="text-secondary">{{ text.submitSharedText }}</p>
-                <div class="form-group" style="margin-top: 1.5rem;">
+                <p class="text-secondary">{{ api.currentUser() ? text.submitSharedLoggedText : text.submitSharedText }}</p>
+                <div class="logged-attempt-note" *ngIf="api.currentUser() as user">
+                  {{ text.loggedAttemptAs }} <strong>{{ user.displayName || user.email }}</strong>
+                </div>
+                <div class="form-group" style="margin-top: 1.5rem;" *ngIf="!api.currentUser()">
                   <input class="form-input" [(ngModel)]="sharedDisplayName" [placeholder]="text.displayName">
                 </div>
                 <button class="btn btn-primary btn-block" type="button" (click)="submitShared()" [disabled]="sharedSubmitting()">
@@ -99,28 +102,24 @@ import { ShellComponent } from './shell.component';
                   <h2>{{ text.historyTitle }}</h2>
                   <p class="text-secondary">{{ pagination().total || notes().length }} {{ text.historyCount }}</p>
                 </div>
-                <div class="filter-row">
-                  <input class="form-input" type="search" [(ngModel)]="search" (ngModelChange)="loadNotes(1)" [placeholder]="text.searchPlaceholder">
-                  <select class="form-select" [(ngModel)]="status" (ngModelChange)="loadNotes(1)">
-                    <option value="">{{ text.filterAll }}</option>
-                    <option value="favorite">{{ text.filterFavorite }}</option>
-                    <option value="new">{{ text.filterNew }}</option>
-                    <option value="learning">{{ text.filterLearning }}</option>
-                    <option value="mastered">{{ text.filterMastered }}</option>
-                  </select>
-                  <label class="page-size-control">
-                    <span>{{ text.perPage }}</span>
-                    <select class="form-select" [(ngModel)]="pageSize" (ngModelChange)="loadNotes(1)">
-                      <option [ngValue]="30">30</option>
-                      <option [ngValue]="50">50</option>
-                      <option [ngValue]="100">100</option>
+                <div class="toolbar-actions">
+                  <div class="primary-actions">
+                    <button class="btn btn-primary" type="button" (click)="startPractice()">{{ text.startPractice }}</button>
+                    <button class="btn btn-outline" type="button" (click)="toggleResultsLookup()">{{ text.sharedResultsButton }}</button>
+                  </div>
+                  <div class="filter-row">
+                    <input class="form-input" type="search" [(ngModel)]="search" (ngModelChange)="loadNotes(1)" [placeholder]="text.searchPlaceholder">
+                    <select class="form-select" [(ngModel)]="status" (ngModelChange)="loadNotes(1)">
+                      <option value="">{{ text.filterAll }}</option>
+                      <option value="favorite">{{ text.filterFavorite }}</option>
+                      <option value="new">{{ text.filterNew }}</option>
+                      <option value="learning">{{ text.filterLearning }}</option>
+                      <option value="mastered">{{ text.filterMastered }}</option>
                     </select>
-                  </label>
-                  <button class="btn btn-outline" type="button" (click)="toggleVisibleSelection()">
-                    {{ allVisibleSelected() ? text.clearSelection : text.selectVisible }}
-                  </button>
-                  <button class="btn btn-primary" type="button" (click)="startPractice()">{{ text.startPractice }}</button>
-                  <button class="btn btn-outline" type="button" (click)="toggleResultsLookup()">{{ text.sharedResultsButton }}</button>
+                    <button class="btn btn-outline" type="button" (click)="toggleVisibleSelection()">
+                      {{ allVisibleSelected() ? text.clearSelection : text.selectVisible }}
+                    </button>
+                  </div>
                 </div>
               </div>
 
@@ -131,41 +130,71 @@ import { ShellComponent } from './shell.component';
                     <p class="text-secondary">{{ text.sharedResultsText }}</p>
                   </div>
                 </div>
-                <div class="results-lookup-row">
-                  <input class="form-input" [(ngModel)]="resultsQuery" [placeholder]="text.sharedResultsPlaceholder" (keyup.enter)="loadSharedResults()">
-                  <button class="btn btn-primary" type="button" (click)="loadSharedResults()" [disabled]="sharedResultsLoading()">
-                    {{ sharedResultsLoading() ? text.loading : text.loadResults }}
-                  </button>
+                <div class="results-tabs">
+                  <button type="button" [class.active]="sharedResultsMode() === 'created'" (click)="setSharedResultsMode('created')">{{ text.createdQuizzes }}</button>
+                  <button type="button" [class.active]="sharedResultsMode() === 'attempts'" (click)="setSharedResultsMode('attempts')">{{ text.myAttempts }}</button>
                 </div>
                 <div class="form-error" *ngIf="sharedResultsError()">{{ sharedResultsError() }}</div>
 
-                <div class="results-board" *ngIf="sharedResults() as board">
-                  <div class="results-summary">
-                    <strong>{{ board.title }}</strong>
-                    <span>{{ board.results?.length || 0 }} {{ text.resultsCount }}</span>
+                <ng-container *ngIf="!sharedResultsLoading(); else sharedResultsLoadingTpl">
+                  <div class="empty-results" *ngIf="sharedResultsMode() === 'created' && !createdSharedQuizzes().length">{{ text.noCreatedQuizzes }}</div>
+                  <div class="created-results-grid" *ngIf="sharedResultsMode() === 'created'">
+                    <article class="results-board" *ngFor="let quiz of createdSharedQuizzes()">
+                      <div class="results-summary">
+                        <div>
+                          <strong>{{ quiz.title }}</strong>
+                          <span>{{ quiz.questionCount }} {{ text.historyCount }} · {{ quiz.attemptCount }} {{ text.resultsCount }}</span>
+                        </div>
+                        <a class="btn btn-outline btn-sm" [href]="quiz.shareUrl" target="_blank" rel="noopener">{{ text.openQuiz }}</a>
+                      </div>
+                      <div class="empty-results" *ngIf="!quiz.attempts?.length">{{ text.noSharedResults }}</div>
+                      <div class="attempt-list" *ngIf="quiz.attempts?.length">
+                        <details class="attempt-row" *ngFor="let attempt of quiz.attempts">
+                          <summary>
+                            <strong>{{ attempt.displayName }}</strong>
+                            <span>{{ attempt.score }} / {{ attempt.totalQuestions }} · {{ attempt.percentage }}% · {{ attempt.completedAt | date:'short' }}</span>
+                          </summary>
+                          <div class="answer-review-list">
+                            <article class="answer-review" *ngFor="let answer of attempt.answers" [class.correct]="answer.correct">
+                              <div>
+                                <strong>{{ answer.questionText }}</strong>
+                                <p>{{ text.selectedAnswer }}: {{ answer.givenText || '-' }}</p>
+                                <p>{{ text.correctAnswer }}: {{ answer.correctAnswerText }}</p>
+                              </div>
+                              <span>{{ answer.correct ? text.correct : text.incorrect }}</span>
+                            </article>
+                          </div>
+                        </details>
+                      </div>
+                    </article>
                   </div>
-                  <div class="empty-results" *ngIf="!board.results?.length">{{ text.noSharedResults }}</div>
-                  <div class="results-table-wrap" *ngIf="board.results?.length">
-                    <table>
-                      <thead>
-                        <tr>
-                          <th>#</th>
-                          <th>{{ text.player }}</th>
-                          <th>{{ text.score }}</th>
-                          <th>{{ text.when }}</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr *ngFor="let result of board.results; let i = index">
-                          <td>{{ i + 1 }}</td>
-                          <td>{{ result.displayName }}</td>
-                          <td>{{ result.score }} / {{ result.totalQuestions }} <span>{{ result.percentage }}%</span></td>
-                          <td>{{ result.completedAt | date:'short' }}</td>
-                        </tr>
-                      </tbody>
-                    </table>
+
+                  <div class="empty-results" *ngIf="sharedResultsMode() === 'attempts' && !participatedAttempts().length">{{ text.noMyAttempts }}</div>
+                  <div class="created-results-grid" *ngIf="sharedResultsMode() === 'attempts'">
+                    <article class="results-board" *ngFor="let attempt of participatedAttempts()">
+                      <div class="results-summary">
+                        <div>
+                          <strong>{{ attempt.title }}</strong>
+                          <span>{{ attempt.score }} / {{ attempt.totalQuestions }} · {{ attempt.percentage }}% · {{ attempt.completedAt | date:'short' }}</span>
+                        </div>
+                        <a class="btn btn-outline btn-sm" [href]="attempt.shareUrl" target="_blank" rel="noopener">{{ text.openQuiz }}</a>
+                      </div>
+                      <div class="answer-review-list">
+                        <article class="answer-review" *ngFor="let answer of attempt.answers" [class.correct]="answer.correct">
+                          <div>
+                            <strong>{{ answer.questionText }}</strong>
+                            <p>{{ text.selectedAnswer }}: {{ answer.givenText || '-' }}</p>
+                            <p>{{ text.correctAnswer }}: {{ answer.correctAnswerText }}</p>
+                          </div>
+                          <span>{{ answer.correct ? text.correct : text.incorrect }}</span>
+                        </article>
+                      </div>
+                    </article>
                   </div>
-                </div>
+                </ng-container>
+                <ng-template #sharedResultsLoadingTpl>
+                  <div class="empty-results">{{ text.loading }}</div>
+                </ng-template>
               </div>
 
               <div class="empty-panel glass" *ngIf="!loading() && !notes().length">
@@ -221,14 +250,24 @@ import { ShellComponent } from './shell.component';
                 </article>
               </div>
 
-              <div class="quiz-pagination glass" *ngIf="pagination().pages > 1">
-                <button class="btn btn-outline btn-sm" type="button" (click)="loadNotes(currentPage() - 1)" [disabled]="currentPage() <= 1">
-                  {{ text.prevPage }}
-                </button>
-                <span>{{ currentPage() }} / {{ pagination().pages }}</span>
-                <button class="btn btn-outline btn-sm" type="button" (click)="loadNotes(currentPage() + 1)" [disabled]="currentPage() >= pagination().pages">
-                  {{ text.nextPage }}
-                </button>
+              <div class="notes-footer-controls glass" *ngIf="notes().length || pagination().total">
+                <label class="page-size-control">
+                  <span>{{ text.perPage }}</span>
+                  <select class="form-select" [(ngModel)]="pageSize" (ngModelChange)="loadNotes(1)">
+                    <option [ngValue]="30">30</option>
+                    <option [ngValue]="50">50</option>
+                    <option [ngValue]="100">100</option>
+                  </select>
+                </label>
+                <div class="quiz-pagination" *ngIf="pagination().pages > 1">
+                  <button class="btn btn-outline btn-sm" type="button" (click)="loadNotes(currentPage() - 1)" [disabled]="currentPage() <= 1">
+                    {{ text.prevPage }}
+                  </button>
+                  <span>{{ currentPage() }} / {{ pagination().pages }}</span>
+                  <button class="btn btn-outline btn-sm" type="button" (click)="loadNotes(currentPage() + 1)" [disabled]="currentPage() >= pagination().pages">
+                    {{ text.nextPage }}
+                  </button>
+                </div>
               </div>
             </section>
 
@@ -414,6 +453,19 @@ import { ShellComponent } from './shell.component';
     .toolbar-title h2 {
       font-size: 1.5rem;
     }
+    .toolbar-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex: 1 1 720px;
+    }
+    .primary-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
     .filter-row {
       display: flex;
       align-items: center;
@@ -470,6 +522,18 @@ import { ShellComponent } from './shell.component';
       margin: -1rem 0 2rem;
       padding: 1.25rem;
     }
+    .logged-attempt-note {
+      margin-top: 1.25rem;
+      padding: 0.85rem 1rem;
+      border: 1px solid rgba(6, 182, 212, 0.2);
+      border-radius: var(--radius-md);
+      background: rgba(6, 182, 212, 0.08);
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
+    .logged-attempt-note strong {
+      color: var(--text-primary);
+    }
     .results-header {
       display: flex;
       align-items: flex-start;
@@ -486,6 +550,32 @@ import { ShellComponent } from './shell.component';
       grid-template-columns: minmax(0, 1fr) auto;
       gap: 0.75rem;
     }
+    .results-tabs {
+      display: inline-flex;
+      gap: 0.25rem;
+      padding: 0.25rem;
+      margin-bottom: 1rem;
+      border: 1px solid rgba(148, 163, 184, 0.14);
+      border-radius: var(--radius-md);
+      background: rgba(15, 23, 42, 0.55);
+    }
+    .results-tabs button {
+      border: 0;
+      border-radius: calc(var(--radius-md) - 2px);
+      padding: 0.7rem 0.95rem;
+      background: transparent;
+      color: var(--text-secondary);
+      font-weight: 800;
+      cursor: pointer;
+    }
+    .results-tabs button.active {
+      background: rgba(6, 182, 212, 0.13);
+      color: var(--accent-cyan);
+    }
+    .created-results-grid {
+      display: grid;
+      gap: 1rem;
+    }
     .results-board {
       margin-top: 1rem;
       border: 1px solid rgba(148, 163, 184, 0.14);
@@ -495,10 +585,15 @@ import { ShellComponent } from './shell.component';
     }
     .results-summary {
       display: flex;
+      align-items: center;
       justify-content: space-between;
       gap: 1rem;
       padding: 0.9rem 1rem;
       border-bottom: 1px solid rgba(148, 163, 184, 0.14);
+    }
+    .results-summary div {
+      display: grid;
+      gap: 0.25rem;
     }
     .results-summary span,
     .results-table-wrap td span {
@@ -531,6 +626,66 @@ import { ShellComponent } from './shell.component';
     }
     .results-table-wrap tr:last-child td {
       border-bottom: 0;
+    }
+    .attempt-list {
+      display: grid;
+      gap: 0.75rem;
+      padding: 1rem;
+    }
+    .attempt-row {
+      border: 1px solid rgba(148, 163, 184, 0.14);
+      border-radius: var(--radius-md);
+      background: rgba(255, 255, 255, 0.02);
+      overflow: hidden;
+    }
+    .attempt-row summary {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 0.9rem 1rem;
+      cursor: pointer;
+      list-style: none;
+    }
+    .attempt-row summary::-webkit-details-marker {
+      display: none;
+    }
+    .attempt-row summary span {
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+    }
+    .answer-review-list {
+      display: grid;
+      gap: 0.75rem;
+      padding: 1rem;
+    }
+    .answer-review {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 1rem;
+      padding: 0.9rem 1rem;
+      border: 1px solid rgba(244, 63, 94, 0.22);
+      border-radius: var(--radius-md);
+      background: rgba(244, 63, 94, 0.06);
+    }
+    .answer-review.correct {
+      border-color: rgba(16, 185, 129, 0.22);
+      background: rgba(16, 185, 129, 0.06);
+    }
+    .answer-review strong {
+      display: block;
+      margin-bottom: 0.45rem;
+    }
+    .answer-review p {
+      color: var(--text-secondary);
+      font-size: 0.88rem;
+      margin: 0.2rem 0;
+    }
+    .answer-review > span {
+      align-self: start;
+      color: var(--text-primary);
+      font-size: 0.78rem;
+      font-weight: 900;
+      text-transform: uppercase;
     }
 
     /* Notes Grid */
@@ -662,14 +817,20 @@ import { ShellComponent } from './shell.component';
     .empty-panel h3 {
       margin-bottom: 0.75rem;
     }
-    .quiz-pagination {
+    .notes-footer-controls {
       margin: 2rem auto 0;
       padding: 0.75rem;
       display: flex;
       align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      width: min(100%, 760px);
+    }
+    .quiz-pagination {
+      display: flex;
+      align-items: center;
       justify-content: center;
       gap: 1rem;
-      width: fit-content;
     }
     .quiz-pagination span {
       min-width: 72px;
@@ -695,6 +856,11 @@ import { ShellComponent } from './shell.component';
         align-items: stretch;
         padding: 1.5rem;
       }
+      .toolbar-actions,
+      .primary-actions {
+        flex-direction: column;
+        align-items: stretch;
+      }
       .filter-row {
         flex-direction: column;
         align-items: stretch;
@@ -702,6 +868,7 @@ import { ShellComponent } from './shell.component';
       .filter-row .form-input,
       .filter-row .form-select,
       .page-size-control,
+      .primary-actions .btn,
       .filter-row button {
         width: 100%;
       }
@@ -713,6 +880,14 @@ import { ShellComponent } from './shell.component';
       }
       .results-summary {
         flex-direction: column;
+        align-items: stretch;
+      }
+      .attempt-row summary,
+      .answer-review,
+      .notes-footer-controls {
+        grid-template-columns: 1fr;
+        flex-direction: column;
+        align-items: stretch;
       }
     }
   `]
@@ -755,27 +930,28 @@ export class QuizComponent implements OnInit {
   protected readonly sharedSubmitting = signal(false);
   protected readonly sharedError = signal('');
   protected readonly resultsPanelOpen = signal(false);
-  protected readonly sharedResults = signal<any>(null);
+  protected readonly sharedResultsMode = signal<'created' | 'attempts'>('created');
+  protected readonly createdSharedQuizzes = signal<any[]>([]);
+  protected readonly participatedAttempts = signal<any[]>([]);
   protected readonly sharedResultsLoading = signal(false);
   protected readonly sharedResultsError = signal('');
   protected readonly allVisibleSelected = computed(() => {
     const notes = this.notes();
     return notes.length > 0 && notes.every(note => this.selected().has(note.id));
   });
-  protected resultsQuery = '';
 
   async ngOnInit(): Promise<void> {
     this.locale = (this.route.snapshot.data['locale'] || 'en') as Locale;
     this.text = QUIZ_TEXT[this.locale];
     this.seo.applyPage('quiz', this.locale, { robots: 'index, follow' });
     this.sharedToken = this.route.snapshot.paramMap.get('token') || '';
+    await this.api.restoreSession();
 
     if (this.sharedToken) {
       await this.loadSharedQuiz();
       return;
     }
 
-    await this.api.restoreSession();
     await this.loadNotes();
   }
 
@@ -959,8 +1135,8 @@ export class QuizComponent implements OnInit {
   }
 
   protected async submitShared(): Promise<void> {
-    const displayName = this.sharedDisplayName.trim();
-    if (!displayName) {
+    const displayName = this.api.currentUser() ? '' : this.sharedDisplayName.trim();
+    if (!this.api.currentUser() && !displayName) {
       this.sharedError.set(this.text.displayNameRequired);
       return;
     }
@@ -971,17 +1147,15 @@ export class QuizComponent implements OnInit {
         const value = this.sharedAnswers()[question.id];
         return value === undefined ? (question.questionType === 'checkbox' ? [] : '') : value;
       });
-      const response = await fetch(`/api/quiz/shared/${encodeURIComponent(this.sharedToken)}/attempt`, {
+      const result = await this.api.request(`/api/quiz/shared/${encodeURIComponent(this.sharedToken)}/attempt`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           displayName,
           answers: orderedAnswers
         })
       });
-      const data = await response.json();
-      if (data.success) this.sharedResult.set(data);
-      else this.sharedError.set(data.error || this.text.sharedError);
+      if (result.success) this.sharedResult.set(result);
+      else this.sharedError.set(result.error || this.text.sharedError);
     } catch {
       this.sharedError.set(this.text.sharedError);
     }
@@ -989,43 +1163,28 @@ export class QuizComponent implements OnInit {
   }
 
   protected toggleResultsLookup(): void {
-    this.resultsPanelOpen.set(!this.resultsPanelOpen());
+    const next = !this.resultsPanelOpen();
+    this.resultsPanelOpen.set(next);
+    if (next) this.loadSharedResults();
   }
 
-  protected async loadSharedResults(): Promise<void> {
-    const token = this.extractSharedToken(this.resultsQuery);
-    if (!token) {
-      this.sharedResultsError.set(this.text.sharedResultsTokenRequired);
-      return;
-    }
+  protected setSharedResultsMode(mode: 'created' | 'attempts'): void {
+    this.sharedResultsMode.set(mode);
+    this.loadSharedResults(mode);
+  }
+
+  protected async loadSharedResults(mode = this.sharedResultsMode()): Promise<void> {
     this.sharedResultsLoading.set(true);
     this.sharedResultsError.set('');
-    try {
-      const response = await fetch(`/api/quiz/shared/${encodeURIComponent(token)}/results`);
-      const data = await response.json();
-      if (data.success) {
-        this.sharedResults.set(data);
-      } else {
-        this.sharedResults.set(null);
-        this.sharedResultsError.set(data.error || this.text.sharedResultsError);
-      }
-    } catch {
-      this.sharedResults.set(null);
-      this.sharedResultsError.set(this.text.sharedResultsError);
+    const endpoint = mode === 'created' ? '/api/quiz/shared-created' : '/api/quiz/shared-attempts';
+    const result = await this.api.request(endpoint);
+    if (result.success) {
+      if (mode === 'created') this.createdSharedQuizzes.set(result.quizzes || []);
+      else this.participatedAttempts.set(result.attempts || []);
+    } else {
+      this.sharedResultsError.set(result.error || this.text.sharedResultsError);
     }
     this.sharedResultsLoading.set(false);
-  }
-
-  private extractSharedToken(value: string): string {
-    const raw = String(value || '').trim();
-    if (!raw) return '';
-    try {
-      const url = new URL(raw);
-      const match = url.pathname.match(/\/quiz\/shared\/([^/?#]+)/);
-      if (match?.[1]) return decodeURIComponent(match[1]);
-    } catch {}
-    const match = raw.match(/(?:quiz\/shared\/|shared\/)([^/?#\s]+)/);
-    return decodeURIComponent(match?.[1] || raw);
   }
 }
 
@@ -1053,9 +1212,16 @@ const QUIZ_TEXT: Record<Locale, any> = {
     selectVisible: 'Select visible',
     clearSelection: 'Clear selection',
     startPractice: 'Start history quiz',
-    sharedResultsButton: 'Check shared results',
+    sharedResultsButton: 'Check results',
     sharedResultsTitle: 'Shared quiz results',
-    sharedResultsText: 'Paste a shared quiz link or token to see submitted scores.',
+    sharedResultsText: 'Review quizzes you created and your own attempts from shared quizzes.',
+    createdQuizzes: 'Created quizzes',
+    myAttempts: 'My attempts',
+    openQuiz: 'Open quiz',
+    noCreatedQuizzes: 'No shared quizzes created yet.',
+    noMyAttempts: 'You have not joined any shared quizzes yet.',
+    selectedAnswer: 'Selected',
+    correctAnswer: 'Correct',
     sharedResultsPlaceholder: 'Paste quiz link or token',
     sharedResultsTokenRequired: 'Paste a shared quiz link or token first.',
     sharedResultsError: 'Could not load shared results.',
@@ -1094,6 +1260,8 @@ const QUIZ_TEXT: Record<Locale, any> = {
     sharedSubtitle: 'Answer the shared questions and submit your attempt.',
     submitShared: 'Submit attempt',
     submitSharedText: 'Enter a display name and check your score.',
+    submitSharedLoggedText: 'Check your score. This attempt will be saved to your account.',
+    loggedAttemptAs: 'Your result will be saved as',
     displayName: 'Display name',
     loading: 'Loading...',
     checkAnswers: 'Check answers',
@@ -1126,7 +1294,14 @@ const QUIZ_TEXT: Record<Locale, any> = {
     startPractice: 'Rozpocznij quiz powtórkowy',
     sharedResultsButton: 'Sprawdz wyniki',
     sharedResultsTitle: 'Wyniki udostepnionego quizu',
-    sharedResultsText: 'Wklej link albo token quizu, aby zobaczyc przeslane wyniki.',
+    sharedResultsText: 'Przegladaj quizy, ktore stworzyles, oraz swoje podejscia do quizow innych osob.',
+    createdQuizzes: 'Moje quizy',
+    myAttempts: 'Moje podejscia',
+    openQuiz: 'Otworz quiz',
+    noCreatedQuizzes: 'Nie masz jeszcze udostepnionych quizow.',
+    noMyAttempts: 'Nie brales jeszcze udzialu w udostepnionych quizach.',
+    selectedAnswer: 'Zaznaczono',
+    correctAnswer: 'Poprawna',
     sharedResultsPlaceholder: 'Wklej link do quizu albo token',
     sharedResultsTokenRequired: 'Najpierw wklej link do quizu albo token.',
     sharedResultsError: 'Nie udalo sie wczytac wynikow.',
@@ -1165,6 +1340,8 @@ const QUIZ_TEXT: Record<Locale, any> = {
     sharedSubtitle: 'Odpowiedz na poniższe pytania i prześlij swoje podejście, aby sprawdzić wiedzę.',
     submitShared: 'Wyślij podejście',
     submitSharedText: 'Wpisz swoją nazwę użytkownika, aby sprawdzić uzyskany wynik.',
+    submitSharedLoggedText: 'Sprawdz wynik. To podejscie zostanie zapisane na Twoim koncie.',
+    loggedAttemptAs: 'Wynik zapisze sie jako',
     displayName: 'Nazwa użytkownika',
     loading: 'Ładowanie...',
     checkAnswers: 'Sprawdź odpowiedzi',

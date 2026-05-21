@@ -411,33 +411,61 @@ import { CHROME_WEB_STORE_URL, Locale, PageKey, contentFor, pathFor } from '../s
     }
 
     .mobile-menu {
-      position: fixed;
-      top: 5rem;
+      position: absolute;
+      top: 100%;
       left: 0;
       right: 0;
-      bottom: 0;
-      background: rgba(3, 7, 18, 0.97);
-      backdrop-filter: blur(15px);
+      max-height: calc(100dvh - 5rem);
+      background: rgba(3, 7, 18, 0.985);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
       z-index: 49;
-      padding: 2rem 1.5rem;
-      animation: fade-in 0.3s;
+      padding: 0.75rem 1rem 1rem;
+      animation: fade-in 0.2s var(--ease-out);
       overflow-y: auto;
+      overscroll-behavior: contain;
     }
     .mobile-menu-inner {
       display: flex;
       flex-direction: column;
-      gap: 1.5rem;
+      gap: 0.55rem;
+      max-width: 36rem;
+      margin: 0 auto;
     }
     .mobile-menu .nav-link {
-      font-size: 1.25rem;
-      padding: 0.5rem 0;
+      display: flex;
+      align-items: center;
+      min-height: 3rem;
+      padding: 0.75rem 1rem;
+      border: 1px solid rgba(148, 163, 184, 0.14);
+      border-radius: var(--radius-md);
+      background: rgba(255, 255, 255, 0.035);
+      color: var(--text-primary);
+      font-size: 1rem;
+      font-weight: 750;
+      line-height: 1.25;
       text-align: left;
+    }
+    .mobile-menu .nav-link::after {
+      display: none;
+    }
+    .mobile-menu .nav-link:hover,
+    .mobile-menu .nav-link.active {
+      border-color: rgba(6, 182, 212, 0.35);
+      background: rgba(6, 182, 212, 0.08);
+      color: var(--accent-cyan);
     }
     .mobile-actions {
       display: flex;
       flex-direction: column;
-      gap: 1rem;
-      margin-top: 2rem;
+      gap: 0.6rem;
+      margin-top: 0.35rem;
+    }
+    .mobile-actions .btn {
+      min-height: 3rem;
+      border-radius: var(--radius-md);
     }
 
     /* CTA Section */
@@ -539,6 +567,19 @@ import { CHROME_WEB_STORE_URL, Locale, PageKey, contentFor, pathFor } from '../s
       }
       .hamburger {
         display: flex;
+      }
+      .nav-container {
+        height: 4.5rem;
+      }
+      .nav-brand {
+        font-size: 1.25rem;
+      }
+      .nav-logo-icon {
+        width: 2.25rem;
+        height: 2.25rem;
+      }
+      .mobile-menu {
+        max-height: calc(100dvh - 4.5rem);
       }
       .footer-grid {
         grid-template-columns: 1fr;
