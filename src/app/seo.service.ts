@@ -56,6 +56,7 @@ export class SeoService {
   }
 
   private resolveMeta(pageKey: PageKey, locale: Locale, data: any): { title: string; description: string } {
+    data = data || {};
     if (data?.meta?.title && data?.meta?.description) return data.meta;
     if (pageKey === 'privacy') {
       return { title: data.metaTitle, description: data.metaDescription };

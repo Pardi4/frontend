@@ -2,64 +2,109 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Quiz Solver Pro — AI Quiz Solver Chrome Extension</title>
+  <title>QuizSolver — AI Quiz Solver Chrome Extension | Testportal, Moodle, Google Forms & more</title>
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#0d0d1a">
+  <meta name="theme-color" content="#030712">
+  <meta name="color-scheme" content="dark">
 
-  <!-- SEO -->
-  <meta name="description" content="Quiz Solver Pro is a free AI-powered Chrome extension that instantly solves quizzes on Testportal, Google Forms, Moodle, Canvas, Microsoft Forms, Kahoot and more. Install in seconds.">
-  <meta name="robots" content="index, follow">
-  <meta name="author" content="Quiz Solver Pro">
+  <!-- SEO Core -->
+  <meta name="description" content="QuizSolver is a free AI-powered Chrome extension that instantly solves quizzes on Testportal, Google Forms, Moodle, Canvas, Microsoft Forms, Kahoot, Quizizz and more. Get answer suggestions, explanations, study notes, and practice quizzes. Install in seconds.">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+  <meta name="author" content="QuizSolver">
+  <meta name="keywords" content="quiz solver, AI quiz solver, testportal solver, moodle quiz solver, google forms solver, chrome extension quiz, quiz answer bot, quiz helper, AI quiz extension, testportal answers, quiz solver chrome, quiz solver AI, kahoot bot, quizizz solver">
   <link rel="canonical" href="https://getquizsolver.com/">
+
+  <!-- hreflang -->
+  <link rel="alternate" hreflang="en" href="https://getquizsolver.com/">
+  <link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/">
+  <link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/">
 
   <!-- Open Graph -->
   <meta property="og:type" content="website">
-  <meta property="og:site_name" content="Quiz Solver Pro">
-  <meta property="og:title" content="Quiz Solver Pro — AI Quiz Solver Chrome Extension">
-  <meta property="og:description" content="Instantly solve quizzes on Testportal, Google Forms, Moodle, Canvas and more. Free Chrome extension powered by AI.">
+  <meta property="og:site_name" content="QuizSolver">
+  <meta property="og:title" content="QuizSolver — AI Quiz Solver Chrome Extension">
+  <meta property="og:description" content="Instantly solve quizzes on Testportal, Google Forms, Moodle, Canvas, Microsoft Forms, Kahoot and more. Free Chrome extension powered by AI.">
   <meta property="og:url" content="https://getquizsolver.com/">
-  <meta property="og:image" content="https://getquizsolver.com/og-image.svg">
+  <meta property="og:image" content="https://getquizsolver.com/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="QuizSolver AI quiz solver browser extension preview">
   <meta property="og:locale" content="en_US">
   <meta property="og:locale:alternate" content="pl_PL">
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Quiz Solver Pro — AI Quiz Solver Chrome Extension">
+  <meta name="twitter:title" content="QuizSolver — AI Quiz Solver Chrome Extension">
   <meta name="twitter:description" content="Instantly solve quizzes on Testportal, Google Forms, Moodle and more. Free Chrome extension.">
-  <meta name="twitter:image" content="https://getquizsolver.com/og-image.svg">
+  <meta name="twitter:image" content="https://getquizsolver.com/og-image.png">
 
   <!-- JSON-LD Structured Data -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    "name": "Quiz Solver Pro",
-    "applicationCategory": "BrowserApplication",
-    "operatingSystem": "Chrome",
-    "url": "https://getquizsolver.com",
-    "downloadUrl": "https://chromewebstore.google.com/detail/quiz-solver-pro/cjchfdnplpjkihigljnicebnhjkpndik",
-    "offers": {
-      "@type": "Offer",
-      "price": "0",
-      "priceCurrency": "USD"
-    },
-    "description": "AI-powered Chrome extension that automatically detects and answers quiz questions on Testportal, Google Forms, Moodle, Canvas, Microsoft Forms, Kahoot and more.",
-    "featureList": [
-      "Auto-detect quiz questions",
-      "AI-powered answers",
-      "Supports Testportal, Google Forms, Moodle, Canvas, Microsoft Forms",
-      "FocusScan — screenshot-based question answering",
-      "Study Notes and Practice Mode",
-      "Hint mode for subtle highlighting"
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://getquizsolver.com/#organization",
+        "name": "QuizSolver",
+        "url": "https://getquizsolver.com",
+        "logo": "https://getquizsolver.com/favicon.ico",
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "email": "support@getquizsolver.com",
+          "contactType": "customer support",
+          "availableLanguage": ["English", "Polish"]
+        }
+      },
+      {
+        "@type": "SoftwareApplication",
+        "@id": "https://getquizsolver.com/#software",
+        "name": "QuizSolver",
+        "applicationCategory": "BrowserApplication",
+        "operatingSystem": "Chrome, Chromium browsers",
+        "url": "https://getquizsolver.com",
+        "downloadUrl": "https://chromewebstore.google.com/detail/quiz-solver-pro/cjchfdnplpjkihigljnicebnhjkpndik",
+        "installUrl": "https://chromewebstore.google.com/detail/quiz-solver-pro/cjchfdnplpjkihigljnicebnhjkpndik",
+        "softwareVersion": "0.7",
+        "inLanguage": ["en", "pl"],
+        "description": "AI-powered Chrome extension that automatically detects and answers quiz questions on Testportal, Google Forms, Moodle, Canvas, Microsoft Forms, Kahoot and more.",
+        "featureList": [
+          "AI-powered answer suggestions",
+          "Short answer explanations",
+          "FocusScan — screenshot-based question answering",
+          "Study Notes with images saved alongside questions",
+          "Practice Mode — quiz from your own history",
+          "Share Quiz — create public quiz links",
+          "Hint Mode for subtle answer highlighting",
+          "Supports 10+ platforms: Testportal, Moodle, Canvas, Google Forms, Microsoft Forms, Kahoot, Quizizz, Socrative, Blackboard, Quizlet"
+        ],
+        "offers": [
+          {"@type": "Offer", "name": "100 credits", "price": "1.99", "priceCurrency": "USD"},
+          {"@type": "Offer", "name": "500 credits", "price": "4.99", "priceCurrency": "USD"},
+          {"@type": "Offer", "name": "2000 credits", "price": "9.99", "priceCurrency": "USD"}
+        ],
+        "creator": {"@id": "https://getquizsolver.com/#organization"}
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://getquizsolver.com/#website",
+        "name": "QuizSolver",
+        "url": "https://getquizsolver.com",
+        "publisher": {"@id": "https://getquizsolver.com/#organization"},
+        "inLanguage": ["en", "pl"]
+      }
     ]
   }
   </script>
 
+  <!-- Favicon -->
   <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="apple-touch-icon" href="favicon.ico">
+
+  <!-- Fonts preconnect -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 </head>
 <body>
   <app-root></app-root>

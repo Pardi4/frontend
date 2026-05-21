@@ -12,48 +12,58 @@ import { ShellComponent } from './shell.component';
   imports: [CommonModule, FormsModule, ShellComponent],
   template: `
     <qs-shell [locale]="locale" pageKey="quiz">
-      <main class="container" style="min-height: 80vh;">
+      <main class="container quiz-main">
         <ng-container *ngIf="sharedToken; else privateQuiz">
           <section class="section">
-            <div class="section-header">
+            <header class="quiz-header">
               <p class="eyebrow">{{ text.sharedBadge }}</p>
-              <h1 class="section-title">{{ sharedQuiz()?.title || text.sharedTitle }}</h1>
-              <p class="section-subtitle">{{ text.sharedSubtitle }}</p>
-            </div>
+              <h1>{{ sharedQuiz()?.title || text.sharedTitle }}</h1>
+              <p class="desc text-secondary">{{ text.sharedSubtitle }}</p>
+            </header>
 
             <div class="shared-layout" *ngIf="sharedQuestions().length; else sharedLoading">
               <section class="shared-grid">
-                <article class="shared-card" *ngFor="let question of sharedQuestions(); let i = index">
-                  <p class="eyebrow">{{ i + 1 }} / {{ sharedQuestions().length }}</p>
+                <article class="shared-card glass" *ngFor="let question of sharedQuestions(); let i = index">
+                  <div class="card-top">
+                    <span class="badge badge-outline">{{ i + 1 }} / {{ sharedQuestions().length }}</span>
+                  </div>
                   <img class="question-image" *ngIf="imageSrc(question)" [src]="imageSrc(question)" alt="">
                   <h3>{{ question.questionText }}</h3>
-                  <div class="answer-panel" *ngIf="question.options?.length; else sharedTextAnswer">
+                  
+                  <div class="answer-choices" *ngIf="question.options?.length; else sharedTextAnswer">
                     <label class="answer-choice" *ngFor="let option of question.options; let optionIndex = index" [class.active]="isSharedChosen(question.id, optionIndex)">
                       <input [type]="question.questionType === 'checkbox' ? 'checkbox' : 'radio'" [name]="'shared-' + question.id" [checked]="isSharedChosen(question.id, optionIndex)" (change)="chooseShared(question, optionIndex)">
                       <span>{{ option }}</span>
                     </label>
                   </div>
                   <ng-template #sharedTextAnswer>
-                    <input class="form-input" [value]="sharedAnswers()[question.id] || ''" (input)="setSharedText(question.id, $any($event.target).value)" [placeholder]="text.typeAnswer">
+                    <div class="text-answer-box">
+                      <input class="form-input" [value]="sharedAnswers()[question.id] || ''" (input)="setSharedText(question.id, $any($event.target).value)" [placeholder]="text.typeAnswer">
+                    </div>
                   </ng-template>
                 </article>
               </section>
 
-              <aside class="shared-card">
+              <aside class="shared-sidebar glass">
                 <h2>{{ text.submitShared }}</h2>
-                <p>{{ text.submitSharedText }}</p>
-                <input class="form-input" [(ngModel)]="sharedDisplayName" [placeholder]="text.displayName">
-                <button class="btn-primary btn-block" type="button" (click)="submitShared()" [disabled]="sharedSubmitting()">{{ sharedSubmitting() ? text.loading : text.checkAnswers }}</button>
-                <div class="score-box" *ngIf="sharedResult() as result">
-                  <strong>{{ result.score }} / {{ result.totalQuestions }}</strong>
-                  <p>{{ text.correctAnswers }}</p>
+                <p class="text-secondary">{{ text.submitSharedText }}</p>
+                <div class="form-group" style="margin-top: 1.5rem;">
+                  <input class="form-input" [(ngModel)]="sharedDisplayName" [placeholder]="text.displayName">
+                </div>
+                <button class="btn btn-primary btn-block" type="button" (click)="submitShared()" [disabled]="sharedSubmitting()">
+                  {{ sharedSubmitting() ? text.loading : text.checkAnswers }}
+                </button>
+                
+                <div class="score-box glass" *ngIf="sharedResult() as result">
+                  <div class="score-num text-gradient-strong">{{ result.score }} / {{ result.totalQuestions }}</div>
+                  <p class="text-secondary">{{ text.correctAnswers }}</p>
                 </div>
               </aside>
             </div>
 
             <ng-template #sharedLoading>
-              <div class="empty-panel">
-                <p>{{ sharedError() || text.loading }}</p>
+              <div class="empty-panel glass">
+                <p class="text-secondary">{{ sharedError() || text.loading }}</p>
               </div>
             </ng-template>
           </section>
@@ -61,15 +71,15 @@ import { ShellComponent } from './shell.component';
 
         <ng-template #privateQuiz>
           <section class="section">
-            <div class="section-header">
+            <header class="quiz-header">
               <p class="eyebrow">{{ text.badge }}</p>
-              <h1 class="section-title">{{ text.title }}</h1>
-              <p class="section-subtitle">{{ text.subtitle }}</p>
-            </div>
+              <h1>{{ text.title }}</h1>
+              <p class="desc text-secondary">{{ text.subtitle }}</p>
+            </header>
 
-            <section *ngIf="!api.token()" class="login-panel" style="max-width: 520px;">
+            <section *ngIf="!api.token()" class="login-card glass">
               <h2>{{ text.loginTitle }}</h2>
-              <p>{{ text.loginSubtitle }}</p>
+              <p class="text-secondary">{{ text.loginSubtitle }}</p>
               <form (ngSubmit)="login()">
                 <div class="form-group">
                   <input class="form-input" type="email" name="email" [(ngModel)]="email" placeholder="Email" autocomplete="email" required>
@@ -77,16 +87,16 @@ import { ShellComponent } from './shell.component';
                 <div class="form-group">
                   <input class="form-input" type="password" name="password" [(ngModel)]="password" [placeholder]="text.password" autocomplete="current-password" required>
                 </div>
-                <button class="btn-primary btn-block" type="submit">{{ text.signIn }}</button>
+                <button class="btn btn-primary btn-block" type="submit">{{ text.signIn }}</button>
               </form>
               <div class="form-error" *ngIf="error()">{{ error() }}</div>
             </section>
 
             <section *ngIf="api.token() && !practice().length">
-              <div class="quiz-toolbar">
-                <div>
+              <div class="quiz-toolbar glass">
+                <div class="toolbar-title">
                   <h2>{{ text.historyTitle }}</h2>
-                  <p class="section-subtitle">{{ notes().length }} {{ text.historyCount }}</p>
+                  <p class="text-secondary">{{ notes().length }} {{ text.historyCount }}</p>
                 </div>
                 <div class="filter-row">
                   <input class="form-input" type="search" [(ngModel)]="search" (ngModelChange)="loadNotes()" [placeholder]="text.searchPlaceholder">
@@ -97,98 +107,384 @@ import { ShellComponent } from './shell.component';
                     <option value="learning">{{ text.filterLearning }}</option>
                     <option value="mastered">{{ text.filterMastered }}</option>
                   </select>
-                  <button class="btn-outline" type="button" (click)="selectVisible()">{{ text.selectVisible }}</button>
-                  <button class="btn-primary" type="button" (click)="startPractice()">{{ text.startPractice }}</button>
+                  <button class="btn btn-outline" type="button" (click)="selectVisible()">{{ text.selectVisible }}</button>
+                  <button class="btn btn-primary" type="button" (click)="startPractice()">{{ text.startPractice }}</button>
                 </div>
               </div>
 
-              <div class="empty-panel" *ngIf="!loading() && !notes().length">
+              <div class="empty-panel glass" *ngIf="!loading() && !notes().length">
                 <h3>{{ text.emptyTitle }}</h3>
-                <p>{{ text.emptyText }}</p>
+                <p class="text-secondary">{{ text.emptyText }}</p>
               </div>
 
               <div class="notes-grid">
-                <article class="note-card" *ngFor="let note of notes()">
+                <article class="note-card glass glass-hover" *ngFor="let note of notes()">
                   <div class="note-head">
-                    <label class="pill">
+                    <label class="pill" [class.active]="selected().has(note.id)">
                       <input type="checkbox" [checked]="selected().has(note.id)" (change)="toggleSelected(note.id)">
-                      {{ text.selected }}
+                      <span>{{ text.selected }}</span>
                     </label>
-                    <button class="btn-outline btn-sm" type="button" (click)="updateNote(note, { favorite: !note.favorite })">{{ note.favorite ? text.favorited : text.favorite }}</button>
+                    <button class="btn btn-outline btn-sm" type="button" (click)="updateNote(note, { favorite: !note.favorite })">
+                      {{ note.favorite ? text.favorited : text.favorite }}
+                    </button>
                   </div>
+                  
                   <img class="question-image" *ngIf="imageSrc(note)" [src]="imageSrc(note)" alt="">
                   <h3>{{ note.questionText }}</h3>
+                  
                   <div class="note-meta">
-                    <span>{{ note.platform || 'quiz' }}</span>
-                    <span>{{ note.status || 'new' }}</span>
+                    <span class="badge badge-outline">{{ note.platform || 'quiz' }}</span>
+                    <span class="badge badge-outline" style="text-transform: capitalize;">{{ note.status || 'new' }}</span>
                   </div>
-                  <div class="answer-panel">
+                  
+                  <div class="answer-panel-box">
                     <strong>{{ text.answer }}</strong>
                     <p>{{ note.answerText }}</p>
                   </div>
-                  <div class="explanation-panel">
+                  
+                  <div class="explanation-panel-box" *ngIf="note.explanation">
                     <strong>{{ text.explanation }}</strong>
-                    <p>{{ note.explanation || text.noExplanation }}</p>
+                    <p>{{ note.explanation }}</p>
                   </div>
-                  <label>
-                    <span class="eyebrow">{{ text.personalNote }}</span>
-                    <textarea [(ngModel)]="note.personalNote" [placeholder]="text.notePlaceholder"></textarea>
-                  </label>
+                  
+                  <div class="personal-note-box">
+                    <label class="eyebrow" style="font-size: 0.7rem; margin-bottom: 0.5rem;">{{ text.personalNote }}</label>
+                    <textarea class="form-input" [(ngModel)]="note.personalNote" [placeholder]="text.notePlaceholder"></textarea>
+                  </div>
+                  
                   <div class="note-actions">
-                    <select class="form-select" [(ngModel)]="note.status" (ngModelChange)="updateNote(note, { status: note.status })">
+                    <select class="form-select" [(ngModel)]="note.status" (ngModelChange)="updateNote(note, { status: note.status })" style="flex: 1;">
                       <option value="new">{{ text.new }}</option>
                       <option value="learning">{{ text.learning }}</option>
                       <option value="mastered">{{ text.mastered }}</option>
                     </select>
-                    <button class="btn-primary" type="button" (click)="updateNote(note, { personalNote: note.personalNote || '' })">{{ text.saveNote }}</button>
+                    <button class="btn btn-primary btn-sm" type="button" (click)="updateNote(note, { personalNote: note.personalNote || '' })">
+                      {{ text.saveNote }}
+                    </button>
                   </div>
                 </article>
               </div>
             </section>
 
-            <section *ngIf="practice().length" class="practice-card">
+            <section *ngIf="practice().length" class="practice-container">
               <div class="practice-top">
-                <button class="btn-outline" type="button" (click)="backToNotes()">{{ text.backToNotes }}</button>
-                <strong>{{ currentIndex() + 1 }} / {{ practice().length }}</strong>
+                <button class="btn btn-outline" type="button" (click)="backToNotes()">{{ text.backToNotes }}</button>
+                <span class="badge badge-outline">{{ currentIndex() + 1 }} / {{ practice().length }}</span>
               </div>
 
-              <article *ngIf="!finished() && currentQuestion() as question">
+              <article class="practice-card glass" *ngIf="!finished() && currentQuestion() as question">
                 <p class="eyebrow">{{ question.platform || 'QuizSolver' }}</p>
-                <img class="question-image" *ngIf="imageSrc(question)" [src]="imageSrc(question)" alt="">
-                <h2>{{ question.questionText }}</h2>
+                <img class="question-image" *ngIf="imageSrc(question)" [src]="imageSrc(question)" alt="" style="margin-top: 1.5rem;">
+                <h2 style="margin-top: 0.5rem; line-height: 1.3;">{{ question.questionText }}</h2>
 
-                <div class="answer-panel" *ngIf="question.options?.length; else practiceTextAnswer">
+                <div class="answer-choices" *ngIf="question.options?.length; else practiceTextAnswer">
                   <label class="answer-choice" *ngFor="let option of question.options; let i = index" [class.active]="isChosen(i)">
                     <input [type]="question.questionType === 'checkbox' ? 'checkbox' : 'radio'" name="answer" [checked]="isChosen(i)" (change)="chooseAnswer(i, question.questionType)">
                     <span>{{ option }}</span>
                   </label>
                 </div>
                 <ng-template #practiceTextAnswer>
-                  <input class="form-input" [(ngModel)]="typedAnswer" [placeholder]="text.typeAnswer">
+                  <div class="text-answer-box" style="margin: 2rem 0;">
+                    <input class="form-input" [(ngModel)]="typedAnswer" [placeholder]="text.typeAnswer">
+                  </div>
                 </ng-template>
 
-                <div class="result-panel" [class.correct]="isCorrect()" [class.incorrect]="!isCorrect()" *ngIf="checked()">
+                <div class="result-panel anim-slide-up" [class.correct]="isCorrect()" [class.incorrect]="!isCorrect()" *ngIf="checked()">
                   <strong>{{ isCorrect() ? text.correct : text.incorrect }}</strong>
-                  <p>{{ question.explanation || text.noExplanation }}</p>
+                  <p class="text-secondary" style="margin-top: 0.5rem; color: inherit;">
+                    {{ question.explanation || text.noExplanation }}
+                  </p>
                 </div>
 
                 <div class="section-actions">
-                  <button class="btn-primary" type="button" *ngIf="!checked()" (click)="checkAnswer(question)">{{ text.checkAnswer }}</button>
-                  <button class="btn-outline" type="button" *ngIf="checked()" (click)="nextQuestion()">{{ text.nextQuestion }}</button>
+                  <button class="btn btn-primary btn-block" type="button" *ngIf="!checked()" (click)="checkAnswer(question)">
+                    {{ text.checkAnswer }}
+                  </button>
+                  <button class="btn btn-outline btn-block" type="button" *ngIf="checked()" (click)="nextQuestion()">
+                    {{ text.nextQuestion }}
+                  </button>
                 </div>
               </article>
 
-              <div class="empty-panel" *ngIf="finished()">
+              <div class="empty-panel glass" *ngIf="finished()">
                 <h2>{{ text.resultTitle }}</h2>
-                <p>{{ score() }} / {{ practice().length }} {{ text.correctAnswers }}</p>
-                <button class="btn-primary" type="button" (click)="restartPractice()">{{ text.restartPractice }}</button>
+                <div class="score-box" style="margin: 2rem 0;">
+                  <span class="score-num text-gradient-strong" style="font-size: 3.5rem; font-weight: 800; font-family: var(--font-heading);">
+                    {{ score() }} / {{ practice().length }}
+                  </span>
+                  <p class="text-secondary" style="margin-top: 0.5rem;">{{ text.correctAnswers }}</p>
+                </div>
+                <button class="btn btn-primary" type="button" (click)="restartPractice()">{{ text.restartPractice }}</button>
               </div>
             </section>
           </section>
         </ng-template>
       </main>
     </qs-shell>
-  `
+  `,
+  styles: [`
+    .quiz-main {
+      padding-bottom: 5rem;
+    }
+    .quiz-header {
+      padding: 4rem 0 2rem;
+      text-align: center;
+    }
+    .quiz-header h1 {
+      font-size: 2.75rem;
+      margin: 0.5rem 0;
+    }
+
+    /* Shared quiz layout */
+    .shared-layout {
+      display: grid;
+      grid-template-columns: 1.3fr 0.7fr;
+      gap: 2rem;
+      margin-top: 2rem;
+      align-items: start;
+    }
+    .shared-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+    .shared-card {
+      padding: 2.5rem;
+    }
+    .shared-sidebar {
+      padding: 2.5rem;
+      position: sticky;
+      top: 6rem;
+    }
+    .shared-sidebar h2 {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+    .score-box {
+      margin-top: 2rem;
+      padding: 1.5rem;
+      text-align: center;
+      background: rgba(255, 255, 255, 0.02);
+    }
+    .score-num {
+      font-size: 2.5rem;
+      font-weight: 800;
+      font-family: var(--font-heading);
+      line-height: 1.2;
+    }
+
+    .card-top {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 1rem;
+    }
+
+    .question-image {
+      max-width: 100%;
+      max-height: 300px;
+      object-fit: contain;
+      border-radius: var(--radius-md);
+      margin-bottom: 1.5rem;
+      border: 1px solid var(--border);
+    }
+
+    .answer-choices {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin: 1.5rem 0;
+    }
+    .answer-choice {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem 1.25rem;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: all 0.25s var(--ease-out);
+    }
+    .answer-choice:hover {
+      background: rgba(255, 255, 255, 0.04);
+      border-color: var(--border-hover);
+    }
+    .answer-choice.active {
+      background: rgba(6, 182, 212, 0.08);
+      border-color: var(--accent-cyan);
+      box-shadow: 0 0 15px rgba(6, 182, 212, 0.1);
+    }
+    .answer-choice input {
+      accent-color: var(--accent-cyan);
+      width: 1.2rem;
+      height: 1.2rem;
+    }
+
+    /* Private quiz login panel */
+    .login-card {
+      max-width: 480px;
+      margin: 4rem auto;
+      padding: 3rem;
+      text-align: center;
+    }
+    .login-card h2 {
+      font-size: 1.75rem;
+      margin-bottom: 0.5rem;
+    }
+    .login-card p {
+      margin-bottom: 2rem;
+    }
+
+    /* Toolbar */
+    .quiz-toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      margin: 2.5rem 0;
+      padding: 1.5rem 2rem;
+    }
+    .toolbar-title h2 {
+      font-size: 1.5rem;
+    }
+    .filter-row {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+    .filter-row .form-input {
+      width: 240px;
+    }
+    .filter-row .form-select {
+      width: 160px;
+    }
+
+    /* Notes Grid */
+    .notes-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      gap: 2rem;
+      margin-top: 1.5rem;
+    }
+    .note-card {
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .note-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.25rem;
+    }
+    .note-meta {
+      display: flex;
+      gap: 0.5rem;
+      margin: 1rem 0;
+    }
+    .answer-panel-box, .explanation-panel-box {
+      margin-top: 1rem;
+      padding: 1rem 1.25rem;
+      background: rgba(255, 255, 255, 0.02);
+      border-left: 3px solid var(--accent-cyan);
+      border-radius: 0 var(--radius-md) var(--radius-md) 0;
+    }
+    .explanation-panel-box {
+      border-left-color: var(--accent-violet);
+    }
+    .answer-panel-box p, .explanation-panel-box p {
+      font-size: 0.95rem;
+      margin-top: 0.25rem;
+    }
+    .personal-note-box {
+      margin-top: 1.25rem;
+    }
+    .note-card textarea {
+      resize: vertical;
+      min-height: 70px;
+      font-size: 0.875rem;
+    }
+    .note-actions {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: 1.5rem;
+    }
+
+    /* Practice Card */
+    .practice-container {
+      max-width: 720px;
+      margin: 3rem auto;
+    }
+    .practice-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+    .practice-card {
+      padding: 3rem;
+    }
+    .result-panel {
+      margin: 1.5rem 0;
+      padding: 1.25rem 1.5rem;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+    }
+    .result-panel.correct {
+      background: rgba(16, 185, 129, 0.08);
+      border-color: rgba(16, 185, 129, 0.2);
+      color: var(--accent-emerald);
+    }
+    .result-panel.incorrect {
+      background: rgba(244, 63, 94, 0.08);
+      border-color: rgba(244, 63, 94, 0.2);
+      color: var(--accent-rose);
+    }
+    .section-actions {
+      display: flex;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+    .empty-panel {
+      padding: 4rem;
+      text-align: center;
+      margin-top: 2rem;
+    }
+    .empty-panel h3 {
+      margin-bottom: 0.75rem;
+    }
+
+    @media (max-width: 992px) {
+      .shared-layout {
+        grid-template-columns: 1fr;
+      }
+      .shared-sidebar {
+        position: static;
+      }
+    }
+    @media (max-width: 768px) {
+      .notes-grid {
+        grid-template-columns: 1fr;
+      }
+      .quiz-toolbar {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 1.5rem;
+      }
+      .filter-row {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .filter-row .form-input,
+      .filter-row .form-select,
+      .filter-row button {
+        width: 100%;
+      }
+    }
+  `]
 })
 export class QuizComponent implements OnInit {
   private readonly route = inject(ActivatedRoute);
@@ -483,8 +779,8 @@ const QUIZ_TEXT: Record<Locale, any> = {
   },
   pl: {
     badge: 'Historia i notatki',
-    title: 'Z zapisanych pytań zrobisz quiz',
-    subtitle: 'Notatki i quiz z historii są teraz jedną stroną. Wybierasz pytania, dopisujesz własne notatki i ćwiczysz później.',
+    title: 'Przekształcaj historię w quizy powtórkowe',
+    subtitle: 'Zarządzaj zapisanymi pytaniami, dodawaj własne notatki i twórz spersonalizowane testy sprawdzające przed egzaminem.',
     loginTitle: 'Zaloguj się, aby wczytać historię',
     loginSubtitle: 'Użyj tego samego konta co w rozszerzeniu Chrome.',
     password: 'Hasło',
@@ -492,16 +788,16 @@ const QUIZ_TEXT: Record<Locale, any> = {
     loginError: 'Nie udało się zalogować.',
     historyTitle: 'Zapisane pytania',
     historyCount: 'pytań',
-    searchPlaceholder: 'Szukaj notatek',
+    searchPlaceholder: 'Szukaj w notatkach...',
     filterAll: 'Wszystkie',
     filterFavorite: 'Ulubione',
     filterNew: 'Nowe',
-    filterLearning: 'Uczę się',
+    filterLearning: 'W trakcie nauki',
     filterMastered: 'Opanowane',
     selectVisible: 'Zaznacz widoczne',
-    startPractice: 'Zacznij quiz z historii',
-    emptyTitle: 'Nie ma jeszcze zapisanych pytań',
-    emptyText: 'Rozwiąż pytania z włączonym zapisem historii w rozszerzeniu i wróć tutaj.',
+    startPractice: 'Rozpocznij quiz powtórkowy',
+    emptyTitle: 'Brak zapisanych pytań',
+    emptyText: 'Rozwiązuj testy za pomocą rozszerzenia z włączonym zapisem historii, a Twoje pytania automatycznie pojawią się w tym panelu.',
     selected: 'Wybrane',
     favorited: 'Ulubione',
     favorite: 'Dodaj do ulubionych',
@@ -509,30 +805,30 @@ const QUIZ_TEXT: Record<Locale, any> = {
     explanation: 'Wyjaśnienie',
     noExplanation: 'Brak zapisanego wyjaśnienia.',
     personalNote: 'Twoja notatka',
-    notePlaceholder: 'Dodaj, co chcesz zapamiętać...',
+    notePlaceholder: 'Dodaj kluczowe informacje, wzory lub komentarz...',
     saveNote: 'Zapisz notatkę',
     new: 'Nowe',
-    learning: 'Uczę się',
+    learning: 'W trakcie nauki',
     mastered: 'Opanowane',
     backToNotes: 'Wróć do historii',
-    typeAnswer: 'Wpisz odpowiedź',
+    typeAnswer: 'Wpisz swoją odpowiedź',
     checkAnswer: 'Sprawdź odpowiedź',
     nextQuestion: 'Następne pytanie',
-    correct: 'Poprawnie',
-    incorrect: 'Jeszcze nie',
-    resultTitle: 'Quiz zakończony',
+    correct: 'Poprawnie!',
+    incorrect: 'Niewłaściwa odpowiedź',
+    resultTitle: 'Quiz zakończony!',
     correctAnswers: 'poprawnych odpowiedzi',
-    restartPractice: 'Ćwicz ponownie',
-    selectAtLeastOne: 'Zaznacz co najmniej jedno pytanie.',
+    restartPractice: 'Rozpocznij ponownie',
+    selectAtLeastOne: 'Zaznacz co najmniej jedno pytanie, aby rozpocząć quiz.',
     sharedBadge: 'Udostępniony quiz',
     sharedTitle: 'Udostępniony quiz QuizSolver',
-    sharedSubtitle: 'Odpowiedz na pytania i wyślij podejście.',
+    sharedSubtitle: 'Odpowiedz na poniższe pytania i prześlij swoje podejście, aby sprawdzić wiedzę.',
     submitShared: 'Wyślij podejście',
-    submitSharedText: 'Wpisz nazwę i sprawdź wynik.',
-    displayName: 'Nazwa',
+    submitSharedText: 'Wpisz swoją nazwę użytkownika, aby sprawdzić uzyskany wynik.',
+    displayName: 'Nazwa użytkownika',
     loading: 'Ładowanie...',
     checkAnswers: 'Sprawdź odpowiedzi',
     sharedError: 'Nie udało się wczytać quizu.',
-    anonymous: 'Anonim'
+    anonymous: 'Anonimowy'
   }
 };
