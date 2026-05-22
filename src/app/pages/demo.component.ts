@@ -1,5 +1,5 @@
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { Component, OnInit, PLATFORM_ID, inject, signal } from '@angular/core';
+import { Component, OnDestroy, OnInit, PLATFORM_ID, inject, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { SeoService } from '../seo.service';
 import { CHROME_WEB_STORE_URL, Locale, pathFor } from '../site-content';
@@ -33,6 +33,7 @@ interface DemoCopy {
   prev: string;
   next: string;
   restart: string;
+  startTour: string;
   selectText: string;
   selectedTip: string;
   popupTitle: string;
@@ -54,6 +55,7 @@ const COPY: Record<Locale, DemoCopy> = {
     prev: 'Previous',
     next: 'Next question',
     restart: 'Restart demo',
+    startTour: 'Start guided tutorial',
     selectText: 'Select demo question text',
     selectedTip: 'Select the question text, open the quick overlay, then click Solve selected text.',
     popupTitle: 'Popup flow',
@@ -71,9 +73,9 @@ const COPY: Record<Locale, DemoCopy> = {
         kicker: 'Step 1',
         title: 'Standard solve',
         instruction: 'Click Solve current page in the extension popup. QuizSolver should choose the correct option.',
-        question: 'Which protocol is the secure version of HTTP?',
-        options: ['HTTP', 'HTTPS', 'FTP', 'SMTP'],
-        correctText: 'HTTPS'
+        question: 'What should you take when it is raining outside?',
+        options: ['Sunglasses', 'Umbrella', 'Beach towel', 'Ice skates'],
+        correctText: 'Umbrella'
       },
       {
         id: 'demo-hidden',
@@ -81,9 +83,9 @@ const COPY: Record<Locale, DemoCopy> = {
         kicker: 'Step 2',
         title: 'Hidden mode',
         instruction: 'Turn on Hint mode in the popup before solving. The answer should be hinted instead of clicked.',
-        question: 'Which CSS property changes the text color?',
-        options: ['background-color', 'color', 'border', 'display'],
-        correctText: 'color'
+        question: 'Which item do people usually keep in a fridge?',
+        options: ['Blanket', 'Milk', 'Notebook', 'Keys'],
+        correctText: 'Milk'
       },
       {
         id: 'demo-text',
@@ -91,9 +93,9 @@ const COPY: Record<Locale, DemoCopy> = {
         kicker: 'Step 3',
         title: 'Typed answer',
         instruction: 'Solve the page and the extension will fill the text input with a local demo answer.',
-        question: 'What short abbreviation is commonly used for artificial intelligence?',
+        question: 'How many days are in a normal week?',
         placeholder: 'Type the answer here',
-        correctText: 'AI'
+        correctText: '7'
       },
       {
         id: 'demo-matching',
@@ -101,10 +103,10 @@ const COPY: Record<Locale, DemoCopy> = {
         kicker: 'Step 4',
         title: 'Dropdown and matching',
         instruction: 'This step shows multi-select matching. QuizSolver fills each dropdown with the matching concept.',
-        question: 'Match each web technology with its main role.',
-        prompts: ['HTML', 'CSS', 'JavaScript'],
-        options: ['Structure', 'Styles', 'Logic'],
-        correctText: 'HTML = Structure, CSS = Styles, JavaScript = Logic'
+        question: 'Match each everyday activity with the place where it usually happens.',
+        prompts: ['Cooking', 'Sleeping', 'Shopping'],
+        options: ['Kitchen', 'Bedroom', 'Store'],
+        correctText: 'Cooking = Kitchen, Sleeping = Bedroom, Shopping = Store'
       },
       {
         id: 'demo-selected',
@@ -112,7 +114,7 @@ const COPY: Record<Locale, DemoCopy> = {
         kicker: 'Step 5',
         title: 'Quick overlay and selected text',
         instruction: 'Select the question text, press Alt+Q or open Quick overlay, then solve selected text.',
-        question: 'What does Alt+Q open in QuizSolver?',
+        question: 'Which QuizSolver tool opens a small window with fast actions?',
         options: ['Quick overlay', 'Credit checkout', 'Admin panel', 'Browser history'],
         correctText: 'Quick overlay'
       }
@@ -131,6 +133,7 @@ const COPY: Record<Locale, DemoCopy> = {
     prev: 'Poprzednie',
     next: 'Nastepne pytanie',
     restart: 'Zacznij od nowa',
+    startTour: 'Uruchom tutorial',
     selectText: 'Zaznacz tekst pytania',
     selectedTip: 'Zaznacz tekst pytania, otworz szybki overlay i kliknij Solve selected text.',
     popupTitle: 'Co klikac w popupie',
@@ -148,9 +151,9 @@ const COPY: Record<Locale, DemoCopy> = {
         kicker: 'Krok 1',
         title: 'Zwykle rozwiazywanie',
         instruction: 'Kliknij Solve current page w popupie rozszerzenia. QuizSolver powinien zaznaczyc poprawna opcje.',
-        question: 'Ktory protokol jest bezpieczniejsza wersja HTTP?',
-        options: ['HTTP', 'HTTPS', 'FTP', 'SMTP'],
-        correctText: 'HTTPS'
+        question: 'Co warto zabrac, gdy na zewnatrz pada deszcz?',
+        options: ['Okulary przeciwsloneczne', 'Parasol', 'Recznik plazowy', 'Lyzwy'],
+        correctText: 'Parasol'
       },
       {
         id: 'demo-hidden',
@@ -158,9 +161,9 @@ const COPY: Record<Locale, DemoCopy> = {
         kicker: 'Krok 2',
         title: 'Tryb ukryty',
         instruction: 'Wlacz Hint mode w popupie przed rozwiazaniem. Odpowiedz zostanie podpowiedziana zamiast kliknieta.',
-        question: 'Ktora wlasciwosc CSS zmienia kolor tekstu?',
-        options: ['background-color', 'color', 'border', 'display'],
-        correctText: 'color'
+        question: 'Co najczesciej trzymamy w lodowce, zeby bylo chlodne?',
+        options: ['Koc', 'Mleko', 'Zeszyt', 'Klucze'],
+        correctText: 'Mleko'
       },
       {
         id: 'demo-text',
@@ -168,9 +171,9 @@ const COPY: Record<Locale, DemoCopy> = {
         kicker: 'Krok 3',
         title: 'Odpowiedz wpisywana',
         instruction: 'Rozwiaz strone, a rozszerzenie wypelni pole tekstowe lokalna odpowiedzia demo.',
-        question: 'Jakim skrotem najczesciej okresla sie sztuczna inteligencje?',
+        question: 'Ile dni ma zwykly tydzien?',
         placeholder: 'Wpisz odpowiedz tutaj',
-        correctText: 'AI'
+        correctText: '7'
       },
       {
         id: 'demo-matching',
@@ -178,10 +181,10 @@ const COPY: Record<Locale, DemoCopy> = {
         kicker: 'Krok 4',
         title: 'Selecty i dopasowanie',
         instruction: 'Ten krok pokazuje dopasowywanie wielu selectow. QuizSolver wypelnia kazdy select pasujacym pojeciem.',
-        question: 'Dopasuj technologie webowe do ich glownej roli.',
-        prompts: ['HTML', 'CSS', 'JavaScript'],
-        options: ['Struktura', 'Style', 'Logika'],
-        correctText: 'HTML = Struktura, CSS = Style, JavaScript = Logika'
+        question: 'Dopasuj codzienna czynnosc do miejsca, w ktorym zwykle sie odbywa.',
+        prompts: ['Gotowanie', 'Spanie', 'Zakupy'],
+        options: ['Kuchnia', 'Sypialnia', 'Sklep'],
+        correctText: 'Gotowanie = Kuchnia, Spanie = Sypialnia, Zakupy = Sklep'
       },
       {
         id: 'demo-selected',
@@ -189,7 +192,7 @@ const COPY: Record<Locale, DemoCopy> = {
         kicker: 'Krok 5',
         title: 'Szybki overlay i zaznaczony tekst',
         instruction: 'Zaznacz tekst pytania, nacisnij Alt+Q albo otworz Quick overlay, a potem rozwiaz zaznaczony tekst.',
-        question: 'Co otwiera skrot Alt+Q w QuizSolver?',
+        question: 'Ktore narzedzie QuizSolver otwiera male okno z szybkimi akcjami?',
         options: ['Szybki overlay', 'Platnosc za kredyty', 'Panel admina', 'Historie przegladarki'],
         correctText: 'Szybki overlay'
       }
@@ -214,7 +217,7 @@ const COPY: Record<Locale, DemoCopy> = {
                 <span>{{ copy.localBadge }}</span>
               </div>
               <div class="demo-actions">
-                <a class="btn btn-primary btn-lg" [href]="storeUrl" target="_blank" rel="noopener">{{ copy.install }}</a>
+                <button class="btn btn-primary btn-lg" type="button" data-qs-tour-start (click)="startGuidedTour()">{{ copy.startTour }}</button>
                 <a class="btn btn-outline btn-lg" [href]="pathFor('quiz')">{{ locale === 'pl' ? 'Otworz historie' : 'Open history' }}</a>
               </div>
             </div>
@@ -242,16 +245,16 @@ const COPY: Record<Locale, DemoCopy> = {
                 <strong>QS</strong>
                 <span>QuizSolver</span>
               </div>
-              <div class="mock-action primary">Solve current page</div>
+              <div class="mock-action primary" data-qs-tour="mock-solve">Solve current page</div>
               <div class="mock-action">FocusScan</div>
-              <div class="mock-action">Quick overlay</div>
-              <div class="mock-toggle" [class.on]="question.type === 'hidden'">
+              <div class="mock-action" data-qs-tour="mock-overlay">Quick overlay</div>
+              <div class="mock-toggle" [class.on]="question.type === 'hidden'" data-qs-tour="mock-hint">
                 <span>Hint mode</span><i></i>
               </div>
             </div>
           </aside>
 
-          <article class="demo-card glass" [attr.data-qs-demo-question]="question.id">
+          <article class="demo-card glass" [attr.data-qs-demo-question]="question.id" data-qs-tour="question-card">
             <div class="question-top">
               <div>
                 <p class="eyebrow">{{ question.kicker }}</p>
@@ -286,18 +289,13 @@ const COPY: Record<Locale, DemoCopy> = {
             </div>
 
             <div class="selected-tip" *ngIf="question.type === 'selected'">
-              <button class="btn btn-outline btn-sm" type="button" (click)="selectQuestionText()">{{ copy.selectText }}</button>
+              <button class="btn btn-outline btn-sm" type="button" data-qs-tour="select-text" (click)="selectQuestionText()">{{ copy.selectText }}</button>
               <p>{{ copy.selectedTip }}</p>
-            </div>
-
-            <div class="answer-note">
-              <span>{{ locale === 'pl' ? 'Poprawna odpowiedz demo' : 'Demo correct answer' }}</span>
-              <strong>{{ question.correctText }}</strong>
             </div>
 
             <div class="demo-nav">
               <button class="btn btn-outline" type="button" (click)="previous()" [disabled]="current() === 0">{{ copy.prev }}</button>
-              <button class="btn btn-primary" type="button" (click)="next()">
+              <button class="btn btn-primary" type="button" data-qs-tour="next" (click)="next()">
                 {{ current() === copy.questions.length - 1 ? copy.restart : copy.next }}
               </button>
             </div>
@@ -609,7 +607,6 @@ const COPY: Record<Locale, DemoCopy> = {
     }
 
     .selected-tip,
-    .answer-note,
     .demo-nav {
       display: flex;
       align-items: center;
@@ -631,24 +628,6 @@ const COPY: Record<Locale, DemoCopy> = {
       flex: 1 1 260px;
       color: #fde68a;
       font-size: 0.92rem;
-    }
-
-    .answer-note {
-      border-top: 1px solid rgba(255,255,255,0.08);
-      padding-top: 1rem;
-    }
-
-    .answer-note span {
-      color: var(--text-secondary);
-      font-size: 0.85rem;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      font-weight: 900;
-    }
-
-    .answer-note strong {
-      color: #86efac;
-      font-size: 1.05rem;
     }
 
     .demo-nav {
@@ -740,7 +719,7 @@ const COPY: Record<Locale, DemoCopy> = {
     }
   `]
 })
-export class DemoComponent implements OnInit {
+export class DemoComponent implements OnInit, OnDestroy {
   protected locale: Locale = 'en';
   protected copy = COPY.en;
   protected readonly current = signal(0);
@@ -748,11 +727,26 @@ export class DemoComponent implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private readonly seo = inject(SeoService);
   private readonly platformId = inject(PLATFORM_ID);
+  private readonly handleTourStep = (event: Event) => {
+    const step = Number((event as CustomEvent<{ step?: number }>).detail?.step ?? 0);
+    const nextStep = Math.min(Math.max(0, step), this.copy.questions.length - 1);
+    this.current.set(nextStep);
+    this.scrollToWorkspace();
+  };
 
   ngOnInit(): void {
     this.locale = (this.route.snapshot.data['locale'] as Locale) || 'en';
     this.copy = COPY[this.locale] || COPY.en;
     this.seo.applyPage('demo', this.locale);
+    if (isPlatformBrowser(this.platformId)) {
+      window.addEventListener('qs-demo-set-step', this.handleTourStep);
+    }
+  }
+
+  ngOnDestroy(): void {
+    if (isPlatformBrowser(this.platformId)) {
+      window.removeEventListener('qs-demo-set-step', this.handleTourStep);
+    }
   }
 
   protected currentQuestion(): DemoQuestion {
@@ -779,6 +773,11 @@ export class DemoComponent implements OnInit {
     range.selectNodeContents(element);
     selection?.removeAllRanges();
     selection?.addRange(range);
+  }
+
+  protected startGuidedTour(): void {
+    if (!isPlatformBrowser(this.platformId)) return;
+    window.dispatchEvent(new CustomEvent('qs-demo-start-tour'));
   }
 
   protected pathFor(pageKey: 'quiz'): string {
