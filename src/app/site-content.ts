@@ -252,7 +252,7 @@ const en: SiteCopy = {
   },
   demoPage: {
     metaTitle: "Interactive Extension Demo | QuizSolver",
-    metaDescription: "Try the QuizSolver extension on a safe local demo quiz with five predefined questions, no credits, and no AI requests.",
+    metaDescription: "Try the QuizSolver extension on a safe local demo quiz with five predefined questions and no credit usage.",
     title: "Interactive Demo"
   },
   successPage: {
@@ -592,7 +592,7 @@ const pl: SiteCopy = {
   },
   demoPage: {
     metaTitle: "Interaktywne demo rozszerzenia | QuizSolver",
-    metaDescription: "Przetestuj QuizSolver na bezpiecznym quizie demo z piecioma gotowymi pytaniami, bez kredytow i bez zapytan do AI.",
+    metaDescription: "Przetestuj QuizSolver na bezpiecznym quizie demo z piecioma gotowymi pytaniami, bez zuzycia kredytow.",
     title: "Interaktywne demo"
   },
   successPage: {

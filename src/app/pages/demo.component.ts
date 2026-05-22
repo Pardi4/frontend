@@ -2,7 +2,7 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { Component, OnDestroy, OnInit, PLATFORM_ID, inject, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { SeoService } from '../seo.service';
-import { CHROME_WEB_STORE_URL, Locale, pathFor } from '../site-content';
+import { Locale } from '../site-content';
 import { ShellComponent } from './shell.component';
 
 type DemoQuestionType = 'radio' | 'hidden' | 'text' | 'matching' | 'selected';
@@ -45,17 +45,17 @@ const COPY: Record<Locale, DemoCopy> = {
   en: {
     eyebrow: 'Interactive onboarding',
     title: 'Try QuizSolver on a safe demo quiz',
-    lead: 'Five predefined questions show how the extension works. This page never consumes credits and demo answers are resolved locally, without AI calls.',
+    lead: 'Five predefined questions show how the extension works. This page never consumes credits, so you can try each mode safely.',
     install: 'Install extension',
     openStore: 'Open Chrome Web Store',
     demoBadge: 'No credits used',
-    localBadge: 'Local answers only',
+    localBadge: 'Guided practice',
     mapTitle: 'How to use this demo',
-    mapText: 'Open the QuizSolver popup on this page and follow each step. You can also use Alt+Q to open the quick overlay.',
+    mapText: 'Start the extension tutorial, then open the QuizSolver popup on this page. You can also use Alt+Q to open the quick overlay.',
     prev: 'Previous',
     next: 'Next question',
     restart: 'Restart demo',
-    startTour: 'Start guided tutorial',
+    startTour: 'Start extension tutorial',
     selectText: 'Select demo question text',
     selectedTip: 'Select the question text, open the quick overlay, then click Solve selected text.',
     popupTitle: 'Popup flow',
@@ -123,17 +123,17 @@ const COPY: Record<Locale, DemoCopy> = {
   pl: {
     eyebrow: 'Interaktywny onboarding',
     title: 'Przetestuj QuizSolver na bezpiecznym demo',
-    lead: 'Piecc predefiniowanych pytan pokazuje, jak dziala rozszerzenie. Ta strona nie zuzywa kredytow i nie wysyla zapytan do AI.',
+    lead: 'Piec predefiniowanych pytan pokazuje, jak dziala rozszerzenie. Ta strona nie zuzywa kredytow, wiec mozesz spokojnie przetestowac kazdy tryb.',
     install: 'Zainstaluj rozszerzenie',
     openStore: 'Otworz Chrome Web Store',
     demoBadge: 'Bez zuzycia kredytow',
-    localBadge: 'Tylko lokalne odpowiedzi',
+    localBadge: 'Tryb treningowy',
     mapTitle: 'Jak korzystac z demo',
-    mapText: 'Otworz popup QuizSolver na tej stronie i przejdz kroki po kolei. Mozesz tez nacisnac Alt+Q, zeby otworzyc szybki overlay.',
+    mapText: 'Uruchom tutorial rozszerzenia, a potem otworz popup QuizSolver na tej stronie. Mozesz tez nacisnac Alt+Q, zeby otworzyc szybki overlay.',
     prev: 'Poprzednie',
     next: 'Nastepne pytanie',
     restart: 'Zacznij od nowa',
-    startTour: 'Uruchom tutorial',
+    startTour: 'Uruchom tutorial w rozszerzeniu',
     selectText: 'Zaznacz tekst pytania',
     selectedTip: 'Zaznacz tekst pytania, otworz szybki overlay i kliknij Solve selected text.',
     popupTitle: 'Co klikac w popupie',
@@ -218,7 +218,6 @@ const COPY: Record<Locale, DemoCopy> = {
               </div>
               <div class="demo-actions">
                 <button class="btn btn-primary btn-lg" type="button" data-qs-tour-start (click)="startGuidedTour()">{{ copy.startTour }}</button>
-                <a class="btn btn-outline btn-lg" [href]="pathFor('quiz')">{{ locale === 'pl' ? 'Otworz historie' : 'Open history' }}</a>
               </div>
             </div>
 
@@ -723,7 +722,6 @@ export class DemoComponent implements OnInit, OnDestroy {
   protected locale: Locale = 'en';
   protected copy = COPY.en;
   protected readonly current = signal(0);
-  protected readonly storeUrl = CHROME_WEB_STORE_URL;
   private readonly route = inject(ActivatedRoute);
   private readonly seo = inject(SeoService);
   private readonly platformId = inject(PLATFORM_ID);
@@ -778,10 +776,6 @@ export class DemoComponent implements OnInit, OnDestroy {
   protected startGuidedTour(): void {
     if (!isPlatformBrowser(this.platformId)) return;
     window.dispatchEvent(new CustomEvent('qs-demo-start-tour'));
-  }
-
-  protected pathFor(pageKey: 'quiz'): string {
-    return pathFor(pageKey, this.locale);
   }
 
   private scrollToWorkspace(): void {
