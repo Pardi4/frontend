@@ -2,7 +2,7 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { Component, Inject, OnInit, PLATFORM_ID, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
-type AdminTab = 'users' | 'purchases' | 'bugs' | 'cache' | 'leaderboard' | 'system';
+type AdminTab = 'users' | 'purchases' | 'bugs' | 'support' | 'cache' | 'leaderboard' | 'system';
 
 @Component({
   standalone: true,
@@ -19,6 +19,11 @@ type AdminTab = 'users' | 'purchases' | 'bugs' | 'cache' | 'leaderboard' | 'syst
           <p class="text-secondary" style="margin-top: 0.5rem; margin-bottom: 2rem;">
             Operational control for credits, users, cache and platform health.
           </p>
+          <button class="btn btn-outline btn-block google-auth-btn" type="button" (click)="startGoogleLogin()">
+            <span>G</span>
+            Continue with Google
+          </button>
+          <div class="auth-divider"><span>or</span></div>
           <form (ngSubmit)="login()">
             <label class="form-label">
               <span>Email</span>
@@ -209,6 +214,80 @@ type AdminTab = 'users' | 'purchases' | 'bugs' | 'cache' | 'leaderboard' | 'syst
                 <div class="empty-panel" style="text-align: center; padding: 2rem;" *ngIf="!bugs().length">
                   <p class="text-secondary">No bug reports.</p>
                 </div>
+              </div>
+            </section>
+
+            <section class="admin-panel glass" *ngIf="activeTab() === 'support'">
+              <div class="panel-head">
+                <div>
+                  <p class="eyebrow">Inbox</p>
+                  <h2>Support mail</h2>
+                </div>
+                <form class="admin-search" (ngSubmit)="loadSupportMessages()">
+                  <select class="form-select" name="supportStatusFilter" [(ngModel)]="supportStatusFilter">
+                    <option value="">All messages</option>
+                    <option value="open">Open</option>
+                    <option value="pending">Pending</option>
+                    <option value="closed">Closed</option>
+                  </select>
+                  <button class="btn btn-primary" type="submit">Filter</button>
+                </form>
+              </div>
+
+              <div class="support-layout">
+                <div class="support-list">
+                  <button class="support-item" type="button" *ngFor="let message of supportMessages()" [class.active]="selectedSupportMessage()?.id === message.id" [class.unread]="!message.isRead" (click)="selectSupportMessage(message)">
+                    <span class="status-pill" [class.danger]="message.status === 'open'">{{ message.status }}</span>
+                    <strong>{{ message.subject || '(No subject)' }}</strong>
+                    <span>{{ message.fromName || message.fromEmail }}</span>
+                    <small>{{ formatDate(message.receivedAt) }}</small>
+                  </button>
+                  <div class="empty-panel" *ngIf="!supportMessages().length">
+                    <p class="text-secondary">No support messages.</p>
+                  </div>
+                </div>
+
+                <article class="support-detail" *ngIf="selectedSupportMessage(); else supportEmpty">
+                  <header>
+                    <div>
+                      <p class="eyebrow">{{ selectedSupportMessage()?.source || 'support' }}</p>
+                      <h3>{{ selectedSupportMessage()?.subject || '(No subject)' }}</h3>
+                      <p class="text-secondary">
+                        {{ selectedSupportMessage()?.fromName || 'Sender' }} &lt;{{ selectedSupportMessage()?.fromEmail }}&gt;
+                      </p>
+                    </div>
+                    <div class="row-actions">
+                      <button type="button" (click)="updateSupportStatus(selectedSupportMessage(), 'open')">Open</button>
+                      <button type="button" (click)="updateSupportStatus(selectedSupportMessage(), 'pending')">Pending</button>
+                      <button type="button" (click)="updateSupportStatus(selectedSupportMessage(), 'closed')">Close</button>
+                    </div>
+                  </header>
+
+                  <pre class="support-body">{{ selectedSupportMessage()?.text || 'No message body.' }}</pre>
+
+                  <div class="support-replies" *ngIf="(selectedSupportMessage()?.replies || []).length">
+                    <h4>Replies</h4>
+                    <article *ngFor="let reply of selectedSupportMessage()?.replies">
+                      <strong>{{ reply.admin }}</strong>
+                      <small>{{ formatDate(reply.sentAt) }} | {{ reply.delivery }}</small>
+                      <p>{{ reply.text }}</p>
+                    </article>
+                  </div>
+
+                  <form class="support-reply-form" (ngSubmit)="replySupportMessage()">
+                    <label class="form-label">
+                      <span>Reply</span>
+                      <textarea name="supportReplyText" [(ngModel)]="supportReplyText" rows="7" placeholder="Write a helpful answer..."></textarea>
+                    </label>
+                    <button class="btn btn-primary" type="submit" [disabled]="!supportReplyText.trim()">Send reply</button>
+                  </form>
+                </article>
+
+                <ng-template #supportEmpty>
+                  <div class="support-detail support-empty">
+                    <p class="text-secondary">Select a message to read and reply.</p>
+                  </div>
+                </ng-template>
               </div>
             </section>
 
@@ -590,6 +669,116 @@ type AdminTab = 'users' | 'purchases' | 'bugs' | 'cache' | 'leaderboard' | 'syst
       font-size: 0.85rem;
     }
 
+    /* Support inbox */
+    .support-layout {
+      display: grid;
+      grid-template-columns: minmax(260px, 0.85fr) minmax(0, 1.65fr);
+      gap: 1.5rem;
+      align-items: start;
+    }
+    .support-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      max-height: 720px;
+      overflow-y: auto;
+      padding-right: 0.25rem;
+    }
+    .support-item {
+      display: grid;
+      gap: 0.35rem;
+      padding: 1rem;
+      text-align: left;
+      color: var(--text-secondary);
+      background: rgba(255, 255, 255, 0.025);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      transition: border-color 0.2s, background 0.2s, transform 0.2s;
+    }
+    .support-item:hover,
+    .support-item.active {
+      border-color: rgba(6, 182, 212, 0.35);
+      background: rgba(6, 182, 212, 0.07);
+      transform: translateY(-1px);
+    }
+    .support-item.unread strong {
+      color: var(--accent-cyan);
+    }
+    .support-item strong {
+      color: var(--text-primary);
+      line-height: 1.25;
+    }
+    .support-item small {
+      color: var(--text-tertiary);
+      font-size: 0.75rem;
+    }
+    .support-detail {
+      min-height: 420px;
+      padding: 1.5rem;
+      background: rgba(255, 255, 255, 0.025);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+    }
+    .support-detail header {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      align-items: flex-start;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 1rem;
+    }
+    .support-detail h3 {
+      font-size: 1.35rem;
+      line-height: 1.2;
+      margin-bottom: 0.35rem;
+    }
+    .support-body {
+      white-space: pre-wrap;
+      word-break: break-word;
+      margin: 0 0 1.5rem;
+      padding: 1rem;
+      border-radius: var(--radius-md);
+      background: rgba(3, 7, 18, 0.38);
+      border: 1px solid rgba(148, 163, 184, 0.12);
+      color: var(--text-primary);
+      font-family: var(--font-body);
+      line-height: 1.6;
+    }
+    .support-replies {
+      display: grid;
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+    }
+    .support-replies h4 {
+      font-size: 1rem;
+      color: var(--text-secondary);
+    }
+    .support-replies article {
+      padding: 1rem;
+      border-radius: var(--radius-md);
+      background: rgba(139, 92, 246, 0.07);
+      border: 1px solid rgba(139, 92, 246, 0.16);
+    }
+    .support-replies small {
+      display: block;
+      color: var(--text-tertiary);
+      margin: 0.25rem 0 0.5rem;
+    }
+    .support-reply-form {
+      display: grid;
+      gap: 1rem;
+    }
+    .support-reply-form .btn {
+      justify-self: end;
+    }
+    .support-empty {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
     /* Cache panel */
     .cache-summary {
       display: flex;
@@ -699,6 +888,9 @@ type AdminTab = 'users' | 'purchases' | 'bugs' | 'cache' | 'leaderboard' | 'syst
       .health-grid {
         grid-template-columns: 1fr;
       }
+      .support-layout {
+        grid-template-columns: 1fr;
+      }
     }
     @media (max-width: 768px) {
       .admin-header {
@@ -724,6 +916,7 @@ export class AdminComponent implements OnInit {
     { id: 'users', label: 'Users', short: 'US' },
     { id: 'purchases', label: 'Purchases', short: 'PY' },
     { id: 'bugs', label: 'Bugs', short: 'BG' },
+    { id: 'support', label: 'Support', short: 'SP' },
     { id: 'cache', label: 'Cache', short: 'CA' },
     { id: 'leaderboard', label: 'Leaderboard', short: 'LB' },
     { id: 'system', label: 'System', short: 'SY' }
@@ -737,6 +930,8 @@ export class AdminComponent implements OnInit {
   protected readonly users = signal<any[]>([]);
   protected readonly purchases = signal<any[]>([]);
   protected readonly bugs = signal<any[]>([]);
+  protected readonly supportMessages = signal<any[]>([]);
+  protected readonly selectedSupportMessage = signal<any | null>(null);
   protected readonly cache = signal<any>({});
   protected readonly leaderboard = signal<any[]>([]);
   protected readonly health = signal<any>({});
@@ -745,6 +940,8 @@ export class AdminComponent implements OnInit {
   protected email = '';
   protected password = '';
   protected userSearch = '';
+  protected supportStatusFilter = '';
+  protected supportReplyText = '';
 
   private token = '';
   private readonly isBrowser: boolean;
@@ -806,6 +1003,11 @@ export class AdminComponent implements OnInit {
     if (this.isBrowser) localStorage.removeItem('qs_admin_token');
   }
 
+  protected startGoogleLogin(): void {
+    if (!this.isBrowser) return;
+    window.location.href = `/api/auth/google/start?redirect=${encodeURIComponent('/admin')}`;
+  }
+
   protected async refresh(): Promise<void> {
     this.error.set('');
     await Promise.all([
@@ -813,6 +1015,7 @@ export class AdminComponent implements OnInit {
       this.loadUsers(this.pagination().page || 1),
       this.loadPurchases(),
       this.loadBugs(),
+      this.loadSupportMessages(),
       this.loadCache(),
       this.loadLeaderboard(),
       this.loadHealth()
@@ -902,6 +1105,7 @@ export class AdminComponent implements OnInit {
       { label: 'Month revenue', value: this.formatMoney(s.monthRevenue || 0), revenue: true },
       { label: 'Purchases today', value: this.formatNumber(s.todayPurchases) },
       { label: 'Bug reports', value: this.formatNumber(s.totalBugReports) },
+      { label: 'Open support', value: this.formatNumber(s.openSupportMessages) },
       { label: 'Banned', value: this.formatNumber(s.bannedUsers) }
     ];
   }
@@ -956,6 +1160,52 @@ export class AdminComponent implements OnInit {
   private async loadBugs(): Promise<void> {
     const result = await this.api('/api/admin/bug-reports');
     if (result.success) this.bugs.set(result.reports || []);
+  }
+
+  protected async loadSupportMessages(): Promise<void> {
+    const params = new URLSearchParams();
+    if (this.supportStatusFilter) params.set('status', this.supportStatusFilter);
+    const result = await this.api(`/api/admin/support/messages${params.toString() ? `?${params.toString()}` : ''}`);
+    if (!result.success) return;
+    const messages = result.messages || [];
+    this.supportMessages.set(messages);
+    const selectedId = this.selectedSupportMessage()?.id;
+    const nextSelected = messages.find((message: any) => message.id === selectedId) || messages[0] || null;
+    this.selectedSupportMessage.set(nextSelected);
+  }
+
+  protected async selectSupportMessage(message: any): Promise<void> {
+    this.selectedSupportMessage.set(message);
+    this.supportReplyText = '';
+    if (!message?.isRead) {
+      await this.updateSupportStatus(message, message.status || 'open', true);
+    }
+  }
+
+  protected async updateSupportStatus(message: any, status: 'open' | 'pending' | 'closed', markRead = false): Promise<void> {
+    if (!message?.id) return;
+    const result = await this.api(`/api/admin/support/messages/${message.id}`, {
+      method: 'PATCH',
+      body: JSON.stringify({ status, isRead: markRead ? true : message.isRead })
+    });
+    if (!result.success) return;
+    await this.loadSupportMessages();
+  }
+
+  protected async replySupportMessage(): Promise<void> {
+    const message = this.selectedSupportMessage();
+    const text = this.supportReplyText.trim();
+    if (!message?.id || !text) return;
+    const result = await this.api(`/api/admin/support/messages/${message.id}/reply`, {
+      method: 'POST',
+      body: JSON.stringify({ text })
+    });
+    if (result.success) {
+      this.supportReplyText = '';
+      await Promise.all([this.loadSupportMessages(), this.loadStats()]);
+      return;
+    }
+    this.error.set(result.error || 'Could not send support reply.');
   }
 
   private async loadCache(): Promise<void> {

@@ -40,7 +40,7 @@ export class ApiService {
         this.clearSession();
         return { success: false, auth: true, error: data.error || 'Session expired.' };
       }
-      if (!response.ok) return { success: false, error: data.error || `Error: ${response.status}` };
+      if (!response.ok) return { ...data, success: false, error: data.error || `Error: ${response.status}` };
       return data;
     } catch {
       return { success: false, error: 'Network error.' };
