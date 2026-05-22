@@ -752,13 +752,15 @@ export class DemoComponent implements OnInit, OnDestroy {
   }
 
   protected next(): void {
+    const scrollSnapshot = this.captureScroll();
     this.current.update((value) => value >= this.copy.questions.length - 1 ? 0 : value + 1);
-    this.scrollToWorkspace();
+    this.restoreScroll(scrollSnapshot);
   }
 
   protected previous(): void {
+    const scrollSnapshot = this.captureScroll();
     this.current.update((value) => Math.max(0, value - 1));
-    this.scrollToWorkspace();
+    this.restoreScroll(scrollSnapshot);
   }
 
   protected selectQuestionText(): void {
@@ -782,6 +784,20 @@ export class DemoComponent implements OnInit, OnDestroy {
     if (!isPlatformBrowser(this.platformId)) return;
     requestAnimationFrame(() => {
       document.querySelector('.demo-workspace')?.scrollIntoView({ block: 'start', behavior: 'smooth' });
+    });
+  }
+
+  private captureScroll(): { x: number; y: number } | null {
+    if (!isPlatformBrowser(this.platformId)) return null;
+    return { x: window.scrollX, y: window.scrollY };
+  }
+
+  private restoreScroll(snapshot: { x: number; y: number } | null): void {
+    if (!snapshot || !isPlatformBrowser(this.platformId)) return;
+    const restore = () => window.scrollTo(snapshot.x, snapshot.y);
+    requestAnimationFrame(() => {
+      restore();
+      setTimeout(restore, 0);
     });
   }
 }
