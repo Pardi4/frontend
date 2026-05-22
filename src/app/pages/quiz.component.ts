@@ -269,11 +269,11 @@ import { ShellComponent } from './shell.component';
                     </select>
                   </label>
                   <div class="quiz-pagination" *ngIf="pagination().pages > 1">
-                    <button class="btn btn-outline btn-sm" type="button" (click)="loadNotes(currentPage() - 1)" [disabled]="currentPage() <= 1">
+                    <button class="btn btn-outline btn-sm" type="button" (click)="loadNotes(currentPage() - 1, true)" [disabled]="currentPage() <= 1">
                       {{ text.prevPage }}
                     </button>
                     <span>{{ currentPage() }} / {{ pagination().pages }}</span>
-                    <button class="btn btn-outline btn-sm" type="button" (click)="loadNotes(currentPage() + 1)" [disabled]="currentPage() >= pagination().pages">
+                    <button class="btn btn-outline btn-sm" type="button" (click)="loadNotes(currentPage() + 1, true)" [disabled]="currentPage() >= pagination().pages">
                       {{ text.nextPage }}
                     </button>
                   </div>
@@ -1030,8 +1030,9 @@ export class QuizComponent implements OnInit {
     this.error.set(result.error || this.text.loginError);
   }
 
-  protected async loadNotes(page = this.currentPage()): Promise<void> {
+  protected async loadNotes(page = this.currentPage(), preserveScroll = false): Promise<void> {
     if (!this.api.token()) return;
+    const scrollSnapshot = this.captureScroll(preserveScroll);
     this.loading.set(true);
     const allowedLimits = [30, 50, 100];
     const limit = allowedLimits.includes(Number(this.pageSize)) ? Number(this.pageSize) : 30;
@@ -1050,6 +1051,7 @@ export class QuizComponent implements OnInit {
       this.currentPage.set(result.pagination?.page || nextPage);
       this.pagination.set(result.pagination || { page: nextPage, limit, total: result.notes.length, pages: 1 });
     }
+    this.restoreScroll(scrollSnapshot);
   }
 
   protected toggleSelected(id: string): void {
@@ -1138,8 +1140,10 @@ export class QuizComponent implements OnInit {
   }
 
   protected nextQuestion(): void {
+    const scrollSnapshot = this.captureScroll(true);
     if (this.currentIndex() + 1 >= this.practice().length) {
       this.finished.set(true);
+      this.restoreScroll(scrollSnapshot);
       return;
     }
     this.currentIndex.set(this.currentIndex() + 1);
@@ -1147,6 +1151,7 @@ export class QuizComponent implements OnInit {
     this.typedAnswer = '';
     this.checked.set(false);
     this.correct.set(false);
+    this.restoreScroll(scrollSnapshot);
   }
 
   protected backToNotes(): void {
@@ -1252,6 +1257,20 @@ export class QuizComponent implements OnInit {
       this.sharedResultsError.set(result.error || this.text.sharedResultsError);
     }
     this.sharedResultsLoading.set(false);
+  }
+
+  private captureScroll(enabled: boolean): { x: number; y: number } | null {
+    if (!enabled || typeof window === 'undefined') return null;
+    return { x: window.scrollX, y: window.scrollY };
+  }
+
+  private restoreScroll(snapshot: { x: number; y: number } | null): void {
+    if (!snapshot || typeof window === 'undefined') return;
+    const restore = () => window.scrollTo(snapshot.x, snapshot.y);
+    requestAnimationFrame(() => {
+      restore();
+      setTimeout(restore, 0);
+    });
   }
 }
 
