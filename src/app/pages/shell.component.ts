@@ -22,7 +22,10 @@ import { CHROME_WEB_STORE_URL, Locale, PageKey, contentFor, pathFor } from '../s
           <nav class="nav-links" aria-label="Main navigation">
             <a class="nav-link" [href]="homeHash('how-it-works')">{{ copy.nav.how }}</a>
             <a class="nav-link" [href]="homeHash('features')">{{ copy.nav.features }}</a>
-            <a class="nav-link" [href]="homeHash('credits')">{{ copy.nav.pricing }}</a>
+            <a class="nav-link" [href]="pathFor('credits')" [class.active]="pageKey === 'credits'">{{ copy.nav.pricing }}</a>
+            <a class="nav-link" [href]="pathFor('demo')" [class.active]="pageKey === 'demo'">
+              {{ locale === 'pl' ? 'Demo' : 'Demo' }}
+            </a>
             <a class="nav-link" [href]="pathFor('quiz')" [class.active]="pageKey === 'quiz'">
               {{ locale === 'pl' ? 'Historia i quiz' : 'History & quiz' }}
             </a>
@@ -40,7 +43,7 @@ import { CHROME_WEB_STORE_URL, Locale, PageKey, contentFor, pathFor } from '../s
             </ng-container>
 
             <ng-template #userMenu>
-              <button class="btn btn-outline btn-sm" type="button" (click)="goToDashboard('credits')">
+              <button class="btn btn-outline btn-sm" type="button" (click)="goToCredits()">
                 {{ api.currentUser()?.role === 'admin' ? '∞' : (api.currentUser()?.credits || 0) }} {{ copy.common.credits }}
               </button>
               <div class="user-menu-container">
@@ -55,7 +58,7 @@ import { CHROME_WEB_STORE_URL, Locale, PageKey, contentFor, pathFor } from '../s
                   <button class="btn btn-ghost btn-block" type="button" (click)="goToDashboard()">
                     {{ copy.common.dashboard }}
                   </button>
-                  <button class="btn btn-ghost btn-block" type="button" (click)="goToDashboard('credits')">
+                  <button class="btn btn-ghost btn-block" type="button" (click)="goToCredits()">
                     {{ copy.common.buyCredits }}
                   </button>
                   <button class="btn btn-ghost btn-block" type="button" (click)="logout()">
@@ -75,7 +78,8 @@ import { CHROME_WEB_STORE_URL, Locale, PageKey, contentFor, pathFor } from '../s
           <div class="mobile-menu-inner">
             <a class="nav-link" [href]="homeHash('how-it-works')" (click)="mobileMenuOpen.set(false)">{{ copy.nav.how }}</a>
             <a class="nav-link" [href]="homeHash('features')" (click)="mobileMenuOpen.set(false)">{{ copy.nav.features }}</a>
-            <a class="nav-link" [href]="homeHash('credits')" (click)="mobileMenuOpen.set(false)">{{ copy.nav.pricing }}</a>
+            <a class="nav-link" [href]="pathFor('credits')" [class.active]="pageKey === 'credits'" (click)="mobileMenuOpen.set(false)">{{ copy.nav.pricing }}</a>
+            <a class="nav-link" [href]="pathFor('demo')" (click)="mobileMenuOpen.set(false)">Demo</a>
             <a class="nav-link" [href]="pathFor('quiz')" (click)="mobileMenuOpen.set(false)">
               {{ locale === 'pl' ? 'Historia i quiz' : 'History & quiz' }}
             </a>
@@ -95,7 +99,7 @@ import { CHROME_WEB_STORE_URL, Locale, PageKey, contentFor, pathFor } from '../s
                 </div>
                 <div class="mobile-actions">
                   <button class="btn btn-outline" type="button" (click)="goToDashboard()">{{ copy.common.dashboard }}</button>
-                  <button class="btn btn-outline" type="button" (click)="goToDashboard('credits')">
+                  <button class="btn btn-outline" type="button" (click)="goToCredits()">
                     {{ api.currentUser()?.role === 'admin' ? 'Unlimited' : (api.currentUser()?.credits || 0) + ' ' + copy.common.credits }}
                   </button>
                   <button class="btn btn-ghost" type="button" (click)="logout()">{{ copy.common.logout }}</button>
@@ -156,6 +160,7 @@ import { CHROME_WEB_STORE_URL, Locale, PageKey, contentFor, pathFor } from '../s
             <div class="footer-links">
               <a class="nav-link" [href]="homeHash('features')">{{ copy.nav.features }}</a>
               <a class="nav-link" [href]="pathFor('quiz')">{{ locale === 'pl' ? 'Historia i quiz' : 'History & quiz' }}</a>
+              <a class="nav-link" [href]="pathFor('credits')">{{ copy.common.buyCredits }}</a>
               <a class="nav-link" [href]="pathFor('dashboard')">{{ copy.common.dashboard }}</a>
             </div>
           </div>
@@ -533,6 +538,15 @@ import { CHROME_WEB_STORE_URL, Locale, PageKey, contentFor, pathFor } from '../s
     }
     .mobile-user-card .avatar-btn {
       pointer-events: none;
+      width: 2.5rem;
+      height: 2.5rem;
+      min-width: 2.5rem;
+      padding: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      align-self: center;
+      line-height: 1;
     }
     .mobile-user-card strong,
     .mobile-user-card span {
@@ -662,6 +676,32 @@ import { CHROME_WEB_STORE_URL, Locale, PageKey, contentFor, pathFor } from '../s
       }
       .mobile-menu {
         max-height: calc(100dvh - 4.5rem);
+      }
+      .mobile-menu-inner {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.5rem;
+      }
+      .mobile-menu .nav-link {
+        min-height: 2.65rem;
+        padding: 0.65rem 0.75rem;
+        font-size: 0.92rem;
+      }
+      .mobile-utility {
+        grid-column: 1 / -1;
+        gap: 0.6rem;
+        padding-top: 0.6rem;
+      }
+      .mobile-actions {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .mobile-actions .btn {
+        min-height: 2.65rem;
+      }
+      .mobile-actions .btn:only-child,
+      .mobile-actions .btn:nth-child(3) {
+        grid-column: 1 / -1;
       }
       .footer-grid {
         grid-template-columns: 1fr;
@@ -862,6 +902,12 @@ export class ShellComponent implements OnInit, AfterViewInit, OnDestroy {
     this.mobileMenuOpen.set(false);
     const url = pathFor('dashboard', this.locale);
     await this.router.navigateByUrl(hash ? `${url}#${hash}` : url);
+  }
+
+  protected async goToCredits(): Promise<void> {
+    this.dropdownOpen.set(false);
+    this.mobileMenuOpen.set(false);
+    await this.router.navigateByUrl(pathFor('credits', this.locale));
   }
 
   protected logout(): void {

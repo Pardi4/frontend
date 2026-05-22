@@ -61,7 +61,7 @@ export class SeoService {
     if (pageKey === 'privacy') {
       return { title: data.metaTitle, description: data.metaDescription };
     }
-    if (pageKey === 'dashboard' || pageKey === 'quiz' || pageKey === 'success' || pageKey === 'notFound') {
+    if (pageKey === 'dashboard' || pageKey === 'credits' || pageKey === 'quiz' || pageKey === 'demo' || pageKey === 'success' || pageKey === 'notFound') {
       return { title: data.metaTitle, description: data.metaDescription };
     }
     const copy = contentFor(locale);

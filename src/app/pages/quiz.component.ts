@@ -127,6 +127,10 @@ import { ShellComponent } from './shell.component';
                 </div>
               </div>
 
+              <div class="note-toast" *ngIf="noteToast()">
+                {{ noteToast() }}
+              </div>
+
               <div class="shared-results-panel glass" *ngIf="resultsPanelOpen()">
                 <div class="results-header">
                   <div>
@@ -477,14 +481,16 @@ import { ShellComponent } from './shell.component';
       justify-content: flex-end;
       gap: 0.75rem;
       flex-wrap: wrap;
+      width: 100%;
       padding: 0.4rem;
       border: 1px solid rgba(148, 163, 184, 0.14);
       border-radius: 12px;
       background: rgba(15, 23, 42, 0.45);
     }
     .filter-row .form-input {
-      flex: 1 1 280px;
-      max-width: 420px;
+      flex: 1 1 0;
+      min-width: 260px;
+      max-width: none;
       min-height: 44px;
       border-color: transparent;
       background-color: rgba(255, 255, 255, 0.04);
@@ -523,6 +529,24 @@ import { ShellComponent } from './shell.component';
       border-radius: 0;
       background-color: transparent;
       padding-left: 0.75rem;
+    }
+    .note-toast {
+      position: fixed;
+      right: 1rem;
+      bottom: 1rem;
+      z-index: 80;
+      padding: 0.85rem 1rem;
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      border-radius: var(--radius-md);
+      background: rgba(4, 120, 87, 0.92);
+      color: #ecfdf5;
+      font-weight: 800;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+      animation: note-toast-in 0.22s var(--ease-out);
+    }
+    @keyframes note-toast-in {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     .shared-results-panel {
@@ -859,9 +883,9 @@ import { ShellComponent } from './shell.component';
         grid-template-columns: 1fr;
       }
       .quiz-toolbar {
-        flex-direction: column;
-        align-items: stretch;
-        padding: 1.5rem;
+        padding: 0.9rem;
+        gap: 0.85rem;
+        margin: 1.25rem 0 1.5rem;
       }
       .toolbar-main,
       .primary-actions {
@@ -869,18 +893,43 @@ import { ShellComponent } from './shell.component';
         align-items: stretch;
       }
       .filter-row {
-        flex-direction: column;
-        align-items: stretch;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.45rem;
       }
       .filter-row .form-input,
-      .filter-row .form-select,
       .page-size-control,
-      .primary-actions .btn,
-      .filter-row button {
+      .primary-actions .btn {
         width: 100%;
+      }
+      .filter-row .form-input {
+        grid-column: 1 / -1;
+        min-width: 0;
+        min-height: 38px;
+        padding: 0.6rem 0.75rem;
+      }
+      .filter-row .form-select {
+        min-width: 0;
+        width: 100%;
+        min-height: 38px;
+        padding: 0.55rem 0.7rem;
+      }
+      .filter-row button {
+        width: auto;
+        min-height: 38px;
+        padding: 0.55rem 0.75rem;
+        font-size: 0.82rem;
+        white-space: nowrap;
       }
       .page-size-control .form-select {
         width: 100%;
+      }
+      .note-toast {
+        left: 1rem;
+        right: 1rem;
+        text-align: center;
       }
       .results-lookup-row {
         grid-template-columns: 1fr;
@@ -942,10 +991,12 @@ export class QuizComponent implements OnInit {
   protected readonly participatedAttempts = signal<any[]>([]);
   protected readonly sharedResultsLoading = signal(false);
   protected readonly sharedResultsError = signal('');
+  protected readonly noteToast = signal('');
   protected readonly allVisibleSelected = computed(() => {
     const notes = this.notes();
     return notes.length > 0 && notes.every(note => this.selected().has(note.id));
   });
+  private noteToastTimer?: ReturnType<typeof setTimeout>;
 
   async ngOnInit(): Promise<void> {
     this.locale = (this.route.snapshot.data['locale'] || 'en') as Locale;
@@ -1018,10 +1069,19 @@ export class QuizComponent implements OnInit {
   protected async updateNote(note: any, patch: any): Promise<void> {
     Object.assign(note, patch);
     this.notes.set([...this.notes()]);
-    await this.api.request(`/api/quiz/study-notes/${note.id}`, {
+    const result = await this.api.request(`/api/quiz/study-notes/${note.id}`, {
       method: 'PATCH',
       body: JSON.stringify(patch)
     });
+    if (result.success && Object.prototype.hasOwnProperty.call(patch, 'personalNote')) {
+      this.showNoteToast(this.text.noteSaved);
+    }
+  }
+
+  private showNoteToast(message: string): void {
+    this.noteToast.set(message);
+    if (this.noteToastTimer) clearTimeout(this.noteToastTimer);
+    this.noteToastTimer = setTimeout(() => this.noteToast.set(''), 2200);
   }
 
   protected async toggleFavorite(note: any): Promise<void> {
@@ -1250,6 +1310,7 @@ const QUIZ_TEXT: Record<Locale, any> = {
     personalNote: 'Your note',
     notePlaceholder: 'Add what you want to remember...',
     saveNote: 'Save note',
+    noteSaved: 'Note saved',
     new: 'New',
     learning: 'Learning',
     mastered: 'Mastered',
@@ -1331,6 +1392,7 @@ const QUIZ_TEXT: Record<Locale, any> = {
     personalNote: 'Twoja notatka',
     notePlaceholder: 'Dodaj kluczowe informacje, wzory lub komentarz...',
     saveNote: 'Zapisz notatkę',
+    noteSaved: 'Notatka zapisana',
     new: 'Nowe',
     learning: 'W trakcie nauki',
     mastered: 'Opanowane',

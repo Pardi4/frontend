@@ -80,7 +80,17 @@ export interface SiteCopy {
     loginText: string;
     loginButton: string;
   };
+  creditsPage: {
+    metaTitle: string;
+    metaDescription: string;
+    title: string;
+  };
   quizPage: {
+    metaTitle: string;
+    metaDescription: string;
+    title: string;
+  };
+  demoPage: {
     metaTitle: string;
     metaDescription: string;
     title: string;
@@ -230,10 +240,20 @@ const en: SiteCopy = {
     loginText: "Sign in or create a free account to track your quiz credits, view purchase history, and access your referral program.",
     loginButton: "Sign In / Sign Up"
   },
+  creditsPage: {
+    metaTitle: "Buy Credits | QuizSolver",
+    metaDescription: "Top up QuizSolver credits with one-time packages for answers, explanations, and study tools.",
+    title: "Buy Credits"
+  },
   quizPage: {
     metaTitle: "History & Practice Quiz | QuizSolver",
     metaDescription: "Review your saved questions, study notes, practice flashcards, and share custom quizzes.",
     title: "History and Quiz"
+  },
+  demoPage: {
+    metaTitle: "Interactive Extension Demo | QuizSolver",
+    metaDescription: "Try the QuizSolver extension on a safe local demo quiz with five predefined questions, no credits, and no AI requests.",
+    title: "Interactive Demo"
   },
   successPage: {
     metaTitle: "Payment Successful | QuizSolver",
@@ -560,10 +580,20 @@ const pl: SiteCopy = {
     loginText: "Zaloguj się lub załóż darmowe konto, aby zarządzać kredytami, sprawdzać historię transakcji i korzystać z programu poleceń.",
     loginButton: "Zaloguj się / Załóż konto"
   },
+  creditsPage: {
+    metaTitle: "Kup kredyty | QuizSolver",
+    metaDescription: "Doładuj kredyty QuizSolver jednorazowym pakietem do odpowiedzi, wyjaśnień i nauki.",
+    title: "Kup kredyty"
+  },
   quizPage: {
     metaTitle: "Historia i quizy powtórkowe | QuizSolver",
     metaDescription: "Przeglądaj zapisane pytania, twórz fiszki do nauki, dodawaj notatki i udostępniaj własne quizy.",
     title: "Historia i quiz"
+  },
+  demoPage: {
+    metaTitle: "Interaktywne demo rozszerzenia | QuizSolver",
+    metaDescription: "Przetestuj QuizSolver na bezpiecznym quizie demo z piecioma gotowymi pytaniami, bez kredytow i bez zapytan do AI.",
+    title: "Interaktywne demo"
   },
   successPage: {
     metaTitle: "Płatność powiodła się | QuizSolver",
@@ -778,7 +808,9 @@ export type Locale = 'en' | 'pl';
 export type PageKey =
   | 'home'
   | 'dashboard'
+  | 'credits'
   | 'quiz'
+  | 'demo'
   | 'quizSolverAi'
   | 'testportal'
   | 'moodle'
@@ -822,7 +854,9 @@ export const PLATFORM_PAGE_KEYS: PageKey[] = [
 export const PAGE_ROUTES: Record<PageKey, Record<Locale, string>> = {
   home: { en: '/', pl: '/pl/' },
   dashboard: { en: '/dashboard', pl: '/pl/dashboard' },
+  credits: { en: '/credits', pl: '/pl/credits' },
   quiz: { en: '/quiz', pl: '/pl/quiz' },
+  demo: { en: '/demo', pl: '/pl/demo' },
   quizSolverAi: { en: '/quiz-solver-ai', pl: '/pl/quiz-solver-ai' },
   testportal: { en: '/testportal-quiz-solver', pl: '/pl/testportal-quiz-solver' },
   moodle: { en: '/moodle-quiz-solver', pl: '/pl/moodle-quiz-solver' },
@@ -841,7 +875,9 @@ export const PAGE_ROUTES: Record<PageKey, Record<Locale, string>> = {
 
 export const INDEXED_PAGE_KEYS: PageKey[] = [
   'home',
+  'credits',
   'quiz',
+  'demo',
   'quizSolverAi',
   'testportal',
   'moodle',
@@ -873,7 +909,9 @@ export function pageData(pageKey: PageKey, locale: Locale): any {
   if (pageKey === 'home') return copy['home'];
   if (pageKey === 'privacy') return copy['privacyPage'];
   if (pageKey === 'dashboard') return copy['dashboardPage'];
+  if (pageKey === 'credits') return copy['creditsPage'];
   if (pageKey === 'quiz') return copy['quizPage'];
+  if (pageKey === 'demo') return copy['demoPage'];
   if (pageKey === 'success') return copy['successPage'];
   if (pageKey === 'notFound') return copy['notFoundPage'];
   return (copy['platformPages'] as any)?.[pageKey];

@@ -3,7 +3,7 @@ import { Component, OnInit, inject, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ApiService } from '../api.service';
 import { SeoService } from '../seo.service';
-import { Locale, pageData } from '../site-content';
+import { Locale, pageData, pathFor } from '../site-content';
 import { ShellComponent } from './shell.component';
 
 @Component({
@@ -102,6 +102,19 @@ import { ShellComponent } from './shell.component';
             </article>
           </section>
 
+          <section class="credit-warning glass" *ngIf="lowCredits()">
+            <div>
+              <p class="eyebrow">{{ copy.credits }}</p>
+              <h2>{{ locale === 'pl' ? 'Twoje kredyty zaraz się skończą' : 'Your credits are running low' }}</h2>
+              <p class="text-secondary">
+                {{ locale === 'pl' ? 'Kup więcej, aby nie zabrakło ich podczas quizu.' : 'Buy more so you do not run out during a quiz.' }}
+              </p>
+            </div>
+            <a class="btn btn-primary" [href]="creditsPath()">
+              {{ locale === 'pl' ? 'Kup kredyty' : 'Buy credits' }}
+            </a>
+          </section>
+
           <!-- Referral Widget -->
           <section class="referral-section">
             <div class="referral-card glass">
@@ -138,28 +151,6 @@ import { ShellComponent } from './shell.component';
                   </div>
                 </div>
               </div>
-            </div>
-          </section>
-
-          <!-- Credit Packages -->
-          <section class="packages-section" id="credits">
-            <div class="section-header">
-              <p class="eyebrow">{{ copy.credits }}</p>
-              <h2>{{ locale === 'pl' ? 'Doładuj konto' : 'Top up your account' }}</h2>
-              <p class="text-secondary">{{ locale === 'pl' ? 'Wybierz jednorazowy pakiet kredytów.' : 'Choose a one-time credit pack.' }}</p>
-            </div>
-            <div class="packages-deck">
-              <article class="package-card glass glass-hover" *ngFor="let pack of packs" [class.featured]="pack.id === 'popular'">
-                <span *ngIf="pack.id === 'popular'" class="featured-badge">
-                  {{ locale === 'pl' ? 'Popularne' : 'Popular' }}
-                </span>
-                <h3 class="pack-name">{{ pack.name[locale] }}</h3>
-                <div class="pack-price">{{ pack.price }}</div>
-                <p class="pack-caption text-secondary">{{ pack.caption[locale] }}</p>
-                <button class="btn btn-block" [class.btn-primary]="pack.id === 'popular'" [class.btn-outline]="pack.id !== 'popular'" type="button" (click)="buyPack(pack.id)">
-                  {{ pack.button[locale] }}
-                </button>
-              </article>
             </div>
           </section>
 
@@ -392,59 +383,22 @@ import { ShellComponent } from './shell.component';
       margin-top: 0.25rem;
       display: block;
     }
-
-    /* Credit Packages */
-    .packages-section {
-      padding: 3rem 0;
-    }
-    .packages-deck {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 2rem;
-      margin-top: 2.5rem;
-    }
-    .package-card {
-      padding: 3rem 2rem;
-      text-align: center;
-      position: relative;
+    .credit-warning {
       display: flex;
-      flex-direction: column;
+      align-items: center;
       justify-content: space-between;
+      gap: 1.25rem;
+      padding: 1.5rem;
+      margin: -1rem 0 3.5rem;
+      border-color: rgba(245, 158, 11, 0.35);
+      background: rgba(245, 158, 11, 0.08);
     }
-    .package-card.featured {
-      border: 1.5px solid var(--accent-cyan);
-      box-shadow: 0 0 25px var(--glow-cyan), var(--shadow-md);
-      transform: scale(1.02);
-    }
-    .featured-badge {
-      position: absolute;
-      top: -0.75rem;
-      left: 50%;
-      transform: translateX(-50%);
-      background: var(--accent-cyan);
-      color: var(--bg-deep);
-      padding: 0.3rem 0.9rem;
-      border-radius: var(--radius-full);
-      font-size: 0.7rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-    .pack-name {
+    .credit-warning h2 {
+      margin: 0.35rem 0;
       font-size: 1.35rem;
-      font-weight: 700;
-      margin-bottom: 0.5rem;
     }
-    .pack-price {
-      font-family: var(--font-heading);
-      font-size: 2.75rem;
-      font-weight: 800;
-      color: var(--text-primary);
-      margin-bottom: 0.5rem;
-    }
-    .pack-caption {
-      font-size: 0.9rem;
-      margin-bottom: 2rem;
+    .credit-warning p:last-child {
+      margin: 0;
     }
 
     /* Purchase History */
@@ -494,16 +448,6 @@ import { ShellComponent } from './shell.component';
         grid-template-columns: 1fr;
         gap: 2.5rem;
       }
-      .packages-deck {
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
-        max-width: 450px;
-        margin-left: auto;
-        margin-right: auto;
-      }
-      .package-card.featured {
-        transform: scale(1);
-      }
     }
     @media (max-width: 768px) {
       .stats-grid {
@@ -512,6 +456,11 @@ import { ShellComponent } from './shell.component';
       }
       .referral-card {
         padding: 1.75rem;
+      }
+      .credit-warning {
+        align-items: stretch;
+        flex-direction: column;
+        margin-top: 0;
       }
       .dashboard-header h1 {
         font-size: 2.25rem;
@@ -549,30 +498,6 @@ export class DashboardComponent implements OnInit {
     credits: 'Credits'
   };
 
-  protected readonly packs = [
-    {
-      id: 'starter',
-      price: '$1.99',
-      name: { en: '100 credits', pl: '100 kredytów' },
-      caption: { en: 'Small one-time top-up', pl: 'Małe jednorazowe doładowanie' },
-      button: { en: 'Buy 100 credits', pl: 'Kup 100 kredytów' }
-    },
-    {
-      id: 'popular',
-      price: '$4.99',
-      name: { en: '500 credits', pl: '500 kredytów' },
-      caption: { en: 'Best for regular use', pl: 'Najlepsze do regularnego użycia' },
-      button: { en: 'Buy 500 credits', pl: 'Kup 500 kredytów' }
-    },
-    {
-      id: 'pro',
-      price: '$9.99',
-      name: { en: '2000 credits', pl: '2000 kredytów' },
-      caption: { en: 'Large sessions and sharing', pl: 'Większe sesje i udostępnianie' },
-      button: { en: 'Buy 2000 credits', pl: 'Kup 2000 kredytów' }
-    }
-  ];
-
   async ngOnInit(): Promise<void> {
     this.locale = (this.route.snapshot.data['locale'] || 'en') as Locale;
     this.copy = this.locale === 'pl'
@@ -596,12 +521,13 @@ export class DashboardComponent implements OnInit {
     if (result.success) this.referral.set(result);
   }
 
-  protected async buyPack(pack: string): Promise<void> {
-    const result = await this.api.request('/api/credits/buy', {
-      method: 'POST',
-      body: JSON.stringify({ pack })
-    });
-    if (result.success && result.checkoutUrl) window.location.href = result.checkoutUrl;
+  protected lowCredits(): boolean {
+    const user = this.api.currentUser();
+    return !!user && user.role !== 'admin' && Number(user.credits || 0) < 20;
+  }
+
+  protected creditsPath(): string {
+    return pathFor('credits', this.locale);
   }
 
   protected async copyReferral(): Promise<void> {

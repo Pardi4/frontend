@@ -662,12 +662,41 @@ import { ShellComponent } from './shell.component';
         gap: 1.5rem;
       }
       .bento-grid {
-        grid-template-columns: 1fr;
-        grid-auto-rows: auto;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.85rem;
       }
       .card-lg, .card-md {
         grid-column: span 1;
         grid-row: span 1;
+      }
+      .bento-card {
+        min-height: 150px;
+        padding: 1rem;
+      }
+      .bento-title {
+        font-size: 1rem;
+      }
+      .bento-text {
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        font-size: 0.78rem;
+        line-height: 1.35;
+      }
+      .bento-preview-box {
+        display: none;
+      }
+      .platforms-links-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.75rem;
+      }
+      .platform-link-card {
+        padding: 0.85rem 0.9rem;
+      }
+      .plat-name {
+        font-size: 0.9rem;
+        overflow-wrap: anywhere;
       }
       .pricing-deck {
         grid-template-columns: 1fr;
@@ -687,8 +716,14 @@ import { ShellComponent } from './shell.component';
       .hero-actions .btn {
         width: 100%;
       }
-      .step-card, .bento-card, .price-tier-card {
+      .step-card, .price-tier-card {
         padding: 2rem 1.5rem;
+      }
+      .bento-card {
+        padding: 0.85rem;
+      }
+      .platform-link-card {
+        padding: 0.75rem;
       }
       .faq-summary {
         font-size: 1.05rem;
@@ -714,7 +749,7 @@ export class HomeComponent implements OnInit {
   }
 
   buyCredits() {
-    window.location.href = pathFor('dashboard', this.locale);
+    window.location.href = pathFor('credits', this.locale);
   }
 
   ngOnInit(): void {

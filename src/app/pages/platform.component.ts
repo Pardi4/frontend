@@ -23,7 +23,7 @@ import { ShellComponent } from './shell.component';
               <h1>{{ data?.title }}</h1>
               <p class="desc text-secondary">{{ data?.subtitle }}</p>
               <div class="hero-actions">
-                <a class="btn btn-primary btn-lg" [href]="pathFor('home') + '#credits'">
+                <a class="btn btn-primary btn-lg" [href]="pathFor('credits')">
                   {{ locale === 'pl' ? 'Zainstaluj rozszerzenie' : 'Install extension' }}
                 </a>
                 <a class="btn btn-outline btn-lg" href="#platform-guides">
