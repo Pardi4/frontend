@@ -214,7 +214,7 @@ type AuthModal = 'login' | 'register' | 'verify' | 'forgot' | 'reset';
                 <span>{{ copy.common.rememberMe }}</span>
               </label>
               <button class="inline-auth-link" type="button" (click)="openModal('forgot')">
-                {{ locale === 'pl' ? 'Nie pamietasz hasla?' : 'Forgot password?' }}
+                {{ locale === 'pl' ? 'Nie pamiętasz hasła?' : 'Forgot password?' }}
               </button>
               <div class="form-error" *ngIf="authError()">{{ authError() }}</div>
               <div class="form-success" *ngIf="authInfo()">{{ authInfo() }}</div>
@@ -237,7 +237,7 @@ type AuthModal = 'login' | 'register' | 'verify' | 'forgot' | 'reset';
             </header>
             <button class="btn btn-outline btn-block google-auth-btn" type="button" (click)="startGoogleLogin()">
               <span>G</span>
-              {{ locale === 'pl' ? 'Zaloz konto przez Google' : 'Sign up with Google' }}
+              {{ locale === 'pl' ? 'Załóż konto przez Google' : 'Sign up with Google' }}
             </button>
             <div class="auth-divider"><span>{{ locale === 'pl' ? 'albo' : 'or' }}</span></div>
             <form (ngSubmit)="register()">
@@ -249,6 +249,9 @@ type AuthModal = 'login' | 'register' | 'verify' | 'forgot' | 'reset';
               </div>
               <div class="form-group">
                 <input class="form-input" type="password" name="password" [(ngModel)]="registerPassword" [placeholder]="copy.common.password" autocomplete="new-password" required>
+              </div>
+              <div class="form-group">
+                <input class="form-input" type="password" name="passwordConfirm" [(ngModel)]="registerPasswordConfirm" [placeholder]="copy.common.confirmPassword" autocomplete="new-password" required>
               </div>
               <div class="form-group">
                 <input class="form-input" type="text" name="referralCode" [(ngModel)]="referralCode" [placeholder]="copy.common.referralCode">
@@ -267,8 +270,8 @@ type AuthModal = 'login' | 'register' | 'verify' | 'forgot' | 'reset';
 
           <ng-container *ngIf="activeModal() === 'verify'">
             <header class="modal-header">
-              <h2>{{ locale === 'pl' ? 'Potwierdz email' : 'Verify email' }}</h2>
-              <p>{{ locale === 'pl' ? 'Wpisz 6-cyfrowy kod wyslany na:' : 'Enter the 6-digit code sent to:' }} <strong>{{ verificationEmail }}</strong></p>
+              <h2>{{ locale === 'pl' ? 'Potwierdź e-mail' : 'Verify email' }}</h2>
+              <p>{{ locale === 'pl' ? 'Wpisz 6-cyfrowy kod wysłany na:' : 'Enter the 6-digit code sent to:' }} <strong>{{ verificationEmail }}</strong></p>
             </header>
             <form (ngSubmit)="verifyEmail()">
               <div class="form-group">
@@ -280,16 +283,16 @@ type AuthModal = 'login' | 'register' | 'verify' | 'forgot' | 'reset';
                 {{ authLoading() ? copy.common.loading : (locale === 'pl' ? 'Zweryfikuj i zaloguj' : 'Verify and sign in') }}
               </button>
               <div class="form-switch">
-                {{ locale === 'pl' ? 'Kod nie doszedl?' : 'No code?' }}
-                <button type="button" (click)="resendVerification()">{{ locale === 'pl' ? 'Wyslij ponownie' : 'Resend code' }}</button>
+                {{ locale === 'pl' ? 'Kod nie doszedł?' : 'No code?' }}
+                <button type="button" (click)="resendVerification()">{{ locale === 'pl' ? 'Wyślij ponownie' : 'Resend code' }}</button>
               </div>
             </form>
           </ng-container>
 
           <ng-container *ngIf="activeModal() === 'forgot'">
             <header class="modal-header">
-              <h2>{{ locale === 'pl' ? 'Reset hasla' : 'Reset password' }}</h2>
-              <p>{{ locale === 'pl' ? 'Podaj email, a wyslemy kod do ustawienia nowego hasla.' : 'Enter your email and we will send a reset code.' }}</p>
+              <h2>{{ locale === 'pl' ? 'Reset hasła' : 'Reset password' }}</h2>
+              <p>{{ locale === 'pl' ? 'Podaj e-mail, a wyślemy kod do ustawienia nowego hasła.' : 'Enter your email and we will send a reset code.' }}</p>
             </header>
             <form (ngSubmit)="forgotPassword()">
               <div class="form-group">
@@ -298,18 +301,18 @@ type AuthModal = 'login' | 'register' | 'verify' | 'forgot' | 'reset';
               <div class="form-error" *ngIf="authError()">{{ authError() }}</div>
               <div class="form-success" *ngIf="authInfo()">{{ authInfo() }}</div>
               <button class="btn btn-primary btn-block" type="submit" [disabled]="authLoading()">
-                {{ authLoading() ? copy.common.loading : (locale === 'pl' ? 'Wyslij kod' : 'Send code') }}
+                {{ authLoading() ? copy.common.loading : (locale === 'pl' ? 'Wyślij kod' : 'Send code') }}
               </button>
               <div class="form-switch">
-                <button type="button" (click)="openModal('login')">{{ locale === 'pl' ? 'Wroc do logowania' : 'Back to login' }}</button>
+                <button type="button" (click)="openModal('login')">{{ locale === 'pl' ? 'Wróć do logowania' : 'Back to login' }}</button>
               </div>
             </form>
           </ng-container>
 
           <ng-container *ngIf="activeModal() === 'reset'">
             <header class="modal-header">
-              <h2>{{ locale === 'pl' ? 'Ustaw nowe haslo' : 'Set new password' }}</h2>
-              <p>{{ locale === 'pl' ? 'Wpisz kod z maila i nowe haslo.' : 'Enter the email code and your new password.' }}</p>
+              <h2>{{ locale === 'pl' ? 'Ustaw nowe hasło' : 'Set new password' }}</h2>
+              <p>{{ locale === 'pl' ? 'Wpisz kod z maila i nowe hasło.' : 'Enter the email code and your new password.' }}</p>
             </header>
             <form (ngSubmit)="resetPassword()">
               <div class="form-group">
@@ -324,7 +327,7 @@ type AuthModal = 'login' | 'register' | 'verify' | 'forgot' | 'reset';
               <div class="form-error" *ngIf="authError()">{{ authError() }}</div>
               <div class="form-success" *ngIf="authInfo()">{{ authInfo() }}</div>
               <button class="btn btn-primary btn-block" type="submit" [disabled]="authLoading()">
-                {{ authLoading() ? copy.common.loading : (locale === 'pl' ? 'Zmien haslo' : 'Change password') }}
+                {{ authLoading() ? copy.common.loading : (locale === 'pl' ? 'Zmień hasło' : 'Change password') }}
               </button>
             </form>
           </ng-container>
@@ -816,6 +819,7 @@ export class ShellComponent implements OnInit, AfterViewInit, OnDestroy {
   protected registerName = '';
   protected registerEmail = '';
   protected registerPassword = '';
+  protected registerPasswordConfirm = '';
   protected referralCode = '';
   protected verificationEmail = '';
   protected verificationCode = '';
@@ -1022,7 +1026,7 @@ export class ShellComponent implements OnInit, AfterViewInit, OnDestroy {
     const messages = [fallback];
     if (result.mailDisabled) {
       messages.push(this.locale === 'pl'
-        ? 'Wysylka maili nie jest jeszcze skonfigurowana na serwerze.'
+        ? 'Wysyłka maili nie jest jeszcze skonfigurowana na serwerze.'
         : 'Email delivery is not configured on the server yet.');
     }
     if (result.devCode) {
@@ -1038,7 +1042,7 @@ export class ShellComponent implements OnInit, AfterViewInit, OnDestroy {
     this.activeModal.set('verify');
     this.authInfo.set(this.deliveryMessage(
       result,
-      this.locale === 'pl' ? 'Wyslalismy kod weryfikacyjny na email.' : 'We sent a verification code to your email.'
+      this.locale === 'pl' ? 'Wysłaliśmy kod weryfikacyjny na e-mail.' : 'We sent a verification code to your email.'
     ));
   }
 
@@ -1074,6 +1078,10 @@ export class ShellComponent implements OnInit, AfterViewInit, OnDestroy {
   protected async register(): Promise<void> {
     this.authError.set('');
     this.authInfo.set('');
+    if (this.registerPassword !== this.registerPasswordConfirm) {
+      this.authError.set(this.locale === 'pl' ? 'Hasła nie są takie same.' : 'Passwords do not match.');
+      return;
+    }
     this.authLoading.set(true);
     const result = await this.api.request('/api/auth/register', {
       method: 'POST',
@@ -1096,7 +1104,7 @@ export class ShellComponent implements OnInit, AfterViewInit, OnDestroy {
       return;
     }
 
-    this.authError.set(result.error || (this.locale === 'pl' ? 'Rejestracja nie powiodło się.' : 'Registration failed.'));
+    this.authError.set(result.error || (this.locale === 'pl' ? 'Rejestracja nie powiodła się.' : 'Registration failed.'));
   }
 
   protected async verifyEmail(): Promise<void> {
@@ -1117,7 +1125,7 @@ export class ShellComponent implements OnInit, AfterViewInit, OnDestroy {
       return;
     }
 
-    this.authError.set(result.error || (this.locale === 'pl' ? 'Kod jest niepoprawny albo wygasl.' : 'The code is invalid or expired.'));
+    this.authError.set(result.error || (this.locale === 'pl' ? 'Kod jest niepoprawny albo wygasł.' : 'The code is invalid or expired.'));
   }
 
   protected async resendVerification(): Promise<void> {
@@ -1136,13 +1144,13 @@ export class ShellComponent implements OnInit, AfterViewInit, OnDestroy {
       this.authInfo.set(this.deliveryMessage(
         result,
         result.alreadyVerified
-          ? (this.locale === 'pl' ? 'Ten email jest juz zweryfikowany.' : 'This email is already verified.')
-          : (this.locale === 'pl' ? 'Wyslalismy nowy kod.' : 'We sent a new code.')
+          ? (this.locale === 'pl' ? 'Ten e-mail jest już zweryfikowany.' : 'This email is already verified.')
+          : (this.locale === 'pl' ? 'Wysłaliśmy nowy kod.' : 'We sent a new code.')
       ));
       return;
     }
 
-    this.authError.set(result.error || (this.locale === 'pl' ? 'Nie udalo sie wyslac kodu.' : 'Could not send the code.'));
+    this.authError.set(result.error || (this.locale === 'pl' ? 'Nie udało się wysłać kodu.' : 'Could not send the code.'));
   }
 
   protected async forgotPassword(): Promise<void> {
@@ -1160,12 +1168,12 @@ export class ShellComponent implements OnInit, AfterViewInit, OnDestroy {
       this.activeModal.set('reset');
       this.authInfo.set(this.deliveryMessage(
         result,
-        this.locale === 'pl' ? 'Jesli konto istnieje, wyslalismy kod resetu.' : 'If the account exists, we sent a reset code.'
+        this.locale === 'pl' ? 'Jeśli konto istnieje, wysłaliśmy kod resetu.' : 'If the account exists, we sent a reset code.'
       ));
       return;
     }
 
-    this.authError.set(result.error || (this.locale === 'pl' ? 'Nie udalo sie zaczac resetu hasla.' : 'Could not start password reset.'));
+    this.authError.set(result.error || (this.locale === 'pl' ? 'Nie udało się zacząć resetu hasła.' : 'Could not start password reset.'));
   }
 
   protected async resetPassword(): Promise<void> {
@@ -1187,10 +1195,10 @@ export class ShellComponent implements OnInit, AfterViewInit, OnDestroy {
       this.resetCode = '';
       this.resetPasswordValue = '';
       this.openModal('login');
-      this.authInfo.set(this.locale === 'pl' ? 'Haslo zmienione. Mozesz sie zalogowac.' : 'Password changed. You can sign in.');
+      this.authInfo.set(this.locale === 'pl' ? 'Hasło zmienione. Możesz się zalogować.' : 'Password changed. You can sign in.');
       return;
     }
 
-    this.authError.set(result.error || (this.locale === 'pl' ? 'Nie udalo sie zmienic hasla.' : 'Could not change password.'));
+    this.authError.set(result.error || (this.locale === 'pl' ? 'Nie udało się zmienić hasła.' : 'Could not change password.'));
   }
 }

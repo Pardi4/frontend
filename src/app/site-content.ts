@@ -25,6 +25,7 @@ export interface SiteCopy {
     createAccount: string;
     email: string;
     password: string;
+    confirmPassword: string;
     rememberMe: string;
     signIn: string;
     displayName: string;
@@ -154,6 +155,7 @@ const en: SiteCopy = {
     createAccount: "Create account",
     email: "Email address",
     password: "Password",
+    confirmPassword: "Confirm password",
     rememberMe: "Remember me",
     signIn: "Sign in",
     displayName: "Display name (optional)",
@@ -494,6 +496,7 @@ const pl: SiteCopy = {
     createAccount: "Załóż konto",
     email: "Adres e-mail",
     password: "Hasło",
+    confirmPassword: "Powtórz hasło",
     rememberMe: "Zapamiętaj mnie",
     signIn: "Zaloguj się",
     displayName: "Nazwa użytkownika (opcjonalnie)",
@@ -592,7 +595,7 @@ const pl: SiteCopy = {
   },
   demoPage: {
     metaTitle: "Interaktywne demo rozszerzenia | QuizSolver",
-    metaDescription: "Przetestuj QuizSolver na bezpiecznym quizie demo z piecioma gotowymi pytaniami, bez zuzycia kredytow.",
+    metaDescription: "Przetestuj QuizSolver na bezpiecznym quizie demo z pięcioma gotowymi pytaniami, bez zużycia kredytów.",
     title: "Interaktywne demo"
   },
   successPage: {
@@ -605,8 +608,8 @@ const pl: SiteCopy = {
     metaDescription: "Strona, której szukasz, nie istnieje w serwisie QuizSolver.",
     badge: "404",
     title: "Strona nie znaleziona",
-    subtitle: "Ta strona nie istnieje albo link wygasl.",
-    homeCta: "Wroc na start",
+    subtitle: "Ta strona nie istnieje albo link wygasł.",
+    homeCta: "Wróć na start",
     storeCta: "Zainstaluj rozszerzenie"
   },
   platformPages: {
@@ -775,7 +778,7 @@ const pl: SiteCopy = {
       subtitle: "Ucz się efektywnie i trenuj quizy Kahoot z pomocą dokładnych objaśnień AI.",
       meta: { title: "Kahoot AI Bot & Solver | Trenuj i Ucz się z AI", description: "Najlepszy asystent AI do nauki, powtórek i ćwiczeń na platformie Kahoot. Opanuj wiedzę i reaguj szybciej." },
       stepsTitle: "Jak używać na Kahoot",
-      steps: ["Uruchom gra ćwiczeniową lub test powtórkowy na platformie Kahoot.", "Użyj rozszerzenia, by błyskawicznie przeanalizować pytanie i warianty odpowiedzi.", "Odbierz szczegółowe, edukacyjne objaśnienie poprawnych opcji."],
+      steps: ["Uruchom grę ćwiczeniową lub test powtórkowy na platformie Kahoot.", "Użyj rozszerzenia, by błyskawicznie przeanalizować pytanie i warianty odpowiedzi.", "Odbierz szczegółowe, edukacyjne objaśnienie poprawnych opcji."],
       features: ["Optymalizacja pod kątem uciekającego czasu", "Wyraźny nacisk na aspekt edukacyjny i zrozumienie", "Pełne wsparcie dla widoków jednoekranowych"],
       keywordSections: [
         { title: "Opanuj testy Kahoot do perfekcji", text: "Rozgrywka na Kahoot wymaga refleksu. Sprawdź i przeanalizuj poprawność odpowiedzi podczas samodzielnych ćwiczeń, by błyszczeć wiedzą na zajęciach." }

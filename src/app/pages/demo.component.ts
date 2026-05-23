@@ -123,36 +123,36 @@ const COPY: Record<Locale, DemoCopy> = {
   pl: {
     eyebrow: 'Interaktywny onboarding',
     title: 'Przetestuj QuizSolver na bezpiecznym demo',
-    lead: 'Piec predefiniowanych pytan pokazuje, jak dziala rozszerzenie. Ta strona nie zuzywa kredytow, wiec mozesz spokojnie przetestowac kazdy tryb.',
+    lead: 'Pięć predefiniowanych pytań pokazuje, jak działa rozszerzenie. Ta strona nie zużywa kredytów, więc możesz spokojnie przetestować każdy tryb.',
     install: 'Zainstaluj rozszerzenie',
-    openStore: 'Otworz Chrome Web Store',
-    demoBadge: 'Bez zuzycia kredytow',
+    openStore: 'Otwórz Chrome Web Store',
+    demoBadge: 'Bez zużycia kredytów',
     localBadge: 'Tryb treningowy',
-    mapTitle: 'Jak korzystac z demo',
-    mapText: 'Uruchom tutorial rozszerzenia, a potem otworz popup QuizSolver na tej stronie. Mozesz tez nacisnac Alt+Q, zeby otworzyc szybki overlay.',
+    mapTitle: 'Jak korzystać z demo',
+    mapText: 'Uruchom tutorial rozszerzenia, a potem otwórz popup QuizSolver na tej stronie. Możesz też nacisnąć Alt+Q, żeby otworzyć szybki overlay.',
     prev: 'Poprzednie',
-    next: 'Nastepne pytanie',
+    next: 'Następne pytanie',
     restart: 'Zacznij od nowa',
     startTour: 'Uruchom tutorial w rozszerzeniu',
     selectText: 'Zaznacz tekst pytania',
-    selectedTip: 'Zaznacz tekst pytania, otworz szybki overlay i kliknij Solve selected text.',
-    popupTitle: 'Co klikac w popupie',
+    selectedTip: 'Zaznacz tekst pytania, otwórz szybki overlay i kliknij Solve selected text.',
+    popupTitle: 'Co klikać w popupie',
     popupSteps: [
-      'Kliknij ikone QS w Chrome.',
-      'Uzyj Solve current page przy zwyklym pytaniu.',
-      'Wlacz Hint mode, zeby sprawdzic tryb ukryty.',
-      'Otworz Quick overlay albo nacisnij Alt+Q.',
-      'Zaznacz tekst i rozwiaz tylko zaznaczenie.'
+      'Kliknij ikonę QS w Chrome.',
+      'Użyj Solve current page przy zwykłym pytaniu.',
+      'Włącz Hint mode, żeby sprawdzić tryb ukryty.',
+      'Otwórz Quick overlay albo naciśnij Alt+Q.',
+      'Zaznacz tekst i rozwiąż tylko zaznaczenie.'
     ],
     questions: [
       {
         id: 'demo-radio',
         type: 'radio',
         kicker: 'Krok 1',
-        title: 'Zwykle rozwiazywanie',
-        instruction: 'Kliknij Solve current page w popupie rozszerzenia. QuizSolver powinien zaznaczyc poprawna opcje.',
-        question: 'Co warto zabrac, gdy na zewnatrz pada deszcz?',
-        options: ['Okulary przeciwsloneczne', 'Parasol', 'Recznik plazowy', 'Lyzwy'],
+        title: 'Zwykłe rozwiązywanie',
+        instruction: 'Kliknij Solve current page w popupie rozszerzenia. QuizSolver powinien zaznaczyć poprawną opcję.',
+        question: 'Co warto zabrać, gdy na zewnątrz pada deszcz?',
+        options: ['Okulary przeciwsłoneczne', 'Parasol', 'Ręcznik plażowy', 'Łyżwy'],
         correctText: 'Parasol'
       },
       {
@@ -160,8 +160,8 @@ const COPY: Record<Locale, DemoCopy> = {
         type: 'hidden',
         kicker: 'Krok 2',
         title: 'Tryb ukryty',
-        instruction: 'Wlacz Hint mode w popupie przed rozwiazaniem. Odpowiedz zostanie podpowiedziana zamiast kliknieta.',
-        question: 'Co najczesciej trzymamy w lodowce, zeby bylo chlodne?',
+        instruction: 'Włącz Hint mode w popupie przed rozwiązaniem. Odpowiedź zostanie podpowiedziana zamiast kliknięta.',
+        question: 'Co najczęściej trzymamy w lodówce, żeby było chłodne?',
         options: ['Koc', 'Mleko', 'Zeszyt', 'Klucze'],
         correctText: 'Mleko'
       },
@@ -169,10 +169,10 @@ const COPY: Record<Locale, DemoCopy> = {
         id: 'demo-text',
         type: 'text',
         kicker: 'Krok 3',
-        title: 'Odpowiedz wpisywana',
-        instruction: 'Rozwiaz strone, a rozszerzenie wypelni pole tekstowe lokalna odpowiedzia demo.',
-        question: 'Ile dni ma zwykly tydzien?',
-        placeholder: 'Wpisz odpowiedz tutaj',
+        title: 'Odpowiedź wpisywana',
+        instruction: 'Rozwiąż stronę, a rozszerzenie wypełni pole tekstowe lokalną odpowiedzią demo.',
+        question: 'Ile dni ma zwykły tydzień?',
+        placeholder: 'Wpisz odpowiedź tutaj',
         correctText: '7'
       },
       {
@@ -180,8 +180,8 @@ const COPY: Record<Locale, DemoCopy> = {
         type: 'matching',
         kicker: 'Krok 4',
         title: 'Selecty i dopasowanie',
-        instruction: 'Ten krok pokazuje dopasowywanie wielu selectow. QuizSolver wypelnia kazdy select pasujacym pojeciem.',
-        question: 'Dopasuj codzienna czynnosc do miejsca, w ktorym zwykle sie odbywa.',
+        instruction: 'Ten krok pokazuje dopasowywanie wielu selectów. QuizSolver wypełnia każdy select pasującym pojęciem.',
+        question: 'Dopasuj codzienną czynność do miejsca, w którym zwykle się odbywa.',
         prompts: ['Gotowanie', 'Spanie', 'Zakupy'],
         options: ['Kuchnia', 'Sypialnia', 'Sklep'],
         correctText: 'Gotowanie = Kuchnia, Spanie = Sypialnia, Zakupy = Sklep'
@@ -191,9 +191,9 @@ const COPY: Record<Locale, DemoCopy> = {
         type: 'selected',
         kicker: 'Krok 5',
         title: 'Szybki overlay i zaznaczony tekst',
-        instruction: 'Zaznacz tekst pytania, nacisnij Alt+Q albo otworz Quick overlay, a potem rozwiaz zaznaczony tekst.',
-        question: 'Ktore narzedzie QuizSolver otwiera male okno z szybkimi akcjami?',
-        options: ['Szybki overlay', 'Platnosc za kredyty', 'Panel admina', 'Historie przegladarki'],
+        instruction: 'Zaznacz tekst pytania, naciśnij Alt+Q albo otwórz Quick overlay, a potem rozwiąż zaznaczony tekst.',
+        question: 'Które narzędzie QuizSolver otwiera małe okno z szybkimi akcjami?',
+        options: ['Szybki overlay', 'Płatność za kredyty', 'Panel admina', 'Historia przeglądarki'],
         correctText: 'Szybki overlay'
       }
     ]
@@ -273,7 +273,7 @@ const COPY: Record<Locale, DemoCopy> = {
             </fieldset>
 
             <label class="text-answer" *ngIf="question.type === 'text'">
-              <span>{{ locale === 'pl' ? 'Twoja odpowiedz' : 'Your answer' }}</span>
+              <span>{{ locale === 'pl' ? 'Twoja odpowiedź' : 'Your answer' }}</span>
               <input type="text" [name]="question.id + '-answer'" [placeholder]="question.placeholder || ''">
             </label>
 

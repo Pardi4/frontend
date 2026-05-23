@@ -43,6 +43,10 @@ import { ShellComponent } from './shell.component';
             <span>{{ copy.lowText }}</span>
           </section>
 
+          <section class="payment-error glass" *ngIf="buyError()">
+            {{ buyError() }}
+          </section>
+
           <section class="packages-section">
             <div class="section-header">
               <p class="eyebrow">{{ copy.packagesBadge }}</p>
@@ -124,6 +128,14 @@ import { ShellComponent } from './shell.component';
     .low-credit-alert strong {
       color: var(--accent-amber);
       white-space: nowrap;
+    }
+    .payment-error {
+      padding: 1rem 1.25rem;
+      margin-bottom: 2rem;
+      border-color: rgba(244, 63, 94, 0.35);
+      background: rgba(244, 63, 94, 0.08);
+      color: var(--accent-rose);
+      font-weight: 700;
     }
     .packages-section {
       padding: 2.5rem 0 0;
@@ -216,6 +228,7 @@ export class CreditsComponent implements OnInit {
   protected readonly seo = inject(SeoService);
   protected readonly api = inject(ApiService);
   protected readonly buying = signal('');
+  protected readonly buyError = signal('');
 
   protected locale: Locale = 'en';
   protected data = pageData('credits', 'en');
@@ -264,6 +277,7 @@ export class CreditsComponent implements OnInit {
 
   protected async buyPack(pack: string): Promise<void> {
     if (!this.api.token()) return;
+    this.buyError.set('');
     this.buying.set(pack);
     const result = await this.api.request('/api/credits/buy', {
       method: 'POST',
@@ -271,6 +285,7 @@ export class CreditsComponent implements OnInit {
     });
     this.buying.set('');
     if (result.success && result.checkoutUrl) window.location.href = result.checkoutUrl;
+    else this.buyError.set(result.error || this.copy.paymentError);
   }
 }
 
@@ -290,7 +305,8 @@ const CREDITS_COPY: Record<Locale, any> = {
     packagesTitle: 'Top up when you need it',
     packagesText: 'Your saved questions and study history stay available even when you are not buying new credits.',
     popular: 'Popular',
-    loading: 'Redirecting...'
+    loading: 'Redirecting...',
+    paymentError: 'Payments are temporarily unavailable. Try again later.'
   },
   pl: {
     badge: 'Kredyty',
@@ -307,6 +323,7 @@ const CREDITS_COPY: Record<Locale, any> = {
     packagesTitle: 'Doładuj wtedy, gdy potrzebujesz',
     packagesText: 'Zapisane pytania i historia nauki zostają dostępne nawet wtedy, gdy nie kupujesz nowych kredytów.',
     popular: 'Popularne',
-    loading: 'Przekierowanie...'
+    loading: 'Przekierowanie...',
+    paymentError: 'Płatności są chwilowo niedostępne. Spróbuj ponownie później.'
   }
 };
