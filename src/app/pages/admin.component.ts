@@ -893,20 +893,168 @@ type AdminTab = 'users' | 'purchases' | 'bugs' | 'support' | 'cache' | 'leaderbo
       }
     }
     @media (max-width: 768px) {
+      .admin-login {
+        padding: 1rem;
+        align-items: flex-start;
+      }
+      .admin-login-card {
+        padding: 1.5rem;
+        margin-top: 1rem;
+      }
+      .admin-login-card h1 {
+        font-size: 1.6rem;
+      }
+      .admin-sidebar {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        padding: 0.85rem;
+        background: rgba(5, 9, 16, 0.94);
+        backdrop-filter: blur(18px);
+      }
+      .admin-sidebar .admin-brand {
+        margin-bottom: 0.75rem;
+      }
+      .admin-sidebar .admin-brand strong {
+        font-size: 1rem;
+      }
+      .admin-tabs {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 0.4rem;
+        margin: 0 0 0.75rem;
+        overflow: visible;
+      }
+      .admin-tabs button {
+        justify-content: center;
+        gap: 0.3rem;
+        min-width: 0;
+        padding: 0.55rem 0.35rem;
+        border-radius: 10px;
+        font-size: 0.68rem;
+        line-height: 1.1;
+        text-align: center;
+        white-space: normal;
+        flex-direction: column;
+      }
+      .admin-tabs button span {
+        font-size: 0.62rem;
+        padding: 0.12rem 0.3rem;
+      }
+      .admin-sidebar-foot {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.5rem;
+      }
+      .admin-main {
+        max-height: none;
+        overflow: visible;
+        padding: 1rem;
+      }
       .admin-header {
         flex-direction: column;
         align-items: stretch;
-        margin-bottom: 2rem;
+        gap: 1rem;
+        margin-bottom: 1rem;
+      }
+      .admin-header h1 {
+        font-size: 1.55rem;
+      }
+      .admin-header-actions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
       }
       .admin-stats {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.75rem;
+        margin-bottom: 1rem;
+      }
+      .admin-stats article {
+        padding: 1rem;
+      }
+      .admin-stats article span {
+        font-size: 0.66rem;
+      }
+      .admin-stats article strong {
+        font-size: 1.35rem;
+        overflow-wrap: anywhere;
+      }
+      .admin-panel {
+        padding: 1rem;
+        margin-bottom: 1rem;
       }
       .panel-head {
         flex-direction: column;
         align-items: stretch;
+        gap: 1rem;
+        margin-bottom: 1rem;
+      }
+      .panel-head h2 {
+        font-size: 1.25rem;
       }
       .admin-search {
         max-width: 100%;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+      }
+      .table-scroll {
+        margin: 1rem -1rem -1rem;
+        -webkit-overflow-scrolling: touch;
+      }
+      .admin-table {
+        min-width: 760px;
+        font-size: 0.85rem;
+      }
+      .admin-table th,
+      .admin-table td {
+        padding: 0.9rem 1rem;
+      }
+      .row-actions button {
+        padding: 0.45rem 0.65rem;
+      }
+      .support-layout {
+        gap: 1rem;
+      }
+      .support-list {
+        max-height: 280px;
+        padding-right: 0;
+      }
+      .support-detail {
+        min-height: auto;
+        padding: 1rem;
+      }
+      .support-detail header,
+      .bug-meta,
+      .cache-list article {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .support-reply-form .btn {
+        justify-self: stretch;
+      }
+      .leaderboard-admin article {
+        grid-template-columns: 48px 1fr;
+        gap: 0.5rem;
+      }
+      .cache-summary,
+      .bug-list article,
+      .cache-list article,
+      .health-grid article {
+        padding: 1rem;
+      }
+    }
+
+    @media (max-width: 430px) {
+      .admin-tabs {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+      .admin-search,
+      .admin-header-actions,
+      .admin-sidebar-foot {
+        grid-template-columns: 1fr;
+      }
+      .admin-stats {
+        grid-template-columns: 1fr 1fr;
       }
     }
   `]
