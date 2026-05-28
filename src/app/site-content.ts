@@ -442,18 +442,22 @@ const en: SiteCopy = {
     kahoot: {
       platformName: "Kahoot",
       shortName: "Kahoot",
-      badge: "Kahoot Practice",
-      title: "Kahoot AI Bot & Solver",
-      subtitle: "Learn faster and practice Kahoot games with step-by-step AI solutions.",
-      meta: { title: "Kahoot AI Bot & Solver | QuizSolver", description: "The ultimate AI assistant for studying and practicing with Kahoot." },
+      badge: "Kahoot Quiz ID Helper",
+      title: "Kahoot AI Bot & Answer Bank",
+      subtitle: "Use QuizSolver in two Kahoot modes: auto-solve visible questions or load the answer bank with a Quiz ID when the host hides questions.",
+      meta: { title: "Kahoot AI Bot & Quiz ID Answer Bank | QuizSolver", description: "Solve visible Kahoot questions with AI or use Quiz ID to view the full Kahoot answer bank in a clean browser extension panel." },
       stepsTitle: "How to use on Kahoot",
-      steps: ["Start a Kahoot practice game", "Use the extension to analyze questions and options", "Receive detailed explanations for the correct answers"],
-      features: ["Time-aware guidance", "Educational focus", "Works on single-screen views"],
+      steps: ["Open kahoot.it/instructions or join the Kahoot lobby.", "Choose Solve whole quiz when questions and answer tiles are visible on your device.", "If the host hides questions, copy the Quiz ID from the Kahoot URL and load all questions with correct answers in the panel."],
+      features: ["Auto mode watches visible Kahoot questions and clicks the best answer", "Quiz ID mode shows the answer bank without spending AI credits", "Searchable floating panel that works on desktop and mobile layouts"],
+      note: "Quiz ID is different from the live game PIN. It appears in Kahoot URLs after quizId=, for example play.kahoot.it/v2/lobby?quizId=...",
       keywordSections: [
-        { title: "Master Kahoot trivia", text: "Kahoot requires quick thinking. Review explanations and correct answers to double-check your knowledge before live classroom tournaments." }
+        { title: "Two Kahoot solving modes", text: "Some Kahoot games show every question on the player screen, while others hide the question and only show answer tiles. QuizSolver adapts to both cases: it can answer visible questions automatically or load the full quiz structure from a Quiz ID." },
+        { title: "What is a Kahoot Quiz ID?", text: "The Quiz ID is the long identifier in the Kahoot lobby or preview URL. Paste it into the extension panel to view a searchable list of questions and correct answers." }
       ],
       faq: [
-        { question: "Will I get first place automatically?", answer: "QuizSolver helps you learn the answers so you can click them faster and earn higher scores manually." }
+        { question: "Is Quiz ID the same as the Kahoot PIN?", answer: "No. The PIN joins a live game. Quiz ID identifies the quiz itself and is usually visible in the Kahoot URL after quizId=." },
+        { question: "Does Quiz ID mode use credits?", answer: "No. Quiz ID mode loads the Kahoot quiz structure and does not ask AI, so it does not spend credits." },
+        { question: "Can QuizSolver click answers automatically?", answer: "Yes, when the question and answer options are visible on your device. If the host hides questions, use Quiz ID mode instead." }
       ]
     },
     quizizz: {
@@ -773,18 +777,22 @@ const pl: SiteCopy = {
     kahoot: {
       platformName: "Kahoot",
       shortName: "Kahoot",
-      badge: "Kahoot Pomocnik",
-      title: "AI Solver i Pomocnik do Kahoot",
-      subtitle: "Ucz się efektywnie i trenuj quizy Kahoot z pomocą dokładnych objaśnień AI.",
-      meta: { title: "Kahoot AI Bot & Solver | Trenuj i Ucz się z AI", description: "Najlepszy asystent AI do nauki, powtórek i ćwiczeń na platformie Kahoot. Opanuj wiedzę i reaguj szybciej." },
+      badge: "Kahoot Quiz ID",
+      title: "Kahoot AI Bot i bank odpowiedzi",
+      subtitle: "QuizSolver działa w dwóch trybach: automatycznie rozwiązuje widoczne pytania albo pokazuje bank odpowiedzi po Quiz ID, gdy host ukrywa pytania.",
+      meta: { title: "Kahoot AI Bot i Quiz ID Answer Bank | QuizSolver", description: "Rozwiązuj widoczne pytania Kahoot z AI albo użyj Quiz ID, żeby zobaczyć pełny bank pytań i poprawnych odpowiedzi w panelu rozszerzenia." },
       stepsTitle: "Jak używać na Kahoot",
-      steps: ["Uruchom grę ćwiczeniową lub test powtórkowy na platformie Kahoot.", "Użyj rozszerzenia, by błyskawicznie przeanalizować pytanie i warianty odpowiedzi.", "Odbierz szczegółowe, edukacyjne objaśnienie poprawnych opcji."],
-      features: ["Optymalizacja pod kątem uciekającego czasu", "Wyraźny nacisk na aspekt edukacyjny i zrozumienie", "Pełne wsparcie dla widoków jednoekranowych"],
+      steps: ["Wejdź na kahoot.it/instructions albo do lobby Kahoota.", "Wybierz Rozwiąż cały quiz, jeśli pytania i kafelki odpowiedzi są widoczne na Twoim urządzeniu.", "Jeśli host ukrywa pytania, skopiuj Quiz ID z adresu URL po quizId= i wczytaj listę pytań z poprawnymi odpowiedziami."],
+      features: ["Tryb auto obserwuje widoczne pytania Kahoot i klika najlepszą odpowiedź", "Tryb Quiz ID pokazuje bank odpowiedzi bez zużywania kredytów AI", "Pływający panel z wyszukiwarką działa wygodnie na komputerze i telefonie"],
+      note: "Quiz ID to nie PIN do gry na żywo. Znajdziesz go w adresie Kahoota po quizId=, np. play.kahoot.it/v2/lobby?quizId=...",
       keywordSections: [
-        { title: "Opanuj testy Kahoot do perfekcji", text: "Rozgrywka na Kahoot wymaga refleksu. Sprawdź i przeanalizuj poprawność odpowiedzi podczas samodzielnych ćwiczeń, by błyszczeć wiedzą na zajęciach." }
+        { title: "Dwa tryby działania dla Kahoota", text: "Nie każdy Kahoot pokazuje pytania na urządzeniu gracza. Dlatego QuizSolver obsługuje dwa scenariusze: automatyczne odpowiadanie na widoczne pytania oraz bank odpowiedzi po Quiz ID, gdy host ukrywa treść quizu." },
+        { title: "Co to Quiz ID w Kahoot?", text: "Quiz ID to długi identyfikator quizu widoczny w linku do lobby lub podglądu Kahoota. Wklej go do panelu rozszerzenia, żeby zobaczyć wyszukiwalną listę pytań i poprawnych odpowiedzi." }
       ],
       faq: [
-        { question: "Czy automatycznie zajmę pierwsze miejsce?", answer: "QuizSolver dostarcza Ci wiedzę i wskazuje poprawne odpowiedzi wraz z wyjaśnieniem, dzięki czemu w trakcie gry możesz klikać właściwe opcje znacznie szybciej i bezbłędnie." }
+        { question: "Czy Quiz ID to to samo co PIN Kahoota?", answer: "Nie. PIN służy do dołączenia do gry na żywo. Quiz ID identyfikuje sam quiz i zwykle znajduje się w adresie URL po quizId=." },
+        { question: "Czy tryb Quiz ID zużywa kredyty?", answer: "Nie. Tryb Quiz ID wczytuje strukturę quizu Kahoot i nie wysyła pytania do AI, więc nie zużywa kredytów." },
+        { question: "Czy QuizSolver może automatycznie klikać odpowiedzi?", answer: "Tak, jeśli pytania i odpowiedzi są widoczne na Twoim urządzeniu. Gdy host je ukrywa, użyj trybu Quiz ID." }
       ]
     },
     quizizz: {
