@@ -1,0 +1,33 @@
+# QuizSolver — robots.txt
+# https://getquizsolver.com/robots.txt
+
+User-agent: *
+Allow: /
+
+# Block private/app pages from indexing
+Disallow: /dashboard
+Disallow: /pl/dashboard
+Disallow: /de/dashboard
+Disallow: /es/dashboard
+Disallow: /fr/dashboard
+Disallow: /it/dashboard
+Disallow: /uk/dashboard
+Disallow: /quiz
+Disallow: /pl/quiz
+Disallow: /de/quiz
+Disallow: /es/quiz
+Disallow: /fr/quiz
+Disallow: /it/quiz
+Disallow: /uk/quiz
+Disallow: /admin
+Disallow: /success
+Disallow: /pl/success
+Disallow: /de/success
+Disallow: /es/success
+Disallow: /fr/success
+Disallow: /it/success
+Disallow: /uk/success
+Disallow: /404
+
+# Sitemap location
+Sitemap: https://getquizsolver.com/sitemap.xml

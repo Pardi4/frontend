@@ -391,9 +391,9 @@ type AuthModal = 'login' | 'register' | 'verify' | 'forgot' | 'reset';
       width: 2.5rem;
       height: 2.5rem;
       border-radius: var(--radius-md);
-      background: var(--grad-primary);
-      box-shadow: 0 0 15px rgba(6, 182, 212, 0.4);
-      color: #fff;
+      background: #101318 url('/logo-512.png') center / cover no-repeat;
+      box-shadow: 0 12px 28px rgba(14, 165, 233, 0.18);
+      color: transparent;
       font-weight: 800;
     }
 

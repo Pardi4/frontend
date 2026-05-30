@@ -1,0 +1,16 @@
+<svg width="640" height="160" viewBox="0 0 640 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="qs-accent" x1="24" y1="24" x2="112" y2="112" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#7C5CFC"/>
+      <stop offset="1" stop-color="#0EA5E9"/>
+    </linearGradient>
+  </defs>
+  <rect x="20" y="20" width="120" height="120" rx="28" fill="#101318"/>
+  <rect x="20.75" y="20.75" width="118.5" height="118.5" rx="27.25" stroke="#2B3545" stroke-width="1.5"/>
+  <path d="M105 28H112V91L88 115H28V108L105 28Z" fill="url(#qs-accent)" opacity="0.95"/>
+  <circle cx="75" cy="72" r="28" stroke="#F8FAFC" stroke-width="13"/>
+  <path d="M91 92L111 112" stroke="#F8FAFC" stroke-width="13" stroke-linecap="round"/>
+  <path d="M54 72H72" stroke="#0EA5E9" stroke-width="8" stroke-linecap="round"/>
+  <text x="168" y="93" fill="#F5F7FB" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="56" font-weight="850" letter-spacing="-2">QuizSolver</text>
+  <text x="171" y="122" fill="#9AA6B5" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="17" font-weight="650" letter-spacing="0.8">AI QUIZ HELPER</text>
+</svg>

@@ -1,0 +1,49 @@
+{
+  "name": "QuizSolver — AI Quiz Solver",
+  "short_name": "QuizSolver",
+  "description": "AI-powered Chrome extension that instantly solves quizzes on Testportal, Moodle, Google Forms, Kahoot and more.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#030712",
+  "theme_color": "#030712",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "en",
+  "categories": ["education", "productivity", "utilities"],
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "48x48",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/logo-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/og-image.png",
+      "sizes": "1200x630",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "QuizSolver AI quiz solver browser extension"
+    }
+  ],
+  "related_applications": [
+    {
+      "platform": "chrome_web_store",
+      "url": "https://chromewebstore.google.com/detail/quiz-solver-pro/cjchfdnplpjkihigljnicebnhjkpndik",
+      "id": "cjchfdnplpjkihigljnicebnhjkpndik"
+    }
+  ],
+  "prefer_related_applications": false
+}
