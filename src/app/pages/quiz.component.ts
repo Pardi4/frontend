@@ -1000,7 +1000,7 @@ export class QuizComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     this.locale = (this.route.snapshot.data['locale'] || 'en') as Locale;
-    this.text = QUIZ_TEXT[this.locale];
+    this.text = QUIZ_TEXT[this.locale] || QUIZ_TEXT.en;
     this.seo.applyPage('quiz', this.locale, { robots: 'index, follow' });
     this.sharedToken = this.route.snapshot.paramMap.get('token') || '';
     await this.api.restoreSession();
@@ -1274,7 +1274,7 @@ export class QuizComponent implements OnInit {
   }
 }
 
-const QUIZ_TEXT: Record<Locale, any> = {
+const QUIZ_TEXT: Partial<Record<Locale, any>> & { en: any; pl: any } = {
   en: {
     badge: 'History and notes',
     title: 'Your saved questions become a quiz',
@@ -1440,3 +1440,159 @@ const QUIZ_TEXT: Record<Locale, any> = {
     anonymous: 'Anonimowy'
   }
 };
+
+const QUIZ_BASE_LOCALIZED: Record<Exclude<Locale, 'en' | 'pl'>, Partial<typeof QUIZ_TEXT.en>> = {
+  de: {
+    badge: 'Historie und Notizen',
+    title: 'Verwandle deine Historie in Übungsquizze',
+    subtitle: 'Verwalte gespeicherte Fragen, Notizen und personalisierte Übungstests.',
+    loginTitle: 'Einloggen, um die Historie zu laden',
+    loginSubtitle: 'Nutze dasselbe Konto wie in der Chrome-Erweiterung.',
+    password: 'Passwort',
+    signIn: 'Einloggen',
+    loginError: 'Login fehlgeschlagen.',
+    historyTitle: 'Gespeicherte Fragen',
+    historyCount: 'Fragen',
+    searchPlaceholder: 'Notizen suchen',
+    filterAll: 'Alle',
+    filterFavorite: 'Favoriten',
+    filterNew: 'Neu',
+    filterLearning: 'Lernen',
+    filterMastered: 'Gemeistert',
+    perPage: 'Pro Seite',
+    prevPage: 'Zurück',
+    nextPage: 'Weiter',
+    selectVisible: 'Sichtbare auswählen',
+    clearSelection: 'Alle abwählen',
+    startPractice: 'Historienquiz starten',
+    sharedResultsButton: 'Ergebnisse prüfen',
+    backToAllQuestions: 'Zurück zu allen Fragen',
+    emptyTitle: 'Noch keine gespeicherten Fragen',
+    emptyText: 'Löse Tests mit aktivierter Historie, damit Fragen hier erscheinen.',
+    selected: 'Ausgewählt',
+    favorited: 'Favorit',
+    favorite: 'Favorit markieren',
+    answer: 'Antwort',
+    explanation: 'Erklärung',
+    noExplanation: 'Noch keine Erklärung gespeichert.',
+    personalNote: 'Deine Notiz',
+    notePlaceholder: 'Füge wichtige Infos, Formeln oder Kommentare hinzu...',
+    saveNote: 'Notiz speichern',
+    noteSaved: 'Notiz gespeichert',
+    typeAnswer: 'Antwort eingeben',
+    checkAnswer: 'Antwort prüfen',
+    nextQuestion: 'Nächste Frage',
+    correct: 'Richtig',
+    incorrect: 'Nicht ganz',
+    resultTitle: 'Übung beendet',
+    correctAnswers: 'richtige Antworten',
+    restartPractice: 'Erneut üben',
+    loading: 'Wird geladen...',
+    checkAnswers: 'Antworten prüfen',
+    anonymous: 'Anonym'
+  },
+  es: {
+    badge: 'Historial y notas',
+    title: 'Convierte tu historial en quizzes de práctica',
+    subtitle: 'Gestiona preguntas guardadas, notas y tests personalizados.',
+    loginTitle: 'Inicia sesión para cargar el historial',
+    loginSubtitle: 'Usa la misma cuenta que en la extensión Chrome.',
+    password: 'Contraseña',
+    signIn: 'Entrar',
+    loginError: 'No se pudo iniciar sesión.',
+    historyTitle: 'Preguntas guardadas',
+    historyCount: 'preguntas',
+    searchPlaceholder: 'Buscar notas',
+    filterAll: 'Todas',
+    filterFavorite: 'Favoritas',
+    filterNew: 'Nuevas',
+    filterLearning: 'Aprendiendo',
+    filterMastered: 'Dominadas',
+    perPage: 'Por página',
+    prevPage: 'Anterior',
+    nextPage: 'Siguiente',
+    selectVisible: 'Seleccionar visibles',
+    clearSelection: 'Quitar selección',
+    startPractice: 'Iniciar quiz del historial',
+    sharedResultsButton: 'Ver resultados',
+    backToAllQuestions: 'Volver a preguntas',
+    emptyTitle: 'Aún no hay preguntas guardadas',
+    emptyText: 'Resuelve tests con historial activado para ver preguntas aquí.',
+    selected: 'Seleccionada',
+    favorited: 'Favorita',
+    favorite: 'Marcar favorita',
+    answer: 'Respuesta',
+    explanation: 'Explicación',
+    noExplanation: 'No hay explicación guardada.',
+    personalNote: 'Tu nota',
+    notePlaceholder: 'Añade información clave, fórmulas o comentarios...',
+    saveNote: 'Guardar nota',
+    noteSaved: 'Nota guardada',
+    typeAnswer: 'Escribe tu respuesta',
+    checkAnswer: 'Comprobar respuesta',
+    nextQuestion: 'Siguiente pregunta',
+    correct: 'Correcto',
+    incorrect: 'No exactamente',
+    resultTitle: 'Práctica completada',
+    correctAnswers: 'respuestas correctas',
+    restartPractice: 'Practicar otra vez',
+    loading: 'Cargando...',
+    checkAnswers: 'Comprobar respuestas',
+    anonymous: 'Anónimo'
+  },
+  fr: {
+    badge: 'Historique et notes',
+    title: 'Transformez l’historique en quiz de révision',
+    subtitle: 'Gérez questions sauvegardées, notes et tests personnalisés.',
+    loginTitle: 'Connectez-vous pour charger l’historique',
+    historyTitle: 'Questions sauvegardées',
+    historyCount: 'questions',
+    searchPlaceholder: 'Rechercher des notes',
+    startPractice: 'Lancer un quiz',
+    sharedResultsButton: 'Voir les résultats',
+    backToAllQuestions: 'Retour aux questions',
+    saveNote: 'Sauvegarder la note',
+    noteSaved: 'Note sauvegardée',
+    loading: 'Chargement...',
+    checkAnswers: 'Vérifier les réponses',
+    anonymous: 'Anonyme'
+  },
+  it: {
+    badge: 'Cronologia e note',
+    title: 'Trasforma la cronologia in quiz di pratica',
+    subtitle: 'Gestisci domande salvate, note e test personalizzati.',
+    loginTitle: 'Accedi per caricare la cronologia',
+    historyTitle: 'Domande salvate',
+    historyCount: 'domande',
+    searchPlaceholder: 'Cerca note',
+    startPractice: 'Avvia quiz',
+    sharedResultsButton: 'Vedi risultati',
+    backToAllQuestions: 'Torna alle domande',
+    saveNote: 'Salva nota',
+    noteSaved: 'Nota salvata',
+    loading: 'Caricamento...',
+    checkAnswers: 'Controlla risposte',
+    anonymous: 'Anonimo'
+  },
+  uk: {
+    badge: 'Історія і нотатки',
+    title: 'Перетвори історію на тренувальні квізи',
+    subtitle: 'Керуй збереженими питаннями, нотатками і персональними тестами.',
+    loginTitle: 'Увійди, щоб завантажити історію',
+    historyTitle: 'Збережені питання',
+    historyCount: 'питань',
+    searchPlaceholder: 'Пошук нотаток',
+    startPractice: 'Почати квіз з історії',
+    sharedResultsButton: 'Перевірити результати',
+    backToAllQuestions: 'Назад до питань',
+    saveNote: 'Зберегти нотатку',
+    noteSaved: 'Нотатку збережено',
+    loading: 'Завантаження...',
+    checkAnswers: 'Перевірити відповіді',
+    anonymous: 'Анонім'
+  }
+};
+
+(['de', 'es', 'fr', 'it', 'uk'] as const).forEach((locale) => {
+  QUIZ_TEXT[locale] = { ...QUIZ_TEXT.en, ...QUIZ_BASE_LOCALIZED[locale] };
+});

@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Router, NavigationEnd } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ApiService } from '../api.service';
-import { CHROME_WEB_STORE_URL, Locale, PageKey, contentFor, pathFor } from '../site-content';
+import { CHROME_WEB_STORE_URL, Locale, PageKey, SUPPORTED_LOCALES, contentFor, localeFromBrowser, localeOption, pathFor } from '../site-content';
 
 type AuthModal = 'login' | 'register' | 'verify' | 'forgot' | 'reset';
 
@@ -25,18 +25,22 @@ type AuthModal = 'login' | 'register' | 'verify' | 'forgot' | 'reset';
             <a class="nav-link" [href]="homeHash('how-it-works')">{{ copy.nav.how }}</a>
             <a class="nav-link" [href]="homeHash('features')">{{ copy.nav.features }}</a>
             <a class="nav-link" [href]="pathFor('credits')" [class.active]="pageKey === 'credits'">{{ copy.nav.pricing }}</a>
-            <a class="nav-link" [href]="pathFor('demo')" [class.active]="pageKey === 'demo'">
-              {{ locale === 'pl' ? 'Demo' : 'Demo' }}
-            </a>
-            <a class="nav-link" [href]="pathFor('quiz')" [class.active]="pageKey === 'quiz'">
-              {{ locale === 'pl' ? 'Historia i quiz' : 'History & quiz' }}
-            </a>
+            <a class="nav-link" [href]="pathFor('demo')" [class.active]="pageKey === 'demo'">{{ copy.common.demo }}</a>
+            <a class="nav-link" [href]="pathFor('quiz')" [class.active]="pageKey === 'quiz'">{{ copy.common.historyQuiz }}</a>
           </nav>
 
           <div class="nav-actions">
             <div class="nav-lang-switch" aria-label="Language">
-              <a class="lang-option" [class.active]="locale === 'en'" [href]="alternatePath('en')">EN</a>
-              <a class="lang-option" [class.active]="locale === 'pl'" [href]="alternatePath('pl')">PL</a>
+              <button class="lang-trigger" type="button" (click)="languageMenuOpen.set(!languageMenuOpen())" [attr.aria-expanded]="languageMenuOpen()">
+                <span class="lang-code">{{ currentLocale.shortLabel }}</span>
+                <span class="lang-name">{{ currentLocale.nativeLabel }}</span>
+              </button>
+              <div class="lang-menu" *ngIf="languageMenuOpen()">
+                <a class="lang-option" *ngFor="let option of localeOptions" [class.active]="locale === option.code" [href]="alternatePath(option.code)" (click)="languageMenuOpen.set(false)">
+                  <span>{{ option.shortLabel }}</span>
+                  <strong>{{ option.nativeLabel }}</strong>
+                </a>
+              </div>
             </div>
 
             <ng-container *ngIf="!api.currentUser(); else userMenu">
@@ -81,14 +85,14 @@ type AuthModal = 'login' | 'register' | 'verify' | 'forgot' | 'reset';
             <a class="nav-link" [href]="homeHash('how-it-works')" (click)="mobileMenuOpen.set(false)">{{ copy.nav.how }}</a>
             <a class="nav-link" [href]="homeHash('features')" (click)="mobileMenuOpen.set(false)">{{ copy.nav.features }}</a>
             <a class="nav-link" [href]="pathFor('credits')" [class.active]="pageKey === 'credits'" (click)="mobileMenuOpen.set(false)">{{ copy.nav.pricing }}</a>
-            <a class="nav-link" [href]="pathFor('demo')" (click)="mobileMenuOpen.set(false)">Demo</a>
-            <a class="nav-link" [href]="pathFor('quiz')" (click)="mobileMenuOpen.set(false)">
-              {{ locale === 'pl' ? 'Historia i quiz' : 'History & quiz' }}
-            </a>
+            <a class="nav-link" [href]="pathFor('demo')" (click)="mobileMenuOpen.set(false)">{{ copy.common.demo }}</a>
+            <a class="nav-link" [href]="pathFor('quiz')" (click)="mobileMenuOpen.set(false)">{{ copy.common.historyQuiz }}</a>
             <div class="mobile-utility">
               <div class="mobile-lang-row" aria-label="Language">
-                <a class="lang-option" [class.active]="locale === 'en'" [href]="alternatePath('en')" (click)="mobileMenuOpen.set(false)">EN</a>
-                <a class="lang-option" [class.active]="locale === 'pl'" [href]="alternatePath('pl')" (click)="mobileMenuOpen.set(false)">PL</a>
+                <a class="lang-option" *ngFor="let option of localeOptions" [class.active]="locale === option.code" [href]="alternatePath(option.code)" (click)="mobileMenuOpen.set(false)">
+                  <span>{{ option.shortLabel }}</span>
+                  <strong>{{ option.nativeLabel }}</strong>
+                </a>
               </div>
 
               <ng-container *ngIf="api.currentUser(); else mobileGuestActions">
@@ -126,16 +130,16 @@ type AuthModal = 'login' | 'register' | 'verify' | 'forgot' | 'reset';
           <div class="cta-card">
             <div class="cta-glow"></div>
             <div class="relative z-10">
-              <p class="eyebrow cta-eyebrow">{{ locale === 'pl' ? 'Gotowy do instalacji?' : 'Ready to install?' }}</p>
+              <p class="eyebrow cta-eyebrow">{{ copy.shell.readyEyebrow }}</p>
               <h2 class="cta-title">
-                {{ locale === 'pl' ? 'Dodaj QuizSolver do Chrome i zacznij od pierwszego quizu.' : 'Add QuizSolver to Chrome and start with your first quiz.' }}
+                {{ copy.shell.readyTitle }}
               </h2>
               <p class="cta-desc text-secondary">
-                {{ locale === 'pl' ? 'Rozszerzenie, historia pytań, notatki i quiz z historii działają na jednym koncie.' : 'The extension, question history, notes, and history quiz all work from one account.' }}
+                {{ copy.shell.readyDesc }}
               </p>
               <div class="cta-buttons">
                 <a class="btn btn-primary btn-lg" [href]="storeUrl" target="_blank" rel="noopener">
-                  {{ locale === 'pl' ? 'Otwórz Chrome Web Store' : 'Open Chrome Web Store' }}
+                  {{ copy.shell.openStore }}
                 </a>
                 <a class="btn btn-outline btn-lg auth-action" [href]="authHref('register')" (click)="openAuthLink($event, 'register')">
                   {{ copy.common.createAccount }}
@@ -154,14 +158,14 @@ type AuthModal = 'login' | 'register' | 'verify' | 'forgot' | 'reset';
               <span>QuizSolver</span>
             </a>
             <p class="text-secondary footer-logo-desc">
-              {{ locale === 'pl' ? 'Rozszerzenie Chrome do sugestii odpowiedzi, wyjaśnień, notatek i powtórek z historii pytań.' : 'Chrome extension for answer suggestions, explanations, notes, and practice from question history.' }}
+              {{ copy.shell.footerDesc }}
             </p>
           </div>
           <div class="footer-col">
             <h4>{{ copy.footer.product }}</h4>
             <div class="footer-links">
               <a class="nav-link" [href]="homeHash('features')">{{ copy.nav.features }}</a>
-              <a class="nav-link" [href]="pathFor('quiz')">{{ locale === 'pl' ? 'Historia i quiz' : 'History & quiz' }}</a>
+              <a class="nav-link" [href]="pathFor('quiz')">{{ copy.common.historyQuiz }}</a>
               <a class="nav-link" [href]="pathFor('credits')">{{ copy.common.buyCredits }}</a>
               <a class="nav-link" [href]="pathFor('dashboard')">{{ copy.common.dashboard }}</a>
             </div>
@@ -199,9 +203,9 @@ type AuthModal = 'login' | 'register' | 'verify' | 'forgot' | 'reset';
             </header>
             <button class="btn btn-outline btn-block google-auth-btn" type="button" (click)="startGoogleLogin()">
               <span>G</span>
-              {{ locale === 'pl' ? 'Kontynuuj z Google' : 'Continue with Google' }}
+              {{ copy.shell.continueGoogle }}
             </button>
-            <div class="auth-divider"><span>{{ locale === 'pl' ? 'albo' : 'or' }}</span></div>
+            <div class="auth-divider"><span>{{ copy.shell.or }}</span></div>
             <form (ngSubmit)="login()">
               <div class="form-group">
                 <input class="form-input" type="email" name="email" [(ngModel)]="loginEmail" [placeholder]="copy.common.email" autocomplete="email" required>
@@ -214,7 +218,7 @@ type AuthModal = 'login' | 'register' | 'verify' | 'forgot' | 'reset';
                 <span>{{ copy.common.rememberMe }}</span>
               </label>
               <button class="inline-auth-link" type="button" (click)="openModal('forgot')">
-                {{ locale === 'pl' ? 'Nie pamiętasz hasła?' : 'Forgot password?' }}
+                {{ copy.shell.forgotPassword }}
               </button>
               <div class="form-error" *ngIf="authError()">{{ authError() }}</div>
               <div class="form-success" *ngIf="authInfo()">{{ authInfo() }}</div>
@@ -232,14 +236,14 @@ type AuthModal = 'login' | 'register' | 'verify' | 'forgot' | 'reset';
             <header class="modal-header">
               <h2>{{ copy.auth.registerTitle }}</h2>
               <p>
-                {{ locale === 'pl' ? 'Kod polecenia jest opcjonalny. Osoba polecająca dostaje 5% kupionych przez Ciebie kredytów jako bonus.' : 'Referral code is optional. The referrer receives 5% of the credits you buy as a bonus.' }}
+                {{ copy.shell.referralInfo }}
               </p>
             </header>
             <button class="btn btn-outline btn-block google-auth-btn" type="button" (click)="startGoogleLogin()">
               <span>G</span>
-              {{ locale === 'pl' ? 'Załóż konto przez Google' : 'Sign up with Google' }}
+              {{ copy.shell.signupGoogle }}
             </button>
-            <div class="auth-divider"><span>{{ locale === 'pl' ? 'albo' : 'or' }}</span></div>
+            <div class="auth-divider"><span>{{ copy.shell.or }}</span></div>
             <form (ngSubmit)="register()">
               <div class="form-group">
                 <input class="form-input" type="text" name="name" [(ngModel)]="registerName" [placeholder]="copy.common.displayName" autocomplete="name" required>
@@ -270,8 +274,8 @@ type AuthModal = 'login' | 'register' | 'verify' | 'forgot' | 'reset';
 
           <ng-container *ngIf="activeModal() === 'verify'">
             <header class="modal-header">
-              <h2>{{ locale === 'pl' ? 'Potwierdź e-mail' : 'Verify email' }}</h2>
-              <p>{{ locale === 'pl' ? 'Wpisz 6-cyfrowy kod wysłany na:' : 'Enter the 6-digit code sent to:' }} <strong>{{ verificationEmail }}</strong></p>
+              <h2>{{ copy.shell.verifyEmail }}</h2>
+              <p>{{ copy.shell.verifyEmailText }} <strong>{{ verificationEmail }}</strong></p>
             </header>
             <form (ngSubmit)="verifyEmail()">
               <div class="form-group">
@@ -280,19 +284,19 @@ type AuthModal = 'login' | 'register' | 'verify' | 'forgot' | 'reset';
               <div class="form-error" *ngIf="authError()">{{ authError() }}</div>
               <div class="form-success" *ngIf="authInfo()">{{ authInfo() }}</div>
               <button class="btn btn-primary btn-block" type="submit" [disabled]="authLoading()">
-                {{ authLoading() ? copy.common.loading : (locale === 'pl' ? 'Zweryfikuj i zaloguj' : 'Verify and sign in') }}
+                {{ authLoading() ? copy.common.loading : copy.shell.verifyAndLogin }}
               </button>
               <div class="form-switch">
-                {{ locale === 'pl' ? 'Kod nie doszedł?' : 'No code?' }}
-                <button type="button" (click)="resendVerification()">{{ locale === 'pl' ? 'Wyślij ponownie' : 'Resend code' }}</button>
+                {{ copy.shell.noCode }}
+                <button type="button" (click)="resendVerification()">{{ copy.shell.resendCode }}</button>
               </div>
             </form>
           </ng-container>
 
           <ng-container *ngIf="activeModal() === 'forgot'">
             <header class="modal-header">
-              <h2>{{ locale === 'pl' ? 'Reset hasła' : 'Reset password' }}</h2>
-              <p>{{ locale === 'pl' ? 'Podaj e-mail, a wyślemy kod do ustawienia nowego hasła.' : 'Enter your email and we will send a reset code.' }}</p>
+              <h2>{{ copy.shell.resetPassword }}</h2>
+              <p>{{ copy.shell.resetPasswordText }}</p>
             </header>
             <form (ngSubmit)="forgotPassword()">
               <div class="form-group">
@@ -301,18 +305,18 @@ type AuthModal = 'login' | 'register' | 'verify' | 'forgot' | 'reset';
               <div class="form-error" *ngIf="authError()">{{ authError() }}</div>
               <div class="form-success" *ngIf="authInfo()">{{ authInfo() }}</div>
               <button class="btn btn-primary btn-block" type="submit" [disabled]="authLoading()">
-                {{ authLoading() ? copy.common.loading : (locale === 'pl' ? 'Wyślij kod' : 'Send code') }}
+                {{ authLoading() ? copy.common.loading : copy.shell.sendCode }}
               </button>
               <div class="form-switch">
-                <button type="button" (click)="openModal('login')">{{ locale === 'pl' ? 'Wróć do logowania' : 'Back to login' }}</button>
+                <button type="button" (click)="openModal('login')">{{ copy.shell.backToLogin }}</button>
               </div>
             </form>
           </ng-container>
 
           <ng-container *ngIf="activeModal() === 'reset'">
             <header class="modal-header">
-              <h2>{{ locale === 'pl' ? 'Ustaw nowe hasło' : 'Set new password' }}</h2>
-              <p>{{ locale === 'pl' ? 'Wpisz kod z maila i nowe hasło.' : 'Enter the email code and your new password.' }}</p>
+              <h2>{{ copy.shell.setNewPassword }}</h2>
+              <p>{{ copy.shell.setNewPasswordText }}</p>
             </header>
             <form (ngSubmit)="resetPassword()">
               <div class="form-group">
@@ -327,7 +331,7 @@ type AuthModal = 'login' | 'register' | 'verify' | 'forgot' | 'reset';
               <div class="form-error" *ngIf="authError()">{{ authError() }}</div>
               <div class="form-success" *ngIf="authInfo()">{{ authInfo() }}</div>
               <button class="btn btn-primary btn-block" type="submit" [disabled]="authLoading()">
-                {{ authLoading() ? copy.common.loading : (locale === 'pl' ? 'Zmień hasło' : 'Change password') }}
+                {{ authLoading() ? copy.common.loading : copy.shell.changePassword }}
               </button>
             </form>
           </ng-container>
@@ -417,25 +421,88 @@ type AuthModal = 'login' | 'register' | 'verify' | 'forgot' | 'reset';
 
     /* Language switch */
     .nav-lang-switch {
-      display: flex;
+      position: relative;
+    }
+    .lang-trigger {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      min-height: 2.45rem;
+      padding: 0.35rem 0.8rem;
       border: 1px solid var(--border-strong);
-      border-radius: var(--radius-full);
-      overflow: hidden;
-      background: rgba(255,255,255,0.03);
+      border-radius: var(--radius-md);
+      background: rgba(23, 28, 36, 0.86);
+      color: var(--text-primary);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+    }
+    .lang-code {
+      display: inline-grid;
+      place-items: center;
+      min-width: 2rem;
+      min-height: 1.6rem;
+      border-radius: 6px;
+      background: linear-gradient(135deg, #7c5cfc, #0ea5e9);
+      color: #fff;
+      font-size: 0.74rem;
+      font-weight: 900;
+    }
+    .lang-name {
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      font-weight: 750;
+    }
+    .lang-menu {
+      position: absolute;
+      top: calc(100% + 0.55rem);
+      right: 0;
+      width: 230px;
+      display: grid;
+      gap: 0.35rem;
+      padding: 0.55rem;
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-md);
+      background: #171c24;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.38);
+      z-index: 70;
+      animation: scale-in 0.18s var(--ease-out);
     }
     .lang-option {
-      font-size: 0.75rem;
-      font-weight: 700;
-      padding: 0.25rem 0.625rem;
+      display: grid;
+      grid-template-columns: 2rem minmax(0, 1fr);
+      align-items: center;
+      gap: 0.55rem;
+      min-height: 2.4rem;
+      padding: 0.4rem 0.5rem;
+      border: 1px solid transparent;
+      border-radius: 8px;
       color: var(--text-secondary);
       transition: all 0.2s;
     }
-    .lang-option:hover {
+    .lang-option span {
+      display: inline-grid;
+      place-items: center;
+      min-height: 1.5rem;
+      border-radius: 6px;
+      background: rgba(124, 92, 252, 0.16);
+      color: #c9d3ff;
+      font-size: 0.72rem;
+      font-weight: 900;
+    }
+    .lang-option strong {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
       color: var(--text-primary);
+      font-size: 0.88rem;
+      font-weight: 780;
+    }
+    .lang-option:hover {
+      border-color: rgba(14, 165, 233, 0.32);
+      background: rgba(14, 165, 233, 0.08);
     }
     .lang-option.active {
-      background: var(--grad-primary);
-      color: #fff;
+      border-color: rgba(124, 92, 252, 0.52);
+      background: rgba(124, 92, 252, 0.16);
     }
 
     /* User Menu & Dropdown */
@@ -591,14 +658,13 @@ type AuthModal = 'login' | 'register' | 'verify' | 'forgot' | 'reset';
     }
     .mobile-lang-row {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 0.5rem;
     }
     .mobile-lang-row .lang-option {
       min-height: 2.75rem;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
+      display: grid;
+      grid-template-columns: 2rem minmax(0, 1fr);
       border: 1px solid rgba(148, 163, 184, 0.14);
       border-radius: var(--radius-md);
       background: rgba(255, 255, 255, 0.035);
@@ -808,6 +874,7 @@ export class ShellComponent implements OnInit, AfterViewInit, OnDestroy {
 
   protected mobileMenuOpen = signal(false);
   protected dropdownOpen = signal(false);
+  protected languageMenuOpen = signal(false);
   protected activeModal = signal<AuthModal | null>(null);
   protected authLoading = signal(false);
   protected authError = signal('');
@@ -827,6 +894,12 @@ export class ShellComponent implements OnInit, AfterViewInit, OnDestroy {
   protected resetCode = '';
   protected resetPasswordValue = '';
 
+  protected readonly localeOptions = SUPPORTED_LOCALES;
+
+  protected get currentLocale() {
+    return localeOption(this.locale);
+  }
+
   get copy(): any {
     return contentFor(this.locale);
   }
@@ -843,9 +916,10 @@ export class ShellComponent implements OnInit, AfterViewInit, OnDestroy {
     const ref = params.get('ref');
     if (ref && !this.referralCode) this.referralCode = ref.trim();
 
-    if (this.shouldRedirectToPolish()) {
+    const browserLocale = localeFromBrowser(navigator.language);
+    if (this.shouldRedirectToBrowserLocale(browserLocale)) {
       this.markLanguageRedirected();
-      void this.router.navigate(['/pl'], { queryParams: Object.fromEntries(params.entries()) });
+      void this.router.navigateByUrl(`${pathFor('home', browserLocale)}${window.location.search}`);
       return;
     }
 
@@ -970,10 +1044,10 @@ export class ShellComponent implements OnInit, AfterViewInit, OnDestroy {
     window.history.replaceState(window.history.state, '', `${url.pathname}${url.search}${url.hash}`);
   }
 
-  private shouldRedirectToPolish(): boolean {
+  private shouldRedirectToBrowserLocale(browserLocale: Locale): boolean {
     return this.pageKey === 'home'
       && window.location.pathname === '/'
-      && navigator.language.toLowerCase().startsWith('pl')
+      && browserLocale !== 'en'
       && !this.hasLanguageRedirected();
   }
 
@@ -989,7 +1063,6 @@ export class ShellComponent implements OnInit, AfterViewInit, OnDestroy {
     try {
       sessionStorage.setItem('lang_redirected', 'true');
     } catch {
-      // Redirect still works; this only prevents repeated redirects on root.
     }
   }
 
@@ -1025,12 +1098,10 @@ export class ShellComponent implements OnInit, AfterViewInit, OnDestroy {
   private deliveryMessage(result: any, fallback: string): string {
     const messages = [fallback];
     if (result.mailDisabled) {
-      messages.push(this.locale === 'pl'
-        ? 'Wysyłka maili nie jest jeszcze skonfigurowana na serwerze.'
-        : 'Email delivery is not configured on the server yet.');
+      messages.push(this.copy.shell.mailDisabled);
     }
     if (result.devCode) {
-      messages.push(this.locale === 'pl' ? `Kod testowy: ${result.devCode}` : `Test code: ${result.devCode}`);
+      messages.push(`${this.copy.shell.testCode}: ${result.devCode}`);
     }
     return messages.join(' ');
   }
@@ -1042,7 +1113,7 @@ export class ShellComponent implements OnInit, AfterViewInit, OnDestroy {
     this.activeModal.set('verify');
     this.authInfo.set(this.deliveryMessage(
       result,
-      this.locale === 'pl' ? 'Wysłaliśmy kod weryfikacyjny na e-mail.' : 'We sent a verification code to your email.'
+      this.copy.shell.verificationSent
     ));
   }
 
@@ -1072,14 +1143,14 @@ export class ShellComponent implements OnInit, AfterViewInit, OnDestroy {
       return;
     }
 
-    this.authError.set(result.error || (this.locale === 'pl' ? 'Logowanie nie powiodło się.' : 'Login failed.'));
+    this.authError.set(result.error || this.copy.shell.loginFailed);
   }
 
   protected async register(): Promise<void> {
     this.authError.set('');
     this.authInfo.set('');
     if (this.registerPassword !== this.registerPasswordConfirm) {
-      this.authError.set(this.locale === 'pl' ? 'Hasła nie są takie same.' : 'Passwords do not match.');
+      this.authError.set(this.copy.shell.passwordsMismatch);
       return;
     }
     this.authLoading.set(true);
@@ -1104,7 +1175,7 @@ export class ShellComponent implements OnInit, AfterViewInit, OnDestroy {
       return;
     }
 
-    this.authError.set(result.error || (this.locale === 'pl' ? 'Rejestracja nie powiodła się.' : 'Registration failed.'));
+    this.authError.set(result.error || this.copy.shell.registerFailed);
   }
 
   protected async verifyEmail(): Promise<void> {
@@ -1125,7 +1196,7 @@ export class ShellComponent implements OnInit, AfterViewInit, OnDestroy {
       return;
     }
 
-    this.authError.set(result.error || (this.locale === 'pl' ? 'Kod jest niepoprawny albo wygasł.' : 'The code is invalid or expired.'));
+    this.authError.set(result.error || this.copy.shell.invalidCode);
   }
 
   protected async resendVerification(): Promise<void> {
@@ -1144,13 +1215,13 @@ export class ShellComponent implements OnInit, AfterViewInit, OnDestroy {
       this.authInfo.set(this.deliveryMessage(
         result,
         result.alreadyVerified
-          ? (this.locale === 'pl' ? 'Ten e-mail jest już zweryfikowany.' : 'This email is already verified.')
-          : (this.locale === 'pl' ? 'Wysłaliśmy nowy kod.' : 'We sent a new code.')
+          ? this.copy.shell.alreadyVerified
+          : this.copy.shell.newCodeSent
       ));
       return;
     }
 
-    this.authError.set(result.error || (this.locale === 'pl' ? 'Nie udało się wysłać kodu.' : 'Could not send the code.'));
+    this.authError.set(result.error || this.copy.shell.codeSendFailed);
   }
 
   protected async forgotPassword(): Promise<void> {
@@ -1168,12 +1239,12 @@ export class ShellComponent implements OnInit, AfterViewInit, OnDestroy {
       this.activeModal.set('reset');
       this.authInfo.set(this.deliveryMessage(
         result,
-        this.locale === 'pl' ? 'Jeśli konto istnieje, wysłaliśmy kod resetu.' : 'If the account exists, we sent a reset code.'
+        this.copy.shell.resetSent
       ));
       return;
     }
 
-    this.authError.set(result.error || (this.locale === 'pl' ? 'Nie udało się zacząć resetu hasła.' : 'Could not start password reset.'));
+    this.authError.set(result.error || this.copy.shell.resetStartFailed);
   }
 
   protected async resetPassword(): Promise<void> {
@@ -1195,10 +1266,10 @@ export class ShellComponent implements OnInit, AfterViewInit, OnDestroy {
       this.resetCode = '';
       this.resetPasswordValue = '';
       this.openModal('login');
-      this.authInfo.set(this.locale === 'pl' ? 'Hasło zmienione. Możesz się zalogować.' : 'Password changed. You can sign in.');
+      this.authInfo.set(this.copy.shell.passwordChanged);
       return;
     }
 
-    this.authError.set(result.error || (this.locale === 'pl' ? 'Nie udało się zmienić hasła.' : 'Could not change password.'));
+    this.authError.set(result.error || this.copy.shell.passwordChangeFailed);
   }
 }

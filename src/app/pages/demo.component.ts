@@ -36,12 +36,14 @@ interface DemoCopy {
   startTour: string;
   selectText: string;
   selectedTip: string;
+  yourAnswer: string;
+  chooseOption: string;
   popupTitle: string;
   popupSteps: string[];
   questions: DemoQuestion[];
 }
 
-const COPY: Record<Locale, DemoCopy> = {
+const COPY: Partial<Record<Locale, DemoCopy>> & { en: DemoCopy; pl: DemoCopy } = {
   en: {
     eyebrow: 'Interactive onboarding',
     title: 'Try QuizSolver on a safe demo quiz',
@@ -58,6 +60,8 @@ const COPY: Record<Locale, DemoCopy> = {
     startTour: 'Start extension tutorial',
     selectText: 'Select demo question text',
     selectedTip: 'Select the question text, open the quick overlay, then click Solve selected text.',
+    yourAnswer: 'Your answer',
+    chooseOption: 'Choose',
     popupTitle: 'Popup flow',
     popupSteps: [
       'Click the QS extension icon in Chrome.',
@@ -136,6 +140,8 @@ const COPY: Record<Locale, DemoCopy> = {
     startTour: 'Uruchom tutorial w rozszerzeniu',
     selectText: 'Zaznacz tekst pytania',
     selectedTip: 'Zaznacz tekst pytania, otwórz szybki overlay i kliknij Solve selected text.',
+    yourAnswer: 'Twoja odpowiedź',
+    chooseOption: 'Wybierz',
     popupTitle: 'Co klikać w popupie',
     popupSteps: [
       'Kliknij ikonę QS w Chrome.',
@@ -199,6 +205,141 @@ const COPY: Record<Locale, DemoCopy> = {
     ]
   }
 };
+
+const DEMO_LOCALE_COPY: Record<Exclude<Locale, 'en' | 'pl'>, Omit<DemoCopy, 'questions'>> = {
+  de: {
+    eyebrow: 'Interaktives Onboarding',
+    title: 'Teste QuizSolver in einem sicheren Demo-Quiz',
+    lead: 'Fünf vorbereitete Alltagsfragen zeigen, wie die Erweiterung funktioniert. Diese Seite verbraucht keine Credits.',
+    install: 'Erweiterung installieren',
+    openStore: 'Chrome Web Store öffnen',
+    demoBadge: 'Keine Credits',
+    localBadge: 'Geführtes Training',
+    mapTitle: 'So nutzt du die Demo',
+    mapText: 'Starte das Erweiterungs-Tutorial und öffne dann das QuizSolver-Popup auf dieser Seite.',
+    prev: 'Zurück',
+    next: 'Nächste Frage',
+    restart: 'Demo neu starten',
+    startTour: 'Tutorial starten',
+    selectText: 'Demo-Fragetext markieren',
+    selectedTip: 'Markiere den Fragetext, öffne das Quick Overlay und löse die Auswahl.',
+    yourAnswer: 'Deine Antwort',
+    chooseOption: 'Auswählen',
+    popupTitle: 'Popup-Ablauf',
+    popupSteps: ['Klicke auf das QS-Symbol in Chrome.', 'Nutze „Aktuelle Seite lösen“.', 'Aktiviere den Hinweis-Modus.', 'Öffne Quick Overlay oder drücke Alt+Q.', 'Markiere Text und löse nur die Auswahl.']
+  },
+  es: {
+    eyebrow: 'Onboarding interactivo',
+    title: 'Prueba QuizSolver en un demo seguro',
+    lead: 'Cinco preguntas cotidianas muestran cómo funciona la extensión. Esta página no consume créditos.',
+    install: 'Instalar extensión',
+    openStore: 'Abrir Chrome Web Store',
+    demoBadge: 'Sin créditos',
+    localBadge: 'Práctica guiada',
+    mapTitle: 'Cómo usar este demo',
+    mapText: 'Inicia el tutorial de la extensión y abre el popup de QuizSolver en esta página.',
+    prev: 'Anterior',
+    next: 'Siguiente pregunta',
+    restart: 'Reiniciar demo',
+    startTour: 'Iniciar tutorial',
+    selectText: 'Seleccionar texto de la pregunta',
+    selectedTip: 'Selecciona el texto, abre el overlay rápido y resuelve la selección.',
+    yourAnswer: 'Tu respuesta',
+    chooseOption: 'Elegir',
+    popupTitle: 'Flujo del popup',
+    popupSteps: ['Haz clic en el icono QS en Chrome.', 'Usa Resolver página actual.', 'Activa Hint mode.', 'Abre Quick overlay o pulsa Alt+Q.', 'Selecciona texto y resuelve solo esa selección.']
+  },
+  fr: {
+    eyebrow: 'Onboarding interactif',
+    title: 'Essayez QuizSolver sur une démo sûre',
+    lead: 'Cinq questions du quotidien montrent le fonctionnement de l’extension. Cette page ne consomme pas de crédits.',
+    install: 'Installer l’extension',
+    openStore: 'Ouvrir Chrome Web Store',
+    demoBadge: 'Aucun crédit',
+    localBadge: 'Pratique guidée',
+    mapTitle: 'Utiliser cette démo',
+    mapText: 'Lancez le tutoriel de l’extension puis ouvrez le popup QuizSolver sur cette page.',
+    prev: 'Précédent',
+    next: 'Question suivante',
+    restart: 'Recommencer',
+    startTour: 'Lancer le tutoriel',
+    selectText: 'Sélectionner le texte',
+    selectedTip: 'Sélectionnez la question, ouvrez l’overlay rapide et résolvez la sélection.',
+    yourAnswer: 'Votre réponse',
+    chooseOption: 'Choisir',
+    popupTitle: 'Flux du popup',
+    popupSteps: ['Cliquez sur l’icône QS dans Chrome.', 'Utilisez Résoudre la page.', 'Activez le mode indice.', 'Ouvrez Quick overlay ou Alt+Q.', 'Sélectionnez du texte et résolvez seulement cette sélection.']
+  },
+  it: {
+    eyebrow: 'Onboarding interattivo',
+    title: 'Prova QuizSolver in una demo sicura',
+    lead: 'Cinque domande quotidiane mostrano come funziona l’estensione. Questa pagina non consuma crediti.',
+    install: 'Installa estensione',
+    openStore: 'Apri Chrome Web Store',
+    demoBadge: 'Nessun credito',
+    localBadge: 'Pratica guidata',
+    mapTitle: 'Come usare la demo',
+    mapText: 'Avvia il tutorial dell’estensione e poi apri il popup QuizSolver su questa pagina.',
+    prev: 'Precedente',
+    next: 'Domanda successiva',
+    restart: 'Riavvia demo',
+    startTour: 'Avvia tutorial',
+    selectText: 'Seleziona testo domanda',
+    selectedTip: 'Seleziona il testo, apri l’overlay rapido e risolvi la selezione.',
+    yourAnswer: 'La tua risposta',
+    chooseOption: 'Scegli',
+    popupTitle: 'Flusso popup',
+    popupSteps: ['Clicca l’icona QS in Chrome.', 'Usa Risolvi pagina corrente.', 'Attiva Hint mode.', 'Apri Quick overlay o premi Alt+Q.', 'Seleziona testo e risolvi solo quello.']
+  },
+  uk: {
+    eyebrow: 'Інтерактивний onboarding',
+    title: 'Спробуй QuizSolver у безпечному демо',
+    lead: 'П’ять повсякденних питань показують роботу розширення. Ця сторінка не витрачає кредити.',
+    install: 'Встановити розширення',
+    openStore: 'Відкрити Chrome Web Store',
+    demoBadge: 'Без кредитів',
+    localBadge: 'Покрокова практика',
+    mapTitle: 'Як користуватися демо',
+    mapText: 'Запусти tutorial розширення, а потім відкрий popup QuizSolver на цій сторінці.',
+    prev: 'Назад',
+    next: 'Наступне питання',
+    restart: 'Почати заново',
+    startTour: 'Запустити tutorial',
+    selectText: 'Виділити текст питання',
+    selectedTip: 'Виділи текст, відкрий швидкий overlay і розв’яжи виділення.',
+    yourAnswer: 'Твоя відповідь',
+    chooseOption: 'Вибери',
+    popupTitle: 'Popup flow',
+    popupSteps: ['Натисни іконку QS у Chrome.', 'Використай Solve current page.', 'Увімкни Hint mode.', 'Відкрий Quick overlay або Alt+Q.', 'Виділи текст і розв’яжи тільки його.']
+  }
+};
+
+const DEMO_QUESTIONS: Record<Exclude<Locale, 'en' | 'pl'>, DemoQuestion[]> = {
+  de: [
+    { ...COPY.en.questions[0], kicker: 'Schritt 1', title: 'Normales Lösen', instruction: 'Klicke im Popup auf „Aktuelle Seite lösen“. QuizSolver sollte die richtige Option wählen.', question: 'Was nimmt man mit, wenn es draußen regnet?', options: ['Sonnenbrille', 'Regenschirm', 'Strandtuch', 'Schlittschuhe'], correctText: 'Regenschirm' },
+    { ...COPY.en.questions[1], kicker: 'Schritt 2', title: 'Hinweis-Modus', instruction: 'Aktiviere Hint mode vor dem Lösen. Die Antwort wird nur angedeutet.', question: 'Was bewahrt man normalerweise im Kühlschrank auf?', options: ['Decke', 'Milch', 'Heft', 'Schlüssel'], correctText: 'Milch' },
+    { ...COPY.en.questions[2], kicker: 'Schritt 3', title: 'Texteingabe', instruction: 'Die Erweiterung füllt das Textfeld mit einer lokalen Demo-Antwort.', question: 'Wie viele Tage hat eine normale Woche?', placeholder: 'Antwort hier eingeben', correctText: '7' },
+    { ...COPY.en.questions[3], kicker: 'Schritt 4', title: 'Dropdowns', instruction: 'QuizSolver wählt passende Begriffe in mehreren Selects.', question: 'Ordne Alltagstätigkeiten dem typischen Ort zu.', prompts: ['Kochen', 'Schlafen', 'Einkaufen'], options: ['Küche', 'Schlafzimmer', 'Geschäft'], correctText: 'Kochen = Küche, Schlafen = Schlafzimmer, Einkaufen = Geschäft' },
+    { ...COPY.en.questions[4], kicker: 'Schritt 5', title: 'Quick overlay', instruction: 'Markiere den Fragetext und löse die Auswahl.', question: 'Welches QuizSolver-Tool öffnet ein kleines Fenster mit schnellen Aktionen?', options: ['Quick overlay', 'Credit checkout', 'Admin panel', 'Browserverlauf'], correctText: 'Quick overlay' }
+  ],
+  es: [
+    { ...COPY.en.questions[0], kicker: 'Paso 1', title: 'Resolución normal', instruction: 'Haz clic en Resolver página actual. QuizSolver debería elegir la opción correcta.', question: '¿Qué llevas cuando llueve afuera?', options: ['Gafas de sol', 'Paraguas', 'Toalla de playa', 'Patines'], correctText: 'Paraguas' },
+    { ...COPY.en.questions[1], kicker: 'Paso 2', title: 'Modo pista', instruction: 'Activa Hint mode antes de resolver. La respuesta se mostrará como pista.', question: '¿Qué se guarda normalmente en la nevera?', options: ['Manta', 'Leche', 'Cuaderno', 'Llaves'], correctText: 'Leche' },
+    { ...COPY.en.questions[2], kicker: 'Paso 3', title: 'Respuesta escrita', instruction: 'La extensión llenará el campo con una respuesta local de demo.', question: '¿Cuántos días tiene una semana normal?', placeholder: 'Escribe la respuesta', correctText: '7' },
+    { ...COPY.en.questions[3], kicker: 'Paso 4', title: 'Dropdowns', instruction: 'QuizSolver completa varios selects con conceptos correctos.', question: 'Relaciona cada actividad cotidiana con su lugar habitual.', prompts: ['Cocinar', 'Dormir', 'Comprar'], options: ['Cocina', 'Dormitorio', 'Tienda'], correctText: 'Cocinar = Cocina, Dormir = Dormitorio, Comprar = Tienda' },
+    { ...COPY.en.questions[4], kicker: 'Paso 5', title: 'Quick overlay', instruction: 'Selecciona el texto y resuelve solo esa selección.', question: '¿Qué herramienta abre una ventana pequeña con acciones rápidas?', options: ['Quick overlay', 'Pago de créditos', 'Panel admin', 'Historial del navegador'], correctText: 'Quick overlay' }
+  ],
+  fr: COPY.en.questions,
+  it: COPY.en.questions,
+  uk: COPY.en.questions
+};
+
+(['de', 'es', 'fr', 'it', 'uk'] as const).forEach((locale) => {
+  COPY[locale] = {
+    ...DEMO_LOCALE_COPY[locale],
+    questions: DEMO_QUESTIONS[locale]
+  };
+});
 
 @Component({
   standalone: true,
@@ -273,7 +414,7 @@ const COPY: Record<Locale, DemoCopy> = {
             </fieldset>
 
             <label class="text-answer" *ngIf="question.type === 'text'">
-              <span>{{ locale === 'pl' ? 'Twoja odpowiedź' : 'Your answer' }}</span>
+              <span>{{ copy.yourAnswer }}</span>
               <input type="text" [name]="question.id + '-answer'" [placeholder]="question.placeholder || ''">
             </label>
 
@@ -281,7 +422,7 @@ const COPY: Record<Locale, DemoCopy> = {
               <label class="match-row" *ngFor="let prompt of question.prompts; let i = index">
                 <span>{{ prompt }}</span>
                 <select [name]="question.id + '-' + i">
-                  <option value="">{{ locale === 'pl' ? 'Wybierz' : 'Choose' }}</option>
+                  <option value="">{{ copy.chooseOption }}</option>
                   <option *ngFor="let option of question.options" [value]="option">{{ option }}</option>
                 </select>
               </label>

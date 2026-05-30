@@ -1,46 +1,37 @@
 import { Routes } from '@angular/router';
+import { Locale, PAGE_ROUTES, PLATFORM_PAGE_KEYS, PageKey, SUPPORTED_LOCALES } from './site-content';
+
+type Loader = Routes[number]['loadComponent'];
+
+const routePath = (path: string): string => path.replace(/^\/+/, '').replace(/\/+$/, '');
+
+const localizedRoutes = (pageKey: PageKey, loadComponent: Loader, extraData: Record<string, unknown> = {}): Routes =>
+  SUPPORTED_LOCALES.map(({ code }) => ({
+    path: routePath(PAGE_ROUTES[pageKey][code]),
+    loadComponent,
+    data: { locale: code, ...extraData }
+  }));
+
+const sharedQuizRoutes = (): Routes =>
+  SUPPORTED_LOCALES.map(({ code }) => ({
+    path: `${routePath(PAGE_ROUTES.quiz[code])}/shared/:token`,
+    loadComponent: () => import('./pages/quiz.component').then(m => m.QuizComponent),
+    data: { locale: code as Locale }
+  }));
 
 export const routes: Routes = [
-  { path: '', loadComponent: () => import('./pages/home.component').then(m => m.HomeComponent), data: { locale: 'en' } },
-  { path: 'pl', loadComponent: () => import('./pages/home.component').then(m => m.HomeComponent), data: { locale: 'pl' } },
-  { path: 'dashboard', loadComponent: () => import('./pages/dashboard.component').then(m => m.DashboardComponent), data: { locale: 'en' } },
+  ...localizedRoutes('home', () => import('./pages/home.component').then(m => m.HomeComponent)),
+  ...localizedRoutes('dashboard', () => import('./pages/dashboard.component').then(m => m.DashboardComponent)),
   { path: 'admin', loadComponent: () => import('./pages/admin.component').then(m => m.AdminComponent) },
-  { path: 'pl/dashboard', loadComponent: () => import('./pages/dashboard.component').then(m => m.DashboardComponent), data: { locale: 'pl' } },
-  { path: 'credits', loadComponent: () => import('./pages/credits.component').then(m => m.CreditsComponent), data: { locale: 'en' } },
-  { path: 'pl/credits', loadComponent: () => import('./pages/credits.component').then(m => m.CreditsComponent), data: { locale: 'pl' } },
-  { path: 'quiz', loadComponent: () => import('./pages/quiz.component').then(m => m.QuizComponent), data: { locale: 'en' } },
-  { path: 'pl/quiz', loadComponent: () => import('./pages/quiz.component').then(m => m.QuizComponent), data: { locale: 'pl' } },
-  { path: 'demo', loadComponent: () => import('./pages/demo.component').then(m => m.DemoComponent), data: { locale: 'en' } },
-  { path: 'pl/demo', loadComponent: () => import('./pages/demo.component').then(m => m.DemoComponent), data: { locale: 'pl' } },
-  { path: 'quiz/shared/:token', loadComponent: () => import('./pages/quiz.component').then(m => m.QuizComponent), data: { locale: 'en' } },
-  { path: 'pl/quiz/shared/:token', loadComponent: () => import('./pages/quiz.component').then(m => m.QuizComponent), data: { locale: 'pl' } },
-  { path: 'privacy', loadComponent: () => import('./pages/privacy.component').then(m => m.PrivacyComponent), data: { locale: 'en' } },
-  { path: 'pl/privacy', loadComponent: () => import('./pages/privacy.component').then(m => m.PrivacyComponent), data: { locale: 'pl' } },
-  { path: 'success', loadComponent: () => import('./pages/status-pages.component').then(m => m.StatusPageComponent), data: { locale: 'en', pageKey: 'success' } },
-  { path: 'pl/success', loadComponent: () => import('./pages/status-pages.component').then(m => m.StatusPageComponent), data: { locale: 'pl', pageKey: 'success' } },
-  { path: '404', loadComponent: () => import('./pages/status-pages.component').then(m => m.StatusPageComponent), data: { locale: 'en', pageKey: 'notFound' } },
-  { path: 'pl/404', loadComponent: () => import('./pages/status-pages.component').then(m => m.StatusPageComponent), data: { locale: 'pl', pageKey: 'notFound' } },
-  { path: 'quiz-solver-ai', loadComponent: () => import('./pages/platform.component').then(m => m.PlatformComponent), data: { locale: 'en', pageKey: 'quizSolverAi' } },
-  { path: 'pl/quiz-solver-ai', loadComponent: () => import('./pages/platform.component').then(m => m.PlatformComponent), data: { locale: 'pl', pageKey: 'quizSolverAi' } },
-  { path: 'testportal-quiz-solver', loadComponent: () => import('./pages/platform.component').then(m => m.PlatformComponent), data: { locale: 'en', pageKey: 'testportal' } },
-  { path: 'pl/testportal-quiz-solver', loadComponent: () => import('./pages/platform.component').then(m => m.PlatformComponent), data: { locale: 'pl', pageKey: 'testportal' } },
-  { path: 'moodle-quiz-solver', loadComponent: () => import('./pages/platform.component').then(m => m.PlatformComponent), data: { locale: 'en', pageKey: 'moodle' } },
-  { path: 'pl/moodle-quiz-solver', loadComponent: () => import('./pages/platform.component').then(m => m.PlatformComponent), data: { locale: 'pl', pageKey: 'moodle' } },
-  { path: 'canvas-quiz-solver', loadComponent: () => import('./pages/platform.component').then(m => m.PlatformComponent), data: { locale: 'en', pageKey: 'canvas' } },
-  { path: 'pl/canvas-quiz-solver', loadComponent: () => import('./pages/platform.component').then(m => m.PlatformComponent), data: { locale: 'pl', pageKey: 'canvas' } },
-  { path: 'google-forms-quiz-solver', loadComponent: () => import('./pages/platform.component').then(m => m.PlatformComponent), data: { locale: 'en', pageKey: 'googleForms' } },
-  { path: 'pl/google-forms-quiz-solver', loadComponent: () => import('./pages/platform.component').then(m => m.PlatformComponent), data: { locale: 'pl', pageKey: 'googleForms' } },
-  { path: 'microsoft-forms-quiz-solver', loadComponent: () => import('./pages/platform.component').then(m => m.PlatformComponent), data: { locale: 'en', pageKey: 'microsoftForms' } },
-  { path: 'pl/microsoft-forms-quiz-solver', loadComponent: () => import('./pages/platform.component').then(m => m.PlatformComponent), data: { locale: 'pl', pageKey: 'microsoftForms' } },
-  { path: 'blackboard-quiz-solver', loadComponent: () => import('./pages/platform.component').then(m => m.PlatformComponent), data: { locale: 'en', pageKey: 'blackboard' } },
-  { path: 'pl/blackboard-quiz-solver', loadComponent: () => import('./pages/platform.component').then(m => m.PlatformComponent), data: { locale: 'pl', pageKey: 'blackboard' } },
-  { path: 'quizlet-solver', loadComponent: () => import('./pages/platform.component').then(m => m.PlatformComponent), data: { locale: 'en', pageKey: 'quizlet' } },
-  { path: 'pl/quizlet-solver', loadComponent: () => import('./pages/platform.component').then(m => m.PlatformComponent), data: { locale: 'pl', pageKey: 'quizlet' } },
-  { path: 'socrative-quiz-solver', loadComponent: () => import('./pages/platform.component').then(m => m.PlatformComponent), data: { locale: 'en', pageKey: 'socrative' } },
-  { path: 'pl/socrative-quiz-solver', loadComponent: () => import('./pages/platform.component').then(m => m.PlatformComponent), data: { locale: 'pl', pageKey: 'socrative' } },
-  { path: 'kahoot-ai-bot', loadComponent: () => import('./pages/platform.component').then(m => m.PlatformComponent), data: { locale: 'en', pageKey: 'kahoot' } },
-  { path: 'pl/kahoot-ai-bot', loadComponent: () => import('./pages/platform.component').then(m => m.PlatformComponent), data: { locale: 'pl', pageKey: 'kahoot' } },
-  { path: 'quizizz-solver', loadComponent: () => import('./pages/platform.component').then(m => m.PlatformComponent), data: { locale: 'en', pageKey: 'quizizz' } },
-  { path: 'pl/quizizz-solver', loadComponent: () => import('./pages/platform.component').then(m => m.PlatformComponent), data: { locale: 'pl', pageKey: 'quizizz' } },
+  ...localizedRoutes('credits', () => import('./pages/credits.component').then(m => m.CreditsComponent)),
+  ...localizedRoutes('quiz', () => import('./pages/quiz.component').then(m => m.QuizComponent)),
+  ...localizedRoutes('demo', () => import('./pages/demo.component').then(m => m.DemoComponent)),
+  ...sharedQuizRoutes(),
+  ...localizedRoutes('privacy', () => import('./pages/privacy.component').then(m => m.PrivacyComponent)),
+  ...localizedRoutes('success', () => import('./pages/status-pages.component').then(m => m.StatusPageComponent), { pageKey: 'success' }),
+  ...localizedRoutes('notFound', () => import('./pages/status-pages.component').then(m => m.StatusPageComponent), { pageKey: 'notFound' }),
+  ...PLATFORM_PAGE_KEYS.flatMap((pageKey) =>
+    localizedRoutes(pageKey, () => import('./pages/platform.component').then(m => m.PlatformComponent), { pageKey })
+  ),
   { path: '**', loadComponent: () => import('./pages/status-pages.component').then(m => m.StatusPageComponent), data: { locale: 'en', pageKey: 'notFound' } }
 ];

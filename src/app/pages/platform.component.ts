@@ -2,8 +2,140 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { SeoService } from '../seo.service';
-import { Locale, PageKey, contentFor, pageData, pathFor, platformEntries } from '../site-content';
+import { Locale, PageKey, pageData, pathFor, platformEntries } from '../site-content';
 import { ShellComponent } from './shell.component';
+
+type PlatformUi = {
+  install: string;
+  related: string;
+  whatItDoes: string;
+  aiAnswers: string;
+  explanations: string;
+  notes: string;
+  sharing: string;
+  howToStart: string;
+  featuresTitle: string;
+  platforms: string;
+  otherGuides: string;
+  guidesIntro: string;
+  faqTitle: string;
+  intro: (platform: string) => string;
+};
+
+const PLATFORM_UI: Record<Locale, PlatformUi> = {
+  en: {
+    install: 'Install extension',
+    related: 'See related',
+    whatItDoes: 'What QuizSolver does',
+    aiAnswers: 'AI answer suggestions',
+    explanations: 'Short explanations',
+    notes: 'Notes and history quiz',
+    sharing: 'Shareable quizzes',
+    howToStart: 'How to start',
+    featuresTitle: 'Features in this workflow',
+    platforms: 'Platforms',
+    otherGuides: 'Other QuizSolver guides',
+    guidesIntro: 'Each platform has its own page so users land in the right context immediately.',
+    faqTitle: 'Questions about this workflow',
+    intro: platform => `QuizSolver helps with permitted ${platform} practice workflows: it detects questions, saves history, and lets you review them later.`
+  },
+  pl: {
+    install: 'Zainstaluj rozszerzenie',
+    related: 'Zobacz podobne',
+    whatItDoes: 'Co robi QuizSolver?',
+    aiAnswers: 'Sugestie odpowiedzi AI',
+    explanations: 'Krótkie wyjaśnienia',
+    notes: 'Notatki i quiz z historii',
+    sharing: 'Udostępnianie quizu z pytań',
+    howToStart: 'Jak zacząć',
+    featuresTitle: 'Funkcje w tym workflow',
+    platforms: 'Platformy',
+    otherGuides: 'Inne poradniki QuizSolver',
+    guidesIntro: 'Każda platforma ma osobną stronę, żeby użytkownik od razu widział właściwy kontekst.',
+    faqTitle: 'Pytania o ten workflow',
+    intro: platform => `QuizSolver pomaga przy dozwolonych ćwiczeniach i powtórkach w stylu ${platform}: wykrywa pytania, zapisuje historię i pozwala wrócić do nich później.`
+  },
+  de: {
+    install: 'Erweiterung installieren',
+    related: 'Ähnliche ansehen',
+    whatItDoes: 'Was QuizSolver macht',
+    aiAnswers: 'KI-Antwortvorschläge',
+    explanations: 'Kurze Erklärungen',
+    notes: 'Notizen und Quiz aus der Historie',
+    sharing: 'Teilbare Quizze',
+    howToStart: 'So startest du',
+    featuresTitle: 'Funktionen in diesem Workflow',
+    platforms: 'Plattformen',
+    otherGuides: 'Weitere QuizSolver-Guides',
+    guidesIntro: 'Jede Plattform hat eine eigene Seite, damit Nutzer sofort im richtigen Kontext landen.',
+    faqTitle: 'Fragen zu diesem Workflow',
+    intro: platform => `QuizSolver hilft bei erlaubten ${platform}-Übungen: Es erkennt Fragen, speichert Verlauf und erleichtert spätere Wiederholung.`
+  },
+  es: {
+    install: 'Instalar extensión',
+    related: 'Ver similares',
+    whatItDoes: 'Qué hace QuizSolver',
+    aiAnswers: 'Sugerencias de respuesta con IA',
+    explanations: 'Explicaciones breves',
+    notes: 'Notas y quiz del historial',
+    sharing: 'Quizzes compartibles',
+    howToStart: 'Cómo empezar',
+    featuresTitle: 'Funciones de este flujo',
+    platforms: 'Plataformas',
+    otherGuides: 'Más guías de QuizSolver',
+    guidesIntro: 'Cada plataforma tiene su propia página para que el usuario llegue al contexto correcto.',
+    faqTitle: 'Preguntas sobre este flujo',
+    intro: platform => `QuizSolver ayuda en prácticas permitidas de ${platform}: detecta preguntas, guarda historial y permite repasarlas después.`
+  },
+  fr: {
+    install: 'Installer l’extension',
+    related: 'Voir similaires',
+    whatItDoes: 'Ce que fait QuizSolver',
+    aiAnswers: 'Suggestions de réponses IA',
+    explanations: 'Explications courtes',
+    notes: 'Notes et quiz depuis l’historique',
+    sharing: 'Quiz partageables',
+    howToStart: 'Comment commencer',
+    featuresTitle: 'Fonctions de ce workflow',
+    platforms: 'Plateformes',
+    otherGuides: 'Autres guides QuizSolver',
+    guidesIntro: 'Chaque plateforme a sa propre page pour placer l’utilisateur dans le bon contexte.',
+    faqTitle: 'Questions sur ce workflow',
+    intro: platform => `QuizSolver aide dans les exercices autorisés ${platform} : il détecte les questions, enregistre l’historique et facilite la révision.`
+  },
+  it: {
+    install: 'Installa estensione',
+    related: 'Vedi simili',
+    whatItDoes: 'Cosa fa QuizSolver',
+    aiAnswers: 'Suggerimenti AI',
+    explanations: 'Spiegazioni brevi',
+    notes: 'Note e quiz dalla cronologia',
+    sharing: 'Quiz condivisibili',
+    howToStart: 'Come iniziare',
+    featuresTitle: 'Funzioni in questo workflow',
+    platforms: 'Piattaforme',
+    otherGuides: 'Altre guide QuizSolver',
+    guidesIntro: 'Ogni piattaforma ha una pagina dedicata per mostrare subito il contesto corretto.',
+    faqTitle: 'Domande su questo workflow',
+    intro: platform => `QuizSolver aiuta negli esercizi consentiti su ${platform}: rileva domande, salva la cronologia e permette di ripassare.`
+  },
+  uk: {
+    install: 'Встановити розширення',
+    related: 'Схожі сторінки',
+    whatItDoes: 'Що робить QuizSolver',
+    aiAnswers: 'AI-підказки відповідей',
+    explanations: 'Короткі пояснення',
+    notes: 'Нотатки й квіз з історії',
+    sharing: 'Квізи для поширення',
+    howToStart: 'Як почати',
+    featuresTitle: 'Функції цього сценарію',
+    platforms: 'Платформи',
+    otherGuides: 'Інші гайди QuizSolver',
+    guidesIntro: 'Кожна платформа має окрему сторінку, щоб користувач одразу бачив потрібний контекст.',
+    faqTitle: 'Питання про цей сценарій',
+    intro: platform => `QuizSolver допомагає з дозволеними вправами ${platform}: знаходить питання, зберігає історію і допомагає повторювати.`
+  }
+};
 
 @Component({
   standalone: true,
@@ -24,22 +156,22 @@ import { ShellComponent } from './shell.component';
               <p class="desc text-secondary">{{ data?.subtitle }}</p>
               <div class="hero-actions">
                 <a class="btn btn-primary btn-lg" [href]="pathFor('credits')">
-                  {{ locale === 'pl' ? 'Zainstaluj rozszerzenie' : 'Install extension' }}
+                  {{ ui.install }}
                 </a>
                 <a class="btn btn-outline btn-lg" href="#platform-guides">
-                  {{ locale === 'pl' ? 'Zobacz podobne' : 'See related' }}
+                  {{ ui.related }}
                 </a>
               </div>
             </div>
             
             <aside class="platform-hero-aside glass">
-              <h2>{{ locale === 'pl' ? 'Co robi QuizSolver?' : 'What QuizSolver does' }}</h2>
+              <h2>{{ ui.whatItDoes }}</h2>
               <p class="text-secondary" style="margin-bottom: 1.5rem;">{{ platformIntro }}</p>
               <ul class="check-list">
-                <li class="check-item"><span class="check-icon">✓</span> {{ locale === 'pl' ? 'Sugestie odpowiedzi AI' : 'AI answer suggestions' }}</li>
-                <li class="check-item"><span class="check-icon">✓</span> {{ locale === 'pl' ? 'Krótkie wyjaśnienia' : 'Short explanations' }}</li>
-                <li class="check-item"><span class="check-icon">✓</span> {{ locale === 'pl' ? 'Notatki i quiz z historii' : 'Notes and history quiz' }}</li>
-                <li class="check-item"><span class="check-icon">✓</span> {{ locale === 'pl' ? 'Udostępnianie quizu z pytań' : 'Shareable quizzes' }}</li>
+                <li class="check-item"><span class="check-icon">✓</span> {{ ui.aiAnswers }}</li>
+                <li class="check-item"><span class="check-icon">✓</span> {{ ui.explanations }}</li>
+                <li class="check-item"><span class="check-icon">✓</span> {{ ui.notes }}</li>
+                <li class="check-item"><span class="check-icon">✓</span> {{ ui.sharing }}</li>
               </ul>
             </aside>
           </div>
@@ -48,13 +180,13 @@ import { ShellComponent } from './shell.component';
         <section class="section">
           <div class="container two-col-grid">
             <article class="guide-card glass glass-hover reveal">
-              <h2>{{ data?.stepsTitle || (locale === 'pl' ? 'Jak zacząć' : 'How to start') }}</h2>
+              <h2>{{ data?.stepsTitle || ui.howToStart }}</h2>
               <ol>
                 <li *ngFor="let step of data?.steps" class="text-secondary">{{ step }}</li>
               </ol>
             </article>
             <article class="guide-card glass glass-hover reveal delay-100">
-              <h2>{{ locale === 'pl' ? 'Funkcje w tym workflow' : 'Features in this workflow' }}</h2>
+              <h2>{{ ui.featuresTitle }}</h2>
               <ul class="feature-list">
                 <li *ngFor="let feature of data?.features" class="text-secondary">
                   <span style="color: var(--accent-cyan); font-weight: bold; margin-right: 0.5rem;">✦</span> {{ feature }}
@@ -81,10 +213,10 @@ import { ShellComponent } from './shell.component';
         <section class="section" id="platform-guides">
           <div class="container">
             <header class="section-header">
-              <p class="eyebrow">{{ locale === 'pl' ? 'Platformy' : 'Platforms' }}</p>
-              <h2>{{ locale === 'pl' ? 'Inne poradniki QuizSolver' : 'Other QuizSolver guides' }}</h2>
+              <p class="eyebrow">{{ ui.platforms }}</p>
+              <h2>{{ ui.otherGuides }}</h2>
               <p class="text-secondary">
-                {{ locale === 'pl' ? 'Każda platforma ma osobną stronę, żeby użytkownik od razu widział właściwy kontekst.' : 'Each platform has its own page so users land in the right context immediately.' }}
+                {{ ui.guidesIntro }}
               </p>
             </header>
             
@@ -101,7 +233,7 @@ import { ShellComponent } from './shell.component';
           <div class="container">
             <header class="section-header">
               <p class="eyebrow">FAQ</p>
-              <h2>{{ locale === 'pl' ? 'Pytania o ten workflow' : 'Questions about this workflow' }}</h2>
+              <h2>{{ ui.faqTitle }}</h2>
             </header>
             
             <div class="faq-list">
@@ -310,15 +442,15 @@ export class PlatformComponent implements OnInit {
   protected data = pageData('quizSolverAi', 'en');
   protected platformLabel = 'AI quiz solver';
   protected platformIntro = '';
+  protected ui = PLATFORM_UI.en;
 
   ngOnInit(): void {
     this.locale = (this.route.snapshot.data['locale'] || 'en') as Locale;
+    this.ui = PLATFORM_UI[this.locale] || PLATFORM_UI.en;
     this.pageKey = this.route.snapshot.data['pageKey'] as PageKey;
     this.data = pageData(this.pageKey, this.locale) || {};
     this.platformLabel = this.data?.shortName || this.data?.platformName || 'AI quiz solver';
-    this.platformIntro = this.locale === 'pl'
-      ? `QuizSolver pomaga przy dozwolonych ćwiczeniach i powtórkach w stylu ${this.platformLabel}: wykrywa pytania, zapisuje historię i pozwala wrócić do nich później.`
-      : `QuizSolver helps with permitted ${this.platformLabel} practice workflows: it detects questions, saves history, and lets you review them later.`;
+    this.platformIntro = this.ui.intro(this.platformLabel);
     this.seo.applyPage(this.pageKey, this.locale);
   }
 

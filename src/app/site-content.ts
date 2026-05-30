@@ -32,6 +32,8 @@ export interface SiteCopy {
     referralCode: string;
     loading: string;
     close: string;
+    demo: string;
+    historyQuiz: string;
   };
   nav: {
     how: string;
@@ -135,6 +137,58 @@ export interface SiteCopy {
   [key: string]: any;
 }
 
+export type Locale = 'en' | 'pl' | 'de' | 'es' | 'fr' | 'it' | 'uk';
+
+export interface LocaleOption {
+  code: Locale;
+  shortLabel: string;
+  label: string;
+  nativeLabel: string;
+  htmlLang: string;
+  ogLocale: string;
+  prefix: string;
+  browserAliases: string[];
+}
+
+export const SUPPORTED_LOCALES: readonly LocaleOption[] = [
+  { code: 'en', shortLabel: 'EN', label: 'English', nativeLabel: 'English', htmlLang: 'en', ogLocale: 'en_US', prefix: '', browserAliases: ['en'] },
+  { code: 'pl', shortLabel: 'PL', label: 'Polish', nativeLabel: 'Polski', htmlLang: 'pl', ogLocale: 'pl_PL', prefix: '/pl', browserAliases: ['pl'] },
+  { code: 'de', shortLabel: 'DE', label: 'German', nativeLabel: 'Deutsch', htmlLang: 'de', ogLocale: 'de_DE', prefix: '/de', browserAliases: ['de'] },
+  { code: 'es', shortLabel: 'ES', label: 'Spanish', nativeLabel: 'Español', htmlLang: 'es', ogLocale: 'es_ES', prefix: '/es', browserAliases: ['es'] },
+  { code: 'fr', shortLabel: 'FR', label: 'French', nativeLabel: 'Français', htmlLang: 'fr', ogLocale: 'fr_FR', prefix: '/fr', browserAliases: ['fr'] },
+  { code: 'it', shortLabel: 'IT', label: 'Italian', nativeLabel: 'Italiano', htmlLang: 'it', ogLocale: 'it_IT', prefix: '/it', browserAliases: ['it'] },
+  { code: 'uk', shortLabel: 'UK', label: 'Ukrainian', nativeLabel: 'Українська', htmlLang: 'uk', ogLocale: 'uk_UA', prefix: '/uk', browserAliases: ['uk', 'ua'] }
+];
+
+export const LOCALE_CODES = SUPPORTED_LOCALES.map((locale) => locale.code) as Locale[];
+
+export function isLocale(value: string | null | undefined): value is Locale {
+  return !!value && LOCALE_CODES.includes(value as Locale);
+}
+
+export function localeOption(locale: Locale): LocaleOption {
+  return SUPPORTED_LOCALES.find((option) => option.code === locale) || SUPPORTED_LOCALES[0];
+}
+
+export function localeFromBrowser(language: string | null | undefined): Locale {
+  const normalized = String(language || '').toLowerCase();
+  const match = SUPPORTED_LOCALES.find((option) =>
+    option.browserAliases.some((alias) => normalized === alias || normalized.startsWith(`${alias}-`))
+  );
+  return match?.code || 'en';
+}
+
+function routeRecord(slug: string): Record<Locale, string> {
+  return SUPPORTED_LOCALES.reduce((record, option) => {
+    if (!slug) {
+      record[option.code] = option.code === 'en' ? '/' : `${option.prefix}/`;
+      return record;
+    }
+    record[option.code] = `${option.prefix}/${slug}`.replace(/\/+/g, '/');
+    return record;
+  }, {} as Record<Locale, string>);
+}
+
 const en: SiteCopy = {
   htmlLang: "en",
   ogLocale: "en_US",
@@ -161,7 +215,9 @@ const en: SiteCopy = {
     displayName: "Display name (optional)",
     referralCode: "Referral code (optional)",
     loading: "Loading...",
-    close: "Close"
+    close: "Close",
+    demo: "Demo",
+    historyQuiz: "History and quiz"
   },
   nav: {
     how: "How it works",
@@ -506,7 +562,9 @@ const pl: SiteCopy = {
     displayName: "Nazwa użytkownika (opcjonalnie)",
     referralCode: "Kod polecającego (opcjonalnie)",
     loading: "Ładowanie...",
-    close: "Zamknij"
+    close: "Zamknij",
+    demo: "Demo",
+    historyQuiz: "Historia i quiz"
   },
   nav: {
     how: "Jak to działa",
@@ -815,7 +873,6 @@ const pl: SiteCopy = {
   }
 };
 
-export type Locale = 'en' | 'pl';
 export type PageKey =
   | 'home'
   | 'dashboard'
@@ -843,9 +900,305 @@ export const SITE_URL = 'https://getquizsolver.com';
 export const CHROME_WEB_STORE_URL =
   'https://chromewebstore.google.com/detail/quiz-solver-pro/cjchfdnplpjkihigljnicebnhjkpndik';
 
+type ExtraLocale = Exclude<Locale, 'en' | 'pl'>;
+
+interface LocalizedSiteBundle {
+  homeTitle: string;
+  homeSubtitle: string;
+  homeMetaTitle: string;
+  homeMetaDescription: string;
+  common: Record<string, string>;
+  nav: Record<string, string>;
+  footer: Record<string, string>;
+  auth: Record<string, string>;
+  shell: Record<string, string>;
+  privacyPage: SiteCopy['privacyPage'];
+  dashboardPage: SiteCopy['dashboardPage'];
+  creditsPage: SiteCopy['creditsPage'];
+  quizPage: SiteCopy['quizPage'];
+  demoPage: SiteCopy['demoPage'];
+  successPage: SiteCopy['successPage'];
+  notFoundPage: SiteCopy['notFoundPage'];
+  platform: {
+    badge: string;
+    title: (name: string) => string;
+    subtitle: (name: string) => string;
+    metaTitle: (name: string) => string;
+    metaDescription: (name: string) => string;
+    stepsTitle: string;
+    steps: (name: string) => string[];
+    features: (name: string) => string[];
+    keywordTitle: (name: string) => string;
+    keywordText: (name: string) => string;
+    faqQuestion: (name: string) => string;
+    faqAnswer: (name: string) => string;
+  };
+}
+
+const LOCALIZED_SITE: Record<ExtraLocale, LocalizedSiteBundle> = {
+  de: {
+    homeTitle: 'KI-Quiz-Solver Chrome-Erweiterung',
+    homeSubtitle: 'Löse Quizze auf Testportal, Moodle und weiteren Plattformen mit KI',
+    homeMetaTitle: 'QuizSolver | KI-Quiz-Solver Chrome-Erweiterung',
+    homeMetaDescription: 'Löse Quizze auf Testportal, Moodle, Canvas, Google Forms und weiteren Plattformen mit KI. Erhalte sofortige Antworten und klare Erklärungen.',
+    common: { credits: 'Credits', dashboard: 'Dashboard', buyCredits: 'Credits kaufen', logout: 'Abmelden', createAccount: 'Konto erstellen', email: 'E-Mail-Adresse', password: 'Passwort', confirmPassword: 'Passwort bestätigen', rememberMe: 'Angemeldet bleiben', signIn: 'Anmelden', displayName: 'Anzeigename (optional)', referralCode: 'Empfehlungscode (optional)', loading: 'Wird geladen...', close: 'Schließen', demo: 'Demo', historyQuiz: 'Historie & Quiz' },
+    nav: { how: 'So funktioniert es', features: 'Funktionen', pricing: 'Preise', login: 'Einloggen', signup: 'Registrieren', toggle: 'Menü öffnen' },
+    footer: { product: 'Produkt', seoPages: 'Unterstützte Plattformen', legal: 'Rechtliches', privacy: 'Datenschutz', rights: '© 2026 QuizSolver. Alle Rechte vorbehalten.', description: 'QuizSolver KI-Quiz-Solver Chrome-Erweiterung.' },
+    auth: { loginTitle: 'Willkommen zurück', loginSubtitle: 'Melde dich bei deinem QuizSolver-Konto an.', showRegister: 'Noch kein Konto?', showRegisterLink: 'Registrieren', registerTitle: 'Konto erstellen', showLogin: 'Schon registriert?', showLoginLink: 'Einloggen' },
+    shell: { readyEyebrow: 'Bereit zur Installation?', readyTitle: 'Füge QuizSolver zu Chrome hinzu und starte mit deinem ersten Quiz.', readyDesc: 'Erweiterung, Fragenhistorie, Notizen und Übungen laufen über ein Konto.', openStore: 'Chrome Web Store öffnen', footerDesc: 'Chrome-Erweiterung für Antwortvorschläge, Erklärungen, Notizen und Wiederholungen.', continueGoogle: 'Mit Google fortfahren', signupGoogle: 'Mit Google registrieren', or: 'oder', forgotPassword: 'Passwort vergessen?', referralInfo: 'Der Empfehlungscode ist optional. Empfehlende erhalten 5% der von dir gekauften Credits als Bonus.', verifyEmail: 'E-Mail bestätigen', verifyEmailText: 'Gib den 6-stelligen Code ein, den wir gesendet haben an:', verifyAndLogin: 'Bestätigen und anmelden', noCode: 'Kein Code erhalten?', resendCode: 'Erneut senden', resetPassword: 'Passwort zurücksetzen', resetPasswordText: 'Gib deine E-Mail ein, dann senden wir dir einen Code.', sendCode: 'Code senden', backToLogin: 'Zurück zum Login', setNewPassword: 'Neues Passwort setzen', setNewPasswordText: 'Gib den E-Mail-Code und dein neues Passwort ein.', changePassword: 'Passwort ändern', mailDisabled: 'E-Mail-Versand ist auf dem Server noch nicht konfiguriert.', testCode: 'Testcode', verificationSent: 'Wir haben einen Bestätigungscode per E-Mail gesendet.', loginFailed: 'Login fehlgeschlagen.', passwordsMismatch: 'Die Passwörter stimmen nicht überein.', registerFailed: 'Registrierung fehlgeschlagen.', invalidCode: 'Der Code ist ungültig oder abgelaufen.', alreadyVerified: 'Diese E-Mail ist bereits bestätigt.', newCodeSent: 'Wir haben einen neuen Code gesendet.', codeSendFailed: 'Der Code konnte nicht gesendet werden.', resetSent: 'Falls das Konto existiert, haben wir einen Reset-Code gesendet.', resetStartFailed: 'Passwort-Reset konnte nicht gestartet werden.', passwordChanged: 'Passwort geändert. Du kannst dich anmelden.', passwordChangeFailed: 'Passwort konnte nicht geändert werden.' },
+    privacyPage: { metaTitle: 'Datenschutz | QuizSolver', metaDescription: 'Wie QuizSolver deine Daten sammelt, verarbeitet und schützt.', title: 'Datenschutz', badge: 'Datenschutz & Sicherheit', subtitle: 'Wir schützen deine Daten und respektieren deine Privatsphäre.', effective: 'Gültig ab: 21. Mai 2026', contactLabel: 'Support kontaktieren', contactValue: 'support@getquizsolver.com', sections: [{ title: '1. Datenerfassung und Kontrolle', text: 'Wir erfassen nur Daten, die für Konto, Credits und den QuizSolver-Dienst nötig sind.', items: ['Kontodaten: E-Mail, Anzeigename und verschlüsseltes Passwort.', 'Nutzungsdaten: gelöste Fragen, Credits und Käufe.', 'Empfehlungen: Registrierungen und Käufe über deinen Code.'] }, { title: '2. Chrome-Erweiterung und FocusScan', text: 'Die Erweiterung analysiert nur Inhalte, wenn du sie aktiv auslöst.', items: ['Aktives Scannen: sichtbare Fragen und Antwortoptionen.', 'FocusScan: der von dir markierte Bildschirmausschnitt.', 'Kein Tracking anderer Tabs oder des Browserverlaufs.'] }, { title: '3. Zahlungen', text: 'Zahlungen werden sicher über Stripe verarbeitet. Wir speichern keine Kartennummern.' }, { title: '4. Weitergabe', text: 'Wir verkaufen oder vermieten keine persönlichen Daten.' }, { title: '5. Deine Rechte', text: 'Du kannst deine Daten einsehen, ändern oder löschen lassen.', items: ['Export deiner gespeicherten Fragen.', 'Kontolöschung über Einstellungen oder Support.'] }] },
+    dashboardPage: { metaTitle: 'Dashboard | QuizSolver', metaDescription: 'Verwalte Credits, Käufe, Empfehlungslink und Kontostatistiken.', title: 'Dashboard', loginTitle: 'Dashboard öffnen', loginText: 'Melde dich an oder erstelle ein Konto, um Credits und Käufe zu verwalten.', loginButton: 'Einloggen / Registrieren' },
+    creditsPage: { metaTitle: 'Credits kaufen | QuizSolver', metaDescription: 'Lade QuizSolver-Credits für Antworten, Erklärungen und Lernwerkzeuge auf.', title: 'Credits kaufen' },
+    quizPage: { metaTitle: 'Historie & Übungsquiz | QuizSolver', metaDescription: 'Überprüfe gespeicherte Fragen, Notizen, Karteikarten und geteilte Quizze.', title: 'Historie und Quiz' },
+    demoPage: { metaTitle: 'Interaktive Erweiterungsdemo | QuizSolver', metaDescription: 'Teste QuizSolver in einem sicheren Demo-Quiz ohne Credit-Verbrauch.', title: 'Interaktive Demo' },
+    successPage: { metaTitle: 'Zahlung erfolgreich | QuizSolver', metaDescription: 'Danke! Deine Credits wurden gutgeschrieben.', badge: 'Erfolg', title: 'Zahlung erfolgreich', subtitle: 'Deine Credits sind einsatzbereit.', dashboardCta: 'Dashboard öffnen', storeCta: 'Erweiterung installieren' },
+    notFoundPage: { metaTitle: '404 Seite nicht gefunden | QuizSolver', metaDescription: 'Diese Seite existiert nicht.', badge: '404', title: 'Seite nicht gefunden', subtitle: 'Diese Seite existiert nicht oder der Link ist abgelaufen.', homeCta: 'Zur Startseite', storeCta: 'Erweiterung installieren' },
+    platform: { badge: 'Workflow', title: (name) => `${name} mit QuizSolver lösen`, subtitle: (name) => `Erhalte KI-Antwortvorschläge, Erklärungen und Lernhistorie für ${name}.`, metaTitle: (name) => `${name} KI Quiz Solver | QuizSolver`, metaDescription: (name) => `Löse ${name}-Quizze mit KI-Antwortvorschlägen, Erklärungen und gespeicherter Lernhistorie.`, stepsTitle: 'So verwendest du QuizSolver', steps: (name) => [`Öffne dein Quiz auf ${name}.`, 'Starte die QuizSolver-Erweiterung.', 'Prüfe die vorgeschlagenen Antworten und Erklärungen.'], features: () => ['Schnelle KI-Antwortvorschläge', 'Kurze Erklärungen', 'Speichern in der Lernhistorie'], keywordTitle: (name) => `Besser lernen mit ${name}`, keywordText: (name) => `QuizSolver hilft dir, Fragen auf ${name} schneller zu verstehen und später gezielt zu wiederholen.`, faqQuestion: (name) => `Funktioniert QuizSolver mit ${name}?`, faqAnswer: (name) => `Ja. QuizSolver erkennt sichtbare Fragen auf ${name} und kann bei Bedarf FocusScan verwenden.` }
+  },
+  es: {
+    homeTitle: 'Extensión Chrome de IA para resolver quizzes',
+    homeSubtitle: 'Resuelve quizzes en Testportal, Moodle y más con IA',
+    homeMetaTitle: 'QuizSolver | Extensión Chrome de IA para quizzes',
+    homeMetaDescription: 'Resuelve quizzes en Testportal, Moodle, Canvas, Google Forms y más con IA. Obtén respuestas rápidas y explicaciones claras.',
+    common: { credits: 'Créditos', dashboard: 'Panel', buyCredits: 'Comprar créditos', logout: 'Cerrar sesión', createAccount: 'Crear cuenta', email: 'Correo electrónico', password: 'Contraseña', confirmPassword: 'Confirmar contraseña', rememberMe: 'Recordarme', signIn: 'Iniciar sesión', displayName: 'Nombre visible (opcional)', referralCode: 'Código de referido (opcional)', loading: 'Cargando...', close: 'Cerrar', demo: 'Demo', historyQuiz: 'Historial y quiz' },
+    nav: { how: 'Cómo funciona', features: 'Funciones', pricing: 'Precios', login: 'Entrar', signup: 'Registrarse', toggle: 'Abrir menú' },
+    footer: { product: 'Producto', seoPages: 'Plataformas compatibles', legal: 'Legal', privacy: 'Privacidad', rights: '© 2026 QuizSolver. Todos los derechos reservados.', description: 'Extensión Chrome QuizSolver para resolver quizzes con IA.' },
+    auth: { loginTitle: 'Bienvenido de nuevo', loginSubtitle: 'Inicia sesión en tu cuenta de QuizSolver.', showRegister: '¿No tienes cuenta?', showRegisterLink: 'Regístrate', registerTitle: 'Crear cuenta', showLogin: '¿Ya tienes cuenta?', showLoginLink: 'Entrar' },
+    shell: { readyEyebrow: '¿Listo para instalar?', readyTitle: 'Añade QuizSolver a Chrome y empieza con tu primer quiz.', readyDesc: 'La extensión, el historial, las notas y la práctica funcionan en una sola cuenta.', openStore: 'Abrir Chrome Web Store', footerDesc: 'Extensión Chrome para sugerencias, explicaciones, notas y repasos.', continueGoogle: 'Continuar con Google', signupGoogle: 'Registrarse con Google', or: 'o', forgotPassword: '¿Olvidaste tu contraseña?', referralInfo: 'El código de referido es opcional. Quien te refirió recibe un 5% de los créditos que compres.', verifyEmail: 'Verificar correo', verifyEmailText: 'Introduce el código de 6 dígitos enviado a:', verifyAndLogin: 'Verificar e iniciar sesión', noCode: '¿No llegó el código?', resendCode: 'Reenviar', resetPassword: 'Restablecer contraseña', resetPasswordText: 'Introduce tu correo y enviaremos un código.', sendCode: 'Enviar código', backToLogin: 'Volver al login', setNewPassword: 'Nueva contraseña', setNewPasswordText: 'Introduce el código y la nueva contraseña.', changePassword: 'Cambiar contraseña', mailDisabled: 'El envío de emails aún no está configurado en el servidor.', testCode: 'Código de prueba', verificationSent: 'Enviamos un código de verificación por email.', loginFailed: 'No se pudo iniciar sesión.', passwordsMismatch: 'Las contraseñas no coinciden.', registerFailed: 'No se pudo registrar.', invalidCode: 'El código es inválido o expiró.', alreadyVerified: 'Este email ya está verificado.', newCodeSent: 'Enviamos un nuevo código.', codeSendFailed: 'No se pudo enviar el código.', resetSent: 'Si la cuenta existe, enviamos un código de restablecimiento.', resetStartFailed: 'No se pudo iniciar el restablecimiento.', passwordChanged: 'Contraseña cambiada. Ya puedes iniciar sesión.', passwordChangeFailed: 'No se pudo cambiar la contraseña.' },
+    privacyPage: { metaTitle: 'Privacidad | QuizSolver', metaDescription: 'Cómo QuizSolver recopila, procesa y protege tu información.', title: 'Privacidad', badge: 'Privacidad y seguridad', subtitle: 'Protegemos tus datos y respetamos tu privacidad.', effective: 'Fecha efectiva: 21 de mayo de 2026', contactLabel: 'Soporte', contactValue: 'support@getquizsolver.com', sections: [{ title: '1. Datos y control', text: 'Recopilamos solo la información necesaria para la cuenta, los créditos y el servicio.', items: ['Cuenta: email, nombre visible y contraseña cifrada.', 'Uso: preguntas resueltas, créditos y compras.', 'Referidos: registros y compras vinculadas a tu código.'] }, { title: '2. Extensión y FocusScan', text: 'La extensión analiza contenido solo cuando la activas.', items: ['Escaneo activo de preguntas y opciones visibles.', 'FocusScan usa el área de pantalla que seleccionas.', 'No registramos otras pestañas ni historial.'] }, { title: '3. Pagos', text: 'Los pagos se procesan de forma segura con Stripe.' }, { title: '4. Compartición', text: 'No vendemos ni alquilamos tus datos personales.' }, { title: '5. Tus derechos', text: 'Puedes acceder, modificar o eliminar tus datos.', items: ['Exportar preguntas guardadas.', 'Eliminar tu cuenta desde ajustes o soporte.'] }] },
+    dashboardPage: { metaTitle: 'Panel | QuizSolver', metaDescription: 'Gestiona créditos, compras, enlace de referido y estadísticas.', title: 'Panel de usuario', loginTitle: 'Accede a tu panel', loginText: 'Inicia sesión o crea una cuenta para gestionar tus créditos.', loginButton: 'Entrar / Registrarse' },
+    creditsPage: { metaTitle: 'Comprar créditos | QuizSolver', metaDescription: 'Recarga créditos para respuestas, explicaciones y herramientas de estudio.', title: 'Comprar créditos' },
+    quizPage: { metaTitle: 'Historial y práctica | QuizSolver', metaDescription: 'Revisa preguntas guardadas, notas, flashcards y quizzes compartidos.', title: 'Historial y quiz' },
+    demoPage: { metaTitle: 'Demo interactiva | QuizSolver', metaDescription: 'Prueba QuizSolver en un demo seguro sin usar créditos.', title: 'Demo interactiva' },
+    successPage: { metaTitle: 'Pago correcto | QuizSolver', metaDescription: 'Gracias. Tus créditos se añadieron correctamente.', badge: 'Éxito', title: 'Pago correcto', subtitle: 'Tus créditos ya están listos.', dashboardCta: 'Abrir panel', storeCta: 'Instalar extensión' },
+    notFoundPage: { metaTitle: '404 Página no encontrada | QuizSolver', metaDescription: 'La página no existe.', badge: '404', title: 'Página no encontrada', subtitle: 'La página no existe o el enlace expiró.', homeCta: 'Volver al inicio', storeCta: 'Instalar extensión' },
+    platform: { badge: 'Flujo', title: (name) => `Resolver ${name} con QuizSolver`, subtitle: (name) => `Obtén sugerencias de IA, explicaciones e historial de estudio para ${name}.`, metaTitle: (name) => `${name} AI Quiz Solver | QuizSolver`, metaDescription: (name) => `Resuelve quizzes de ${name} con sugerencias de IA, explicaciones e historial guardado.`, stepsTitle: 'Cómo usar QuizSolver', steps: (name) => [`Abre tu quiz en ${name}.`, 'Inicia la extensión QuizSolver.', 'Revisa las respuestas y explicaciones sugeridas.'], features: () => ['Sugerencias rápidas de IA', 'Explicaciones breves', 'Historial de estudio guardado'], keywordTitle: (name) => `Estudia mejor con ${name}`, keywordText: (name) => `QuizSolver te ayuda a entender preguntas de ${name} y repasarlas más tarde.`, faqQuestion: (name) => `¿Funciona QuizSolver con ${name}?`, faqAnswer: (name) => `Sí. QuizSolver detecta preguntas visibles en ${name} y también puede usar FocusScan.` }
+  },
+  fr: {
+    homeTitle: 'Extension Chrome IA pour résoudre des quiz',
+    homeSubtitle: 'Résolvez des quiz sur Testportal, Moodle et plus avec l’IA',
+    homeMetaTitle: 'QuizSolver | Extension Chrome IA pour quiz',
+    homeMetaDescription: 'Résolvez des quiz sur Testportal, Moodle, Canvas, Google Forms et plus avec l’IA. Obtenez des réponses rapides et des explications claires.',
+    common: { credits: 'Crédits', dashboard: 'Tableau de bord', buyCredits: 'Acheter des crédits', logout: 'Déconnexion', createAccount: 'Créer un compte', email: 'Adresse e-mail', password: 'Mot de passe', confirmPassword: 'Confirmer le mot de passe', rememberMe: 'Se souvenir de moi', signIn: 'Connexion', displayName: 'Nom affiché (optionnel)', referralCode: 'Code de parrainage (optionnel)', loading: 'Chargement...', close: 'Fermer', demo: 'Démo', historyQuiz: 'Historique et quiz' },
+    nav: { how: 'Fonctionnement', features: 'Fonctions', pricing: 'Tarifs', login: 'Connexion', signup: 'Inscription', toggle: 'Ouvrir le menu' },
+    footer: { product: 'Produit', seoPages: 'Plateformes prises en charge', legal: 'Légal', privacy: 'Confidentialité', rights: '© 2026 QuizSolver. Tous droits réservés.', description: 'Extension Chrome QuizSolver pour résoudre des quiz avec l’IA.' },
+    auth: { loginTitle: 'Bon retour', loginSubtitle: 'Connectez-vous à votre compte QuizSolver.', showRegister: 'Pas encore de compte ?', showRegisterLink: 'S’inscrire', registerTitle: 'Créer un compte', showLogin: 'Déjà un compte ?', showLoginLink: 'Connexion' },
+    shell: { readyEyebrow: 'Prêt à installer ?', readyTitle: 'Ajoutez QuizSolver à Chrome et commencez votre premier quiz.', readyDesc: 'Extension, historique, notes et entraînement fonctionnent avec un seul compte.', openStore: 'Ouvrir Chrome Web Store', footerDesc: 'Extension Chrome pour suggestions, explications, notes et révisions.', continueGoogle: 'Continuer avec Google', signupGoogle: 'S’inscrire avec Google', or: 'ou', forgotPassword: 'Mot de passe oublié ?', referralInfo: 'Le code de parrainage est optionnel. Le parrain reçoit 5% des crédits achetés.', verifyEmail: 'Vérifier l’e-mail', verifyEmailText: 'Entrez le code à 6 chiffres envoyé à :', verifyAndLogin: 'Vérifier et se connecter', noCode: 'Code non reçu ?', resendCode: 'Renvoyer', resetPassword: 'Réinitialiser le mot de passe', resetPasswordText: 'Entrez votre e-mail et nous enverrons un code.', sendCode: 'Envoyer le code', backToLogin: 'Retour à la connexion', setNewPassword: 'Nouveau mot de passe', setNewPasswordText: 'Entrez le code e-mail et votre nouveau mot de passe.', changePassword: 'Changer le mot de passe', mailDisabled: 'L’envoi d’e-mails n’est pas encore configuré sur le serveur.', testCode: 'Code de test', verificationSent: 'Nous avons envoyé un code de vérification par e-mail.', loginFailed: 'Connexion impossible.', passwordsMismatch: 'Les mots de passe ne correspondent pas.', registerFailed: 'Inscription impossible.', invalidCode: 'Le code est invalide ou expiré.', alreadyVerified: 'Cet e-mail est déjà vérifié.', newCodeSent: 'Nouveau code envoyé.', codeSendFailed: 'Impossible d’envoyer le code.', resetSent: 'Si le compte existe, nous avons envoyé un code.', resetStartFailed: 'Impossible de démarrer la réinitialisation.', passwordChanged: 'Mot de passe modifié. Vous pouvez vous connecter.', passwordChangeFailed: 'Impossible de changer le mot de passe.' },
+    privacyPage: { metaTitle: 'Confidentialité | QuizSolver', metaDescription: 'Comment QuizSolver collecte, traite et protège vos informations.', title: 'Confidentialité', badge: 'Confidentialité et sécurité', subtitle: 'Nous protégeons vos données et respectons votre vie privée.', effective: 'Date d’effet : 21 mai 2026', contactLabel: 'Support', contactValue: 'support@getquizsolver.com', sections: [{ title: '1. Données et contrôle', text: 'Nous collectons uniquement les données nécessaires au compte, aux crédits et au service.', items: ['Compte : e-mail, nom affiché et mot de passe chiffré.', 'Usage : questions résolues, crédits et achats.', 'Parrainage : inscriptions et achats liés à votre code.'] }, { title: '2. Extension et FocusScan', text: 'L’extension analyse le contenu uniquement quand vous l’activez.', items: ['Scan actif des questions et options visibles.', 'FocusScan utilise la zone d’écran sélectionnée.', 'Aucun suivi des autres onglets ou de l’historique.'] }, { title: '3. Paiements', text: 'Les paiements sont traités en sécurité par Stripe.' }, { title: '4. Partage', text: 'Nous ne vendons ni ne louons vos données personnelles.' }, { title: '5. Vos droits', text: 'Vous pouvez consulter, modifier ou supprimer vos données.', items: ['Exporter vos questions enregistrées.', 'Supprimer votre compte via les paramètres ou le support.'] }] },
+    dashboardPage: { metaTitle: 'Tableau de bord | QuizSolver', metaDescription: 'Gérez crédits, achats, parrainage et statistiques.', title: 'Tableau de bord', loginTitle: 'Accéder au tableau de bord', loginText: 'Connectez-vous ou créez un compte pour gérer vos crédits.', loginButton: 'Connexion / Inscription' },
+    creditsPage: { metaTitle: 'Acheter des crédits | QuizSolver', metaDescription: 'Rechargez des crédits QuizSolver pour réponses, explications et outils d’étude.', title: 'Acheter des crédits' },
+    quizPage: { metaTitle: 'Historique et entraînement | QuizSolver', metaDescription: 'Consultez vos questions, notes, cartes et quiz partagés.', title: 'Historique et quiz' },
+    demoPage: { metaTitle: 'Démo interactive | QuizSolver', metaDescription: 'Essayez QuizSolver sur une démo sûre sans utiliser de crédits.', title: 'Démo interactive' },
+    successPage: { metaTitle: 'Paiement réussi | QuizSolver', metaDescription: 'Merci. Vos crédits ont été ajoutés.', badge: 'Succès', title: 'Paiement réussi', subtitle: 'Vos crédits sont prêts.', dashboardCta: 'Ouvrir le tableau', storeCta: 'Installer l’extension' },
+    notFoundPage: { metaTitle: '404 Page introuvable | QuizSolver', metaDescription: 'Cette page n’existe pas.', badge: '404', title: 'Page introuvable', subtitle: 'Cette page n’existe pas ou le lien a expiré.', homeCta: 'Retour à l’accueil', storeCta: 'Installer l’extension' },
+    platform: { badge: 'Workflow', title: (name) => `Résoudre ${name} avec QuizSolver`, subtitle: (name) => `Recevez des suggestions IA, des explications et un historique pour ${name}.`, metaTitle: (name) => `${name} AI Quiz Solver | QuizSolver`, metaDescription: (name) => `Résolvez des quiz ${name} avec suggestions IA, explications et historique enregistré.`, stepsTitle: 'Comment utiliser QuizSolver', steps: (name) => [`Ouvrez votre quiz sur ${name}.`, 'Lancez l’extension QuizSolver.', 'Vérifiez les réponses et explications proposées.'], features: () => ['Suggestions IA rapides', 'Explications courtes', 'Historique d’étude enregistré'], keywordTitle: (name) => `Mieux étudier avec ${name}`, keywordText: (name) => `QuizSolver vous aide à comprendre les questions sur ${name} et à les réviser plus tard.`, faqQuestion: (name) => `QuizSolver fonctionne-t-il avec ${name} ?`, faqAnswer: (name) => `Oui. QuizSolver détecte les questions visibles sur ${name} et peut aussi utiliser FocusScan.` }
+  },
+  it: {
+    homeTitle: 'Estensione Chrome AI per quiz',
+    homeSubtitle: 'Risolvi quiz su Testportal, Moodle e altre piattaforme con l’AI',
+    homeMetaTitle: 'QuizSolver | Estensione Chrome AI per quiz',
+    homeMetaDescription: 'Risolvi quiz su Testportal, Moodle, Canvas, Google Forms e altro con l’AI. Ottieni risposte immediate e spiegazioni chiare.',
+    common: { credits: 'Crediti', dashboard: 'Dashboard', buyCredits: 'Compra crediti', logout: 'Esci', createAccount: 'Crea account', email: 'Indirizzo email', password: 'Password', confirmPassword: 'Conferma password', rememberMe: 'Ricordami', signIn: 'Accedi', displayName: 'Nome visualizzato (opzionale)', referralCode: 'Codice referral (opzionale)', loading: 'Caricamento...', close: 'Chiudi', demo: 'Demo', historyQuiz: 'Cronologia e quiz' },
+    nav: { how: 'Come funziona', features: 'Funzioni', pricing: 'Prezzi', login: 'Accedi', signup: 'Registrati', toggle: 'Apri menu' },
+    footer: { product: 'Prodotto', seoPages: 'Piattaforme supportate', legal: 'Legale', privacy: 'Privacy', rights: '© 2026 QuizSolver. Tutti i diritti riservati.', description: 'Estensione Chrome QuizSolver per risolvere quiz con l’AI.' },
+    auth: { loginTitle: 'Bentornato', loginSubtitle: 'Accedi al tuo account QuizSolver.', showRegister: 'Non hai un account?', showRegisterLink: 'Registrati', registerTitle: 'Crea account', showLogin: 'Hai già un account?', showLoginLink: 'Accedi' },
+    shell: { readyEyebrow: 'Pronto per installare?', readyTitle: 'Aggiungi QuizSolver a Chrome e inizia dal primo quiz.', readyDesc: 'Estensione, cronologia, note e pratica funzionano con un solo account.', openStore: 'Apri Chrome Web Store', footerDesc: 'Estensione Chrome per suggerimenti, spiegazioni, note e ripasso.', continueGoogle: 'Continua con Google', signupGoogle: 'Registrati con Google', or: 'oppure', forgotPassword: 'Password dimenticata?', referralInfo: 'Il codice referral è opzionale. Chi ti invita riceve il 5% dei crediti che compri.', verifyEmail: 'Verifica email', verifyEmailText: 'Inserisci il codice di 6 cifre inviato a:', verifyAndLogin: 'Verifica e accedi', noCode: 'Codice non arrivato?', resendCode: 'Invia di nuovo', resetPassword: 'Reimposta password', resetPasswordText: 'Inserisci la tua email e invieremo un codice.', sendCode: 'Invia codice', backToLogin: 'Torna al login', setNewPassword: 'Nuova password', setNewPasswordText: 'Inserisci il codice email e la nuova password.', changePassword: 'Cambia password', mailDisabled: 'L’invio email non è ancora configurato sul server.', testCode: 'Codice test', verificationSent: 'Abbiamo inviato un codice di verifica via email.', loginFailed: 'Accesso non riuscito.', passwordsMismatch: 'Le password non coincidono.', registerFailed: 'Registrazione non riuscita.', invalidCode: 'Il codice non è valido o è scaduto.', alreadyVerified: 'Questa email è già verificata.', newCodeSent: 'Abbiamo inviato un nuovo codice.', codeSendFailed: 'Impossibile inviare il codice.', resetSent: 'Se l’account esiste, abbiamo inviato un codice.', resetStartFailed: 'Impossibile avviare il reset.', passwordChanged: 'Password cambiata. Ora puoi accedere.', passwordChangeFailed: 'Impossibile cambiare password.' },
+    privacyPage: { metaTitle: 'Privacy | QuizSolver', metaDescription: 'Come QuizSolver raccoglie, elabora e protegge le informazioni.', title: 'Privacy', badge: 'Privacy e sicurezza', subtitle: 'Proteggiamo i tuoi dati e rispettiamo la tua privacy.', effective: 'Data di entrata in vigore: 21 maggio 2026', contactLabel: 'Supporto', contactValue: 'support@getquizsolver.com', sections: [{ title: '1. Dati e controllo', text: 'Raccogliamo solo dati necessari per account, crediti e servizio.', items: ['Account: email, nome visualizzato e password cifrata.', 'Uso: domande risolte, crediti e acquisti.', 'Referral: registrazioni e acquisti collegati al codice.'] }, { title: '2. Estensione e FocusScan', text: 'L’estensione analizza contenuti solo quando la attivi.', items: ['Scansione attiva di domande e opzioni visibili.', 'FocusScan usa l’area dello schermo selezionata.', 'Nessun tracciamento di altre schede o cronologia.'] }, { title: '3. Pagamenti', text: 'I pagamenti sono gestiti in sicurezza da Stripe.' }, { title: '4. Condivisione', text: 'Non vendiamo né affittiamo dati personali.' }, { title: '5. Diritti', text: 'Puoi consultare, modificare o eliminare i tuoi dati.', items: ['Esportare le domande salvate.', 'Eliminare l’account da impostazioni o supporto.'] }] },
+    dashboardPage: { metaTitle: 'Dashboard | QuizSolver', metaDescription: 'Gestisci crediti, acquisti, referral e statistiche.', title: 'Dashboard utente', loginTitle: 'Apri dashboard', loginText: 'Accedi o crea un account per gestire i crediti.', loginButton: 'Accedi / Registrati' },
+    creditsPage: { metaTitle: 'Compra crediti | QuizSolver', metaDescription: 'Ricarica crediti QuizSolver per risposte, spiegazioni e strumenti di studio.', title: 'Compra crediti' },
+    quizPage: { metaTitle: 'Cronologia e pratica | QuizSolver', metaDescription: 'Rivedi domande salvate, note, flashcard e quiz condivisi.', title: 'Cronologia e quiz' },
+    demoPage: { metaTitle: 'Demo interattiva | QuizSolver', metaDescription: 'Prova QuizSolver in una demo sicura senza usare crediti.', title: 'Demo interattiva' },
+    successPage: { metaTitle: 'Pagamento riuscito | QuizSolver', metaDescription: 'Grazie. I crediti sono stati aggiunti.', badge: 'Successo', title: 'Pagamento riuscito', subtitle: 'I crediti sono pronti.', dashboardCta: 'Apri dashboard', storeCta: 'Installa estensione' },
+    notFoundPage: { metaTitle: '404 Pagina non trovata | QuizSolver', metaDescription: 'Questa pagina non esiste.', badge: '404', title: 'Pagina non trovata', subtitle: 'La pagina non esiste o il link è scaduto.', homeCta: 'Torna alla home', storeCta: 'Installa estensione' },
+    platform: { badge: 'Workflow', title: (name) => `Risolvi ${name} con QuizSolver`, subtitle: (name) => `Ottieni suggerimenti AI, spiegazioni e cronologia per ${name}.`, metaTitle: (name) => `${name} AI Quiz Solver | QuizSolver`, metaDescription: (name) => `Risolvi quiz ${name} con suggerimenti AI, spiegazioni e cronologia salvata.`, stepsTitle: 'Come usare QuizSolver', steps: (name) => [`Apri il quiz su ${name}.`, 'Avvia l’estensione QuizSolver.', 'Controlla risposte e spiegazioni suggerite.'], features: () => ['Suggerimenti AI rapidi', 'Spiegazioni brevi', 'Cronologia studio salvata'], keywordTitle: (name) => `Studia meglio con ${name}`, keywordText: (name) => `QuizSolver ti aiuta a capire le domande su ${name} e ripassarle più tardi.`, faqQuestion: (name) => `QuizSolver funziona con ${name}?`, faqAnswer: (name) => `Sì. QuizSolver rileva le domande visibili su ${name} e può usare anche FocusScan.` }
+  },
+  uk: {
+    homeTitle: 'Chrome-розширення AI Quiz Solver',
+    homeSubtitle: 'Розв’язуй квізи на Testportal, Moodle та інших платформах за допомогою AI',
+    homeMetaTitle: 'QuizSolver | Chrome-розширення AI Quiz Solver',
+    homeMetaDescription: 'Розв’язуй квізи на Testportal, Moodle, Canvas, Google Forms та інших платформах за допомогою AI. Отримуй миттєві відповіді та зрозумілі пояснення.',
+    common: { credits: 'Кредити', dashboard: 'Панель', buyCredits: 'Купити кредити', logout: 'Вийти', createAccount: 'Створити акаунт', email: 'Електронна пошта', password: 'Пароль', confirmPassword: 'Підтвердити пароль', rememberMe: 'Запам’ятати мене', signIn: 'Увійти', displayName: 'Ім’я (необов’язково)', referralCode: 'Реферальний код (необов’язково)', loading: 'Завантаження...', close: 'Закрити', demo: 'Демо', historyQuiz: 'Історія і квіз' },
+    nav: { how: 'Як це працює', features: 'Функції', pricing: 'Ціни', login: 'Увійти', signup: 'Реєстрація', toggle: 'Відкрити меню' },
+    footer: { product: 'Продукт', seoPages: 'Підтримувані платформи', legal: 'Правова інформація', privacy: 'Приватність', rights: '© 2026 QuizSolver. Усі права захищені.', description: 'Chrome-розширення QuizSolver для AI-відповідей у квізах.' },
+    auth: { loginTitle: 'З поверненням', loginSubtitle: 'Увійди у свій акаунт QuizSolver.', showRegister: 'Немає акаунта?', showRegisterLink: 'Зареєструватися', registerTitle: 'Створити акаунт', showLogin: 'Вже маєш акаунт?', showLoginLink: 'Увійти' },
+    shell: { readyEyebrow: 'Готовий встановити?', readyTitle: 'Додай QuizSolver у Chrome і почни з першого квізу.', readyDesc: 'Розширення, історія питань, нотатки і практика працюють з одного акаунта.', openStore: 'Відкрити Chrome Web Store', footerDesc: 'Chrome-розширення для підказок, пояснень, нотаток і повторення.', continueGoogle: 'Продовжити з Google', signupGoogle: 'Зареєструватися через Google', or: 'або', forgotPassword: 'Забув пароль?', referralInfo: 'Реферальний код необов’язковий. Той, хто запросив, отримує 5% куплених кредитів як бонус.', verifyEmail: 'Підтвердити email', verifyEmailText: 'Введи 6-значний код, надісланий на:', verifyAndLogin: 'Підтвердити і увійти', noCode: 'Код не прийшов?', resendCode: 'Надіслати ще раз', resetPassword: 'Скинути пароль', resetPasswordText: 'Введи email, і ми надішлемо код.', sendCode: 'Надіслати код', backToLogin: 'Повернутися до входу', setNewPassword: 'Новий пароль', setNewPasswordText: 'Введи код з email і новий пароль.', changePassword: 'Змінити пароль', mailDisabled: 'Відправлення email ще не налаштоване на сервері.', testCode: 'Тестовий код', verificationSent: 'Ми надіслали код підтвердження на email.', loginFailed: 'Не вдалося увійти.', passwordsMismatch: 'Паролі не збігаються.', registerFailed: 'Не вдалося зареєструватися.', invalidCode: 'Код неправильний або прострочений.', alreadyVerified: 'Цей email вже підтверджений.', newCodeSent: 'Ми надіслали новий код.', codeSendFailed: 'Не вдалося надіслати код.', resetSent: 'Якщо акаунт існує, ми надіслали код скидання.', resetStartFailed: 'Не вдалося почати скидання пароля.', passwordChanged: 'Пароль змінено. Можеш увійти.', passwordChangeFailed: 'Не вдалося змінити пароль.' },
+    privacyPage: { metaTitle: 'Приватність | QuizSolver', metaDescription: 'Як QuizSolver збирає, обробляє і захищає твої дані.', title: 'Приватність', badge: 'Приватність і безпека', subtitle: 'Ми захищаємо твої дані і поважаємо приватність.', effective: 'Дата набуття чинності: 21 травня 2026', contactLabel: 'Підтримка', contactValue: 'support@getquizsolver.com', sections: [{ title: '1. Дані і контроль', text: 'Ми збираємо лише дані, потрібні для акаунта, кредитів і сервісу.', items: ['Акаунт: email, ім’я і зашифрований пароль.', 'Використання: розв’язані питання, кредити і покупки.', 'Реферали: реєстрації і покупки за твоїм кодом.'] }, { title: '2. Розширення і FocusScan', text: 'Розширення аналізує контент лише після твоєї дії.', items: ['Активне сканування видимих питань і варіантів.', 'FocusScan використовує вибрану область екрана.', 'Ми не записуємо інші вкладки чи історію браузера.'] }, { title: '3. Платежі', text: 'Платежі безпечно обробляються через Stripe.' }, { title: '4. Передача даних', text: 'Ми не продаємо і не здаємо персональні дані.' }, { title: '5. Твої права', text: 'Ти можеш переглянути, змінити або видалити свої дані.', items: ['Експорт збережених питань.', 'Видалення акаунта через налаштування або підтримку.'] }] },
+    dashboardPage: { metaTitle: 'Панель | QuizSolver', metaDescription: 'Керуй кредитами, покупками, рефералами і статистикою.', title: 'Панель користувача', loginTitle: 'Відкрити панель', loginText: 'Увійди або створи акаунт, щоб керувати кредитами.', loginButton: 'Увійти / Зареєструватися' },
+    creditsPage: { metaTitle: 'Купити кредити | QuizSolver', metaDescription: 'Поповни кредити QuizSolver для відповідей, пояснень і навчальних інструментів.', title: 'Купити кредити' },
+    quizPage: { metaTitle: 'Історія і практика | QuizSolver', metaDescription: 'Переглядай збережені питання, нотатки, картки і спільні квізи.', title: 'Історія і квіз' },
+    demoPage: { metaTitle: 'Інтерактивне демо | QuizSolver', metaDescription: 'Спробуй QuizSolver у безпечному демо без витрати кредитів.', title: 'Інтерактивне демо' },
+    successPage: { metaTitle: 'Платіж успішний | QuizSolver', metaDescription: 'Дякуємо. Кредити додано.', badge: 'Успіх', title: 'Платіж успішний', subtitle: 'Кредити готові до використання.', dashboardCta: 'Відкрити панель', storeCta: 'Встановити розширення' },
+    notFoundPage: { metaTitle: '404 Сторінку не знайдено | QuizSolver', metaDescription: 'Ця сторінка не існує.', badge: '404', title: 'Сторінку не знайдено', subtitle: 'Ця сторінка не існує або посилання застаріло.', homeCta: 'На головну', storeCta: 'Встановити розширення' },
+    platform: { badge: 'Workflow', title: (name) => `Розв’язуй ${name} з QuizSolver`, subtitle: (name) => `Отримуй AI-підказки, пояснення та історію навчання для ${name}.`, metaTitle: (name) => `${name} AI Quiz Solver | QuizSolver`, metaDescription: (name) => `Розв’язуй квізи ${name} з AI-підказками, поясненнями і збереженою історією.`, stepsTitle: 'Як користуватися QuizSolver', steps: (name) => [`Відкрий квіз на ${name}.`, 'Запусти розширення QuizSolver.', 'Перевір запропоновані відповіді і пояснення.'], features: () => ['Швидкі AI-підказки', 'Короткі пояснення', 'Збережена історія навчання'], keywordTitle: (name) => `Навчайся краще з ${name}`, keywordText: (name) => `QuizSolver допомагає швидше зрозуміти питання на ${name} і повторити їх пізніше.`, faqQuestion: (name) => `Чи працює QuizSolver з ${name}?`, faqAnswer: (name) => `Так. QuizSolver знаходить видимі питання на ${name} і може використовувати FocusScan.` }
+  }
+};
+
+const EN_SHELL = {
+  demo: 'Demo',
+  historyQuiz: 'History & quiz',
+  readyEyebrow: 'Ready to install?',
+  readyTitle: 'Add QuizSolver to Chrome and start with your first quiz.',
+  readyDesc: 'The extension, question history, notes, and history quiz all work from one account.',
+  openStore: 'Open Chrome Web Store',
+  footerDesc: 'Chrome extension for answer suggestions, explanations, notes, and practice from question history.',
+  continueGoogle: 'Continue with Google',
+  signupGoogle: 'Sign up with Google',
+  or: 'or',
+  forgotPassword: 'Forgot password?',
+  referralInfo: 'Referral code is optional. The referrer receives 5% of the credits you buy as a bonus.',
+  verifyEmail: 'Verify email',
+  verifyEmailText: 'Enter the 6-digit code sent to:',
+  verifyAndLogin: 'Verify and sign in',
+  noCode: 'No code?',
+  resendCode: 'Resend code',
+  resetPassword: 'Reset password',
+  resetPasswordText: 'Enter your email and we will send a reset code.',
+  sendCode: 'Send code',
+  backToLogin: 'Back to login',
+  setNewPassword: 'Set new password',
+  setNewPasswordText: 'Enter the email code and your new password.',
+  changePassword: 'Change password',
+  mailDisabled: 'Email delivery is not configured on the server yet.',
+  testCode: 'Test code',
+  verificationSent: 'We sent a verification code to your email.',
+  loginFailed: 'Login failed.',
+  passwordsMismatch: 'Passwords do not match.',
+  registerFailed: 'Registration failed.',
+  invalidCode: 'The code is invalid or expired.',
+  alreadyVerified: 'This email is already verified.',
+  newCodeSent: 'We sent a new code.',
+  codeSendFailed: 'Could not send the code.',
+  resetSent: 'If the account exists, we sent a reset code.',
+  resetStartFailed: 'Could not start password reset.',
+  passwordChanged: 'Password changed. You can sign in.',
+  passwordChangeFailed: 'Could not change password.'
+};
+
+const PL_SHELL = {
+  demo: 'Demo',
+  historyQuiz: 'Historia i quiz',
+  readyEyebrow: 'Gotowy do instalacji?',
+  readyTitle: 'Dodaj QuizSolver do Chrome i zacznij od pierwszego quizu.',
+  readyDesc: 'Rozszerzenie, historia pytań, notatki i quiz z historii działają na jednym koncie.',
+  openStore: 'Otwórz Chrome Web Store',
+  footerDesc: 'Rozszerzenie Chrome do sugestii odpowiedzi, wyjaśnień, notatek i powtórek z historii pytań.',
+  continueGoogle: 'Kontynuuj z Google',
+  signupGoogle: 'Załóż konto przez Google',
+  or: 'albo',
+  forgotPassword: 'Nie pamiętasz hasła?',
+  referralInfo: 'Kod polecenia jest opcjonalny. Osoba polecająca dostaje 5% kupionych przez Ciebie kredytów jako bonus.',
+  verifyEmail: 'Potwierdź e-mail',
+  verifyEmailText: 'Wpisz 6-cyfrowy kod wysłany na:',
+  verifyAndLogin: 'Zweryfikuj i zaloguj',
+  noCode: 'Kod nie doszedł?',
+  resendCode: 'Wyślij ponownie',
+  resetPassword: 'Reset hasła',
+  resetPasswordText: 'Podaj e-mail, a wyślemy kod do ustawienia nowego hasła.',
+  sendCode: 'Wyślij kod',
+  backToLogin: 'Wróć do logowania',
+  setNewPassword: 'Ustaw nowe hasło',
+  setNewPasswordText: 'Wpisz kod z maila i nowe hasło.',
+  changePassword: 'Zmień hasło',
+  mailDisabled: 'Wysyłka maili nie jest jeszcze skonfigurowana na serwerze.',
+  testCode: 'Kod testowy',
+  verificationSent: 'Wysłaliśmy kod weryfikacyjny na e-mail.',
+  loginFailed: 'Logowanie nie powiodło się.',
+  passwordsMismatch: 'Hasła nie są takie same.',
+  registerFailed: 'Rejestracja nie powiodła się.',
+  invalidCode: 'Kod jest niepoprawny albo wygasł.',
+  alreadyVerified: 'Ten e-mail jest już zweryfikowany.',
+  newCodeSent: 'Wysłaliśmy nowy kod.',
+  codeSendFailed: 'Nie udało się wysłać kodu.',
+  resetSent: 'Jeśli konto istnieje, wysłaliśmy kod resetu.',
+  resetStartFailed: 'Nie udało się zacząć resetu hasła.',
+  passwordChanged: 'Hasło zmienione. Możesz się zalogować.',
+  passwordChangeFailed: 'Nie udało się zmienić hasła.'
+};
+
+function applySharedCopy(copy: SiteCopy, locale: Locale): SiteCopy {
+  const option = localeOption(locale);
+  const shellByLocale: Partial<Record<Locale, typeof EN_SHELL>> = { en: EN_SHELL, pl: PL_SHELL };
+  const shell = shellByLocale[locale] || LOCALIZED_SITE[locale as ExtraLocale].shell;
+  const localizedCommon = shellByLocale[locale] ? null : LOCALIZED_SITE[locale as ExtraLocale].common;
+  copy.htmlLang = option.htmlLang;
+  copy.ogLocale = option.ogLocale;
+  copy.common = {
+    ...copy.common,
+    demo: localizedCommon?.demo || shell.demo,
+    historyQuiz: localizedCommon?.historyQuiz || shell.historyQuiz
+  };
+  copy.shell = shell;
+  return copy;
+}
+
+function buildPlatformPages(bundle: LocalizedSiteBundle): SiteCopy['platformPages'] {
+  return Object.fromEntries(Object.entries(en.platformPages).map(([key, base]) => {
+    const name = base.shortName || base.platformName;
+    const copy: PlatformCopy = {
+      platformName: base.platformName,
+      shortName: base.shortName,
+      badge: `${name} ${bundle.platform.badge}`,
+      title: bundle.platform.title(name),
+      subtitle: bundle.platform.subtitle(name),
+      meta: { title: bundle.platform.metaTitle(name), description: bundle.platform.metaDescription(name) },
+      stepsTitle: bundle.platform.stepsTitle,
+      steps: bundle.platform.steps(name),
+      features: bundle.platform.features(name),
+      note: base.note ? bundle.platform.keywordText(name) : undefined,
+      keywordSections: [
+        { title: bundle.platform.keywordTitle(name), text: bundle.platform.keywordText(name) }
+      ],
+      faq: [
+        { question: bundle.platform.faqQuestion(name), answer: bundle.platform.faqAnswer(name) }
+      ]
+    };
+    return [key, copy];
+  })) as SiteCopy['platformPages'];
+}
+
+function buildLocalizedSiteCopy(locale: ExtraLocale): SiteCopy {
+  const bundle = LOCALIZED_SITE[locale];
+  const option = localeOption(locale);
+  return applySharedCopy({
+    htmlLang: option.htmlLang,
+    ogLocale: option.ogLocale,
+    home: {
+      title: bundle.homeTitle,
+      subtitle: bundle.homeSubtitle,
+      meta: { title: bundle.homeMetaTitle, description: bundle.homeMetaDescription }
+    },
+    common: { brand: 'QuizSolver', ...bundle.common },
+    nav: bundle.nav,
+    footer: bundle.footer,
+    auth: bundle.auth,
+    privacyPage: bundle.privacyPage,
+    dashboardPage: bundle.dashboardPage,
+    creditsPage: bundle.creditsPage,
+    quizPage: bundle.quizPage,
+    demoPage: bundle.demoPage,
+    successPage: bundle.successPage,
+    notFoundPage: bundle.notFoundPage,
+    platformPages: buildPlatformPages(bundle)
+  } as SiteCopy, locale);
+}
+
+const de = buildLocalizedSiteCopy('de');
+const es = buildLocalizedSiteCopy('es');
+const fr = buildLocalizedSiteCopy('fr');
+const it = buildLocalizedSiteCopy('it');
+const uk = buildLocalizedSiteCopy('uk');
+
+applySharedCopy(en, 'en');
+applySharedCopy(pl, 'pl');
+
 export const CONTENT: Record<Locale, SiteCopy> = {
   en: en as SiteCopy,
-  pl: pl as SiteCopy
+  pl: pl as SiteCopy,
+  de,
+  es,
+  fr,
+  it,
+  uk
 };
 
 export const PLATFORM_PAGE_KEYS: PageKey[] = [
@@ -862,27 +1215,31 @@ export const PLATFORM_PAGE_KEYS: PageKey[] = [
   'quizizz'
 ];
 
-export const PAGE_ROUTES: Record<PageKey, Record<Locale, string>> = {
-  home: { en: '/', pl: '/pl/' },
-  dashboard: { en: '/dashboard', pl: '/pl/dashboard' },
-  credits: { en: '/credits', pl: '/pl/credits' },
-  quiz: { en: '/quiz', pl: '/pl/quiz' },
-  demo: { en: '/demo', pl: '/pl/demo' },
-  quizSolverAi: { en: '/quiz-solver-ai', pl: '/pl/quiz-solver-ai' },
-  testportal: { en: '/testportal-quiz-solver', pl: '/pl/testportal-quiz-solver' },
-  moodle: { en: '/moodle-quiz-solver', pl: '/pl/moodle-quiz-solver' },
-  canvas: { en: '/canvas-quiz-solver', pl: '/pl/canvas-quiz-solver' },
-  googleForms: { en: '/google-forms-quiz-solver', pl: '/pl/google-forms-quiz-solver' },
-  microsoftForms: { en: '/microsoft-forms-quiz-solver', pl: '/pl/microsoft-forms-quiz-solver' },
-  blackboard: { en: '/blackboard-quiz-solver', pl: '/pl/blackboard-quiz-solver' },
-  quizlet: { en: '/quizlet-solver', pl: '/pl/quizlet-solver' },
-  socrative: { en: '/socrative-quiz-solver', pl: '/pl/socrative-quiz-solver' },
-  kahoot: { en: '/kahoot-ai-bot', pl: '/pl/kahoot-ai-bot' },
-  quizizz: { en: '/quizizz-solver', pl: '/pl/quizizz-solver' },
-  privacy: { en: '/privacy', pl: '/pl/privacy' },
-  notFound: { en: '/404', pl: '/pl/404' },
-  success: { en: '/success', pl: '/pl/success' }
+export const PAGE_SLUGS: Record<PageKey, string> = {
+  home: '',
+  dashboard: 'dashboard',
+  credits: 'credits',
+  quiz: 'quiz',
+  demo: 'demo',
+  quizSolverAi: 'quiz-solver-ai',
+  testportal: 'testportal-quiz-solver',
+  moodle: 'moodle-quiz-solver',
+  canvas: 'canvas-quiz-solver',
+  googleForms: 'google-forms-quiz-solver',
+  microsoftForms: 'microsoft-forms-quiz-solver',
+  blackboard: 'blackboard-quiz-solver',
+  quizlet: 'quizlet-solver',
+  socrative: 'socrative-quiz-solver',
+  kahoot: 'kahoot-ai-bot',
+  quizizz: 'quizizz-solver',
+  privacy: 'privacy',
+  notFound: '404',
+  success: 'success'
 };
+
+export const PAGE_ROUTES: Record<PageKey, Record<Locale, string>> = Object.fromEntries(
+  Object.entries(PAGE_SLUGS).map(([pageKey, slug]) => [pageKey, routeRecord(slug)])
+) as Record<PageKey, Record<Locale, string>>;
 
 export const INDEXED_PAGE_KEYS: PageKey[] = [
   'home',
@@ -937,7 +1294,7 @@ export function platformEntries(locale: Locale): Array<{ pageKey: PageKey; data:
 
 export function routePathsForPrerender(): string[] {
   return Object.values(PAGE_ROUTES)
-    .flatMap((localized) => [localized.en, localized.pl])
+    .flatMap((localized) => SUPPORTED_LOCALES.map((locale) => localized[locale.code]))
     .map((path) => path.replace(/^\/+/, '').replace(/\/+$/, ''))
     .map((path) => path || '');
 }

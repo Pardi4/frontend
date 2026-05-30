@@ -238,30 +238,30 @@ export class CreditsComponent implements OnInit {
     {
       id: 'starter',
       price: '$1.99',
-      name: { en: '100 credits', pl: '100 kredytów' },
-      caption: { en: 'Small one-time top-up', pl: 'Małe jednorazowe doładowanie' },
-      button: { en: 'Buy 100 credits', pl: 'Kup 100 kredytów' }
+      name: { en: '100 credits', pl: '100 kredytów', de: '100 Credits', es: '100 créditos', fr: '100 crédits', it: '100 crediti', uk: '100 кредитів' },
+      caption: { en: 'Small one-time top-up', pl: 'Małe jednorazowe doładowanie', de: 'Kleine einmalige Aufladung', es: 'Recarga pequeña', fr: 'Petite recharge unique', it: 'Piccola ricarica una tantum', uk: 'Мале одноразове поповнення' },
+      button: { en: 'Buy 100 credits', pl: 'Kup 100 kredytów', de: '100 Credits kaufen', es: 'Comprar 100 créditos', fr: 'Acheter 100 crédits', it: 'Compra 100 crediti', uk: 'Купити 100 кредитів' }
     },
     {
       id: 'popular',
       price: '$4.99',
-      name: { en: '500 credits', pl: '500 kredytów' },
-      caption: { en: 'Best for regular use', pl: 'Najlepsze do regularnego użycia' },
-      button: { en: 'Buy 500 credits', pl: 'Kup 500 kredytów' }
+      name: { en: '500 credits', pl: '500 kredytów', de: '500 Credits', es: '500 créditos', fr: '500 crédits', it: '500 crediti', uk: '500 кредитів' },
+      caption: { en: 'Best for regular use', pl: 'Najlepsze do regularnego użycia', de: 'Am besten für regelmäßige Nutzung', es: 'Ideal para uso regular', fr: 'Idéal pour usage régulier', it: 'Ideale per uso regolare', uk: 'Найкраще для регулярного використання' },
+      button: { en: 'Buy 500 credits', pl: 'Kup 500 kredytów', de: '500 Credits kaufen', es: 'Comprar 500 créditos', fr: 'Acheter 500 crédits', it: 'Compra 500 crediti', uk: 'Купити 500 кредитів' }
     },
     {
       id: 'pro',
       price: '$9.99',
-      name: { en: '2000 credits', pl: '2000 kredytów' },
-      caption: { en: 'Large sessions and sharing', pl: 'Większe sesje i udostępnianie' },
-      button: { en: 'Buy 2000 credits', pl: 'Kup 2000 kredytów' }
+      name: { en: '2000 credits', pl: '2000 kredytów', de: '2000 Credits', es: '2000 créditos', fr: '2000 crédits', it: '2000 crediti', uk: '2000 кредитів' },
+      caption: { en: 'Large sessions and sharing', pl: 'Większe sesje i udostępnianie', de: 'Große Lernsessions und Teilen', es: 'Sesiones grandes y compartir', fr: 'Grandes sessions et partage', it: 'Sessioni grandi e condivisione', uk: 'Великі сесії та спільний доступ' },
+      button: { en: 'Buy 2000 credits', pl: 'Kup 2000 kredytów', de: '2000 Credits kaufen', es: 'Comprar 2000 créditos', fr: 'Acheter 2000 crédits', it: 'Compra 2000 crediti', uk: 'Купити 2000 кредитів' }
     }
   ];
 
   async ngOnInit(): Promise<void> {
     this.locale = (this.route.snapshot.data['locale'] || 'en') as Locale;
     this.data = pageData('credits', this.locale);
-    this.copy = CREDITS_COPY[this.locale];
+    this.copy = CREDITS_COPY[this.locale] || CREDITS_COPY.en;
     this.seo.applyPage('credits', this.locale);
     await this.api.restoreSession();
   }
@@ -289,7 +289,7 @@ export class CreditsComponent implements OnInit {
   }
 }
 
-const CREDITS_COPY: Record<Locale, any> = {
+const CREDITS_COPY: Partial<Record<Locale, any>> & { en: any; pl: any } = {
   en: {
     badge: 'Credits',
     subtitle: 'Choose a one-time credit package. No subscription, no hidden recurring charge.',
@@ -326,4 +326,95 @@ const CREDITS_COPY: Record<Locale, any> = {
     loading: 'Przekierowanie...',
     paymentError: 'Płatności są chwilowo niedostępne. Spróbuj ponownie później.'
   }
+};
+
+CREDITS_COPY.de = {
+  badge: 'Credits',
+  subtitle: 'Wähle ein einmaliges Credit-Paket. Kein Abo und keine versteckten Gebühren.',
+  loginTitle: 'Einloggen, um Credits zu kaufen',
+  loginText: 'Nutze dasselbe Konto wie in der Chrome-Erweiterung und wähle dann ein Paket.',
+  loginButton: 'Einloggen / Registrieren',
+  balanceLabel: 'Aktuelles Guthaben',
+  balanceText: 'Credits werden für KI-Antworten, Erklärungen, Rückfragen und FocusScan verwendet.',
+  dashboardCta: 'Zurück zum Dashboard',
+  lowTitle: 'Wenig Credits',
+  lowText: 'Deine Credits sind fast aufgebraucht. Kaufe mehr, damit sie im Quiz nicht ausgehen.',
+  packagesBadge: 'Einmalpakete',
+  packagesTitle: 'Aufladen, wenn du es brauchst',
+  packagesText: 'Gespeicherte Fragen und Lernhistorie bleiben verfügbar, auch wenn du keine neuen Credits kaufst.',
+  popular: 'Beliebt',
+  loading: 'Weiterleitung...',
+  paymentError: 'Zahlungen sind vorübergehend nicht verfügbar. Versuche es später erneut.'
+};
+CREDITS_COPY.es = {
+  badge: 'Créditos',
+  subtitle: 'Elige un paquete único de créditos. Sin suscripción ni cargos ocultos.',
+  loginTitle: 'Inicia sesión para comprar créditos',
+  loginText: 'Usa la misma cuenta que en la extensión Chrome y elige un paquete.',
+  loginButton: 'Entrar / Registrarse',
+  balanceLabel: 'Saldo actual',
+  balanceText: 'Los créditos se usan para respuestas AI, explicaciones, preguntas extra y FocusScan.',
+  dashboardCta: 'Volver al panel',
+  lowTitle: 'Pocos créditos',
+  lowText: 'Tus créditos están por terminarse. Compra más para no quedarte sin ellos durante un quiz.',
+  packagesBadge: 'Paquetes únicos',
+  packagesTitle: 'Recarga cuando lo necesites',
+  packagesText: 'Tus preguntas guardadas y el historial siguen disponibles aunque no compres créditos.',
+  popular: 'Popular',
+  loading: 'Redirigiendo...',
+  paymentError: 'Los pagos no están disponibles temporalmente. Inténtalo más tarde.'
+};
+CREDITS_COPY.fr = {
+  badge: 'Crédits',
+  subtitle: 'Choisissez un pack de crédits unique. Sans abonnement ni frais cachés.',
+  loginTitle: 'Connectez-vous pour acheter des crédits',
+  loginText: 'Utilisez le même compte que dans l’extension Chrome, puis choisissez un pack.',
+  loginButton: 'Connexion / Inscription',
+  balanceLabel: 'Solde actuel',
+  balanceText: 'Les crédits servent aux réponses IA, explications, suivis et FocusScan.',
+  dashboardCta: 'Retour au tableau',
+  lowTitle: 'Solde faible',
+  lowText: 'Vos crédits sont presque épuisés. Achetez-en pour ne pas manquer pendant un quiz.',
+  packagesBadge: 'Packs uniques',
+  packagesTitle: 'Rechargez quand nécessaire',
+  packagesText: 'Vos questions sauvegardées et votre historique restent disponibles.',
+  popular: 'Populaire',
+  loading: 'Redirection...',
+  paymentError: 'Les paiements sont temporairement indisponibles. Réessayez plus tard.'
+};
+CREDITS_COPY.it = {
+  badge: 'Crediti',
+  subtitle: 'Scegli un pacchetto di crediti una tantum. Nessun abbonamento o costo nascosto.',
+  loginTitle: 'Accedi per comprare crediti',
+  loginText: 'Usa lo stesso account dell’estensione Chrome e scegli un pacchetto.',
+  loginButton: 'Accedi / Registrati',
+  balanceLabel: 'Saldo attuale',
+  balanceText: 'I crediti servono per risposte AI, spiegazioni, follow-up e FocusScan.',
+  dashboardCta: 'Torna alla dashboard',
+  lowTitle: 'Pochi crediti',
+  lowText: 'I tuoi crediti stanno per finire. Comprane altri per non restare senza durante un quiz.',
+  packagesBadge: 'Pacchetti una tantum',
+  packagesTitle: 'Ricarica quando serve',
+  packagesText: 'Domande salvate e cronologia restano disponibili anche senza nuovi acquisti.',
+  popular: 'Popolare',
+  loading: 'Reindirizzamento...',
+  paymentError: 'I pagamenti sono temporaneamente non disponibili. Riprova più tardi.'
+};
+CREDITS_COPY.uk = {
+  badge: 'Кредити',
+  subtitle: 'Обери одноразовий пакет кредитів. Без підписки і прихованих платежів.',
+  loginTitle: 'Увійди, щоб купити кредити',
+  loginText: 'Використай той самий акаунт, що й у Chrome-розширенні, і вибери пакет.',
+  loginButton: 'Увійти / Зареєструватися',
+  balanceLabel: 'Поточний баланс',
+  balanceText: 'Кредити використовуються для AI-відповідей, пояснень, follow-up і FocusScan.',
+  dashboardCta: 'Назад до панелі',
+  lowTitle: 'Мало кредитів',
+  lowText: 'Кредити майже закінчилися. Купи більше, щоб їх вистачило під час квізу.',
+  packagesBadge: 'Одноразові пакети',
+  packagesTitle: 'Поповнюй, коли потрібно',
+  packagesText: 'Збережені питання та історія навчання залишаються доступними.',
+  popular: 'Популярне',
+  loading: 'Переадресація...',
+  paymentError: 'Платежі тимчасово недоступні. Спробуй пізніше.'
 };

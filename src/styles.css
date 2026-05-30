@@ -6,16 +6,16 @@
 /* ---------- Tokens ---------- */
 :root {
   /* Backgrounds */
-  --bg-deep:       #030712;
-  --bg-surface:    rgba(15, 18, 35, 0.70);
-  --bg-surface-solid: #0f1223;
-  --bg-elevated:   rgba(20, 24, 48, 0.55);
+  --bg-deep:       #101318;
+  --bg-surface:    rgba(23, 28, 36, 0.86);
+  --bg-surface-solid: #171c24;
+  --bg-elevated:   rgba(29, 36, 48, 0.72);
 
   /* Accents */
-  --accent-cyan:   #06b6d4;
-  --accent-violet: #8b5cf6;
+  --accent-cyan:   #0ea5e9;
+  --accent-violet: #7c5cfc;
   --accent-rose:   #f43f5e;
-  --accent-emerald:#10b981;
+  --accent-emerald:#16a36f;
   --accent-amber:  #f59e0b;
 
   /* Text */
@@ -24,20 +24,20 @@
   --text-tertiary: #64748b;
 
   /* Borders */
-  --border:        rgba(255,255,255,0.06);
-  --border-hover:  rgba(6,182,212,0.35);
-  --border-strong: rgba(255,255,255,0.12);
+  --border:        #2b3545;
+  --border-hover:  rgba(14,165,233,0.42);
+  --border-strong: #3b4658;
 
   /* Glows */
-  --glow-cyan:     rgba(6,182,212,0.15);
-  --glow-violet:   rgba(139,92,246,0.15);
-  --glow-cyan-strong: rgba(6,182,212,0.35);
+  --glow-cyan:     rgba(14,165,233,0.14);
+  --glow-violet:   rgba(124,92,252,0.18);
+  --glow-cyan-strong: rgba(14,165,233,0.32);
 
   /* Gradients */
-  --grad-primary:  linear-gradient(135deg, #06b6d4, #8b5cf6);
-  --grad-primary-hover: linear-gradient(135deg, #22d3ee, #a78bfa);
-  --grad-mesh:     radial-gradient(ellipse at 20% 0%, rgba(6,182,212,0.12) 0%, transparent 50%),
-                   radial-gradient(ellipse at 80% 100%, rgba(139,92,246,0.10) 0%, transparent 50%),
+  --grad-primary:  linear-gradient(135deg, #7c5cfc, #0ea5e9);
+  --grad-primary-hover: linear-gradient(135deg, #8c72ff, #38bdf8);
+  --grad-mesh:     linear-gradient(140deg, rgba(124, 92, 252, 0.14), transparent 34%),
+                   linear-gradient(210deg, rgba(14, 165, 233, 0.10), transparent 38%),
                    var(--bg-deep);
 
   /* Typography */
@@ -47,9 +47,9 @@
   /* Radii */
   --radius-sm:     0.5rem;
   --radius-md:     0.75rem;
-  --radius-lg:     1rem;
-  --radius-xl:     1.25rem;
-  --radius-2xl:    1.5rem;
+  --radius-lg:     0.75rem;
+  --radius-xl:     0.875rem;
+  --radius-2xl:    1rem;
   --radius-full:   9999px;
 
   /* Shadows */

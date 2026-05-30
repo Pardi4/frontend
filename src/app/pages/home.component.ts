@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { SeoService } from '../seo.service';
-import { CHROME_WEB_STORE_URL, Locale, pathFor } from '../site-content';
+import { CHROME_WEB_STORE_URL, Locale, PageKey, pathFor } from '../site-content';
 import { ShellComponent } from './shell.component';
 
 @Component({
@@ -20,8 +20,8 @@ import { ShellComponent } from './shell.component';
           <div class="container hero-container">
             <p class="eyebrow">{{ text.hero.eyebrow }}</p>
             <h1 class="hero-title delay-1">
-              {{ locale === 'pl' ? 'Rozwiązuj quizy z' : 'Unlock the ultimate' }}
-              <span class="text-gradient-strong">{{ locale === 'pl' ? 'mocą AI' : 'Quiz Solving Power' }}</span>
+              {{ text.hero.headingStart }}
+              <span class="text-gradient-strong">{{ text.hero.headingAccent }}</span>
             </h1>
             <p class="hero-lead delay-2">{{ text.hero.lead }}</p>
             <div class="hero-actions delay-3">
@@ -754,15 +754,17 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.locale = (this.route.snapshot.data['locale'] || 'en') as Locale;
-    this.text = HOME_COPY[this.locale];
+    this.text = HOME_COPY[this.locale] || HOME_COPY.en;
     this.seo.applyPage('home', this.locale);
   }
 }
 
-const HOME_COPY: Record<Locale, any> = {
+const HOME_COPY: Partial<Record<Locale, any>> & { en: any; pl: any } = {
   en: {
     hero: {
       eyebrow: 'AI quiz solver Chrome extension',
+      headingStart: 'Unlock the ultimate',
+      headingAccent: 'Quiz Solving Power',
       lead: 'A clean browser extension for quick answer suggestions, short explanations, saved study notes, and custom history practice quizzes.',
       primary: 'Install from Chrome Web Store',
       secondary: 'See how it works',
@@ -832,6 +834,8 @@ const HOME_COPY: Record<Locale, any> = {
   pl: {
     hero: {
       eyebrow: 'Rozszerzenie Chrome AI quiz solver',
+      headingStart: 'Rozwiązuj quizy z',
+      headingAccent: 'mocą AI',
       lead: 'Przejrzyste rozszerzenie do szybkich sugestii odpowiedzi, krótkich wyjaśnień pojęć, własnych notatek i quizów powtórkowych.',
       primary: 'Zainstaluj z Chrome Web Store',
       secondary: 'Zobacz jak to działa',
@@ -899,3 +903,211 @@ const HOME_COPY: Record<Locale, any> = {
     ]
   }
 };
+
+const HOME_LOCALE_TEXT: Record<Exclude<Locale, 'en' | 'pl'>, any> = {
+  de: {
+    headingStart: 'Löse Quizze mit',
+    headingAccent: 'KI-Power',
+    eyebrow: 'KI-Quiz-Solver Chrome-Erweiterung',
+    lead: 'Eine klare Browser-Erweiterung für schnelle Antwortvorschläge, kurze Erklärungen, Lernnotizen und Quizze aus deiner Historie.',
+    primary: 'Aus dem Chrome Web Store installieren',
+    secondary: 'So funktioniert es',
+    proof: ['Testportal, Moodle, Canvas, Forms und mehr', 'Notizen und Bilder werden mit Fragen gespeichert', 'Teilbare Quizze aus deiner Historie'],
+    how: ['So funktioniert es', 'Ein verbundener Workflow statt vieler einzelner Tools', 'QuizSolver verbindet Live-Antwortsuche mit späterem Lernen.'],
+    steps: [['Installieren und anmelden', 'Erstelle ein kostenloses Konto und nutze dieselben Daten in Erweiterung und Website.'], ['Lösen oder scannen', 'Nutze automatisches Lösen oder FocusScan für Fragen in Bildern.'], ['Wiederholen und lernen', 'Gelöste Fragen werden zu Notizen, Karteikarten und Übungsquizzen.']],
+    features: ['Kernfunktionen', 'Für echte Quiz-Workflows gebaut', 'Keine Füllfunktionen, sondern Werkzeuge, die beim Lernen helfen.', ['Antwortvorschläge', 'Scanne sichtbare Fragen und erhalte sofort wahrscheinliche KI-Antworten.'], ['Erklärungen', 'Lass dir die Logik hinter der Antwort kurz erklären.'], ['Bilder speichern', 'Fragenbilder werden mit deiner Historie gesichert.'], ['Eigene Notizen', 'Füge Kommentare, Formeln und Hinweise zu jeder Frage hinzu.'], ['Quizze aus Historie', 'Erstelle Übungssets aus gespeicherten Fragen.'], ['Teilbare Links', 'Teile ausgewählte Fragen als öffentliches Quiz.'], ['FocusScan', 'Markiere jede Bildschirmregion, wenn Fragen in Bildern stecken.'], ['Mehrsprachig', 'Oberfläche, Website und Erweiterung in mehreren Sprachen.']],
+    pricing: ['Einfache Credit-Preise', 'Lade nur auf, wenn du es brauchst', 'Keine Abos. Antworten und Erklärungen nutzen Credits, deine Historie bleibt verfügbar.', 'Beliebt'],
+    faqTitle: 'Häufige Fragen'
+  },
+  es: {
+    headingStart: 'Resuelve quizzes con',
+    headingAccent: 'potencia AI',
+    eyebrow: 'Extensión Chrome AI quiz solver',
+    lead: 'Una extensión limpia para sugerencias rápidas, explicaciones breves, notas guardadas y quizzes de práctica desde tu historial.',
+    primary: 'Instalar desde Chrome Web Store',
+    secondary: 'Ver cómo funciona',
+    proof: ['Testportal, Moodle, Canvas, Forms y más', 'Notas e imágenes guardadas con preguntas', 'Quizzes compartibles desde el historial'],
+    how: ['Cómo funciona', 'Un flujo conectado, no diez herramientas sueltas', 'QuizSolver conecta respuestas en vivo con estudio posterior.'],
+    steps: [['Instala e inicia sesión', 'Crea una cuenta gratis y usa los mismos datos en la extensión y la web.'], ['Resuelve o escanea', 'Usa solución automática o FocusScan para preguntas en imágenes.'], ['Repasa y estudia', 'Las preguntas resueltas se convierten en notas, tarjetas y quizzes.']],
+    features: ['Funciones principales', 'Creado para flujos reales de quiz', 'Sin widgets de relleno: solo herramientas que ayudan a estudiar.', ['Sugerencias de respuesta', 'Escanea preguntas visibles y recibe respuestas probables al instante.'], ['Explicaciones', 'Obtén una explicación breve de la lógica de la respuesta.'], ['Guarda imágenes', 'Las imágenes de preguntas se guardan con tu historial.'], ['Notas propias', 'Añade comentarios, fórmulas o recordatorios.'], ['Quizzes del historial', 'Convierte preguntas guardadas en sets de práctica.'], ['Links compartibles', 'Comparte preguntas seleccionadas como quiz público.'], ['FocusScan', 'Selecciona cualquier zona de pantalla con preguntas.'], ['Multiidioma', 'Interfaz, web y extensión en varios idiomas.']],
+    pricing: ['Precios simples por créditos', 'Recarga solo cuando lo necesites', 'Sin suscripciones. Las respuestas y explicaciones usan créditos; el historial queda disponible.', 'Popular'],
+    faqTitle: 'Preguntas frecuentes'
+  },
+  fr: {
+    headingStart: 'Résolvez des quiz avec',
+    headingAccent: 'la puissance IA',
+    eyebrow: 'Extension Chrome IA quiz solver',
+    lead: 'Une extension claire pour suggestions rapides, explications courtes, notes sauvegardées et entraînement depuis l’historique.',
+    primary: 'Installer depuis Chrome Web Store',
+    secondary: 'Voir le fonctionnement',
+    proof: ['Testportal, Moodle, Canvas, Forms et plus', 'Notes et images sauvegardées avec les questions', 'Quiz partageables depuis l’historique'],
+    how: ['Fonctionnement', 'Un flux connecté, pas dix outils dispersés', 'QuizSolver relie les réponses en direct à la révision.'],
+    steps: [['Installer et se connecter', 'Créez un compte gratuit et utilisez-le dans l’extension et le site.'], ['Résoudre ou scanner', 'Utilisez la résolution automatique ou FocusScan pour les images.'], ['Réviser et apprendre', 'Les questions résolues deviennent notes, cartes et quiz.']],
+    features: ['Fonctions clés', 'Conçu pour de vrais quiz', 'Pas de widgets inutiles : uniquement les outils utiles aux étudiants.', ['Suggestions', 'Scannez les questions visibles et recevez des réponses probables.'], ['Explications', 'Comprenez rapidement la logique de la réponse.'], ['Images sauvegardées', 'Les images des questions restent dans l’historique.'], ['Notes personnelles', 'Ajoutez commentaires, formules ou rappels.'], ['Quiz d’historique', 'Transformez vos questions en entraînements.'], ['Liens partageables', 'Partagez des questions via un lien public.'], ['FocusScan', 'Sélectionnez n’importe quelle zone de l’écran.'], ['Multilingue', 'Interface, site et extension en plusieurs langues.']],
+    pricing: ['Tarifs crédits simples', 'Rechargez seulement si nécessaire', 'Pas d’abonnement. Réponses et explications utilisent des crédits, l’historique reste disponible.', 'Populaire'],
+    faqTitle: 'Questions fréquentes'
+  },
+  it: {
+    headingStart: 'Risolvi quiz con',
+    headingAccent: 'potenza AI',
+    eyebrow: 'Estensione Chrome AI quiz solver',
+    lead: 'Un’estensione pulita per suggerimenti rapidi, spiegazioni brevi, note salvate e quiz di pratica dalla cronologia.',
+    primary: 'Installa da Chrome Web Store',
+    secondary: 'Vedi come funziona',
+    proof: ['Testportal, Moodle, Canvas, Forms e altro', 'Note e immagini salvate con le domande', 'Quiz condivisibili dalla cronologia'],
+    how: ['Come funziona', 'Un flusso unico, non dieci strumenti separati', 'QuizSolver collega risposte live e ripasso successivo.'],
+    steps: [['Installa e accedi', 'Crea un account gratuito e usa gli stessi dati in estensione e sito.'], ['Risolvi o scansiona', 'Usa la soluzione automatica o FocusScan per immagini.'], ['Ripassa e studia', 'Le domande risolte diventano note, flashcard e quiz.']],
+    features: ['Funzioni principali', 'Creato per veri flussi di quiz', 'Niente funzioni inutili: solo strumenti utili allo studio.', ['Suggerimenti', 'Scansiona domande visibili e ricevi risposte probabili.'], ['Spiegazioni', 'Capisci la logica dietro la risposta.'], ['Immagini salvate', 'Le immagini delle domande restano nella cronologia.'], ['Note personali', 'Aggiungi commenti, formule o appunti.'], ['Quiz dalla cronologia', 'Crea set di pratica dalle domande salvate.'], ['Link condivisibili', 'Condividi domande come quiz pubblico.'], ['FocusScan', 'Seleziona qualsiasi area dello schermo.'], ['Multilingua', 'Interfaccia, sito ed estensione in più lingue.']],
+    pricing: ['Prezzi crediti semplici', 'Ricarica solo quando serve', 'Nessun abbonamento. Risposte e spiegazioni usano crediti; la cronologia resta disponibile.', 'Popolare'],
+    faqTitle: 'Domande frequenti'
+  },
+  uk: {
+    headingStart: 'Розв’язуй квізи з',
+    headingAccent: 'силою AI',
+    eyebrow: 'Chrome-розширення AI quiz solver',
+    lead: 'Зручне розширення для швидких підказок, коротких пояснень, збережених нотаток і практики з історії.',
+    primary: 'Встановити з Chrome Web Store',
+    secondary: 'Як це працює',
+    proof: ['Testportal, Moodle, Canvas, Forms та інші', 'Нотатки й зображення зберігаються з питаннями', 'Квізи з історії можна ділитися'],
+    how: ['Як це працює', 'Один зв’язаний workflow замість купи інструментів', 'QuizSolver поєднує живі відповіді з подальшим навчанням.'],
+    steps: [['Встанови й увійди', 'Створи безкоштовний акаунт і використовуй його в розширенні та на сайті.'], ['Розв’язуй або скануй', 'Використовуй автопошук або FocusScan для питань у зображеннях.'], ['Повторюй і вчися', 'Розв’язані питання стають нотатками, картками і тренувальними квізами.']],
+    features: ['Основні функції', 'Створено для реальних квізів', 'Без зайвих віджетів: тільки те, що допомагає навчанню.', ['Підказки відповідей', 'Скануй видимі питання і отримуй швидкі AI-відповіді.'], ['Пояснення', 'Дізнайся логіку правильної відповіді.'], ['Збереження зображень', 'Зображення питань зберігаються в історії.'], ['Власні нотатки', 'Додавай коментарі, формули і підказки.'], ['Квізи з історії', 'Створюй тренування зі збережених питань.'], ['Спільні посилання', 'Ділися вибраними питаннями як публічним квізом.'], ['FocusScan', 'Виділяй будь-яку область екрана.'], ['Багатомовність', 'Інтерфейс, сайт і розширення кількома мовами.']],
+    pricing: ['Прості ціни кредитів', 'Поповнюй лише коли потрібно', 'Без підписок. Відповіді й пояснення витрачають кредити, історія доступна завжди.', 'Популярне'],
+    faqTitle: 'Поширені питання'
+  }
+};
+
+const HOME_PLATFORM_KEYS: PageKey[] = ['testportal', 'moodle', 'canvas', 'googleForms', 'microsoftForms', 'blackboard', 'quizlet', 'socrative', 'kahoot', 'quizizz'];
+
+const HOME_DETAIL_TEXT: Record<Exclude<Locale, 'en' | 'pl'>, any> = {
+  de: {
+    platforms: ['Nahtlose Plattform-Integrationen', 'Optimiert für die Systeme, die du wirklich nutzt', 'QuizSolver arbeitet direkt mit gängigen LMS-Plattformen und Formular-Tools.'],
+    packs: [
+      ['Kleines Guthaben', '100 Credits holen', ['Einmaliger Kauf, kein Abo', 'Gut für kurze Übungstests', 'Für Antworten und Erklärungen', 'Dauerhafter Zugriff auf Notizen']],
+      ['Paket für regelmäßige Nutzung', '500 Credits wählen', ['15% günstiger als Starter', 'Ideal für wöchentliche Aufgaben', 'Hohe Antwortpriorität', 'Dauerhafter Zugriff auf Notizen']],
+      ['Große Lernsessions', '2000 Credits wählen', ['Bester Preis pro Credit', 'Perfekt für Prüfungsphasen', 'Höchste Antwortpriorität', 'Dauerhafter Zugriff auf Notizen']]
+    ],
+    faq: [
+      ['Ist QuizSolver nur für Testportal?', 'Nein. QuizSolver unterstützt Testportal, Moodle, Canvas LMS, Blackboard, Google Forms, Microsoft Forms und viele weitere Quizformate über Parsing oder FocusScan.'],
+      ['Wo finde ich gelöste Fragen?', 'Alle gelösten Fragen werden unter „Historie & Quiz” gespeichert. Du kannst sie ansehen, Notizen hinzufügen und Übungsquizze starten.'],
+      ['Kann ich Quizsets teilen?', 'Ja. Wähle Fragen aus deiner Historie, erstelle einen öffentlichen Quizlink und teile ihn mit anderen.'],
+      ['Wie funktionieren Empfehlungen?', 'Teile deinen persönlichen Link aus dem Dashboard. Nach einer ersten Aufladung erhältst du automatisch 5% Bonus-Credits.']
+    ]
+  },
+  es: {
+    platforms: ['Integraciones fluidas', 'Optimizado para los sistemas que usas', 'QuizSolver se integra con plataformas LMS y formularios comunes.'],
+    packs: [
+      ['Recarga pequeña', 'Obtener 100 créditos', ['Pago único, sin suscripción', 'Bueno para pruebas rápidas', 'Sirve para respuestas y explicaciones', 'Acceso permanente a notas']],
+      ['Pack de uso regular', 'Elegir 500 créditos', ['Ahorra 15% frente al starter', 'Ideal para tareas semanales', 'Respuesta con alta prioridad', 'Acceso permanente a notas']],
+      ['Sesiones intensas', 'Elegir 2000 créditos', ['Mejor valor por crédito', 'Perfecto para exámenes', 'Máxima prioridad de respuesta', 'Acceso permanente a notas']]
+    ],
+    faq: [
+      ['¿QuizSolver es solo para Testportal?', 'No. Soporta Testportal, Moodle, Canvas LMS, Blackboard, Google Forms, Microsoft Forms y muchos formatos de quiz mediante parser general o FocusScan.'],
+      ['¿Dónde veo mis preguntas resueltas?', 'Se guardan en “Historial y quiz”. Puedes verlas, añadir notas y crear quizzes de práctica.'],
+      ['¿Puedo compartir mis sets?', 'Sí. Selecciona preguntas del historial, genera un enlace público y compártelo con quien quieras.'],
+      ['¿Cómo funcionan los referidos?', 'Comparte tu enlace desde el dashboard. Cuando alguien se registra y compra créditos, recibes un bono del 5%.']
+    ]
+  },
+  fr: {
+    platforms: ['Intégrations fluides', 'Optimisé pour les systèmes que tu utilises', 'QuizSolver s’intègre aux LMS et outils de formulaires courants.'],
+    packs: [
+      ['Petite recharge', 'Obtenir 100 crédits', ['Achat unique, sans abonnement', 'Idéal pour des tests rapides', 'Fonctionne pour réponses et explications', 'Accès permanent aux notes']],
+      ['Pack régulier', 'Choisir 500 crédits', ['15% d’économie vs starter', 'Parfait pour les devoirs hebdomadaires', 'Réponses prioritaires', 'Accès permanent aux notes']],
+      ['Grosses sessions', 'Choisir 2000 crédits', ['Meilleur prix par crédit', 'Parfait pour les examens', 'Priorité maximale', 'Accès permanent aux notes']]
+    ],
+    faq: [
+      ['QuizSolver est-il seulement pour Testportal ?', 'Non. Il prend en charge Testportal, Moodle, Canvas LMS, Blackboard, Google Forms, Microsoft Forms et beaucoup d’autres formats via parsing ou FocusScan.'],
+      ['Où trouver mes questions résolues ?', 'Elles sont enregistrées dans “Historique et quiz”. Tu peux les revoir, ajouter des notes et lancer des quiz d’entraînement.'],
+      ['Puis-je partager mes séries ?', 'Oui. Sélectionne des questions de ton historique, crée un lien public et partage-le.'],
+      ['Comment fonctionnent les parrainages ?', 'Partage ton lien depuis le dashboard. Quand quelqu’un s’inscrit et achète des crédits, tu reçois 5% en bonus.']
+    ]
+  },
+  it: {
+    platforms: ['Integrazioni fluide', 'Ottimizzato per i sistemi che usi davvero', 'QuizSolver si integra con LMS e strumenti per moduli comuni.'],
+    packs: [
+      ['Piccola ricarica', 'Ottieni 100 crediti', ['Acquisto una tantum, niente abbonamento', 'Ottimo per test rapidi', 'Vale per risposte e spiegazioni', 'Accesso permanente alle note']],
+      ['Pack uso regolare', 'Scegli 500 crediti', ['Risparmi il 15% rispetto allo starter', 'Ideale per compiti settimanali', 'Risposte ad alta priorità', 'Accesso permanente alle note']],
+      ['Sessioni intense', 'Scegli 2000 crediti', ['Miglior valore per credito', 'Perfetto per esami', 'Massima priorità', 'Accesso permanente alle note']]
+    ],
+    faq: [
+      ['QuizSolver è solo per Testportal?', 'No. Supporta Testportal, Moodle, Canvas LMS, Blackboard, Google Forms, Microsoft Forms e molti altri formati tramite parser o FocusScan.'],
+      ['Dove trovo le domande risolte?', 'Sono salvate in “Cronologia e quiz”. Puoi rivederle, aggiungere note e creare quiz di pratica.'],
+      ['Posso condividere i miei set?', 'Sì. Seleziona domande dalla cronologia, genera un link pubblico e condividilo.'],
+      ['Come funzionano i referral?', 'Condividi il tuo link dal dashboard. Quando qualcuno si registra e compra crediti, ricevi il 5% di bonus.']
+    ]
+  },
+  uk: {
+    platforms: ['Плавні інтеграції', 'Оптимізовано для систем, якими ти реально користуєшся', 'QuizSolver працює з популярними LMS і формами напряму.'],
+    packs: [
+      ['Мале поповнення', 'Отримати 100 кредитів', ['Разова покупка, без підписки', 'Добре для швидких тренувань', 'Працює для відповідей і пояснень', 'Постійний доступ до нотаток']],
+      ['Пакет для регулярного використання', 'Вибрати 500 кредитів', ['Економія 15% проти starter', 'Зручно для щотижневих завдань', 'Високий пріоритет відповіді', 'Постійний доступ до нотаток']],
+      ['Великі навчальні сесії', 'Вибрати 2000 кредитів', ['Найкраща ціна за кредит', 'Ідеально перед іспитами', 'Найвищий пріоритет відповіді', 'Постійний доступ до нотаток']]
+    ],
+    faq: [
+      ['QuizSolver тільки для Testportal?', 'Ні. Він підтримує Testportal, Moodle, Canvas LMS, Blackboard, Google Forms, Microsoft Forms та багато інших форматів через парсер або FocusScan.'],
+      ['Де знайти розв’язані питання?', 'Усі питання зберігаються в “Історія і квіз”. Можна переглядати їх, додавати нотатки і запускати тренування.'],
+      ['Чи можна ділитися наборами?', 'Так. Обери питання з історії, створи публічне посилання і поділися ним.'],
+      ['Як працюють реферали?', 'Поділися посиланням з панелі. Коли хтось зареєструється і купить кредити, ти отримаєш 5% бонусу.']
+    ]
+  }
+};
+
+function makeHomeCopy(locale: Exclude<Locale, 'en' | 'pl'>): any {
+  const t = HOME_LOCALE_TEXT[locale];
+  const detail = HOME_DETAIL_TEXT[locale];
+  const features = t.features.slice(3).map(([title, text]: string[], i: number) => ({
+    icon: HOME_COPY.en.features.items[i].icon,
+    title,
+    text
+  }));
+  const packs = HOME_COPY.en.pricing.packs.map((pack: any, index: number) => ({
+    ...pack,
+    caption: detail.packs[index][0],
+    button: detail.packs[index][1],
+    features: detail.packs[index][2]
+  }));
+  return {
+    hero: {
+      eyebrow: t.eyebrow,
+      headingStart: t.headingStart,
+      headingAccent: t.headingAccent,
+      lead: t.lead,
+      primary: t.primary,
+      secondary: t.secondary,
+      proof: t.proof
+    },
+    how: {
+      eyebrow: t.how[0],
+      title: t.how[1],
+      subtitle: t.how[2],
+      steps: t.steps.map(([title, text]: string[]) => ({ title, text }))
+    },
+    features: {
+      eyebrow: t.features[0],
+      title: t.features[1],
+      subtitle: t.features[2],
+      items: features
+    },
+    platforms: {
+      eyebrow: detail.platforms[0],
+      title: detail.platforms[1],
+      subtitle: detail.platforms[2],
+      items: HOME_COPY.en.platforms.items.map((item: any, index: number) => ({ ...item, href: pathFor(HOME_PLATFORM_KEYS[index], locale) }))
+    },
+    pricing: {
+      eyebrow: t.pricing[0],
+      title: t.pricing[1],
+      subtitle: t.pricing[2],
+      badge: t.pricing[3],
+      packs
+    },
+    faqTitle: t.faqTitle,
+    faq: detail.faq.map(([question, answer]: string[]) => ({ question, answer }))
+  };
+}
+
+HOME_COPY.de = makeHomeCopy('de');
+HOME_COPY.es = makeHomeCopy('es');
+HOME_COPY.fr = makeHomeCopy('fr');
+HOME_COPY.it = makeHomeCopy('it');
+HOME_COPY.uk = makeHomeCopy('uk');

@@ -6,6 +6,210 @@ import { SeoService } from '../seo.service';
 import { Locale, pageData, pathFor } from '../site-content';
 import { ShellComponent } from './shell.component';
 
+type DashboardUi = {
+  dashboard: string;
+  credits: string;
+  welcomeUser: string;
+  dashboardIntro: string;
+  questionsSolved: string;
+  referralBonus: string;
+  referralCode: string;
+  referralMockTitle: string;
+  greeting: string;
+  lowCreditsTitle: string;
+  lowCreditsText: string;
+  buyCredits: string;
+  referralTitle: string;
+  referralText: string;
+  copied: string;
+  copy: string;
+  signups: string;
+  purchases: string;
+  bonusCredits: string;
+  ofPurchase: string;
+  history: string;
+  historyTitle: string;
+  noPurchases: string;
+};
+
+const DASHBOARD_UI: Record<Locale, DashboardUi> = {
+  en: {
+    dashboard: 'Dashboard',
+    credits: 'Credits',
+    welcomeUser: 'Welcome, User',
+    dashboardIntro: 'Credits, purchase history, and your referral code in one place.',
+    questionsSolved: 'Questions solved',
+    referralBonus: 'Referral bonus',
+    referralCode: 'Referral code',
+    referralMockTitle: 'Refer users and earn 5%',
+    greeting: 'Hi,',
+    lowCreditsTitle: 'Your credits are running low',
+    lowCreditsText: 'Buy more so you do not run out during a quiz.',
+    buyCredits: 'Buy credits',
+    referralTitle: 'Refer users and earn 5% of bought credits',
+    referralText: 'When someone signs up from your link and buys credits, you receive a bonus equal to 5% of those credits. The buyer keeps the full purchase.',
+    copied: 'Copied',
+    copy: 'Copy',
+    signups: 'Signups',
+    purchases: 'Purchases',
+    bonusCredits: 'Bonus credits',
+    ofPurchase: 'Of purchase',
+    history: 'History',
+    historyTitle: 'Purchases and bonuses',
+    noPurchases: 'No purchases yet.'
+  },
+  pl: {
+    dashboard: 'Panel',
+    credits: 'Kredyty',
+    welcomeUser: 'Witaj, Użytkowniku',
+    dashboardIntro: 'Kredyty, historia zakupów i kod polecający w jednym miejscu.',
+    questionsSolved: 'Rozwiązane pytania',
+    referralBonus: 'Bonus z poleceń',
+    referralCode: 'Kod polecający',
+    referralMockTitle: 'Polecaj i odbieraj 5% kredytów',
+    greeting: 'Cześć,',
+    lowCreditsTitle: 'Twoje kredyty zaraz się skończą',
+    lowCreditsText: 'Kup więcej, aby nie zabrakło ich podczas quizu.',
+    buyCredits: 'Kup kredyty',
+    referralTitle: 'Polecaj i odbieraj 5% kupionych kredytów',
+    referralText: 'Gdy ktoś zarejestruje się z Twojego linku i kupi kredyty, dostajesz bonus równy 5% tej liczby kredytów. Kupujący nic nie traci.',
+    copied: 'Skopiowano',
+    copy: 'Kopiuj',
+    signups: 'Rejestracje',
+    purchases: 'Zakupy',
+    bonusCredits: 'Kredyty bonusowe',
+    ofPurchase: 'Od zakupu',
+    history: 'Historia',
+    historyTitle: 'Zakupy i bonusy',
+    noPurchases: 'Nie ma jeszcze zakupów.'
+  },
+  de: {
+    dashboard: 'Dashboard',
+    credits: 'Credits',
+    welcomeUser: 'Willkommen, Nutzer',
+    dashboardIntro: 'Credits, Kaufhistorie und dein Empfehlungscode an einem Ort.',
+    questionsSolved: 'Gelöste Fragen',
+    referralBonus: 'Empfehlungsbonus',
+    referralCode: 'Empfehlungscode',
+    referralMockTitle: 'Empfehlen und 5% Credits erhalten',
+    greeting: 'Hallo,',
+    lowCreditsTitle: 'Deine Credits werden knapp',
+    lowCreditsText: 'Kaufe mehr, damit sie während eines Quiz nicht ausgehen.',
+    buyCredits: 'Credits kaufen',
+    referralTitle: 'Empfehle Nutzer und erhalte 5% gekaufter Credits',
+    referralText: 'Wenn sich jemand über deinen Link registriert und Credits kauft, erhältst du 5% dieser Credits als Bonus. Der Käufer behält den vollen Kauf.',
+    copied: 'Kopiert',
+    copy: 'Kopieren',
+    signups: 'Registrierungen',
+    purchases: 'Käufe',
+    bonusCredits: 'Bonus-Credits',
+    ofPurchase: 'Vom Kauf',
+    history: 'Historie',
+    historyTitle: 'Käufe und Boni',
+    noPurchases: 'Noch keine Käufe.'
+  },
+  es: {
+    dashboard: 'Panel',
+    credits: 'Créditos',
+    welcomeUser: 'Bienvenido, usuario',
+    dashboardIntro: 'Créditos, historial de compras y código de referido en un solo lugar.',
+    questionsSolved: 'Preguntas resueltas',
+    referralBonus: 'Bono de referido',
+    referralCode: 'Código de referido',
+    referralMockTitle: 'Recomienda y recibe 5% de créditos',
+    greeting: 'Hola,',
+    lowCreditsTitle: 'Tus créditos están por acabarse',
+    lowCreditsText: 'Compra más para no quedarte sin créditos durante un quiz.',
+    buyCredits: 'Comprar créditos',
+    referralTitle: 'Recomienda usuarios y gana 5% de los créditos comprados',
+    referralText: 'Cuando alguien se registra con tu enlace y compra créditos, recibes un bono equivalente al 5% de esos créditos. El comprador conserva toda su compra.',
+    copied: 'Copiado',
+    copy: 'Copiar',
+    signups: 'Registros',
+    purchases: 'Compras',
+    bonusCredits: 'Créditos de bono',
+    ofPurchase: 'De la compra',
+    history: 'Historial',
+    historyTitle: 'Compras y bonos',
+    noPurchases: 'Todavía no hay compras.'
+  },
+  fr: {
+    dashboard: 'Tableau de bord',
+    credits: 'Crédits',
+    welcomeUser: 'Bienvenue, utilisateur',
+    dashboardIntro: 'Crédits, historique d’achat et code de parrainage au même endroit.',
+    questionsSolved: 'Questions résolues',
+    referralBonus: 'Bonus de parrainage',
+    referralCode: 'Code de parrainage',
+    referralMockTitle: 'Parraine et reçois 5% de crédits',
+    greeting: 'Bonjour,',
+    lowCreditsTitle: 'Tes crédits sont presque épuisés',
+    lowCreditsText: 'Achète-en davantage pour ne pas en manquer pendant un quiz.',
+    buyCredits: 'Acheter des crédits',
+    referralTitle: 'Parraine des utilisateurs et gagne 5% des crédits achetés',
+    referralText: 'Quand quelqu’un s’inscrit avec ton lien et achète des crédits, tu reçois un bonus égal à 5% de ces crédits. L’acheteur garde tout son achat.',
+    copied: 'Copié',
+    copy: 'Copier',
+    signups: 'Inscriptions',
+    purchases: 'Achats',
+    bonusCredits: 'Crédits bonus',
+    ofPurchase: 'De l’achat',
+    history: 'Historique',
+    historyTitle: 'Achats et bonus',
+    noPurchases: 'Aucun achat pour l’instant.'
+  },
+  it: {
+    dashboard: 'Dashboard',
+    credits: 'Crediti',
+    welcomeUser: 'Benvenuto, utente',
+    dashboardIntro: 'Crediti, cronologia acquisti e codice referral in un unico posto.',
+    questionsSolved: 'Domande risolte',
+    referralBonus: 'Bonus referral',
+    referralCode: 'Codice referral',
+    referralMockTitle: 'Invita e ricevi il 5% di crediti',
+    greeting: 'Ciao,',
+    lowCreditsTitle: 'I tuoi crediti stanno finendo',
+    lowCreditsText: 'Acquistane altri per non rimanere senza durante un quiz.',
+    buyCredits: 'Compra crediti',
+    referralTitle: 'Invita utenti e guadagna il 5% dei crediti acquistati',
+    referralText: 'Quando qualcuno si registra dal tuo link e compra crediti, ricevi un bonus pari al 5% di quei crediti. Chi compra mantiene l’intero acquisto.',
+    copied: 'Copiato',
+    copy: 'Copia',
+    signups: 'Registrazioni',
+    purchases: 'Acquisti',
+    bonusCredits: 'Crediti bonus',
+    ofPurchase: 'Dell’acquisto',
+    history: 'Cronologia',
+    historyTitle: 'Acquisti e bonus',
+    noPurchases: 'Ancora nessun acquisto.'
+  },
+  uk: {
+    dashboard: 'Панель',
+    credits: 'Кредити',
+    welcomeUser: 'Вітаємо, користувачу',
+    dashboardIntro: 'Кредити, історія покупок і реферальний код в одному місці.',
+    questionsSolved: 'Розв’язані питання',
+    referralBonus: 'Реферальний бонус',
+    referralCode: 'Реферальний код',
+    referralMockTitle: 'Запрошуй і отримуй 5% кредитів',
+    greeting: 'Привіт,',
+    lowCreditsTitle: 'Кредити скоро закінчаться',
+    lowCreditsText: 'Купи більше, щоб їх вистачило під час вікторини.',
+    buyCredits: 'Купити кредити',
+    referralTitle: 'Запрошуй користувачів і отримуй 5% куплених кредитів',
+    referralText: 'Коли хтось реєструється за твоїм посиланням і купує кредити, ти отримуєш бонус 5% від цих кредитів. Покупець нічого не втрачає.',
+    copied: 'Скопійовано',
+    copy: 'Копіювати',
+    signups: 'Реєстрації',
+    purchases: 'Покупки',
+    bonusCredits: 'Бонусні кредити',
+    ofPurchase: 'Від покупки',
+    history: 'Історія',
+    historyTitle: 'Покупки та бонуси',
+    noPurchases: 'Покупок поки немає.'
+  }
+};
+
 @Component({
   standalone: true,
   imports: [CommonModule, ShellComponent],
@@ -17,9 +221,9 @@ import { ShellComponent } from './shell.component';
           <div class="unauthorized-blur-bg" aria-hidden="true">
             <header class="dashboard-header" style="padding-top: 1rem;">
               <p class="eyebrow">DASHBOARD</p>
-              <h1>{{ locale === 'pl' ? 'Witaj, Użytkowniku' : 'Welcome, User' }}</h1>
+              <h1>{{ ui.welcomeUser }}</h1>
               <p class="desc text-secondary">
-                {{ locale === 'pl' ? 'Kredyty, historia zakupów i kod polecający w jednym miejscu.' : 'Credits, purchase history, and your referral code in one place.' }}
+                {{ ui.dashboardIntro }}
               </p>
             </header>
 
@@ -30,19 +234,19 @@ import { ShellComponent } from './shell.component';
               </div>
               <div class="stat-card glass">
                 <div class="stat-num">142</div>
-                <div class="stat-label">{{ locale === 'pl' ? 'Rozwiązane pytania' : 'Questions solved' }}</div>
+                <div class="stat-label">{{ ui.questionsSolved }}</div>
               </div>
               <div class="stat-card glass">
                 <div class="stat-num">35</div>
-                <div class="stat-label">{{ locale === 'pl' ? 'Bonus z poleceń' : 'Referral bonus' }}</div>
+                <div class="stat-label">{{ ui.referralBonus }}</div>
               </div>
             </div>
 
             <div class="referral-card glass" style="margin-bottom: 2rem;">
               <div class="referral-grid">
                 <div class="referral-info">
-                  <p class="eyebrow">{{ locale === 'pl' ? 'Kod polecający' : 'Referral code' }}</p>
-                  <h2 style="margin: 0.5rem 0;">{{ locale === 'pl' ? 'Polecaj i odbieraj 5% kredytów' : 'Refer users and earn 5%' }}</h2>
+                  <p class="eyebrow">{{ ui.referralCode }}</p>
+                  <h2 style="margin: 0.5rem 0;">{{ ui.referralMockTitle }}</h2>
                   <div class="copy-box" style="max-width: 300px;"><code class="ref-link">https://getquizsolver.com/?ref=demo123</code></div>
                 </div>
                 <div class="referral-stats" style="grid-template-columns: repeat(2, 1fr); gap: 0.5rem;">
@@ -74,9 +278,9 @@ import { ShellComponent } from './shell.component';
         <ng-template #dashboardContent>
           <header class="dashboard-header">
             <p class="eyebrow">{{ copy.dashboard }}</p>
-            <h1>{{ locale === 'pl' ? 'Cześć,' : 'Hi,' }} {{ api.currentUser()?.displayName || 'User' }}</h1>
+            <h1>{{ ui.greeting }} {{ api.currentUser()?.displayName || 'User' }}</h1>
             <p class="desc text-secondary">
-              {{ locale === 'pl' ? 'Kredyty, historia zakupów i kod polecający w jednym miejscu.' : 'Credits, purchase history, and your referral code in one place.' }}
+              {{ ui.dashboardIntro }}
             </p>
           </header>
 
@@ -92,26 +296,26 @@ import { ShellComponent } from './shell.component';
               <div class="stat-num">
                 {{ api.currentUser()?.stats?.totalQuestionsSolved || 0 }}
               </div>
-              <div class="stat-label">{{ locale === 'pl' ? 'Rozwiązane pytania' : 'Questions solved' }}</div>
+              <div class="stat-label">{{ ui.questionsSolved }}</div>
             </article>
             <article class="stat-card glass glass-hover">
               <div class="stat-num">
                 {{ referral().referralCredits || 0 }}
               </div>
-              <div class="stat-label">{{ locale === 'pl' ? 'Bonus z poleceń' : 'Referral bonus' }}</div>
+              <div class="stat-label">{{ ui.referralBonus }}</div>
             </article>
           </section>
 
           <section class="credit-warning glass" *ngIf="lowCredits()">
             <div>
               <p class="eyebrow">{{ copy.credits }}</p>
-              <h2>{{ locale === 'pl' ? 'Twoje kredyty zaraz się skończą' : 'Your credits are running low' }}</h2>
+              <h2>{{ ui.lowCreditsTitle }}</h2>
               <p class="text-secondary">
-                {{ locale === 'pl' ? 'Kup więcej, aby nie zabrakło ich podczas quizu.' : 'Buy more so you do not run out during a quiz.' }}
+                {{ ui.lowCreditsText }}
               </p>
             </div>
             <a class="btn btn-primary" [href]="creditsPath()">
-              {{ locale === 'pl' ? 'Kup kredyty' : 'Buy credits' }}
+              {{ ui.buyCredits }}
             </a>
           </section>
 
@@ -120,34 +324,34 @@ import { ShellComponent } from './shell.component';
             <div class="referral-card glass">
               <div class="referral-grid">
                 <div class="referral-info">
-                  <p class="eyebrow">{{ locale === 'pl' ? 'Kod polecający' : 'Referral code' }}</p>
-                  <h2>{{ locale === 'pl' ? 'Polecaj i odbieraj 5% kupionych kredytów' : 'Refer users and earn 5% of bought credits' }}</h2>
+                  <p class="eyebrow">{{ ui.referralCode }}</p>
+                  <h2>{{ ui.referralTitle }}</h2>
                   <p class="text-secondary">
-                    {{ locale === 'pl' ? 'Gdy ktoś zarejestruje się z Twojego linku i kupi kredyty, dostajesz bonus równy 5% tej liczby kredytów. Kupujący nic nie traci.' : 'When someone signs up from your link and buys credits, you receive a bonus equal to 5% of those credits. The buyer keeps the full purchase.' }}
+                    {{ ui.referralText }}
                   </p>
                   <div class="copy-box">
                     <code class="ref-link">{{ referral().referralLink || 'Loading...' }}</code>
                     <button class="btn btn-primary btn-sm" type="button" (click)="copyReferral()">
-                      {{ copied ? (locale === 'pl' ? 'Skopiowano' : 'Copied') : (locale === 'pl' ? 'Kopiuj' : 'Copy') }}
+                      {{ copied ? ui.copied : ui.copy }}
                     </button>
                   </div>
                 </div>
                 <div class="referral-stats">
                   <div class="glass stat-box">
                     <strong class="stat-val">{{ referral().referredUsers || 0 }}</strong>
-                    <span class="stat-lbl text-secondary">{{ locale === 'pl' ? 'Rejestracje' : 'Signups' }}</span>
+                    <span class="stat-lbl text-secondary">{{ ui.signups }}</span>
                   </div>
                   <div class="glass stat-box">
                     <strong class="stat-val">{{ referral().referralPurchases || 0 }}</strong>
-                    <span class="stat-lbl text-secondary">{{ locale === 'pl' ? 'Zakupy' : 'Purchases' }}</span>
+                    <span class="stat-lbl text-secondary">{{ ui.purchases }}</span>
                   </div>
                   <div class="glass stat-box">
                     <strong class="stat-val">{{ referral().referralCredits || 0 }}</strong>
-                    <span class="stat-lbl text-secondary">{{ locale === 'pl' ? 'Kredyty bonusowe' : 'Bonus credits' }}</span>
+                    <span class="stat-lbl text-secondary">{{ ui.bonusCredits }}</span>
                   </div>
                   <div class="glass stat-box highlight-box">
                     <strong class="stat-val text-gradient-strong">5%</strong>
-                    <span class="stat-lbl text-secondary">{{ locale === 'pl' ? 'Od zakupu' : 'Of purchase' }}</span>
+                    <span class="stat-lbl text-secondary">{{ ui.ofPurchase }}</span>
                   </div>
                 </div>
               </div>
@@ -157,8 +361,8 @@ import { ShellComponent } from './shell.component';
           <!-- Purchase History -->
           <section class="history-section">
             <div class="history-header">
-              <p class="eyebrow">{{ locale === 'pl' ? 'Historia' : 'History' }}</p>
-              <h2>{{ locale === 'pl' ? 'Zakupy i bonusy' : 'Purchases and bonuses' }}</h2>
+              <p class="eyebrow">{{ ui.history }}</p>
+              <h2>{{ ui.historyTitle }}</h2>
             </div>
             <div class="history-list glass" *ngIf="purchases().length; else noPurchases">
               <div class="history-item" *ngFor="let purchase of purchases()">
@@ -173,7 +377,7 @@ import { ShellComponent } from './shell.component';
             </div>
             <ng-template #noPurchases>
               <div class="no-purchases glass">
-                <p class="text-secondary">{{ locale === 'pl' ? 'Nie ma jeszcze zakupów.' : 'No purchases yet.' }}</p>
+                <p class="text-secondary">{{ ui.noPurchases }}</p>
               </div>
             </ng-template>
           </section>
@@ -493,16 +697,13 @@ export class DashboardComponent implements OnInit {
   protected locale: Locale = 'en';
   protected data = pageData('dashboard', 'en');
   protected copied = false;
-  protected copy = {
-    dashboard: 'Dashboard',
-    credits: 'Credits'
-  };
+  protected ui = DASHBOARD_UI.en;
+  protected copy = { dashboard: DASHBOARD_UI.en.dashboard, credits: DASHBOARD_UI.en.credits };
 
   async ngOnInit(): Promise<void> {
     this.locale = (this.route.snapshot.data['locale'] || 'en') as Locale;
-    this.copy = this.locale === 'pl'
-      ? { dashboard: 'Panel', credits: 'Kredyty' }
-      : { dashboard: 'Dashboard', credits: 'Credits' };
+    this.ui = DASHBOARD_UI[this.locale] || DASHBOARD_UI.en;
+    this.copy = { dashboard: this.ui.dashboard, credits: this.ui.credits };
     this.data = pageData('dashboard', this.locale);
     this.seo.applyPage('dashboard', this.locale);
     await this.api.restoreSession();

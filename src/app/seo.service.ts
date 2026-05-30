@@ -6,6 +6,7 @@ import {
   Locale,
   PageKey,
   SITE_URL,
+  SUPPORTED_LOCALES,
   abs,
   contentFor,
   pageData,
@@ -41,16 +42,16 @@ export class SeoService {
     this.upsertMeta('property', 'og:description', meta.description);
     this.upsertMeta('property', 'og:image', abs('/og-image.svg'));
     this.upsertMeta('property', 'og:image:alt', 'QuizSolver AI quiz solver browser extension preview');
-    this.upsertMeta('property', 'og:locale', copy['ogLocale'] || (locale === 'pl' ? 'pl_PL' : 'en_US'));
-    this.upsertMeta('property', 'og:locale:alternate', locale === 'pl' ? 'en_US' : 'pl_PL');
+    this.upsertMeta('property', 'og:locale', copy['ogLocale'] || 'en_US');
+    const firstAlternate = SUPPORTED_LOCALES.find((option) => option.code !== locale);
+    if (firstAlternate) this.upsertMeta('property', 'og:locale:alternate', firstAlternate.ogLocale);
     this.upsertMeta('name', 'twitter:card', 'summary_large_image');
     this.upsertMeta('name', 'twitter:title', meta.title);
     this.upsertMeta('name', 'twitter:description', meta.description);
     this.upsertMeta('name', 'twitter:image', abs('/og-image.svg'));
 
     this.upsertLink('canonical', canonical);
-    this.upsertAlternate('en', abs(pathFor(pageKey, 'en')));
-    this.upsertAlternate('pl', abs(pathFor(pageKey, 'pl')));
+    SUPPORTED_LOCALES.forEach((option) => this.upsertAlternate(option.htmlLang, abs(pathFor(pageKey, option.code))));
     this.upsertAlternate('x-default', abs(pathFor(pageKey, 'en')));
     this.upsertJsonLd(this.buildJsonLd(pageKey, locale, data, meta, canonical));
   }
@@ -120,7 +121,7 @@ export class SeoService {
           '@type': 'ContactPoint',
           url: abs('/privacy#contact'),
           contactType: 'customer support',
-          availableLanguage: ['English', 'Polish']
+          availableLanguage: SUPPORTED_LOCALES.map((option) => option.label)
         }
       },
       {
@@ -133,7 +134,7 @@ export class SeoService {
         downloadUrl: CHROME_WEB_STORE_URL,
         installUrl: CHROME_WEB_STORE_URL,
         sameAs: [CHROME_WEB_STORE_URL],
-        inLanguage: ['en', 'pl'],
+        inLanguage: SUPPORTED_LOCALES.map((option) => option.htmlLang),
         description: meta.description,
         creator: { '@id': `${homeUrl}#organization` },
         featureList: [
