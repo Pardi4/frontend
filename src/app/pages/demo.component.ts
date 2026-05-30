@@ -47,13 +47,13 @@ const COPY: Partial<Record<Locale, DemoCopy>> & { en: DemoCopy; pl: DemoCopy } =
   en: {
     eyebrow: 'Interactive onboarding',
     title: 'Try QuizSolver on a safe demo quiz',
-    lead: 'Five predefined questions show how the extension works. This page never consumes credits, so you can try each mode safely.',
+    lead: 'Five predefined everyday questions walk through the real extension flow: solve a visible question, use Hint mode, fill text answers, handle dropdowns and try the quick overlay. The demo never consumes credits.',
     install: 'Install extension',
     openStore: 'Open Chrome Web Store',
     demoBadge: 'No credits used',
     localBadge: 'Guided practice',
     mapTitle: 'How to use this demo',
-    mapText: 'Start the extension tutorial, then open the QuizSolver popup on this page. You can also use Alt+Q to open the quick overlay.',
+    mapText: 'Click Start extension tutorial first. The extension will point at this demo quiz step by step; then open the QuizSolver popup, follow the highlighted action, and move to the next question.',
     prev: 'Previous',
     next: 'Next question',
     restart: 'Restart demo',
@@ -64,11 +64,11 @@ const COPY: Partial<Record<Locale, DemoCopy>> & { en: DemoCopy; pl: DemoCopy } =
     chooseOption: 'Choose',
     popupTitle: 'Popup flow',
     popupSteps: [
-      'Click the QS extension icon in Chrome.',
-      'Use Solve current page for standard questions.',
-      'Turn on Hint mode to test hidden mode.',
-      'Open Quick overlay or press Alt+Q.',
-      'Select text and solve only that selection.'
+      'Click the QS extension icon in Chrome while this demo page is open.',
+      'Click Solve current page and check that the correct answer is selected.',
+      'Turn on Hint mode before solving to see a subtle clue instead of an automatic click.',
+      'Use the text and dropdown examples to see how non-radio questions are handled.',
+      'Open Quick overlay with the popup button or Alt+Q, select question text, then solve only that selection.'
     ],
     questions: [
       {
@@ -127,28 +127,28 @@ const COPY: Partial<Record<Locale, DemoCopy>> & { en: DemoCopy; pl: DemoCopy } =
   pl: {
     eyebrow: 'Interaktywny onboarding',
     title: 'Przetestuj QuizSolver na bezpiecznym demo',
-    lead: 'Pięć predefiniowanych pytań pokazuje, jak działa rozszerzenie. Ta strona nie zużywa kredytów, więc możesz spokojnie przetestować każdy tryb.',
+    lead: 'Pięć prostych pytań z codziennego życia prowadzi przez prawdziwy flow rozszerzenia: zwykłe rozwiązanie, Hint mode, odpowiedź tekstową, selecty i szybki overlay. Demo nigdy nie zużywa kredytów.',
     install: 'Zainstaluj rozszerzenie',
     openStore: 'Otwórz Chrome Web Store',
     demoBadge: 'Bez zużycia kredytów',
     localBadge: 'Tryb treningowy',
     mapTitle: 'Jak korzystać z demo',
-    mapText: 'Uruchom tutorial rozszerzenia, a potem otwórz popup QuizSolver na tej stronie. Możesz też nacisnąć Alt+Q, żeby otworzyć szybki overlay.',
+    mapText: 'Najpierw kliknij Uruchom tutorial w rozszerzeniu. Rozszerzenie pokaże po kolei, gdzie patrzeć i co kliknąć; potem otwórz popup QuizSolver, wykonaj podświetloną akcję i przejdź do następnego pytania.',
     prev: 'Poprzednie',
     next: 'Następne pytanie',
     restart: 'Zacznij od nowa',
     startTour: 'Uruchom tutorial w rozszerzeniu',
     selectText: 'Zaznacz tekst pytania',
-    selectedTip: 'Zaznacz tekst pytania, otwórz szybki overlay i kliknij Solve selected text.',
+    selectedTip: 'Zaznacz sam tekst pytania, otwórz szybki overlay i kliknij Rozwiąż zaznaczony tekst.',
     yourAnswer: 'Twoja odpowiedź',
     chooseOption: 'Wybierz',
     popupTitle: 'Co klikać w popupie',
     popupSteps: [
-      'Kliknij ikonę QS w Chrome.',
-      'Użyj Solve current page przy zwykłym pytaniu.',
-      'Włącz Hint mode, żeby sprawdzić tryb ukryty.',
-      'Otwórz Quick overlay albo naciśnij Alt+Q.',
-      'Zaznacz tekst i rozwiąż tylko zaznaczenie.'
+      'Kliknij ikonę QS w Chrome, gdy ta strona demo jest otwarta.',
+      'Kliknij Rozwiąż bieżącą stronę i sprawdź, czy poprawna odpowiedź została zaznaczona.',
+      'Włącz Hint mode przed rozwiązaniem, żeby zobaczyć dyskretną podpowiedź zamiast automatycznego kliknięcia.',
+      'Przejdź przez przykład z polem tekstowym i selectami, żeby zobaczyć obsługę innych typów pytań.',
+      'Otwórz szybki overlay przyciskiem w popupie albo skrótem Alt+Q, zaznacz tekst pytania i rozwiąż tylko zaznaczenie.'
     ],
     questions: [
       {
@@ -329,9 +329,27 @@ const DEMO_QUESTIONS: Record<Exclude<Locale, 'en' | 'pl'>, DemoQuestion[]> = {
     { ...COPY.en.questions[3], kicker: 'Paso 4', title: 'Dropdowns', instruction: 'QuizSolver completa varios selects con conceptos correctos.', question: 'Relaciona cada actividad cotidiana con su lugar habitual.', prompts: ['Cocinar', 'Dormir', 'Comprar'], options: ['Cocina', 'Dormitorio', 'Tienda'], correctText: 'Cocinar = Cocina, Dormir = Dormitorio, Comprar = Tienda' },
     { ...COPY.en.questions[4], kicker: 'Paso 5', title: 'Quick overlay', instruction: 'Selecciona el texto y resuelve solo esa selección.', question: '¿Qué herramienta abre una ventana pequeña con acciones rápidas?', options: ['Quick overlay', 'Pago de créditos', 'Panel admin', 'Historial del navegador'], correctText: 'Quick overlay' }
   ],
-  fr: COPY.en.questions,
-  it: COPY.en.questions,
-  uk: COPY.en.questions
+  fr: [
+    { ...COPY.en.questions[0], kicker: 'Étape 1', title: 'Résolution standard', instruction: 'Cliquez sur Résoudre la page dans le popup. QuizSolver doit choisir la bonne option sans utiliser de crédits.', question: 'Que faut-il prendre quand il pleut dehors ?', options: ['Lunettes de soleil', 'Parapluie', 'Serviette de plage', 'Patins'], correctText: 'Parapluie' },
+    { ...COPY.en.questions[1], kicker: 'Étape 2', title: 'Mode indice', instruction: 'Activez Hint mode avant de résoudre. La réponse sera indiquée discrètement au lieu d’être cliquée.', question: 'Quel produit garde-t-on généralement au réfrigérateur ?', options: ['Couverture', 'Lait', 'Cahier', 'Clés'], correctText: 'Lait' },
+    { ...COPY.en.questions[2], kicker: 'Étape 3', title: 'Réponse saisie', instruction: 'L’extension remplit le champ avec une réponse locale de démonstration.', question: 'Combien de jours compte une semaine normale ?', placeholder: 'Tapez la réponse', correctText: '7' },
+    { ...COPY.en.questions[3], kicker: 'Étape 4', title: 'Menus déroulants', instruction: 'QuizSolver associe chaque activité à son lieu habituel.', question: 'Associez chaque activité quotidienne au lieu où elle se déroule.', prompts: ['Cuisiner', 'Dormir', 'Faire les courses'], options: ['Cuisine', 'Chambre', 'Magasin'], correctText: 'Cuisiner = Cuisine, Dormir = Chambre, Faire les courses = Magasin' },
+    { ...COPY.en.questions[4], kicker: 'Étape 5', title: 'Overlay rapide', instruction: 'Sélectionnez le texte de la question, ouvrez l’overlay et résolvez uniquement cette sélection.', question: 'Quel outil QuizSolver ouvre une petite fenêtre avec des actions rapides ?', options: ['Quick overlay', 'Paiement des crédits', 'Panel admin', 'Historique navigateur'], correctText: 'Quick overlay' }
+  ],
+  it: [
+    { ...COPY.en.questions[0], kicker: 'Passo 1', title: 'Risoluzione standard', instruction: 'Clicca Risolvi pagina corrente nel popup. QuizSolver deve selezionare l’opzione corretta senza usare crediti.', question: 'Cosa porti con te quando fuori piove?', options: ['Occhiali da sole', 'Ombrello', 'Telo mare', 'Pattini'], correctText: 'Ombrello' },
+    { ...COPY.en.questions[1], kicker: 'Passo 2', title: 'Hint mode', instruction: 'Attiva Hint mode prima di risolvere. La risposta viene suggerita invece di essere cliccata.', question: 'Quale cosa si conserva di solito in frigorifero?', options: ['Coperta', 'Latte', 'Quaderno', 'Chiavi'], correctText: 'Latte' },
+    { ...COPY.en.questions[2], kicker: 'Passo 3', title: 'Risposta scritta', instruction: 'L’estensione riempie il campo con una risposta demo locale.', question: 'Quanti giorni ha una settimana normale?', placeholder: 'Scrivi la risposta', correctText: '7' },
+    { ...COPY.en.questions[3], kicker: 'Passo 4', title: 'Menu a tendina', instruction: 'QuizSolver abbina ogni attività al luogo corretto.', question: 'Abbina ogni attività quotidiana al luogo in cui avviene di solito.', prompts: ['Cucinare', 'Dormire', 'Fare la spesa'], options: ['Cucina', 'Camera da letto', 'Negozio'], correctText: 'Cucinare = Cucina, Dormire = Camera da letto, Fare la spesa = Negozio' },
+    { ...COPY.en.questions[4], kicker: 'Passo 5', title: 'Overlay rapido', instruction: 'Seleziona il testo della domanda, apri l’overlay e risolvi solo quella selezione.', question: 'Quale strumento QuizSolver apre una piccola finestra con azioni rapide?', options: ['Quick overlay', 'Pagamento crediti', 'Pannello admin', 'Cronologia browser'], correctText: 'Quick overlay' }
+  ],
+  uk: [
+    { ...COPY.en.questions[0], kicker: 'Крок 1', title: 'Звичайне розв’язання', instruction: 'Натисни Solve current page у popup. QuizSolver має вибрати правильний варіант без витрати кредитів.', question: 'Що варто взяти, коли надворі дощ?', options: ['Сонцезахисні окуляри', 'Парасолю', 'Пляжний рушник', 'Ковзани'], correctText: 'Парасолю' },
+    { ...COPY.en.questions[1], kicker: 'Крок 2', title: 'Hint mode', instruction: 'Увімкни Hint mode перед розв’язанням. Відповідь буде підказана, а не натиснута автоматично.', question: 'Що зазвичай зберігають у холодильнику?', options: ['Ковдру', 'Молоко', 'Зошит', 'Ключі'], correctText: 'Молоко' },
+    { ...COPY.en.questions[2], kicker: 'Крок 3', title: 'Текстова відповідь', instruction: 'Розширення заповнить поле локальною демо-відповіддю.', question: 'Скільки днів має звичайний тиждень?', placeholder: 'Введи відповідь', correctText: '7' },
+    { ...COPY.en.questions[3], kicker: 'Крок 4', title: 'Dropdown і matching', instruction: 'QuizSolver підбирає правильний варіант у кожному списку.', question: 'Зістав повсякденну дію з місцем, де вона зазвичай відбувається.', prompts: ['Готування', 'Сон', 'Покупки'], options: ['Кухня', 'Спальня', 'Магазин'], correctText: 'Готування = Кухня, Сон = Спальня, Покупки = Магазин' },
+    { ...COPY.en.questions[4], kicker: 'Крок 5', title: 'Quick overlay', instruction: 'Виділи текст питання, відкрий overlay і розв’яжи тільки виділення.', question: 'Який інструмент QuizSolver відкриває маленьке вікно зі швидкими діями?', options: ['Quick overlay', 'Оплата кредитів', 'Admin panel', 'Історія браузера'], correctText: 'Quick overlay' }
+  ]
 };
 
 (['de', 'es', 'fr', 'it', 'uk'] as const).forEach((locale) => {

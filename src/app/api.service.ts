@@ -16,12 +16,15 @@ export interface ApiResult {
 export class ApiService {
   readonly currentUser = signal<any | null>(null);
   readonly token = signal<string | null>(null);
+  readonly sessionReady = signal(false);
   readonly isBrowser: boolean;
 
   constructor(@Inject(PLATFORM_ID) platformId: object) {
     this.isBrowser = isPlatformBrowser(platformId);
     if (this.isBrowser) {
       this.token.set(this.getStoredToken());
+    } else {
+      this.sessionReady.set(true);
     }
   }
 
@@ -48,21 +51,31 @@ export class ApiService {
   }
 
   async restoreSession(): Promise<void> {
-    if (!this.token()) return;
-    const result = await this.request('/api/auth/me');
-    if (result.success && result.user) this.currentUser.set(result.user);
-    else this.clearSession();
+    if (!this.token()) {
+      this.sessionReady.set(true);
+      return;
+    }
+
+    try {
+      const result = await this.request('/api/auth/me');
+      if (result.success && result.user) this.currentUser.set(result.user);
+      else this.clearSession();
+    } finally {
+      this.sessionReady.set(true);
+    }
   }
 
   setSession(token: string, user: any): void {
     this.token.set(token);
     this.currentUser.set(user);
+    this.sessionReady.set(true);
     if (this.isBrowser) this.setStoredToken(token);
   }
 
   clearSession(): void {
     this.token.set(null);
     this.currentUser.set(null);
+    this.sessionReady.set(true);
     if (this.isBrowser) this.removeStoredToken();
   }
 

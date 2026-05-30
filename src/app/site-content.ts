@@ -181,7 +181,7 @@ export function localeFromBrowser(language: string | null | undefined): Locale {
 function routeRecord(slug: string): Record<Locale, string> {
   return SUPPORTED_LOCALES.reduce((record, option) => {
     if (!slug) {
-      record[option.code] = option.code === 'en' ? '/' : `${option.prefix}/`;
+      record[option.code] = option.code === 'en' ? '/' : option.prefix;
       return record;
     }
     record[option.code] = `${option.prefix}/${slug}`.replace(/\/+/g, '/');
@@ -194,10 +194,10 @@ const en: SiteCopy = {
   ogLocale: "en_US",
   home: {
     title: "AI Quiz Solver Chrome Extension",
-    subtitle: "Solve quizzes on Testportal, Moodle, and more using AI",
+    subtitle: "Solve and review quiz questions on Testportal, Moodle, Canvas, Google Forms, Kahoot and more",
     meta: {
-      title: "QuizSolver | AI Quiz Solver Chrome Extension",
-      description: "Solve quizzes on Testportal, Moodle, Canvas, Google Forms, and more using AI. Get instant answers and detailed explanations."
+      title: "QuizSolver | AI Quiz Solver, Kahoot Bot & Quiz Helper",
+      description: "QuizSolver is a Chrome AI quiz solver for Testportal, Moodle, Canvas, Google Forms, Kahoot and more. Get answer hints, explanations, FocusScan and practice history."
     }
   },
   common: {
@@ -541,10 +541,10 @@ const pl: SiteCopy = {
   ogLocale: "pl_PL",
   home: {
     title: "Rozszerzenie AI do rozwiązywania quizów",
-    subtitle: "Rozwiązuj quizy na platformach Testportal, Moodle i innych dzięki AI",
+    subtitle: "Rozwiązuj i powtarzaj pytania z Testportal, Moodle, Canvas, Google Forms, Kahoot i innych platform",
     meta: {
-      title: "QuizSolver | Rozszerzenie Chrome AI do rozwiązywania testów i quizów",
-      description: "Rozwiązuj testy i quizy online na Testportalu, Moodle, Canvasie i Google Forms dzięki AI. Otrzymuj natychmiastowe odpowiedzi z wyjaśnieniem."
+      title: "QuizSolver | AI quiz solver, Kahoot bot i pomoc do testów",
+      description: "QuizSolver to rozszerzenie Chrome do quizów na Testportal, Moodle, Canvas, Google Forms, Kahoot i więcej. Podpowiedzi, wyjaśnienia, FocusScan i historia nauki."
     }
   },
   common: {
@@ -939,8 +939,8 @@ const LOCALIZED_SITE: Record<ExtraLocale, LocalizedSiteBundle> = {
   de: {
     homeTitle: 'KI-Quiz-Solver Chrome-Erweiterung',
     homeSubtitle: 'Löse Quizze auf Testportal, Moodle und weiteren Plattformen mit KI',
-    homeMetaTitle: 'QuizSolver | KI-Quiz-Solver Chrome-Erweiterung',
-    homeMetaDescription: 'Löse Quizze auf Testportal, Moodle, Canvas, Google Forms und weiteren Plattformen mit KI. Erhalte sofortige Antworten und klare Erklärungen.',
+    homeMetaTitle: 'QuizSolver | KI Quiz Solver, Kahoot Bot und Quiz Helper',
+    homeMetaDescription: 'Chrome KI-Quiz-Solver für Testportal, Moodle, Canvas, Google Forms, Kahoot und mehr. Antwort-Hinweise, Erklärungen, FocusScan und Lernhistorie.',
     common: { credits: 'Credits', dashboard: 'Dashboard', buyCredits: 'Credits kaufen', logout: 'Abmelden', createAccount: 'Konto erstellen', email: 'E-Mail-Adresse', password: 'Passwort', confirmPassword: 'Passwort bestätigen', rememberMe: 'Angemeldet bleiben', signIn: 'Anmelden', displayName: 'Anzeigename (optional)', referralCode: 'Empfehlungscode (optional)', loading: 'Wird geladen...', close: 'Schließen', demo: 'Demo', historyQuiz: 'Historie & Quiz' },
     nav: { how: 'So funktioniert es', features: 'Funktionen', pricing: 'Preise', login: 'Einloggen', signup: 'Registrieren', toggle: 'Menü öffnen' },
     footer: { product: 'Produkt', seoPages: 'Unterstützte Plattformen', legal: 'Rechtliches', privacy: 'Datenschutz', rights: '© 2026 QuizSolver. Alle Rechte vorbehalten.', description: 'QuizSolver KI-Quiz-Solver Chrome-Erweiterung.' },
@@ -958,8 +958,8 @@ const LOCALIZED_SITE: Record<ExtraLocale, LocalizedSiteBundle> = {
   es: {
     homeTitle: 'Extensión Chrome de IA para resolver quizzes',
     homeSubtitle: 'Resuelve quizzes en Testportal, Moodle y más con IA',
-    homeMetaTitle: 'QuizSolver | Extensión Chrome de IA para quizzes',
-    homeMetaDescription: 'Resuelve quizzes en Testportal, Moodle, Canvas, Google Forms y más con IA. Obtén respuestas rápidas y explicaciones claras.',
+    homeMetaTitle: 'QuizSolver | AI Quiz Solver, Kahoot Bot y Quiz Helper',
+    homeMetaDescription: 'Extensión Chrome para quizzes en Testportal, Moodle, Canvas, Google Forms, Kahoot y más. Pistas, explicaciones, FocusScan e historial.',
     common: { credits: 'Créditos', dashboard: 'Panel', buyCredits: 'Comprar créditos', logout: 'Cerrar sesión', createAccount: 'Crear cuenta', email: 'Correo electrónico', password: 'Contraseña', confirmPassword: 'Confirmar contraseña', rememberMe: 'Recordarme', signIn: 'Iniciar sesión', displayName: 'Nombre visible (opcional)', referralCode: 'Código de referido (opcional)', loading: 'Cargando...', close: 'Cerrar', demo: 'Demo', historyQuiz: 'Historial y quiz' },
     nav: { how: 'Cómo funciona', features: 'Funciones', pricing: 'Precios', login: 'Entrar', signup: 'Registrarse', toggle: 'Abrir menú' },
     footer: { product: 'Producto', seoPages: 'Plataformas compatibles', legal: 'Legal', privacy: 'Privacidad', rights: '© 2026 QuizSolver. Todos los derechos reservados.', description: 'Extensión Chrome QuizSolver para resolver quizzes con IA.' },
@@ -977,8 +977,8 @@ const LOCALIZED_SITE: Record<ExtraLocale, LocalizedSiteBundle> = {
   fr: {
     homeTitle: 'Extension Chrome IA pour résoudre des quiz',
     homeSubtitle: 'Résolvez des quiz sur Testportal, Moodle et plus avec l’IA',
-    homeMetaTitle: 'QuizSolver | Extension Chrome IA pour quiz',
-    homeMetaDescription: 'Résolvez des quiz sur Testportal, Moodle, Canvas, Google Forms et plus avec l’IA. Obtenez des réponses rapides et des explications claires.',
+    homeMetaTitle: 'QuizSolver | AI Quiz Solver, Kahoot Bot et Quiz Helper',
+    homeMetaDescription: 'Extension Chrome pour Testportal, Moodle, Canvas, Google Forms, Kahoot et plus. Indices, explications, FocusScan et historique de révision.',
     common: { credits: 'Crédits', dashboard: 'Tableau de bord', buyCredits: 'Acheter des crédits', logout: 'Déconnexion', createAccount: 'Créer un compte', email: 'Adresse e-mail', password: 'Mot de passe', confirmPassword: 'Confirmer le mot de passe', rememberMe: 'Se souvenir de moi', signIn: 'Connexion', displayName: 'Nom affiché (optionnel)', referralCode: 'Code de parrainage (optionnel)', loading: 'Chargement...', close: 'Fermer', demo: 'Démo', historyQuiz: 'Historique et quiz' },
     nav: { how: 'Fonctionnement', features: 'Fonctions', pricing: 'Tarifs', login: 'Connexion', signup: 'Inscription', toggle: 'Ouvrir le menu' },
     footer: { product: 'Produit', seoPages: 'Plateformes prises en charge', legal: 'Légal', privacy: 'Confidentialité', rights: '© 2026 QuizSolver. Tous droits réservés.', description: 'Extension Chrome QuizSolver pour résoudre des quiz avec l’IA.' },
@@ -996,8 +996,8 @@ const LOCALIZED_SITE: Record<ExtraLocale, LocalizedSiteBundle> = {
   it: {
     homeTitle: 'Estensione Chrome AI per quiz',
     homeSubtitle: 'Risolvi quiz su Testportal, Moodle e altre piattaforme con l’AI',
-    homeMetaTitle: 'QuizSolver | Estensione Chrome AI per quiz',
-    homeMetaDescription: 'Risolvi quiz su Testportal, Moodle, Canvas, Google Forms e altro con l’AI. Ottieni risposte immediate e spiegazioni chiare.',
+    homeMetaTitle: 'QuizSolver | AI Quiz Solver, Kahoot Bot e Quiz Helper',
+    homeMetaDescription: 'Estensione Chrome per quiz su Testportal, Moodle, Canvas, Google Forms, Kahoot e altro. Suggerimenti, spiegazioni, FocusScan e cronologia.',
     common: { credits: 'Crediti', dashboard: 'Dashboard', buyCredits: 'Compra crediti', logout: 'Esci', createAccount: 'Crea account', email: 'Indirizzo email', password: 'Password', confirmPassword: 'Conferma password', rememberMe: 'Ricordami', signIn: 'Accedi', displayName: 'Nome visualizzato (opzionale)', referralCode: 'Codice referral (opzionale)', loading: 'Caricamento...', close: 'Chiudi', demo: 'Demo', historyQuiz: 'Cronologia e quiz' },
     nav: { how: 'Come funziona', features: 'Funzioni', pricing: 'Prezzi', login: 'Accedi', signup: 'Registrati', toggle: 'Apri menu' },
     footer: { product: 'Prodotto', seoPages: 'Piattaforme supportate', legal: 'Legale', privacy: 'Privacy', rights: '© 2026 QuizSolver. Tutti i diritti riservati.', description: 'Estensione Chrome QuizSolver per risolvere quiz con l’AI.' },
@@ -1015,8 +1015,8 @@ const LOCALIZED_SITE: Record<ExtraLocale, LocalizedSiteBundle> = {
   uk: {
     homeTitle: 'Chrome-розширення AI Quiz Solver',
     homeSubtitle: 'Розв’язуй квізи на Testportal, Moodle та інших платформах за допомогою AI',
-    homeMetaTitle: 'QuizSolver | Chrome-розширення AI Quiz Solver',
-    homeMetaDescription: 'Розв’язуй квізи на Testportal, Moodle, Canvas, Google Forms та інших платформах за допомогою AI. Отримуй миттєві відповіді та зрозумілі пояснення.',
+    homeMetaTitle: 'QuizSolver | AI Quiz Solver, Kahoot Bot і Quiz Helper',
+    homeMetaDescription: 'Chrome-розширення для Testportal, Moodle, Canvas, Google Forms, Kahoot та інших квізів. Підказки, пояснення, FocusScan та історія.',
     common: { credits: 'Кредити', dashboard: 'Панель', buyCredits: 'Купити кредити', logout: 'Вийти', createAccount: 'Створити акаунт', email: 'Електронна пошта', password: 'Пароль', confirmPassword: 'Підтвердити пароль', rememberMe: 'Запам’ятати мене', signIn: 'Увійти', displayName: 'Ім’я (необов’язково)', referralCode: 'Реферальний код (необов’язково)', loading: 'Завантаження...', close: 'Закрити', demo: 'Демо', historyQuiz: 'Історія і квіз' },
     nav: { how: 'Як це працює', features: 'Функції', pricing: 'Ціни', login: 'Увійти', signup: 'Реєстрація', toggle: 'Відкрити меню' },
     footer: { product: 'Продукт', seoPages: 'Підтримувані платформи', legal: 'Правова інформація', privacy: 'Приватність', rights: '© 2026 QuizSolver. Усі права захищені.', description: 'Chrome-розширення QuizSolver для AI-відповідей у квізах.' },
@@ -1182,6 +1182,229 @@ function buildLocalizedSiteCopy(locale: ExtraLocale): SiteCopy {
   } as SiteCopy, locale);
 }
 
+function enhancePlatformTutorials(copy: SiteCopy, locale: Locale): SiteCopy {
+  const templates: Record<Locale, {
+    stepsTitle: string;
+    genericSteps: (name: string) => string[];
+    genericFeatures: string[];
+    genericFaq: (name: string) => PlatformCopy['faq'];
+    kahootSteps: string[];
+    kahootFeatures: string[];
+    kahootFaq: PlatformCopy['faq'];
+  }> = {
+    en: {
+      stepsTitle: 'Step-by-step setup',
+      genericSteps: (name) => [
+        'Install QuizSolver from the Chrome Web Store, pin the QS icon, and sign in to the same account you use on the website.',
+        `Open your ${name} quiz and wait until the current question and all visible answer options are loaded.`,
+        'Click the QuizSolver extension icon and choose Solve current page. If the page layout is unusual, use FocusScan and draw a box around the question area.',
+        'Review the suggested answer and explanation before you submit. Turn on Hint mode when you want a discreet mark instead of automatic clicking.',
+        'Save useful questions to History & quiz, add a short note, and later start a practice quiz from the saved set.'
+      ],
+      genericFeatures: [
+        'Detects visible questions, answer choices, typed inputs, checkboxes and dropdowns.',
+        'FocusScan helps when a question is inside an image, iframe, custom layout or locked container.',
+        'Hint mode can show a subtle clue while leaving the final click to you.',
+        'History, notes and practice quizzes turn solved questions into study material.'
+      ],
+      genericFaq: (name) => [
+        { question: `How do I start QuizSolver on ${name}?`, answer: `Open the ${name} quiz, click the QS icon in Chrome, then choose Solve current page. The extension reads only the visible question you ask it to solve.` },
+        { question: 'What if the extension does not detect the question?', answer: 'Use FocusScan, drag a box around the question and answer area, then run the scan again. This is useful for images, unusual layouts and embedded frames.' },
+        { question: 'Can I review the questions later?', answer: 'Yes. Save solved questions to History & quiz, add notes, mark favorites and create a practice quiz from your saved history.' }
+      ],
+      kahootSteps: [
+        'Open kahoot.it/instructions, the Kahoot lobby or the live answer screen, then click the QS extension icon.',
+        'Choose Solve whole quiz when the host shows questions and answer tiles on your device. The extension waits for each new question before suggesting or clicking an answer.',
+        'If the host hides questions, copy the Quiz ID from a Kahoot URL after quizId= and paste it into the Kahoot panel.',
+        'Use the searchable answer bank to find the current question and read the correct answer. Quiz ID mode does not spend AI credits.',
+        'Keep the floating panel open, resize it if needed, and stop auto mode from the main Kahoot action button when you want to take over.'
+      ],
+      kahootFeatures: [
+        'Two workflows: automatic visible-question solving or Quiz ID answer bank.',
+        'Quiz ID mode loads known Kahoot questions without spending AI credits.',
+        'Searchable floating panel works on desktop and mobile layouts.',
+        'Clear status text shows whether auto mode is waiting, solving or stopped.'
+      ],
+      kahootFaq: [
+        { question: 'Is Quiz ID the same as a Kahoot PIN?', answer: 'No. A PIN joins a live game. Quiz ID identifies the quiz itself and is usually visible in a Kahoot URL after quizId=.' },
+        { question: 'Why does automatic mode sometimes not start?', answer: 'Some hosts hide questions from player devices. When you cannot see the question text and answer tiles, use Quiz ID mode instead.' },
+        { question: 'Does Kahoot Quiz ID mode use credits?', answer: 'No. It displays the quiz answer bank and does not send the question to AI.' }
+      ]
+    },
+    pl: {
+      stepsTitle: 'Instrukcja krok po kroku',
+      genericSteps: (name) => [
+        'Zainstaluj QuizSolver z Chrome Web Store, przypnij ikonę QS i zaloguj się na to samo konto, którego używasz na stronie.',
+        `Otwórz quiz na ${name} i poczekaj, aż załaduje się aktualne pytanie oraz widoczne odpowiedzi.`,
+        'Kliknij ikonę rozszerzenia QuizSolver i wybierz Rozwiąż bieżącą stronę. Jeżeli układ strony jest nietypowy, użyj FocusScan i zaznacz obszar z pytaniem.',
+        'Sprawdź sugerowaną odpowiedź i wyjaśnienie przed wysłaniem. Włącz Hint mode, jeśli chcesz tylko dyskretną podpowiedź zamiast automatycznego kliknięcia.',
+        'Zapisz ważne pytania do Historii i quizu, dodaj krótką notatkę, a później uruchom quiz powtórkowy z zapisanych pytań.'
+      ],
+      genericFeatures: [
+        'Wykrywa widoczne pytania, odpowiedzi, pola tekstowe, checkboxy i listy rozwijane.',
+        'FocusScan pomaga przy pytaniach w obrazkach, iframe, nietypowym layoucie albo zablokowanym kontenerze.',
+        'Hint mode może pokazać subtelną wskazówkę, zostawiając finalne kliknięcie Tobie.',
+        'Historia, notatki i quizy powtórkowe zmieniają rozwiązane pytania w materiał do nauki.'
+      ],
+      genericFaq: (name) => [
+        { question: `Jak uruchomić QuizSolver na ${name}?`, answer: `Otwórz quiz na ${name}, kliknij ikonę QS w Chrome i wybierz Rozwiąż bieżącą stronę. Rozszerzenie czyta tylko pytanie, które sam zlecisz do rozwiązania.` },
+        { question: 'Co zrobić, gdy pytanie nie zostanie wykryte?', answer: 'Użyj FocusScan, przeciągnij ramkę wokół pytania i odpowiedzi, a potem uruchom skan ponownie. To pomaga przy obrazkach, nietypowych układach i osadzonych ramkach.' },
+        { question: 'Czy mogę wrócić do pytań później?', answer: 'Tak. Zapisuj pytania w Historii i quizie, dodawaj notatki, oznaczaj ulubione i twórz quiz powtórkowy z własnej historii.' }
+      ],
+      kahootSteps: [
+        'Wejdź na kahoot.it/instructions, do lobby Kahoota albo na ekran odpowiedzi live, a potem kliknij ikonę QS.',
+        'Wybierz Rozwiąż cały quiz, gdy host pokazuje pytania i kafelki odpowiedzi na Twoim urządzeniu. Rozszerzenie będzie czekać na kolejne pytania.',
+        'Jeżeli host ukrywa pytania, skopiuj Quiz ID z linku Kahoota po quizId= i wklej go do panelu Kahoot.',
+        'Użyj wyszukiwarki w banku odpowiedzi, żeby znaleźć aktualne pytanie i poprawną odpowiedź. Tryb Quiz ID nie zużywa kredytów AI.',
+        'Zostaw pływający panel otwarty, dopasuj jego rozmiar i zatrzymaj tryb auto głównym przyciskiem, gdy chcesz przejąć kontrolę.'
+      ],
+      kahootFeatures: [
+        'Dwa tryby: automatyczne rozwiązywanie widocznych pytań albo bank odpowiedzi po Quiz ID.',
+        'Tryb Quiz ID ładuje znane pytania Kahoot bez zużywania kredytów AI.',
+        'Wyszukiwalny panel działa wygodnie na komputerze i telefonie.',
+        'Czytelny status pokazuje, czy tryb auto czeka, rozwiązuje czy jest zatrzymany.'
+      ],
+      kahootFaq: [
+        { question: 'Czy Quiz ID to to samo co PIN Kahoota?', answer: 'Nie. PIN służy do dołączenia do gry na żywo. Quiz ID identyfikuje sam quiz i zwykle znajduje się w adresie URL po quizId=.' },
+        { question: 'Dlaczego tryb automatyczny czasem nie startuje?', answer: 'Niektórzy hostowie ukrywają pytania na urządzeniach graczy. Gdy nie widzisz treści pytania i kafelków odpowiedzi, użyj trybu Quiz ID.' },
+        { question: 'Czy tryb Kahoot Quiz ID zużywa kredyty?', answer: 'Nie. Pokazuje bank odpowiedzi quizu i nie wysyła pytania do AI.' }
+      ]
+    },
+    de: {
+      stepsTitle: 'Schritt-für-Schritt-Anleitung',
+      genericSteps: (name) => [
+        'Installiere QuizSolver aus dem Chrome Web Store, pinne das QS-Symbol und melde dich mit demselben Konto wie auf der Website an.',
+        `Öffne dein ${name}-Quiz und warte, bis die aktuelle Frage und alle sichtbaren Antwortoptionen geladen sind.`,
+        'Klicke auf das QuizSolver-Symbol und wähle Aktuelle Seite lösen. Bei ungewöhnlichen Layouts nutze FocusScan und markiere den Fragebereich.',
+        'Prüfe die vorgeschlagene Antwort und Erklärung, bevor du absendest. Nutze Hint mode, wenn du nur einen dezenten Hinweis möchtest.',
+        'Speichere wichtige Fragen in Historie & Quiz, füge eine Notiz hinzu und starte später ein Übungsquiz.'
+      ],
+      genericFeatures: ['Erkennt sichtbare Fragen, Optionen, Texteingaben, Checkboxen und Dropdowns.', 'FocusScan hilft bei Bildern, iFrames und ungewöhnlichen Layouts.', 'Hint mode zeigt einen dezenten Hinweis, ohne die Kontrolle zu übernehmen.', 'Historie, Notizen und Übungsquizze machen aus Antworten Lernmaterial.'],
+      genericFaq: (name) => [
+        { question: `Wie starte ich QuizSolver auf ${name}?`, answer: `Öffne das ${name}-Quiz, klicke auf das QS-Symbol und wähle Aktuelle Seite lösen.` },
+        { question: 'Was mache ich, wenn die Frage nicht erkannt wird?', answer: 'Nutze FocusScan und ziehe einen Rahmen um Frage und Antworten.' },
+        { question: 'Kann ich Fragen später wiederholen?', answer: 'Ja, speichere sie in Historie & Quiz und starte daraus ein Übungsquiz.' }
+      ],
+      kahootSteps: ['Öffne kahoot.it/instructions, die Lobby oder den Live-Antwortbildschirm und klicke auf QS.', 'Wähle Ganzes Quiz lösen, wenn Fragen und Antwortfelder sichtbar sind.', 'Wenn der Host Fragen versteckt, kopiere die Quiz ID aus der URL nach quizId=.', 'Suche die aktuelle Frage in der Antwortbank. Quiz-ID-Modus verbraucht keine AI-Credits.', 'Lass das Panel offen und stoppe den Auto-Modus, wenn du selbst übernehmen willst.'],
+      kahootFeatures: ['Automatischer Modus oder Quiz-ID-Antwortbank.', 'Quiz-ID-Modus verbraucht keine AI-Credits.', 'Suchbares Panel für Desktop und Mobile.', 'Status zeigt Warten, Lösen oder Gestoppt.'],
+      kahootFaq: [
+        { question: 'Ist Quiz ID dasselbe wie der Kahoot-PIN?', answer: 'Nein. Der PIN verbindet dich mit dem Live-Spiel, die Quiz ID identifiziert das Quiz.' },
+        { question: 'Warum startet Auto-Modus nicht?', answer: 'Wenn der Host Fragen versteckt, nutze den Quiz-ID-Modus.' },
+        { question: 'Verbraucht Quiz-ID-Modus Credits?', answer: 'Nein, er zeigt die Antwortbank ohne AI-Anfrage.' }
+      ]
+    },
+    es: {
+      stepsTitle: 'Guía paso a paso',
+      genericSteps: (name) => [
+        'Instala QuizSolver desde Chrome Web Store, fija el icono QS e inicia sesión con la misma cuenta del sitio web.',
+        `Abre tu quiz de ${name} y espera a que carguen la pregunta y las respuestas visibles.`,
+        'Haz clic en el icono de QuizSolver y elige Resolver página actual. Si el diseño es raro, usa FocusScan y marca el área de la pregunta.',
+        'Revisa la respuesta sugerida y la explicación antes de enviar. Usa Hint mode si prefieres una pista discreta.',
+        'Guarda preguntas útiles en Historial y quiz, añade una nota y practica después con ese conjunto.'
+      ],
+      genericFeatures: ['Detecta preguntas visibles, opciones, campos de texto, checkboxes y desplegables.', 'FocusScan ayuda con imágenes, iframes y diseños especiales.', 'Hint mode muestra una pista sin hacer el clic final.', 'Historial, notas y quizzes de práctica convierten respuestas en material de estudio.'],
+      genericFaq: (name) => [
+        { question: `¿Cómo uso QuizSolver en ${name}?`, answer: `Abre el quiz de ${name}, pulsa el icono QS y elige Resolver página actual.` },
+        { question: '¿Qué hago si no detecta la pregunta?', answer: 'Usa FocusScan y dibuja un cuadro alrededor de la pregunta y las opciones.' },
+        { question: '¿Puedo repasar preguntas después?', answer: 'Sí, guárdalas en Historial y quiz y crea una práctica desde tu historial.' }
+      ],
+      kahootSteps: ['Abre kahoot.it/instructions, el lobby o la pantalla de respuestas y pulsa QS.', 'Elige Resolver todo el quiz si ves preguntas y respuestas.', 'Si el host las oculta, copia el Quiz ID de la URL después de quizId=.', 'Busca la pregunta en el banco de respuestas. El modo Quiz ID no usa créditos de IA.', 'Mantén el panel abierto y detén el modo auto cuando quieras tomar control.'],
+      kahootFeatures: ['Modo automático o banco de respuestas por Quiz ID.', 'Quiz ID no consume créditos de IA.', 'Panel buscable para escritorio y móvil.', 'Estado claro: esperando, resolviendo o detenido.'],
+      kahootFaq: [
+        { question: '¿Quiz ID es lo mismo que el PIN de Kahoot?', answer: 'No. El PIN une al juego en vivo; el Quiz ID identifica el quiz.' },
+        { question: '¿Por qué no empieza el modo automático?', answer: 'Si el host oculta preguntas, usa el modo Quiz ID.' },
+        { question: '¿Quiz ID usa créditos?', answer: 'No, muestra el banco de respuestas sin consultar a la IA.' }
+      ]
+    },
+    fr: {
+      stepsTitle: 'Guide étape par étape',
+      genericSteps: (name) => [
+        'Installez QuizSolver depuis le Chrome Web Store, épinglez l’icône QS et connectez-vous avec le même compte.',
+        `Ouvrez votre quiz ${name} et attendez que la question et les réponses visibles soient chargées.`,
+        'Cliquez sur l’icône QuizSolver et choisissez Résoudre la page. Si la mise en page est spéciale, utilisez FocusScan.',
+        'Vérifiez la réponse proposée et l’explication avant d’envoyer. Activez Hint mode pour un indice discret.',
+        'Enregistrez les questions utiles dans Historique et quiz, ajoutez une note et révisez-les plus tard.'
+      ],
+      genericFeatures: ['Détecte questions visibles, options, champs texte, cases et listes déroulantes.', 'FocusScan aide avec images, iframes et mises en page inhabituelles.', 'Hint mode affiche un indice sans cliquer à votre place.', 'Historique, notes et quiz d’entraînement transforment les réponses en révision.'],
+      genericFaq: (name) => [
+        { question: `Comment utiliser QuizSolver sur ${name} ?`, answer: `Ouvrez le quiz ${name}, cliquez sur l’icône QS et choisissez Résoudre la page.` },
+        { question: 'Et si la question n’est pas détectée ?', answer: 'Utilisez FocusScan et encadrez la question avec les réponses.' },
+        { question: 'Puis-je réviser plus tard ?', answer: 'Oui, enregistrez les questions dans Historique et quiz.' }
+      ],
+      kahootSteps: ['Ouvrez kahoot.it/instructions, le lobby ou l’écran de réponse, puis cliquez sur QS.', 'Choisissez Résoudre tout le quiz si les questions et réponses sont visibles.', 'Si l’hôte les masque, copiez le Quiz ID dans l’URL après quizId=.', 'Cherchez la question dans la banque de réponses. Le mode Quiz ID ne consomme pas de crédits IA.', 'Gardez le panneau ouvert et arrêtez le mode auto quand vous voulez reprendre la main.'],
+      kahootFeatures: ['Mode automatique ou banque de réponses par Quiz ID.', 'Quiz ID ne consomme pas de crédits IA.', 'Panneau de recherche desktop et mobile.', 'Statut clair : attente, résolution ou arrêt.'],
+      kahootFaq: [
+        { question: 'Quiz ID est-il le PIN Kahoot ?', answer: 'Non. Le PIN rejoint le jeu en direct, le Quiz ID identifie le quiz.' },
+        { question: 'Pourquoi le mode auto ne démarre-t-il pas ?', answer: 'Si l’hôte cache les questions, utilisez le mode Quiz ID.' },
+        { question: 'Quiz ID utilise-t-il des crédits ?', answer: 'Non, il affiche la banque de réponses sans appel IA.' }
+      ]
+    },
+    it: {
+      stepsTitle: 'Guida passo passo',
+      genericSteps: (name) => [
+        'Installa QuizSolver dal Chrome Web Store, fissa l’icona QS e accedi con lo stesso account del sito.',
+        `Apri il quiz ${name} e attendi che la domanda e le risposte visibili siano caricate.`,
+        'Clicca l’icona QuizSolver e scegli Risolvi pagina corrente. Se il layout è insolito, usa FocusScan.',
+        'Controlla risposta e spiegazione prima di inviare. Usa Hint mode per un suggerimento discreto.',
+        'Salva le domande utili in Cronologia e quiz, aggiungi una nota e ripassale più tardi.'
+      ],
+      genericFeatures: ['Rileva domande visibili, opzioni, campi testo, checkbox e menu a tendina.', 'FocusScan aiuta con immagini, iframe e layout insoliti.', 'Hint mode mostra un indizio senza cliccare al posto tuo.', 'Cronologia, note e quiz di pratica trasformano le risposte in studio.'],
+      genericFaq: (name) => [
+        { question: `Come uso QuizSolver su ${name}?`, answer: `Apri il quiz ${name}, clicca QS e scegli Risolvi pagina corrente.` },
+        { question: 'E se non rileva la domanda?', answer: 'Usa FocusScan e seleziona l’area con domanda e risposte.' },
+        { question: 'Posso ripassare dopo?', answer: 'Sì, salva le domande in Cronologia e quiz.' }
+      ],
+      kahootSteps: ['Apri kahoot.it/instructions, la lobby o la schermata risposte e clicca QS.', 'Scegli Risolvi tutto il quiz se domande e risposte sono visibili.', 'Se l’host le nasconde, copia il Quiz ID dall’URL dopo quizId=.', 'Cerca la domanda nel banco risposte. Quiz ID non usa crediti AI.', 'Tieni aperto il pannello e ferma la modalità auto quando vuoi.'],
+      kahootFeatures: ['Modalità automatica o banco risposte con Quiz ID.', 'Quiz ID non consuma crediti AI.', 'Pannello cercabile per desktop e mobile.', 'Stato chiaro: attesa, risoluzione o stop.'],
+      kahootFaq: [
+        { question: 'Quiz ID è il PIN di Kahoot?', answer: 'No. Il PIN entra nella partita live; Quiz ID identifica il quiz.' },
+        { question: 'Perché auto non parte?', answer: 'Se l’host nasconde le domande, usa Quiz ID.' },
+        { question: 'Quiz ID usa crediti?', answer: 'No, mostra il banco risposte senza IA.' }
+      ]
+    },
+    uk: {
+      stepsTitle: 'Покрокова інструкція',
+      genericSteps: (name) => [
+        'Встанови QuizSolver з Chrome Web Store, закріпи іконку QS і увійди в той самий акаунт, що й на сайті.',
+        `Відкрий квіз ${name} і дочекайся, поки завантажаться питання та видимі варіанти відповіді.`,
+        'Натисни іконку QuizSolver і вибери Solve current page. Якщо макет незвичний, використай FocusScan.',
+        'Перевір запропоновану відповідь і пояснення перед відправкою. Увімкни Hint mode для непомітної підказки.',
+        'Збережи корисні питання в History & quiz, додай нотатку і повтори їх пізніше.'
+      ],
+      genericFeatures: ['Розпізнає видимі питання, варіанти, текстові поля, checkbox і dropdown.', 'FocusScan допомагає з картинками, iframe і незвичними макетами.', 'Hint mode показує підказку без фінального кліку.', 'Історія, нотатки і тренувальні квізи перетворюють відповіді на навчання.'],
+      genericFaq: (name) => [
+        { question: `Як запустити QuizSolver на ${name}?`, answer: `Відкрий квіз ${name}, натисни QS і вибери Solve current page.` },
+        { question: 'Що робити, якщо питання не знайдено?', answer: 'Використай FocusScan і виділи область з питанням та відповідями.' },
+        { question: 'Чи можна повторити питання пізніше?', answer: 'Так, збережи їх у History & quiz і створи тренувальний квіз.' }
+      ],
+      kahootSteps: ['Відкрий kahoot.it/instructions, lobby або екран відповідей і натисни QS.', 'Вибери Solve whole quiz, якщо питання й відповіді видно.', 'Якщо host приховує питання, скопіюй Quiz ID з URL після quizId=.', 'Знайди питання в банку відповідей. Quiz ID не витрачає AI-кредити.', 'Тримай панель відкритою і зупини auto mode, коли хочеш керувати сам.'],
+      kahootFeatures: ['Auto mode або банк відповідей через Quiz ID.', 'Quiz ID не витрачає AI-кредити.', 'Панель з пошуком для desktop і mobile.', 'Статус показує очікування, розв’язання або зупинку.'],
+      kahootFaq: [
+        { question: 'Quiz ID — це PIN Kahoot?', answer: 'Ні. PIN підключає до live-гри, Quiz ID ідентифікує сам квіз.' },
+        { question: 'Чому auto mode не стартує?', answer: 'Якщо host приховує питання, використовуй Quiz ID.' },
+        { question: 'Quiz ID витрачає кредити?', answer: 'Ні, він показує банк відповідей без AI-запиту.' }
+      ]
+    }
+  };
+
+  const template = templates[locale] || templates.en;
+  (Object.entries(copy.platformPages) as Array<[keyof SiteCopy['platformPages'], PlatformCopy]>).forEach(([pageKey, page]) => {
+    if (pageKey === 'kahoot') {
+      page.stepsTitle = template.stepsTitle;
+      page.steps = template.kahootSteps;
+      page.features = template.kahootFeatures;
+      page.faq = template.kahootFaq;
+      return;
+    }
+    const name = page.shortName || page.platformName;
+    page.stepsTitle = template.stepsTitle;
+    page.steps = template.genericSteps(name);
+    page.features = template.genericFeatures;
+    page.faq = template.genericFaq(name);
+  });
+  return copy;
+}
+
 const de = buildLocalizedSiteCopy('de');
 const es = buildLocalizedSiteCopy('es');
 const fr = buildLocalizedSiteCopy('fr');
@@ -1190,6 +1413,13 @@ const uk = buildLocalizedSiteCopy('uk');
 
 applySharedCopy(en, 'en');
 applySharedCopy(pl, 'pl');
+enhancePlatformTutorials(en, 'en');
+enhancePlatformTutorials(pl, 'pl');
+enhancePlatformTutorials(de, 'de');
+enhancePlatformTutorials(es, 'es');
+enhancePlatformTutorials(fr, 'fr');
+enhancePlatformTutorials(it, 'it');
+enhancePlatformTutorials(uk, 'uk');
 
 export const CONTENT: Record<Locale, SiteCopy> = {
   en: en as SiteCopy,

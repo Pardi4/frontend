@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Router, NavigationEnd } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ApiService } from '../api.service';
-import { CHROME_WEB_STORE_URL, Locale, PageKey, SUPPORTED_LOCALES, contentFor, localeFromBrowser, localeOption, pathFor } from '../site-content';
+import { CHROME_WEB_STORE_URL, Locale, PageKey, SUPPORTED_LOCALES, contentFor, localeOption, pathFor } from '../site-content';
 
 type AuthModal = 'login' | 'register' | 'verify' | 'forgot' | 'reset';
 
@@ -137,13 +137,23 @@ type AuthModal = 'login' | 'register' | 'verify' | 'forgot' | 'reset';
               <p class="cta-desc text-secondary">
                 {{ copy.shell.readyDesc }}
               </p>
-              <div class="cta-buttons">
-                <a class="btn btn-primary btn-lg" [href]="storeUrl" target="_blank" rel="noopener">
-                  {{ copy.shell.openStore }}
-                </a>
-                <a class="btn btn-outline btn-lg auth-action" [href]="authHref('register')" (click)="openAuthLink($event, 'register')">
-                  {{ copy.common.createAccount }}
-                </a>
+              <div class="cta-buttons" *ngIf="api.sessionReady()">
+                <ng-container *ngIf="api.currentUser(); else guestCta">
+                  <button class="btn btn-primary btn-lg" type="button" (click)="goToDashboard()">
+                    {{ copy.common.dashboard }}
+                  </button>
+                  <button class="btn btn-outline btn-lg" type="button" (click)="goToCredits()">
+                    {{ copy.common.buyCredits }}
+                  </button>
+                </ng-container>
+                <ng-template #guestCta>
+                  <a class="btn btn-primary btn-lg" [href]="storeUrl" target="_blank" rel="noopener">
+                    {{ copy.shell.openStore }}
+                  </a>
+                  <a class="btn btn-outline btn-lg auth-action" [href]="authHref('register')" (click)="openAuthLink($event, 'register')">
+                    {{ copy.common.createAccount }}
+                  </a>
+                </ng-template>
               </div>
             </div>
           </div>
@@ -916,13 +926,6 @@ export class ShellComponent implements OnInit, AfterViewInit, OnDestroy {
     const ref = params.get('ref');
     if (ref && !this.referralCode) this.referralCode = ref.trim();
 
-    const browserLocale = localeFromBrowser(navigator.language);
-    if (this.shouldRedirectToBrowserLocale(browserLocale)) {
-      this.markLanguageRedirected();
-      void this.router.navigateByUrl(`${pathFor('home', browserLocale)}${window.location.search}`);
-      return;
-    }
-
     this.openModalFromAuthQuery(params);
   }
 
@@ -1042,28 +1045,6 @@ export class ShellComponent implements OnInit, AfterViewInit, OnDestroy {
     url.searchParams.delete('auth');
     url.searchParams.delete('error');
     window.history.replaceState(window.history.state, '', `${url.pathname}${url.search}${url.hash}`);
-  }
-
-  private shouldRedirectToBrowserLocale(browserLocale: Locale): boolean {
-    return this.pageKey === 'home'
-      && window.location.pathname === '/'
-      && browserLocale !== 'en'
-      && !this.hasLanguageRedirected();
-  }
-
-  private hasLanguageRedirected(): boolean {
-    try {
-      return sessionStorage.getItem('lang_redirected') === 'true';
-    } catch {
-      return false;
-    }
-  }
-
-  private markLanguageRedirected(): void {
-    try {
-      sessionStorage.setItem('lang_redirected', 'true');
-    } catch {
-    }
   }
 
   protected async goToDashboard(hash?: string): Promise<void> {

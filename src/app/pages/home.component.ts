@@ -782,17 +782,17 @@ const HOME_COPY: Partial<Record<Locale, any>> & { en: any; pl: any } = {
     },
     features: {
       eyebrow: 'Core features',
-      title: 'Built around real quiz workflows',
-      subtitle: 'No filler widgets or fake calculators. Just the exact tools students need to study effectively.',
+      title: 'Tools that explain what to do next',
+      subtitle: 'QuizSolver is built around the moments that actually happen during online quizzes: visible questions, hidden answer modes, images, quick checks and revision later.',
       items: [
-        { icon: 'AI', title: 'Answer suggestions', text: 'Scan visible question boxes and receive instant, high-probability answer options from the AI model.' },
-        { icon: 'EX', title: 'Concept explanations', text: 'Click for a brief step-by-step reasoning breakdown to learn the logic behind the solution.' },
-        { icon: 'IMG', title: 'Retains question images', text: 'When a test question features an image, the extension saves the image with the question in your notes.' },
-        { icon: 'N', title: 'Custom study notes', text: 'Add your own comments, formulas, or summaries to any solved question right after answering or in the dashboard.' },
-        { icon: 'Q', title: 'History-based quizzes', text: 'Convert your list of saved questions into custom practice sets to review before exams.' },
-        { icon: 'SH', title: 'Shareable quiz links', text: 'Bundle selected questions from your history into a public link to share with teammates or friends.' },
-        { icon: 'FS', title: 'FocusScan tool', text: 'Drag and select any screen area when questions are embedded inside images, canvas frames, or locked portals.' },
-        { icon: 'PL', title: 'Bi-lingual interface', text: 'Full English and Polish language support across the extension, dashboard, and site content.' }
+        { icon: 'QD', title: 'Question detection', text: 'Click Solve current page and the extension reads the visible question, answer options, question type and images before showing a suggestion.' },
+        { icon: 'HM', title: 'Hint mode', text: 'Turn this on when you want to stay in control. QuizSolver highlights the likely answer instead of clicking it automatically.' },
+        { icon: 'FS', title: 'FocusScan', text: 'Drag around a question when it is inside an image, canvas, PDF preview or unusual portal layout. Only that selected area is scanned.' },
+        { icon: 'QO', title: 'Quick overlay', text: 'Open a small movable panel on the page for fast actions such as solving the current question or solving selected text.' },
+        { icon: 'NT', title: 'History and notes', text: 'Solved questions can be saved with answer, explanation, source page, images and your own note so you can review them later.' },
+        { icon: 'PQ', title: 'Practice quiz from history', text: 'Turn saved questions into a practice quiz, check your result, and see which answers were correct after finishing.' },
+        { icon: 'SH', title: 'Share latest questions', text: 'Choose how many recent questions to share and generate a public quiz link for classmates without giving them your account.' },
+        { icon: 'ID', title: 'Kahoot Quiz ID mode', text: 'When a Kahoot host hides questions, paste the Quiz ID from the URL to open a searchable answer bank without spending AI credits.' }
       ]
     },
     platforms: {
@@ -825,10 +825,11 @@ const HOME_COPY: Partial<Record<Locale, any>> & { en: any; pl: any } = {
     },
     faqTitle: 'Frequently asked questions',
     faq: [
-      { question: 'Is QuizSolver only for Testportal?', answer: 'No. QuizSolver supports Testportal, Moodle, Canvas LMS, Blackboard, Google Forms, Microsoft Forms, and many other common quiz formats using general parsing or FocusScan.' },
-      { question: 'Where can I find my solved questions?', answer: 'All solved questions are saved under the "History & quiz" tab. You can view them, add notes, and run practice quizzes from there.' },
-      { question: 'Can I share my quiz sets with classmates?', answer: 'Yes. You can select specific questions from your history, generate a public quiz link, and share it with anyone. They can take the quiz without using your credits.' },
-      { question: 'How do referrals work?', answer: 'You can share your unique referral link from the dashboard. When someone signs up using your link and makes their first top-up, you receive a 5% bonus credit payload instantly.' }
+      { question: 'What should I click when I open a quiz page?', answer: 'Open the QuizSolver extension and click Solve current page. If the page is supported, QuizSolver detects the visible question and answer options. If the layout is unusual, use FocusScan and draw a box around the question.' },
+      { question: 'What is Hint mode for?', answer: 'Hint mode is for situations where you do not want the extension to click anything. It marks the likely answer visually, so you decide what to select.' },
+      { question: 'Does the demo or tutorial use credits?', answer: 'No. The demo page uses predefined local questions and answers. It is there so you can learn the workflow without sending anything to AI and without spending credits.' },
+      { question: 'Where can I review solved questions later?', answer: 'Saved questions are available in History & quiz. You can add notes, mark favorites, create practice quizzes and share selected questions as a public link.' },
+      { question: 'What is the difference between a Kahoot PIN and Quiz ID?', answer: 'The PIN lets you join a live Kahoot game. The Quiz ID identifies the quiz itself and appears in some Kahoot URLs after quizId=. QuizSolver uses Quiz ID only for the answer-bank mode.' }
     ]
   },
   pl: {
@@ -853,17 +854,17 @@ const HOME_COPY: Partial<Record<Locale, any>> & { en: any; pl: any } = {
     },
     features: {
       eyebrow: 'Główne funkcje',
-      title: 'Zbudowane z myślą o realnej nauce',
-      subtitle: 'Brak zbędnych widżetów. Skupiamy się na funkcjach, które faktycznie ułatwiają studentom zapamiętywanie materiału.',
+      title: 'Funkcje, które mówią co zrobić dalej',
+      subtitle: 'QuizSolver skupia się na realnych sytuacjach z quizów: widoczne pytania, tryb podpowiedzi, obrazki, szybki overlay, historia i powtórki.',
       items: [
-        { icon: 'AI', title: 'Sugestie odpowiedzi', text: 'Skanuj widoczne pytania i otrzymuj błyskawiczne, wysoce prawdopodobne sugestie od modelu AI.' },
-        { icon: 'EX', title: 'Wyjaśnienia pojęć', text: 'Jednym kliknięciem wyświetlaj logiczne, krokowe uzasadnienie odpowiedzi, aby lepiej przyswoić wiedzę.' },
-        { icon: 'IMG', title: 'Zapisywanie obrazków', text: 'Jeśli pytanie zawiera grafikę pomocniczą, rozszerzenie zapisze ją wraz z notatką w Twojej historii.' },
-        { icon: 'N', title: 'Własne notatki', text: 'Dodawaj własne adnotacje, wzory czy komentarze do pytań bezpośrednio po rozwiązaniu lub w panelu.' },
-        { icon: 'Q', title: 'Quizy z historii', text: 'Zmień listę swoich zapisanych pytań w spersonalizowane quizy powtórkowe przed kolokwium.' },
-        { icon: 'SH', title: 'Udostępnianie linków', text: 'Wybierz zestaw pytań ze swojej historii i wygeneruj publiczny link, by podzielić się nim ze znajomymi z grupy.' },
-        { icon: 'FS', title: 'Narzędzie FocusScan', text: 'Zaznacz i zeskanuj dowolny fragment ekranu, gdy pytania są zablokowane lub wklejone jako obrazek.' },
-        { icon: 'PL', title: 'Dwujęzyczny interfejs', text: 'Pełne wsparcie dla języka polskiego i angielskiego w rozszerzeniu, panelu oraz na stronie głównej.' }
+        { icon: 'QD', title: 'Wykrywanie pytań', text: 'Klikasz Rozwiąż obecną stronę, a rozszerzenie odczytuje widoczne pytanie, odpowiedzi, typ pytania i obrazki, zanim pokaże sugestię.' },
+        { icon: 'HM', title: 'Tryb podpowiedzi', text: 'Włącz go, gdy nie chcesz automatycznego kliknięcia. QuizSolver tylko wizualnie zaznaczy prawdopodobną odpowiedź.' },
+        { icon: 'FS', title: 'FocusScan', text: 'Zaznacz obszar z pytaniem, gdy jest w obrazku, canvasie, podglądzie PDF albo nietypowym układzie strony. Skanowany jest tylko ten fragment.' },
+        { icon: 'QO', title: 'Szybki overlay', text: 'Otwórz małe, przesuwalne okno na stronie z akcjami do szybkiego rozwiązania pytania lub zaznaczonego tekstu.' },
+        { icon: 'NT', title: 'Historia i notatki', text: 'Rozwiązane pytania mogą zapisać się z odpowiedzią, wyjaśnieniem, stroną źródłową, obrazkami i Twoją własną notatką.' },
+        { icon: 'PQ', title: 'Quiz z historii', text: 'Z zapisanych pytań tworzysz quiz powtórkowy, sprawdzasz wynik i widzisz, które odpowiedzi były poprawne.' },
+        { icon: 'SH', title: 'Udostępnianie ostatnich pytań', text: 'Wybierasz ile ostatnich pytań udostępnić i generujesz publiczny link do quizu bez udostępniania konta.' },
+        { icon: 'ID', title: 'Kahoot Quiz ID', text: 'Gdy host Kahoota ukrywa pytania, wklejasz Quiz ID z adresu URL i otwierasz wyszukiwalny bank odpowiedzi bez zużywania kredytów AI.' }
       ]
     },
     platforms: {
@@ -896,10 +897,11 @@ const HOME_COPY: Partial<Record<Locale, any>> & { en: any; pl: any } = {
     },
     faqTitle: 'Najczęściej zadawane pytania',
     faq: [
-      { question: 'Czy QuizSolver działa tylko na Testportalu?', answer: 'Nie. QuizSolver wspiera Testportal, Moodle, Canvas LMS, Blackboard, Google Forms, Microsoft Forms oraz wiele innych formatów dzięki precyzyjnemu parserowi i funkcji FocusScan.' },
-      { question: 'Gdzie znajdę rozwiązane pytania?', answer: 'Wszystkie zeskanowane pytania trafiają do zakładki "Historia i quiz". Możesz nimi zarządzać, dodawać komentarze oraz uruchamiać quizy powtórkowe.' },
-      { question: 'Czy mogę podzielić się pytaniami ze znajomymi?', answer: 'Tak. Możesz zaznaczyć wybrane pytania w historii i wygenerować publiczny link. Znajomi mogą rozwiązywać ten quiz bez używania Twoich kredytów.' },
-      { question: 'Jak działają polecenia i bonusy?', answer: 'Skopiuj swój unikalny link polecający z panelu. Jeśli nowa osoba zarejestruje się z Twojego linku i dokona doładowania, otrzymasz bonusowe +5% kredytów na swoje konto.' }
+      { question: 'Co kliknąć po wejściu na stronę z quizem?', answer: 'Otwórz rozszerzenie QuizSolver i kliknij Rozwiąż obecną stronę. Jeśli strona jest obsługiwana, narzędzie wykryje pytanie i opcje odpowiedzi. Przy nietypowym układzie użyj FocusScan i zaznacz sam obszar pytania.' },
+      { question: 'Do czego służy tryb podpowiedzi?', answer: 'Tryb podpowiedzi jest dla sytuacji, w których nie chcesz automatycznego klikania. Rozszerzenie tylko zaznacza prawdopodobną odpowiedź, a decyzja zostaje po Twojej stronie.' },
+      { question: 'Czy demo albo tutorial zużywa kredyty?', answer: 'Nie. Strona demo korzysta z gotowych lokalnych pytań i odpowiedzi. Możesz spokojnie sprawdzić cały workflow bez wysyłania zapytań do AI i bez zużywania kredytów.' },
+      { question: 'Gdzie wrócić do rozwiązanych pytań?', answer: 'W zakładce Historia i quiz możesz przeglądać zapisane pytania, dodawać notatki, oznaczać ulubione, uruchamiać quiz powtórkowy i udostępniać wybrane pytania linkiem.' },
+      { question: 'Czym różni się PIN Kahoota od Quiz ID?', answer: 'PIN służy do dołączenia do gry na żywo. Quiz ID identyfikuje konkretny quiz i czasem widać go w adresie URL po quizId=. QuizSolver używa Quiz ID tylko w trybie banku odpowiedzi.' }
     ]
   }
 };
@@ -915,7 +917,7 @@ const HOME_LOCALE_TEXT: Record<Exclude<Locale, 'en' | 'pl'>, any> = {
     proof: ['Testportal, Moodle, Canvas, Forms und mehr', 'Notizen und Bilder werden mit Fragen gespeichert', 'Teilbare Quizze aus deiner Historie'],
     how: ['So funktioniert es', 'Ein verbundener Workflow statt vieler einzelner Tools', 'QuizSolver verbindet Live-Antwortsuche mit späterem Lernen.'],
     steps: [['Installieren und anmelden', 'Erstelle ein kostenloses Konto und nutze dieselben Daten in Erweiterung und Website.'], ['Lösen oder scannen', 'Nutze automatisches Lösen oder FocusScan für Fragen in Bildern.'], ['Wiederholen und lernen', 'Gelöste Fragen werden zu Notizen, Karteikarten und Übungsquizzen.']],
-    features: ['Kernfunktionen', 'Für echte Quiz-Workflows gebaut', 'Keine Füllfunktionen, sondern Werkzeuge, die beim Lernen helfen.', ['Antwortvorschläge', 'Scanne sichtbare Fragen und erhalte sofort wahrscheinliche KI-Antworten.'], ['Erklärungen', 'Lass dir die Logik hinter der Antwort kurz erklären.'], ['Bilder speichern', 'Fragenbilder werden mit deiner Historie gesichert.'], ['Eigene Notizen', 'Füge Kommentare, Formeln und Hinweise zu jeder Frage hinzu.'], ['Quizze aus Historie', 'Erstelle Übungssets aus gespeicherten Fragen.'], ['Teilbare Links', 'Teile ausgewählte Fragen als öffentliches Quiz.'], ['FocusScan', 'Markiere jede Bildschirmregion, wenn Fragen in Bildern stecken.'], ['Mehrsprachig', 'Oberfläche, Website und Erweiterung in mehreren Sprachen.']],
+    features: ['Kernfunktionen', 'Werkzeuge, die den nächsten Schritt erklären', 'Für sichtbare Fragen, Hinweis-Modus, Bilder, Quick Overlay, Historie und Wiederholung.', ['Fragenerkennung', 'Klicke Aktuelle Seite lösen: Die Erweiterung liest Frage, Optionen, Fragetyp und Bilder, bevor sie eine Antwort vorschlägt.'], ['Hinweis-Modus', 'Nutze ihn, wenn nichts automatisch geklickt werden soll. QuizSolver markiert nur die wahrscheinlich richtige Antwort.'], ['FocusScan', 'Markiere einen Bereich, wenn die Frage in einem Bild, Canvas, PDF oder ungewöhnlichen Layout steckt.'], ['Quick Overlay', 'Öffne ein kleines verschiebbares Fenster auf der Seite für schnelle Aktionen.'], ['Historie und Notizen', 'Speichere gelöste Fragen mit Antwort, Erklärung, Quelle, Bildern und eigenen Notizen.'], ['Übungsquiz aus Historie', 'Verwandle gespeicherte Fragen in ein Übungsquiz und prüfe danach die richtigen Antworten.'], ['Fragen teilen', 'Wähle aktuelle Fragen aus und erstelle einen öffentlichen Quizlink für andere.'], ['Kahoot Quiz ID', 'Wenn der Host Fragen ausblendet, öffnet die Quiz ID einen Suchbereich mit Antworten ohne AI-Credits.']],
     pricing: ['Einfache Credit-Preise', 'Lade nur auf, wenn du es brauchst', 'Keine Abos. Antworten und Erklärungen nutzen Credits, deine Historie bleibt verfügbar.', 'Beliebt'],
     faqTitle: 'Häufige Fragen'
   },
@@ -929,7 +931,7 @@ const HOME_LOCALE_TEXT: Record<Exclude<Locale, 'en' | 'pl'>, any> = {
     proof: ['Testportal, Moodle, Canvas, Forms y más', 'Notas e imágenes guardadas con preguntas', 'Quizzes compartibles desde el historial'],
     how: ['Cómo funciona', 'Un flujo conectado, no diez herramientas sueltas', 'QuizSolver conecta respuestas en vivo con estudio posterior.'],
     steps: [['Instala e inicia sesión', 'Crea una cuenta gratis y usa los mismos datos en la extensión y la web.'], ['Resuelve o escanea', 'Usa solución automática o FocusScan para preguntas en imágenes.'], ['Repasa y estudia', 'Las preguntas resueltas se convierten en notas, tarjetas y quizzes.']],
-    features: ['Funciones principales', 'Creado para flujos reales de quiz', 'Sin widgets de relleno: solo herramientas que ayudan a estudiar.', ['Sugerencias de respuesta', 'Escanea preguntas visibles y recibe respuestas probables al instante.'], ['Explicaciones', 'Obtén una explicación breve de la lógica de la respuesta.'], ['Guarda imágenes', 'Las imágenes de preguntas se guardan con tu historial.'], ['Notas propias', 'Añade comentarios, fórmulas o recordatorios.'], ['Quizzes del historial', 'Convierte preguntas guardadas en sets de práctica.'], ['Links compartibles', 'Comparte preguntas seleccionadas como quiz público.'], ['FocusScan', 'Selecciona cualquier zona de pantalla con preguntas.'], ['Multiidioma', 'Interfaz, web y extensión en varios idiomas.']],
+    features: ['Funciones principales', 'Herramientas que explican el siguiente paso', 'Para preguntas visibles, modo pista, imágenes, overlay rápido, historial y práctica.', ['Detección de preguntas', 'Haz clic en Resolver página actual: la extensión lee la pregunta, opciones, tipo e imágenes antes de sugerir una respuesta.'], ['Modo pista', 'Úsalo cuando no quieres clics automáticos. QuizSolver solo marca la respuesta probable.'], ['FocusScan', 'Selecciona un área cuando la pregunta está en una imagen, canvas, PDF o diseño extraño.'], ['Overlay rápido', 'Abre una ventana pequeña y movible en la página con acciones rápidas.'], ['Historial y notas', 'Guarda preguntas resueltas con respuesta, explicación, fuente, imágenes y tus notas.'], ['Quiz de práctica', 'Convierte preguntas guardadas en un quiz y revisa las respuestas correctas al final.'], ['Compartir preguntas', 'Elige preguntas recientes y crea un enlace público para compartirlas.'], ['Kahoot Quiz ID', 'Si el host oculta preguntas, Quiz ID abre un banco buscable de respuestas sin gastar créditos AI.']],
     pricing: ['Precios simples por créditos', 'Recarga solo cuando lo necesites', 'Sin suscripciones. Las respuestas y explicaciones usan créditos; el historial queda disponible.', 'Popular'],
     faqTitle: 'Preguntas frecuentes'
   },
@@ -943,7 +945,7 @@ const HOME_LOCALE_TEXT: Record<Exclude<Locale, 'en' | 'pl'>, any> = {
     proof: ['Testportal, Moodle, Canvas, Forms et plus', 'Notes et images sauvegardées avec les questions', 'Quiz partageables depuis l’historique'],
     how: ['Fonctionnement', 'Un flux connecté, pas dix outils dispersés', 'QuizSolver relie les réponses en direct à la révision.'],
     steps: [['Installer et se connecter', 'Créez un compte gratuit et utilisez-le dans l’extension et le site.'], ['Résoudre ou scanner', 'Utilisez la résolution automatique ou FocusScan pour les images.'], ['Réviser et apprendre', 'Les questions résolues deviennent notes, cartes et quiz.']],
-    features: ['Fonctions clés', 'Conçu pour de vrais quiz', 'Pas de widgets inutiles : uniquement les outils utiles aux étudiants.', ['Suggestions', 'Scannez les questions visibles et recevez des réponses probables.'], ['Explications', 'Comprenez rapidement la logique de la réponse.'], ['Images sauvegardées', 'Les images des questions restent dans l’historique.'], ['Notes personnelles', 'Ajoutez commentaires, formules ou rappels.'], ['Quiz d’historique', 'Transformez vos questions en entraînements.'], ['Liens partageables', 'Partagez des questions via un lien public.'], ['FocusScan', 'Sélectionnez n’importe quelle zone de l’écran.'], ['Multilingue', 'Interface, site et extension en plusieurs langues.']],
+    features: ['Fonctions clés', 'Des outils qui indiquent la suite', 'Pour questions visibles, mode indice, images, overlay rapide, historique et révision.', ['Détection des questions', 'Cliquez Résoudre la page : l’extension lit la question, les options, le type et les images avant de proposer une réponse.'], ['Mode indice', 'À utiliser quand vous ne voulez aucun clic automatique. QuizSolver marque seulement la réponse probable.'], ['FocusScan', 'Sélectionnez une zone si la question est dans une image, un canvas, un PDF ou un layout inhabituel.'], ['Overlay rapide', 'Ouvrez une petite fenêtre déplaçable avec les actions rapides sur la page.'], ['Historique et notes', 'Enregistrez les questions avec réponse, explication, source, images et notes personnelles.'], ['Quiz d’entraînement', 'Transformez les questions enregistrées en quiz et vérifiez les bonnes réponses à la fin.'], ['Partage de questions', 'Choisissez des questions récentes et créez un lien public.'], ['Kahoot Quiz ID', 'Si l’hôte masque les questions, Quiz ID ouvre une banque de réponses sans crédits IA.']],
     pricing: ['Tarifs crédits simples', 'Rechargez seulement si nécessaire', 'Pas d’abonnement. Réponses et explications utilisent des crédits, l’historique reste disponible.', 'Populaire'],
     faqTitle: 'Questions fréquentes'
   },
@@ -957,7 +959,7 @@ const HOME_LOCALE_TEXT: Record<Exclude<Locale, 'en' | 'pl'>, any> = {
     proof: ['Testportal, Moodle, Canvas, Forms e altro', 'Note e immagini salvate con le domande', 'Quiz condivisibili dalla cronologia'],
     how: ['Come funziona', 'Un flusso unico, non dieci strumenti separati', 'QuizSolver collega risposte live e ripasso successivo.'],
     steps: [['Installa e accedi', 'Crea un account gratuito e usa gli stessi dati in estensione e sito.'], ['Risolvi o scansiona', 'Usa la soluzione automatica o FocusScan per immagini.'], ['Ripassa e studia', 'Le domande risolte diventano note, flashcard e quiz.']],
-    features: ['Funzioni principali', 'Creato per veri flussi di quiz', 'Niente funzioni inutili: solo strumenti utili allo studio.', ['Suggerimenti', 'Scansiona domande visibili e ricevi risposte probabili.'], ['Spiegazioni', 'Capisci la logica dietro la risposta.'], ['Immagini salvate', 'Le immagini delle domande restano nella cronologia.'], ['Note personali', 'Aggiungi commenti, formule o appunti.'], ['Quiz dalla cronologia', 'Crea set di pratica dalle domande salvate.'], ['Link condivisibili', 'Condividi domande come quiz pubblico.'], ['FocusScan', 'Seleziona qualsiasi area dello schermo.'], ['Multilingua', 'Interfaccia, sito ed estensione in più lingue.']],
+    features: ['Funzioni principali', 'Strumenti che spiegano il prossimo passo', 'Per domande visibili, modalità suggerimento, immagini, overlay rapido, cronologia e ripasso.', ['Rilevamento domande', 'Clicca Risolvi pagina corrente: l’estensione legge domanda, opzioni, tipo e immagini prima di suggerire una risposta.'], ['Modalità suggerimento', 'Usala quando non vuoi clic automatici. QuizSolver evidenzia solo la risposta probabile.'], ['FocusScan', 'Seleziona un’area quando la domanda è in immagine, canvas, PDF o layout insolito.'], ['Overlay rapido', 'Apri una piccola finestra spostabile sulla pagina con azioni rapide.'], ['Cronologia e note', 'Salva domande risolte con risposta, spiegazione, fonte, immagini e note personali.'], ['Quiz di pratica', 'Trasforma domande salvate in un quiz e controlla le risposte corrette alla fine.'], ['Condividi domande', 'Scegli domande recenti e crea un link pubblico.'], ['Kahoot Quiz ID', 'Se l’host nasconde le domande, Quiz ID apre un banco risposte senza crediti AI.']],
     pricing: ['Prezzi crediti semplici', 'Ricarica solo quando serve', 'Nessun abbonamento. Risposte e spiegazioni usano crediti; la cronologia resta disponibile.', 'Popolare'],
     faqTitle: 'Domande frequenti'
   },
@@ -971,7 +973,7 @@ const HOME_LOCALE_TEXT: Record<Exclude<Locale, 'en' | 'pl'>, any> = {
     proof: ['Testportal, Moodle, Canvas, Forms та інші', 'Нотатки й зображення зберігаються з питаннями', 'Квізи з історії можна ділитися'],
     how: ['Як це працює', 'Один зв’язаний workflow замість купи інструментів', 'QuizSolver поєднує живі відповіді з подальшим навчанням.'],
     steps: [['Встанови й увійди', 'Створи безкоштовний акаунт і використовуй його в розширенні та на сайті.'], ['Розв’язуй або скануй', 'Використовуй автопошук або FocusScan для питань у зображеннях.'], ['Повторюй і вчися', 'Розв’язані питання стають нотатками, картками і тренувальними квізами.']],
-    features: ['Основні функції', 'Створено для реальних квізів', 'Без зайвих віджетів: тільки те, що допомагає навчанню.', ['Підказки відповідей', 'Скануй видимі питання і отримуй швидкі AI-відповіді.'], ['Пояснення', 'Дізнайся логіку правильної відповіді.'], ['Збереження зображень', 'Зображення питань зберігаються в історії.'], ['Власні нотатки', 'Додавай коментарі, формули і підказки.'], ['Квізи з історії', 'Створюй тренування зі збережених питань.'], ['Спільні посилання', 'Ділися вибраними питаннями як публічним квізом.'], ['FocusScan', 'Виділяй будь-яку область екрана.'], ['Багатомовність', 'Інтерфейс, сайт і розширення кількома мовами.']],
+    features: ['Основні функції', 'Інструменти, що пояснюють наступний крок', 'Для видимих питань, режиму підказки, зображень, швидкого overlay, історії та повторення.', ['Виявлення питань', 'Натисни Розв’язати сторінку: розширення читає питання, варіанти, тип і зображення перед підказкою.'], ['Режим підказки', 'Використовуй, коли не хочеш автоматичних кліків. QuizSolver лише підсвічує ймовірну відповідь.'], ['FocusScan', 'Виділи область, якщо питання в зображенні, canvas, PDF або незвичному макеті.'], ['Швидкий overlay', 'Відкрий маленьке рухоме вікно на сторінці з швидкими діями.'], ['Історія і нотатки', 'Зберігай розв’язані питання з відповіддю, поясненням, джерелом, зображеннями і нотатками.'], ['Квіз з історії', 'Перетвори збережені питання на тренувальний квіз і перевір правильні відповіді після завершення.'], ['Поширення питань', 'Обери останні питання і створи публічне посилання для інших.'], ['Kahoot Quiz ID', 'Якщо хост ховає питання, Quiz ID відкриває банк відповідей без витрати AI-кредитів.']],
     pricing: ['Прості ціни кредитів', 'Поповнюй лише коли потрібно', 'Без підписок. Відповіді й пояснення витрачають кредити, історія доступна завжди.', 'Популярне'],
     faqTitle: 'Поширені питання'
   }
@@ -988,10 +990,11 @@ const HOME_DETAIL_TEXT: Record<Exclude<Locale, 'en' | 'pl'>, any> = {
       ['Große Lernsessions', '2000 Credits wählen', ['Bester Preis pro Credit', 'Perfekt für Prüfungsphasen', 'Höchste Antwortpriorität', 'Dauerhafter Zugriff auf Notizen']]
     ],
     faq: [
-      ['Ist QuizSolver nur für Testportal?', 'Nein. QuizSolver unterstützt Testportal, Moodle, Canvas LMS, Blackboard, Google Forms, Microsoft Forms und viele weitere Quizformate über Parsing oder FocusScan.'],
-      ['Wo finde ich gelöste Fragen?', 'Alle gelösten Fragen werden unter „Historie & Quiz” gespeichert. Du kannst sie ansehen, Notizen hinzufügen und Übungsquizze starten.'],
-      ['Kann ich Quizsets teilen?', 'Ja. Wähle Fragen aus deiner Historie, erstelle einen öffentlichen Quizlink und teile ihn mit anderen.'],
-      ['Wie funktionieren Empfehlungen?', 'Teile deinen persönlichen Link aus dem Dashboard. Nach einer ersten Aufladung erhältst du automatisch 5% Bonus-Credits.']
+      ['Was klicke ich auf einer Quizseite?', 'Öffne die Erweiterung und klicke Aktuelle Seite lösen. Bei ungewöhnlichen Layouts markierst du die Frage mit FocusScan.'],
+      ['Wofür ist der Hinweis-Modus?', 'Er markiert die wahrscheinlich richtige Antwort, ohne automatisch zu klicken. Du entscheidest selbst, was du auswählst.'],
+      ['Verbraucht die Demo Credits?', 'Nein. Die Demo nutzt lokale Beispielfragen und ist nur zum Lernen des Workflows gedacht.'],
+      ['Wo finde ich gelöste Fragen?', 'Alle gespeicherten Fragen liegen in Historie & Quiz. Dort kannst du Notizen ergänzen, üben und Links teilen.'],
+      ['Was ist Kahoot Quiz ID?', 'Quiz ID identifiziert den Quiz-Inhalt. Der Live-PIN ist nur zum Beitreten eines Spiels da.']
     ]
   },
   es: {
@@ -1002,10 +1005,11 @@ const HOME_DETAIL_TEXT: Record<Exclude<Locale, 'en' | 'pl'>, any> = {
       ['Sesiones intensas', 'Elegir 2000 créditos', ['Mejor valor por crédito', 'Perfecto para exámenes', 'Máxima prioridad de respuesta', 'Acceso permanente a notas']]
     ],
     faq: [
-      ['¿QuizSolver es solo para Testportal?', 'No. Soporta Testportal, Moodle, Canvas LMS, Blackboard, Google Forms, Microsoft Forms y muchos formatos de quiz mediante parser general o FocusScan.'],
-      ['¿Dónde veo mis preguntas resueltas?', 'Se guardan en “Historial y quiz”. Puedes verlas, añadir notas y crear quizzes de práctica.'],
-      ['¿Puedo compartir mis sets?', 'Sí. Selecciona preguntas del historial, genera un enlace público y compártelo con quien quieras.'],
-      ['¿Cómo funcionan los referidos?', 'Comparte tu enlace desde el dashboard. Cuando alguien se registra y compra créditos, recibes un bono del 5%.']
+      ['¿Qué hago al abrir una página de quiz?', 'Abre la extensión y pulsa Resolver página actual. Si el diseño es raro, usa FocusScan y selecciona solo la pregunta.'],
+      ['¿Para qué sirve el modo pista?', 'Marca la respuesta probable sin hacer clic automático, para que tú mantengas el control.'],
+      ['¿La demo consume créditos?', 'No. La demo usa preguntas locales preparadas para aprender el flujo sin gastar créditos.'],
+      ['¿Dónde reviso preguntas resueltas?', 'En Historial y quiz puedes verlas, añadir notas, practicar y compartir enlaces.'],
+      ['¿Qué es Kahoot Quiz ID?', 'Quiz ID identifica el quiz. El PIN solo sirve para entrar a una partida en vivo.']
     ]
   },
   fr: {
@@ -1016,10 +1020,11 @@ const HOME_DETAIL_TEXT: Record<Exclude<Locale, 'en' | 'pl'>, any> = {
       ['Grosses sessions', 'Choisir 2000 crédits', ['Meilleur prix par crédit', 'Parfait pour les examens', 'Priorité maximale', 'Accès permanent aux notes']]
     ],
     faq: [
-      ['QuizSolver est-il seulement pour Testportal ?', 'Non. Il prend en charge Testportal, Moodle, Canvas LMS, Blackboard, Google Forms, Microsoft Forms et beaucoup d’autres formats via parsing ou FocusScan.'],
-      ['Où trouver mes questions résolues ?', 'Elles sont enregistrées dans “Historique et quiz”. Tu peux les revoir, ajouter des notes et lancer des quiz d’entraînement.'],
-      ['Puis-je partager mes séries ?', 'Oui. Sélectionne des questions de ton historique, crée un lien public et partage-le.'],
-      ['Comment fonctionnent les parrainages ?', 'Partage ton lien depuis le dashboard. Quand quelqu’un s’inscrit et achète des crédits, tu reçois 5% en bonus.']
+      ['Que faire sur une page de quiz ?', 'Ouvrez l’extension et cliquez Résoudre la page. Si le layout est inhabituel, utilisez FocusScan sur la question.'],
+      ['À quoi sert le mode indice ?', 'Il marque la réponse probable sans cliquer automatiquement, pour garder le contrôle.'],
+      ['La démo consomme-t-elle des crédits ?', 'Non. La démo utilise des questions locales préparées pour apprendre le workflow.'],
+      ['Où revoir les questions résolues ?', 'Dans Historique et quiz, vous pouvez revoir, annoter, pratiquer et partager des questions.'],
+      ['Qu’est-ce que Kahoot Quiz ID ?', 'Quiz ID identifie le quiz. Le PIN sert seulement à rejoindre une partie en direct.']
     ]
   },
   it: {
@@ -1030,10 +1035,11 @@ const HOME_DETAIL_TEXT: Record<Exclude<Locale, 'en' | 'pl'>, any> = {
       ['Sessioni intense', 'Scegli 2000 crediti', ['Miglior valore per credito', 'Perfetto per esami', 'Massima priorità', 'Accesso permanente alle note']]
     ],
     faq: [
-      ['QuizSolver è solo per Testportal?', 'No. Supporta Testportal, Moodle, Canvas LMS, Blackboard, Google Forms, Microsoft Forms e molti altri formati tramite parser o FocusScan.'],
-      ['Dove trovo le domande risolte?', 'Sono salvate in “Cronologia e quiz”. Puoi rivederle, aggiungere note e creare quiz di pratica.'],
-      ['Posso condividere i miei set?', 'Sì. Seleziona domande dalla cronologia, genera un link pubblico e condividilo.'],
-      ['Come funzionano i referral?', 'Condividi il tuo link dal dashboard. Quando qualcuno si registra e compra crediti, ricevi il 5% di bonus.']
+      ['Cosa clicco su una pagina quiz?', 'Apri l’estensione e premi Risolvi pagina corrente. Per layout insoliti usa FocusScan sulla domanda.'],
+      ['A cosa serve la modalità suggerimento?', 'Evidenzia la risposta probabile senza clic automatici, così decidi tu cosa selezionare.'],
+      ['La demo consuma crediti?', 'No. La demo usa domande locali preparate per imparare il flusso.'],
+      ['Dove rivedo le domande risolte?', 'In Cronologia e quiz puoi rivederle, aggiungere note, fare pratica e condividere link.'],
+      ['Cos’è Kahoot Quiz ID?', 'Quiz ID identifica il quiz. Il PIN serve solo per entrare in una partita live.']
     ]
   },
   uk: {
@@ -1044,10 +1050,11 @@ const HOME_DETAIL_TEXT: Record<Exclude<Locale, 'en' | 'pl'>, any> = {
       ['Великі навчальні сесії', 'Вибрати 2000 кредитів', ['Найкраща ціна за кредит', 'Ідеально перед іспитами', 'Найвищий пріоритет відповіді', 'Постійний доступ до нотаток']]
     ],
     faq: [
-      ['QuizSolver тільки для Testportal?', 'Ні. Він підтримує Testportal, Moodle, Canvas LMS, Blackboard, Google Forms, Microsoft Forms та багато інших форматів через парсер або FocusScan.'],
-      ['Де знайти розв’язані питання?', 'Усі питання зберігаються в “Історія і квіз”. Можна переглядати їх, додавати нотатки і запускати тренування.'],
-      ['Чи можна ділитися наборами?', 'Так. Обери питання з історії, створи публічне посилання і поділися ним.'],
-      ['Як працюють реферали?', 'Поділися посиланням з панелі. Коли хтось зареєструється і купить кредити, ти отримаєш 5% бонусу.']
+      ['Що натиснути на сторінці квізу?', 'Відкрий розширення і натисни Розв’язати сторінку. Для незвичного макета використовуй FocusScan.'],
+      ['Для чого режим підказки?', 'Він підсвічує ймовірну відповідь без автоматичного кліку, щоб рішення залишалося за тобою.'],
+      ['Чи витрачає демо кредити?', 'Ні. Демо використовує локальні підготовлені питання, щоб навчити workflow.'],
+      ['Де переглянути розв’язані питання?', 'В Історія і квіз можна переглядати, додавати нотатки, тренуватися і ділитися посиланням.'],
+      ['Що таке Kahoot Quiz ID?', 'Quiz ID визначає сам квіз. PIN потрібен лише для входу в живу гру.']
     ]
   }
 };

@@ -9,6 +9,7 @@ import {
   SUPPORTED_LOCALES,
   abs,
   contentFor,
+  localeOption,
   pageData,
   pathFor
 } from './site-content';
@@ -157,7 +158,7 @@ export class SeoService {
         name: 'QuizSolver',
         url: homeUrl,
         publisher: { '@id': `${homeUrl}#organization` },
-        inLanguage: ['en', 'pl']
+        inLanguage: SUPPORTED_LOCALES.map((option) => option.htmlLang)
       },
       {
         '@type': 'WebPage',
@@ -167,7 +168,7 @@ export class SeoService {
         description: meta.description,
         isPartOf: { '@id': `${homeUrl}#website` },
         about: { '@id': `${homeUrl}#software` },
-        inLanguage: locale
+        inLanguage: localeOption(locale).htmlLang
       }
     ];
 
