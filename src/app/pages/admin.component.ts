@@ -385,12 +385,18 @@ type AdminTab = 'users' | 'purchases' | 'bugs' | 'support' | 'cache' | 'leaderbo
       margin-bottom: 2rem;
     }
     .admin-brand span {
-      background: var(--grad-primary);
-      color: #fff;
+      width: 2.35rem;
+      height: 2.35rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: #101318 url('/logo-512.png') center / cover no-repeat;
+      color: transparent;
+      font-size: 0;
       font-weight: 800;
-      padding: 0.25rem 0.6rem;
+      padding: 0;
       border-radius: var(--radius-sm);
-      font-size: 1.1rem;
+      box-shadow: 0 10px 24px rgba(14, 165, 233, 0.22);
     }
     .admin-brand strong {
       font-size: 1.25rem;

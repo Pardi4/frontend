@@ -1,5 +1,5 @@
 {
-  "name": "QuizSolver — AI Quiz Solver",
+  "name": "QuizSolver - AI Quiz Solver",
   "short_name": "QuizSolver",
   "description": "AI-powered Chrome extension that instantly solves quizzes on Testportal, Moodle, Google Forms, Kahoot and more.",
   "start_url": "/",
@@ -13,7 +13,7 @@
   "icons": [
     {
       "src": "/favicon.ico",
-      "sizes": "48x48",
+      "sizes": "256x256",
       "type": "image/x-icon"
     },
     {
