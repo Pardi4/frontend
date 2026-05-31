@@ -2,13 +2,13 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { SeoService } from '../seo.service';
-import { Locale, PageKey, pageData, pathFor, platformEntries } from '../site-content';
+import { CHROME_WEB_STORE_URL, Locale, PageKey, pageData, pathFor, platformEntries } from '../site-content';
 import { ShellComponent } from './shell.component';
 
 type PlatformUi = {
   install: string;
   related: string;
-  whatItDoes: string;
+  whatItDoes: (platform: string) => string;
   aiAnswers: string;
   explanations: string;
   notes: string;
@@ -19,6 +19,7 @@ type PlatformUi = {
   otherGuides: string;
   guidesIntro: string;
   faqTitle: string;
+  stats: string[];
   intro: (platform: string) => string;
 };
 
@@ -26,7 +27,7 @@ const PLATFORM_UI: Record<Locale, PlatformUi> = {
   en: {
     install: 'Install extension',
     related: 'See related',
-    whatItDoes: 'What QuizSolver does',
+    whatItDoes: platform => `Why students use QuizSolver on ${platform}`,
     aiAnswers: 'AI answer suggestions',
     explanations: 'Short explanations',
     notes: 'Notes and history quiz',
@@ -35,14 +36,15 @@ const PLATFORM_UI: Record<Locale, PlatformUi> = {
     featuresTitle: 'Features in this workflow',
     platforms: 'Platforms',
     otherGuides: 'Other QuizSolver guides',
-    guidesIntro: 'Each platform has its own page so users land in the right context immediately.',
+    guidesIntro: 'Choose your platform and get a step-by-step guide tailored to that quiz system.',
     faqTitle: 'Questions about this workflow',
-    intro: platform => `QuizSolver helps with permitted ${platform} practice workflows: it detects questions, saves history, and lets you review them later.`
+    stats: ['10+ platforms', 'AI answers in seconds', 'Free to install'],
+    intro: platform => `QuizSolver detects questions on ${platform}, suggests AI answers, and saves everything to your study history automatically.`
   },
   pl: {
     install: 'Zainstaluj rozszerzenie',
     related: 'Zobacz podobne',
-    whatItDoes: 'Co robi QuizSolver?',
+    whatItDoes: platform => `Dlaczego użytkownicy używają QuizSolver na ${platform}`,
     aiAnswers: 'Sugestie odpowiedzi AI',
     explanations: 'Krótkie wyjaśnienia',
     notes: 'Notatki i quiz z historii',
@@ -51,14 +53,15 @@ const PLATFORM_UI: Record<Locale, PlatformUi> = {
     featuresTitle: 'Funkcje w tym workflow',
     platforms: 'Platformy',
     otherGuides: 'Inne poradniki QuizSolver',
-    guidesIntro: 'Każda platforma ma osobną stronę, żeby użytkownik od razu widział właściwy kontekst.',
+    guidesIntro: 'Wybierz platformę i zobacz instrukcję krok po kroku dopasowaną do konkretnego systemu quizów.',
     faqTitle: 'Pytania o ten workflow',
-    intro: platform => `QuizSolver pomaga przy dozwolonych ćwiczeniach i powtórkach w stylu ${platform}: wykrywa pytania, zapisuje historię i pozwala wrócić do nich później.`
+    stats: ['10+ platform', 'Odpowiedzi AI w kilka sekund', 'Darmowa instalacja'],
+    intro: platform => `QuizSolver wykrywa pytania na ${platform}, podpowiada odpowiedzi AI i automatycznie zapisuje wszystko do historii nauki.`
   },
   de: {
     install: 'Erweiterung installieren',
     related: 'Ähnliche ansehen',
-    whatItDoes: 'Was QuizSolver macht',
+    whatItDoes: platform => `Warum Lernende QuizSolver auf ${platform} nutzen`,
     aiAnswers: 'KI-Antwortvorschläge',
     explanations: 'Kurze Erklärungen',
     notes: 'Notizen und Quiz aus der Historie',
@@ -67,14 +70,15 @@ const PLATFORM_UI: Record<Locale, PlatformUi> = {
     featuresTitle: 'Funktionen in diesem Workflow',
     platforms: 'Plattformen',
     otherGuides: 'Weitere QuizSolver-Guides',
-    guidesIntro: 'Jede Plattform hat eine eigene Seite, damit Nutzer sofort im richtigen Kontext landen.',
+    guidesIntro: 'Wähle deine Plattform und erhalte eine Schritt-für-Schritt-Anleitung für dieses Quizsystem.',
     faqTitle: 'Fragen zu diesem Workflow',
-    intro: platform => `QuizSolver hilft bei erlaubten ${platform}-Übungen: Es erkennt Fragen, speichert Verlauf und erleichtert spätere Wiederholung.`
+    stats: ['10+ Plattformen', 'KI-Antworten in Sekunden', 'Kostenlos installieren'],
+    intro: platform => `QuizSolver erkennt Fragen auf ${platform}, schlägt KI-Antworten vor und speichert alles automatisch in deiner Lernhistorie.`
   },
   es: {
     install: 'Instalar extensión',
     related: 'Ver similares',
-    whatItDoes: 'Qué hace QuizSolver',
+    whatItDoes: platform => `Por qué estudiantes usan QuizSolver en ${platform}`,
     aiAnswers: 'Sugerencias de respuesta con IA',
     explanations: 'Explicaciones breves',
     notes: 'Notas y quiz del historial',
@@ -83,14 +87,15 @@ const PLATFORM_UI: Record<Locale, PlatformUi> = {
     featuresTitle: 'Funciones de este flujo',
     platforms: 'Plataformas',
     otherGuides: 'Más guías de QuizSolver',
-    guidesIntro: 'Cada plataforma tiene su propia página para que el usuario llegue al contexto correcto.',
+    guidesIntro: 'Elige tu plataforma y sigue una guía paso a paso adaptada a ese sistema de quiz.',
     faqTitle: 'Preguntas sobre este flujo',
-    intro: platform => `QuizSolver ayuda en prácticas permitidas de ${platform}: detecta preguntas, guarda historial y permite repasarlas después.`
+    stats: ['10+ plataformas', 'Respuestas IA en segundos', 'Instalación gratis'],
+    intro: platform => `QuizSolver detecta preguntas en ${platform}, sugiere respuestas con IA y guarda todo automáticamente en tu historial de estudio.`
   },
   fr: {
     install: 'Installer l’extension',
     related: 'Voir similaires',
-    whatItDoes: 'Ce que fait QuizSolver',
+    whatItDoes: platform => `Pourquoi utiliser QuizSolver sur ${platform}`,
     aiAnswers: 'Suggestions de réponses IA',
     explanations: 'Explications courtes',
     notes: 'Notes et quiz depuis l’historique',
@@ -99,14 +104,15 @@ const PLATFORM_UI: Record<Locale, PlatformUi> = {
     featuresTitle: 'Fonctions de ce workflow',
     platforms: 'Plateformes',
     otherGuides: 'Autres guides QuizSolver',
-    guidesIntro: 'Chaque plateforme a sa propre page pour placer l’utilisateur dans le bon contexte.',
+    guidesIntro: 'Choisissez votre plateforme et suivez un guide étape par étape adapté à ce système de quiz.',
     faqTitle: 'Questions sur ce workflow',
-    intro: platform => `QuizSolver aide dans les exercices autorisés ${platform} : il détecte les questions, enregistre l’historique et facilite la révision.`
+    stats: ['10+ plateformes', 'Réponses IA en quelques secondes', 'Installation gratuite'],
+    intro: platform => `QuizSolver détecte les questions sur ${platform}, propose des réponses IA et sauvegarde automatiquement le tout dans votre historique d’étude.`
   },
   it: {
     install: 'Installa estensione',
     related: 'Vedi simili',
-    whatItDoes: 'Cosa fa QuizSolver',
+    whatItDoes: platform => `Perché usare QuizSolver su ${platform}`,
     aiAnswers: 'Suggerimenti AI',
     explanations: 'Spiegazioni brevi',
     notes: 'Note e quiz dalla cronologia',
@@ -115,14 +121,15 @@ const PLATFORM_UI: Record<Locale, PlatformUi> = {
     featuresTitle: 'Funzioni in questo workflow',
     platforms: 'Piattaforme',
     otherGuides: 'Altre guide QuizSolver',
-    guidesIntro: 'Ogni piattaforma ha una pagina dedicata per mostrare subito il contesto corretto.',
+    guidesIntro: 'Scegli la piattaforma e segui una guida passo passo pensata per quel sistema di quiz.',
     faqTitle: 'Domande su questo workflow',
-    intro: platform => `QuizSolver aiuta negli esercizi consentiti su ${platform}: rileva domande, salva la cronologia e permette di ripassare.`
+    stats: ['10+ piattaforme', 'Risposte AI in pochi secondi', 'Installazione gratis'],
+    intro: platform => `QuizSolver rileva le domande su ${platform}, suggerisce risposte AI e salva automaticamente tutto nella tua cronologia di studio.`
   },
   uk: {
     install: 'Встановити розширення',
     related: 'Схожі сторінки',
-    whatItDoes: 'Що робить QuizSolver',
+    whatItDoes: platform => `Чому користуються QuizSolver на ${platform}`,
     aiAnswers: 'AI-підказки відповідей',
     explanations: 'Короткі пояснення',
     notes: 'Нотатки й квіз з історії',
@@ -131,9 +138,10 @@ const PLATFORM_UI: Record<Locale, PlatformUi> = {
     featuresTitle: 'Функції цього сценарію',
     platforms: 'Платформи',
     otherGuides: 'Інші гайди QuizSolver',
-    guidesIntro: 'Кожна платформа має окрему сторінку, щоб користувач одразу бачив потрібний контекст.',
+    guidesIntro: 'Обери платформу й отримай покроковий гайд, адаптований до цієї системи квізів.',
     faqTitle: 'Питання про цей сценарій',
-    intro: platform => `QuizSolver допомагає з дозволеними вправами ${platform}: знаходить питання, зберігає історію і допомагає повторювати.`
+    stats: ['10+ платформ', 'AI-відповіді за секунди', 'Безкоштовна установка'],
+    intro: platform => `QuizSolver знаходить питання на ${platform}, пропонує AI-відповіді й автоматично зберігає все в історії навчання.`
   }
 };
 
@@ -155,7 +163,7 @@ const PLATFORM_UI: Record<Locale, PlatformUi> = {
               <h1>{{ data?.title }}</h1>
               <p class="desc text-secondary">{{ data?.subtitle }}</p>
               <div class="hero-actions">
-                <a class="btn btn-primary btn-lg" [href]="pathFor('credits')">
+                <a class="btn btn-primary btn-lg" [href]="storeUrl" target="_blank" rel="noopener">
                   {{ ui.install }}
                 </a>
                 <a class="btn btn-outline btn-lg" href="#platform-guides">
@@ -165,7 +173,7 @@ const PLATFORM_UI: Record<Locale, PlatformUi> = {
             </div>
             
             <aside class="platform-hero-aside glass">
-              <h2>{{ ui.whatItDoes }}</h2>
+              <h2>{{ whatItDoesTitle }}</h2>
               <p class="text-secondary" style="margin-bottom: 1.5rem;">{{ platformIntro }}</p>
               <ul class="check-list">
                 <li class="check-item"><span class="check-icon">✓</span> {{ ui.aiAnswers }}</li>
@@ -175,14 +183,22 @@ const PLATFORM_UI: Record<Locale, PlatformUi> = {
               </ul>
             </aside>
           </div>
+          <div class="container platform-stat-bar" aria-label="QuizSolver facts">
+            <div class="platform-stat" *ngFor="let stat of ui.stats">
+              <span>{{ stat }}</span>
+            </div>
+          </div>
         </section>
 
         <section class="section">
           <div class="container two-col-grid">
             <article class="guide-card glass glass-hover reveal">
               <h2>{{ data?.stepsTitle || ui.howToStart }}</h2>
-              <ol>
-                <li *ngFor="let step of data?.steps" class="text-secondary">{{ step }}</li>
+              <ol class="numbered-steps">
+                <li *ngFor="let step of data?.steps; let i = index">
+                  <span class="step-index">{{ i + 1 }}</span>
+                  <span class="text-secondary">{{ step }}</span>
+                </li>
               </ol>
             </article>
             <article class="guide-card glass glass-hover reveal delay-100">
@@ -305,6 +321,29 @@ const PLATFORM_UI: Record<Locale, PlatformUi> = {
       font-size: 1.75rem;
       margin-bottom: 1rem;
     }
+    .platform-stat-bar {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.75rem;
+      margin-top: 1.5rem;
+    }
+    .platform-stat {
+      min-height: 4.25rem;
+      display: grid;
+      place-items: center;
+      padding: 0.85rem 1rem;
+      border: 1px solid #2b3545;
+      border-radius: 12px;
+      background: #171c24;
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.22);
+      text-align: center;
+    }
+    .platform-stat span {
+      color: var(--text-primary);
+      font-family: var(--font-heading);
+      font-size: 0.95rem;
+      font-weight: 850;
+    }
     .check-list {
       display: flex;
       flex-direction: column;
@@ -338,6 +377,31 @@ const PLATFORM_UI: Record<Locale, PlatformUi> = {
       display: flex;
       flex-direction: column;
       gap: 0.75rem;
+    }
+    .numbered-steps {
+      padding-left: 0 !important;
+      list-style: none;
+      gap: 0.85rem !important;
+    }
+    .numbered-steps li {
+      display: grid;
+      grid-template-columns: 2rem minmax(0, 1fr);
+      gap: 0.85rem;
+      align-items: start;
+      padding: 0.85rem;
+      border: 1px solid #2b3545;
+      border-radius: 12px;
+      background: #1d2430;
+    }
+    .step-index {
+      display: grid;
+      place-items: center;
+      width: 2rem;
+      height: 2rem;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #7c5cfc, #0ea5e9);
+      color: white;
+      font-weight: 900;
     }
     .feature-list {
       list-style: none;
@@ -430,6 +494,9 @@ const PLATFORM_UI: Record<Locale, PlatformUi> = {
       .platform-hero-aside {
         padding: 2rem;
       }
+      .platform-stat-bar {
+        grid-template-columns: 1fr;
+      }
     }
   `]
 })
@@ -442,7 +509,9 @@ export class PlatformComponent implements OnInit {
   protected data = pageData('quizSolverAi', 'en');
   protected platformLabel = 'AI quiz solver';
   protected platformIntro = '';
+  protected whatItDoesTitle = '';
   protected ui = PLATFORM_UI.en;
+  protected storeUrl = CHROME_WEB_STORE_URL;
 
   ngOnInit(): void {
     this.locale = (this.route.snapshot.data['locale'] || 'en') as Locale;
@@ -451,6 +520,7 @@ export class PlatformComponent implements OnInit {
     this.data = pageData(this.pageKey, this.locale) || {};
     this.platformLabel = this.data?.shortName || this.data?.platformName || 'AI quiz solver';
     this.platformIntro = this.ui.intro(this.platformLabel);
+    this.whatItDoesTitle = this.ui.whatItDoes(this.platformLabel);
     this.seo.applyPage(this.pageKey, this.locale);
   }
 

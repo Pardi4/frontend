@@ -765,25 +765,25 @@ const HOME_COPY: Partial<Record<Locale, any>> & { en: any; pl: any } = {
       eyebrow: 'AI quiz solver Chrome extension',
       headingStart: 'Unlock the ultimate',
       headingAccent: 'Quiz Solving Power',
-      lead: 'A clean browser extension for quick answer suggestions, short explanations, saved study notes, and custom history practice quizzes.',
+      lead: 'Instantly solve quizzes on Testportal, Moodle, Kahoot, Canvas, Google Forms and 7 more platforms. Get AI answer suggestions with step-by-step explanations — free to install.',
       primary: 'Install from Chrome Web Store',
       secondary: 'See how it works',
       proof: ['Testportal, Moodle, Canvas, Forms and more', 'Notes and images saved with questions', 'Shareable quizzes from history']
     },
     how: {
-      eyebrow: 'How it works',
-      title: 'One connected workflow, not ten scattered tools',
-      subtitle: 'QuizSolver keeps your live answer search and study review connected.',
+      eyebrow: 'How QuizSolver works',
+      title: '3 steps to solve any quiz with AI',
+      subtitle: 'Install once, solve quizzes on any supported platform, and automatically build a personal study library.',
       steps: [
-        { title: 'Install and sign in', text: 'Create a free account. Use the same credentials in the Chrome extension and on getquizsolver.com.' },
-        { title: 'Solve or scan', text: 'Use automatic page solving for standard quiz templates, or use FocusScan to capture image-based questions.' },
-        { title: 'Review and study', text: 'Your solved questions automatically become study notes, flashcards, and custom practice quizzes.' }
+        { title: 'Install and sign in', text: 'Add QuizSolver to Chrome for free. Create an account — your solved questions, notes, and practice quizzes sync across the extension and the website.' },
+        { title: 'Solve or scan', text: 'Click Solve current page when a quiz is open. For image-based questions or unusual layouts, drag FocusScan to capture just the question area.' },
+        { title: 'Review and study', text: 'Every solved question is saved to History. Turn them into flashcards, run a practice quiz, or share a set of questions with classmates.' }
       ]
     },
     features: {
-      eyebrow: 'Core features',
-      title: 'Tools that explain what to do next',
-      subtitle: 'QuizSolver is built around the moments that actually happen during online quizzes: visible questions, hidden answer modes, images, quick checks and revision later.',
+      eyebrow: 'QuizSolver features',
+      title: 'Everything you need to solve quizzes faster',
+      subtitle: 'Built for real quiz situations: visible questions, image-based questions, hint-only mode, quick overlay, and a full study review system.',
       items: [
         { icon: 'QD', title: 'Question detection', text: 'Click Solve current page and the extension reads the visible question, answer options, question type and images before showing a suggestion.' },
         { icon: 'HM', title: 'Hint mode', text: 'Turn this on when you want to stay in control. QuizSolver highlights the likely answer instead of clicking it automatically.' },
@@ -798,7 +798,7 @@ const HOME_COPY: Partial<Record<Locale, any>> & { en: any; pl: any } = {
     platforms: {
       eyebrow: 'Seamless platform integrations',
       title: 'Optimized for the systems you actually use',
-      subtitle: 'QuizSolver integrates directly with common LMS platforms and form builders.',
+      subtitle: 'Use one AI quiz solver for Testportal, Moodle, Canvas, Google Forms, Microsoft Forms, Blackboard, Quizlet, Socrative, Kahoot and Quizizz.',
       items: [
         { name: 'Testportal', href: '/testportal-quiz-solver' },
         { name: 'Moodle', href: '/moodle-quiz-solver' },
@@ -826,6 +826,9 @@ const HOME_COPY: Partial<Record<Locale, any>> & { en: any; pl: any } = {
     faqTitle: 'Frequently asked questions',
     faq: [
       { question: 'What should I click when I open a quiz page?', answer: 'Open the QuizSolver extension and click Solve current page. If the page is supported, QuizSolver detects the visible question and answer options. If the layout is unusual, use FocusScan and draw a box around the question.' },
+      { question: 'Does QuizSolver work on Testportal?', answer: 'Yes. QuizSolver auto-detects questions on Testportal including the timer interface. Open a Testportal quiz, click Solve current page, and you get an AI suggestion within seconds.' },
+      { question: 'What is FocusScan and when should I use it?', answer: 'FocusScan is a screenshot tool inside QuizSolver. Draw a box around any part of the screen — a PDF, image, canvas, or embed — and QuizSolver reads that region instead of the full page. Use it when the question is not in plain HTML text.' },
+      { question: 'How many free credits do I get?', answer: 'All new accounts get free starting credits — enough to try answer suggestions and explanations. Additional credits start from $1.99 for 100 credits. Kahoot Quiz ID mode never uses credits.' },
       { question: 'What is Hint mode for?', answer: 'Hint mode is for situations where you do not want the extension to click anything. It marks the likely answer visually, so you decide what to select.' },
       { question: 'Does the demo or tutorial use credits?', answer: 'No. The demo page uses predefined local questions and answers. It is there so you can learn the workflow without sending anything to AI and without spending credits.' },
       { question: 'Where can I review solved questions later?', answer: 'Saved questions are available in History & quiz. You can add notes, mark favorites, create practice quizzes and share selected questions as a public link.' },
@@ -837,25 +840,25 @@ const HOME_COPY: Partial<Record<Locale, any>> & { en: any; pl: any } = {
       eyebrow: 'Rozszerzenie Chrome AI quiz solver',
       headingStart: 'Rozwiązuj quizy z',
       headingAccent: 'mocą AI',
-      lead: 'Przejrzyste rozszerzenie do szybkich sugestii odpowiedzi, krótkich wyjaśnień pojęć, własnych notatek i quizów powtórkowych.',
+      lead: 'Rozwiązuj quizy na Testportal, Moodle, Kahoot, Canvas, Google Forms i 7 kolejnych platformach. Dostajesz sugestie odpowiedzi AI z krótkim wyjaśnieniem krok po kroku — instalacja jest darmowa.',
       primary: 'Zainstaluj z Chrome Web Store',
       secondary: 'Zobacz jak to działa',
       proof: ['Testportal, Moodle, Canvas, Forms i inne', 'Notatki i obrazy zapisywane z pytaniami', 'Udostępniane quizy z historii']
     },
     how: {
-      eyebrow: 'Jak to działa',
-      title: 'Jeden spójny workflow, zamiast rozproszonych narzędzi',
-      subtitle: 'QuizSolver łączy w jedno szybkie sugestie odpowiedzi na żywo z późniejszą nauką do egzaminów.',
+      eyebrow: 'Jak działa QuizSolver',
+      title: '3 kroki, żeby rozwiązać quiz z AI',
+      subtitle: 'Instalujesz raz, rozwiązujesz quizy na obsługiwanych platformach i automatycznie budujesz własną bibliotekę do nauki.',
       steps: [
-        { title: 'Zainstaluj i zaloguj się', text: 'Załóż darmowe konto. Używasz tych samych danych w rozszerzeniu Chrome oraz na getquizsolver.com.' },
-        { title: 'Rozwiąż lub zeskanuj', text: 'Korzystaj z automatycznego rozwiązywania standardowych stron lub użyj FocusScan do przechwycenia obrazków.' },
-        { title: 'Ucz się i powtarzaj', text: 'Twoje rozwiązane pytania automatycznie stają się notatkami do nauki, fiszkami i quizami powtórkowymi.' }
+        { title: 'Zainstaluj i zaloguj się', text: 'Dodaj QuizSolver do Chrome za darmo. Konto synchronizuje rozwiązane pytania, notatki i quizy powtórkowe między rozszerzeniem a stroną.' },
+        { title: 'Rozwiąż lub zeskanuj', text: 'Kliknij Rozwiąż obecną stronę, gdy quiz jest otwarty. Przy pytaniach w obrazku, canvasie albo nietypowym układzie przeciągnij FocusScan tylko po obszarze pytania.' },
+        { title: 'Ucz się i udostępniaj', text: 'Każde rozwiązane pytanie trafia do historii. Możesz zrobić z niego fiszki, uruchomić quiz powtórkowy albo udostępnić zestaw pytań innym.' }
       ]
     },
     features: {
-      eyebrow: 'Główne funkcje',
-      title: 'Funkcje, które mówią co zrobić dalej',
-      subtitle: 'QuizSolver skupia się na realnych sytuacjach z quizów: widoczne pytania, tryb podpowiedzi, obrazki, szybki overlay, historia i powtórki.',
+      eyebrow: 'Funkcje QuizSolver',
+      title: 'Wszystko, czego potrzebujesz do szybszego rozwiązywania quizów',
+      subtitle: 'Stworzone pod realne sytuacje: widoczne pytania, pytania w obrazkach, tryb samej podpowiedzi, szybki overlay oraz pełny system powtórek.',
       items: [
         { icon: 'QD', title: 'Wykrywanie pytań', text: 'Klikasz Rozwiąż obecną stronę, a rozszerzenie odczytuje widoczne pytanie, odpowiedzi, typ pytania i obrazki, zanim pokaże sugestię.' },
         { icon: 'HM', title: 'Tryb podpowiedzi', text: 'Włącz go, gdy nie chcesz automatycznego kliknięcia. QuizSolver tylko wizualnie zaznaczy prawdopodobną odpowiedź.' },
@@ -870,7 +873,7 @@ const HOME_COPY: Partial<Record<Locale, any>> & { en: any; pl: any } = {
     platforms: {
       eyebrow: 'Integracja z platformami',
       title: 'Zoptymalizowane pod systemy, z których korzystasz',
-      subtitle: 'QuizSolver wspiera bezpośrednie zaczytywanie pytań na wiodących platformach LMS i w kreatorach formularzy.',
+      subtitle: 'Jedno rozszerzenie AI do Testportal, Moodle, Canvas, Google Forms, Microsoft Forms, Blackboard, Quizlet, Socrative, Kahoot i Quizizz.',
       items: [
         { name: 'Testportal', href: '/pl/testportal-quiz-solver' },
         { name: 'Moodle', href: '/pl/moodle-quiz-solver' },
@@ -898,6 +901,9 @@ const HOME_COPY: Partial<Record<Locale, any>> & { en: any; pl: any } = {
     faqTitle: 'Najczęściej zadawane pytania',
     faq: [
       { question: 'Co kliknąć po wejściu na stronę z quizem?', answer: 'Otwórz rozszerzenie QuizSolver i kliknij Rozwiąż obecną stronę. Jeśli strona jest obsługiwana, narzędzie wykryje pytanie i opcje odpowiedzi. Przy nietypowym układzie użyj FocusScan i zaznacz sam obszar pytania.' },
+      { question: 'Czy QuizSolver działa na Testportalu?', answer: 'Tak. QuizSolver wykrywa pytania na Testportalu, również w widoku z timerem. Otwierasz quiz, klikasz Rozwiąż obecną stronę i po chwili dostajesz sugestię odpowiedzi AI.' },
+      { question: 'Co to jest FocusScan i kiedy go używać?', answer: 'FocusScan to narzędzie do zaznaczania fragmentu ekranu. Obrysowujesz pytanie w PDF-ie, obrazku, canvasie albo nietypowym embedzie, a QuizSolver odczytuje tylko ten obszar zamiast całej strony.' },
+      { question: 'Ile darmowych kredytów dostaje nowe konto?', answer: 'Każde nowe konto dostaje darmowe kredyty startowe, żeby sprawdzić sugestie odpowiedzi i wyjaśnienia. Dodatkowe pakiety zaczynają się od $1.99 za 100 kredytów. Tryb Kahoot Quiz ID nie zużywa kredytów.' },
       { question: 'Do czego służy tryb podpowiedzi?', answer: 'Tryb podpowiedzi jest dla sytuacji, w których nie chcesz automatycznego klikania. Rozszerzenie tylko zaznacza prawdopodobną odpowiedź, a decyzja zostaje po Twojej stronie.' },
       { question: 'Czy demo albo tutorial zużywa kredyty?', answer: 'Nie. Strona demo korzysta z gotowych lokalnych pytań i odpowiedzi. Możesz spokojnie sprawdzić cały workflow bez wysyłania zapytań do AI i bez zużywania kredytów.' },
       { question: 'Gdzie wrócić do rozwiązanych pytań?', answer: 'W zakładce Historia i quiz możesz przeglądać zapisane pytania, dodawać notatki, oznaczać ulubione, uruchamiać quiz powtórkowy i udostępniać wybrane pytania linkiem.' },
@@ -911,13 +917,13 @@ const HOME_LOCALE_TEXT: Record<Exclude<Locale, 'en' | 'pl'>, any> = {
     headingStart: 'Löse Quizze mit',
     headingAccent: 'KI-Power',
     eyebrow: 'KI-Quiz-Solver Chrome-Erweiterung',
-    lead: 'Eine klare Browser-Erweiterung für schnelle Antwortvorschläge, kurze Erklärungen, Lernnotizen und Quizze aus deiner Historie.',
+    lead: 'Löse Quizze auf Testportal, Moodle, Kahoot, Canvas, Google Forms und 7 weiteren Plattformen. Erhalte KI-Antwortvorschläge mit kurzen Schritt-für-Schritt-Erklärungen.',
     primary: 'Aus dem Chrome Web Store installieren',
     secondary: 'So funktioniert es',
     proof: ['Testportal, Moodle, Canvas, Forms und mehr', 'Notizen und Bilder werden mit Fragen gespeichert', 'Teilbare Quizze aus deiner Historie'],
-    how: ['So funktioniert es', 'Ein verbundener Workflow statt vieler einzelner Tools', 'QuizSolver verbindet Live-Antwortsuche mit späterem Lernen.'],
-    steps: [['Installieren und anmelden', 'Erstelle ein kostenloses Konto und nutze dieselben Daten in Erweiterung und Website.'], ['Lösen oder scannen', 'Nutze automatisches Lösen oder FocusScan für Fragen in Bildern.'], ['Wiederholen und lernen', 'Gelöste Fragen werden zu Notizen, Karteikarten und Übungsquizzen.']],
-    features: ['Kernfunktionen', 'Werkzeuge, die den nächsten Schritt erklären', 'Für sichtbare Fragen, Hinweis-Modus, Bilder, Quick Overlay, Historie und Wiederholung.', ['Fragenerkennung', 'Klicke Aktuelle Seite lösen: Die Erweiterung liest Frage, Optionen, Fragetyp und Bilder, bevor sie eine Antwort vorschlägt.'], ['Hinweis-Modus', 'Nutze ihn, wenn nichts automatisch geklickt werden soll. QuizSolver markiert nur die wahrscheinlich richtige Antwort.'], ['FocusScan', 'Markiere einen Bereich, wenn die Frage in einem Bild, Canvas, PDF oder ungewöhnlichen Layout steckt.'], ['Quick Overlay', 'Öffne ein kleines verschiebbares Fenster auf der Seite für schnelle Aktionen.'], ['Historie und Notizen', 'Speichere gelöste Fragen mit Antwort, Erklärung, Quelle, Bildern und eigenen Notizen.'], ['Übungsquiz aus Historie', 'Verwandle gespeicherte Fragen in ein Übungsquiz und prüfe danach die richtigen Antworten.'], ['Fragen teilen', 'Wähle aktuelle Fragen aus und erstelle einen öffentlichen Quizlink für andere.'], ['Kahoot Quiz ID', 'Wenn der Host Fragen ausblendet, öffnet die Quiz ID einen Suchbereich mit Antworten ohne AI-Credits.']],
+    how: ['So funktioniert QuizSolver', '3 Schritte, um jedes Quiz mit KI zu lösen', 'Einmal installieren, auf unterstützten Plattformen lösen und automatisch eine persönliche Lernbibliothek aufbauen.'],
+    steps: [['Installieren und anmelden', 'Installiere QuizSolver kostenlos in Chrome. Dein Konto synchronisiert gelöste Fragen, Notizen und Übungsquizze zwischen Erweiterung und Website.'], ['Lösen oder scannen', 'Klicke Aktuelle Seite lösen. Bei Bildern, Canvas, PDF oder ungewöhnlichem Layout markierst du nur den Fragebereich mit FocusScan.'], ['Wiederholen und teilen', 'Jede gelöste Frage landet in der Historie. Daraus entstehen Karteikarten, Übungsquizze und teilbare Fragensets.']],
+    features: ['QuizSolver-Funktionen', 'Alles, was du brauchst, um Quizze schneller zu lösen', 'Für sichtbare Fragen, bildbasierte Fragen, Hinweis-Modus, Quick Overlay und ein vollständiges Wiederholungssystem.', ['Fragenerkennung', 'Klicke Aktuelle Seite lösen: Die Erweiterung liest Frage, Optionen, Fragetyp und Bilder, bevor sie eine Antwort vorschlägt.'], ['Hinweis-Modus', 'Nutze ihn, wenn nichts automatisch geklickt werden soll. QuizSolver markiert nur die wahrscheinlich richtige Antwort.'], ['FocusScan', 'Markiere einen Bereich, wenn die Frage in einem Bild, Canvas, PDF oder ungewöhnlichen Layout steckt.'], ['Quick Overlay', 'Öffne ein kleines verschiebbares Fenster auf der Seite für schnelle Aktionen.'], ['Historie und Notizen', 'Speichere gelöste Fragen mit Antwort, Erklärung, Quelle, Bildern und eigenen Notizen.'], ['Übungsquiz aus Historie', 'Verwandle gespeicherte Fragen in ein Übungsquiz und prüfe danach die richtigen Antworten.'], ['Fragen teilen', 'Wähle aktuelle Fragen aus und erstelle einen öffentlichen Quizlink für andere.'], ['Kahoot Quiz ID', 'Wenn der Host Fragen ausblendet, öffnet die Quiz ID einen Suchbereich mit Antworten ohne AI-Credits.']],
     pricing: ['Einfache Credit-Preise', 'Lade nur auf, wenn du es brauchst', 'Keine Abos. Antworten und Erklärungen nutzen Credits, deine Historie bleibt verfügbar.', 'Beliebt'],
     faqTitle: 'Häufige Fragen'
   },
@@ -925,13 +931,13 @@ const HOME_LOCALE_TEXT: Record<Exclude<Locale, 'en' | 'pl'>, any> = {
     headingStart: 'Resuelve quizzes con',
     headingAccent: 'potencia AI',
     eyebrow: 'Extensión Chrome AI quiz solver',
-    lead: 'Una extensión limpia para sugerencias rápidas, explicaciones breves, notas guardadas y quizzes de práctica desde tu historial.',
+    lead: 'Resuelve quizzes en Testportal, Moodle, Kahoot, Canvas, Google Forms y 7 plataformas más. Recibe sugerencias de respuesta con IA y explicaciones paso a paso.',
     primary: 'Instalar desde Chrome Web Store',
     secondary: 'Ver cómo funciona',
     proof: ['Testportal, Moodle, Canvas, Forms y más', 'Notas e imágenes guardadas con preguntas', 'Quizzes compartibles desde el historial'],
-    how: ['Cómo funciona', 'Un flujo conectado, no diez herramientas sueltas', 'QuizSolver conecta respuestas en vivo con estudio posterior.'],
-    steps: [['Instala e inicia sesión', 'Crea una cuenta gratis y usa los mismos datos en la extensión y la web.'], ['Resuelve o escanea', 'Usa solución automática o FocusScan para preguntas en imágenes.'], ['Repasa y estudia', 'Las preguntas resueltas se convierten en notas, tarjetas y quizzes.']],
-    features: ['Funciones principales', 'Herramientas que explican el siguiente paso', 'Para preguntas visibles, modo pista, imágenes, overlay rápido, historial y práctica.', ['Detección de preguntas', 'Haz clic en Resolver página actual: la extensión lee la pregunta, opciones, tipo e imágenes antes de sugerir una respuesta.'], ['Modo pista', 'Úsalo cuando no quieres clics automáticos. QuizSolver solo marca la respuesta probable.'], ['FocusScan', 'Selecciona un área cuando la pregunta está en una imagen, canvas, PDF o diseño extraño.'], ['Overlay rápido', 'Abre una ventana pequeña y movible en la página con acciones rápidas.'], ['Historial y notas', 'Guarda preguntas resueltas con respuesta, explicación, fuente, imágenes y tus notas.'], ['Quiz de práctica', 'Convierte preguntas guardadas en un quiz y revisa las respuestas correctas al final.'], ['Compartir preguntas', 'Elige preguntas recientes y crea un enlace público para compartirlas.'], ['Kahoot Quiz ID', 'Si el host oculta preguntas, Quiz ID abre un banco buscable de respuestas sin gastar créditos AI.']],
+    how: ['Cómo funciona QuizSolver', '3 pasos para resolver cualquier quiz con IA', 'Instala una vez, resuelve en plataformas compatibles y crea automáticamente tu biblioteca de estudio.'],
+    steps: [['Instala e inicia sesión', 'Añade QuizSolver a Chrome gratis. Tu cuenta sincroniza preguntas resueltas, notas y quizzes de práctica entre la extensión y la web.'], ['Resuelve o escanea', 'Haz clic en Resolver página actual. Para imágenes, canvas, PDF o diseños raros, usa FocusScan solo sobre el área de la pregunta.'], ['Repasa y comparte', 'Cada pregunta resuelta se guarda en Historial. Úsala para tarjetas, quizzes de práctica o enlaces compartidos.']],
+    features: ['Funciones de QuizSolver', 'Todo lo que necesitas para resolver quizzes más rápido', 'Para preguntas visibles, preguntas en imágenes, modo pista, overlay rápido y un sistema completo de repaso.', ['Detección de preguntas', 'Haz clic en Resolver página actual: la extensión lee la pregunta, opciones, tipo e imágenes antes de sugerir una respuesta.'], ['Modo pista', 'Úsalo cuando no quieres clics automáticos. QuizSolver solo marca la respuesta probable.'], ['FocusScan', 'Selecciona un área cuando la pregunta está en una imagen, canvas, PDF o diseño extraño.'], ['Overlay rápido', 'Abre una ventana pequeña y movible en la página con acciones rápidas.'], ['Historial y notas', 'Guarda preguntas resueltas con respuesta, explicación, fuente, imágenes y tus notas.'], ['Quiz de práctica', 'Convierte preguntas guardadas en un quiz y revisa las respuestas correctas al final.'], ['Compartir preguntas', 'Elige preguntas recientes y crea un enlace público para compartirlas.'], ['Kahoot Quiz ID', 'Si el host oculta preguntas, Quiz ID abre un banco buscable de respuestas sin gastar créditos AI.']],
     pricing: ['Precios simples por créditos', 'Recarga solo cuando lo necesites', 'Sin suscripciones. Las respuestas y explicaciones usan créditos; el historial queda disponible.', 'Popular'],
     faqTitle: 'Preguntas frecuentes'
   },
@@ -939,13 +945,13 @@ const HOME_LOCALE_TEXT: Record<Exclude<Locale, 'en' | 'pl'>, any> = {
     headingStart: 'Résolvez des quiz avec',
     headingAccent: 'la puissance IA',
     eyebrow: 'Extension Chrome IA quiz solver',
-    lead: 'Une extension claire pour suggestions rapides, explications courtes, notes sauvegardées et entraînement depuis l’historique.',
+    lead: 'Résolvez des quiz sur Testportal, Moodle, Kahoot, Canvas, Google Forms et 7 autres plateformes. Obtenez des suggestions IA avec des explications étape par étape.',
     primary: 'Installer depuis Chrome Web Store',
     secondary: 'Voir le fonctionnement',
     proof: ['Testportal, Moodle, Canvas, Forms et plus', 'Notes et images sauvegardées avec les questions', 'Quiz partageables depuis l’historique'],
-    how: ['Fonctionnement', 'Un flux connecté, pas dix outils dispersés', 'QuizSolver relie les réponses en direct à la révision.'],
-    steps: [['Installer et se connecter', 'Créez un compte gratuit et utilisez-le dans l’extension et le site.'], ['Résoudre ou scanner', 'Utilisez la résolution automatique ou FocusScan pour les images.'], ['Réviser et apprendre', 'Les questions résolues deviennent notes, cartes et quiz.']],
-    features: ['Fonctions clés', 'Des outils qui indiquent la suite', 'Pour questions visibles, mode indice, images, overlay rapide, historique et révision.', ['Détection des questions', 'Cliquez Résoudre la page : l’extension lit la question, les options, le type et les images avant de proposer une réponse.'], ['Mode indice', 'À utiliser quand vous ne voulez aucun clic automatique. QuizSolver marque seulement la réponse probable.'], ['FocusScan', 'Sélectionnez une zone si la question est dans une image, un canvas, un PDF ou un layout inhabituel.'], ['Overlay rapide', 'Ouvrez une petite fenêtre déplaçable avec les actions rapides sur la page.'], ['Historique et notes', 'Enregistrez les questions avec réponse, explication, source, images et notes personnelles.'], ['Quiz d’entraînement', 'Transformez les questions enregistrées en quiz et vérifiez les bonnes réponses à la fin.'], ['Partage de questions', 'Choisissez des questions récentes et créez un lien public.'], ['Kahoot Quiz ID', 'Si l’hôte masque les questions, Quiz ID ouvre une banque de réponses sans crédits IA.']],
+    how: ['Comment fonctionne QuizSolver', '3 étapes pour résoudre un quiz avec l’IA', 'Installez une fois, résolvez sur les plateformes compatibles et créez automatiquement une bibliothèque d’étude.'],
+    steps: [['Installer et se connecter', 'Ajoutez QuizSolver à Chrome gratuitement. Votre compte synchronise questions résolues, notes et quiz d’entraînement entre l’extension et le site.'], ['Résoudre ou scanner', 'Cliquez Résoudre la page. Pour images, canvas, PDF ou layouts inhabituels, utilisez FocusScan uniquement sur la zone de question.'], ['Réviser et partager', 'Chaque question résolue est sauvegardée dans l’historique pour créer des cartes, des quiz ou des liens partagés.']],
+    features: ['Fonctions QuizSolver', 'Tout pour résoudre les quiz plus vite', 'Pour questions visibles, questions en image, mode indice, overlay rapide et système complet de révision.', ['Détection des questions', 'Cliquez Résoudre la page : l’extension lit la question, les options, le type et les images avant de proposer une réponse.'], ['Mode indice', 'À utiliser quand vous ne voulez aucun clic automatique. QuizSolver marque seulement la réponse probable.'], ['FocusScan', 'Sélectionnez une zone si la question est dans une image, un canvas, un PDF ou un layout inhabituel.'], ['Overlay rapide', 'Ouvrez une petite fenêtre déplaçable avec les actions rapides sur la page.'], ['Historique et notes', 'Enregistrez les questions avec réponse, explication, source, images et notes personnelles.'], ['Quiz d’entraînement', 'Transformez les questions enregistrées en quiz et vérifiez les bonnes réponses à la fin.'], ['Partage de questions', 'Choisissez des questions récentes et créez un lien public.'], ['Kahoot Quiz ID', 'Si l’hôte masque les questions, Quiz ID ouvre une banque de réponses sans crédits IA.']],
     pricing: ['Tarifs crédits simples', 'Rechargez seulement si nécessaire', 'Pas d’abonnement. Réponses et explications utilisent des crédits, l’historique reste disponible.', 'Populaire'],
     faqTitle: 'Questions fréquentes'
   },
@@ -953,13 +959,13 @@ const HOME_LOCALE_TEXT: Record<Exclude<Locale, 'en' | 'pl'>, any> = {
     headingStart: 'Risolvi quiz con',
     headingAccent: 'potenza AI',
     eyebrow: 'Estensione Chrome AI quiz solver',
-    lead: 'Un’estensione pulita per suggerimenti rapidi, spiegazioni brevi, note salvate e quiz di pratica dalla cronologia.',
+    lead: 'Risolvi quiz su Testportal, Moodle, Kahoot, Canvas, Google Forms e altre 7 piattaforme. Ottieni suggerimenti AI con spiegazioni passo dopo passo.',
     primary: 'Installa da Chrome Web Store',
     secondary: 'Vedi come funziona',
     proof: ['Testportal, Moodle, Canvas, Forms e altro', 'Note e immagini salvate con le domande', 'Quiz condivisibili dalla cronologia'],
-    how: ['Come funziona', 'Un flusso unico, non dieci strumenti separati', 'QuizSolver collega risposte live e ripasso successivo.'],
-    steps: [['Installa e accedi', 'Crea un account gratuito e usa gli stessi dati in estensione e sito.'], ['Risolvi o scansiona', 'Usa la soluzione automatica o FocusScan per immagini.'], ['Ripassa e studia', 'Le domande risolte diventano note, flashcard e quiz.']],
-    features: ['Funzioni principali', 'Strumenti che spiegano il prossimo passo', 'Per domande visibili, modalità suggerimento, immagini, overlay rapido, cronologia e ripasso.', ['Rilevamento domande', 'Clicca Risolvi pagina corrente: l’estensione legge domanda, opzioni, tipo e immagini prima di suggerire una risposta.'], ['Modalità suggerimento', 'Usala quando non vuoi clic automatici. QuizSolver evidenzia solo la risposta probabile.'], ['FocusScan', 'Seleziona un’area quando la domanda è in immagine, canvas, PDF o layout insolito.'], ['Overlay rapido', 'Apri una piccola finestra spostabile sulla pagina con azioni rapide.'], ['Cronologia e note', 'Salva domande risolte con risposta, spiegazione, fonte, immagini e note personali.'], ['Quiz di pratica', 'Trasforma domande salvate in un quiz e controlla le risposte corrette alla fine.'], ['Condividi domande', 'Scegli domande recenti e crea un link pubblico.'], ['Kahoot Quiz ID', 'Se l’host nasconde le domande, Quiz ID apre un banco risposte senza crediti AI.']],
+    how: ['Come funziona QuizSolver', '3 passaggi per risolvere qualsiasi quiz con AI', 'Installa una volta, risolvi sulle piattaforme supportate e crea automaticamente una libreria di studio.'],
+    steps: [['Installa e accedi', 'Aggiungi QuizSolver a Chrome gratis. Il tuo account sincronizza domande risolte, note e quiz di pratica tra estensione e sito.'], ['Risolvi o scansiona', 'Clicca Risolvi pagina corrente. Per immagini, canvas, PDF o layout insoliti usa FocusScan solo sull’area della domanda.'], ['Ripassa e condividi', 'Ogni domanda risolta viene salvata nella cronologia per creare flashcard, quiz di pratica o link condivisi.']],
+    features: ['Funzioni QuizSolver', 'Tutto ciò che serve per risolvere quiz più velocemente', 'Per domande visibili, domande in immagini, modalità suggerimento, overlay rapido e sistema completo di ripasso.', ['Rilevamento domande', 'Clicca Risolvi pagina corrente: l’estensione legge domanda, opzioni, tipo e immagini prima di suggerire una risposta.'], ['Modalità suggerimento', 'Usala quando non vuoi clic automatici. QuizSolver evidenzia solo la risposta probabile.'], ['FocusScan', 'Seleziona un’area quando la domanda è in immagine, canvas, PDF o layout insolito.'], ['Overlay rapido', 'Apri una piccola finestra spostabile sulla pagina con azioni rapide.'], ['Cronologia e note', 'Salva domande risolte con risposta, spiegazione, fonte, immagini e note personali.'], ['Quiz di pratica', 'Trasforma domande salvate in un quiz e controlla le risposte corrette alla fine.'], ['Condividi domande', 'Scegli domande recenti e crea un link pubblico.'], ['Kahoot Quiz ID', 'Se l’host nasconde le domande, Quiz ID apre un banco risposte senza crediti AI.']],
     pricing: ['Prezzi crediti semplici', 'Ricarica solo quando serve', 'Nessun abbonamento. Risposte e spiegazioni usano crediti; la cronologia resta disponibile.', 'Popolare'],
     faqTitle: 'Domande frequenti'
   },
@@ -967,13 +973,13 @@ const HOME_LOCALE_TEXT: Record<Exclude<Locale, 'en' | 'pl'>, any> = {
     headingStart: 'Розв’язуй квізи з',
     headingAccent: 'силою AI',
     eyebrow: 'Chrome-розширення AI quiz solver',
-    lead: 'Зручне розширення для швидких підказок, коротких пояснень, збережених нотаток і практики з історії.',
+    lead: 'Розв’язуй квізи на Testportal, Moodle, Kahoot, Canvas, Google Forms та 7 інших платформах. Отримуй AI-підказки з короткими покроковими поясненнями.',
     primary: 'Встановити з Chrome Web Store',
     secondary: 'Як це працює',
     proof: ['Testportal, Moodle, Canvas, Forms та інші', 'Нотатки й зображення зберігаються з питаннями', 'Квізи з історії можна ділитися'],
-    how: ['Як це працює', 'Один зв’язаний workflow замість купи інструментів', 'QuizSolver поєднує живі відповіді з подальшим навчанням.'],
-    steps: [['Встанови й увійди', 'Створи безкоштовний акаунт і використовуй його в розширенні та на сайті.'], ['Розв’язуй або скануй', 'Використовуй автопошук або FocusScan для питань у зображеннях.'], ['Повторюй і вчися', 'Розв’язані питання стають нотатками, картками і тренувальними квізами.']],
-    features: ['Основні функції', 'Інструменти, що пояснюють наступний крок', 'Для видимих питань, режиму підказки, зображень, швидкого overlay, історії та повторення.', ['Виявлення питань', 'Натисни Розв’язати сторінку: розширення читає питання, варіанти, тип і зображення перед підказкою.'], ['Режим підказки', 'Використовуй, коли не хочеш автоматичних кліків. QuizSolver лише підсвічує ймовірну відповідь.'], ['FocusScan', 'Виділи область, якщо питання в зображенні, canvas, PDF або незвичному макеті.'], ['Швидкий overlay', 'Відкрий маленьке рухоме вікно на сторінці з швидкими діями.'], ['Історія і нотатки', 'Зберігай розв’язані питання з відповіддю, поясненням, джерелом, зображеннями і нотатками.'], ['Квіз з історії', 'Перетвори збережені питання на тренувальний квіз і перевір правильні відповіді після завершення.'], ['Поширення питань', 'Обери останні питання і створи публічне посилання для інших.'], ['Kahoot Quiz ID', 'Якщо хост ховає питання, Quiz ID відкриває банк відповідей без витрати AI-кредитів.']],
+    how: ['Як працює QuizSolver', '3 кроки, щоб розв’язати квіз з AI', 'Встанови один раз, розв’язуй на підтримуваних платформах і автоматично збирай власну бібліотеку для навчання.'],
+    steps: [['Встанови й увійди', 'Додай QuizSolver у Chrome безкоштовно. Акаунт синхронізує розв’язані питання, нотатки і тренувальні квізи між розширенням та сайтом.'], ['Розв’язуй або скануй', 'Натисни Розв’язати сторінку. Для зображень, canvas, PDF або незвичного макета виділи лише область питання через FocusScan.'], ['Повторюй і ділись', 'Кожне розв’язане питання зберігається в історії, щоб робити картки, тренувальні квізи або посилання для інших.']],
+    features: ['Функції QuizSolver', 'Усе потрібне, щоб розв’язувати квізи швидше', 'Для видимих питань, питань у зображеннях, режиму підказки, швидкого overlay і повної системи повторення.', ['Виявлення питань', 'Натисни Розв’язати сторінку: розширення читає питання, варіанти, тип і зображення перед підказкою.'], ['Режим підказки', 'Використовуй, коли не хочеш автоматичних кліків. QuizSolver лише підсвічує ймовірну відповідь.'], ['FocusScan', 'Виділи область, якщо питання в зображенні, canvas, PDF або незвичному макеті.'], ['Швидкий overlay', 'Відкрий маленьке рухоме вікно на сторінці з швидкими діями.'], ['Історія і нотатки', 'Зберігай розв’язані питання з відповіддю, поясненням, джерелом, зображеннями і нотатками.'], ['Квіз з історії', 'Перетвори збережені питання на тренувальний квіз і перевір правильні відповіді після завершення.'], ['Поширення питань', 'Обери останні питання і створи публічне посилання для інших.'], ['Kahoot Quiz ID', 'Якщо хост ховає питання, Quiz ID відкриває банк відповідей без витрати AI-кредитів.']],
     pricing: ['Прості ціни кредитів', 'Поповнюй лише коли потрібно', 'Без підписок. Відповіді й пояснення витрачають кредити, історія доступна завжди.', 'Популярне'],
     faqTitle: 'Поширені питання'
   }
@@ -983,7 +989,7 @@ const HOME_PLATFORM_KEYS: PageKey[] = ['testportal', 'moodle', 'canvas', 'google
 
 const HOME_DETAIL_TEXT: Record<Exclude<Locale, 'en' | 'pl'>, any> = {
   de: {
-    platforms: ['Nahtlose Plattform-Integrationen', 'Optimiert für die Systeme, die du wirklich nutzt', 'QuizSolver arbeitet direkt mit gängigen LMS-Plattformen und Formular-Tools.'],
+    platforms: ['Nahtlose Plattform-Integrationen', 'Optimiert für die Systeme, die du wirklich nutzt', 'Eine Chrome-Erweiterung für Testportal, Moodle, Canvas, Google Forms, Microsoft Forms, Blackboard, Quizlet, Socrative, Kahoot und Quizizz.'],
     packs: [
       ['Kleines Guthaben', '100 Credits holen', ['Einmaliger Kauf, kein Abo', 'Gut für kurze Übungstests', 'Für Antworten und Erklärungen', 'Dauerhafter Zugriff auf Notizen']],
       ['Paket für regelmäßige Nutzung', '500 Credits wählen', ['15% günstiger als Starter', 'Ideal für wöchentliche Aufgaben', 'Hohe Antwortpriorität', 'Dauerhafter Zugriff auf Notizen']],
@@ -991,6 +997,9 @@ const HOME_DETAIL_TEXT: Record<Exclude<Locale, 'en' | 'pl'>, any> = {
     ],
     faq: [
       ['Was klicke ich auf einer Quizseite?', 'Öffne die Erweiterung und klicke Aktuelle Seite lösen. Bei ungewöhnlichen Layouts markierst du die Frage mit FocusScan.'],
+      ['Funktioniert QuizSolver mit Testportal?', 'Ja. QuizSolver erkennt Testportal-Fragen, auch im Timer-Interface. Öffne den Testportal-Test, klicke Aktuelle Seite lösen und erhalte in Sekunden einen KI-Vorschlag.'],
+      ['Was ist FocusScan?', 'FocusScan ist ein Screenshot-Werkzeug in QuizSolver. Markiere einen PDF-, Bild-, Canvas- oder Embed-Bereich, wenn die Frage nicht als normaler HTML-Text vorliegt.'],
+      ['Wie viele kostenlose Credits bekomme ich?', 'Neue Konten erhalten Start-Credits zum Testen von Antworten und Erklärungen. Zusätzliche Pakete beginnen bei $1.99 für 100 Credits. Kahoot Quiz ID verbraucht keine Credits.'],
       ['Wofür ist der Hinweis-Modus?', 'Er markiert die wahrscheinlich richtige Antwort, ohne automatisch zu klicken. Du entscheidest selbst, was du auswählst.'],
       ['Verbraucht die Demo Credits?', 'Nein. Die Demo nutzt lokale Beispielfragen und ist nur zum Lernen des Workflows gedacht.'],
       ['Wo finde ich gelöste Fragen?', 'Alle gespeicherten Fragen liegen in Historie & Quiz. Dort kannst du Notizen ergänzen, üben und Links teilen.'],
@@ -998,7 +1007,7 @@ const HOME_DETAIL_TEXT: Record<Exclude<Locale, 'en' | 'pl'>, any> = {
     ]
   },
   es: {
-    platforms: ['Integraciones fluidas', 'Optimizado para los sistemas que usas', 'QuizSolver se integra con plataformas LMS y formularios comunes.'],
+    platforms: ['Integraciones fluidas', 'Optimizado para los sistemas que usas', 'Una extensión de Chrome para Testportal, Moodle, Canvas, Google Forms, Microsoft Forms, Blackboard, Quizlet, Socrative, Kahoot y Quizizz.'],
     packs: [
       ['Recarga pequeña', 'Obtener 100 créditos', ['Pago único, sin suscripción', 'Bueno para pruebas rápidas', 'Sirve para respuestas y explicaciones', 'Acceso permanente a notas']],
       ['Pack de uso regular', 'Elegir 500 créditos', ['Ahorra 15% frente al starter', 'Ideal para tareas semanales', 'Respuesta con alta prioridad', 'Acceso permanente a notas']],
@@ -1006,6 +1015,9 @@ const HOME_DETAIL_TEXT: Record<Exclude<Locale, 'en' | 'pl'>, any> = {
     ],
     faq: [
       ['¿Qué hago al abrir una página de quiz?', 'Abre la extensión y pulsa Resolver página actual. Si el diseño es raro, usa FocusScan y selecciona solo la pregunta.'],
+      ['¿Funciona QuizSolver en Testportal?', 'Sí. QuizSolver detecta preguntas de Testportal, incluido el modo con temporizador. Abre el quiz, pulsa Resolver página actual y recibe una sugerencia IA en segundos.'],
+      ['¿Qué es FocusScan?', 'FocusScan es una herramienta de captura dentro de QuizSolver. Selecciona una zona de PDF, imagen, canvas o embed cuando la pregunta no está en texto HTML normal.'],
+      ['¿Cuántos créditos gratis recibo?', 'Las cuentas nuevas reciben créditos iniciales para probar respuestas y explicaciones. Los paquetes adicionales empiezan desde $1.99 por 100 créditos. Kahoot Quiz ID no usa créditos.'],
       ['¿Para qué sirve el modo pista?', 'Marca la respuesta probable sin hacer clic automático, para que tú mantengas el control.'],
       ['¿La demo consume créditos?', 'No. La demo usa preguntas locales preparadas para aprender el flujo sin gastar créditos.'],
       ['¿Dónde reviso preguntas resueltas?', 'En Historial y quiz puedes verlas, añadir notas, practicar y compartir enlaces.'],
@@ -1013,7 +1025,7 @@ const HOME_DETAIL_TEXT: Record<Exclude<Locale, 'en' | 'pl'>, any> = {
     ]
   },
   fr: {
-    platforms: ['Intégrations fluides', 'Optimisé pour les systèmes que tu utilises', 'QuizSolver s’intègre aux LMS et outils de formulaires courants.'],
+    platforms: ['Intégrations fluides', 'Optimisé pour les systèmes que tu utilises', 'Une extension Chrome pour Testportal, Moodle, Canvas, Google Forms, Microsoft Forms, Blackboard, Quizlet, Socrative, Kahoot et Quizizz.'],
     packs: [
       ['Petite recharge', 'Obtenir 100 crédits', ['Achat unique, sans abonnement', 'Idéal pour des tests rapides', 'Fonctionne pour réponses et explications', 'Accès permanent aux notes']],
       ['Pack régulier', 'Choisir 500 crédits', ['15% d’économie vs starter', 'Parfait pour les devoirs hebdomadaires', 'Réponses prioritaires', 'Accès permanent aux notes']],
@@ -1021,6 +1033,9 @@ const HOME_DETAIL_TEXT: Record<Exclude<Locale, 'en' | 'pl'>, any> = {
     ],
     faq: [
       ['Que faire sur une page de quiz ?', 'Ouvrez l’extension et cliquez Résoudre la page. Si le layout est inhabituel, utilisez FocusScan sur la question.'],
+      ['QuizSolver fonctionne-t-il sur Testportal ?', 'Oui. QuizSolver détecte les questions Testportal, y compris l’interface avec minuteur. Ouvrez le quiz, cliquez Résoudre la page et recevez une suggestion IA en quelques secondes.'],
+      ['Qu’est-ce que FocusScan ?', 'FocusScan est un outil de capture dans QuizSolver. Sélectionnez une zone de PDF, image, canvas ou embed lorsque la question n’est pas du texte HTML classique.'],
+      ['Combien de crédits gratuits ai-je ?', 'Les nouveaux comptes reçoivent des crédits de départ pour tester réponses et explications. Les packs commencent à $1.99 pour 100 crédits. Kahoot Quiz ID ne consomme pas de crédits.'],
       ['À quoi sert le mode indice ?', 'Il marque la réponse probable sans cliquer automatiquement, pour garder le contrôle.'],
       ['La démo consomme-t-elle des crédits ?', 'Non. La démo utilise des questions locales préparées pour apprendre le workflow.'],
       ['Où revoir les questions résolues ?', 'Dans Historique et quiz, vous pouvez revoir, annoter, pratiquer et partager des questions.'],
@@ -1028,7 +1043,7 @@ const HOME_DETAIL_TEXT: Record<Exclude<Locale, 'en' | 'pl'>, any> = {
     ]
   },
   it: {
-    platforms: ['Integrazioni fluide', 'Ottimizzato per i sistemi che usi davvero', 'QuizSolver si integra con LMS e strumenti per moduli comuni.'],
+    platforms: ['Integrazioni fluide', 'Ottimizzato per i sistemi che usi davvero', 'Un’estensione Chrome per Testportal, Moodle, Canvas, Google Forms, Microsoft Forms, Blackboard, Quizlet, Socrative, Kahoot e Quizizz.'],
     packs: [
       ['Piccola ricarica', 'Ottieni 100 crediti', ['Acquisto una tantum, niente abbonamento', 'Ottimo per test rapidi', 'Vale per risposte e spiegazioni', 'Accesso permanente alle note']],
       ['Pack uso regolare', 'Scegli 500 crediti', ['Risparmi il 15% rispetto allo starter', 'Ideale per compiti settimanali', 'Risposte ad alta priorità', 'Accesso permanente alle note']],
@@ -1036,6 +1051,9 @@ const HOME_DETAIL_TEXT: Record<Exclude<Locale, 'en' | 'pl'>, any> = {
     ],
     faq: [
       ['Cosa clicco su una pagina quiz?', 'Apri l’estensione e premi Risolvi pagina corrente. Per layout insoliti usa FocusScan sulla domanda.'],
+      ['QuizSolver funziona su Testportal?', 'Sì. QuizSolver rileva le domande su Testportal, inclusa l’interfaccia con timer. Apri il quiz, clicca Risolvi pagina corrente e ricevi un suggerimento AI in pochi secondi.'],
+      ['Che cos’è FocusScan?', 'FocusScan è uno strumento screenshot dentro QuizSolver. Seleziona un’area PDF, immagine, canvas o embed quando la domanda non è testo HTML normale.'],
+      ['Quanti crediti gratis ricevo?', 'I nuovi account ricevono crediti iniziali per provare risposte e spiegazioni. I pacchetti aggiuntivi partono da $1.99 per 100 crediti. Kahoot Quiz ID non usa crediti.'],
       ['A cosa serve la modalità suggerimento?', 'Evidenzia la risposta probabile senza clic automatici, così decidi tu cosa selezionare.'],
       ['La demo consuma crediti?', 'No. La demo usa domande locali preparate per imparare il flusso.'],
       ['Dove rivedo le domande risolte?', 'In Cronologia e quiz puoi rivederle, aggiungere note, fare pratica e condividere link.'],
@@ -1043,7 +1061,7 @@ const HOME_DETAIL_TEXT: Record<Exclude<Locale, 'en' | 'pl'>, any> = {
     ]
   },
   uk: {
-    platforms: ['Плавні інтеграції', 'Оптимізовано для систем, якими ти реально користуєшся', 'QuizSolver працює з популярними LMS і формами напряму.'],
+    platforms: ['Плавні інтеграції', 'Оптимізовано для систем, якими ти реально користуєшся', 'Chrome-розширення для Testportal, Moodle, Canvas, Google Forms, Microsoft Forms, Blackboard, Quizlet, Socrative, Kahoot і Quizizz.'],
     packs: [
       ['Мале поповнення', 'Отримати 100 кредитів', ['Разова покупка, без підписки', 'Добре для швидких тренувань', 'Працює для відповідей і пояснень', 'Постійний доступ до нотаток']],
       ['Пакет для регулярного використання', 'Вибрати 500 кредитів', ['Економія 15% проти starter', 'Зручно для щотижневих завдань', 'Високий пріоритет відповіді', 'Постійний доступ до нотаток']],
@@ -1051,6 +1069,9 @@ const HOME_DETAIL_TEXT: Record<Exclude<Locale, 'en' | 'pl'>, any> = {
     ],
     faq: [
       ['Що натиснути на сторінці квізу?', 'Відкрий розширення і натисни Розв’язати сторінку. Для незвичного макета використовуй FocusScan.'],
+      ['Чи працює QuizSolver на Testportal?', 'Так. QuizSolver розпізнає питання Testportal, включно з інтерфейсом таймера. Відкрий квіз, натисни Розв’язати сторінку й отримай AI-підказку за секунди.'],
+      ['Що таке FocusScan?', 'FocusScan — це інструмент скріншота в QuizSolver. Виділи область PDF, зображення, canvas або embed, якщо питання не є звичайним HTML-текстом.'],
+      ['Скільки безкоштовних кредитів я отримую?', 'Нові акаунти отримують стартові кредити для перевірки відповідей і пояснень. Додаткові пакети починаються від $1.99 за 100 кредитів. Kahoot Quiz ID не витрачає кредити.'],
       ['Для чого режим підказки?', 'Він підсвічує ймовірну відповідь без автоматичного кліку, щоб рішення залишалося за тобою.'],
       ['Чи витрачає демо кредити?', 'Ні. Демо використовує локальні підготовлені питання, щоб навчити workflow.'],
       ['Де переглянути розв’язані питання?', 'В Історія і квіз можна переглядати, додавати нотатки, тренуватися і ділитися посиланням.'],

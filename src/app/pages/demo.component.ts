@@ -47,7 +47,7 @@ const COPY: Partial<Record<Locale, DemoCopy>> & { en: DemoCopy; pl: DemoCopy } =
   en: {
     eyebrow: 'Interactive onboarding',
     title: 'Try QuizSolver on a safe demo quiz',
-    lead: 'Five predefined everyday questions walk through the real extension flow: solve a visible question, use Hint mode, fill text answers, handle dropdowns and try the quick overlay. The demo never consumes credits.',
+    lead: 'Try the full QuizSolver workflow without spending credits. Pick a predefined everyday question, open the extension, and see how QuizSolver suggests an answer, gives a hint, fills text fields, handles dropdowns and solves selected text.',
     install: 'Install extension',
     openStore: 'Open Chrome Web Store',
     demoBadge: 'No credits used',
@@ -127,7 +127,7 @@ const COPY: Partial<Record<Locale, DemoCopy>> & { en: DemoCopy; pl: DemoCopy } =
   pl: {
     eyebrow: 'Interaktywny onboarding',
     title: 'Przetestuj QuizSolver na bezpiecznym demo',
-    lead: 'Pięć prostych pytań z codziennego życia prowadzi przez prawdziwy flow rozszerzenia: zwykłe rozwiązanie, Hint mode, odpowiedź tekstową, selecty i szybki overlay. Demo nigdy nie zużywa kredytów.',
+    lead: 'Przetestuj pełny workflow QuizSolver bez zużywania kredytów. Wybierz gotowe pytanie z codziennego życia, otwórz rozszerzenie i zobacz, jak QuizSolver sugeruje odpowiedź, pokazuje podpowiedź, wypełnia pola tekstowe, obsługuje selecty i rozwiązuje zaznaczony tekst.',
     install: 'Zainstaluj rozszerzenie',
     openStore: 'Otwórz Chrome Web Store',
     demoBadge: 'Bez zużycia kredytów',
@@ -464,26 +464,27 @@ const DEMO_QUESTIONS: Record<Exclude<Locale, 'en' | 'pl'>, DemoQuestion[]> = {
   `,
   styles: [`
     .demo-page {
-      padding: 5rem 0 6rem;
+      padding: 4.5rem 0 5rem;
       width: 100%;
       max-width: 100vw;
       overflow-x: hidden;
+      background:
+        linear-gradient(180deg, rgba(16, 19, 24, 0.98), rgba(13, 17, 25, 0.98)),
+        #101318;
     }
 
     .demo-hero {
-      padding: 2rem 0 4rem;
+      padding: 1.5rem 0 2.5rem;
       max-width: 100vw;
       overflow-x: hidden;
-      background:
-        radial-gradient(circle at 20% 20%, rgba(6, 182, 212, 0.12), transparent 32rem),
-        radial-gradient(circle at 86% 8%, rgba(245, 158, 11, 0.1), transparent 28rem);
+      border-bottom: 1px solid rgba(43, 53, 69, 0.72);
     }
 
     .demo-hero-grid,
     .demo-workspace {
       display: grid;
-      grid-template-columns: minmax(0, 1.15fr) minmax(320px, 0.85fr);
-      gap: 1.5rem;
+      grid-template-columns: minmax(0, 1fr) minmax(340px, 0.92fr);
+      gap: 1.25rem;
       align-items: stretch;
     }
 
@@ -496,7 +497,7 @@ const DEMO_QUESTIONS: Record<Exclude<Locale, 'en' | 'pl'>, DemoQuestion[]> = {
 
     .demo-copy h1 {
       max-width: 780px;
-      margin: 0.9rem 0 1rem;
+      margin: 0.75rem 0 0.9rem;
       overflow-wrap: anywhere;
     }
 
@@ -511,7 +512,7 @@ const DEMO_QUESTIONS: Record<Exclude<Locale, 'en' | 'pl'>, DemoQuestion[]> = {
       display: flex;
       flex-wrap: wrap;
       gap: 0.75rem;
-      margin-top: 1.4rem;
+      margin-top: 1.2rem;
     }
 
     .demo-badges span {
@@ -529,58 +530,62 @@ const DEMO_QUESTIONS: Record<Exclude<Locale, 'en' | 'pl'>, DemoQuestion[]> = {
     .demo-map,
     .demo-side,
     .demo-card {
-      border-radius: 1rem;
-      padding: 1.35rem;
+      border: 1px solid #2b3545;
+      border-radius: 12px;
+      background: #171c24;
+      box-shadow: 0 18px 50px rgba(0, 0, 0, 0.26);
+      padding: 1.1rem;
     }
 
     .demo-map h2,
     .demo-side h2 {
-      font-size: 1.35rem;
+      font-size: 1.2rem;
       margin-bottom: 0.65rem;
     }
 
     .demo-map ol {
       display: grid;
-      gap: 0.7rem;
-      margin-top: 1rem;
+      gap: 0.5rem;
+      margin-top: 0.9rem;
     }
 
     .demo-map li {
       display: grid;
-      grid-template-columns: 2rem 1fr;
-      gap: 0.7rem;
+      grid-template-columns: 1.8rem 1fr;
+      gap: 0.65rem;
       align-items: center;
-      padding: 0.7rem;
-      border: 1px solid rgba(255,255,255,0.07);
-      border-radius: 0.75rem;
-      background: rgba(255,255,255,0.03);
+      padding: 0.65rem;
+      border: 1px solid rgba(43, 53, 69, 0.9);
+      border-radius: 10px;
+      background: #1d2430;
     }
 
     .demo-map li.active {
-      border-color: rgba(6, 182, 212, 0.45);
-      background: rgba(6, 182, 212, 0.1);
+      border-color: rgba(14, 165, 233, 0.62);
+      background: linear-gradient(135deg, rgba(124, 92, 252, 0.16), rgba(14, 165, 233, 0.12));
     }
 
     .demo-map li span {
       display: grid;
       place-items: center;
-      width: 2rem;
-      height: 2rem;
-      border-radius: 0.6rem;
-      background: rgba(6, 182, 212, 0.16);
-      color: #67e8f9;
+      width: 1.8rem;
+      height: 1.8rem;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #7c5cfc, #0ea5e9);
+      color: #ffffff;
       font-weight: 900;
     }
 
     .demo-map li p {
       color: var(--text-primary);
-      font-size: 0.92rem;
+      font-size: 0.9rem;
       line-height: 1.35;
     }
 
     .demo-workspace {
       grid-template-columns: minmax(280px, 0.42fr) minmax(0, 1fr);
       align-items: start;
+      margin-top: 1.75rem;
     }
 
     .demo-side {
@@ -597,9 +602,9 @@ const DEMO_QUESTIONS: Record<Exclude<Locale, 'en' | 'pl'>, DemoQuestion[]> = {
       gap: 0.6rem;
       margin-top: 1.15rem;
       padding: 0.85rem;
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 0.9rem;
-      background: #0d1421;
+      border: 1px solid #2b3545;
+      border-radius: 12px;
+      background: #101318;
     }
 
     .mock-popup-head {
@@ -623,10 +628,10 @@ const DEMO_QUESTIONS: Record<Exclude<Locale, 'en' | 'pl'>, DemoQuestion[]> = {
     .mock-action,
     .mock-toggle {
       min-height: 2.65rem;
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 0.7rem;
+      border: 1px solid #2b3545;
+      border-radius: 10px;
       padding: 0.7rem 0.8rem;
-      background: rgba(255,255,255,0.04);
+      background: #1d2430;
       color: var(--text-primary);
       font-weight: 800;
     }
@@ -686,8 +691,8 @@ const DEMO_QUESTIONS: Record<Exclude<Locale, 'en' | 'pl'>, DemoQuestion[]> = {
       flex: 0 0 auto;
       height: 2.3rem;
       padding: 0.42rem 0.7rem;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 10px;
+      border: 1px solid #2b3545;
       color: #bae6fd;
       font-weight: 900;
     }
@@ -704,9 +709,9 @@ const DEMO_QUESTIONS: Record<Exclude<Locale, 'en' | 'pl'>, DemoQuestion[]> = {
       gap: 0.75rem;
       min-height: 3.35rem;
       padding: 0.8rem 0.9rem;
-      border: 1px solid rgba(255,255,255,0.09);
-      border-radius: 0.8rem;
-      background: rgba(255,255,255,0.04);
+      border: 1px solid #2b3545;
+      border-radius: 10px;
+      background: #1d2430;
       color: var(--text-primary);
       font-weight: 750;
     }
@@ -733,9 +738,9 @@ const DEMO_QUESTIONS: Record<Exclude<Locale, 'en' | 'pl'>, DemoQuestion[]> = {
     .match-row select {
       width: 100%;
       min-height: 3.2rem;
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 0.8rem;
-      background: #111827;
+      border: 1px solid #2b3545;
+      border-radius: 10px;
+      background: #101318;
       color: var(--text-primary);
       padding: 0 0.9rem;
       outline: none;
@@ -777,8 +782,8 @@ const DEMO_QUESTIONS: Record<Exclude<Locale, 'en' | 'pl'>, DemoQuestion[]> = {
     .selected-tip {
       justify-content: flex-start;
       border: 1px solid rgba(245, 158, 11, 0.18);
-      background: rgba(245, 158, 11, 0.08);
-      border-radius: 0.8rem;
+      background: rgba(245, 158, 11, 0.07);
+      border-radius: 10px;
       padding: 0.75rem;
     }
 
