@@ -1,0 +1,71 @@
+# QuizSolver — AI Quiz Solver Chrome Extension
+
+> QuizSolver is a Chrome browser extension that uses artificial intelligence to instantly solve quizzes across 10+ educational platforms including Testportal, Moodle, Canvas LMS, Google Forms, Kahoot, Quizizz, Blackboard, Microsoft Forms, Quizlet, and Socrative.
+
+## What is QuizSolver?
+
+QuizSolver is an AI-powered Chrome extension for students. When a student is taking an online quiz, QuizSolver reads the visible question and answer options on the page, sends them to an AI model, and displays an answer suggestion with a detailed step-by-step explanation — all inside a browser side panel without the student needing to switch tabs or leave the quiz page.
+
+**Key capabilities:**
+- Instant AI answer suggestions for multiple choice, single choice, true/false, short answer, and essay questions
+- Step-by-step explanations so students can actually learn the concept
+- FocusScan tool: screenshot any region of the screen to solve questions embedded in images, canvases, or iframes
+- Automatic save to question history — all solved questions are stored for later review
+- Practice quiz generator — create flashcard-style quizzes from question history
+- Kahoot Quiz ID mode — load the full answer bank for a Kahoot quiz without spending credits, using only the Quiz ID from the URL
+- Works in Chrome Side Panel — no tab switching required
+
+## Supported Platforms
+
+| Platform | URL Pattern | Notes |
+|---|---|---|
+| Testportal | testportal.pl, testportal.net | Auto-detect questions |
+| Moodle | any Moodle instance | Supports math/LaTeX |
+| Canvas LMS | instructure.com | Supports LTI via FocusScan |
+| Google Forms | docs.google.com/forms | All question types |
+| Kahoot | kahoot.it | Auto-solve + Quiz ID mode |
+| Quizizz | quizizz.com | Homework and live mode |
+| Blackboard | blackboard.com | Classic and Ultra |
+| Microsoft Forms | forms.office.com | All question types |
+| Quizlet | quizlet.com | Learn mode, tests, matching |
+| Socrative | socrative.com | Live quiz rooms |
+
+## Pricing
+
+QuizSolver uses a credit-based system. Users receive free starting credits upon registration. Additional credits are purchased as one-time top-up packages (no subscription required). Credits are consumed per AI query; Kahoot Quiz ID lookups do not consume credits.
+
+## How to Install
+
+1. Visit the Chrome Web Store: https://chromewebstore.google.com/detail/quiz-solver-pro/cjchfdnplpjkihigljnicebnhjkpndik
+2. Click "Add to Chrome"
+3. Pin the QuizSolver icon to the Chrome toolbar
+4. Create a free account at https://getquizsolver.com
+5. Open any supported quiz page and click the QuizSolver icon
+
+## Languages Supported
+
+The QuizSolver website and extension UI are available in: English (en), Polish (pl), German (de), Spanish (es), French (fr), Italian (it), Ukrainian (uk).
+
+## Company Information
+
+- **Website:** https://getquizsolver.com
+- **Chrome Web Store:** https://chromewebstore.google.com/detail/quiz-solver-pro/cjchfdnplpjkihigljnicebnhjkpndik
+- **Support email:** support@getquizsolver.com
+- **Privacy policy:** https://getquizsolver.com/privacy
+
+## Frequently Asked Questions
+
+**Q: Does QuizSolver work on all websites?**
+A: It automatically detects questions on supported platforms. For any other website, the FocusScan tool lets you capture any screen region containing a question.
+
+**Q: Is it detectable by anti-cheat systems?**
+A: QuizSolver runs in the browser's standard extension sandbox inside a Side Panel. It does not inject scripts into quiz pages beyond what is needed to read visible DOM content.
+
+**Q: Does it submit answers automatically?**
+A: No. QuizSolver only suggests answers. The student always decides what to submit.
+
+**Q: What is Kahoot Quiz ID?**
+A: The Quiz ID is the unique identifier of a Kahoot quiz, visible in the URL after `quizId=`. It is different from the live game PIN. Entering the Quiz ID in QuizSolver displays all questions and correct answers without using AI credits.
+
+**Q: Is it free?**
+A: Yes, with free starting credits. Additional credits are purchased as needed. Kahoot Quiz ID mode is always free.

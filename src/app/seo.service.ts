@@ -132,16 +132,27 @@ export class SeoService {
         '@type': 'Organization',
         '@id': `${homeUrl}#organization`,
         name: 'QuizSolver',
+        description: 'QuizSolver builds AI-powered browser extensions for students. The flagship product is a Chrome extension that instantly solves quizzes on Testportal, Moodle, Canvas, Google Forms, Kahoot, Quizizz, Blackboard, Microsoft Forms, Quizlet, and Socrative using AI answer suggestions and step-by-step explanations.',
         url: homeUrl,
+        foundingDate: '2025',
+        knowsAbout: [
+          'AI quiz solving', 'educational technology', 'Chrome browser extensions',
+          'Testportal', 'Moodle LMS', 'Canvas LMS', 'Google Forms', 'Kahoot',
+          'Quizizz', 'Blackboard Learn', 'Microsoft Forms', 'Quizlet', 'Socrative'
+        ],
         logo: {
           '@type': 'ImageObject',
           url: abs('/logo-512.png'),
           width: 512,
           height: 512
         },
-        sameAs: [CHROME_WEB_STORE_URL],
+        sameAs: [
+          CHROME_WEB_STORE_URL,
+          'https://twitter.com/getquizsolver'
+        ],
         contactPoint: {
           '@type': 'ContactPoint',
+          email: 'support@getquizsolver.com',
           url: abs('/privacy#contact'),
           contactType: 'customer support',
           availableLanguage: SUPPORTED_LOCALES.map(opt => opt.label)
@@ -161,18 +172,31 @@ export class SeoService {
         installUrl: CHROME_WEB_STORE_URL,
         sameAs: [CHROME_WEB_STORE_URL],
         inLanguage: SUPPORTED_LOCALES.map(opt => opt.htmlLang),
-        description: meta.description,
+        description: 'QuizSolver is a Chrome extension that uses AI to instantly suggest answers and explanations for quiz questions on Testportal, Moodle, Canvas LMS, Google Forms, Kahoot, Quizizz, Blackboard, Microsoft Forms, Quizlet, and Socrative. It works in the browser side panel without tab switching and saves all solved questions for later review.',
         screenshot: abs('/og-image.png'),
         creator: { '@id': `${homeUrl}#organization` },
+        mentions: [
+          { '@type': 'SoftwareApplication', name: 'Testportal', url: 'https://testportal.pl' },
+          { '@type': 'SoftwareApplication', name: 'Moodle', url: 'https://moodle.org' },
+          { '@type': 'SoftwareApplication', name: 'Canvas LMS', url: 'https://www.instructure.com' },
+          { '@type': 'SoftwareApplication', name: 'Google Forms', url: 'https://forms.google.com' },
+          { '@type': 'SoftwareApplication', name: 'Kahoot', url: 'https://kahoot.com' },
+          { '@type': 'SoftwareApplication', name: 'Quizizz', url: 'https://quizizz.com' },
+          { '@type': 'SoftwareApplication', name: 'Blackboard Learn', url: 'https://www.blackboard.com' },
+          { '@type': 'SoftwareApplication', name: 'Microsoft Forms', url: 'https://forms.office.com' },
+          { '@type': 'SoftwareApplication', name: 'Quizlet', url: 'https://quizlet.com' },
+          { '@type': 'SoftwareApplication', name: 'Socrative', url: 'https://socrative.com' }
+        ],
         featureList: [
           'AI quiz answer suggestions',
-          'Answer explanations',
-          'Study Notes history',
-          'Practice Mode',
+          'Step-by-step answer explanations',
+          'Study notes and question history',
+          'Practice quiz from history',
           'FocusScan screenshot solver',
-          'Kahoot Quiz ID answer bank',
-          'Testportal, Moodle, Canvas, Google Forms, Microsoft Forms, Kahoot, Quizizz and more',
-          'Optional site permissions and hint mode'
+          'Kahoot Quiz ID answer bank (free, no credits)',
+          'Works on Testportal, Moodle, Canvas, Google Forms, Kahoot, Quizizz, Blackboard, Microsoft Forms, Quizlet, Socrative',
+          'Chrome Side Panel — no tab switching required',
+          'Hint mode for discreet help'
         ],
         aggregateRating: {
           '@type': 'AggregateRating',
@@ -218,6 +242,10 @@ export class SeoService {
         inLanguage: locOpt.htmlLang,
         datePublished: '2026-05-01',
         dateModified: new Date().toISOString().split('T')[0],
+        speakable: {
+          '@type': 'SpeakableSpecification',
+          cssSelector: ['h1', '.hero-subtitle', '.platform-subtitle', 'meta[name="description"]']
+        },
         ...(pageKey !== 'home' && {
           author: { '@id': `${homeUrl}#organization` },
           publisher: { '@id': `${homeUrl}#organization` }
@@ -239,6 +267,9 @@ export class SeoService {
 
     /* HowTo — pages with steps */
     if (Array.isArray(data?.steps) && data.steps.length) {
+      const stepNames: string[] = [
+        'Open the quiz page', 'Activate QuizSolver', 'Review AI suggestion'
+      ];
       graph.push({
         '@type': 'HowTo',
         '@id': `${canonical}#howto`,
@@ -248,7 +279,7 @@ export class SeoService {
         step: data.steps.map((step: string, index: number) => ({
           '@type': 'HowToStep',
           position: index + 1,
-          name: `Step ${index + 1}`,
+          name: stepNames[index] || `Step ${index + 1}`,
           text: step
         }))
       });
@@ -270,7 +301,7 @@ export class SeoService {
       });
     }
 
-    /* ItemList — home page: list of supported platforms */
+    /* ItemList + home FAQ — home page only */
     if (pageKey === 'home') {
       const platforms = platformEntries(locale);
       graph.push({
@@ -285,6 +316,19 @@ export class SeoService {
           name: entry.data?.platformName || entry.pageKey,
           url: abs(pathFor(entry.pageKey as PageKey, locale))
         }))
+      });
+      /* Home-level FAQ for AI Overviews */
+      graph.push({
+        '@type': 'FAQPage',
+        '@id': `${canonical}#homefaq`,
+        mainEntity: [
+          { '@type': 'Question', name: 'What is QuizSolver?', acceptedAnswer: { '@type': 'Answer', text: 'QuizSolver is a Chrome browser extension that uses AI to instantly solve quiz questions on platforms like Testportal, Moodle, Canvas, Google Forms, Kahoot, Quizizz, Blackboard, Microsoft Forms, Quizlet, and Socrative. It shows AI answer suggestions with step-by-step explanations in a Chrome Side Panel.' } },
+          { '@type': 'Question', name: 'Is QuizSolver free?', acceptedAnswer: { '@type': 'Answer', text: 'QuizSolver is free to install. New accounts receive free starting AI credits. Additional credits are purchased as one-time top-up packages starting from $1.99. The Kahoot Quiz ID mode is always free and does not consume credits.' } },
+          { '@type': 'Question', name: 'What quiz platforms does QuizSolver support?', acceptedAnswer: { '@type': 'Answer', text: 'QuizSolver supports Testportal, Moodle, Canvas LMS, Google Forms, Kahoot, Quizizz, Blackboard Learn, Microsoft Forms, Quizlet, and Socrative. For any other platform or image-based questions, the FocusScan tool can capture any screen region.' } },
+          { '@type': 'Question', name: 'Does QuizSolver work on Kahoot?', acceptedAnswer: { '@type': 'Answer', text: 'Yes. QuizSolver has two Kahoot modes: Auto mode detects visible questions and suggests the best answer automatically. Quiz ID mode lets you load the full answer bank for any Kahoot quiz using the Quiz ID from the URL — this mode is completely free (no credits needed).' } },
+          { '@type': 'Question', name: 'Can Google or teachers detect QuizSolver?', acceptedAnswer: { '@type': 'Answer', text: 'QuizSolver runs in the standard Chrome extension sandbox inside the Chrome Side Panel. It does not inject suspicious scripts into quiz pages and does not require leaving the quiz tab, so it does not trigger common window-focus or tab-switch detectors.' } },
+          { '@type': 'Question', name: 'How do I install QuizSolver?', acceptedAnswer: { '@type': 'Answer', text: 'Visit the Chrome Web Store, search for QuizSolver or click the install link at getquizsolver.com, click Add to Chrome, pin the icon to your toolbar, create a free account, and open any supported quiz page to start.' } }
+        ]
       });
     }
 
