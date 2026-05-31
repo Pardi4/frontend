@@ -28,6 +28,8 @@ const LOCALE_KEYWORDS: Record<Locale, string> = {
 
 /* ─── Noindex pages ──────────────────────────────────────────────────────────── */
 const NOINDEX_PAGES = new Set<PageKey>(['dashboard', 'success', 'notFound']);
+const ASSET_VERSION = '20260531';
+const assetUrl = (path: string) => `${abs(path)}?v=${ASSET_VERSION}`;
 
 @Injectable({ providedIn: 'root' })
 export class SeoService {
@@ -65,7 +67,7 @@ export class SeoService {
     this.upsertMeta('property', 'og:url', canonical);
     this.upsertMeta('property', 'og:title', meta.title);
     this.upsertMeta('property', 'og:description', meta.description);
-    this.upsertMeta('property', 'og:image', abs('/og-image.png'));
+    this.upsertMeta('property', 'og:image', assetUrl('/og-image.png'));
     this.upsertMeta('property', 'og:image:type', 'image/png');
     this.upsertMeta('property', 'og:image:width', '1200');
     this.upsertMeta('property', 'og:image:height', '630');
@@ -95,7 +97,7 @@ export class SeoService {
     this.upsertMeta('name', 'twitter:creator', '@getquizsolver');
     this.upsertMeta('name', 'twitter:title', meta.title);
     this.upsertMeta('name', 'twitter:description', meta.description);
-    this.upsertMeta('name', 'twitter:image', abs('/og-image.png'));
+    this.upsertMeta('name', 'twitter:image', assetUrl('/og-image.png'));
     this.upsertMeta('name', 'twitter:image:alt', 'QuizSolver AI quiz solver Chrome extension');
 
     /* ── Canonical + hreflang ── */
@@ -142,7 +144,7 @@ export class SeoService {
         ],
         logo: {
           '@type': 'ImageObject',
-          url: abs('/logo-512.png'),
+          url: assetUrl('/logo-512.png'),
           width: 512,
           height: 512
         },
@@ -173,7 +175,7 @@ export class SeoService {
         sameAs: [CHROME_WEB_STORE_URL],
         inLanguage: SUPPORTED_LOCALES.map(opt => opt.htmlLang),
         description: 'QuizSolver is a Chrome extension that uses AI to instantly suggest answers and explanations for quiz questions on Testportal, Moodle, Canvas LMS, Google Forms, Kahoot, Quizizz, Blackboard, Microsoft Forms, Quizlet, and Socrative. It works in the browser side panel without tab switching and saves all solved questions for later review.',
-        screenshot: abs('/og-image.png'),
+        screenshot: assetUrl('/og-image.png'),
         creator: { '@id': `${homeUrl}#organization` },
         mentions: [
           { '@type': 'SoftwareApplication', name: 'Testportal', url: 'https://testportal.pl' },
@@ -341,7 +343,7 @@ export class SeoService {
         description: 'Prepaid AI credits for solving quiz questions, getting explanations, and using study tools in the QuizSolver Chrome extension.',
         brand: { '@id': `${homeUrl}#organization` },
         url: canonical,
-        image: abs('/og-image.png'),
+        image: assetUrl('/og-image.png'),
         offers: [
           { '@type': 'Offer', name: 'Free starter credits', price: '0', priceCurrency: 'USD', availability: 'https://schema.org/InStock' },
           { '@type': 'Offer', name: '100 AI credits', price: '1.99', priceCurrency: 'USD', availability: 'https://schema.org/InStock' },

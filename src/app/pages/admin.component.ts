@@ -390,7 +390,7 @@ type AdminTab = 'users' | 'purchases' | 'bugs' | 'support' | 'cache' | 'leaderbo
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      background: #101318 url('/logo-512.png') center / cover no-repeat;
+      background: #101318 url('/logo-512.png?v=20260531') center / cover no-repeat;
       color: transparent;
       font-size: 0;
       font-weight: 800;

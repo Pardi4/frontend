@@ -36,7 +36,7 @@ type AuthModal = 'login' | 'register' | 'verify' | 'forgot' | 'reset';
                 <span class="lang-name">{{ currentLocale.nativeLabel }}</span>
               </button>
               <div class="lang-menu" *ngIf="languageMenuOpen()">
-                <a class="lang-option" *ngFor="let option of localeOptions" [class.active]="locale === option.code" [href]="alternatePath(option.code)" (click)="languageMenuOpen.set(false)">
+                <a class="lang-option" *ngFor="let option of localeOptions" [class.active]="locale === option.code" [href]="alternatePath(option.code)" (click)="switchLocale($event, option.code)">
                   <span>{{ option.shortLabel }}</span>
                   <strong>{{ option.nativeLabel }}</strong>
                 </a>
@@ -89,7 +89,7 @@ type AuthModal = 'login' | 'register' | 'verify' | 'forgot' | 'reset';
             <a class="nav-link" [href]="pathFor('quiz')" (click)="mobileMenuOpen.set(false)">{{ copy.common.historyQuiz }}</a>
             <div class="mobile-utility">
               <div class="mobile-lang-row" aria-label="Language">
-                <a class="lang-option" *ngFor="let option of localeOptions" [class.active]="locale === option.code" [href]="alternatePath(option.code)" (click)="mobileMenuOpen.set(false)">
+                <a class="lang-option" *ngFor="let option of localeOptions" [class.active]="locale === option.code" [href]="alternatePath(option.code)" (click)="switchLocale($event, option.code)">
                   <span>{{ option.shortLabel }}</span>
                   <strong>{{ option.nativeLabel }}</strong>
                 </a>
@@ -391,7 +391,7 @@ type AuthModal = 'login' | 'register' | 'verify' | 'forgot' | 'reset';
       width: 2.5rem;
       height: 2.5rem;
       border-radius: var(--radius-md);
-      background: #101318 url('/logo-512.png') center / cover no-repeat;
+      background: #101318 url('/logo-512.png?v=20260531') center / cover no-repeat;
       box-shadow: 0 12px 28px rgba(14, 165, 233, 0.18);
       color: transparent;
       font-weight: 800;
@@ -998,6 +998,14 @@ export class ShellComponent implements OnInit, AfterViewInit, OnDestroy {
 
   protected alternatePath(targetLocale: Locale): string {
     return pathFor(this.pageKey, targetLocale);
+  }
+
+  protected switchLocale(event: MouseEvent, targetLocale: Locale): void {
+    event.preventDefault();
+    this.languageMenuOpen.set(false);
+    this.mobileMenuOpen.set(false);
+    if (targetLocale === this.locale) return;
+    this.router.navigateByUrl(this.alternatePath(targetLocale));
   }
 
   protected homeHash(hash: string): string {
