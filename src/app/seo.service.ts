@@ -2,6 +2,7 @@ import { DOCUMENT } from '@angular/common';
 import { Inject, Injectable } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
 import { BlogPost, BLOG_POSTS } from './blog-content';
+import { BlogCategoryCopy, BLOG_CATEGORY_ORDER, categoryFor, categoryLabel } from './blog-categories';
 import {
   CHROME_WEB_STORE_URL,
   Locale,
@@ -230,6 +231,7 @@ export class SeoService {
           abs(pathFor('credits', locale)),
           abs(pathFor('quiz', locale)),
           abs(pathFor('blog', locale)),
+          ...BLOG_CATEGORY_ORDER.map(category => abs(pathFor('blogCategory', locale).replace(':category', category))),
           abs(pathFor('kahoot', locale)),
           abs(pathFor('testportal', locale)),
           abs(pathFor('googleForms', locale))
@@ -416,6 +418,113 @@ export class SeoService {
     this.document.head.appendChild(script);
   }
 
+  applyBlogCategory(category: BlogCategoryCopy, locale: Locale): void {
+    const copy = contentFor(locale);
+    const meta = { title: category.metaTitle, description: category.metaDescription };
+    const canonicalPath = pathFor('blogCategory', locale).replace(':category', category.slug);
+    const canonical = abs(canonicalPath);
+    const locOpt = localeOption(locale);
+    const robots = 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1';
+
+    this.document.documentElement.lang = copy['htmlLang'] || locale;
+    this.title.setTitle(meta.title);
+    this.upsertMeta('name', 'description', meta.description);
+    this.upsertMeta('name', 'robots', robots);
+    this.upsertMeta('name', 'author', 'QuizSolver');
+    this.upsertMeta('name', 'theme-color', '#030712');
+    this.upsertMeta('name', 'application-name', 'QuizSolver');
+    this.upsertMeta('name', 'rating', 'general');
+
+    this.upsertMeta('property', 'og:type', 'website');
+    this.upsertMeta('property', 'og:site_name', 'QuizSolver');
+    this.upsertMeta('property', 'og:url', canonical);
+    this.upsertMeta('property', 'og:title', meta.title);
+    this.upsertMeta('property', 'og:description', meta.description);
+    this.upsertMeta('property', 'og:image', assetUrl('/og-image.png'));
+    this.upsertMeta('property', 'og:image:type', 'image/png');
+    this.upsertMeta('property', 'og:image:width', '1200');
+    this.upsertMeta('property', 'og:image:height', '630');
+    this.upsertMeta('property', 'og:image:alt', category.title);
+    this.upsertMeta('property', 'og:locale', locOpt.ogLocale);
+
+    SUPPORTED_LOCALES
+      .filter(opt => opt.code !== locale)
+      .forEach(opt => {
+        const selector = `[property="og:locale:alternate"][data-loc="${opt.code}"]`;
+        const existing = this.document.head.querySelector(selector);
+        if (existing) {
+          existing.setAttribute('content', opt.ogLocale);
+        } else {
+          const el = this.document.createElement('meta');
+          el.setAttribute('property', 'og:locale:alternate');
+          el.setAttribute('content', opt.ogLocale);
+          el.setAttribute('data-loc', opt.code);
+          this.document.head.appendChild(el);
+        }
+      });
+
+    this.upsertMeta('name', 'twitter:card', 'summary_large_image');
+    this.upsertMeta('name', 'twitter:site', '@getquizsolver');
+    this.upsertMeta('name', 'twitter:creator', '@getquizsolver');
+    this.upsertMeta('name', 'twitter:title', meta.title);
+    this.upsertMeta('name', 'twitter:description', meta.description);
+    this.upsertMeta('name', 'twitter:image', assetUrl('/og-image.png'));
+    this.upsertMeta('name', 'twitter:image:alt', category.title);
+
+    this.upsertLink('canonical', canonical);
+    SUPPORTED_LOCALES.forEach(opt => {
+      const localizedCategory = categoryFor(opt.code, category.slug);
+      if (localizedCategory) {
+        const route = pathFor('blogCategory', opt.code).replace(':category', localizedCategory.slug);
+        this.upsertAlternate(opt.htmlLang, abs(route));
+      }
+    });
+    this.upsertAlternate('x-default', abs(pathFor('blogCategory', 'en').replace(':category', category.slug)));
+
+    const homeUrl = `${SITE_URL}/`;
+    const posts = BLOG_POSTS
+      .filter(post => post.locale === locale && post.category === category.slug)
+      .slice(0, 12);
+
+    this.upsertJsonLd({
+      '@context': 'https://schema.org',
+      '@graph': [
+        {
+          '@type': 'CollectionPage',
+          '@id': `${canonical}#webpage`,
+          url: canonical,
+          name: meta.title,
+          description: meta.description,
+          isPartOf: { '@id': `${homeUrl}#website` },
+          inLanguage: locOpt.htmlLang,
+          about: { '@id': `${homeUrl}#software` },
+          breadcrumb: { '@id': `${canonical}#breadcrumb` }
+        },
+        {
+          '@type': 'BreadcrumbList',
+          '@id': `${canonical}#breadcrumb`,
+          itemListElement: [
+            { '@type': 'ListItem', position: 1, name: 'QuizSolver', item: homeUrl },
+            { '@type': 'ListItem', position: 2, name: 'Blog', item: abs(pathFor('blog', locale)) },
+            { '@type': 'ListItem', position: 3, name: category.title, item: canonical }
+          ]
+        },
+        {
+          '@type': 'ItemList',
+          '@id': `${canonical}#articles`,
+          name: category.title,
+          numberOfItems: posts.length,
+          itemListElement: posts.map((post, index) => ({
+            '@type': 'ListItem',
+            position: index + 1,
+            name: post.title,
+            url: abs(pathFor('blogPost', locale).replace(':slug', post.slug))
+          }))
+        }
+      ]
+    });
+  }
+
   applyBlogPost(post: BlogPost, locale: Locale): void {
     const copy = contentFor(locale);
     const meta = { title: post.metaTitle, description: post.metaDescription };
@@ -501,6 +610,8 @@ export class SeoService {
           datePublished: post.datePublished,
           dateModified: post.dateModified,
           inLanguage: locOpt.htmlLang,
+          articleSection: categoryLabel(locale, post.category),
+          keywords: post.tags?.join(', '),
           author: {
             '@type': 'Person',
             name: post.author

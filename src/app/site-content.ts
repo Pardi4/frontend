@@ -196,8 +196,8 @@ const en: SiteCopy = {
     title: "AI Quiz Solver Chrome Extension",
     subtitle: "Solve and review quiz questions on Testportal, Moodle, Canvas, Google Forms, Kahoot and more",
     meta: {
-      title: "QuizSolver — AI Quiz Solver for Testportal, Moodle, Kahoot & More",
-      description: "QuizSolver is a free Chrome extension that instantly solves quizzes on 10+ platforms: Testportal, Moodle, Canvas, Google Forms, Kahoot, Quizizz and more. Get AI answer hints, explanations and FocusScan. Install free in seconds."
+      title: "QuizSolver — AI Quiz Solver Chrome Extension",
+      description: "Solve online quiz questions with AI hints, explanations, FocusScan, notes and Kahoot Quiz ID mode in QuizSolver."
     }
   },
   common: {
@@ -332,8 +332,8 @@ const en: SiteCopy = {
     storeCta: "Install extension"
   },
   blogPage: {
-    metaTitle: "QuizSolver Blog — Learn Smarter with AI Study Tips",
-    metaDescription: "Read the latest tips on online exams, study hacks, AI education tools, and academic success on the QuizSolver blog.",
+    metaTitle: "QuizSolver Blog — AI Quiz Guides and Study Tips",
+    metaDescription: "Read QuizSolver guides for Kahoot, Testportal, Google Forms, FocusScan, quiz history, privacy and smarter AI study workflows.",
     title: "QuizSolver Blog",
     badge: "Articles & Guides",
     subtitle: "Helpful insights, tips, and strategies for students to study more efficiently."
@@ -550,8 +550,8 @@ const pl: SiteCopy = {
     title: "Rozszerzenie AI do rozwiązywania quizów",
     subtitle: "Rozwiązuj i powtarzaj pytania z Testportal, Moodle, Canvas, Google Forms, Kahoot i innych platform",
     meta: {
-      title: "QuizSolver — AI do Quizów: Testportal, Moodle, Kahoot i więcej",
-      description: "QuizSolver to darmowe rozszerzenie Chrome, które natychmiast rozwiązuje quizy na 10+ platformach: Testportal, Moodle, Canvas, Google Forms, Kahoot, Quizizz i więcej. Podpowiedzi AI, wyjaśnienia, FocusScan. Zainstaluj za darmo."
+      title: "QuizSolver — AI do Quizów Online",
+      description: "Rozwiązuj quizy online z podpowiedziami AI, wyjaśnieniami, FocusScan, notatkami i trybem Kahoot Quiz ID."
     }
   },
   common: {
@@ -682,8 +682,8 @@ const pl: SiteCopy = {
     storeCta: "Zainstaluj rozszerzenie"
   },
   blogPage: {
-    metaTitle: "Blog QuizSolver — Artykuły, Poradniki i Wskazówki dla Uczniów",
-    metaDescription: "Przeczytaj najnowsze poradniki o Testportalu, Moodle, ściąganiu na testach, asystentach AI oraz skutecznych metodach nauki na blogu QuizSolver.",
+    metaTitle: "Blog QuizSolver — Poradniki AI do Quizów",
+    metaDescription: "Poradniki QuizSolver o Kahoot, Testportal, Google Forms, FocusScan, historii pytań, prywatności i nauce z AI.",
     title: "Blog QuizSolver",
     badge: "Artykuły i Poradniki",
     subtitle: "Wiedza, wskazówki i strategie, które pomogą Ci uczyć się efektywniej."
@@ -908,6 +908,7 @@ export type PageKey =
   | 'notFound'
   | 'success'
   | 'blog'
+  | 'blogCategory'
   | 'blogPost';
 
 
@@ -955,8 +956,8 @@ const LOCALIZED_SITE: Record<ExtraLocale, LocalizedSiteBundle> = {
   de: {
     homeTitle: 'KI-Quiz-Solver Chrome-Erweiterung',
     homeSubtitle: 'Löse Quizze auf Testportal, Moodle und weiteren Plattformen mit KI',
-    homeMetaTitle: 'QuizSolver — KI Quiz Solver für Testportal, Moodle, Kahoot & mehr',
-    homeMetaDescription: 'QuizSolver ist eine kostenlose Chrome-Erweiterung, die Quizze auf 10+ Plattformen sofort löst: Testportal, Moodle, Canvas, Google Forms, Kahoot, Quizizz und mehr. KI-Antworten, Erklärungen, FocusScan. Kostenlos installieren.',
+    homeMetaTitle: 'QuizSolver — KI Quiz Solver Chrome-Erweiterung',
+    homeMetaDescription: 'Löse Online-Quizfragen mit KI-Hinweisen, Erklärungen, FocusScan, Notizen und Kahoot Quiz ID in QuizSolver.',
     common: { credits: 'Credits', dashboard: 'Dashboard', buyCredits: 'Credits kaufen', logout: 'Abmelden', createAccount: 'Konto erstellen', email: 'E-Mail-Adresse', password: 'Passwort', confirmPassword: 'Passwort bestätigen', rememberMe: 'Angemeldet bleiben', signIn: 'Anmelden', displayName: 'Anzeigename (optional)', referralCode: 'Empfehlungscode (optional)', loading: 'Wird geladen...', close: 'Schließen', demo: 'Demo', historyQuiz: 'Historie & Quiz' },
     nav: { how: 'So funktioniert es', features: 'Funktionen', pricing: 'Preise', login: 'Einloggen', signup: 'Registrieren', toggle: 'Menü öffnen' },
     footer: { product: 'Produkt', seoPages: 'Unterstützte Plattformen', legal: 'Rechtliches', privacy: 'Datenschutz', rights: '© 2026 QuizSolver. Alle Rechte vorbehalten.', description: 'QuizSolver KI-Quiz-Solver Chrome-Erweiterung.' },
@@ -974,8 +975,8 @@ const LOCALIZED_SITE: Record<ExtraLocale, LocalizedSiteBundle> = {
   es: {
     homeTitle: 'Extensión Chrome de IA para resolver quizzes',
     homeSubtitle: 'Resuelve quizzes en Testportal, Moodle y más con IA',
-    homeMetaTitle: 'QuizSolver — AI Quiz Solver para Testportal, Moodle, Kahoot y más',
-    homeMetaDescription: 'QuizSolver es una extensión Chrome gratuita que resuelve quiz en 10+ plataformas al instante: Testportal, Moodle, Canvas, Google Forms, Kahoot, Quizizz y más. Respuestas IA, explicaciones, FocusScan. Instala gratis.',
+    homeMetaTitle: 'QuizSolver — AI Quiz Solver para Chrome',
+    homeMetaDescription: 'Resuelve quizzes online con pistas IA, explicaciones, FocusScan, notas y modo Kahoot Quiz ID en QuizSolver.',
     common: { credits: 'Créditos', dashboard: 'Panel', buyCredits: 'Comprar créditos', logout: 'Cerrar sesión', createAccount: 'Crear cuenta', email: 'Correo electrónico', password: 'Contraseña', confirmPassword: 'Confirmar contraseña', rememberMe: 'Recordarme', signIn: 'Iniciar sesión', displayName: 'Nombre visible (opcional)', referralCode: 'Código de referido (opcional)', loading: 'Cargando...', close: 'Cerrar', demo: 'Demo', historyQuiz: 'Historial y quiz' },
     nav: { how: 'Cómo funciona', features: 'Funciones', pricing: 'Precios', login: 'Entrar', signup: 'Registrarse', toggle: 'Abrir menú' },
     footer: { product: 'Producto', seoPages: 'Plataformas compatibles', legal: 'Legal', privacy: 'Privacidad', rights: '© 2026 QuizSolver. Todos los derechos reservados.', description: 'Extensión Chrome QuizSolver para resolver quizzes con IA.' },
@@ -993,8 +994,8 @@ const LOCALIZED_SITE: Record<ExtraLocale, LocalizedSiteBundle> = {
   fr: {
     homeTitle: 'Extension Chrome IA pour résoudre des quiz',
     homeSubtitle: 'Résolvez des quiz sur Testportal, Moodle et plus avec l’IA',
-    homeMetaTitle: 'QuizSolver — Solveur de Quiz IA pour Testportal, Moodle, Kahoot et plus',
-    homeMetaDescription: 'QuizSolver est une extension Chrome gratuite qui résoud des quiz sur 10+ plateformes instantanément : Testportal, Moodle, Canvas, Google Forms, Kahoot, Quizizz et plus. Réponses IA, explications, FocusScan. Installation gratuite.',
+    homeMetaTitle: 'QuizSolver — Extension Chrome IA pour Quiz',
+    homeMetaDescription: 'Résolvez des quiz en ligne avec indices IA, explications, FocusScan, notes et mode Kahoot Quiz ID dans QuizSolver.',
     common: { credits: 'Crédits', dashboard: 'Tableau de bord', buyCredits: 'Acheter des crédits', logout: 'Déconnexion', createAccount: 'Créer un compte', email: 'Adresse e-mail', password: 'Mot de passe', confirmPassword: 'Confirmer le mot de passe', rememberMe: 'Se souvenir de moi', signIn: 'Connexion', displayName: 'Nom affiché (optionnel)', referralCode: 'Code de parrainage (optionnel)', loading: 'Chargement...', close: 'Fermer', demo: 'Démo', historyQuiz: 'Historique et quiz' },
     nav: { how: 'Fonctionnement', features: 'Fonctions', pricing: 'Tarifs', login: 'Connexion', signup: 'Inscription', toggle: 'Ouvrir le menu' },
     footer: { product: 'Produit', seoPages: 'Plateformes prises en charge', legal: 'Légal', privacy: 'Confidentialité', rights: '© 2026 QuizSolver. Tous droits réservés.', description: 'Extension Chrome QuizSolver pour résoudre des quiz avec l’IA.' },
@@ -1012,8 +1013,8 @@ const LOCALIZED_SITE: Record<ExtraLocale, LocalizedSiteBundle> = {
   it: {
     homeTitle: 'Estensione Chrome AI per quiz',
     homeSubtitle: 'Risolvi quiz su Testportal, Moodle e altre piattaforme con l’AI',
-    homeMetaTitle: 'QuizSolver — AI Quiz Solver per Testportal, Moodle, Kahoot e altro',
-    homeMetaDescription: 'QuizSolver è un’estensione Chrome gratuita che risolve quiz su 10+ piattaforme istantaneamente: Testportal, Moodle, Canvas, Google Forms, Kahoot, Quizizz e altro. Risposte AI, spiegazioni, FocusScan. Installazione gratuita.',
+    homeMetaTitle: 'QuizSolver — AI Quiz Solver per Chrome',
+    homeMetaDescription: 'Risolvi quiz online con suggerimenti AI, spiegazioni, FocusScan, note e modalità Kahoot Quiz ID in QuizSolver.',
     common: { credits: 'Crediti', dashboard: 'Dashboard', buyCredits: 'Compra crediti', logout: 'Esci', createAccount: 'Crea account', email: 'Indirizzo email', password: 'Password', confirmPassword: 'Conferma password', rememberMe: 'Ricordami', signIn: 'Accedi', displayName: 'Nome visualizzato (opzionale)', referralCode: 'Codice referral (opzionale)', loading: 'Caricamento...', close: 'Chiudi', demo: 'Demo', historyQuiz: 'Cronologia e quiz' },
     nav: { how: 'Come funziona', features: 'Funzioni', pricing: 'Prezzi', login: 'Accedi', signup: 'Registrati', toggle: 'Apri menu' },
     footer: { product: 'Prodotto', seoPages: 'Piattaforme supportate', legal: 'Legale', privacy: 'Privacy', rights: '© 2026 QuizSolver. Tutti i diritti riservati.', description: 'Estensione Chrome QuizSolver per risolvere quiz con l’AI.' },
@@ -1031,8 +1032,8 @@ const LOCALIZED_SITE: Record<ExtraLocale, LocalizedSiteBundle> = {
   uk: {
     homeTitle: 'Chrome-розширення AI Quiz Solver',
     homeSubtitle: 'Розв’язуй квізи на Testportal, Moodle та інших платформах за допомогою AI',
-    homeMetaTitle: 'QuizSolver — AI Quiz Solver для Testportal, Moodle, Kahoot та інших',
-    homeMetaDescription: 'QuizSolver — безкоштовне Chrome-розширення, яке миттєво розв’язує квізи на 10+ платформах: Testportal, Moodle, Canvas, Google Forms, Kahoot, Quizizz та інших. AI-відповіді, пояснення, FocusScan. Встановлюй безкоштовно.',
+    homeMetaTitle: 'QuizSolver — AI Quiz Solver для Chrome',
+    homeMetaDescription: 'Розв’язуй онлайн-квізи з AI-підказками, поясненнями, FocusScan, нотатками та Kahoot Quiz ID у QuizSolver.',
     common: { credits: 'Кредити', dashboard: 'Панель', buyCredits: 'Купити кредити', logout: 'Вийти', createAccount: 'Створити акаунт', email: 'Електронна пошта', password: 'Пароль', confirmPassword: 'Підтвердити пароль', rememberMe: 'Запам’ятати мене', signIn: 'Увійти', displayName: 'Ім’я (необов’язково)', referralCode: 'Реферальний код (необов’язково)', loading: 'Завантаження...', close: 'Закрити', demo: 'Демо', historyQuiz: 'Історія і квіз' },
     nav: { how: 'Як це працює', features: 'Функції', pricing: 'Ціни', login: 'Увійти', signup: 'Реєстрація', toggle: 'Відкрити меню' },
     footer: { product: 'Продукт', seoPages: 'Підтримувані платформи', legal: 'Правова інформація', privacy: 'Приватність', rights: '© 2026 QuizSolver. Усі права захищені.', description: 'Chrome-розширення QuizSolver для AI-відповідей у квізах.' },
@@ -1438,6 +1439,64 @@ enhancePlatformTutorials(fr, 'fr');
 enhancePlatformTutorials(it, 'it');
 enhancePlatformTutorials(uk, 'uk');
 
+function applyCompactSeo(copy: SiteCopy, locale: Locale): void {
+  const templates: Record<Locale, {
+    platform: (name: string) => string;
+    quiz: string;
+    privacy: string;
+  }> = {
+    en: {
+      platform: (name) => `Get AI answers and explanations for ${name} quizzes with QuizSolver. Supports visible questions, FocusScan OCR, notes and review history.`,
+      quiz: 'Review saved quiz questions, notes, favorites, shared quizzes and practice history in your QuizSolver account.',
+      privacy: 'Learn how QuizSolver handles accounts, saved questions, FocusScan images, payments, support requests and privacy choices.'
+    },
+    pl: {
+      platform: (name) => `Rozwiązuj quizy ${name} z podpowiedziami AI, FocusScan OCR, notatkami i historią pytań w QuizSolver.`,
+      quiz: 'Przeglądaj zapisane pytania, notatki, ulubione, udostępnione quizy i powtórki na koncie QuizSolver.',
+      privacy: 'Sprawdź, jak QuizSolver obsługuje konta, zapisane pytania, obrazy FocusScan, płatności, support i prywatność.'
+    },
+    de: {
+      platform: (name) => `Löse ${name}-Quizze mit KI-Hinweisen, FocusScan OCR, Notizen und Fragenhistorie in QuizSolver.`,
+      quiz: 'Prüfe gespeicherte Quizfragen, Notizen, Favoriten, geteilte Quizze und Wiederholungen in QuizSolver.',
+      privacy: 'Erfahre, wie QuizSolver Konten, gespeicherte Fragen, FocusScan-Bilder, Zahlungen, Support und Datenschutz behandelt.'
+    },
+    es: {
+      platform: (name) => `Resuelve quizzes de ${name} con respuestas IA, FocusScan OCR, notas e historial en QuizSolver.`,
+      quiz: 'Revisa preguntas guardadas, notas, favoritos, quizzes compartidos y práctica desde tu cuenta QuizSolver.',
+      privacy: 'Descubre cómo QuizSolver gestiona cuentas, preguntas guardadas, imágenes FocusScan, pagos, soporte y privacidad.'
+    },
+    fr: {
+      platform: (name) => `Résolvez les quiz ${name} avec réponses IA, FocusScan OCR, notes et historique dans QuizSolver.`,
+      quiz: 'Revoyez questions enregistrées, notes, favoris, quiz partagés et entraînements dans votre compte QuizSolver.',
+      privacy: 'Découvrez comment QuizSolver gère comptes, questions enregistrées, images FocusScan, paiements, support et confidentialité.'
+    },
+    it: {
+      platform: (name) => `Risolvi quiz ${name} con risposte AI, FocusScan OCR, note e cronologia domande in QuizSolver.`,
+      quiz: 'Rivedi domande salvate, note, preferiti, quiz condivisi e pratica dal tuo account QuizSolver.',
+      privacy: 'Scopri come QuizSolver gestisce account, domande salvate, immagini FocusScan, pagamenti, supporto e privacy.'
+    },
+    uk: {
+      platform: (name) => `Розв’язуй квізи ${name} з AI-підказками, FocusScan OCR, нотатками та історією в QuizSolver.`,
+      quiz: 'Переглядай збережені питання, нотатки, обране, спільні квізи й тренування у своєму акаунті QuizSolver.',
+      privacy: 'Дізнайся, як QuizSolver обробляє акаунти, збережені питання, FocusScan, платежі, support і приватність.'
+    }
+  };
+  const seo = templates[locale] || templates.en;
+  copy.quizPage.metaDescription = seo.quiz;
+  copy.privacyPage.metaDescription = seo.privacy;
+  (Object.values(copy.platformPages) as PlatformCopy[]).forEach((page) => {
+    page.meta.description = seo.platform(page.platformName || page.shortName || 'online');
+  });
+}
+
+applyCompactSeo(en, 'en');
+applyCompactSeo(pl, 'pl');
+applyCompactSeo(de, 'de');
+applyCompactSeo(es, 'es');
+applyCompactSeo(fr, 'fr');
+applyCompactSeo(it, 'it');
+applyCompactSeo(uk, 'uk');
+
 export const CONTENT: Record<Locale, SiteCopy> = {
   en: en as SiteCopy,
   pl: pl as SiteCopy,
@@ -1483,6 +1542,7 @@ export const PAGE_SLUGS: Record<PageKey, string> = {
   notFound: '404',
   success: 'success',
   blog: 'blog',
+  blogCategory: 'blog/category/:category',
   blogPost: 'blog/:slug'
 };
 

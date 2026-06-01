@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { SeoService } from '../seo.service';
+import { BLOG_POSTS, BlogPost } from '../blog-content';
 import { CHROME_WEB_STORE_URL, Locale, PageKey, pageData, pathFor, platformEntries } from '../site-content';
 import { ShellComponent } from './shell.component';
 
@@ -18,6 +19,8 @@ type PlatformUi = {
   platforms: string;
   otherGuides: string;
   guidesIntro: string;
+  relatedArticles: string;
+  readArticle: string;
   faqTitle: string;
   stats: string[];
   intro: (platform: string) => string;
@@ -37,6 +40,8 @@ const PLATFORM_UI: Record<Locale, PlatformUi> = {
     platforms: 'Platforms',
     otherGuides: 'Other QuizSolver guides',
     guidesIntro: 'Choose your platform and get a step-by-step guide tailored to that quiz system.',
+    relatedArticles: 'Related articles and tutorials',
+    readArticle: 'Read article',
     faqTitle: 'Questions about this workflow',
     stats: ['10+ platforms', 'AI answers in seconds', 'Free to install'],
     intro: platform => `QuizSolver detects questions on ${platform}, suggests AI answers, and saves everything to your study history automatically.`
@@ -54,6 +59,8 @@ const PLATFORM_UI: Record<Locale, PlatformUi> = {
     platforms: 'Platformy',
     otherGuides: 'Inne poradniki QuizSolver',
     guidesIntro: 'Wybierz platformę i zobacz instrukcję krok po kroku dopasowaną do konkretnego systemu quizów.',
+    relatedArticles: 'Powiązane artykuły i tutoriale',
+    readArticle: 'Przeczytaj artykuł',
     faqTitle: 'Pytania o ten workflow',
     stats: ['10+ platform', 'Odpowiedzi AI w kilka sekund', 'Darmowa instalacja'],
     intro: platform => `QuizSolver wykrywa pytania na ${platform}, podpowiada odpowiedzi AI i automatycznie zapisuje wszystko do historii nauki.`
@@ -71,6 +78,8 @@ const PLATFORM_UI: Record<Locale, PlatformUi> = {
     platforms: 'Plattformen',
     otherGuides: 'Weitere QuizSolver-Guides',
     guidesIntro: 'Wähle deine Plattform und erhalte eine Schritt-für-Schritt-Anleitung für dieses Quizsystem.',
+    relatedArticles: 'Passende Artikel und Tutorials',
+    readArticle: 'Artikel lesen',
     faqTitle: 'Fragen zu diesem Workflow',
     stats: ['10+ Plattformen', 'KI-Antworten in Sekunden', 'Kostenlos installieren'],
     intro: platform => `QuizSolver erkennt Fragen auf ${platform}, schlägt KI-Antworten vor und speichert alles automatisch in deiner Lernhistorie.`
@@ -88,6 +97,8 @@ const PLATFORM_UI: Record<Locale, PlatformUi> = {
     platforms: 'Plataformas',
     otherGuides: 'Más guías de QuizSolver',
     guidesIntro: 'Elige tu plataforma y sigue una guía paso a paso adaptada a ese sistema de quiz.',
+    relatedArticles: 'Artículos y tutoriales relacionados',
+    readArticle: 'Leer artículo',
     faqTitle: 'Preguntas sobre este flujo',
     stats: ['10+ plataformas', 'Respuestas IA en segundos', 'Instalación gratis'],
     intro: platform => `QuizSolver detecta preguntas en ${platform}, sugiere respuestas con IA y guarda todo automáticamente en tu historial de estudio.`
@@ -105,6 +116,8 @@ const PLATFORM_UI: Record<Locale, PlatformUi> = {
     platforms: 'Plateformes',
     otherGuides: 'Autres guides QuizSolver',
     guidesIntro: 'Choisissez votre plateforme et suivez un guide étape par étape adapté à ce système de quiz.',
+    relatedArticles: 'Articles et tutoriels liés',
+    readArticle: 'Lire l’article',
     faqTitle: 'Questions sur ce workflow',
     stats: ['10+ plateformes', 'Réponses IA en quelques secondes', 'Installation gratuite'],
     intro: platform => `QuizSolver détecte les questions sur ${platform}, propose des réponses IA et sauvegarde automatiquement le tout dans votre historique d’étude.`
@@ -122,6 +135,8 @@ const PLATFORM_UI: Record<Locale, PlatformUi> = {
     platforms: 'Piattaforme',
     otherGuides: 'Altre guide QuizSolver',
     guidesIntro: 'Scegli la piattaforma e segui una guida passo passo pensata per quel sistema di quiz.',
+    relatedArticles: 'Articoli e tutorial correlati',
+    readArticle: 'Leggi articolo',
     faqTitle: 'Domande su questo workflow',
     stats: ['10+ piattaforme', 'Risposte AI in pochi secondi', 'Installazione gratis'],
     intro: platform => `QuizSolver rileva le domande su ${platform}, suggerisce risposte AI e salva automaticamente tutto nella tua cronologia di studio.`
@@ -139,6 +154,8 @@ const PLATFORM_UI: Record<Locale, PlatformUi> = {
     platforms: 'Платформи',
     otherGuides: 'Інші гайди QuizSolver',
     guidesIntro: 'Обери платформу й отримай покроковий гайд, адаптований до цієї системи квізів.',
+    relatedArticles: 'Пов’язані статті та гайди',
+    readArticle: 'Читати статтю',
     faqTitle: 'Питання про цей сценарій',
     stats: ['10+ платформ', 'AI-відповіді за секунди', 'Безкоштовна установка'],
     intro: platform => `QuizSolver знаходить питання на ${platform}, пропонує AI-відповіді й автоматично зберігає все в історії навчання.`
@@ -223,6 +240,24 @@ const PLATFORM_UI: Record<Locale, PlatformUi> = {
               <h2>{{ section.title }}</h2>
               <p class="text-secondary">{{ section.text }}</p>
             </article>
+          </div>
+        </section>
+
+        <section class="section" *ngIf="relatedArticles().length">
+          <div class="container">
+            <header class="section-header">
+              <p class="eyebrow">Blog</p>
+              <h2>{{ ui.relatedArticles }}</h2>
+            </header>
+
+            <div class="article-grid">
+              <a class="article-card glass glass-hover reveal" *ngFor="let article of relatedArticles(); let i = index" [class.delay-100]="(i % 3) === 1" [class.delay-200]="(i % 3) === 2" [href]="postUrl(article)">
+                <span class="eyebrow">{{ article.datePublished | date:'mediumDate' }}</span>
+                <strong>{{ article.title }}</strong>
+                <span class="text-secondary">{{ article.excerpt }}</span>
+                <span class="article-link">{{ ui.readArticle }} →</span>
+              </a>
+            </div>
           </div>
         </section>
 
@@ -448,6 +483,40 @@ const PLATFORM_UI: Record<Locale, PlatformUi> = {
     .related-card strong {
       font-size: 1.15rem;
     }
+    .article-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+    .article-card {
+      min-height: 15rem;
+      padding: 1.5rem;
+      border-radius: 14px;
+      text-decoration: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    .article-card strong {
+      color: var(--text-primary);
+      font-size: 1.08rem;
+      line-height: 1.35;
+    }
+    .article-card .text-secondary {
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      font-size: 0.92rem;
+      line-height: 1.55;
+    }
+    .article-link {
+      margin-top: auto;
+      color: var(--accent-cyan);
+      font-weight: 800;
+      font-size: 0.9rem;
+    }
 
     /* FAQ accordion */
     .faq-list {
@@ -530,5 +599,23 @@ export class PlatformComponent implements OnInit {
 
   protected relatedPages(): Array<{ pageKey: PageKey; data: any }> {
     return platformEntries(this.locale).filter((entry) => entry.pageKey !== this.pageKey);
+  }
+
+  protected relatedArticles(): BlogPost[] {
+    const category = this.articleCategory();
+    return BLOG_POSTS
+      .filter(post => post.locale === this.locale && post.category === category)
+      .slice(0, 3);
+  }
+
+  protected postUrl(post: BlogPost): string {
+    return pathFor('blogPost', this.locale).replace(':slug', post.slug);
+  }
+
+  private articleCategory(): string {
+    if (this.pageKey === 'kahoot') return 'kahoot';
+    if (this.pageKey === 'demo') return 'study-workflows';
+    if (this.pageKey === 'quizSolverAi') return 'study-workflows';
+    return 'platform-guides';
   }
 }

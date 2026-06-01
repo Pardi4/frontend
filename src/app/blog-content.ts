@@ -4,6 +4,8 @@ import rawPosts from './blog-posts.json';
 export interface BlogPostMetadata {
   translationKey: string;
   slug: string;
+  category: string;
+  tags?: string[];
   title: string;
   metaTitle: string;
   metaDescription: string;
@@ -400,6 +402,144 @@ const ARTICLE_DRAFTS: Record<string, ArticleDraft> = {
       {
         heading: 'Share when studying in a group',
         paragraphs: ['If you study with classmates, selected history questions can become a shared practice set. Comparing explanations is often more valuable than comparing only final answers.']
+      }
+    ]
+  },
+  'czy-da-sie-oszukiwac-na-kahoot': {
+    intro: [
+      'Ludzie wpisują w Google „jak oszukiwać na Kahoot”, bo chcą szybko wygrać live quiz albo zrozumieć, dlaczego ktoś zna odpowiedzi wcześniej. Sensowna odpowiedź zaczyna się od rozróżnienia dwóch rzeczy: live PIN-u i Quiz ID.',
+      'Ten poradnik nie jest instrukcją łamania zasad. Pokazuje, co technicznie oznaczają ukryte pytania, kiedy QuizSolver może czytać widoczną stronę i jak użyć Quiz ID do nauki albo powtórki bez zużywania kredytów.'
+    ],
+    sections: [
+      {
+        heading: 'PIN gry to nie Quiz ID',
+        paragraphs: ['PIN Kahoot służy do wejścia do aktualnej rozgrywki. Quiz ID identyfikuje konkretny zestaw pytań utworzony przez autora quizu. QuizSolver potrzebuje Quiz ID tylko wtedy, gdy chcesz zobaczyć bank pytań dla publicznego zestawu albo gdy host ukrywa pytania na urządzeniach graczy.'],
+        bullets: ['PIN jest krótki i zmienia się dla sesji live.', 'Quiz ID jest dłuższy i zwykle pojawia się w adresie URL po quizId=.', 'Tryb Quiz ID nie wysyła pytania do AI, więc nie zużywa kredytów.']
+      },
+      {
+        heading: 'Co zrobić, gdy pytania są widoczne',
+        paragraphs: ['Jeżeli na ekranie widzisz pytanie i odpowiedzi, użyj trybu automatycznego. Rozszerzenie może wtedy odczytać treść strony, wysłać ją do AI i wskazać najlepszą opcję. Ten tryb jest zależny od tego, co faktycznie jest widoczne w przeglądarce.']
+      },
+      {
+        heading: 'Co zrobić, gdy host ukrywa pytania',
+        paragraphs: ['Jeżeli gracz widzi tylko kafelki odpowiedzi bez treści pytania, automatyczne wykrywanie nie ma kontekstu. W takiej sytuacji panel Kahoot w QuizSolver prosi o Quiz ID i pokazuje przeszukiwalną listę pytań oraz poprawnych odpowiedzi, jeżeli zestaw da się pobrać.']
+      },
+      {
+        heading: 'Najlepszy sposób użycia przed quizem',
+        paragraphs: ['Najmocniejszy workflow to przejrzenie banku pytań przed rozgrywką, zapisanie trudnych tematów i zrobienie własnej powtórki. Zamiast zgadywać kafelki w live grze, wiesz, których pojęć jeszcze nie rozumiesz.']
+      }
+    ]
+  },
+  'can-you-cheat-on-kahoot': {
+    intro: [
+      'People search “can you cheat on Kahoot” because Kahoot mixes speed, hidden screens and public question sets. The useful answer is not a magic trick; it is understanding the difference between a live game PIN and a Quiz ID.',
+      'This guide explains the limits without giving a rule-breaking playbook. It shows when QuizSolver can read visible questions, when hidden questions require Quiz ID mode and how to use the answer bank for practice.'
+    ],
+    sections: [
+      {
+        heading: 'A Kahoot PIN is not a Quiz ID',
+        paragraphs: ['The PIN joins a live session. The Quiz ID identifies the underlying question set. QuizSolver only asks for a Quiz ID when visible page detection is not enough or when you want to review the question bank.'],
+        bullets: ['The PIN is short and session-specific.', 'The Quiz ID is usually a longer URL value after quizId=.', 'Quiz ID mode does not spend AI credits because it loads quiz structure instead of asking AI.']
+      },
+      {
+        heading: 'When auto mode works',
+        paragraphs: ['If the player screen shows the question and answer text, auto mode can parse the page, ask AI for the best answer and click or suggest the matching choice. If the page only shows colored tiles, there is not enough visible context.']
+      },
+      {
+        heading: 'When hidden questions need an answer bank',
+        paragraphs: ['Some hosts hide questions on player devices. In that case, Quiz ID mode opens a searchable panel with the quiz questions and correct answers when the public Kahoot data is available.']
+      },
+      {
+        heading: 'Use it as review, not a shortcut',
+        paragraphs: ['The strongest way to use Quiz ID mode is before or after a session: review the question bank, mark weak topics and turn them into notes or practice questions.']
+      }
+    ]
+  },
+  'kahoot-pin-vs-quiz-id': {
+    intro: [
+      'Najczęstszy błąd w panelu Kahoot to wklejenie PIN-u gry zamiast Quiz ID. PIN pozwala wejść do sesji live, ale nie mówi rozszerzeniu, jaki zestaw pytań ma pobrać.',
+      'Quiz ID to identyfikator konkretnego kahoota. Właśnie dlatego jest potrzebny w trybie banku odpowiedzi.'
+    ],
+    sections: [
+      {
+        heading: 'Jak rozpoznać PIN',
+        paragraphs: ['PIN gry jest krótki, zwykle numeryczny i wpisuje się go na stronie kahoot.it, żeby dołączyć do rozgrywki. Działa tylko dla aktualnej sesji uruchomionej przez hosta.']
+      },
+      {
+        heading: 'Jak rozpoznać Quiz ID',
+        paragraphs: ['Quiz ID jest częścią linku do konkretnego quizu. Najczęściej znajdziesz go w adresie URL po fragmencie quizId=. To ten kod wklejasz w panel QuizSolver, gdy pytania są ukryte.']
+      },
+      {
+        heading: 'Który tryb wybrać',
+        bullets: ['Pytania i odpowiedzi są widoczne: użyj trybu automatycznego.', 'Widzisz tylko kafelki lub host ukrywa treść: użyj Quiz ID.', 'Chcesz powtórzyć pytania bez AI: użyj banku odpowiedzi.']
+      }
+    ]
+  },
+  'kahoot-pin-vs-quiz-id-explained': {
+    intro: [
+      'The fastest way to fix Kahoot setup problems is to stop mixing two codes: the live PIN and the Quiz ID. They look similar in conversation, but they do different jobs.',
+      'The PIN joins the game. The Quiz ID points to the quiz set that QuizSolver can load in answer bank mode.'
+    ],
+    sections: [
+      {
+        heading: 'What the PIN does',
+        paragraphs: ['The PIN is the short code players type on kahoot.it to join the current live session. It changes between sessions and is not enough to fetch the question bank.']
+      },
+      {
+        heading: 'What the Quiz ID does',
+        paragraphs: ['The Quiz ID usually appears in a URL after quizId=. It identifies the original Kahoot quiz, which is why QuizSolver asks for it when questions are hidden.']
+      },
+      {
+        heading: 'Which mode to use',
+        bullets: ['Visible question text: use auto mode.', 'Only answer tiles are visible: use Quiz ID mode.', 'Practice without AI credits: use the answer bank.']
+      }
+    ]
+  },
+  'najlepszy-ai-quiz-solver-chrome': {
+    intro: [
+      'Dobry AI quiz solver nie powinien być tylko przyciskiem „daj odpowiedź”. Jeżeli ma pomagać naprawdę, musi rozpoznawać typ pytania, radzić sobie z obrazami, zapisywać historię i jasno pokazywać, kiedy zużywa kredyty.',
+      'Ta lista pomaga porównać rozszerzenia do Chrome bez łapania się na puste obietnice i spam słów kluczowych.'
+    ],
+    sections: [
+      {
+        heading: 'Rozpoznawanie typów pytań',
+        paragraphs: ['Sprawdź, czy rozszerzenie rozróżnia radio, checkboxy, dropdowny, krótkie odpowiedzi i pytania z obrazem. Checkbox jest szczególnie ważny, bo oznacza możliwość kilku poprawnych odpowiedzi.']
+      },
+      {
+        heading: 'OCR i pytania obrazkowe',
+        paragraphs: ['W quizach często pojawiają się wykresy, screenshoty i fragmenty PDF. Dlatego FocusScan albo podobny tryb OCR jest ważniejszy niż kolejny marketingowy slogan.']
+      },
+      {
+        heading: 'Historia, notatki i powtórka',
+        paragraphs: ['Jeżeli odpowiedź znika po zamknięciu strony, tracisz większość wartości. Dobry solver zapisuje pytania, pozwala dodać notatkę i wrócić do nich jako quiz powtórkowy.']
+      },
+      {
+        heading: 'Prywatność i jasne limity',
+        paragraphs: ['Użytkownik powinien wiedzieć, co jest wysyłane do AI, kiedy zużywany jest kredyt i jakie dane zostają lokalnie albo na koncie. To buduje zaufanie bardziej niż obietnica „działa wszędzie”.']
+      }
+    ]
+  },
+  'best-ai-quiz-solver-chrome-extension': {
+    intro: [
+      'The best AI quiz solver extension is not the one with the loudest promise. It is the one that detects question structure reliably, explains answers, handles images and makes saved questions useful later.',
+      'Use this checklist before installing any quiz solver for Chrome.'
+    ],
+    sections: [
+      {
+        heading: 'Question type detection',
+        paragraphs: ['A serious solver should distinguish radio questions, checkboxes, dropdowns, short answers and image-based prompts. Multiple-answer questions need a different AI instruction than single-choice questions.']
+      },
+      {
+        heading: 'OCR for screenshots and charts',
+        paragraphs: ['Online quizzes often include charts, PDF fragments and locked text. A FocusScan-style OCR tool lets the extension read the relevant screen region instead of guessing from incomplete HTML.']
+      },
+      {
+        heading: 'History and practice mode',
+        paragraphs: ['Saved history turns a quick answer into study material. Look for notes, favorites, weak-question filters and a way to build practice quizzes from previous questions.']
+      },
+      {
+        heading: 'Privacy and transparent credits',
+        paragraphs: ['A trustworthy extension should explain what is sent to AI, when a credit is spent and which data is saved. Transparent limits are better than vague claims that the tool works everywhere.']
       }
     ]
   }

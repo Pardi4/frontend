@@ -29,6 +29,7 @@ export const routes: Routes = [
   ...sharedQuizRoutes(),
   ...localizedRoutes('privacy', () => import('./pages/privacy.component').then(m => m.PrivacyComponent)),
   ...localizedRoutes('blog', () => import('./pages/blog-list.component').then(m => m.BlogListComponent)),
+  ...localizedRoutes('blogCategory', () => import('./pages/blog-list.component').then(m => m.BlogListComponent)),
   ...localizedRoutes('blogPost', () => import('./pages/blog-post.component').then(m => m.BlogPostComponent)),
   ...localizedRoutes('success', () => import('./pages/status-pages.component').then(m => m.StatusPageComponent), { pageKey: 'success' }),
   ...localizedRoutes('notFound', () => import('./pages/status-pages.component').then(m => m.StatusPageComponent), { pageKey: 'notFound' }),

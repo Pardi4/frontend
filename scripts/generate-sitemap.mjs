@@ -6,6 +6,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.join(__dirname, '..');
 const siteUrl = 'https://getquizsolver.com';
 const posts = JSON.parse(fs.readFileSync(path.join(root, 'src', 'app', 'blog-posts.json'), 'utf8'));
+const categories = [...new Set(posts.map(post => post.category).filter(Boolean))];
 
 const locales = [
   { code: 'en', prefix: '', htmlLang: 'en' },
@@ -49,9 +50,14 @@ function blogRoute(post) {
   return `${locale.prefix}/blog/${post.slug}`.replace(/\/+/g, '/');
 }
 
+function blogCategoryRoute(category, locale) {
+  return `${locale.prefix}/blog/category/${category}`.replace(/\/+/g, '/');
+}
+
 function priority(route) {
   if (route === '/' || /^\/(pl|de|es|fr|it|uk)$/.test(route)) return '1.0';
   if (route.includes('kahoot-ai-bot') || route.includes('quiz-solver-ai') || route.includes('testportal-quiz-solver') || route.includes('google-forms-quiz-solver')) return '0.9';
+  if (route.includes('/blog/category/')) return '0.75';
   if (route.includes('/blog/')) return '0.7';
   if (route.includes('privacy')) return '0.4';
   return '0.8';
@@ -106,8 +112,29 @@ function blogUrl(post) {
   ].join('\n');
 }
 
+function categoryUrl(category, locale) {
+  const route = blogCategoryRoute(category, locale);
+  const newestPost = posts
+    .filter(post => post.category === category && post.locale === locale.code)
+    .sort((a, b) => String(b.dateModified || b.datePublished).localeCompare(String(a.dateModified || a.datePublished)))[0];
+  const alternates = locales
+    .map(item => `    <xhtml:link rel="alternate" hreflang="${item.htmlLang}" href="${siteUrl}${blogCategoryRoute(category, item)}"/>`)
+    .join('\n');
+  return [
+    '  <url>',
+    `    <loc>${xmlEscape(`${siteUrl}${route}`)}</loc>`,
+    alternates,
+    `    <xhtml:link rel="alternate" hreflang="x-default" href="${xmlEscape(`${siteUrl}${blogCategoryRoute(category, locales[0])}`)}"/>`,
+    `    <lastmod>${xmlEscape(newestPost?.dateModified || newestPost?.datePublished || '2026-06-01')}</lastmod>`,
+    '    <changefreq>weekly</changefreq>',
+    `    <priority>${priority(route)}</priority>`,
+    '  </url>'
+  ].join('\n');
+}
+
 const urls = [
   ...indexedPageKeys.flatMap(pageKey => locales.map(locale => pageUrl(pageKey, locale))),
+  ...categories.flatMap(category => locales.map(locale => categoryUrl(category, locale))),
   ...posts.map(blogUrl)
 ];
 
