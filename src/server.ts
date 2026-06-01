@@ -12,6 +12,17 @@ const browserDistFolder = join(import.meta.dirname, '../browser');
 const app = express();
 const angularApp = new AngularNodeAppEngine();
 
+app.use((req, res, next) => {
+  if (req.method !== 'GET' && req.method !== 'HEAD') return next();
+  if (req.path.length <= 1 || !req.path.endsWith('/')) return next();
+  if (/\.[a-z0-9]{2,8}$/i.test(req.path)) return next();
+
+  const queryIndex = req.originalUrl.indexOf('?');
+  const pathPart = queryIndex === -1 ? req.originalUrl : req.originalUrl.slice(0, queryIndex);
+  const query = queryIndex === -1 ? '' : req.originalUrl.slice(queryIndex);
+  return res.redirect(301, `${pathPart.replace(/\/+$/, '')}${query}`);
+});
+
 /**
  * Example Express Rest API endpoints can be defined here.
  * Uncomment and define endpoints as necessary.
