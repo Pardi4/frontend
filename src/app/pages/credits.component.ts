@@ -18,6 +18,17 @@ import { ShellComponent } from './shell.component';
           <p class="desc text-secondary">{{ copy.subtitle }}</p>
         </header>
 
+        <section class="credit-unit-card glass">
+          <div>
+            <p class="eyebrow">{{ copy.unitBadge }}</p>
+            <h2>{{ copy.unitTitle }}</h2>
+            <p class="text-secondary">{{ copy.unitText }}</p>
+          </div>
+          <ul>
+            <li *ngFor="let item of copy.unitItems">{{ item }}</li>
+          </ul>
+        </section>
+
         <section *ngIf="!api.currentUser(); else creditsContent" class="login-card glass">
           <h2>{{ copy.loginTitle }}</h2>
           <p class="text-secondary">{{ copy.loginText }}</p>
@@ -114,6 +125,46 @@ import { ShellComponent } from './shell.component';
       font-weight: 850;
       line-height: 1;
       margin: 0.35rem 0;
+    }
+    .credit-unit-card {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr);
+      gap: 1.5rem;
+      align-items: center;
+      padding: 1.5rem 1.75rem;
+      margin-bottom: 1rem;
+      background: rgba(23, 28, 36, 0.72);
+    }
+    .credit-unit-card h2 {
+      font-size: clamp(1.35rem, 3vw, 2rem);
+      margin: 0.35rem 0 0.5rem;
+    }
+    .credit-unit-card p {
+      margin: 0;
+    }
+    .credit-unit-card ul {
+      display: grid;
+      gap: 0.6rem;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+    .credit-unit-card li {
+      position: relative;
+      padding-left: 1.35rem;
+      color: var(--text-secondary);
+      font-weight: 650;
+    }
+    .credit-unit-card li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0.55em;
+      width: 0.45rem;
+      height: 0.45rem;
+      border-radius: 999px;
+      background: var(--accent-cyan);
+      box-shadow: 0 0 12px rgba(6, 182, 212, 0.45);
     }
     .low-credit-alert {
       display: flex;
@@ -212,6 +263,10 @@ import { ShellComponent } from './shell.component';
         flex-direction: column;
         padding: 1.35rem;
       }
+      .credit-unit-card {
+        grid-template-columns: 1fr;
+        padding: 1.25rem;
+      }
       .low-credit-alert {
         align-items: flex-start;
         flex-direction: column;
@@ -298,6 +353,10 @@ const CREDITS_COPY: Partial<Record<Locale, any>> & { en: any; pl: any } = {
     loginButton: 'Sign in / Sign up',
     balanceLabel: 'Current balance',
     balanceText: 'Credits are used for AI answers, explanations, follow-ups, and FocusScan.',
+    unitBadge: 'How credits work',
+    unitTitle: '1 credit = 1 AI answer',
+    unitText: 'A credit is the usage unit for QuizSolver. One visible quiz question sent to AI uses one credit and returns the suggested answer.',
+    unitItems: ['Saved history and notes do not cost credits.', 'Kahoot Quiz ID mode does not use AI credits.', 'Extra follow-ups, explanations, or FocusScan requests count as new AI answers.'],
     dashboardCta: 'Back to dashboard',
     lowTitle: 'Low balance',
     lowText: 'Your credits are almost gone. Buy more so you do not run out during a quiz.',
@@ -316,6 +375,10 @@ const CREDITS_COPY: Partial<Record<Locale, any>> & { en: any; pl: any } = {
     loginButton: 'Zaloguj się / Załóż konto',
     balanceLabel: 'Aktualne saldo',
     balanceText: 'Kredyty zużywają odpowiedzi AI, wyjaśnienia, follow-upy i FocusScan.',
+    unitBadge: 'Jak działają kredyty',
+    unitTitle: '1 kredyt = 1 odpowiedź AI',
+    unitText: 'Kredyt to jednostka użycia QuizSolvera. Jedno widoczne pytanie wysłane do AI zużywa jeden kredyt i zwraca sugerowaną odpowiedź.',
+    unitItems: ['Zapisana historia i notatki nie zużywają kredytów.', 'Tryb Kahoot Quiz ID nie zużywa kredytów AI.', 'Dodatkowe follow-upy, wyjaśnienia lub FocusScan liczą się jako nowe odpowiedzi AI.'],
     dashboardCta: 'Wróć do panelu',
     lowTitle: 'Mało kredytów',
     lowText: 'Twoje kredyty zaraz się skończą. Kup więcej, aby nie zabrakło ich podczas quizu.',
@@ -336,6 +399,10 @@ CREDITS_COPY.de = {
   loginButton: 'Einloggen / Registrieren',
   balanceLabel: 'Aktuelles Guthaben',
   balanceText: 'Credits werden für KI-Antworten, Erklärungen, Rückfragen und FocusScan verwendet.',
+  unitBadge: 'So funktionieren Credits',
+  unitTitle: '1 Credit = 1 KI-Antwort',
+  unitText: 'Ein Credit ist die Nutzungseinheit von QuizSolver. Eine sichtbare Quizfrage, die an die KI gesendet wird, verbraucht einen Credit und liefert einen Antwortvorschlag.',
+  unitItems: ['Gespeicherte Historie und Notizen kosten keine Credits.', 'Der Kahoot Quiz-ID-Modus verbraucht keine KI-Credits.', 'Zusätzliche Rückfragen, Erklärungen oder FocusScan-Anfragen zählen als neue KI-Antworten.'],
   dashboardCta: 'Zurück zum Dashboard',
   lowTitle: 'Wenig Credits',
   lowText: 'Deine Credits sind fast aufgebraucht. Kaufe mehr, damit sie im Quiz nicht ausgehen.',
@@ -354,6 +421,10 @@ CREDITS_COPY.es = {
   loginButton: 'Entrar / Registrarse',
   balanceLabel: 'Saldo actual',
   balanceText: 'Los créditos se usan para respuestas AI, explicaciones, preguntas extra y FocusScan.',
+  unitBadge: 'Cómo funcionan los créditos',
+  unitTitle: '1 crédito = 1 respuesta AI',
+  unitText: 'Un crédito es la unidad de uso de QuizSolver. Una pregunta visible enviada a la IA consume un crédito y devuelve una respuesta sugerida.',
+  unitItems: ['El historial y las notas guardadas no consumen créditos.', 'El modo Kahoot Quiz ID no usa créditos de IA.', 'Los seguimientos, explicaciones o FocusScan adicionales cuentan como nuevas respuestas de IA.'],
   dashboardCta: 'Volver al panel',
   lowTitle: 'Pocos créditos',
   lowText: 'Tus créditos están por terminarse. Compra más para no quedarte sin ellos durante un quiz.',
@@ -372,6 +443,10 @@ CREDITS_COPY.fr = {
   loginButton: 'Connexion / Inscription',
   balanceLabel: 'Solde actuel',
   balanceText: 'Les crédits servent aux réponses IA, explications, suivis et FocusScan.',
+  unitBadge: 'Fonctionnement des crédits',
+  unitTitle: '1 crédit = 1 réponse IA',
+  unitText: 'Un crédit est l’unité d’utilisation de QuizSolver. Une question visible envoyée à l’IA consomme un crédit et renvoie une réponse suggérée.',
+  unitItems: ['L’historique et les notes enregistrées ne consomment pas de crédits.', 'Le mode Kahoot Quiz ID n’utilise pas de crédits IA.', 'Les suivis, explications ou FocusScan supplémentaires comptent comme de nouvelles réponses IA.'],
   dashboardCta: 'Retour au tableau',
   lowTitle: 'Solde faible',
   lowText: 'Vos crédits sont presque épuisés. Achetez-en pour ne pas manquer pendant un quiz.',
@@ -390,6 +465,10 @@ CREDITS_COPY.it = {
   loginButton: 'Accedi / Registrati',
   balanceLabel: 'Saldo attuale',
   balanceText: 'I crediti servono per risposte AI, spiegazioni, follow-up e FocusScan.',
+  unitBadge: 'Come funzionano i crediti',
+  unitTitle: '1 credito = 1 risposta AI',
+  unitText: 'Un credito è l’unità di utilizzo di QuizSolver. Una domanda visibile inviata all’AI consuma un credito e restituisce una risposta suggerita.',
+  unitItems: ['Cronologia e note salvate non consumano crediti.', 'La modalità Kahoot Quiz ID non usa crediti AI.', 'Follow-up, spiegazioni o FocusScan aggiuntivi contano come nuove risposte AI.'],
   dashboardCta: 'Torna alla dashboard',
   lowTitle: 'Pochi crediti',
   lowText: 'I tuoi crediti stanno per finire. Comprane altri per non restare senza durante un quiz.',
@@ -408,6 +487,10 @@ CREDITS_COPY.uk = {
   loginButton: 'Увійти / Зареєструватися',
   balanceLabel: 'Поточний баланс',
   balanceText: 'Кредити використовуються для AI-відповідей, пояснень, follow-up і FocusScan.',
+  unitBadge: 'Як працюють кредити',
+  unitTitle: '1 кредит = 1 AI-відповідь',
+  unitText: 'Кредит — це одиниця використання QuizSolver. Одне видиме питання, надіслане до AI, витрачає один кредит і повертає запропоновану відповідь.',
+  unitItems: ['Збережена історія і нотатки не витрачають кредити.', 'Режим Kahoot Quiz ID не використовує AI-кредити.', 'Додаткові follow-up, пояснення або FocusScan рахуються як нові AI-відповіді.'],
   dashboardCta: 'Назад до панелі',
   lowTitle: 'Мало кредитів',
   lowText: 'Кредити майже закінчилися. Купи більше, щоб їх вистачило під час квізу.',

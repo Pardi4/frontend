@@ -9,6 +9,7 @@ import { ShellComponent } from './shell.component';
 type DashboardUi = {
   dashboard: string;
   credits: string;
+  creditUnitText: string;
   welcomeUser: string;
   dashboardIntro: string;
   questionsSolved: string;
@@ -36,6 +37,7 @@ const DASHBOARD_UI: Record<Locale, DashboardUi> = {
   en: {
     dashboard: 'Dashboard',
     credits: 'Credits',
+    creditUnitText: '1 credit = 1 AI answer',
     welcomeUser: 'Welcome, User',
     dashboardIntro: 'Credits, purchase history, and your referral code in one place.',
     questionsSolved: 'Questions solved',
@@ -61,6 +63,7 @@ const DASHBOARD_UI: Record<Locale, DashboardUi> = {
   pl: {
     dashboard: 'Panel',
     credits: 'Kredyty',
+    creditUnitText: '1 kredyt = 1 odpowiedź AI',
     welcomeUser: 'Witaj, Użytkowniku',
     dashboardIntro: 'Kredyty, historia zakupów i kod polecający w jednym miejscu.',
     questionsSolved: 'Rozwiązane pytania',
@@ -86,6 +89,7 @@ const DASHBOARD_UI: Record<Locale, DashboardUi> = {
   de: {
     dashboard: 'Dashboard',
     credits: 'Credits',
+    creditUnitText: '1 Credit = 1 KI-Antwort',
     welcomeUser: 'Willkommen, Nutzer',
     dashboardIntro: 'Credits, Kaufhistorie und dein Empfehlungscode an einem Ort.',
     questionsSolved: 'Gelöste Fragen',
@@ -111,6 +115,7 @@ const DASHBOARD_UI: Record<Locale, DashboardUi> = {
   es: {
     dashboard: 'Panel',
     credits: 'Créditos',
+    creditUnitText: '1 crédito = 1 respuesta AI',
     welcomeUser: 'Bienvenido, usuario',
     dashboardIntro: 'Créditos, historial de compras y código de referido en un solo lugar.',
     questionsSolved: 'Preguntas resueltas',
@@ -136,6 +141,7 @@ const DASHBOARD_UI: Record<Locale, DashboardUi> = {
   fr: {
     dashboard: 'Tableau de bord',
     credits: 'Crédits',
+    creditUnitText: '1 crédit = 1 réponse IA',
     welcomeUser: 'Bienvenue, utilisateur',
     dashboardIntro: 'Crédits, historique d’achat et code de parrainage au même endroit.',
     questionsSolved: 'Questions résolues',
@@ -161,6 +167,7 @@ const DASHBOARD_UI: Record<Locale, DashboardUi> = {
   it: {
     dashboard: 'Dashboard',
     credits: 'Crediti',
+    creditUnitText: '1 credito = 1 risposta AI',
     welcomeUser: 'Benvenuto, utente',
     dashboardIntro: 'Crediti, cronologia acquisti e codice referral in un unico posto.',
     questionsSolved: 'Domande risolte',
@@ -186,6 +193,7 @@ const DASHBOARD_UI: Record<Locale, DashboardUi> = {
   uk: {
     dashboard: 'Панель',
     credits: 'Кредити',
+    creditUnitText: '1 кредит = 1 AI-відповідь',
     welcomeUser: 'Вітаємо, користувачу',
     dashboardIntro: 'Кредити, історія покупок і реферальний код в одному місці.',
     questionsSolved: 'Розв’язані питання',
@@ -291,6 +299,7 @@ const DASHBOARD_UI: Record<Locale, DashboardUi> = {
                 {{ api.currentUser()?.role === 'admin' ? '∞' : (api.currentUser()?.credits || 0) }}
               </div>
               <div class="stat-label">{{ copy.credits }}</div>
+              <div class="stat-note text-secondary">{{ ui.creditUnitText }}</div>
             </article>
             <article class="stat-card glass glass-hover">
               <div class="stat-num">
@@ -586,6 +595,11 @@ const DASHBOARD_UI: Record<Locale, DashboardUi> = {
       font-size: 0.75rem;
       margin-top: 0.25rem;
       display: block;
+    }
+    .stat-note {
+      margin-top: 0.45rem;
+      font-size: 0.78rem;
+      font-weight: 700;
     }
     .credit-warning {
       display: flex;
