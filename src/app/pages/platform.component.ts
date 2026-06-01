@@ -150,7 +150,7 @@ const PLATFORM_UI: Record<Locale, PlatformUi> = {
   imports: [CommonModule, ShellComponent],
   template: `
     <qs-shell [locale]="locale" [pageKey]="pageKey">
-      <main class="seo-page" id="main-content">
+      <main class="seo-page">
         <section class="platform-hero">
           <div class="container platform-hero-grid">
             <div class="platform-hero-content">

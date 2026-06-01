@@ -13,6 +13,15 @@ const app = express();
 const angularApp = new AngularNodeAppEngine();
 
 app.use((req, res, next) => {
+  const noindexPaths = ['/dashboard', '/quiz', '/success', '/admin'];
+  const isNoindex = noindexPaths.some(p => req.path === p || req.path.match(new RegExp(`^/[a-z]{2}${p}`)));
+  if (isNoindex) {
+    res.setHeader('X-Robots-Tag', 'noindex, follow');
+  }
+  next();
+});
+
+app.use((req, res, next) => {
   if (req.method !== 'GET' && req.method !== 'HEAD') return next();
   if (req.path.length <= 1 || !req.path.endsWith('/')) return next();
   if (/\.[a-z0-9]{2,8}$/i.test(req.path)) return next();

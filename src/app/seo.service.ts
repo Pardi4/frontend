@@ -31,6 +31,13 @@ const NOINDEX_PAGES = new Set<PageKey>(['dashboard', 'success', 'notFound']);
 const ASSET_VERSION = '20260531';
 const assetUrl = (path: string) => `${abs(path)}?v=${ASSET_VERSION}`;
 
+const RATING_VALUE = '4.8';
+const RATING_COUNT = '127';
+const PLATFORM_PAGE_KEYS = [
+  'quizSolverAi', 'testportal', 'moodle', 'canvas', 'googleForms',
+  'microsoftForms', 'blackboard', 'quizlet', 'socrative', 'kahoot', 'quizizz'
+];
+
 @Injectable({ providedIn: 'root' })
 export class SeoService {
   constructor(
@@ -62,7 +69,8 @@ export class SeoService {
     this.upsertMeta('name', 'rating', 'general');
 
     /* ── Open Graph ── */
-    this.upsertMeta('property', 'og:type', (pageKey === 'home' || pageKey === 'credits') ? 'website' : 'article');
+    const isPlatform = PLATFORM_PAGE_KEYS.includes(pageKey as any);
+    this.upsertMeta('property', 'og:type', isPlatform ? 'article' : 'website');
     this.upsertMeta('property', 'og:site_name', 'QuizSolver');
     this.upsertMeta('property', 'og:url', canonical);
     this.upsertMeta('property', 'og:title', meta.title);
@@ -202,8 +210,8 @@ export class SeoService {
         ],
         aggregateRating: {
           '@type': 'AggregateRating',
-          ratingValue: '4.8',
-          ratingCount: '127',
+          ratingValue: RATING_VALUE,
+          ratingCount: RATING_COUNT,
           bestRating: '5',
           worstRating: '1'
         },
@@ -221,19 +229,11 @@ export class SeoService {
         name: 'QuizSolver',
         url: homeUrl,
         publisher: { '@id': `${homeUrl}#organization` },
-        inLanguage: SUPPORTED_LOCALES.map(opt => opt.htmlLang),
-        potentialAction: {
-          '@type': 'SearchAction',
-          target: {
-            '@type': 'EntryPoint',
-            urlTemplate: `${SITE_URL}/?q={search_term_string}`
-          },
-          'query-input': 'required name=search_term_string'
-        }
+        inLanguage: SUPPORTED_LOCALES.map(opt => opt.htmlLang)
       },
       /* WebPage */
       {
-        '@type': pageKey === 'home' ? 'WebPage' : 'Article',
+        '@type': (pageKey === 'home' || PLATFORM_PAGE_KEYS.includes(pageKey as any)) ? 'WebPage' : 'Article',
         '@id': `${canonical}#webpage`,
         url: canonical,
         name: meta.title,
@@ -243,10 +243,10 @@ export class SeoService {
         about: { '@id': `${homeUrl}#software` },
         inLanguage: locOpt.htmlLang,
         datePublished: '2026-05-01',
-        dateModified: new Date().toISOString().split('T')[0],
+        dateModified: '2026-05-31',
         speakable: {
           '@type': 'SpeakableSpecification',
-          cssSelector: ['h1', '.hero-subtitle', '.platform-subtitle', 'meta[name="description"]']
+          cssSelector: ['h1', '.hero-lead', '.desc', 'p.hero-subtitle']
         },
         ...(pageKey !== 'home' && {
           author: { '@id': `${homeUrl}#organization` },
@@ -352,8 +352,8 @@ export class SeoService {
         ],
         aggregateRating: {
           '@type': 'AggregateRating',
-          ratingValue: '4.8',
-          ratingCount: '127',
+          ratingValue: RATING_VALUE,
+          ratingCount: RATING_COUNT,
           bestRating: '5',
           worstRating: '1'
         }

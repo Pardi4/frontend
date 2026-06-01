@@ -2,344 +2,1534 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
 
-  <!-- ══════════════════════════════════════════════════════════ -->
-  <!-- HOME                                                       -->
-  <!-- ══════════════════════════════════════════════════════════ -->
+  <!-- ============================================================ -->
+  <!-- HOME                                                        -->
+  <!-- ============================================================ -->
   <url>
-    <loc>https://getquizsolver.com/</loc>
+    <loc>https://getquizsolver.com</loc>
     <lastmod>2026-05-31</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
-    <xhtml:link rel="alternate" hreflang="en"      href="https://getquizsolver.com/"/>
-    <xhtml:link rel="alternate" hreflang="pl"      href="https://getquizsolver.com/pl"/>
-    <xhtml:link rel="alternate" hreflang="de"      href="https://getquizsolver.com/de"/>
-    <xhtml:link rel="alternate" hreflang="es"      href="https://getquizsolver.com/es"/>
-    <xhtml:link rel="alternate" hreflang="fr"      href="https://getquizsolver.com/fr"/>
-    <xhtml:link rel="alternate" hreflang="it"      href="https://getquizsolver.com/it"/>
-    <xhtml:link rel="alternate" hreflang="uk"      href="https://getquizsolver.com/uk"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/"/>
+    <priority>1.00</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com"/>
   </url>
-  <url><loc>https://getquizsolver.com/pl</loc><lastmod>2026-05-31</lastmod><changefreq>weekly</changefreq><priority>0.95</priority></url>
-  <url><loc>https://getquizsolver.com/de</loc><lastmod>2026-05-31</lastmod><changefreq>weekly</changefreq><priority>0.90</priority></url>
-  <url><loc>https://getquizsolver.com/es</loc><lastmod>2026-05-31</lastmod><changefreq>weekly</changefreq><priority>0.90</priority></url>
-  <url><loc>https://getquizsolver.com/fr</loc><lastmod>2026-05-31</lastmod><changefreq>weekly</changefreq><priority>0.90</priority></url>
-  <url><loc>https://getquizsolver.com/it</loc><lastmod>2026-05-31</lastmod><changefreq>weekly</changefreq><priority>0.90</priority></url>
-  <url><loc>https://getquizsolver.com/uk</loc><lastmod>2026-05-31</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>
+  <url>
+    <loc>https://getquizsolver.com/pl</loc>
+    <lastmod>2026-05-31</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com"/>
+  </url>
+  <url>
+    <loc>https://getquizsolver.com/de</loc>
+    <lastmod>2026-05-31</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.90</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com"/>
+  </url>
+  <url>
+    <loc>https://getquizsolver.com/es</loc>
+    <lastmod>2026-05-31</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.90</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com"/>
+  </url>
+  <url>
+    <loc>https://getquizsolver.com/fr</loc>
+    <lastmod>2026-05-31</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.90</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com"/>
+  </url>
+  <url>
+    <loc>https://getquizsolver.com/it</loc>
+    <lastmod>2026-05-31</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.90</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com"/>
+  </url>
+  <url>
+    <loc>https://getquizsolver.com/uk</loc>
+    <lastmod>2026-05-31</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com"/>
+  </url>
 
-  <!-- ══════════════════════════════════════════════════════════ -->
-  <!-- CREDITS / PRICING                                          -->
-  <!-- ══════════════════════════════════════════════════════════ -->
+  <!-- ============================================================ -->
+  <!-- CREDITS                                                     -->
+  <!-- ============================================================ -->
   <url>
     <loc>https://getquizsolver.com/credits</loc>
     <lastmod>2026-05-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
-    <xhtml:link rel="alternate" hreflang="en"      href="https://getquizsolver.com/credits"/>
-    <xhtml:link rel="alternate" hreflang="pl"      href="https://getquizsolver.com/pl/credits"/>
-    <xhtml:link rel="alternate" hreflang="de"      href="https://getquizsolver.com/de/credits"/>
-    <xhtml:link rel="alternate" hreflang="es"      href="https://getquizsolver.com/es/credits"/>
-    <xhtml:link rel="alternate" hreflang="fr"      href="https://getquizsolver.com/fr/credits"/>
-    <xhtml:link rel="alternate" hreflang="it"      href="https://getquizsolver.com/it/credits"/>
-    <xhtml:link rel="alternate" hreflang="uk"      href="https://getquizsolver.com/uk/credits"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/credits"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/credits"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/credits"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/credits"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/credits"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/credits"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/credits"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/credits"/>
   </url>
-  <url><loc>https://getquizsolver.com/pl/credits</loc><lastmod>2026-05-31</lastmod><changefreq>monthly</changefreq><priority>0.80</priority></url>
-  <url><loc>https://getquizsolver.com/de/credits</loc><lastmod>2026-05-31</lastmod><changefreq>monthly</changefreq><priority>0.80</priority></url>
-  <url><loc>https://getquizsolver.com/es/credits</loc><lastmod>2026-05-31</lastmod><changefreq>monthly</changefreq><priority>0.80</priority></url>
-  <url><loc>https://getquizsolver.com/fr/credits</loc><lastmod>2026-05-31</lastmod><changefreq>monthly</changefreq><priority>0.80</priority></url>
-  <url><loc>https://getquizsolver.com/it/credits</loc><lastmod>2026-05-31</lastmod><changefreq>monthly</changefreq><priority>0.80</priority></url>
-  <url><loc>https://getquizsolver.com/uk/credits</loc><lastmod>2026-05-31</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url>
+    <loc>https://getquizsolver.com/pl/credits</loc>
+    <lastmod>2026-05-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.80</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/credits"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/credits"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/credits"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/credits"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/credits"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/credits"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/credits"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/credits"/>
+  </url>
+  <url>
+    <loc>https://getquizsolver.com/de/credits</loc>
+    <lastmod>2026-05-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.80</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/credits"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/credits"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/credits"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/credits"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/credits"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/credits"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/credits"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/credits"/>
+  </url>
+  <url>
+    <loc>https://getquizsolver.com/es/credits</loc>
+    <lastmod>2026-05-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.80</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/credits"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/credits"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/credits"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/credits"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/credits"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/credits"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/credits"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/credits"/>
+  </url>
+  <url>
+    <loc>https://getquizsolver.com/fr/credits</loc>
+    <lastmod>2026-05-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.80</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/credits"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/credits"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/credits"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/credits"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/credits"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/credits"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/credits"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/credits"/>
+  </url>
+  <url>
+    <loc>https://getquizsolver.com/it/credits</loc>
+    <lastmod>2026-05-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.80</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/credits"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/credits"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/credits"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/credits"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/credits"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/credits"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/credits"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/credits"/>
+  </url>
+  <url>
+    <loc>https://getquizsolver.com/uk/credits</loc>
+    <lastmod>2026-05-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/credits"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/credits"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/credits"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/credits"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/credits"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/credits"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/credits"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/credits"/>
+  </url>
 
-  <!-- ══════════════════════════════════════════════════════════ -->
-  <!-- DEMO                                                       -->
-  <!-- ══════════════════════════════════════════════════════════ -->
+  <!-- ============================================================ -->
+  <!-- DEMO                                                        -->
+  <!-- ============================================================ -->
   <url>
     <loc>https://getquizsolver.com/demo</loc>
     <lastmod>2026-05-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.80</priority>
-    <xhtml:link rel="alternate" hreflang="en"      href="https://getquizsolver.com/demo"/>
-    <xhtml:link rel="alternate" hreflang="pl"      href="https://getquizsolver.com/pl/demo"/>
-    <xhtml:link rel="alternate" hreflang="de"      href="https://getquizsolver.com/de/demo"/>
-    <xhtml:link rel="alternate" hreflang="es"      href="https://getquizsolver.com/es/demo"/>
-    <xhtml:link rel="alternate" hreflang="fr"      href="https://getquizsolver.com/fr/demo"/>
-    <xhtml:link rel="alternate" hreflang="it"      href="https://getquizsolver.com/it/demo"/>
-    <xhtml:link rel="alternate" hreflang="uk"      href="https://getquizsolver.com/uk/demo"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/demo"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/demo"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/demo"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/demo"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/demo"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/demo"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/demo"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/demo"/>
   </url>
-  <url><loc>https://getquizsolver.com/pl/demo</loc><lastmod>2026-05-31</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://getquizsolver.com/de/demo</loc><lastmod>2026-05-31</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://getquizsolver.com/es/demo</loc><lastmod>2026-05-31</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://getquizsolver.com/fr/demo</loc><lastmod>2026-05-31</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://getquizsolver.com/it/demo</loc><lastmod>2026-05-31</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://getquizsolver.com/uk/demo</loc><lastmod>2026-05-31</lastmod><changefreq>monthly</changefreq><priority>0.70</priority></url>
+  <url>
+    <loc>https://getquizsolver.com/pl/demo</loc>
+    <lastmod>2026-05-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/demo"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/demo"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/demo"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/demo"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/demo"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/demo"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/demo"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/demo"/>
+  </url>
+  <url>
+    <loc>https://getquizsolver.com/de/demo</loc>
+    <lastmod>2026-05-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/demo"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/demo"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/demo"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/demo"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/demo"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/demo"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/demo"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/demo"/>
+  </url>
+  <url>
+    <loc>https://getquizsolver.com/es/demo</loc>
+    <lastmod>2026-05-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/demo"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/demo"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/demo"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/demo"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/demo"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/demo"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/demo"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/demo"/>
+  </url>
+  <url>
+    <loc>https://getquizsolver.com/fr/demo</loc>
+    <lastmod>2026-05-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/demo"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/demo"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/demo"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/demo"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/demo"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/demo"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/demo"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/demo"/>
+  </url>
+  <url>
+    <loc>https://getquizsolver.com/it/demo</loc>
+    <lastmod>2026-05-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/demo"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/demo"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/demo"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/demo"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/demo"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/demo"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/demo"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/demo"/>
+  </url>
+  <url>
+    <loc>https://getquizsolver.com/uk/demo</loc>
+    <lastmod>2026-05-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.70</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/demo"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/demo"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/demo"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/demo"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/demo"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/demo"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/demo"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/demo"/>
+  </url>
 
-  <!-- ══════════════════════════════════════════════════════════ -->
-  <!-- PLATFORM PAGES — AI Quiz Solver                            -->
-  <!-- ══════════════════════════════════════════════════════════ -->
+  <!-- ============================================================ -->
+  <!-- QUIZ SOLVER AI                                              -->
+  <!-- ============================================================ -->
   <url>
     <loc>https://getquizsolver.com/quiz-solver-ai</loc>
     <lastmod>2026-05-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
-    <xhtml:link rel="alternate" hreflang="en"      href="https://getquizsolver.com/quiz-solver-ai"/>
-    <xhtml:link rel="alternate" hreflang="pl"      href="https://getquizsolver.com/pl/quiz-solver-ai"/>
-    <xhtml:link rel="alternate" hreflang="de"      href="https://getquizsolver.com/de/quiz-solver-ai"/>
-    <xhtml:link rel="alternate" hreflang="es"      href="https://getquizsolver.com/es/quiz-solver-ai"/>
-    <xhtml:link rel="alternate" hreflang="fr"      href="https://getquizsolver.com/fr/quiz-solver-ai"/>
-    <xhtml:link rel="alternate" hreflang="it"      href="https://getquizsolver.com/it/quiz-solver-ai"/>
-    <xhtml:link rel="alternate" hreflang="uk"      href="https://getquizsolver.com/uk/quiz-solver-ai"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/quiz-solver-ai"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/quiz-solver-ai"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/quiz-solver-ai"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/quiz-solver-ai"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/quiz-solver-ai"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/quiz-solver-ai"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/quiz-solver-ai"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/quiz-solver-ai"/>
   </url>
-  <url><loc>https://getquizsolver.com/pl/quiz-solver-ai</loc><lastmod>2026-05-31</lastmod><changefreq>monthly</changefreq><priority>0.80</priority></url>
-  <url><loc>https://getquizsolver.com/de/quiz-solver-ai</loc><lastmod>2026-05-31</lastmod><changefreq>monthly</changefreq><priority>0.80</priority></url>
-  <url><loc>https://getquizsolver.com/es/quiz-solver-ai</loc><lastmod>2026-05-31</lastmod><changefreq>monthly</changefreq><priority>0.80</priority></url>
-  <url><loc>https://getquizsolver.com/fr/quiz-solver-ai</loc><lastmod>2026-05-31</lastmod><changefreq>monthly</changefreq><priority>0.80</priority></url>
-  <url><loc>https://getquizsolver.com/it/quiz-solver-ai</loc><lastmod>2026-05-31</lastmod><changefreq>monthly</changefreq><priority>0.80</priority></url>
-  <url><loc>https://getquizsolver.com/uk/quiz-solver-ai</loc><lastmod>2026-05-31</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url>
+    <loc>https://getquizsolver.com/pl/quiz-solver-ai</loc>
+    <lastmod>2026-05-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.80</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/quiz-solver-ai"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/quiz-solver-ai"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/quiz-solver-ai"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/quiz-solver-ai"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/quiz-solver-ai"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/quiz-solver-ai"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/quiz-solver-ai"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/quiz-solver-ai"/>
+  </url>
+  <url>
+    <loc>https://getquizsolver.com/de/quiz-solver-ai</loc>
+    <lastmod>2026-05-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.80</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/quiz-solver-ai"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/quiz-solver-ai"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/quiz-solver-ai"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/quiz-solver-ai"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/quiz-solver-ai"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/quiz-solver-ai"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/quiz-solver-ai"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/quiz-solver-ai"/>
+  </url>
+  <url>
+    <loc>https://getquizsolver.com/es/quiz-solver-ai</loc>
+    <lastmod>2026-05-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.80</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/quiz-solver-ai"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/quiz-solver-ai"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/quiz-solver-ai"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/quiz-solver-ai"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/quiz-solver-ai"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/quiz-solver-ai"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/quiz-solver-ai"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/quiz-solver-ai"/>
+  </url>
+  <url>
+    <loc>https://getquizsolver.com/fr/quiz-solver-ai</loc>
+    <lastmod>2026-05-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.80</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/quiz-solver-ai"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/quiz-solver-ai"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/quiz-solver-ai"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/quiz-solver-ai"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/quiz-solver-ai"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/quiz-solver-ai"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/quiz-solver-ai"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/quiz-solver-ai"/>
+  </url>
+  <url>
+    <loc>https://getquizsolver.com/it/quiz-solver-ai</loc>
+    <lastmod>2026-05-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.80</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/quiz-solver-ai"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/quiz-solver-ai"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/quiz-solver-ai"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/quiz-solver-ai"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/quiz-solver-ai"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/quiz-solver-ai"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/quiz-solver-ai"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/quiz-solver-ai"/>
+  </url>
+  <url>
+    <loc>https://getquizsolver.com/uk/quiz-solver-ai</loc>
+    <lastmod>2026-05-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/quiz-solver-ai"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/quiz-solver-ai"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/quiz-solver-ai"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/quiz-solver-ai"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/quiz-solver-ai"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/quiz-solver-ai"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/quiz-solver-ai"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/quiz-solver-ai"/>
+  </url>
 
-  <!-- PLATFORM: Testportal -->
+  <!-- ============================================================ -->
+  <!-- TESTPORTAL QUIZ SOLVER                                      -->
+  <!-- ============================================================ -->
   <url>
     <loc>https://getquizsolver.com/testportal-quiz-solver</loc>
     <lastmod>2026-05-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
-    <xhtml:link rel="alternate" hreflang="en"      href="https://getquizsolver.com/testportal-quiz-solver"/>
-    <xhtml:link rel="alternate" hreflang="pl"      href="https://getquizsolver.com/pl/testportal-quiz-solver"/>
-    <xhtml:link rel="alternate" hreflang="de"      href="https://getquizsolver.com/de/testportal-quiz-solver"/>
-    <xhtml:link rel="alternate" hreflang="es"      href="https://getquizsolver.com/es/testportal-quiz-solver"/>
-    <xhtml:link rel="alternate" hreflang="fr"      href="https://getquizsolver.com/fr/testportal-quiz-solver"/>
-    <xhtml:link rel="alternate" hreflang="it"      href="https://getquizsolver.com/it/testportal-quiz-solver"/>
-    <xhtml:link rel="alternate" hreflang="uk"      href="https://getquizsolver.com/uk/testportal-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/testportal-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/testportal-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/testportal-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/testportal-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/testportal-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/testportal-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/testportal-quiz-solver"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/testportal-quiz-solver"/>
   </url>
-  <url><loc>https://getquizsolver.com/pl/testportal-quiz-solver</loc><lastmod>2026-05-31</lastmod><changefreq>monthly</changefreq><priority>0.82</priority></url>
-  <url><loc>https://getquizsolver.com/de/testportal-quiz-solver</loc><lastmod>2026-05-31</lastmod><changefreq>monthly</changefreq><priority>0.78</priority></url>
-  <url><loc>https://getquizsolver.com/es/testportal-quiz-solver</loc><lastmod>2026-05-31</lastmod><changefreq>monthly</changefreq><priority>0.78</priority></url>
-  <url><loc>https://getquizsolver.com/fr/testportal-quiz-solver</loc><lastmod>2026-05-31</lastmod><changefreq>monthly</changefreq><priority>0.78</priority></url>
-  <url><loc>https://getquizsolver.com/it/testportal-quiz-solver</loc><lastmod>2026-05-31</lastmod><changefreq>monthly</changefreq><priority>0.78</priority></url>
-  <url><loc>https://getquizsolver.com/uk/testportal-quiz-solver</loc><lastmod>2026-05-31</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url>
+    <loc>https://getquizsolver.com/pl/testportal-quiz-solver</loc>
+    <lastmod>2026-05-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.82</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/testportal-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/testportal-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/testportal-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/testportal-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/testportal-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/testportal-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/testportal-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/testportal-quiz-solver"/>
+  </url>
+  <url>
+    <loc>https://getquizsolver.com/de/testportal-quiz-solver</loc>
+    <lastmod>2026-05-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.78</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/testportal-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/testportal-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/testportal-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/testportal-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/testportal-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/testportal-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/testportal-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/testportal-quiz-solver"/>
+  </url>
+  <url>
+    <loc>https://getquizsolver.com/es/testportal-quiz-solver</loc>
+    <lastmod>2026-05-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.78</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/testportal-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/testportal-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/testportal-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/testportal-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/testportal-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/testportal-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/testportal-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/testportal-quiz-solver"/>
+  </url>
+  <url>
+    <loc>https://getquizsolver.com/fr/testportal-quiz-solver</loc>
+    <lastmod>2026-05-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.78</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/testportal-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/testportal-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/testportal-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/testportal-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/testportal-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/testportal-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/testportal-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/testportal-quiz-solver"/>
+  </url>
+  <url>
+    <loc>https://getquizsolver.com/it/testportal-quiz-solver</loc>
+    <lastmod>2026-05-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.78</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/testportal-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/testportal-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/testportal-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/testportal-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/testportal-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/testportal-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/testportal-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/testportal-quiz-solver"/>
+  </url>
+  <url>
+    <loc>https://getquizsolver.com/uk/testportal-quiz-solver</loc>
+    <lastmod>2026-05-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/testportal-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/testportal-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/testportal-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/testportal-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/testportal-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/testportal-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/testportal-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/testportal-quiz-solver"/>
+  </url>
 
-  <!-- PLATFORM: Moodle -->
+  <!-- ============================================================ -->
+  <!-- MOODLE QUIZ SOLVER                                          -->
+  <!-- ============================================================ -->
   <url>
     <loc>https://getquizsolver.com/moodle-quiz-solver</loc>
     <lastmod>2026-05-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
-    <xhtml:link rel="alternate" hreflang="en"      href="https://getquizsolver.com/moodle-quiz-solver"/>
-    <xhtml:link rel="alternate" hreflang="pl"      href="https://getquizsolver.com/pl/moodle-quiz-solver"/>
-    <xhtml:link rel="alternate" hreflang="de"      href="https://getquizsolver.com/de/moodle-quiz-solver"/>
-    <xhtml:link rel="alternate" hreflang="es"      href="https://getquizsolver.com/es/moodle-quiz-solver"/>
-    <xhtml:link rel="alternate" hreflang="fr"      href="https://getquizsolver.com/fr/moodle-quiz-solver"/>
-    <xhtml:link rel="alternate" hreflang="it"      href="https://getquizsolver.com/it/moodle-quiz-solver"/>
-    <xhtml:link rel="alternate" hreflang="uk"      href="https://getquizsolver.com/uk/moodle-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/moodle-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/moodle-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/moodle-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/moodle-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/moodle-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/moodle-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/moodle-quiz-solver"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/moodle-quiz-solver"/>
   </url>
-  <url><loc>https://getquizsolver.com/pl/moodle-quiz-solver</loc><lastmod>2026-05-31</lastmod><changefreq>monthly</changefreq><priority>0.82</priority></url>
-  <url><loc>https://getquizsolver.com/de/moodle-quiz-solver</loc><lastmod>2026-05-31</lastmod><changefreq>monthly</changefreq><priority>0.78</priority></url>
-  <url><loc>https://getquizsolver.com/es/moodle-quiz-solver</loc><lastmod>2026-05-31</lastmod><changefreq>monthly</changefreq><priority>0.78</priority></url>
-  <url><loc>https://getquizsolver.com/fr/moodle-quiz-solver</loc><lastmod>2026-05-31</lastmod><changefreq>monthly</changefreq><priority>0.78</priority></url>
-  <url><loc>https://getquizsolver.com/it/moodle-quiz-solver</loc><lastmod>2026-05-31</lastmod><changefreq>monthly</changefreq><priority>0.78</priority></url>
-  <url><loc>https://getquizsolver.com/uk/moodle-quiz-solver</loc><lastmod>2026-05-31</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url>
+    <loc>https://getquizsolver.com/pl/moodle-quiz-solver</loc>
+    <lastmod>2026-05-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.82</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/moodle-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/moodle-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/moodle-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/moodle-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/moodle-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/moodle-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/moodle-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/moodle-quiz-solver"/>
+  </url>
+  <url>
+    <loc>https://getquizsolver.com/de/moodle-quiz-solver</loc>
+    <lastmod>2026-05-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.78</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/moodle-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/moodle-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/moodle-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/moodle-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/moodle-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/moodle-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/moodle-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/moodle-quiz-solver"/>
+  </url>
+  <url>
+    <loc>https://getquizsolver.com/es/moodle-quiz-solver</loc>
+    <lastmod>2026-05-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.78</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/moodle-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/moodle-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/moodle-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/moodle-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/moodle-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/moodle-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/moodle-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/moodle-quiz-solver"/>
+  </url>
+  <url>
+    <loc>https://getquizsolver.com/fr/moodle-quiz-solver</loc>
+    <lastmod>2026-05-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.78</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/moodle-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/moodle-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/moodle-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/moodle-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/moodle-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/moodle-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/moodle-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/moodle-quiz-solver"/>
+  </url>
+  <url>
+    <loc>https://getquizsolver.com/it/moodle-quiz-solver</loc>
+    <lastmod>2026-05-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.78</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/moodle-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/moodle-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/moodle-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/moodle-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/moodle-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/moodle-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/moodle-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/moodle-quiz-solver"/>
+  </url>
+  <url>
+    <loc>https://getquizsolver.com/uk/moodle-quiz-solver</loc>
+    <lastmod>2026-05-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/moodle-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/moodle-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/moodle-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/moodle-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/moodle-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/moodle-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/moodle-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/moodle-quiz-solver"/>
+  </url>
 
-  <!-- PLATFORM: Canvas -->
+  <!-- ============================================================ -->
+  <!-- CANVAS QUIZ SOLVER                                          -->
+  <!-- ============================================================ -->
   <url>
     <loc>https://getquizsolver.com/canvas-quiz-solver</loc>
     <lastmod>2026-05-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.82</priority>
-    <xhtml:link rel="alternate" hreflang="en"      href="https://getquizsolver.com/canvas-quiz-solver"/>
-    <xhtml:link rel="alternate" hreflang="pl"      href="https://getquizsolver.com/pl/canvas-quiz-solver"/>
-    <xhtml:link rel="alternate" hreflang="de"      href="https://getquizsolver.com/de/canvas-quiz-solver"/>
-    <xhtml:link rel="alternate" hreflang="es"      href="https://getquizsolver.com/es/canvas-quiz-solver"/>
-    <xhtml:link rel="alternate" hreflang="fr"      href="https://getquizsolver.com/fr/canvas-quiz-solver"/>
-    <xhtml:link rel="alternate" hreflang="it"      href="https://getquizsolver.com/it/canvas-quiz-solver"/>
-    <xhtml:link rel="alternate" hreflang="uk"      href="https://getquizsolver.com/uk/canvas-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/canvas-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/canvas-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/canvas-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/canvas-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/canvas-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/canvas-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/canvas-quiz-solver"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/canvas-quiz-solver"/>
   </url>
-  <url><loc>https://getquizsolver.com/pl/canvas-quiz-solver</loc><lastmod>2026-05-31</lastmod><changefreq>monthly</changefreq><priority>0.78</priority></url>
-  <url><loc>https://getquizsolver.com/de/canvas-quiz-solver</loc><lastmod>2026-05-31</lastmod><changefreq>monthly</changefreq><priority>0.76</priority></url>
-  <url><loc>https://getquizsolver.com/es/canvas-quiz-solver</loc><lastmod>2026-05-31</lastmod><changefreq>monthly</changefreq><priority>0.76</priority></url>
-  <url><loc>https://getquizsolver.com/fr/canvas-quiz-solver</loc><lastmod>2026-05-31</lastmod><changefreq>monthly</changefreq><priority>0.76</priority></url>
-  <url><loc>https://getquizsolver.com/it/canvas-quiz-solver</loc><lastmod>2026-05-31</lastmod><changefreq>monthly</changefreq><priority>0.76</priority></url>
-  <url><loc>https://getquizsolver.com/uk/canvas-quiz-solver</loc><lastmod>2026-05-31</lastmod><changefreq>monthly</changefreq><priority>0.72</priority></url>
+  <url>
+    <loc>https://getquizsolver.com/pl/canvas-quiz-solver</loc>
+    <lastmod>2026-05-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.78</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/canvas-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/canvas-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/canvas-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/canvas-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/canvas-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/canvas-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/canvas-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/canvas-quiz-solver"/>
+  </url>
+  <url>
+    <loc>https://getquizsolver.com/de/canvas-quiz-solver</loc>
+    <lastmod>2026-05-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.76</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/canvas-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/canvas-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/canvas-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/canvas-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/canvas-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/canvas-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/canvas-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/canvas-quiz-solver"/>
+  </url>
+  <url>
+    <loc>https://getquizsolver.com/es/canvas-quiz-solver</loc>
+    <lastmod>2026-05-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.76</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/canvas-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/canvas-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/canvas-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/canvas-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/canvas-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/canvas-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/canvas-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/canvas-quiz-solver"/>
+  </url>
+  <url>
+    <loc>https://getquizsolver.com/fr/canvas-quiz-solver</loc>
+    <lastmod>2026-05-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.76</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/canvas-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/canvas-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/canvas-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/canvas-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/canvas-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/canvas-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/canvas-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/canvas-quiz-solver"/>
+  </url>
+  <url>
+    <loc>https://getquizsolver.com/it/canvas-quiz-solver</loc>
+    <lastmod>2026-05-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.76</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/canvas-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/canvas-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/canvas-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/canvas-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/canvas-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/canvas-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/canvas-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/canvas-quiz-solver"/>
+  </url>
+  <url>
+    <loc>https://getquizsolver.com/uk/canvas-quiz-solver</loc>
+    <lastmod>2026-05-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.72</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/canvas-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/canvas-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/canvas-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/canvas-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/canvas-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/canvas-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/canvas-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/canvas-quiz-solver"/>
+  </url>
 
-  <!-- PLATFORM: Google Forms -->
+  <!-- ============================================================ -->
+  <!-- GOOGLE FORMS QUIZ SOLVER                                    -->
+  <!-- ============================================================ -->
   <url>
     <loc>https://getquizsolver.com/google-forms-quiz-solver</loc>
     <lastmod>2026-05-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
-    <xhtml:link rel="alternate" hreflang="en"      href="https://getquizsolver.com/google-forms-quiz-solver"/>
-    <xhtml:link rel="alternate" hreflang="pl"      href="https://getquizsolver.com/pl/google-forms-quiz-solver"/>
-    <xhtml:link rel="alternate" hreflang="de"      href="https://getquizsolver.com/de/google-forms-quiz-solver"/>
-    <xhtml:link rel="alternate" hreflang="es"      href="https://getquizsolver.com/es/google-forms-quiz-solver"/>
-    <xhtml:link rel="alternate" hreflang="fr"      href="https://getquizsolver.com/fr/google-forms-quiz-solver"/>
-    <xhtml:link rel="alternate" hreflang="it"      href="https://getquizsolver.com/it/google-forms-quiz-solver"/>
-    <xhtml:link rel="alternate" hreflang="uk"      href="https://getquizsolver.com/uk/google-forms-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/google-forms-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/google-forms-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/google-forms-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/google-forms-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/google-forms-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/google-forms-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/google-forms-quiz-solver"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/google-forms-quiz-solver"/>
   </url>
-  <url><loc>https://getquizsolver.com/pl/google-forms-quiz-solver</loc><lastmod>2026-05-31</lastmod><changefreq>monthly</changefreq><priority>0.82</priority></url>
-  <url><loc>https://getquizsolver.com/de/google-forms-quiz-solver</loc><lastmod>2026-05-31</lastmod><changefreq>monthly</changefreq><priority>0.78</priority></url>
-  <url><loc>https://getquizsolver.com/es/google-forms-quiz-solver</loc><lastmod>2026-05-31</lastmod><changefreq>monthly</changefreq><priority>0.78</priority></url>
-  <url><loc>https://getquizsolver.com/fr/google-forms-quiz-solver</loc><lastmod>2026-05-31</lastmod><changefreq>monthly</changefreq><priority>0.78</priority></url>
-  <url><loc>https://getquizsolver.com/it/google-forms-quiz-solver</loc><lastmod>2026-05-31</lastmod><changefreq>monthly</changefreq><priority>0.78</priority></url>
-  <url><loc>https://getquizsolver.com/uk/google-forms-quiz-solver</loc><lastmod>2026-05-31</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url>
+    <loc>https://getquizsolver.com/pl/google-forms-quiz-solver</loc>
+    <lastmod>2026-05-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.82</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/google-forms-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/google-forms-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/google-forms-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/google-forms-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/google-forms-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/google-forms-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/google-forms-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/google-forms-quiz-solver"/>
+  </url>
+  <url>
+    <loc>https://getquizsolver.com/de/google-forms-quiz-solver</loc>
+    <lastmod>2026-05-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.78</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/google-forms-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/google-forms-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/google-forms-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/google-forms-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/google-forms-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/google-forms-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/google-forms-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/google-forms-quiz-solver"/>
+  </url>
+  <url>
+    <loc>https://getquizsolver.com/es/google-forms-quiz-solver</loc>
+    <lastmod>2026-05-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.78</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/google-forms-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/google-forms-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/google-forms-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/google-forms-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/google-forms-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/google-forms-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/google-forms-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/google-forms-quiz-solver"/>
+  </url>
+  <url>
+    <loc>https://getquizsolver.com/fr/google-forms-quiz-solver</loc>
+    <lastmod>2026-05-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.78</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/google-forms-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/google-forms-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/google-forms-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/google-forms-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/google-forms-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/google-forms-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/google-forms-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/google-forms-quiz-solver"/>
+  </url>
+  <url>
+    <loc>https://getquizsolver.com/it/google-forms-quiz-solver</loc>
+    <lastmod>2026-05-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.78</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/google-forms-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/google-forms-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/google-forms-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/google-forms-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/google-forms-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/google-forms-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/google-forms-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/google-forms-quiz-solver"/>
+  </url>
+  <url>
+    <loc>https://getquizsolver.com/uk/google-forms-quiz-solver</loc>
+    <lastmod>2026-05-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/google-forms-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/google-forms-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/google-forms-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/google-forms-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/google-forms-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/google-forms-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/google-forms-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/google-forms-quiz-solver"/>
+  </url>
 
-  <!-- PLATFORM: Microsoft Forms -->
+  <!-- ============================================================ -->
+  <!-- MICROSOFT FORMS QUIZ SOLVER                                 -->
+  <!-- ============================================================ -->
   <url>
     <loc>https://getquizsolver.com/microsoft-forms-quiz-solver</loc>
     <lastmod>2026-05-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.80</priority>
-    <xhtml:link rel="alternate" hreflang="en"      href="https://getquizsolver.com/microsoft-forms-quiz-solver"/>
-    <xhtml:link rel="alternate" hreflang="pl"      href="https://getquizsolver.com/pl/microsoft-forms-quiz-solver"/>
-    <xhtml:link rel="alternate" hreflang="de"      href="https://getquizsolver.com/de/microsoft-forms-quiz-solver"/>
-    <xhtml:link rel="alternate" hreflang="es"      href="https://getquizsolver.com/es/microsoft-forms-quiz-solver"/>
-    <xhtml:link rel="alternate" hreflang="fr"      href="https://getquizsolver.com/fr/microsoft-forms-quiz-solver"/>
-    <xhtml:link rel="alternate" hreflang="it"      href="https://getquizsolver.com/it/microsoft-forms-quiz-solver"/>
-    <xhtml:link rel="alternate" hreflang="uk"      href="https://getquizsolver.com/uk/microsoft-forms-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/microsoft-forms-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/microsoft-forms-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/microsoft-forms-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/microsoft-forms-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/microsoft-forms-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/microsoft-forms-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/microsoft-forms-quiz-solver"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/microsoft-forms-quiz-solver"/>
   </url>
-  <url><loc>https://getquizsolver.com/pl/microsoft-forms-quiz-solver</loc><lastmod>2026-05-31</lastmod><changefreq>monthly</changefreq><priority>0.76</priority></url>
-  <url><loc>https://getquizsolver.com/de/microsoft-forms-quiz-solver</loc><lastmod>2026-05-31</lastmod><changefreq>monthly</changefreq><priority>0.74</priority></url>
-  <url><loc>https://getquizsolver.com/es/microsoft-forms-quiz-solver</loc><lastmod>2026-05-31</lastmod><changefreq>monthly</changefreq><priority>0.74</priority></url>
-  <url><loc>https://getquizsolver.com/fr/microsoft-forms-quiz-solver</loc><lastmod>2026-05-31</lastmod><changefreq>monthly</changefreq><priority>0.74</priority></url>
-  <url><loc>https://getquizsolver.com/it/microsoft-forms-quiz-solver</loc><lastmod>2026-05-31</lastmod><changefreq>monthly</changefreq><priority>0.74</priority></url>
-  <url><loc>https://getquizsolver.com/uk/microsoft-forms-quiz-solver</loc><lastmod>2026-05-31</lastmod><changefreq>monthly</changefreq><priority>0.70</priority></url>
+  <url>
+    <loc>https://getquizsolver.com/pl/microsoft-forms-quiz-solver</loc>
+    <lastmod>2026-05-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.76</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/microsoft-forms-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/microsoft-forms-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/microsoft-forms-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/microsoft-forms-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/microsoft-forms-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/microsoft-forms-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/microsoft-forms-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/microsoft-forms-quiz-solver"/>
+  </url>
+  <url>
+    <loc>https://getquizsolver.com/de/microsoft-forms-quiz-solver</loc>
+    <lastmod>2026-05-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.74</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/microsoft-forms-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/microsoft-forms-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/microsoft-forms-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/microsoft-forms-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/microsoft-forms-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/microsoft-forms-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/microsoft-forms-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/microsoft-forms-quiz-solver"/>
+  </url>
+  <url>
+    <loc>https://getquizsolver.com/es/microsoft-forms-quiz-solver</loc>
+    <lastmod>2026-05-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.74</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/microsoft-forms-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/microsoft-forms-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/microsoft-forms-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/microsoft-forms-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/microsoft-forms-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/microsoft-forms-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/microsoft-forms-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/microsoft-forms-quiz-solver"/>
+  </url>
+  <url>
+    <loc>https://getquizsolver.com/fr/microsoft-forms-quiz-solver</loc>
+    <lastmod>2026-05-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.74</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/microsoft-forms-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/microsoft-forms-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/microsoft-forms-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/microsoft-forms-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/microsoft-forms-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/microsoft-forms-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/microsoft-forms-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/microsoft-forms-quiz-solver"/>
+  </url>
+  <url>
+    <loc>https://getquizsolver.com/it/microsoft-forms-quiz-solver</loc>
+    <lastmod>2026-05-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.74</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/microsoft-forms-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/microsoft-forms-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/microsoft-forms-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/microsoft-forms-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/microsoft-forms-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/microsoft-forms-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/microsoft-forms-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/microsoft-forms-quiz-solver"/>
+  </url>
+  <url>
+    <loc>https://getquizsolver.com/uk/microsoft-forms-quiz-solver</loc>
+    <lastmod>2026-05-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.70</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/microsoft-forms-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/microsoft-forms-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/microsoft-forms-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/microsoft-forms-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/microsoft-forms-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/microsoft-forms-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/microsoft-forms-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/microsoft-forms-quiz-solver"/>
+  </url>
 
-  <!-- PLATFORM: Kahoot -->
+  <!-- ============================================================ -->
+  <!-- KAHOOT AI BOT                                               -->
+  <!-- ============================================================ -->
   <url>
     <loc>https://getquizsolver.com/kahoot-ai-bot</loc>
     <lastmod>2026-05-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
-    <xhtml:link rel="alternate" hreflang="en"      href="https://getquizsolver.com/kahoot-ai-bot"/>
-    <xhtml:link rel="alternate" hreflang="pl"      href="https://getquizsolver.com/pl/kahoot-ai-bot"/>
-    <xhtml:link rel="alternate" hreflang="de"      href="https://getquizsolver.com/de/kahoot-ai-bot"/>
-    <xhtml:link rel="alternate" hreflang="es"      href="https://getquizsolver.com/es/kahoot-ai-bot"/>
-    <xhtml:link rel="alternate" hreflang="fr"      href="https://getquizsolver.com/fr/kahoot-ai-bot"/>
-    <xhtml:link rel="alternate" hreflang="it"      href="https://getquizsolver.com/it/kahoot-ai-bot"/>
-    <xhtml:link rel="alternate" hreflang="uk"      href="https://getquizsolver.com/uk/kahoot-ai-bot"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/kahoot-ai-bot"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/kahoot-ai-bot"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/kahoot-ai-bot"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/kahoot-ai-bot"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/kahoot-ai-bot"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/kahoot-ai-bot"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/kahoot-ai-bot"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/kahoot-ai-bot"/>
   </url>
-  <url><loc>https://getquizsolver.com/pl/kahoot-ai-bot</loc><lastmod>2026-05-31</lastmod><changefreq>monthly</changefreq><priority>0.82</priority></url>
-  <url><loc>https://getquizsolver.com/de/kahoot-ai-bot</loc><lastmod>2026-05-31</lastmod><changefreq>monthly</changefreq><priority>0.78</priority></url>
-  <url><loc>https://getquizsolver.com/es/kahoot-ai-bot</loc><lastmod>2026-05-31</lastmod><changefreq>monthly</changefreq><priority>0.78</priority></url>
-  <url><loc>https://getquizsolver.com/fr/kahoot-ai-bot</loc><lastmod>2026-05-31</lastmod><changefreq>monthly</changefreq><priority>0.78</priority></url>
-  <url><loc>https://getquizsolver.com/it/kahoot-ai-bot</loc><lastmod>2026-05-31</lastmod><changefreq>monthly</changefreq><priority>0.78</priority></url>
-  <url><loc>https://getquizsolver.com/uk/kahoot-ai-bot</loc><lastmod>2026-05-31</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url>
+    <loc>https://getquizsolver.com/pl/kahoot-ai-bot</loc>
+    <lastmod>2026-05-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.82</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/kahoot-ai-bot"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/kahoot-ai-bot"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/kahoot-ai-bot"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/kahoot-ai-bot"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/kahoot-ai-bot"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/kahoot-ai-bot"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/kahoot-ai-bot"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/kahoot-ai-bot"/>
+  </url>
+  <url>
+    <loc>https://getquizsolver.com/de/kahoot-ai-bot</loc>
+    <lastmod>2026-05-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.78</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/kahoot-ai-bot"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/kahoot-ai-bot"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/kahoot-ai-bot"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/kahoot-ai-bot"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/kahoot-ai-bot"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/kahoot-ai-bot"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/kahoot-ai-bot"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/kahoot-ai-bot"/>
+  </url>
+  <url>
+    <loc>https://getquizsolver.com/es/kahoot-ai-bot</loc>
+    <lastmod>2026-05-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.78</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/kahoot-ai-bot"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/kahoot-ai-bot"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/kahoot-ai-bot"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/kahoot-ai-bot"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/kahoot-ai-bot"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/kahoot-ai-bot"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/kahoot-ai-bot"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/kahoot-ai-bot"/>
+  </url>
+  <url>
+    <loc>https://getquizsolver.com/fr/kahoot-ai-bot</loc>
+    <lastmod>2026-05-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.78</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/kahoot-ai-bot"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/kahoot-ai-bot"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/kahoot-ai-bot"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/kahoot-ai-bot"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/kahoot-ai-bot"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/kahoot-ai-bot"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/kahoot-ai-bot"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/kahoot-ai-bot"/>
+  </url>
+  <url>
+    <loc>https://getquizsolver.com/it/kahoot-ai-bot</loc>
+    <lastmod>2026-05-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.78</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/kahoot-ai-bot"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/kahoot-ai-bot"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/kahoot-ai-bot"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/kahoot-ai-bot"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/kahoot-ai-bot"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/kahoot-ai-bot"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/kahoot-ai-bot"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/kahoot-ai-bot"/>
+  </url>
+  <url>
+    <loc>https://getquizsolver.com/uk/kahoot-ai-bot</loc>
+    <lastmod>2026-05-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/kahoot-ai-bot"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/kahoot-ai-bot"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/kahoot-ai-bot"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/kahoot-ai-bot"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/kahoot-ai-bot"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/kahoot-ai-bot"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/kahoot-ai-bot"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/kahoot-ai-bot"/>
+  </url>
 
-  <!-- PLATFORM: Quizizz -->
+  <!-- ============================================================ -->
+  <!-- QUIZIZZ SOLVER                                              -->
+  <!-- ============================================================ -->
   <url>
     <loc>https://getquizsolver.com/quizizz-solver</loc>
     <lastmod>2026-05-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.82</priority>
-    <xhtml:link rel="alternate" hreflang="en"      href="https://getquizsolver.com/quizizz-solver"/>
-    <xhtml:link rel="alternate" hreflang="pl"      href="https://getquizsolver.com/pl/quizizz-solver"/>
-    <xhtml:link rel="alternate" hreflang="de"      href="https://getquizsolver.com/de/quizizz-solver"/>
-    <xhtml:link rel="alternate" hreflang="es"      href="https://getquizsolver.com/es/quizizz-solver"/>
-    <xhtml:link rel="alternate" hreflang="fr"      href="https://getquizsolver.com/fr/quizizz-solver"/>
-    <xhtml:link rel="alternate" hreflang="it"      href="https://getquizsolver.com/it/quizizz-solver"/>
-    <xhtml:link rel="alternate" hreflang="uk"      href="https://getquizsolver.com/uk/quizizz-solver"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/quizizz-solver"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/quizizz-solver"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/quizizz-solver"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/quizizz-solver"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/quizizz-solver"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/quizizz-solver"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/quizizz-solver"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/quizizz-solver"/>
   </url>
-  <url><loc>https://getquizsolver.com/pl/quizizz-solver</loc><lastmod>2026-05-31</lastmod><changefreq>monthly</changefreq><priority>0.78</priority></url>
-  <url><loc>https://getquizsolver.com/de/quizizz-solver</loc><lastmod>2026-05-31</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://getquizsolver.com/es/quizizz-solver</loc><lastmod>2026-05-31</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://getquizsolver.com/fr/quizizz-solver</loc><lastmod>2026-05-31</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://getquizsolver.com/it/quizizz-solver</loc><lastmod>2026-05-31</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://getquizsolver.com/uk/quizizz-solver</loc><lastmod>2026-05-31</lastmod><changefreq>monthly</changefreq><priority>0.72</priority></url>
+  <url>
+    <loc>https://getquizsolver.com/pl/quizizz-solver</loc>
+    <lastmod>2026-05-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.78</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/quizizz-solver"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/quizizz-solver"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/quizizz-solver"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/quizizz-solver"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/quizizz-solver"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/quizizz-solver"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/quizizz-solver"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/quizizz-solver"/>
+  </url>
+  <url>
+    <loc>https://getquizsolver.com/de/quizizz-solver</loc>
+    <lastmod>2026-05-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/quizizz-solver"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/quizizz-solver"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/quizizz-solver"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/quizizz-solver"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/quizizz-solver"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/quizizz-solver"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/quizizz-solver"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/quizizz-solver"/>
+  </url>
+  <url>
+    <loc>https://getquizsolver.com/es/quizizz-solver</loc>
+    <lastmod>2026-05-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/quizizz-solver"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/quizizz-solver"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/quizizz-solver"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/quizizz-solver"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/quizizz-solver"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/quizizz-solver"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/quizizz-solver"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/quizizz-solver"/>
+  </url>
+  <url>
+    <loc>https://getquizsolver.com/fr/quizizz-solver</loc>
+    <lastmod>2026-05-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/quizizz-solver"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/quizizz-solver"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/quizizz-solver"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/quizizz-solver"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/quizizz-solver"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/quizizz-solver"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/quizizz-solver"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/quizizz-solver"/>
+  </url>
+  <url>
+    <loc>https://getquizsolver.com/it/quizizz-solver</loc>
+    <lastmod>2026-05-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/quizizz-solver"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/quizizz-solver"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/quizizz-solver"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/quizizz-solver"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/quizizz-solver"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/quizizz-solver"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/quizizz-solver"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/quizizz-solver"/>
+  </url>
+  <url>
+    <loc>https://getquizsolver.com/uk/quizizz-solver</loc>
+    <lastmod>2026-05-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.72</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/quizizz-solver"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/quizizz-solver"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/quizizz-solver"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/quizizz-solver"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/quizizz-solver"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/quizizz-solver"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/quizizz-solver"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/quizizz-solver"/>
+  </url>
 
-  <!-- PLATFORM: Blackboard -->
+  <!-- ============================================================ -->
+  <!-- BLACKBOARD QUIZ SOLVER                                      -->
+  <!-- ============================================================ -->
   <url>
     <loc>https://getquizsolver.com/blackboard-quiz-solver</loc>
     <lastmod>2026-05-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.78</priority>
-    <xhtml:link rel="alternate" hreflang="en"      href="https://getquizsolver.com/blackboard-quiz-solver"/>
-    <xhtml:link rel="alternate" hreflang="pl"      href="https://getquizsolver.com/pl/blackboard-quiz-solver"/>
-    <xhtml:link rel="alternate" hreflang="de"      href="https://getquizsolver.com/de/blackboard-quiz-solver"/>
-    <xhtml:link rel="alternate" hreflang="es"      href="https://getquizsolver.com/es/blackboard-quiz-solver"/>
-    <xhtml:link rel="alternate" hreflang="fr"      href="https://getquizsolver.com/fr/blackboard-quiz-solver"/>
-    <xhtml:link rel="alternate" hreflang="it"      href="https://getquizsolver.com/it/blackboard-quiz-solver"/>
-    <xhtml:link rel="alternate" hreflang="uk"      href="https://getquizsolver.com/uk/blackboard-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/blackboard-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/blackboard-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/blackboard-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/blackboard-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/blackboard-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/blackboard-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/blackboard-quiz-solver"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/blackboard-quiz-solver"/>
   </url>
-  <url><loc>https://getquizsolver.com/pl/blackboard-quiz-solver</loc><lastmod>2026-05-31</lastmod><changefreq>monthly</changefreq><priority>0.74</priority></url>
-  <url><loc>https://getquizsolver.com/de/blackboard-quiz-solver</loc><lastmod>2026-05-31</lastmod><changefreq>monthly</changefreq><priority>0.72</priority></url>
-  <url><loc>https://getquizsolver.com/es/blackboard-quiz-solver</loc><lastmod>2026-05-31</lastmod><changefreq>monthly</changefreq><priority>0.72</priority></url>
-  <url><loc>https://getquizsolver.com/fr/blackboard-quiz-solver</loc><lastmod>2026-05-31</lastmod><changefreq>monthly</changefreq><priority>0.72</priority></url>
-  <url><loc>https://getquizsolver.com/it/blackboard-quiz-solver</loc><lastmod>2026-05-31</lastmod><changefreq>monthly</changefreq><priority>0.72</priority></url>
-  <url><loc>https://getquizsolver.com/uk/blackboard-quiz-solver</loc><lastmod>2026-05-31</lastmod><changefreq>monthly</changefreq><priority>0.68</priority></url>
+  <url>
+    <loc>https://getquizsolver.com/pl/blackboard-quiz-solver</loc>
+    <lastmod>2026-05-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.74</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/blackboard-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/blackboard-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/blackboard-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/blackboard-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/blackboard-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/blackboard-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/blackboard-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/blackboard-quiz-solver"/>
+  </url>
+  <url>
+    <loc>https://getquizsolver.com/de/blackboard-quiz-solver</loc>
+    <lastmod>2026-05-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.72</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/blackboard-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/blackboard-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/blackboard-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/blackboard-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/blackboard-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/blackboard-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/blackboard-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/blackboard-quiz-solver"/>
+  </url>
+  <url>
+    <loc>https://getquizsolver.com/es/blackboard-quiz-solver</loc>
+    <lastmod>2026-05-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.72</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/blackboard-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/blackboard-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/blackboard-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/blackboard-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/blackboard-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/blackboard-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/blackboard-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/blackboard-quiz-solver"/>
+  </url>
+  <url>
+    <loc>https://getquizsolver.com/fr/blackboard-quiz-solver</loc>
+    <lastmod>2026-05-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.72</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/blackboard-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/blackboard-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/blackboard-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/blackboard-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/blackboard-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/blackboard-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/blackboard-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/blackboard-quiz-solver"/>
+  </url>
+  <url>
+    <loc>https://getquizsolver.com/it/blackboard-quiz-solver</loc>
+    <lastmod>2026-05-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.72</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/blackboard-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/blackboard-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/blackboard-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/blackboard-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/blackboard-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/blackboard-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/blackboard-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/blackboard-quiz-solver"/>
+  </url>
+  <url>
+    <loc>https://getquizsolver.com/uk/blackboard-quiz-solver</loc>
+    <lastmod>2026-05-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.68</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/blackboard-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/blackboard-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/blackboard-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/blackboard-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/blackboard-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/blackboard-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/blackboard-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/blackboard-quiz-solver"/>
+  </url>
 
-  <!-- PLATFORM: Quizlet -->
+  <!-- ============================================================ -->
+  <!-- QUIZLET SOLVER                                              -->
+  <!-- ============================================================ -->
   <url>
     <loc>https://getquizsolver.com/quizlet-solver</loc>
     <lastmod>2026-05-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.78</priority>
-    <xhtml:link rel="alternate" hreflang="en"      href="https://getquizsolver.com/quizlet-solver"/>
-    <xhtml:link rel="alternate" hreflang="pl"      href="https://getquizsolver.com/pl/quizlet-solver"/>
-    <xhtml:link rel="alternate" hreflang="de"      href="https://getquizsolver.com/de/quizlet-solver"/>
-    <xhtml:link rel="alternate" hreflang="es"      href="https://getquizsolver.com/es/quizlet-solver"/>
-    <xhtml:link rel="alternate" hreflang="fr"      href="https://getquizsolver.com/fr/quizlet-solver"/>
-    <xhtml:link rel="alternate" hreflang="it"      href="https://getquizsolver.com/it/quizlet-solver"/>
-    <xhtml:link rel="alternate" hreflang="uk"      href="https://getquizsolver.com/uk/quizlet-solver"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/quizlet-solver"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/quizlet-solver"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/quizlet-solver"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/quizlet-solver"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/quizlet-solver"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/quizlet-solver"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/quizlet-solver"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/quizlet-solver"/>
   </url>
-  <url><loc>https://getquizsolver.com/pl/quizlet-solver</loc><lastmod>2026-05-31</lastmod><changefreq>monthly</changefreq><priority>0.74</priority></url>
-  <url><loc>https://getquizsolver.com/de/quizlet-solver</loc><lastmod>2026-05-31</lastmod><changefreq>monthly</changefreq><priority>0.72</priority></url>
-  <url><loc>https://getquizsolver.com/es/quizlet-solver</loc><lastmod>2026-05-31</lastmod><changefreq>monthly</changefreq><priority>0.72</priority></url>
-  <url><loc>https://getquizsolver.com/fr/quizlet-solver</loc><lastmod>2026-05-31</lastmod><changefreq>monthly</changefreq><priority>0.72</priority></url>
-  <url><loc>https://getquizsolver.com/it/quizlet-solver</loc><lastmod>2026-05-31</lastmod><changefreq>monthly</changefreq><priority>0.72</priority></url>
-  <url><loc>https://getquizsolver.com/uk/quizlet-solver</loc><lastmod>2026-05-31</lastmod><changefreq>monthly</changefreq><priority>0.68</priority></url>
+  <url>
+    <loc>https://getquizsolver.com/pl/quizlet-solver</loc>
+    <lastmod>2026-05-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.74</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/quizlet-solver"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/quizlet-solver"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/quizlet-solver"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/quizlet-solver"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/quizlet-solver"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/quizlet-solver"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/quizlet-solver"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/quizlet-solver"/>
+  </url>
+  <url>
+    <loc>https://getquizsolver.com/de/quizlet-solver</loc>
+    <lastmod>2026-05-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.72</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/quizlet-solver"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/quizlet-solver"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/quizlet-solver"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/quizlet-solver"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/quizlet-solver"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/quizlet-solver"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/quizlet-solver"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/quizlet-solver"/>
+  </url>
+  <url>
+    <loc>https://getquizsolver.com/es/quizlet-solver</loc>
+    <lastmod>2026-05-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.72</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/quizlet-solver"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/quizlet-solver"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/quizlet-solver"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/quizlet-solver"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/quizlet-solver"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/quizlet-solver"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/quizlet-solver"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/quizlet-solver"/>
+  </url>
+  <url>
+    <loc>https://getquizsolver.com/fr/quizlet-solver</loc>
+    <lastmod>2026-05-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.72</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/quizlet-solver"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/quizlet-solver"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/quizlet-solver"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/quizlet-solver"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/quizlet-solver"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/quizlet-solver"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/quizlet-solver"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/quizlet-solver"/>
+  </url>
+  <url>
+    <loc>https://getquizsolver.com/it/quizlet-solver</loc>
+    <lastmod>2026-05-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.72</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/quizlet-solver"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/quizlet-solver"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/quizlet-solver"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/quizlet-solver"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/quizlet-solver"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/quizlet-solver"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/quizlet-solver"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/quizlet-solver"/>
+  </url>
+  <url>
+    <loc>https://getquizsolver.com/uk/quizlet-solver</loc>
+    <lastmod>2026-05-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.68</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/quizlet-solver"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/quizlet-solver"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/quizlet-solver"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/quizlet-solver"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/quizlet-solver"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/quizlet-solver"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/quizlet-solver"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/quizlet-solver"/>
+  </url>
 
-  <!-- PLATFORM: Socrative -->
+  <!-- ============================================================ -->
+  <!-- SOCRATIVE QUIZ SOLVER                                       -->
+  <!-- ============================================================ -->
   <url>
     <loc>https://getquizsolver.com/socrative-quiz-solver</loc>
     <lastmod>2026-05-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
-    <xhtml:link rel="alternate" hreflang="en"      href="https://getquizsolver.com/socrative-quiz-solver"/>
-    <xhtml:link rel="alternate" hreflang="pl"      href="https://getquizsolver.com/pl/socrative-quiz-solver"/>
-    <xhtml:link rel="alternate" hreflang="de"      href="https://getquizsolver.com/de/socrative-quiz-solver"/>
-    <xhtml:link rel="alternate" hreflang="es"      href="https://getquizsolver.com/es/socrative-quiz-solver"/>
-    <xhtml:link rel="alternate" hreflang="fr"      href="https://getquizsolver.com/fr/socrative-quiz-solver"/>
-    <xhtml:link rel="alternate" hreflang="it"      href="https://getquizsolver.com/it/socrative-quiz-solver"/>
-    <xhtml:link rel="alternate" hreflang="uk"      href="https://getquizsolver.com/uk/socrative-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/socrative-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/socrative-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/socrative-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/socrative-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/socrative-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/socrative-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/socrative-quiz-solver"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/socrative-quiz-solver"/>
   </url>
-  <url><loc>https://getquizsolver.com/pl/socrative-quiz-solver</loc><lastmod>2026-05-31</lastmod><changefreq>monthly</changefreq><priority>0.72</priority></url>
-  <url><loc>https://getquizsolver.com/de/socrative-quiz-solver</loc><lastmod>2026-05-31</lastmod><changefreq>monthly</changefreq><priority>0.70</priority></url>
-  <url><loc>https://getquizsolver.com/es/socrative-quiz-solver</loc><lastmod>2026-05-31</lastmod><changefreq>monthly</changefreq><priority>0.70</priority></url>
-  <url><loc>https://getquizsolver.com/fr/socrative-quiz-solver</loc><lastmod>2026-05-31</lastmod><changefreq>monthly</changefreq><priority>0.70</priority></url>
-  <url><loc>https://getquizsolver.com/it/socrative-quiz-solver</loc><lastmod>2026-05-31</lastmod><changefreq>monthly</changefreq><priority>0.70</priority></url>
-  <url><loc>https://getquizsolver.com/uk/socrative-quiz-solver</loc><lastmod>2026-05-31</lastmod><changefreq>monthly</changefreq><priority>0.65</priority></url>
+  <url>
+    <loc>https://getquizsolver.com/pl/socrative-quiz-solver</loc>
+    <lastmod>2026-05-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.72</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/socrative-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/socrative-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/socrative-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/socrative-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/socrative-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/socrative-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/socrative-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/socrative-quiz-solver"/>
+  </url>
+  <url>
+    <loc>https://getquizsolver.com/de/socrative-quiz-solver</loc>
+    <lastmod>2026-05-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.70</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/socrative-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/socrative-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/socrative-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/socrative-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/socrative-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/socrative-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/socrative-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/socrative-quiz-solver"/>
+  </url>
+  <url>
+    <loc>https://getquizsolver.com/es/socrative-quiz-solver</loc>
+    <lastmod>2026-05-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.70</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/socrative-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/socrative-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/socrative-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/socrative-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/socrative-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/socrative-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/socrative-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/socrative-quiz-solver"/>
+  </url>
+  <url>
+    <loc>https://getquizsolver.com/fr/socrative-quiz-solver</loc>
+    <lastmod>2026-05-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.70</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/socrative-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/socrative-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/socrative-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/socrative-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/socrative-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/socrative-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/socrative-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/socrative-quiz-solver"/>
+  </url>
+  <url>
+    <loc>https://getquizsolver.com/it/socrative-quiz-solver</loc>
+    <lastmod>2026-05-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.70</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/socrative-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/socrative-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/socrative-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/socrative-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/socrative-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/socrative-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/socrative-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/socrative-quiz-solver"/>
+  </url>
+  <url>
+    <loc>https://getquizsolver.com/uk/socrative-quiz-solver</loc>
+    <lastmod>2026-05-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.65</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/socrative-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/socrative-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/socrative-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/socrative-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/socrative-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/socrative-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/socrative-quiz-solver"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/socrative-quiz-solver"/>
+  </url>
 
-  <!-- ══════════════════════════════════════════════════════════ -->
-  <!-- PRIVACY POLICY                                             -->
-  <!-- ══════════════════════════════════════════════════════════ -->
+  <!-- ============================================================ -->
+  <!-- PRIVACY                                                     -->
+  <!-- ============================================================ -->
   <url>
     <loc>https://getquizsolver.com/privacy</loc>
     <lastmod>2026-05-31</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.50</priority>
-    <xhtml:link rel="alternate" hreflang="en"      href="https://getquizsolver.com/privacy"/>
-    <xhtml:link rel="alternate" hreflang="pl"      href="https://getquizsolver.com/pl/privacy"/>
-    <xhtml:link rel="alternate" hreflang="de"      href="https://getquizsolver.com/de/privacy"/>
-    <xhtml:link rel="alternate" hreflang="es"      href="https://getquizsolver.com/es/privacy"/>
-    <xhtml:link rel="alternate" hreflang="fr"      href="https://getquizsolver.com/fr/privacy"/>
-    <xhtml:link rel="alternate" hreflang="it"      href="https://getquizsolver.com/it/privacy"/>
-    <xhtml:link rel="alternate" hreflang="uk"      href="https://getquizsolver.com/uk/privacy"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/privacy"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/privacy"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/privacy"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/privacy"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/privacy"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/privacy"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/privacy"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/privacy"/>
   </url>
-  <url><loc>https://getquizsolver.com/pl/privacy</loc><lastmod>2026-05-31</lastmod><changefreq>yearly</changefreq><priority>0.45</priority></url>
-  <url><loc>https://getquizsolver.com/de/privacy</loc><lastmod>2026-05-31</lastmod><changefreq>yearly</changefreq><priority>0.45</priority></url>
-  <url><loc>https://getquizsolver.com/es/privacy</loc><lastmod>2026-05-31</lastmod><changefreq>yearly</changefreq><priority>0.45</priority></url>
-  <url><loc>https://getquizsolver.com/fr/privacy</loc><lastmod>2026-05-31</lastmod><changefreq>yearly</changefreq><priority>0.45</priority></url>
-  <url><loc>https://getquizsolver.com/it/privacy</loc><lastmod>2026-05-31</lastmod><changefreq>yearly</changefreq><priority>0.45</priority></url>
-  <url><loc>https://getquizsolver.com/uk/privacy</loc><lastmod>2026-05-31</lastmod><changefreq>yearly</changefreq><priority>0.40</priority></url>
+  <url>
+    <loc>https://getquizsolver.com/pl/privacy</loc>
+    <lastmod>2026-05-31</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.45</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/privacy"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/privacy"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/privacy"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/privacy"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/privacy"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/privacy"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/privacy"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/privacy"/>
+  </url>
+  <url>
+    <loc>https://getquizsolver.com/de/privacy</loc>
+    <lastmod>2026-05-31</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.45</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/privacy"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/privacy"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/privacy"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/privacy"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/privacy"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/privacy"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/privacy"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/privacy"/>
+  </url>
+  <url>
+    <loc>https://getquizsolver.com/es/privacy</loc>
+    <lastmod>2026-05-31</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.45</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/privacy"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/privacy"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/privacy"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/privacy"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/privacy"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/privacy"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/privacy"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/privacy"/>
+  </url>
+  <url>
+    <loc>https://getquizsolver.com/fr/privacy</loc>
+    <lastmod>2026-05-31</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.45</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/privacy"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/privacy"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/privacy"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/privacy"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/privacy"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/privacy"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/privacy"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/privacy"/>
+  </url>
+  <url>
+    <loc>https://getquizsolver.com/it/privacy</loc>
+    <lastmod>2026-05-31</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.45</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/privacy"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/privacy"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/privacy"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/privacy"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/privacy"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/privacy"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/privacy"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/privacy"/>
+  </url>
+  <url>
+    <loc>https://getquizsolver.com/uk/privacy</loc>
+    <lastmod>2026-05-31</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.40</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/privacy"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/privacy"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/privacy"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/privacy"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/privacy"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/privacy"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/privacy"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/privacy"/>
+  </url>
 
 </urlset>

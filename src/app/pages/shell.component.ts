@@ -14,6 +14,7 @@ type AuthModal = 'login' | 'register' | 'verify' | 'forgot' | 'reset';
   imports: [CommonModule, FormsModule],
   template: `
     <div class="site-shell" [attr.data-locale]="locale">
+      <a class="skip-link" href="#main-content">Skip to main content</a>
       <header class="site-header" role="banner">
         <div class="container nav-container">
           <a class="nav-brand" [href]="pathFor('home')" aria-label="QuizSolver home">
@@ -182,11 +183,18 @@ type AuthModal = 'login' | 'register' | 'verify' | 'forgot' | 'reset';
           </div>
           <div class="footer-col">
             <h4>{{ copy.footer.seoPages }}</h4>
-            <div class="footer-links">
+            <div class="footer-links footer-links-2col">
+              <a class="nav-link" [href]="pathFor('quizSolverAi')">AI quiz solver</a>
               <a class="nav-link" [href]="pathFor('testportal')">Testportal</a>
               <a class="nav-link" [href]="pathFor('moodle')">Moodle</a>
+              <a class="nav-link" [href]="pathFor('canvas')">Canvas</a>
               <a class="nav-link" [href]="pathFor('googleForms')">Google Forms</a>
-              <a class="nav-link" [href]="pathFor('quizSolverAi')">AI quiz solver</a>
+              <a class="nav-link" [href]="pathFor('microsoftForms')">MS Forms</a>
+              <a class="nav-link" [href]="pathFor('kahoot')">Kahoot</a>
+              <a class="nav-link" [href]="pathFor('quizizz')">Quizizz</a>
+              <a class="nav-link" [href]="pathFor('blackboard')">Blackboard</a>
+              <a class="nav-link" [href]="pathFor('quizlet')">Quizlet</a>
+              <a class="nav-link" [href]="pathFor('socrative')">Socrative</a>
             </div>
           </div>
           <div class="footer-col">
@@ -350,6 +358,20 @@ type AuthModal = 'login' | 'register' | 'verify' | 'forgot' | 'reset';
     </div>
   `,
   styles: [`
+    .skip-link {
+      position: absolute;
+      top: -40px;
+      left: 0;
+      background: #0ea5e9;
+      color: #fff;
+      padding: 8px 16px;
+      z-index: 100;
+      transition: top 0.2s;
+    }
+    .skip-link:focus {
+      top: 0;
+    }
+
     .site-shell {
       min-height: 100vh;
       display: flex;
@@ -797,6 +819,11 @@ type AuthModal = 'login' | 'register' | 'verify' | 'forgot' | 'reset';
       flex-direction: column;
       gap: 0.75rem;
       text-align: left;
+    }
+    .footer-links-2col {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.75rem 1.5rem;
     }
     .footer-links .nav-link {
       font-size: 0.9rem;

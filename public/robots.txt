@@ -28,6 +28,12 @@ Disallow: /fr/success
 Disallow: /it/success
 Disallow: /uk/success
 Disallow: /404
+Disallow: /pl/404
+Disallow: /de/404
+Disallow: /es/404
+Disallow: /fr/404
+Disallow: /it/404
+Disallow: /uk/404
 
 # Sitemap location
 Sitemap: https://getquizsolver.com/sitemap.xml

@@ -10,7 +10,7 @@ import { ShellComponent } from './shell.component';
   imports: [CommonModule, ShellComponent],
   template: `
     <qs-shell [locale]="locale" pageKey="home">
-      <main id="main-content">
+      <main>
         <!-- Hero Section -->
         <section class="hero-section">
           <div class="hero-bg-glow"></div>
