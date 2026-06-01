@@ -1,4 +1,5 @@
-import { RenderMode, ServerRoute } from '@angular/ssr';
+import { PrerenderFallback, RenderMode, ServerRoute } from '@angular/ssr';
+import { BLOG_POSTS } from './blog-content';
 import { PAGE_ROUTES, SUPPORTED_LOCALES } from './site-content';
 
 const routePath = (path: string): string => path.replace(/^\/+/, '').replace(/\/+$/, '');
@@ -10,7 +11,13 @@ const sharedQuizRoutes: ServerRoute[] = SUPPORTED_LOCALES.map(({ code }) => ({
 
 const blogPostRoutes: ServerRoute[] = SUPPORTED_LOCALES.map(({ code }) => ({
   path: routePath(PAGE_ROUTES.blogPost[code]),
-  renderMode: RenderMode.Server
+  renderMode: RenderMode.Prerender,
+  fallback: PrerenderFallback.None,
+  async getPrerenderParams() {
+    return BLOG_POSTS
+      .filter(post => post.locale === code)
+      .map(post => ({ slug: post.slug }));
+  }
 }));
 
 export const serverRoutes: ServerRoute[] = [

@@ -12,72 +12,62 @@ import { ShellComponent } from './shell.component';
   template: `
     <qs-shell [locale]="locale" pageKey="blogPost">
       <div class="container blog-post-page" id="main-content" *ngIf="post">
-        <!-- Back Link -->
         <div class="back-navigation">
           <a [href]="getBlogListUrl()" class="back-link">
             <span class="arrow">←</span>
-            <span>{{ locale === 'pl' ? 'Wróć do bazy wiedzy' : 'Back to blog' }}</span>
+            <span>{{ labels.back }}</span>
           </a>
         </div>
 
-        <!-- Article Header -->
         <header class="post-header">
           <div class="post-meta">
-            <span class="post-badge">{{ locale === 'pl' ? 'Poradnik' : 'Guide' }}</span>
+            <span class="post-badge">{{ labels.guide }}</span>
             <span class="bullet">•</span>
             <span>{{ post.datePublished | date:'mediumDate' }}</span>
             <span class="bullet">•</span>
-            <span>{{ post.readTime }} {{ locale === 'pl' ? 'czytania' : 'read' }}</span>
+            <span>{{ post.readTime }} {{ labels.readSuffix }}</span>
           </div>
           <h1 class="post-title">{{ post.title }}</h1>
           <div class="post-author-box">
             <span class="author-avatar">{{ post.author.substring(0, 2).toUpperCase() }}</span>
             <div class="author-details">
               <span class="author-name">{{ post.author }}</span>
-              <span class="author-role">{{ locale === 'pl' ? 'Autor QuizSolver' : 'QuizSolver Writer' }}</span>
+              <span class="author-role">{{ labels.authorRole }}</span>
             </div>
           </div>
         </header>
 
-        <!-- Article Body -->
         <article class="post-content glass">
           <div [innerHTML]="post.content"></div>
         </article>
 
-        <!-- CTA Box -->
         <section class="post-cta glass reveal">
           <div class="cta-gradient"></div>
           <div class="cta-inner">
-            <h2 class="cta-title">
-              {{ locale === 'pl' ? 'Chcesz zdać kolejny test bez stresu?' : 'Ready to pass your next test stress-free?' }}
-            </h2>
+            <h2 class="cta-title">{{ labels.ctaTitle }}</h2>
             <p class="cta-description text-secondary">
-              {{ locale === 'pl' 
-                ? 'Zainstaluj darmowe rozszerzenie QuizSolver do Chrome. Korzystaj z bocznego panelu i inteligentnych wyjaśnień AI, które ułatwiają naukę i rozwiązywanie quizów.'
-                : 'Install the free QuizSolver Chrome extension. Get AI-powered explanations, personal notes, and revision quizzes directly in your browser sidebar.'
-              }}
+              {{ labels.ctaText }}
             </p>
             <div class="cta-actions">
               <a [href]="storeUrl" target="_blank" rel="noopener" class="btn btn-primary btn-lg">
-                {{ locale === 'pl' ? 'Dodaj do Chrome (Za darmo)' : 'Add to Chrome (Free)' }}
+                {{ labels.install }}
               </a>
               <a [href]="getDemoUrl()" class="btn btn-outline btn-lg">
-                {{ locale === 'pl' ? 'Wypróbuj interaktywne demo' : 'Try Interactive Demo' }}
+                {{ labels.demo }}
               </a>
             </div>
           </div>
         </section>
       </div>
 
-      <!-- 404/Not Found State -->
       <div class="container not-found-state" *ngIf="!post">
         <div class="not-found-card glass">
-          <h1>{{ locale === 'pl' ? 'Nie znaleziono artykułu' : 'Article Not Found' }}</h1>
+          <h1>{{ labels.notFoundTitle }}</h1>
           <p class="text-secondary">
-            {{ locale === 'pl' ? 'Przepraszamy, ten wpis blogowy nie istnieje lub został przeniesiony.' : 'Sorry, this blog post does not exist or has been moved.' }}
+            {{ labels.notFoundText }}
           </p>
           <a [href]="getBlogListUrl()" class="btn btn-primary">
-            {{ locale === 'pl' ? 'Przejdź do bazy wiedzy' : 'Go to blog' }}
+            {{ labels.goBlog }}
           </a>
         </div>
       </div>
@@ -357,29 +347,26 @@ export class BlogPostComponent implements OnInit {
   protected locale: Locale = 'en';
   protected post?: BlogPost;
   protected readonly storeUrl = CHROME_WEB_STORE_URL;
+  protected labels = this.labelsFor('en');
 
   ngOnInit(): void {
     this.locale = (this.route.snapshot.data['locale'] || 'en') as Locale;
-    
-    // Get slug from route parameters
+    this.labels = this.labelsFor(this.locale);
+
     this.route.paramMap.subscribe(params => {
       const slug = params.get('slug');
       if (slug) {
         this.post = BLOG_POSTS.find(p => p.slug === slug && p.locale === this.locale);
         
         if (this.post) {
-          // Apply custom BlogPosting schema and SEO parameters
           this.seo.applyBlogPost(this.post, this.locale);
         } else {
-          // If post is not found for this language, check if it exists in another language, or display 404
           const otherLangPost = BLOG_POSTS.find(p => p.slug === slug);
           if (otherLangPost) {
-            // Redirect to the correct localized page of that post
             const routePattern = pathFor('blogPost', otherLangPost.locale);
             const redirectUrl = routePattern.replace(':slug', slug);
             this.router.navigateByUrl(redirectUrl);
           } else {
-            // Apply fallback SEO for 404 state
             this.seo.applyPage('notFound', this.locale);
           }
         }
@@ -393,5 +380,102 @@ export class BlogPostComponent implements OnInit {
 
   protected getDemoUrl(): string {
     return pathFor('demo', this.locale);
+  }
+
+  private labelsFor(locale: Locale) {
+    const labels: Record<Locale, any> = {
+      en: {
+        back: 'Back to blog',
+        guide: 'Guide',
+        readSuffix: 'read',
+        authorRole: 'QuizSolver Writer',
+        ctaTitle: 'Ready to make your next quiz easier to review?',
+        ctaText: 'Install the free QuizSolver Chrome extension and use AI explanations, notes and practice quizzes directly in your browser sidebar.',
+        install: 'Add to Chrome (free)',
+        demo: 'Try interactive demo',
+        notFoundTitle: 'Article not found',
+        notFoundText: 'Sorry, this blog post does not exist or has been moved.',
+        goBlog: 'Go to blog'
+      },
+      pl: {
+        back: 'Wróć do bloga',
+        guide: 'Poradnik',
+        readSuffix: 'czytania',
+        authorRole: 'Autor QuizSolver',
+        ctaTitle: 'Chcesz łatwiej powtarzać pytania z kolejnego quizu?',
+        ctaText: 'Zainstaluj darmowe rozszerzenie QuizSolver do Chrome. Korzystaj z bocznego panelu, wyjaśnień AI, notatek i quizów powtórkowych.',
+        install: 'Dodaj do Chrome za darmo',
+        demo: 'Wypróbuj demo',
+        notFoundTitle: 'Nie znaleziono artykułu',
+        notFoundText: 'Ten wpis blogowy nie istnieje albo został przeniesiony.',
+        goBlog: 'Przejdź do bloga'
+      },
+      de: {
+        back: 'Zurück zum Blog',
+        guide: 'Leitfaden',
+        readSuffix: 'Lesezeit',
+        authorRole: 'QuizSolver Autor',
+        ctaTitle: 'Bereit für bessere Wiederholung?',
+        ctaText: 'Installiere QuizSolver kostenlos und nutze KI-Erklärungen, Notizen und Übungsquizze direkt in Chrome.',
+        install: 'Kostenlos zu Chrome hinzufügen',
+        demo: 'Demo testen',
+        notFoundTitle: 'Artikel nicht gefunden',
+        notFoundText: 'Dieser Blogbeitrag existiert nicht oder wurde verschoben.',
+        goBlog: 'Zum Blog'
+      },
+      es: {
+        back: 'Volver al blog',
+        guide: 'Guía',
+        readSuffix: 'de lectura',
+        authorRole: 'Autor de QuizSolver',
+        ctaTitle: '¿Quieres repasar mejor tu próximo quiz?',
+        ctaText: 'Instala QuizSolver gratis y usa explicaciones con IA, notas y práctica directamente en Chrome.',
+        install: 'Añadir a Chrome gratis',
+        demo: 'Probar demo',
+        notFoundTitle: 'Artículo no encontrado',
+        notFoundText: 'Este artículo no existe o fue movido.',
+        goBlog: 'Ir al blog'
+      },
+      fr: {
+        back: 'Retour au blog',
+        guide: 'Guide',
+        readSuffix: 'de lecture',
+        authorRole: 'Auteur QuizSolver',
+        ctaTitle: 'Prêt à mieux réviser votre prochain quiz ?',
+        ctaText: 'Installez QuizSolver gratuitement et utilisez explications IA, notes et quiz de révision dans Chrome.',
+        install: 'Ajouter à Chrome gratuitement',
+        demo: 'Essayer la démo',
+        notFoundTitle: 'Article introuvable',
+        notFoundText: 'Cet article n’existe pas ou a été déplacé.',
+        goBlog: 'Aller au blog'
+      },
+      it: {
+        back: 'Torna al blog',
+        guide: 'Guida',
+        readSuffix: 'di lettura',
+        authorRole: 'Autore QuizSolver',
+        ctaTitle: 'Vuoi ripassare meglio il prossimo quiz?',
+        ctaText: 'Installa QuizSolver gratis e usa spiegazioni AI, note e quiz di pratica direttamente in Chrome.',
+        install: 'Aggiungi a Chrome gratis',
+        demo: 'Prova la demo',
+        notFoundTitle: 'Articolo non trovato',
+        notFoundText: 'Questo articolo non esiste o è stato spostato.',
+        goBlog: 'Vai al blog'
+      },
+      uk: {
+        back: 'Назад до блогу',
+        guide: 'Гайд',
+        readSuffix: 'читання',
+        authorRole: 'Автор QuizSolver',
+        ctaTitle: 'Хочете краще повторити наступний квіз?',
+        ctaText: 'Встановіть QuizSolver безкоштовно та використовуйте AI-пояснення, нотатки й тренувальні квізи в Chrome.',
+        install: 'Додати до Chrome безкоштовно',
+        demo: 'Спробувати демо',
+        notFoundTitle: 'Статтю не знайдено',
+        notFoundText: 'Ця стаття не існує або була переміщена.',
+        goBlog: 'До блогу'
+      }
+    };
+    return labels[locale] || labels.en;
   }
 }

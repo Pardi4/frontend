@@ -12,7 +12,6 @@ import { ShellComponent } from './shell.component';
   template: `
     <qs-shell [locale]="locale" pageKey="blog">
       <div class="container blog-list-page" id="main-content">
-        <!-- Hero Header -->
         <section class="blog-hero">
           <div class="blog-hero-glow"></div>
           <span class="eyebrow delay-1">{{ data.badge }}</span>
@@ -20,7 +19,6 @@ import { ShellComponent } from './shell.component';
           <p class="hero-subtitle text-secondary delay-3">{{ data.subtitle }}</p>
         </section>
 
-        <!-- Articles Grid -->
         <section class="blog-grid-section">
           <div class="blog-grid" *ngIf="posts.length > 0; else noPosts">
             <article class="blog-card glass glass-hover reveal" *ngFor="let post of posts; let i = index">
@@ -36,7 +34,7 @@ import { ShellComponent } from './shell.component';
                 <p class="blog-card-excerpt text-secondary">{{ post.excerpt }}</p>
                 <div class="blog-card-footer">
                   <a class="blog-link" [href]="getPostUrl(post.slug)">
-                    <span>{{ locale === 'pl' ? 'Przeczytaj artykuł' : 'Read article' }}</span>
+                    <span>{{ labels.readArticle }}</span>
                     <span class="arrow">→</span>
                   </a>
                 </div>
@@ -46,7 +44,7 @@ import { ShellComponent } from './shell.component';
 
           <ng-template #noPosts>
             <div class="no-posts glass">
-              <p>{{ locale === 'pl' ? 'Brak artykułów w tym języku.' : 'No articles available in this language.' }}</p>
+              <p>{{ labels.noPosts }}</p>
             </div>
           </ng-template>
         </section>
@@ -209,21 +207,34 @@ export class BlogListComponent implements OnInit {
   protected c = contentFor('en');
   protected data = pageData('blog', 'en');
   protected posts: BlogPost[] = [];
+  protected labels = this.labelsFor('en');
 
   ngOnInit(): void {
     this.locale = (this.route.snapshot.data['locale'] || 'en') as Locale;
     this.c = contentFor(this.locale);
     this.data = pageData('blog', this.locale);
-    
-    // Filter posts for this locale
-    this.posts = BLOG_POSTS.filter(post => post.locale === this.locale);
-
-    // Apply SEO metatags
+    this.labels = this.labelsFor(this.locale);
+    this.posts = BLOG_POSTS
+      .filter(post => post.locale === this.locale)
+      .sort((a, b) => b.datePublished.localeCompare(a.datePublished));
     this.seo.applyPage('blog', this.locale);
   }
 
   protected getPostUrl(slug: string): string {
     const routePattern = pathFor('blogPost', this.locale);
     return routePattern.replace(':slug', slug);
+  }
+
+  private labelsFor(locale: Locale): { readArticle: string; noPosts: string } {
+    const labels: Record<Locale, { readArticle: string; noPosts: string }> = {
+      en: { readArticle: 'Read article', noPosts: 'No articles are available in this language yet.' },
+      pl: { readArticle: 'Przeczytaj artykuł', noPosts: 'Nie ma jeszcze artykułów w tym języku.' },
+      de: { readArticle: 'Artikel lesen', noPosts: 'Für diese Sprache gibt es noch keine Artikel.' },
+      es: { readArticle: 'Leer artículo', noPosts: 'Todavía no hay artículos en este idioma.' },
+      fr: { readArticle: 'Lire l’article', noPosts: 'Aucun article n’est encore disponible dans cette langue.' },
+      it: { readArticle: 'Leggi articolo', noPosts: 'Non ci sono ancora articoli in questa lingua.' },
+      uk: { readArticle: 'Читати статтю', noPosts: 'Поки що немає статей цією мовою.' }
+    };
+    return labels[locale] || labels.en;
   }
 }

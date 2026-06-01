@@ -16,17 +16,6 @@ import {
   platformEntries
 } from './site-content';
 
-/* ─── Per-locale keyword sets ───────────────────────────────────────────────── */
-const LOCALE_KEYWORDS: Record<Locale, string> = {
-  en: 'quiz solver, AI quiz solver, chrome extension quiz, testportal solver, moodle quiz solver, google forms solver, kahoot bot, quizizz solver, quiz answer helper, online quiz AI',
-  pl: 'quiz solver, rozwiązywanie quizów AI, testportal rozwiązywanie, moodle quiz solver, google forms pomoc, rozszerzenie chrome do quizów, kahoot bot, quizizz solver, pomoc w quizach, AI do testów',
-  de: 'Quiz-Solver, KI Quiz Löser, Chrome-Erweiterung Quiz, Testportal Löser, Moodle Quiz Hilfe, Google Forms Solver, Kahoot Bot, Quizizz Solver, Quiz Antworten KI, Online-Quiz Hilfe',
-  es: 'solucionador de quiz, AI quiz solver, extensión chrome quiz, testportal solver, moodle quiz solver, google forms solver, kahoot bot, quizizz solver, ayuda quiz online, respuestas quiz IA',
-  fr: 'solveur de quiz, IA quiz solver, extension chrome quiz, testportal solver, moodle quiz solver, google forms solver, kahoot bot, quizizz solver, aide quiz en ligne, réponses quiz IA',
-  it: 'risolutore quiz, AI quiz solver, estensione chrome quiz, testportal solver, moodle quiz solver, google forms solver, kahoot bot, quizizz solver, aiuto quiz online, risposte quiz IA',
-  uk: 'розв\'язувач квізів, AI quiz solver, розширення chrome квіз, testportal solver, moodle quiz solver, google forms solver, kahoot bot, quizizz solver, допомога в квізах, відповіді квіз AI'
-};
-
 /* ─── Noindex pages ──────────────────────────────────────────────────────────── */
 const NOINDEX_PAGES = new Set<PageKey>(['dashboard', 'success', 'notFound']);
 const ASSET_VERSION = '20260531';
@@ -66,7 +55,6 @@ export class SeoService {
     this.upsertMeta('name', 'author', 'QuizSolver');
     this.upsertMeta('name', 'theme-color', '#030712');
     this.upsertMeta('name', 'application-name', 'QuizSolver');
-    this.upsertMeta('name', 'keywords', LOCALE_KEYWORDS[locale] || LOCALE_KEYWORDS.en);
     this.upsertMeta('name', 'rating', 'general');
 
     /* ── Open Graph ── */
@@ -231,6 +219,21 @@ export class SeoService {
         url: homeUrl,
         publisher: { '@id': `${homeUrl}#organization` },
         inLanguage: SUPPORTED_LOCALES.map(opt => opt.htmlLang)
+      },
+      {
+        '@type': 'SiteNavigationElement',
+        '@id': `${homeUrl}#site-navigation`,
+        name: 'Primary navigation',
+        url: [
+          abs(pathFor('quizSolverAi', locale)),
+          abs(pathFor('demo', locale)),
+          abs(pathFor('credits', locale)),
+          abs(pathFor('quiz', locale)),
+          abs(pathFor('blog', locale)),
+          abs(pathFor('kahoot', locale)),
+          abs(pathFor('testportal', locale)),
+          abs(pathFor('googleForms', locale))
+        ]
       },
       /* WebPage */
       {
@@ -431,7 +434,6 @@ export class SeoService {
     this.upsertMeta('name', 'author', post.author);
     this.upsertMeta('name', 'theme-color', '#030712');
     this.upsertMeta('name', 'application-name', 'QuizSolver');
-    this.upsertMeta('name', 'keywords', LOCALE_KEYWORDS[locale] || LOCALE_KEYWORDS.en);
     this.upsertMeta('name', 'rating', 'general');
 
     /* ── Open Graph ── */
@@ -475,18 +477,16 @@ export class SeoService {
 
     /* ── Canonical + hreflang ── */
     this.upsertLink('canonical', canonical);
-    
-    // Hreflangs for blog posts are based on matching posts in other languages
+
     SUPPORTED_LOCALES.forEach(opt => {
-      // Find post with the same slug for this locale
-      const match = BLOG_POSTS.find(p => p.slug === post.slug && p.locale === opt.code);
+      const match = BLOG_POSTS.find(p => p.translationKey === post.translationKey && p.locale === opt.code);
       if (match) {
         this.upsertAlternate(opt.htmlLang, abs(pathFor('blogPost', opt.code).replace(':slug', match.slug)));
       }
     });
-    this.upsertAlternate('x-default', abs(pathFor('blogPost', 'en').replace(':slug', post.slug)));
+    const defaultPost = BLOG_POSTS.find(p => p.translationKey === post.translationKey && p.locale === 'en') || post;
+    this.upsertAlternate('x-default', abs(pathFor('blogPost', defaultPost.locale).replace(':slug', defaultPost.slug)));
 
-    /* ── JSON-LD (BlogPosting) ── */
     const homeUrl = `${SITE_URL}/`;
     const blogPostSchema = {
       '@context': 'https://schema.org',
@@ -494,28 +494,48 @@ export class SeoService {
         {
           '@type': 'BlogPosting',
           '@id': `${canonical}#post`,
-          'url': canonical,
-          'mainEntityOfPage': canonical,
-          'headline': post.title,
-          'description': post.metaDescription,
-          'datePublished': post.datePublished,
-          'dateModified': post.dateModified,
-          'author': {
+          url: canonical,
+          mainEntityOfPage: { '@id': `${canonical}#webpage` },
+          headline: post.title,
+          description: post.metaDescription,
+          datePublished: post.datePublished,
+          dateModified: post.dateModified,
+          inLanguage: locOpt.htmlLang,
+          author: {
             '@type': 'Person',
-            'name': post.author
+            name: post.author
           },
-          'publisher': {
+          publisher: {
             '@type': 'Organization',
             '@id': `${homeUrl}#organization`,
-            'name': 'QuizSolver',
-            'logo': {
+            name: 'QuizSolver',
+            logo: {
               '@type': 'ImageObject',
-              'url': assetUrl('/logo-512.png'),
-              'width': 512,
-              'height': 512
+              url: assetUrl('/logo-512.png'),
+              width: 512,
+              height: 512
             }
           },
-          'image': assetUrl('/og-image.png')
+          image: assetUrl('/og-image.png')
+        },
+        {
+          '@type': 'WebPage',
+          '@id': `${canonical}#webpage`,
+          url: canonical,
+          name: post.metaTitle,
+          description: post.metaDescription,
+          isPartOf: { '@id': `${homeUrl}#website` },
+          inLanguage: locOpt.htmlLang,
+          breadcrumb: { '@id': `${canonical}#breadcrumb` }
+        },
+        {
+          '@type': 'BreadcrumbList',
+          '@id': `${canonical}#breadcrumb`,
+          itemListElement: [
+            { '@type': 'ListItem', position: 1, name: 'QuizSolver', item: homeUrl },
+            { '@type': 'ListItem', position: 2, name: 'Blog', item: abs(pathFor('blog', locale)) },
+            { '@type': 'ListItem', position: 3, name: post.title, item: canonical }
+          ]
         }
       ]
     };

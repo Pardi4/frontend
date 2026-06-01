@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Router, NavigationEnd } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ApiService } from '../api.service';
+import { BLOG_POSTS } from '../blog-content';
 import { CHROME_WEB_STORE_URL, Locale, PageKey, SUPPORTED_LOCALES, contentFor, localeOption, pathFor } from '../site-content';
 
 type AuthModal = 'login' | 'register' | 'verify' | 'forgot' | 'reset';
@@ -1014,6 +1015,17 @@ export class ShellComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   protected alternatePath(targetLocale: Locale): string {
+    if (this.pageKey === 'blogPost' && isPlatformBrowser(this.platformId)) {
+      const slug = window.location.pathname.split('/').filter(Boolean).at(-1);
+      const currentPost = BLOG_POSTS.find(post => post.slug === slug);
+      const translatedPost = currentPost
+        ? BLOG_POSTS.find(post => post.translationKey === currentPost.translationKey && post.locale === targetLocale)
+        : undefined;
+      if (translatedPost) {
+        return pathFor('blogPost', targetLocale).replace(':slug', translatedPost.slug);
+      }
+      return pathFor('blog', targetLocale);
+    }
     return pathFor(this.pageKey, targetLocale);
   }
 
@@ -1030,7 +1042,23 @@ export class ShellComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   protected authHref(type: 'login' | 'register'): string {
-    return `${pathFor(this.pageKey, this.locale)}?auth=${type}`;
+    const currentPath = this.currentAuthPath();
+    return `${currentPath}?auth=${type}`;
+  }
+
+  private currentAuthPath(): string {
+    if (this.pageKey !== 'blogPost') {
+      return pathFor(this.pageKey, this.locale);
+    }
+
+    if (isPlatformBrowser(this.platformId)) {
+      const path = window.location.pathname || '';
+      if (path.includes('/blog/') && !path.includes(':slug')) {
+        return path;
+      }
+    }
+
+    return pathFor('blog', this.locale);
   }
 
   protected userInitial(user: any): string {

@@ -1,6 +1,8 @@
 import { Locale } from './site-content';
+import rawPosts from './blog-posts.json';
 
-export interface BlogPost {
+export interface BlogPostMetadata {
+  translationKey: string;
   slug: string;
   title: string;
   metaTitle: string;
@@ -8,412 +10,408 @@ export interface BlogPost {
   datePublished: string;
   dateModified: string;
   excerpt: string;
-  content: string; // HTML-structured content for rendering
   author: string;
   locale: Locale;
   readTime: string;
 }
 
-export const BLOG_POSTS: BlogPost[] = [
-  {
-    slug: 'czy-testportal-wykrywa-karty',
-    title: 'Czy Testportal wykrywa karty? Wszystko o ostrzeżeniach dla nauczyciela w 2026 roku',
-    metaTitle: 'Czy Testportal Wykrywa Karty i Opuszczanie Ekranu? [Poradnik]',
-    metaDescription: 'Sprawdź, jak Testportal wykrywa opuszczanie karty, podział ekranu i przełączanie okien. Zobacz, co widzi nauczyciel i jak działa bot do testów w 2026 roku.',
-    datePublished: '2026-06-01',
-    dateModified: '2026-06-01',
-    author: 'Edukacyjny Ekspert',
-    locale: 'pl',
-    readTime: '5 min',
-    excerpt: 'Zbliża się kolokwium lub sprawdzian online na Testportalu, a Ty zastanawiasz się, jak działa słynne wykrywanie kart? Dowiedz się, co widzi nauczyciel i czy podział ekranu chroni przed ostrzeżeniami.',
-    content: `
-      <article class="blog-article-content">
-        <p>Zbliża się sesja, a wraz z nią stresujące testy online. Wśród uczniów i studentów krąży wiele mitów na temat tego, jak działa <strong>wykrywanie kart na Testportalu</strong>. Jedni twierdzą, że system widzi każdy ruch myszki, inni, że wystarczy podzielić ekran na pół, by bezkarnie szukać odpowiedzi w przeglądarce. Jaka jest prawda w 2026 roku? Dowiedz się, jak działa słynny system blokad i co naprawdę widzi Twój nauczyciel.</p>
+export interface BlogPost extends BlogPostMetadata {
+  content: string;
+}
 
-        <h2>Jak Testportal wykrywa opuszczanie karty?</h2>
-        <p>Z technicznego punktu widzenia Testportal nie ma dostępu do Twojego komputera ani systemu operacyjnego. Działa całkowicie w przeglądarce. Jak więc wykrywa, że "ściągasz"? Wykorzystuje standardowe interfejsy API przeglądarki, takie jak <code>Page Visibility API</code> oraz zdarzenia <code>focus</code> i <code>blur</code>.</p>
-        <p>Kiedy klikasz poza okno testu (np. otwierasz nową kartę, przełączasz się na komunikator lub otwierasz notatki), okno testu traci nazywany <em>focus</em> (aktywność). Przeglądarka natychmiast wysyła o tym informację do skryptu Testportalu, który rejestruje to jako "opuszczenie karty".</p>
+type ArticleSection = {
+  heading: string;
+  paragraphs?: string[];
+  bullets?: string[];
+};
 
-        <div class="blog-native-ad">
-          <h4 class="blog-native-ad-title">💡 Rozwiązuj testy bez stresu z asystentem AI</h4>
-          <p class="blog-native-ad-text">QuizSolver działa bezpośrednio w panelu bocznym przeglądarki Chrome, dzięki czemu nie opuszczasz karty testu. Korzystaj z FocusScan i inteligentnych podpowiedzi AI całkowicie bezpiecznie.</p>
-          <a href="https://chromewebstore.google.com/detail/quiz-solver-pro/cjchfdnplpjkihigljnicebnhjkpndik" target="_blank" rel="noopener" class="blog-native-ad-btn">Zainstaluj QuizSolver za darmo</a>
-        </div>
+type ArticleDraft = {
+  intro: string[];
+  sections: ArticleSection[];
+};
 
-        <h2>Co widzi nauczyciel na swoim panelu?</h2>
-        <p>Nauczyciel nie widzi podglądu Twojego pulpitu ani kamerki (chyba że test jest zintegrowany z Microsoft Teams lub Zoomem i wymaga włączenia kamery). Zamiast tego na żywo otrzymuje raport z wykroczeń:</p>
-        <ul>
-          <li><strong>Liczbę opuszczeń karty:</strong> Dokładną informację, ile razy uczeń stracił focus z okna egzaminu.</li>
-          <li><strong>Czas przebywania poza testem:</strong> Ile sekund uczeń spędził poza aktywnym oknem testu.</li>
-          <li><strong>Automatyczne zablokowanie testu:</strong> Jeśli nauczyciel ustawić limit (np. maksymalnie 2 opuszczenia karty), po przekroczeniu tej liczby test zostanie zablokowany, a uczeń nie będzie mógł kontynuować rozwiązywania bez zgody nauczyciela.</li>
-        </ul>
+const routeFor = (locale: Locale, slug: string): string => locale === 'en' ? `/${slug}` : `/${locale}/${slug}`;
 
-        <blockquote>
-          <p><strong>Ważne:</strong> Nauczyciel nie dowie się, co dokładnie robiłeś poza oknem testu — czy sprawdzałeś definicje w Google, czy po prostu wyskoczyło Ci powiadomienie o aktualizacji systemu. Z perspektywy raportu jest to traktowane tak samo.</p>
-        </blockquote>
+const ctaFor = (locale: Locale): string => {
+  const isPl = locale === 'pl';
+  const title = isPl ? 'Sprawdź QuizSolver w praktyce' : 'Try QuizSolver in practice';
+  const text = isPl
+    ? 'Otwórz bezpieczne demo, uruchom panel rozszerzenia i przejdź przez przykładowe pytania bez zużywania kredytów.'
+    : 'Open the safe demo, launch the extension panel and walk through sample questions without spending credits.';
+  const button = isPl ? 'Otwórz demo' : 'Open demo';
+  return `
+    <div class="blog-native-ad">
+      <h4 class="blog-native-ad-title">${title}</h4>
+      <p class="blog-native-ad-text">${text}</p>
+      <a href="${routeFor(locale, 'demo')}" class="blog-native-ad-btn">${button}</a>
+    </div>
+  `;
+};
 
-        <h2>Ściąganie na testach a podział ekranu (Split Screen)</h2>
-        <p>Częstym pytaniem jest: <em>"Czy Testportal wykrywa podział ekranu na pół?"</em>.<br>
-        Jeśli podzielisz ekran i klikniesz w okno obok testu (np. wyszukiwarkę Google), okno Testportalu natychmiast straci focus, co wygeneruje ostrzeżenie. Samo posiadanie dwóch otwartych okien obok siebie nie wywołuje alarmu, dopóki <strong>nie klikniesz</strong> w drugie okno. W momencie kliknięcia na cokolwiek poza stroną testu, system odnotowuje opuszczenie karty.</p>
+const renderArticle = (locale: Locale, draft: ArticleDraft): string => `
+  <article class="blog-article-content">
+    ${draft.intro.map(paragraph => `<p>${paragraph}</p>`).join('')}
+    ${ctaFor(locale)}
+    ${draft.sections.map(section => `
+      <h2>${section.heading}</h2>
+      ${(section.paragraphs || []).map(paragraph => `<p>${paragraph}</p>`).join('')}
+      ${section.bullets?.length ? `<ul>${section.bullets.map(item => `<li>${item}</li>`).join('')}</ul>` : ''}
+    `).join('')}
+  </article>
+`;
 
-        <h2>Jak korzystać z bota do testów i asystenta AI bezpiecznie?</h2>
-        <p>Studenci poszukujący wsparcia edukacyjnego coraz chętniej sięgają po <strong>boty do testów</strong> i rozszerzenia AI, takie jak <strong>QuizSolver</strong>. W przeciwieństwie do tradycyjnego szukania odpowiedzi w Google, profesjonalne rozszerzenie działa w inny sposób:</p>
-        <ol>
-          <li><strong>Działanie w panelu bocznym (Side Panel):</strong> Nowoczesne rozszerzenia integrują się bezpośrednio jako pasek boczny Chrome, co pozwala na interakcję z asystentem bez utraty aktywności głównego okna.</li>
-          <li><strong>Narzędzie FocusScan:</strong> Pozwala na szybkie przeanalizowanie trudnego pytania (np. z obrazka) bez konieczności kopiowania i wklejania tekstu, co często blokują systemy egzaminacyjne.</li>
-          <li><strong>Tryb podpowiedzi (Hint Mode):</strong> Zamiast automatycznego klikania za ucznia, AI dyskretnie podświetla właściwą odpowiedź, pozostawiając kontrolę w rękach użytkownika.</li>
-        </ol>
-        <p>Pamiętaj, że najlepszym sposobem na testy jest rzetelne przygotowanie, a narzędzia AI powinny służyć jako wsparcie w weryfikacji wiedzy, wyjaśnianiu trudnych pojęć i nauce z zapisanej historii pytań.</p>
-      </article>
-    `
+const genericLocalizedDraft = (locale: Locale): ArticleDraft => {
+  const drafts: Record<Locale, ArticleDraft> = {
+    en: {
+      intro: [
+        'QuizSolver is a Chrome extension for students who want faster feedback while studying with online quizzes. It reads visible questions, suggests answers and explains the reasoning so you can review the topic instead of only memorizing the option.',
+        'The most useful workflow is simple: open a quiz, start QuizSolver, review the suggested answer, save important questions and return to them later as a practice set.'
+      ],
+      sections: [
+        {
+          heading: 'What QuizSolver does on a quiz page',
+          paragraphs: ['The extension looks for question text, answer choices, checkboxes, dropdowns and short-answer fields that are visible on the current page. If the layout is unusual, FocusScan lets you select a screen region manually.'],
+          bullets: ['AI answer suggestions with explanations.', 'FocusScan OCR for images and blocked text.', 'History, notes and practice quizzes for later review.']
+        },
+        {
+          heading: 'Why explanations matter',
+          paragraphs: ['A plain answer is useful for speed, but an explanation is what helps you remember the concept. Saved explanations become a personal revision library that you can revisit before the next test.']
+        }
+      ]
+    },
+    pl: {
+      intro: [
+        'QuizSolver to rozszerzenie do Chrome stworzone dla osób, które chcą szybciej sprawdzać pytania z quizów online i jednocześnie lepiej rozumieć odpowiedzi. Narzędzie rozpoznaje widoczną treść pytania, analizuje opcje i pokazuje uzasadnienie.',
+        'Najlepszy schemat pracy jest prosty: otwierasz quiz, uruchamiasz QuizSolver, sprawdzasz podpowiedź, zapisujesz ważne pytania i wracasz do nich później jako do własnej powtórki.'
+      ],
+      sections: [
+        {
+          heading: 'Co QuizSolver robi na stronie quizu',
+          paragraphs: ['Rozszerzenie szuka tekstu pytania, odpowiedzi jednokrotnego wyboru, checkboxów, list rozwijanych i pól tekstowych. Jeśli układ strony jest nietypowy, FocusScan pozwala ręcznie zaznaczyć fragment ekranu.'],
+          bullets: ['Podpowiedzi AI z uzasadnieniem.', 'FocusScan OCR dla obrazów i zablokowanego tekstu.', 'Historia, notatki i quizy powtórkowe po rozwiązaniu pytań.']
+        },
+        {
+          heading: 'Dlaczego wyjaśnienia są ważniejsze niż sama litera odpowiedzi',
+          paragraphs: ['Sama odpowiedź pomaga szybko przejść dalej, ale dopiero wyjaśnienie pozwala zapamiętać zasadę. Zapisane odpowiedzi i notatki tworzą prywatną bazę powtórkową przed kolejnym testem.']
+        }
+      ]
+    },
+    de: {
+      intro: [
+        'QuizSolver ist eine Chrome-Erweiterung für Online-Quizze, die sichtbare Fragen analysiert, Antwortvorschläge liefert und die Begründung erklärt.',
+        'So entsteht aus jeder Frage nicht nur eine schnelle Antwort, sondern auch Material für spätere Wiederholung.'
+      ],
+      sections: [
+        { heading: 'Der typische Ablauf', paragraphs: ['Öffne dein Quiz, starte QuizSolver, prüfe den Vorschlag und speichere wichtige Fragen im Verlauf. Bei Bildern oder gesperrtem Text hilft FocusScan.'], bullets: ['KI-Hinweise direkt im Browser.', 'OCR für Screenshots und Diagramme.', 'Notizen und Übungsquizze aus dem Verlauf.'] },
+        { heading: 'Besser lernen statt nur klicken', paragraphs: ['Die Erklärung zeigt, warum eine Antwort passt. Dadurch wird der Verlauf zu einem echten Lernarchiv.'] }
+      ]
+    },
+    es: {
+      intro: [
+        'QuizSolver es una extensión de Chrome para estudiar con quizzes online. Detecta preguntas visibles, analiza opciones y muestra explicaciones con IA.',
+        'La idea es usar cada respuesta como material de repaso, no solo como una solución rápida.'
+      ],
+      sections: [
+        { heading: 'Flujo recomendado', paragraphs: ['Abre el quiz, activa QuizSolver, revisa la sugerencia y guarda las preguntas importantes. Si el texto no se puede copiar, usa FocusScan.'], bullets: ['Sugerencias con explicación.', 'OCR para imágenes y texto bloqueado.', 'Historial, notas y práctica desde tus preguntas.'] },
+        { heading: 'Por qué guardar el historial', paragraphs: ['El historial convierte preguntas sueltas en una biblioteca personal para repasar antes de exámenes.'] }
+      ]
+    },
+    fr: {
+      intro: [
+        'QuizSolver est une extension Chrome qui aide à analyser les quiz en ligne, lire les questions visibles et proposer des explications avec IA.',
+        'L’objectif est de transformer chaque question en support de révision clair.'
+      ],
+      sections: [
+        { heading: 'Comment l’utiliser', paragraphs: ['Ouvrez le quiz, lancez QuizSolver, lisez la suggestion et gardez les questions importantes dans l’historique. FocusScan aide quand le texte est une image.'], bullets: ['Réponses suggérées avec explications.', 'OCR pour images et textes bloqués.', 'Historique et quiz de révision.'] },
+        { heading: 'Apprendre avec les explications', paragraphs: ['Une explication courte aide à comprendre la règle et à mieux préparer le prochain test.'] }
+      ]
+    },
+    it: {
+      intro: [
+        'QuizSolver è un’estensione Chrome per quiz online che riconosce domande visibili, suggerisce risposte e mostra spiegazioni con AI.',
+        'Ogni domanda salvata può diventare materiale di ripasso per studiare in modo più ordinato.'
+      ],
+      sections: [
+        { heading: 'Uso consigliato', paragraphs: ['Apri il quiz, avvia QuizSolver, controlla la risposta suggerita e salva le domande importanti. FocusScan aiuta con immagini e testo non copiabile.'], bullets: ['Suggerimenti con spiegazione.', 'OCR per screenshot e grafici.', 'Cronologia, note e quiz di pratica.'] },
+        { heading: 'Perché non basta la risposta', paragraphs: ['La spiegazione rende più facile ricordare il concetto e ripassare prima del test successivo.'] }
+      ]
+    },
+    uk: {
+      intro: [
+        'QuizSolver — це розширення Chrome для онлайн-квізів, яке розпізнає видимі питання, пропонує відповідь і пояснює логіку.',
+        'Збережені питання можна використовувати пізніше як матеріал для повторення.'
+      ],
+      sections: [
+        { heading: 'Як працювати з QuizSolver', paragraphs: ['Відкрийте квіз, запустіть QuizSolver, перевірте підказку та збережіть важливі питання. Якщо текст є зображенням, використайте FocusScan.'], bullets: ['AI-підказки з поясненнями.', 'OCR для зображень і заблокованого тексту.', 'Історія, нотатки та тренувальні квізи.'] },
+        { heading: 'Навчання через пояснення', paragraphs: ['Пояснення допомагає зрозуміти правило, а не просто вибрати варіант відповіді.'] }
+      ]
+    }
+  };
+  return drafts[locale] || drafts.en;
+};
+
+const ARTICLE_DRAFTS: Record<string, ArticleDraft> = {
+  'czy-testportal-wykrywa-karty': {
+    intro: [
+      'Testportal nie widzi magicznie całego Twojego komputera, ale potrafi rejestrować zdarzenia dostępne dla zwykłej strony internetowej. Najczęściej chodzi o utratę fokusu okna, opuszczenie karty, przełączenie aplikacji albo wyjście z trybu pełnoekranowego.',
+      'Warto rozumieć te mechanizmy, bo wiele mitów o Testportalu bierze się z mieszania realnych zdarzeń przeglądarki z wyobrażeniem, że nauczyciel ma podgląd pulpitu.'
+    ],
+    sections: [
+      {
+        heading: 'Co jest realnie wykrywalne',
+        paragraphs: ['Strona quizu może dostać informację, że karta przestała być aktywna. To nie mówi, co dokładnie zrobił użytkownik, ale w raporcie może pojawić się jako opuszczenie testu.'],
+        bullets: ['zmiana aktywnej karty lub okna', 'kliknięcie w inną aplikację', 'utrata trybu pełnoekranowego', 'czas spędzony poza aktywną kartą testu']
+      },
+      {
+        heading: 'Czego platforma zwykle nie widzi',
+        paragraphs: ['Bez dodatkowego oprogramowania egzaminacyjnego strona nie może po prostu przeskanować listy programów, zobaczyć innych kart ani odczytać plików z komputera. To ograniczenie wynika z bezpieczeństwa przeglądarki.']
+      },
+      {
+        heading: 'Jak korzystać z AI rozsądniej',
+        paragraphs: ['Najbezpieczniejszy kierunek to używanie AI do przygotowania i powtórek: zapisuj pytania, dodawaj notatki, twórz quiz z historii i sprawdzaj, czy naprawdę rozumiesz odpowiedź.']
+      }
+    ]
   },
-  {
-    slug: 'jak-oszukac-testportal-i-moodle',
-    title: 'Jak oszukać Testportal i Moodle? Praktyczny przewodnik po nauce z asystentem AI',
-    metaTitle: 'Jak Oszukać Testportal i Moodle? Prawda o Rozszerzeniach AI',
-    metaDescription: 'Sprawdź czy da się oszukać Moodle i Testportal w 2026 roku. Dowiedz się, jak działają boty do testów, FocusScan i asystenci AI do weryfikacji odpowiedzi.',
-    datePublished: '2026-06-01',
-    dateModified: '2026-06-01',
-    author: 'Akademicki Bloger',
-    locale: 'pl',
-    readTime: '6 min',
-    excerpt: 'W sieci pełno jest poradników pokazujących, jak oszukać Moodle lub Testportal. Przyjrzyjmy się temu z technicznego punktu widzenia i zobaczmy, jak skutecznie uczyć się z asystentem AI.',
-    content: `
-      <article class="blog-article-content">
-        <p>Każdy uczeń i student przynajmniej raz zastanawiał się, czy istnieje prosty <strong>sposób na Testportal</strong> lub jak obejść ograniczenia na platformie Moodle. Wyszukiwarki pękają w szwach od fraz takich jak <em>"jak oszukać Moodle"</em> czy <em>"bot do testów online"</em>. Spójrzmy na ten temat chłodnym okiem programisty i zobaczmy, co jest możliwe, a co natychmiast skończy się niezdanym terminem.</p>
-
-        <h2>Blokady i zabezpieczenia: Moodle vs Testportal</h2>
-        <p>Zarówno Moodle, jak i Testportal mają szereg zabezpieczeń, ale działają one zupełnie inaczej:</p>
-        <ul>
-          <li><strong>Moodle</strong> to otwarty system LMS. Zabezpieczenia zależą od konfiguracji administratora uczelni. Najpopularniejszą z nich jest blokowanie kopiowania tekstu oraz czasami wtyczka <code>Safe Exam Browser (SEB)</code>, która wymusza dedykowaną, zablokowaną przeglądarkę.</li>
-          <li><strong>Testportal</strong> stawia na monitorowanie aktywności przeglądarki na żywo. Wykrywa opuszczanie kart, wyjście z trybu pełnoekranowego i zliczanie sekund poza testem.</li>
-        </ul>
-
-        <h2>Prawda o botach do testów i skryptach</h2>
-        <p>Wiele osób szuka gotowych skryptów JS wklejanych do konsoli deweloperskiej, obiecujących automatyczne rozwiązywanie quizów. Przestrzegamy przed tym rozwiązaniem z dwóch powodów:</p>
-        <ol>
-          <li>Systemy anty-cheat natychmiast wykrywają modyfikacje struktury DOM (kodu strony) oraz nietypowy ruch i mogą automatycznie oflagować Twoje konto.</li>
-          <li>Kody ze źródeł niewiadomego pochodzenia na GitHubie mogą wykradać Twoje dane logowania do konta uczelnianego.</li>
-        </ol>
-
-        <h2>Jak bezpiecznie wspierać się sztuczną inteligencją (AI)?</h2>
-        <p>Zamiast szukać nielegalnych i ryzykownych skryptów, studenci korzystają z nowoczesnych asystentów AI, którzy działają w pełni pasywnie i bezpiecznie wewnątrz przeglądarki Chrome, np. <strong>QuizSolver</strong>.</p>
-        <p>Taki asystent AI nie ingeruje w kod platformy egzaminacyjnej ani nie próbuje "oszukać" serwera w agresywny sposób. Działa jako wsparcie edukacyjne:</p>
-        <ul>
-          <li><strong>FocusScan (OCR):</strong> Pobiera wybrany przez Ciebie wycinek ekranu jako obraz, wyodrębnia z niego treść pytania i przesyła do modelu AI w celu analizy. Pomaga to w nauce trudnych zadań logicznych i matematycznych.</li>
-          <li><strong>Baza wyjaśnień krok po kroku:</strong> Zamiast samej odpowiedzi, AI tłumaczy, dlaczego dana opcja jest poprawna. Dzięki temu uczysz się podczas samego rozwiązywania testu.</li>
-          <li><strong>Własne notatki i historia pytań:</strong> QuizSolver automatycznie zapisuje wszystkie rozwiązane zadania. Po teście możesz do nich wrócić, dodać własne uwagi i wygenerować quiz powtórkowy.</li>
-        </ul>
-
-        <div class="blog-native-ad">
-          <h4 class="blog-native-ad-title">💡 Rozwiązuj testy bez stresu z asystentem AI</h4>
-          <p class="blog-native-ad-text">QuizSolver działa bezpośrednio w panelu bocznym przeglądarki Chrome, dzięki czemu nie opuszczasz karty testu. Korzystaj z FocusScan i inteligentnych podpowiedzi AI całkowicie bezpiecznie.</p>
-          <a href="https://chromewebstore.google.com/detail/quiz-solver-pro/cjchfdnplpjkihigljnicebnhjkpndik" target="_blank" rel="noopener" class="blog-native-ad-btn">Zainstaluj QuizSolver za darmo</a>
-        </div>
-
-        <h2>Bezpieczeństwo na Moodle z Safe Exam Browser (SEB)</h2>
-        <p>Warto pamiętać, że jeśli Twoja uczelnia wymaga <strong>Safe Exam Browser (SEB)</strong>, żadne tradycyjne rozszerzenie do Chrome nie zadziała, ponieważ SEB blokuje instalację jakichwiek wtyczek. W takich sytuacjach jedyną drogą jest solidna nauka i korzystanie z asystentów AI podczas powtórek przed egzaminem, generując próbne quizy w panelu QuizSolver.</p>
-      </article>
-    `
+  'jak-przygotowac-sie-do-testu-online-z-ai': {
+    intro: [
+      'Największy błąd przed testem online to uczenie się przez losowe kopiowanie pytań do chatu. Działa to chwilowo, ale nie tworzy żadnego systemu powtórki.',
+      'QuizSolver pomaga zbudować prosty proces: wykrycie pytania, wyjaśnienie, notatka, zapis w historii i powtórka w formie własnego quizu.'
+    ],
+    sections: [
+      {
+        heading: 'Krok 1: zbierz materiał',
+        paragraphs: ['Podczas ćwiczeń zapisuj pytania, które sprawiają problem. Nie zapisuj wszystkiego bezmyślnie; oznaczaj te, do których chcesz wrócić.'],
+        bullets: ['pytania z błędnymi odpowiedziami', 'zadania z obrazkiem lub wykresem', 'pojęcia, które wymagają definicji', 'tematy, które powtarzają się w różnych quizach']
+      },
+      {
+        heading: 'Krok 2: dopisz własną notatkę',
+        paragraphs: ['Najlepsza notatka jest krótka: jedno zdanie z zasadą, wzorem albo pułapką. Dzięki temu historia pytań nie jest archiwum chaosu, tylko mapą do powtórki.']
+      },
+      {
+        heading: 'Krok 3: wróć do pytań po czasie',
+        paragraphs: ['Po kilku dniach uruchom quiz z historii i sprawdź, czy umiesz odpowiedzieć bez patrzenia na podpowiedź. To aktywne przypominanie, czyli jedna z najskuteczniejszych metod nauki.']
+      }
+    ]
   },
-  {
-    slug: 'bot-do-testow-online-sciaganie',
-    title: 'Bot do testów online – czy asystent AI to rewolucja w ściąganiu na testach?',
-    metaTitle: 'Bot do Testów Online a Ściąganie na Egzaminach [2026]',
-    metaDescription: 'Czy bot do testów online ułatwia ściąganie na testach? Zobacz, jak sztuczna inteligencja zmienia podejście do nauki i weryfikacji wiedzy z QuizSolver.',
-    datePublished: '2026-06-01',
-    dateModified: '2026-06-01',
-    author: 'Studencki Głos',
-    locale: 'pl',
-    readTime: '4 min',
-    excerpt: 'Coraz więcej studentów mówi o botach do testów online jako nowej metodzie na zaliczenie sesji. Sprawdźmy, jak asystenci AI tacy jak QuizSolver zmieniają naukę.',
-    content: `
-      <article class="blog-article-content">
-        <p>W ciągu ostatnich lat technologie sztucznej inteligencji zmieniły niemal każdą branżę. Edukacja nie jest tu wyjątkiem. Na forach studenckich i grupach na Discordzie słowa takie jak <strong>bot do testów online</strong> czy <strong>ściąganie na testach z AI</strong> pojawiają się codziennie. Czy to tylko chwilowa moda na omijanie systemu, czy trwała rewolucja w tym, jak się uczymy?</p>
-
-        <h2>Kim jest współczesny "bot do testów"?</h2>
-        <p>Większości z nas bot kojarzy się z automatycznym programem, który klika losowe opcje w grach. W kontekście nauki i testów online mówimy jednak o zaawansowanych rozszerzeniach AI zintegrowanych z przeglądarką Chrome. Jednym z najpopularniejszych narzędzi tego typu jest <strong>QuizSolver</strong>.</p>
-        <p>Zamiast ślepego automatyzowania, współczesny asystent AI stawia na:</p>
-        <ul>
-          <li><strong>Skanowanie pytań w ułamku sekundy:</strong> Narzędzie potrafi natychmiast rozpoznać strukturę pytania testowego i zaproponować najbardziej logiczną odpowiedź.</li>
-          <li><strong>Kontekstowe wyjaśnienia:</strong> Dobre narzędzie AI nie tylko zaznacza odpowiedź, ale też tłumaczy pojęcia stojące za pytaniem, pomagając zapamiętać materiał.</li>
-          <li><strong>Budowanie bazy pytań:</strong> Wszystkie zapytania trafiają do Twojej osobistej biblioteki, dzięki czemu przed egzaminem końcowym możesz wygenerować z nich próbne testy.</li>
-        </ul>
-
-        <h2>Czy asystent AI ułatwia ściąganie?</h2>
-        <p>Z perspektywy tradycyjnego systemu edukacyjnego opartego na pamięciówce, używanie asystenta podczas testu może być widziane jako ułatwienie. Jednak prawda jest bardziej złożona. Narzędzia AI pokazują studentom, że liczy się **zrozumienie materiału**, a nie bezmyślne wkuwanie regułek.</p>
-        <p>Gdy korzystasz z QuizSolvera, widzisz pełne uzasadnienie wyboru. Dodatkowo, zapisane w historii pytania stają się świetnymi fiszkami. Wiele osób zauważa, że dzięki analizowaniu podpowiedzi bota lepiej radzi sobie na egzaminach ustnych i praktycznych.</p>
-
-        <div class="blog-native-ad">
-          <h4 class="blog-native-ad-title">💡 Rozwiązuj testy bez stresu z asystentem AI</h4>
-          <p class="blog-native-ad-text">QuizSolver działa bezpośrednio w panelu bocznym przeglądarki Chrome, dzięki czemu nie opuszczasz karty testu. Korzystaj z FocusScan i inteligentnych podpowiedzi AI całkowicie bezpiecznie.</p>
-          <a href="https://chromewebstore.google.com/detail/quiz-solver-pro/cjchfdnplpjkihigljnicebnhjkpndik" target="_blank" rel="noopener" class="blog-native-ad-btn">Zainstaluj QuizSolver za darmo</a>
-        </div>
-
-        <h2>Szybki start z QuizSolver</h2>
-        <p>Jeśli chcesz sprawdzić, jak asystent AI radzi sobie w praktyce, możesz to zrobić w trzech prostych krokach:</p>
-        <ol>
-          <li>Zainstaluj rozszerzenie QuizSolver za darmo z Chrome Web Store.</li>
-          <li>Wejdź na naszą stronę <strong>Demo</strong>, gdzie przygotowaliśmy bezpieczny próbny test (rozwiązujesz go bez zużywania kredytów).</li>
-          <li>Przetestuj działanie bocznego panelu oraz FocusScan na przykładowych pytaniach i przekonaj się, jak sztuczna inteligencja pomaga w nauce.</li>
-        </ol>
-      </article>
-    `
+  'kahoot-quiz-id-jak-znalezc-i-uzyc': {
+    intro: [
+      'W Kahoot są dwa różne identyfikatory, które często się mylą: PIN gry i Quiz ID. PIN służy do dołączenia do rozgrywki live, a Quiz ID identyfikuje konkretny zestaw pytań.',
+      'Jeżeli prowadzący ukrywa pytania na urządzeniach uczestników, tryb Quiz ID może pokazać bazę pytań i odpowiedzi bez wysyłania zapytań do AI.'
+    ],
+    sections: [
+      {
+        heading: 'Gdzie znaleźć Quiz ID',
+        paragraphs: ['Najczęściej Quiz ID pojawia się w adresie URL jako wartość po parametrze quizId=. To długi ciąg znaków, a nie krótki PIN gry wpisywany przez uczestników.'],
+        bullets: ['otwórz stronę lobby lub podgląd quizu', 'sprawdź pasek adresu', 'skopiuj wartość po quizId=', 'wklej ją w panel QuizSolver na Kahoot']
+      },
+      {
+        heading: 'Kiedy użyć trybu automatycznego',
+        paragraphs: ['Jeżeli pytania i opcje odpowiedzi są widoczne na ekranie uczestnika, możesz użyć trybu automatycznego. Rozszerzenie wykrywa wtedy aktualne pytanie i próbuje kliknąć najlepszą odpowiedź.']
+      },
+      {
+        heading: 'Kiedy użyć banku odpowiedzi',
+        paragraphs: ['Jeżeli host ukrywa treść pytań, automatyczne wykrywanie nie ma z czego czytać. Wtedy sens ma tryb Quiz ID, czyli przeszukiwalna lista pytań i poprawnych odpowiedzi.']
+      }
+    ]
   },
-  {
-    slug: 'does-canvas-or-moodle-detect-extensions',
-    title: 'Does Canvas or Moodle Detect Browser Extensions during Quizzes?',
-    metaTitle: 'Does Canvas or Moodle Detect Browser Extensions? | QuizSolver',
-    metaDescription: 'Find out how Canvas, Moodle, and Blackboard track student activity. Learn browser extension security, sandboxing, and focus logs during online exams.',
-    datePublished: '2026-06-01',
-    dateModified: '2026-06-01',
-    author: 'Tech Researcher',
-    locale: 'en',
-    readTime: '5 min',
-    excerpt: 'Worried about taking online exams on Moodle or Canvas? Learn what browser sandboxing means, how focus tracking works, and what teachers can actually detect.',
-    content: `
-      <article class="blog-article-content">
-        <p>With online classes and remote testing becoming the norm, platforms like Canvas LMS, Moodle, and Blackboard have implemented various tracking measures. If you are preparing for exams and using study tools or extensions like <strong>QuizSolver</strong>, you might ask: <em>Can my school detect browser extensions during a quiz?</em> Let’s separate myth from reality.</p>
-
-        <h2>The Browser Sandbox: What Web Apps Can and Cannot See</h2>
-        <p>Websites operate within a strict security environment called a <strong>sandbox</strong>. This sandbox prevents standard websites (including Canvas and Moodle) from seeing what other software is installed on your computer, what other tabs you have open, or what extensions you are running.</p>
-        <p>As a result, neither Canvas nor Moodle can scan your browser extension list or detect extensions running in isolated processes. They simply do not have the permissions required to do so.</p>
-
-        <h2>How Focus Tracking Works</h2>
-        <p>While these platforms cannot see your extensions, they <strong>can</strong> monitor your interaction with the active exam window. They do this through standard web browser API events: <code>focus</code> and <code>blur</code>.</p>
-        <ul>
-          <li><strong>Focus Event:</strong> Reassurance to the website that your cursor is inside the exam page.</li>
-          <li><strong>Blur Event (Unfocus):</strong> Logged when you click outside the exam tab, open a new window, switch to a desktop document, or click a notification.</li>
-        </ul>
-        <p>Canvas tracks this as "Quiz Log" activity, noting when you stop viewing the quiz page. In Moodle, teachers can see logs showing when your focus shifted away from the quiz window.</p>
-
-        <div class="blog-native-ad">
-          <h4 class="blog-native-ad-title">💡 Study Smarter and Pass Exams with AI</h4>
-          <p class="blog-native-ad-text">QuizSolver integrates directly into the Chrome Side Panel, so you never lose page focus during quizzes. Get instant AI explanations and use FocusScan safely.</p>
-          <a href="https://chromewebstore.google.com/detail/quiz-solver-pro/cjchfdnplpjkihigljnicebnhjkpndik" target="_blank" rel="noopener" class="blog-native-ad-btn">Install QuizSolver Free</a>
-        </div>
-
-        <h2>Why Modern AI Assistants are Secure</h2>
-        <p>To avoid triggering false-positive alerts on focus loss logs, modern AI tools such as <strong>QuizSolver</strong> are built to work with browser sandboxing in mind:</p>
-        <ol>
-          <li><strong>Chrome Side Panel Integration:</strong> By operating directly within Chrome’s native side panel interface, you can get study assistance and review guides without losing window focus.</li>
-          <li><strong>FocusScan OCR technology:</strong> Instead of copying text, which might trigger paste prevention rules, you can snap a screenshot of a specific screen area to analyze the question.</li>
-        </ol>
-        <p>While AI extensions are extremely helpful for reviewing questions, studying concept notes, and doing practice quizzes, they are best used to reinforce your understanding of the material before and during study sessions.</p>
-      </article>
-    `
+  'google-forms-quiz-solver-jak-dziala': {
+    intro: [
+      'Google Forms wygląda prosto, ale quiz może zawierać różne typy pól: radio, checkboxy, krótkie odpowiedzi, listy rozwijane, obrazy i sekcje wielostronicowe.',
+      'Dobry solver nie powinien zakładać, że każde pytanie ma jedną odpowiedź. Dlatego QuizSolver rozpoznaje typ pola i wysyła do AI informację, czy możliwy jest wybór wielu odpowiedzi.'
+    ],
+    sections: [
+      {
+        heading: 'Najważniejsze typy pytań',
+        paragraphs: ['Rozpoznanie typu pytania wpływa na jakość odpowiedzi. Checkbox oznacza, że poprawnych opcji może być kilka, a pytanie tekstowe wymaga innej formy odpowiedzi niż test ABCD.'],
+        bullets: ['jednokrotny wybór', 'wielokrotny wybór', 'krótka odpowiedź', 'lista rozwijana', 'pytania z obrazem']
+      },
+      {
+        heading: 'Co zrobić przy nietypowym układzie',
+        paragraphs: ['Jeżeli formularz jest osadzony w ramce albo pytanie znajduje się na obrazku, użyj FocusScan. Zaznaczasz obszar z pytaniem i odpowiedziami, a OCR przygotowuje tekst dla AI.']
+      },
+      {
+        heading: 'Jak zachować porządek po quizie',
+        paragraphs: ['Po rozwiązaniu zapisz ważne pytania w historii. W panelu /quiz możesz oznaczać ulubione, dopisywać notatki i tworzyć własne powtórki.']
+      }
+    ]
   },
-  {
-    slug: 'how-to-study-smarter-ai-quiz-solvers',
-    title: 'How to Study Smarter: Using AI Quiz Solvers Responsibly',
-    metaTitle: 'How to Study Smarter with AI Quiz Solvers | QuizSolver',
-    metaDescription: 'Learn how to use AI quiz solvers to study effectively, create practice quizzes, and retain information rather than just getting quick answers.',
-    datePublished: '2026-06-01',
-    dateModified: '2026-06-01',
-    author: 'Academic Coach',
-    locale: 'en',
-    readTime: '4 min',
-    excerpt: 'AI quiz solvers are powerful tools, but are you using them to actually learn? Learn how to turn automated answers into permanent knowledge with smart revision.',
-    content: `
-      <article class="blog-article-content">
-        <p>AI technology has completely transformed homework and study sessions. With tools like <strong>QuizSolver</strong>, finding answer suggestions for complex questions takes just seconds. But there is a huge difference between copying answers and actually <strong>learning the material</strong>. Here is how you can use AI assistants responsibly to boost your grades and retain knowledge long-term.</p>
-
-        <h2>1. Read the Step-by-Step Explanations</h2>
-        <p>Getting a quick answer gets you past the immediate assignment, but it won’t help you during in-person exams or oral presentations. Instead of just noting the correct answer, look at the AI-generated explanations. A good solver breaks down the core concepts and explains <strong>why</strong> a choice is correct. This turns a simple cheat sheet into an interactive tutoring session.</p>
-
-        <h2>2. Build a Personal Study Library</h2>
-        <p>Every time you solve a question with QuizSolver, it gets saved to your private dashboard. Treat this history as your personalized study guide. You can add custom notes, link specific textbook chapters, and highlight questions you got wrong to study them later.</p>
-
-        <div class="blog-native-ad">
-          <h4 class="blog-native-ad-title">💡 Study Smarter and Pass Exams with AI</h4>
-          <p class="blog-native-ad-text">QuizSolver integrates directly into the Chrome Side Panel, so you never lose page focus during quizzes. Get instant AI explanations and use FocusScan safely.</p>
-          <a href="https://chromewebstore.google.com/detail/quiz-solver-pro/cjchfdnplpjkihigljnicebnhjkpndik" target="_blank" rel="noopener" class="blog-native-ad-btn">Install QuizSolver Free</a>
-        </div>
-
-        <h2>3. Use the Practice Quiz Feature</h2>
-        <p>Passive reading is one of the least effective study methods. Active recall is much better. Take your saved history of questions and convert them into a custom practice quiz. Test yourself a few days after doing the original assignment to see how much information you actually retained.</p>
-
-        <h2>4. Share Quizzes with Study Groups</h2>
-        <p>Teaching others is one of the best ways to solidify your own knowledge. With QuizSolver’s share features, you can export selected quiz sets from your history as public links. Send them to your classmates to study together, compare notes, and prepare for finals as a team.</p>
-      </article>
-    `
+  'focusscan-pytania-ze-zdjecia-i-wykresu': {
+    intro: [
+      'Nie każde pytanie da się skopiować. Czasem treść jest obrazkiem, wykresem, fragmentem PDF albo elementem strony, który blokuje zaznaczanie tekstu.',
+      'FocusScan rozwiązuje ten problem przez zaznaczenie fragmentu ekranu. OCR odczytuje tekst z obrazu, a AI dostaje czysty kontekst zamiast przypadkowego zrzutu całej strony.'
+    ],
+    sections: [
+      {
+        heading: 'Kiedy używać FocusScan',
+        paragraphs: ['FocusScan warto uruchomić wtedy, gdy zwykłe wykrywanie strony nie daje pełnego pytania albo pomija ważny obraz. Zaznacz tylko potrzebny fragment, żeby nie mieszać AI zbędnym tekstem.'],
+        bullets: ['pytania jako obraz', 'wykresy i diagramy', 'wzory matematyczne', 'PDF i osadzone ramki', 'strony blokujące kopiowanie']
+      },
+      {
+        heading: 'Jak poprawić jakość odpowiedzi',
+        paragraphs: ['Najlepszy wynik daje zaznaczenie pytania razem z odpowiedziami. Jeśli zadanie ma obraz, obejmij go w zaznaczeniu. Jeżeli tekst jest mały, powiększ stronę przed skanowaniem.']
+      },
+      {
+        heading: 'Dlaczego to jest przydatne do nauki',
+        paragraphs: ['Pytania obrazkowe często są najtrudniejsze do powtórki. Po zapisaniu ich w historii możesz dopisać własną notatkę i wrócić do schematu przed egzaminem.']
+      }
+    ]
   },
-  {
-    slug: 'jak-zainstalowac-i-skonfigurowac-quizsolver',
-    title: 'QuizSolver – jak zainstalować i skonfigurować asystenta AI w przeglądarce?',
-    metaTitle: 'QuizSolver – Jak Zainstalować i Skonfigurować Rozszerzenie AI',
-    metaDescription: 'Krok po kroku: jak zainstalować i skonfigurować rozszerzenie QuizSolver. Poznaj bezstresowe metody nauki i rozwiązywania quizów online z asystentem AI.',
-    datePublished: '2026-06-01',
-    dateModified: '2026-06-01',
-    author: 'QuizSolver Team',
-    locale: 'pl',
-    readTime: '4 min',
-    excerpt: 'Instalacja asystenta AI QuizSolver to absolutna essa! Zobacz, jak w 3 prostych krokach skonfigurować rozszerzenie w bocznym panelu Chrome i zyskać darmowe kredyty.',
-    content: `
-      <article class="blog-article-content">
-        <p>Instalacja i pierwsze uruchomienie asystenta AI na studiach czy w szkole kojarzy Ci się z trudną konfiguracją i masą kodu? Nic bardziej mylnego. Z QuizSolverem cała procedura to absolutna <strong>essa</strong> – zajmuje mniej niż minutę, a korzyści z posiadania wirtualnego korepetytora w przeglądarce są gigantyczne. Dowiedz się, jak krok po kroku przygotować swoje narzędzie do nauki.</p>
-
-        <h2>Krok 1: Pobranie rozszerzenia z Chrome Web Store</h2>
-        <p>QuizSolver jest oficjalnym rozszerzeniem dostępnym w bezpiecznym sklepie Google. Aby go zainstalować:</p>
-        <ol>
-          <li>Wejdź na stronę główną sklepu Chrome Web Store lub kliknij bezpośredni link na naszej stronie.</li>
-          <li>Kliknij przycisk <strong>Dodaj do Chrome</strong>.</li>
-          <li>Potwierdź instalację w wyskakującym okienku przeglądarki.</li>
-        </ol>
-        <p>Po zainstalowaniu rozszerzenie automatycznie doda się do paska narzędzi. Warto kliknąć ikonę puzzla w prawym górnym rogu Chrome i "przypiąć" (pin) QuizSolver, aby mieć do niego szybki dostęp w każdej chwili. Proste? No jasne, czysty <strong>kox</strong>!</p>
-
-        <h2>Krok 2: Rejestracja darmowego konta</h2>
-        <p>Po kliknięciu ikony rozszerzenia otworzy się panel boczny (Chrome Side Panel). Aby w pełni korzystać z funkcji weryfikacji wiedzy, musisz założyć darmowe konto. Dlaczego warto?</p>
-        <ul>
-          <li><strong>Darmowe kredyty na start:</strong> Każdy nowy użytkownik otrzymuje pakiet darmowych kredytów AI na weryfikację swoich pierwszych pytań i wypróbowanie systemu.</li>
-          <li><strong>Synchronizacja historii:</strong> Twoje pytania, zapisane notatki i próbne quizy będą bezpiecznie synchronizować się między rozszerzeniem a stroną www.</li>
-        </ul>
-
-        <div class="blog-native-ad">
-          <h4 class="blog-native-ad-title">💡 Rozwiązuj testy bez stresu z asystentem AI</h4>
-          <p class="blog-native-ad-text">QuizSolver działa bezpośrednio w panelu bocznym przeglądarki Chrome, dzięki czemu nie opuszczasz karty testu. Korzystaj z FocusScan i inteligentnych podpowiedzi AI całkowicie bezpiecznie.</p>
-          <a href="https://chromewebstore.google.com/detail/quiz-solver-pro/cjchfdnplpjkihigljnicebnhjkpndik" target="_blank" rel="noopener" class="blog-native-ad-btn">Zainstaluj QuizSolver za darmo</a>
-        </div>
-
-        <h2>Krok 3: Konfiguracja trybu działania – podpowiedzi czy pełne rozwiązanie?</h2>
-        <p>Jedną z największych zalet QuizSolvera jest elastyczność. W ustawieniach panelu bocznego możesz wybrać tryb działania dostosowany do Twojego stylu nauki:</p>
-        <ul>
-          <li><strong>Tryb podpowiedzi (Hint Mode):</strong> Zamiast podawania gotowej odpowiedzi na tacy, system delikatnie podświetla właściwy wybór na ekranie. Zmusza Cię to do pomyślenia i analizy – mega przydatne do nauki! **IMO** to najlepszy tryb dla ambitnych.</li>
-          <li><strong>FocusScan (OCR):</strong> Masz pytanie na obrazku lub w formie wykresu? Zamiast przepisywać je ręcznie (co jest kompletnym **cringem** i stratą czasu), wybierasz narzędzie FocusScan, zaznaczasz myszką obszar i patrzysz, jak AI odczytuje i rozwiązuje zadanie. **Rel**, to działa błyskawicznie!</li>
-        </ul>
-
-        <blockquote>
-          <p><strong>Porada dla Sigm:</strong> Przed użyciem rozszerzenia na prawdziwym sprawdzianie, przejdź na naszą podstronę <strong>Demo</strong>. Pozwoli Ci to bezpiecznie i bez zużywania kredytów przetestować asystenta na przykładowym teście.</p>
-        </blockquote>
-
-        <p>Jesteśmy nowym rozszerzeniem i każda Wasza opinia jest dla nas na wagę złota. Mamy już pierwszą, mega motywującą ocenę 5 gwiazdek na Chrome Web Store! Zainstaluj QuizSolver już dziś, przetestuj go i daj nam znać, jak poszła nauka!</p>
-      </article>
-    `
+  'historia-pytan-notatki-i-quiz-powtorkowy': {
+    intro: [
+      'Historia pytań to coś więcej niż lista ostatnich odpowiedzi. Dobrze używana działa jak prywatny zeszyt ćwiczeń: masz pytanie, odpowiedź, wyjaśnienie, notatkę i status powtórki.',
+      'To właśnie tutaj QuizSolver zmienia się z narzędzia do szybkiego sprawdzania odpowiedzi w pełny system nauki.'
+    ],
+    sections: [
+      {
+        heading: 'Co warto zapisywać',
+        paragraphs: ['Nie każde pytanie musi trafić do powtórki. Największą wartość mają pytania, które pokazują lukę w wiedzy albo często powtarzający się schemat.'],
+        bullets: ['pytania oznaczone jako trudne', 'błędne odpowiedzi', 'zadania z obrazkami', 'definicje i pojęcia', 'pytania, które mogą wrócić na sprawdzianie']
+      },
+      {
+        heading: 'Jak działa quiz z historii',
+        paragraphs: ['Wybierasz zapisane pytania i uruchamiasz własny quiz powtórkowy. Dzięki temu sprawdzasz pamięć aktywnie, zamiast tylko czytać gotowe odpowiedzi.']
+      },
+      {
+        heading: 'Jak notować, żeby nie utonąć w tekście',
+        paragraphs: ['Dobra notatka ma być krótsza niż pytanie. Zapisz zasadę, wyjątek albo powód, dla którego dana odpowiedź jest poprawna. Tyle wystarczy, żeby wrócić do tematu później.']
+      }
+    ]
   },
-  {
-    slug: 'dlaczego-quizsolver-to-najlepsze-rozszerzenie-ai',
-    title: 'Dlaczego QuizSolver to najlepsze rozszerzenie AI do nauki i quizów?',
-    metaTitle: 'Dlaczego QuizSolver to Najlepsze Rozszerzenie AI do Quizów',
-    metaDescription: 'Dowiedz się, dlaczego QuizSolver to najlepszy asystent AI do nauki w 2026 roku. Zobacz zalety paska bocznego, FocusScan i quizów powtórkowych.',
-    datePublished: '2026-06-01',
-    dateModified: '2026-06-01',
-    author: 'QuizSolver Creator',
-    locale: 'pl',
-    readTime: '5 min',
-    excerpt: 'Szukasz asystenta AI do testów online? IMO QuizSolver deklasuje konkurencję. Poznaj zalety działania w Side Panelu, FocusScan i nauki z historii pytań. Rel!',
-    content: `
-      <article class="blog-article-content">
-        <p>Rynek narzędzi edukacyjnych opartych na sztucznej inteligencji rośnie w zawrotnym tempie. Uczniowie i studenci mają do dyspozycji setki chatbotów, skanerów i wyszukiwarek rozwiązań. **IMO** (moim zdaniem) większość z nich ma jednak kluczowe wady – wymagają ciągłego przełączania kart, kopiowania tekstu lub działają niestabilnie. Na tym tle **QuizSolver** wyróżnia się jako prawdziwy **sigma** asystent. Dlaczego to właśnie to rozszerzenie jest najlepszym wyborem w 2026 roku? Sprawdźmy.</p>
-
-        <h2>1. Integracja z Chrome Side Panel – brak utraty focusu</h2>
-        <p>Większość tradycyjnych rozszerzeń AI próbuje ingerować bezpośrednio w kod rozwiązywanych testów (np. na Testportalu czy Moodle) albo wymaga ciągłego przełączania kart w celu skonsultowania się z ChatGPT. To ogromny błąd, który systemy anty-ściąganiowe natychmiast wykrywają jako utratę focusu przez okno testu.</p>
-        <p>QuizSolver rozwiązuje ten problem genialnie – działa w <strong>oficjalnym panelu bocznym Chrome</strong>. Oznacza to, że asystent jest zawsze widoczny po prawej stronie ekranu, a okno testu ani na chwilę nie traci aktywności. Bezstresowe zaliczanie bez żadnych podejrzanych skryptów? To czysty **kox** i totalna **essa**!</p>
-
-        <div class="blog-native-ad">
-          <h4 class="blog-native-ad-title">💡 Rozwiązuj testy bez stresu z asystentem AI</h4>
-          <p class="blog-native-ad-text">QuizSolver działa bezpośrednio w panelu bocznym przeglądarki Chrome, dzięki czemu nie opuszczasz karty testu. Korzystaj z FocusScan i inteligentnych podpowiedzi AI całkowicie bezpiecznie.</p>
-          <a href="https://chromewebstore.google.com/detail/quiz-solver-pro/cjchfdnplpjkihigljnicebnhjkpndik" target="_blank" rel="noopener" class="blog-native-ad-btn">Zainstaluj QuizSolver za darmo</a>
-        </div>
-
-        <h2>2. FocusScan (OCR) – koniec z cringowym przepisywaniem pytań</h2>
-        <p>Nauczyciele coraz częściej blokują możliwość zaznaczania i kopiowania tekstu na platformach egzaminacyjnych. Część z nich wkleja pytania jako pliki graficzne. Tradycyjne boty i wtyczki w tym momencie się poddają. Z QuizSolverem jest inaczej.</p>
-        <p>Dzięki funkcji **FocusScan** możesz po prostu zrobić zrzut ekranu interesującego Cię pytania bezpośrednio z poziomu rozszerzenia. Wbudowany moduł OCR odczyta tekst z obrazka (nawet jeśli to skomplikowane równanie matematyczne czy schemat) i w ułamku sekundy prześle do analizy AI. **Rel** – to rozwiązuje problem blokad raz na zawsze!</p>
-
-        <h2>3. Nauka, a nie tylko gotowe odpowiedzi</h2>
-        <p>Wielu asystentów podaje tylko suchą odpowiedź (np. "A"). QuizSolver idzie o krok dalej. Każde zapytanie zwraca szczegółowe, logiczne wyjaśnienie krok po kroku. Uczysz się podczas samego rozwiązywania zadań! Dodatkowo, wszystkie pytania automatycznie zapisują się w Twojej prywatnej bibliotece, skąd możesz generować własne quizy powtórkowe przed egzaminem końcowym. To nie jest zwykłe ściąganie – to inteligentna platforma edukacyjna.</p>
-
-        <h2>Jesteśmy nowi, ale mamy 5 gwiazdek!</h2>
-        <p>Jako nowo powstały projekt na rynku, budujemy zaufanie z każdym z Was. Mamy na koncie naszą pierwszą oficjalną opinię 5.0/5 gwiazdek na Chrome Web Store! To dowód na to, że nasza praca przynosi realną pomoc uczniom i studentom w codziennej nauce. Dołącz do grona naszych ersten użytkowników i przekonaj się, że nauka z AI może być przyjemna i w pełni efektywna.</p>
-      </article>
-    `
+  'does-canvas-or-moodle-detect-extensions': {
+    intro: [
+      'Canvas and Moodle run inside the browser sandbox. That means they can observe what happens on their own page, but they cannot freely inspect your computer, your installed extensions or other private tabs.',
+      'The confusing part is that quiz platforms can still log focus changes, page visibility and copy restrictions. Understanding that difference helps you avoid myths.'
+    ],
+    sections: [
+      {
+        heading: 'What LMS quiz pages can usually detect',
+        paragraphs: ['A quiz page can receive browser events when it loses focus or becomes hidden. Teachers may see logs such as stopped viewing the quiz page, page left or time away from the quiz.'],
+        bullets: ['tab or window focus changes', 'page visibility changes', 'copy and paste attempts if blocked by the page', 'time spent away from the active quiz window']
+      },
+      {
+        heading: 'What they cannot normally inspect',
+        paragraphs: ['Without a locked-down exam browser or separate proctoring software, a normal website cannot list your browser extensions, read unrelated tabs or scan files on your device.']
+      },
+      {
+        heading: 'Where QuizSolver fits',
+        paragraphs: ['QuizSolver is most valuable as a study assistant: it explains questions, saves your history and helps you revise. The side-panel workflow reduces unnecessary tab switching while you review visible quiz content.']
+      }
+    ]
   },
-  {
-    slug: 'how-to-install-and-setup-quizsolver',
-    title: 'How to Install and Setup the QuizSolver AI Extension on Chrome',
-    metaTitle: 'How to Install and Setup QuizSolver AI Extension on Chrome',
-    metaDescription: 'Step-by-step guide to downloading, installing, and configuring the QuizSolver Chrome extension. Get free credits and start studying smarter with AI.',
-    datePublished: '2026-06-01',
-    dateModified: '2026-06-01',
-    author: 'QuizSolver Support',
-    locale: 'en',
-    readTime: '4 min',
-    excerpt: 'Setting up QuizSolver is incredibly quick and easy! Read our step-by-step tutorial to install the extension, activate the Chrome side panel, and get free AI credits.',
-    content: `
-      <article class="blog-article-content">
-        <p>Using an AI assistant to verify your quiz answers and explain complex academic topics doesn\'t require any programming skills or complicated setups. With <strong>QuizSolver</strong>, you can get up and running in under a minute. In this step-by-step guide, we\'ll walk you through how to install, register, and configure the extension to make your study sessions as productive as possible.</p>
-
-        <h2>Step 1: Download from the Chrome Web Store</h2>
-        <p>QuizSolver is an officially verified browser extension available in the Chrome Web Store. To get started:</p>
-        <ol>
-          <li>Open your Chrome browser and head to the Chrome Web Store, or click the direct installation links found on our website.</li>
-          <li>Click the <strong>Add to Chrome</strong> button on the extension page.</li>
-          <li>Review the permissions dialog and click <strong>Add extension</strong> to confirm.</li>
-        </ol>
-        <p>Once installed, Chrome will add the QuizSolver icon to your extension area. We highly recommend clicking the extension puzzle icon and "pinning" QuizSolver to your toolbar so that it is always one click away when you start a quiz.</p>
-
-        <h2>Step 2: Sign Up for Your Free Account</h2>
-        <p>When you click the QuizSolver icon, it opens directly inside the native <strong>Chrome Side Panel</strong>. To activate your student dashboard, sign up for a free account. Doing so gives you access to:</p>
-        <ul>
-          <li><strong>Free Starter Credits:</strong> Every new user receives complimentary AI credits to solve questions and test-drive the extension\'s features.</li>
-          <li><strong>Study History Access:</strong> Save all your solved questions, edit custom notes, and review step-by-step explanations anytime from both the extension and our website.</li>
-        </ul>
-
-        <div class="blog-native-ad">
-          <h4 class="blog-native-ad-title">💡 Study Smarter and Pass Exams with AI</h4>
-          <p class="blog-native-ad-text">QuizSolver integrates directly into the Chrome Side Panel, so you never lose page focus during quizzes. Get instant AI explanations and use FocusScan safely.</p>
-          <a href="https://chromewebstore.google.com/detail/quiz-solver-pro/cjchfdnplpjkihigljnicebnhjkpndik" target="_blank" rel="noopener" class="blog-native-ad-btn">Install QuizSolver Free</a>
-        </div>
-
-        <h2>Step 3: Setup and Customization</h2>
-        <p>QuizSolver is designed to adapt to your unique learning style. Inside the side panel settings, you can toggle several key features:</p>
-        <ul>
-          <li><strong>Hint Mode:</strong> Perfect for active learning. Instead of clicking the correct answer automatically, QuizSolver discreetly highlights the suggested answer on the page, encouraging you to review the concept yourself.</li>
-          <li><strong>FocusScan OCR Tool:</strong> If a quiz blocks copying or uses images for questions, simply select the FocusScan tool, draw a box over the question area, and let the AI extract and analyze the text automatically.</li>
-        </ul>
-
-        <blockquote>
-          <p><strong>Pro Tip:</strong> Before your first real test, check out our interactive <strong>Demo Page</strong>. It lets you simulate a mock quiz and try all features completely for free without spending your starter credits.</p>
-        </blockquote>
-
-        <p>We are a brand new extension and have just received our very first 5.0/5-star rating on the Chrome Web Store! We are incredibly grateful for the support. Try QuizSolver today and tell us how it helped you succeed!</p>
-      </article>
-    `
+  'how-to-study-smarter-ai-quiz-solvers': {
+    intro: [
+      'AI quiz solvers are most useful when they become part of a study loop, not when they are treated as a magic answer button.',
+      'A good workflow turns every solved question into something reusable: an explanation, a note, a favorite item or a practice question for later.'
+    ],
+    sections: [
+      {
+        heading: 'Use AI for explanations first',
+        paragraphs: ['The answer tells you what to choose. The explanation tells you why. If you read the reasoning and compare it with your own intuition, the same topic is easier to recall later.']
+      },
+      {
+        heading: 'Build a revision library',
+        paragraphs: ['Save questions that reveal a weak point. Add one short note in your own words. Mark questions as favorite or weak so your review session has a clear order.'],
+        bullets: ['save difficult questions', 'add short notes', 'review favorites', 'generate practice quizzes from history']
+      },
+      {
+        heading: 'Use FocusScan only when structure is hard to read',
+        paragraphs: ['If a page blocks copying or renders the question as an image, FocusScan gives the AI better context by selecting only the relevant screen area.']
+      }
+    ]
   },
-  {
-    slug: 'why-quizsolver-is-ultimate-ai-study-assistant',
-    title: 'Why QuizSolver is the Ultimate AI Study Assistant for Students',
-    metaTitle: 'Why QuizSolver is the Ultimate AI Study Assistant for Students',
-    metaDescription: 'Explore the key features that make QuizSolver the best Chrome extension for students. Learn about native side-panel integration, FocusScan, and practice quizzes.',
-    datePublished: '2026-06-01',
-    dateModified: '2026-06-01',
-    author: 'QuizSolver Team',
-    locale: 'en',
-    readTime: '5 min',
-    excerpt: 'Looking for a reliable study tool? Discover why QuizSolver beats other AI helpers with its native side panel, screenshot scanner (FocusScan), and custom practice test generator.',
-    content: `
-      <article class="blog-article-content">
-        <p>As remote testing and online homework become standard parts of high school and university courses, the demand for AI homework help has surged. While there are many AI models available, most of them require constant copy-pasting, switching tabs, or using suspicious scripts that can get you flagged by exam systems. <strong>QuizSolver</strong> was built from the ground up to address these exact problems, making it the ultimate AI study assistant. Here is why it stands out from the competition.</p>
-
-        <h2>1. Seamless Chrome Side Panel Integration</h2>
-        <p>Most AI search extensions inject scripts directly into the exam page or pop up on top of the text. This is risky because exam platforms like Canvas or Moodle log when you click outside the exam or modify the page structure.</p>
-        <p>QuizSolver runs entirely in the official <strong>Chrome Side Panel</strong>. This means the extension operates in an isolated browser window next to your quiz. You get AI answers and explanations without ever losing focus on the main quiz tab. It is a clean, stress-free, and safe solution.</p>
-
-        <h2>2. FocusScan (OCR) to Solve Uncopyable Questions</h2>
-        <p>To prevent cheating, teachers often disable right-clicking, text selection, and copy-paste on quiz pages, or upload questions as images. Traditional search extensions fail under these restrictions.</p>
-        <p>With QuizSolver\'s **FocusScan** tool, restrictions don\'t matter. You can take a screenshot of any portion of your screen directly from the extension. The built-in Optical Character Recognition (OCR) extracts the question text—even from charts, PDFs, or complex layouts—and sends it to the AI for analysis in milliseconds.</p>
-
-        <div class="blog-native-ad">
-          <h4 class="blog-native-ad-title">💡 Study Smarter and Pass Exams with AI</h4>
-          <p class="blog-native-ad-text">QuizSolver integrates directly into the Chrome Side Panel, so you never lose page focus during quizzes. Get instant AI explanations and use FocusScan safely.</p>
-          <a href="https://chromewebstore.google.com/detail/quiz-solver-pro/cjchfdnplpjkihigljnicebnhjkpndik" target="_blank" rel="noopener" class="blog-native-ad-btn">Install QuizSolver Free</a>
-        </div>
-
-        <h2>3. Structured Explanations That Help You Learn</h2>
-        <p>QuizSolver is not just a tool to get quick grades. It is a learning platform. Every answer suggestion is accompanied by a detailed step-by-step explanation. By reading why an answer is correct, you actually absorb the material. Moreover, all solved questions are saved to your account. You can review them later, add notes, and generate custom practice quizzes to test your recall before finals.</p>
-
-        <h2>New Extension, Big Milestones!</h2>
-        <p>We are a brand new tool in the Chrome Web Store, and we are proud to share that we just received our very first 5.0/5-star user review! This milestone keeps us motivated to continue building the best AI education helper. Join our early users today and experience a smarter, stress-free way to study.</p>
-      </article>
-    `
+  'kahoot-quiz-id-answer-bank-guide': {
+    intro: [
+      'Kahoot has two different identifiers: the live game PIN and the Quiz ID. The PIN gets you into a live session. The Quiz ID points to the underlying quiz set.',
+      'When questions are hidden by the host, a Quiz ID answer bank is often more useful than automatic page detection because the page itself may not show the question text.'
+    ],
+    sections: [
+      {
+        heading: 'Where to find the Quiz ID',
+        paragraphs: ['Look for a quizId parameter in the Kahoot URL. It is usually a long ID string, not the short numeric PIN used by players.'],
+        bullets: ['open the lobby, preview or instruction page', 'check the address bar', 'copy the value after quizId=', 'paste it into the QuizSolver Kahoot panel']
+      },
+      {
+        heading: 'Auto mode vs answer bank',
+        paragraphs: ['Auto mode works when the current question and answers are visible. Answer bank mode is better when the host hides them from player devices.']
+      },
+      {
+        heading: 'Why this mode does not need AI credits',
+        paragraphs: ['The answer bank reads quiz structure instead of asking an AI model to reason from scratch, so it can be shown without spending credits.']
+      }
+    ]
+  },
+  'google-forms-quiz-solver-guide': {
+    intro: [
+      'Google Forms quizzes look simple, but they may include radio questions, checkboxes, dropdowns, short answers, images and multiple sections.',
+      'QuizSolver improves answer quality by identifying the question type before sending context to AI.'
+    ],
+    sections: [
+      {
+        heading: 'Why question type matters',
+        paragraphs: ['A checkbox question can have several correct answers. A short answer field needs a text response. A dropdown should be handled differently from a radio group.'],
+        bullets: ['single choice', 'multiple choice', 'short answer', 'dropdowns', 'image-based prompts']
+      },
+      {
+        heading: 'When to use FocusScan',
+        paragraphs: ['If the form is embedded in an unusual layout or the question is an image, select the question region with FocusScan so OCR can prepare clean text for AI.']
+      },
+      {
+        heading: 'Review after submission',
+        paragraphs: ['Saved questions become a study set. Use notes and practice quizzes to revisit the topics that appeared in the form.']
+      }
+    ]
+  },
+  'solve-image-questions-with-focusscan': {
+    intro: [
+      'Image-based quiz questions are frustrating because normal text extraction often fails. A chart, screenshot, PDF fragment or locked question can break a standard parser.',
+      'FocusScan lets you draw a box around the relevant area and sends that cropped context through OCR before AI analysis.'
+    ],
+    sections: [
+      {
+        heading: 'Best use cases',
+        paragraphs: ['Use FocusScan whenever the visible page structure does not contain enough text or when the important information is inside an image.'],
+        bullets: ['screenshots', 'charts and diagrams', 'math formulas', 'PDF fragments', 'blocked copy text']
+      },
+      {
+        heading: 'How to capture a useful region',
+        paragraphs: ['Include the question, all answer options and any diagram needed to solve it. Avoid selecting the whole page because extra text can confuse the model.']
+      },
+      {
+        heading: 'Save the result for later',
+        paragraphs: ['If the explanation is useful, save the question and add a short note. Image questions often repeat as concepts, even when the exact picture changes.']
+      }
+    ]
+  },
+  'turn-quiz-history-into-practice-tests': {
+    intro: [
+      'Your saved quiz history can become a personal practice system. Instead of rereading answers, you can generate a quiz from previous questions and test yourself again.',
+      'This is active recall: it forces your brain to retrieve the answer, which is usually more effective than passive reading.'
+    ],
+    sections: [
+      {
+        heading: 'Choose the right questions',
+        paragraphs: ['Do not practice everything at once. Start with weak or favorite questions, then add new items as your course moves forward.'],
+        bullets: ['weak questions', 'favorite explanations', 'image-based tasks', 'definitions', 'questions you answered incorrectly']
+      },
+      {
+        heading: 'Keep notes short',
+        paragraphs: ['A useful note should capture the rule, exception or memory hook. If it is longer than the explanation, it becomes hard to review.']
+      },
+      {
+        heading: 'Share when studying in a group',
+        paragraphs: ['If you study with classmates, selected history questions can become a shared practice set. Comparing explanations is often more valuable than comparing only final answers.']
+      }
+    ]
   }
-];
+};
+
+const metadata = rawPosts as BlogPostMetadata[];
+
+export const BLOG_POST_MANIFEST: BlogPostMetadata[] = metadata;
+
+export const BLOG_POSTS: BlogPost[] = metadata
+  .map((post) => ({
+    ...post,
+    content: renderArticle(post.locale, ARTICLE_DRAFTS[post.slug] || genericLocalizedDraft(post.locale))
+  }))
+  .sort((a, b) => b.datePublished.localeCompare(a.datePublished));
