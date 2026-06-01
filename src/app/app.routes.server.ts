@@ -8,8 +8,14 @@ const sharedQuizRoutes: ServerRoute[] = SUPPORTED_LOCALES.map(({ code }) => ({
   renderMode: RenderMode.Server
 }));
 
+const blogPostRoutes: ServerRoute[] = SUPPORTED_LOCALES.map(({ code }) => ({
+  path: routePath(PAGE_ROUTES.blogPost[code]),
+  renderMode: RenderMode.Server
+}));
+
 export const serverRoutes: ServerRoute[] = [
   ...sharedQuizRoutes,
+  ...blogPostRoutes,
   {
     path: '**',
     renderMode: RenderMode.Prerender

@@ -1,6 +1,7 @@
 import { DOCUMENT } from '@angular/common';
 import { Inject, Injectable } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
+import { BlogPost, BLOG_POSTS } from './blog-content';
 import {
   CHROME_WEB_STORE_URL,
   Locale,
@@ -121,7 +122,7 @@ export class SeoService {
   private resolveMeta(pageKey: PageKey, locale: Locale, data: any): { title: string; description: string } {
     data = data || {};
     if (data?.meta?.title && data?.meta?.description) return data.meta;
-    if (['privacy', 'dashboard', 'credits', 'quiz', 'demo', 'success', 'notFound'].includes(pageKey)) {
+    if (['privacy', 'dashboard', 'credits', 'quiz', 'demo', 'success', 'notFound', 'blog'].includes(pageKey)) {
       return { title: data.metaTitle || data.title || 'QuizSolver', description: data.metaDescription || '' };
     }
     const copy = contentFor(locale);
@@ -410,5 +411,114 @@ export class SeoService {
     script.setAttribute('data-quizsolver-schema', 'main');
     script.textContent = JSON.stringify(payload, null, 0).replace(/</g, '\\u003c');
     this.document.head.appendChild(script);
+  }
+
+  applyBlogPost(post: BlogPost, locale: Locale): void {
+    const copy = contentFor(locale);
+    const meta = { title: post.metaTitle, description: post.metaDescription };
+    const canonicalPath = pathFor('blogPost', locale).replace(':slug', post.slug);
+    const canonical = abs(canonicalPath);
+    const robots = 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1';
+    const locOpt = localeOption(locale);
+
+    /* ── HTML lang ── */
+    this.document.documentElement.lang = copy['htmlLang'] || locale;
+
+    /* ── Core ── */
+    this.title.setTitle(meta.title);
+    this.upsertMeta('name', 'description', meta.description);
+    this.upsertMeta('name', 'robots', robots);
+    this.upsertMeta('name', 'author', post.author);
+    this.upsertMeta('name', 'theme-color', '#030712');
+    this.upsertMeta('name', 'application-name', 'QuizSolver');
+    this.upsertMeta('name', 'keywords', LOCALE_KEYWORDS[locale] || LOCALE_KEYWORDS.en);
+    this.upsertMeta('name', 'rating', 'general');
+
+    /* ── Open Graph ── */
+    this.upsertMeta('property', 'og:type', 'article');
+    this.upsertMeta('property', 'og:site_name', 'QuizSolver');
+    this.upsertMeta('property', 'og:url', canonical);
+    this.upsertMeta('property', 'og:title', meta.title);
+    this.upsertMeta('property', 'og:description', meta.description);
+    this.upsertMeta('property', 'og:image', assetUrl('/og-image.png'));
+    this.upsertMeta('property', 'og:image:type', 'image/png');
+    this.upsertMeta('property', 'og:image:width', '1200');
+    this.upsertMeta('property', 'og:image:height', '630');
+    this.upsertMeta('property', 'og:image:alt', post.title);
+    this.upsertMeta('property', 'og:locale', locOpt.ogLocale);
+
+    /* All OG locale alternates */
+    SUPPORTED_LOCALES
+      .filter(opt => opt.code !== locale)
+      .forEach(opt => {
+        const selector = `[property="og:locale:alternate"][data-loc="${opt.code}"]`;
+        const existing = this.document.head.querySelector(selector);
+        if (existing) {
+          existing.setAttribute('content', opt.ogLocale);
+        } else {
+          const el = this.document.createElement('meta');
+          el.setAttribute('property', 'og:locale:alternate');
+          el.setAttribute('content', opt.ogLocale);
+          el.setAttribute('data-loc', opt.code);
+          this.document.head.appendChild(el);
+        }
+      });
+
+    /* ── Twitter / X ── */
+    this.upsertMeta('name', 'twitter:card', 'summary_large_image');
+    this.upsertMeta('name', 'twitter:site', '@getquizsolver');
+    this.upsertMeta('name', 'twitter:creator', '@getquizsolver');
+    this.upsertMeta('name', 'twitter:title', meta.title);
+    this.upsertMeta('name', 'twitter:description', meta.description);
+    this.upsertMeta('name', 'twitter:image', assetUrl('/og-image.png'));
+    this.upsertMeta('name', 'twitter:image:alt', post.title);
+
+    /* ── Canonical + hreflang ── */
+    this.upsertLink('canonical', canonical);
+    
+    // Hreflangs for blog posts are based on matching posts in other languages
+    SUPPORTED_LOCALES.forEach(opt => {
+      // Find post with the same slug for this locale
+      const match = BLOG_POSTS.find(p => p.slug === post.slug && p.locale === opt.code);
+      if (match) {
+        this.upsertAlternate(opt.htmlLang, abs(pathFor('blogPost', opt.code).replace(':slug', match.slug)));
+      }
+    });
+    this.upsertAlternate('x-default', abs(pathFor('blogPost', 'en').replace(':slug', post.slug)));
+
+    /* ── JSON-LD (BlogPosting) ── */
+    const homeUrl = `${SITE_URL}/`;
+    const blogPostSchema = {
+      '@context': 'https://schema.org',
+      '@graph': [
+        {
+          '@type': 'BlogPosting',
+          '@id': `${canonical}#post`,
+          'url': canonical,
+          'mainEntityOfPage': canonical,
+          'headline': post.title,
+          'description': post.metaDescription,
+          'datePublished': post.datePublished,
+          'dateModified': post.dateModified,
+          'author': {
+            '@type': 'Person',
+            'name': post.author
+          },
+          'publisher': {
+            '@type': 'Organization',
+            '@id': `${homeUrl}#organization`,
+            'name': 'QuizSolver',
+            'logo': {
+              '@type': 'ImageObject',
+              'url': assetUrl('/logo-512.png'),
+              'width': 512,
+              'height': 512
+            }
+          },
+          'image': assetUrl('/og-image.png')
+        }
+      ]
+    };
+    this.upsertJsonLd(blogPostSchema);
   }
 }

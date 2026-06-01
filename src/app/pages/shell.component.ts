@@ -14,7 +14,6 @@ type AuthModal = 'login' | 'register' | 'verify' | 'forgot' | 'reset';
   imports: [CommonModule, FormsModule],
   template: `
     <div class="site-shell" [attr.data-locale]="locale">
-      <a class="skip-link" href="#main-content">Skip to main content</a>
       <header class="site-header" role="banner">
         <div class="container nav-container">
           <a class="nav-brand" [href]="pathFor('home')" aria-label="QuizSolver home">
@@ -28,6 +27,7 @@ type AuthModal = 'login' | 'register' | 'verify' | 'forgot' | 'reset';
             <a class="nav-link" [href]="pathFor('credits')" [class.active]="pageKey === 'credits'">{{ copy.nav.pricing }}</a>
             <a class="nav-link" [href]="pathFor('demo')" [class.active]="pageKey === 'demo'">{{ copy.common.demo }}</a>
             <a class="nav-link" [href]="pathFor('quiz')" [class.active]="pageKey === 'quiz'">{{ copy.common.historyQuiz }}</a>
+            <a class="nav-link" [href]="pathFor('blog')" [class.active]="pageKey === 'blog' || pageKey === 'blogPost'">Blog</a>
           </nav>
 
           <div class="nav-actions">
@@ -88,6 +88,7 @@ type AuthModal = 'login' | 'register' | 'verify' | 'forgot' | 'reset';
             <a class="nav-link" [href]="pathFor('credits')" [class.active]="pageKey === 'credits'" (click)="mobileMenuOpen.set(false)">{{ copy.nav.pricing }}</a>
             <a class="nav-link" [href]="pathFor('demo')" (click)="mobileMenuOpen.set(false)">{{ copy.common.demo }}</a>
             <a class="nav-link" [href]="pathFor('quiz')" (click)="mobileMenuOpen.set(false)">{{ copy.common.historyQuiz }}</a>
+            <a class="nav-link" [href]="pathFor('blog')" [class.active]="pageKey === 'blog' || pageKey === 'blogPost'" (click)="mobileMenuOpen.set(false)">Blog</a>
             <div class="mobile-utility">
               <div class="mobile-lang-row" aria-label="Language">
                 <a class="lang-option" *ngFor="let option of localeOptions" [class.active]="locale === option.code" [href]="alternatePath(option.code)" (click)="switchLocale($event, option.code)">
@@ -173,16 +174,17 @@ type AuthModal = 'login' | 'register' | 'verify' | 'forgot' | 'reset';
             </p>
           </div>
           <div class="footer-col">
-            <h4>{{ copy.footer.product }}</h4>
+            <h3>{{ copy.footer.product }}</h3>
             <div class="footer-links">
               <a class="nav-link" [href]="homeHash('features')">{{ copy.nav.features }}</a>
               <a class="nav-link" [href]="pathFor('quiz')">{{ copy.common.historyQuiz }}</a>
               <a class="nav-link" [href]="pathFor('credits')">{{ copy.common.buyCredits }}</a>
               <a class="nav-link" [href]="pathFor('dashboard')">{{ copy.common.dashboard }}</a>
+              <a class="nav-link" [href]="pathFor('blog')">Blog</a>
             </div>
           </div>
           <div class="footer-col">
-            <h4>{{ copy.footer.seoPages }}</h4>
+            <h3>{{ copy.footer.seoPages }}</h3>
             <div class="footer-links footer-links-2col">
               <a class="nav-link" [href]="pathFor('quizSolverAi')">AI quiz solver</a>
               <a class="nav-link" [href]="pathFor('testportal')">Testportal</a>
@@ -198,7 +200,7 @@ type AuthModal = 'login' | 'register' | 'verify' | 'forgot' | 'reset';
             </div>
           </div>
           <div class="footer-col">
-            <h4>{{ copy.footer.legal }}</h4>
+            <h3>{{ copy.footer.legal }}</h3>
             <div class="footer-links">
               <a class="nav-link" [href]="pathFor('privacy')">{{ copy.footer.privacy }}</a>
               <span class="nav-link">support&#64;getquizsolver.com</span>
@@ -358,20 +360,6 @@ type AuthModal = 'login' | 'register' | 'verify' | 'forgot' | 'reset';
     </div>
   `,
   styles: [`
-    .skip-link {
-      position: absolute;
-      top: -40px;
-      left: 0;
-      background: #0ea5e9;
-      color: #fff;
-      padding: 8px 16px;
-      z-index: 100;
-      transition: top 0.2s;
-    }
-    .skip-link:focus {
-      top: 0;
-    }
-
     .site-shell {
       min-height: 100vh;
       display: flex;
@@ -413,7 +401,7 @@ type AuthModal = 'login' | 'register' | 'verify' | 'forgot' | 'reset';
       width: 2.5rem;
       height: 2.5rem;
       border-radius: var(--radius-md);
-      background: #101318 url('/logo-512.png?v=20260531') center / cover no-repeat;
+      background: #101318 url('/logo-96.png?v=20260531') center / cover no-repeat;
       box-shadow: 0 12px 28px rgba(14, 165, 233, 0.18);
       color: transparent;
       font-weight: 800;
@@ -801,7 +789,7 @@ type AuthModal = 'login' | 'register' | 'verify' | 'forgot' | 'reset';
       gap: 3rem;
       margin-bottom: 4rem;
     }
-    .footer-col h4 {
+    .footer-col h3 {
       font-size: 1rem;
       text-transform: uppercase;
       letter-spacing: 0.05em;

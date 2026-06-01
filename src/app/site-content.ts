@@ -331,6 +331,13 @@ const en: SiteCopy = {
     homeCta: "Back to home",
     storeCta: "Install extension"
   },
+  blogPage: {
+    metaTitle: "QuizSolver Blog — Learn Smarter with AI Study Tips",
+    metaDescription: "Read the latest tips on online exams, study hacks, AI education tools, and academic success on the QuizSolver blog.",
+    title: "QuizSolver Blog",
+    badge: "Articles & Guides",
+    subtitle: "Helpful insights, tips, and strategies for students to study more efficiently."
+  },
   platformPages: {
     quizSolverAi: {
       platformName: "AI quiz solver",
@@ -674,6 +681,13 @@ const pl: SiteCopy = {
     homeCta: "Wróć na start",
     storeCta: "Zainstaluj rozszerzenie"
   },
+  blogPage: {
+    metaTitle: "Blog QuizSolver — Artykuły, Poradniki i Wskazówki dla Uczniów",
+    metaDescription: "Przeczytaj najnowsze poradniki o Testportalu, Moodle, ściąganiu na testach, asystentach AI oraz skutecznych metodach nauki na blogu QuizSolver.",
+    title: "Blog QuizSolver",
+    badge: "Artykuły i Poradniki",
+    subtitle: "Wiedza, wskazówki i strategie, które pomogą Ci uczyć się efektywniej."
+  },
   platformPages: {
     quizSolverAi: {
       platformName: "AI quiz solver",
@@ -892,7 +906,9 @@ export type PageKey =
   | 'quizizz'
   | 'privacy'
   | 'notFound'
-  | 'success';
+  | 'success'
+  | 'blog'
+  | 'blogPost';
 
 
 
@@ -1178,8 +1194,9 @@ function buildLocalizedSiteCopy(locale: ExtraLocale): SiteCopy {
     demoPage: bundle.demoPage,
     successPage: bundle.successPage,
     notFoundPage: bundle.notFoundPage,
+    blogPage: (bundle as any).blogPage || en.blogPage,
     platformPages: buildPlatformPages(bundle)
-  } as SiteCopy, locale);
+  } as unknown as SiteCopy, locale);
 }
 
 function enhancePlatformTutorials(copy: SiteCopy, locale: Locale): SiteCopy {
@@ -1464,7 +1481,9 @@ export const PAGE_SLUGS: Record<PageKey, string> = {
   quizizz: 'quizizz-solver',
   privacy: 'privacy',
   notFound: '404',
-  success: 'success'
+  success: 'success',
+  blog: 'blog',
+  blogPost: 'blog/:slug'
 };
 
 export const PAGE_ROUTES: Record<PageKey, Record<Locale, string>> = Object.fromEntries(
@@ -1487,7 +1506,9 @@ export const INDEXED_PAGE_KEYS: PageKey[] = [
   'socrative',
   'kahoot',
   'quizizz',
-  'privacy'
+  'privacy',
+  'blog',
+  'blogPost'
 ];
 
 export function contentFor(locale: Locale): SiteCopy {
@@ -1512,6 +1533,7 @@ export function pageData(pageKey: PageKey, locale: Locale): any {
   if (pageKey === 'demo') return copy['demoPage'];
   if (pageKey === 'success') return copy['successPage'];
   if (pageKey === 'notFound') return copy['notFoundPage'];
+  if (pageKey === 'blog') return copy['blogPage'];
   return (copy['platformPages'] as any)?.[pageKey];
 }
 
