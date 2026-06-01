@@ -125,7 +125,9 @@ type AuthModal = 'login' | 'register' | 'verify' | 'forgot' | 'reset';
         </nav>
       </header>
 
-      <ng-content></ng-content>
+      <main id="main-content">
+        <ng-content></ng-content>
+      </main>
 
       <section class="cta-section" *ngIf="pageKey !== 'dashboard' && pageKey !== 'quiz' && pageKey !== 'success'">
         <div class="container">

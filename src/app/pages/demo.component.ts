@@ -2,7 +2,7 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { Component, OnDestroy, OnInit, PLATFORM_ID, inject, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { SeoService } from '../seo.service';
-import { Locale } from '../site-content';
+import { Locale, CHROME_WEB_STORE_URL } from '../site-content';
 import { ShellComponent } from './shell.component';
 
 type DemoQuestionType = 'radio' | 'hidden' | 'text' | 'matching' | 'selected';
@@ -364,7 +364,7 @@ const DEMO_QUESTIONS: Record<Exclude<Locale, 'en' | 'pl'>, DemoQuestion[]> = {
   imports: [CommonModule, ShellComponent],
   template: `
     <qs-shell [locale]="locale" pageKey="demo">
-      <main id="main-content" class="demo-page" data-qs-demo-root="onboarding">
+      <div class="demo-page" data-qs-demo-root="onboarding">
         <section class="demo-hero">
           <div class="container demo-hero-grid">
             <div class="demo-copy">
@@ -375,8 +375,21 @@ const DEMO_QUESTIONS: Record<Exclude<Locale, 'en' | 'pl'>, DemoQuestion[]> = {
                 <span>{{ copy.demoBadge }}</span>
                 <span>{{ copy.localBadge }}</span>
               </div>
+
+              <!-- Warning Card -->
+              <div class="demo-extension-warning glass">
+                <div class="warning-icon">⚠️</div>
+                <div class="warning-content">
+                  <h3>{{ getExtensionWarning().title }}</h3>
+                  <p>{{ getExtensionWarning().text }}</p>
+                </div>
+              </div>
+
               <div class="demo-actions">
                 <button class="btn btn-primary btn-lg" type="button" data-qs-tour-start (click)="startGuidedTour()">{{ copy.startTour }}</button>
+                <a [href]="storeUrl" target="_blank" rel="noopener" class="btn btn-outline btn-lg cta-store-btn">
+                  {{ copy.install }}
+                </a>
               </div>
             </div>
 
@@ -459,7 +472,7 @@ const DEMO_QUESTIONS: Record<Exclude<Locale, 'en' | 'pl'>, DemoQuestion[]> = {
             </div>
           </article>
         </section>
-      </main>
+      </div>
     </qs-shell>
   `,
   styles: [`
@@ -880,10 +893,80 @@ const DEMO_QUESTIONS: Record<Exclude<Locale, 'en' | 'pl'>, DemoQuestion[]> = {
         width: max-content;
       }
     }
+
+    .demo-extension-warning {
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+      margin-top: 1.5rem;
+      padding: 1.25rem 1.5rem;
+      border: 1px solid rgba(234, 179, 8, 0.3);
+      background: rgba(234, 179, 8, 0.04);
+      border-radius: 8px;
+      text-align: left;
+    }
+    .demo-extension-warning h3 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #fef08a;
+      margin: 0 0 0.25rem;
+    }
+    .demo-extension-warning p {
+      font-size: 0.925rem;
+      color: var(--text-secondary);
+      line-height: 1.45;
+      margin: 0;
+    }
+    .warning-icon {
+      font-size: 1.5rem;
+      line-height: 1;
+    }
+    .cta-store-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
   `]
 })
 export class DemoComponent implements OnInit, OnDestroy {
   protected locale: Locale = 'en';
+  protected readonly storeUrl = CHROME_WEB_STORE_URL;
+
+  protected getExtensionWarning(): { title: string; text: string } {
+    const warnings: Record<Locale, { title: string; text: string }> = {
+      en: {
+        title: 'Chrome Extension Required',
+        text: 'To test this interactive demo, you must have the official QuizSolver Chrome extension installed and active. Download it directly from the Chrome Web Store.'
+      },
+      pl: {
+        title: 'Wymagane rozszerzenie Chrome',
+        text: 'Aby przetestować to interaktywne demo, musisz mieć zainstalowane i włączone oficjalne rozszerzenie QuizSolver. Pobierz je bezpośrednio z Chrome Web Store.'
+      },
+      de: {
+        title: 'Chrome-Erweiterung erforderlich',
+        text: 'Um diese interaktive Demo zu testen, müssen Sie die offizielle QuizSolver-Chrome-Erweiterung installiert und aktiviert haben. Laden Sie sie direkt aus dem Chrome Web Store herunter.'
+      },
+      es: {
+        title: 'Se requiere la extensión de Chrome',
+        text: 'Para probar este demo interactivo, debes tener instalada y activada la extensión oficial de Chrome de QuizSolver. Descárgala directamente desde Chrome Web Store.'
+      },
+      fr: {
+        title: 'Extension Chrome requise',
+        text: 'Pour tester cette démo interactive, vous devez avoir installé et activé l’extension Chrome officielle de QuizSolver. Téléchargez-la directement depuis le Chrome Web Store.'
+      },
+      it: {
+        title: 'Estensione Chrome richiesta',
+        text: 'Per testare questa demo interattiva, devi avere installata e attiva l’estensione ufficiale Chrome di QuizSolver. Scaricala direttamente dal Chrome Web Store.'
+      },
+      uk: {
+        title: 'Необхідно встановити розширення Chrome',
+        text: 'Щоб протестувати це інтерактивне демо, у вас має бути встановлене та увімкнене офіційне розширення QuizSolver для Chrome. Завантажте його безкоштовно з Chrome Web Store.'
+      }
+    };
+    return warnings[this.locale] || warnings.en;
+  }
+
   protected copy = COPY.en;
   protected readonly current = signal(0);
   private readonly route = inject(ActivatedRoute);

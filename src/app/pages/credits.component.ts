@@ -11,7 +11,7 @@ import { ShellComponent } from './shell.component';
   imports: [CommonModule, ShellComponent],
   template: `
     <qs-shell #shell [locale]="locale" pageKey="credits">
-      <main class="container credits-main">
+      <div class="container credits-main">
         <header class="credits-hero">
           <p class="eyebrow">{{ copy.badge }}</p>
           <h1>{{ data.title }}</h1>
@@ -67,7 +67,7 @@ import { ShellComponent } from './shell.component';
             </div>
           </section>
         </ng-template>
-      </main>
+      </div>
     </qs-shell>
   `,
   styles: [`

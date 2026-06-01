@@ -215,7 +215,7 @@ const DASHBOARD_UI: Record<Locale, DashboardUi> = {
   imports: [CommonModule, ShellComponent],
   template: `
     <qs-shell #shell [locale]="locale" pageKey="dashboard">
-      <main class="container dashboard-main">
+      <div class="container dashboard-main">
         <section *ngIf="!api.currentUser(); else dashboardContent" class="section unauthorized-section-wrapper">
           <!-- Inactive dashboard mockup (blurred) -->
           <div class="unauthorized-blur-bg" aria-hidden="true">
@@ -382,7 +382,7 @@ const DASHBOARD_UI: Record<Locale, DashboardUi> = {
             </ng-template>
           </section>
         </ng-template>
-      </main>
+      </div>
     </qs-shell>
   `,
   styles: [`

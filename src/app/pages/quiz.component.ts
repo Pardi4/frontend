@@ -12,7 +12,7 @@ import { ShellComponent } from './shell.component';
   imports: [CommonModule, FormsModule, ShellComponent],
   template: `
     <qs-shell [locale]="locale" pageKey="quiz">
-      <main class="container quiz-main">
+      <div class="container quiz-main">
         <ng-container *ngIf="sharedToken; else privateQuiz">
           <section class="section">
             <header class="quiz-header">
@@ -334,7 +334,7 @@ import { ShellComponent } from './shell.component';
             </section>
           </section>
         </ng-template>
-      </main>
+      </div>
     </qs-shell>
   `,
   styles: [`

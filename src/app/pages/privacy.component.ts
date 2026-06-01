@@ -10,7 +10,7 @@ import { ShellComponent } from './shell.component';
   imports: [CommonModule, ShellComponent],
   template: `
     <qs-shell [locale]="locale" pageKey="privacy">
-      <main class="container privacy-page" id="main-content">
+      <div class="container privacy-page">
         <section class="utility-hero">
           <div class="utility-hero-grid">
             <div>
@@ -40,7 +40,7 @@ import { ShellComponent } from './shell.component';
             </article>
           </div>
         </section>
-      </main>
+      </div>
     </qs-shell>
   `,
   styles: [`

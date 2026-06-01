@@ -32,8 +32,8 @@ const NOINDEX_PAGES = new Set<PageKey>(['dashboard', 'success', 'notFound']);
 const ASSET_VERSION = '20260531';
 const assetUrl = (path: string) => `${abs(path)}?v=${ASSET_VERSION}`;
 
-const RATING_VALUE = '4.8';
-const RATING_COUNT = '127';
+const RATING_VALUE = '5.0';
+const RATING_COUNT = '1';
 const PLATFORM_PAGE_KEYS = [
   'quizSolverAi', 'testportal', 'moodle', 'canvas', 'googleForms',
   'microsoftForms', 'blackboard', 'quizlet', 'socrative', 'kahoot', 'quizizz'

@@ -11,7 +11,7 @@ import { ShellComponent } from './shell.component';
   imports: [CommonModule, ShellComponent],
   template: `
     <qs-shell [locale]="locale" pageKey="blogPost">
-      <main class="container blog-post-page" id="main-content" *ngIf="post">
+      <div class="container blog-post-page" id="main-content" *ngIf="post">
         <!-- Back Link -->
         <div class="back-navigation">
           <a [href]="getBlogListUrl()" class="back-link">
@@ -67,10 +67,10 @@ import { ShellComponent } from './shell.component';
             </div>
           </div>
         </section>
-      </main>
+      </div>
 
       <!-- 404/Not Found State -->
-      <main class="container not-found-state" *ngIf="!post">
+      <div class="container not-found-state" *ngIf="!post">
         <div class="not-found-card glass">
           <h1>{{ locale === 'pl' ? 'Nie znaleziono artykułu' : 'Article Not Found' }}</h1>
           <p class="text-secondary">
@@ -80,7 +80,7 @@ import { ShellComponent } from './shell.component';
             {{ locale === 'pl' ? 'Przejdź do bazy wiedzy' : 'Go to blog' }}
           </a>
         </div>
-      </main>
+      </div>
     </qs-shell>
   `,
   styles: [`
@@ -233,6 +233,47 @@ import { ShellComponent } from './shell.component';
     }
     ::ng-deep .blog-article-content strong {
       font-weight: 700;
+    }
+
+    ::ng-deep .blog-native-ad {
+      margin: 2.5rem 0;
+      padding: 2rem;
+      background: linear-gradient(135deg, rgba(124, 92, 252, 0.08) 0%, rgba(6, 182, 212, 0.08) 100%);
+      border: 1px solid rgba(124, 92, 252, 0.2);
+      border-radius: var(--radius-md);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    ::ng-deep .blog-native-ad-title {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--text-primary);
+      margin: 0 !important;
+    }
+    ::ng-deep .blog-native-ad-text {
+      font-size: 0.975rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+      margin: 0 !important;
+    }
+    ::ng-deep .blog-native-ad-btn {
+      align-self: flex-start;
+      padding: 0.75rem 1.5rem;
+      background: linear-gradient(135deg, var(--accent-violet) 0%, var(--accent-cyan) 100%);
+      color: #ffffff !important;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.95rem;
+      border-radius: var(--radius-sm);
+      transition: opacity 0.2s ease, transform 0.2s ease;
+      box-shadow: 0 4px 12px rgba(124, 92, 252, 0.25);
+    }
+    ::ng-deep .blog-native-ad-btn:hover {
+      opacity: 0.95;
+      transform: translateY(-1px);
     }
 
     /* CTA Box */

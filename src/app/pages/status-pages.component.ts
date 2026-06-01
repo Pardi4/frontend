@@ -20,7 +20,7 @@ const STATUS_UI: Record<Locale, { home: string; install: string; successBadge: s
   imports: [CommonModule, ShellComponent],
   template: `
     <qs-shell [locale]="locale" [pageKey]="pageKey">
-      <main class="container status-page-main" id="main-content">
+      <div class="container status-page-main" id="main-content">
         <div class="status-grid">
           <div class="status-content animate-fade-in">
             <span class="eyebrow">{{ data.badge || (pageKey === 'success' ? ui.successBadge : ui.notFoundBadge) }}</span>
@@ -40,7 +40,7 @@ const STATUS_UI: Record<Locale, { home: string; install: string; successBadge: s
             <p class="text-gradient-strong">{{ c.common.brand }}</p>
           </aside>
         </div>
-      </main>
+      </div>
     </qs-shell>
   `,
   styles: [`
