@@ -22,8 +22,6 @@ const NOINDEX_PAGES = new Set<PageKey>(['dashboard', 'success', 'notFound']);
 const ASSET_VERSION = '20260531';
 const assetUrl = (path: string) => `${abs(path)}?v=${ASSET_VERSION}`;
 
-const RATING_VALUE = '5.0';
-const RATING_COUNT = '1';
 const PLATFORM_PAGE_KEYS = [
   'quizSolverAi', 'testportal', 'moodle', 'canvas', 'googleForms',
   'microsoftForms', 'blackboard', 'quizlet', 'socrative', 'kahoot', 'quizizz'
@@ -198,13 +196,6 @@ export class SeoService {
           'Chrome Side Panel — no tab switching required',
           'Hint mode for discreet help'
         ],
-        aggregateRating: {
-          '@type': 'AggregateRating',
-          ratingValue: RATING_VALUE,
-          ratingCount: RATING_COUNT,
-          bestRating: '5',
-          worstRating: '1'
-        },
         offers: [
           { '@type': 'Offer', name: 'Free starter credits', price: '0', priceCurrency: 'USD' },
           { '@type': 'Offer', name: '100 credit top-up', price: '1.99', priceCurrency: 'USD' },
@@ -355,14 +346,7 @@ export class SeoService {
           { '@type': 'Offer', name: '100 AI credits', price: '1.99', priceCurrency: 'USD', availability: 'https://schema.org/InStock' },
           { '@type': 'Offer', name: '500 AI credits', price: '4.99', priceCurrency: 'USD', availability: 'https://schema.org/InStock' },
           { '@type': 'Offer', name: '2000 AI credits', price: '9.99', priceCurrency: 'USD', availability: 'https://schema.org/InStock' }
-        ],
-        aggregateRating: {
-          '@type': 'AggregateRating',
-          ratingValue: RATING_VALUE,
-          ratingCount: RATING_COUNT,
-          bestRating: '5',
-          worstRating: '1'
-        }
+        ]
       });
     }
 
