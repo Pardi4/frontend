@@ -34,12 +34,8 @@ import { ShellComponent } from './shell.component';
             
             <!-- Social Proof Statistics -->
             <div class="hero-proof-stats delay-3">
-              <div class="rating-stars" aria-hidden="true">
-                <span class="star">★</span>
-                <span class="star">★</span>
-                <span class="star">★</span>
-                <span class="star">★</span>
-                <span class="star">★</span>
+              <div class="rating-stars community-mark" aria-hidden="true">
+                <span class="star">✓</span>
               </div>
               <span class="rating-text">{{ text.hero.socialProof }}</span>
             </div>
@@ -305,9 +301,16 @@ import { ShellComponent } from './shell.component';
       color: var(--text-secondary);
     }
     .rating-stars {
-      display: flex;
-      gap: 0.15rem;
-      color: var(--accent-amber);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 2rem;
+      height: 2rem;
+      border-radius: 999px;
+      color: #d1fae5;
+      background: rgba(22, 163, 111, 0.18);
+      border: 1px solid rgba(22, 163, 111, 0.36);
+      box-shadow: 0 0 18px rgba(22, 163, 111, 0.16);
     }
     .rating-text {
       font-family: var(--font-heading);
@@ -798,7 +801,7 @@ const HOME_COPY: Partial<Record<Locale, any>> & { en: any; pl: any } = {
       primary: 'Install from Chrome Web Store',
       secondary: 'See how it works',
       proof: ['Testportal, Moodle, Canvas, Forms and more', 'Notes and images saved with questions', 'Shareable quizzes from history'],
-      socialProof: 'Rated 5.0/5 on Chrome Web Store. Be one of our first users!'
+      socialProof: 'Join the first QuizSolver users shaping the AI quiz solver built for real study workflows.'
     },
     how: {
       eyebrow: 'How QuizSolver works',
@@ -874,7 +877,7 @@ const HOME_COPY: Partial<Record<Locale, any>> & { en: any; pl: any } = {
       primary: 'Zainstaluj z Chrome Web Store',
       secondary: 'Zobacz jak to działa',
       proof: ['Testportal, Moodle, Canvas, Forms i inne', 'Notatki i obrazy zapisywane z pytaniami', 'Udostępniane quizy z historii'],
-      socialProof: 'Ocena 5.0/5 w Chrome Web Store. Zostań jednym z pierwszych użytkowników!'
+      socialProof: 'Dołącz do pierwszych użytkowników i pomóż rozwijać najlepszy AI quiz solver do nauki, powtórek i quizów online.'
     },
     how: {
       eyebrow: 'Jak działa QuizSolver',
@@ -952,7 +955,7 @@ const HOME_LOCALE_TEXT: Record<Exclude<Locale, 'en' | 'pl'>, any> = {
     primary: 'Aus dem Chrome Web Store installieren',
     secondary: 'So funktioniert es',
     proof: ['Testportal, Moodle, Canvas, Forms und mehr', 'Notizen und Bilder werden mit Fragen gespeichert', 'Teilbare Quizze aus deiner Historie'],
-    socialProof: 'Mit 5.0/5 Sternen im Chrome Web Store bewertet. Sei einer unserer ersten Nutzer!',
+    socialProof: 'Werde einer der ersten QuizSolver-Nutzer und gestalte einen AI-Quiz-Solver für echte Lernabläufe mit.',
     how: ['So funktioniert QuizSolver', '3 Schritte, um jedes Quiz mit KI zu lösen', 'Einmal installieren, auf unterstützten Plattformen lösen und automatisch eine persönliche Lernbibliothek aufbauen.'],
     steps: [['Installieren und anmelden', 'Installiere QuizSolver kostenlos in Chrome. Dein Konto synchronisiert gelöste Fragen, Notizen und Übungsquizze zwischen Erweiterung und Website.'], ['Lösen oder scannen', 'Klicke Aktuelle Seite lösen. Bei Bildern, Canvas, PDF oder ungewöhnlichem Layout markierst du nur den Fragebereich mit FocusScan.'], ['Wiederholen und teilen', 'Jede gelöste Frage landet in der Historie. Daraus entstehen Karteikarten, Übungsquizze und teilbare Fragensets.']],
     features: ['QuizSolver-Funktionen', 'Alles, was du brauchst, um Quizze schneller zu lösen', 'Für sichtbare Fragen, bildbasierte Fragen, Hinweis-Modus, Quick Overlay und ein vollständiges Wiederholungssystem.', ['Fragenerkennung', 'Klicke Aktuelle Seite lösen: Die Erweiterung liest Frage, Optionen, Fragetyp und Bilder, bevor sie eine Antwort vorschlägt.'], ['Hinweis-Modus', 'Nutze ihn, wenn nichts automatisch geklickt werden soll. QuizSolver markiert nur die wahrscheinlich richtige Antwort.'], ['FocusScan', 'Markiere einen Bereich, wenn die Frage in einem Bild, Canvas, PDF oder ungewöhnlichen Layout steckt.'], ['Quick Overlay', 'Öffne ein kleines verschiebbares Fenster auf der Seite für schnelle Aktionen.'], ['Historie und Notizen', 'Speichere gelöste Fragen mit Antwort, Erklärung, Quelle, Bildern und eigenen Notizen.'], ['Übungsquiz aus Historie', 'Verwandle gespeicherte Fragen in ein Übungsquiz und prüfe danach die richtigen Antworten.'], ['Fragen teilen', 'Wähle aktuelle Fragen aus und erstelle einen öffentlichen Quizlink für andere.'], ['Kahoot Quiz ID', 'Wenn der Host Fragen ausblendet, öffnet die Quiz ID einen Suchbereich mit Antworten ohne AI-Credits.']],
@@ -967,7 +970,7 @@ const HOME_LOCALE_TEXT: Record<Exclude<Locale, 'en' | 'pl'>, any> = {
     primary: 'Instalar desde Chrome Web Store',
     secondary: 'Ver cómo funciona',
     proof: ['Testportal, Moodle, Canvas, Forms y más', 'Notas e imágenes guardadas con preguntas', 'Quizzes compartibles desde el historial'],
-    socialProof: 'Valorado con 5.0/5 en Chrome Web Store. ¡Sé uno de nuestros primeros usuarios!',
+    socialProof: 'Únete a los primeros usuarios de QuizSolver y ayuda a crear un AI quiz solver para estudiar mejor.',
     how: ['Cómo funciona QuizSolver', '3 pasos para resolver cualquier quiz con IA', 'Instala una vez, resuelve en plataformas compatibles y crea automáticamente tu biblioteca de estudio.'],
     steps: [['Instala e inicia sesión', 'Añade QuizSolver a Chrome gratis. Tu cuenta sincroniza preguntas resueltas, notas y quizzes de práctica entre la extensión y la web.'], ['Resuelve o escanea', 'Haz clic en Resolver página actual. Para imágenes, canvas, PDF o diseños raros, usa FocusScan solo sobre el área de la pregunta.'], ['Repasa y comparte', 'Cada pregunta resuelta se guarda en Historial. Úsala para tarjetas, quizzes de práctica o enlaces compartidos.']],
     features: ['Funciones de QuizSolver', 'Todo lo que necesitas para resolver quizzes más rápido', 'Para preguntas visibles, preguntas en imágenes, modo pista, overlay rápido y un sistema completo de repaso.', ['Detección de preguntas', 'Haz clic en Resolver página actual: la extensión lee la pregunta, opciones, tipo e imágenes antes de sugerir una respuesta.'], ['Modo pista', 'Úsalo cuando no quieres clics automáticos. QuizSolver solo marca la respuesta probable.'], ['FocusScan', 'Selecciona un área cuando la pregunta está en una imagen, canvas, PDF o diseño extraño.'], ['Overlay rápido', 'Abre una ventana pequeña y movible en la página con acciones rápidas.'], ['Historial y notas', 'Guarda preguntas resueltas con respuesta, explicación, fuente, imágenes y tus notas.'], ['Quiz de práctica', 'Convierte preguntas guardadas en un quiz y revisa las respuestas correctas al final.'], ['Compartir preguntas', 'Elige preguntas recientes y crea un enlace público para compartirlas.'], ['Kahoot Quiz ID', 'Si el host oculta preguntas, Quiz ID abre un banco buscable de respuestas sin gastar créditos AI.']],
@@ -982,7 +985,7 @@ const HOME_LOCALE_TEXT: Record<Exclude<Locale, 'en' | 'pl'>, any> = {
     primary: 'Installer depuis Chrome Web Store',
     secondary: 'Voir le fonctionnement',
     proof: ['Testportal, Moodle, Canvas, Forms et plus', 'Notes et images sauvegardées avec les questions', 'Quiz partageables depuis l’historique'],
-    socialProof: 'Noté 5.0/5 sur le Chrome Web Store. Soyez l\'un de nos premiers utilisateurs !',
+    socialProof: 'Rejoignez les premiers utilisateurs de QuizSolver et aidez à construire un AI quiz solver vraiment utile.',
     how: ['Comment fonctionne QuizSolver', '3 étapes pour résoudre un quiz avec l’IA', 'Installez une fois, résolvez sur les plateformes compatibles et créez automatiquement une bibliothèque d’étude.'],
     steps: [['Installer et se connecter', 'Ajoutez QuizSolver à Chrome gratuitement. Votre compte synchronise questions résolues, notes et quiz d’entraînement entre l’extension et le site.'], ['Résoudre ou scanner', 'Cliquez Résoudre la page. Pour images, canvas, PDF ou layouts inhabituels, utilisez FocusScan uniquement sur la zone de question.'], ['Réviser et partager', 'Chaque question résolue est sauvegardée dans l’historique pour créer des cartes, des quiz ou des liens partagés.']],
     features: ['Fonctions QuizSolver', 'Tout pour résoudre les quiz plus vite', 'Pour questions visibles, questions en image, mode indice, overlay rapide et système complet de révision.', ['Détection des questions', 'Cliquez Résoudre la page : l’extension lit la question, les options, le type et les images avant de proposer une réponse.'], ['Mode indice', 'À utiliser quand vous ne voulez aucun clic automatique. QuizSolver marque seulement la réponse probable.'], ['FocusScan', 'Sélectionnez une zone si la question est dans une image, un canvas, un PDF ou un layout inhabituel.'], ['Overlay rapide', 'Ouvrez une petite fenêtre déplaçable avec les actions rapides sur la page.'], ['Historique et notes', 'Enregistrez les questions avec réponse, explication, source, images et notes personnelles.'], ['Quiz d’entraînement', 'Transformez les questions enregistrées en quiz et vérifiez les bonnes réponses à la fin.'], ['Partage de questions', 'Choisissez des questions récentes et créez un lien public.'], ['Kahoot Quiz ID', 'Si l’hôte masque les questions, Quiz ID ouvre une banque de réponses sans crédits IA.']],
@@ -997,7 +1000,7 @@ const HOME_LOCALE_TEXT: Record<Exclude<Locale, 'en' | 'pl'>, any> = {
     primary: 'Installa da Chrome Web Store',
     secondary: 'Vedi come funziona',
     proof: ['Testportal, Moodle, Canvas, Forms e altro', 'Note e immagini salvate con le domande', 'Quiz condivisibili dalla cronologia'],
-    socialProof: 'Valutato 5.0/5 sul Chrome Web Store. Sii uno dei nostri primi utenti!',
+    socialProof: 'Unisciti ai primi utenti di QuizSolver e aiutaci a creare un AI quiz solver davvero utile per lo studio.',
     how: ['Come funziona QuizSolver', '3 passaggi per risolvere qualsiasi quiz con AI', 'Installa una volta, risolvi sulle piattaforme supportate e crea automaticamente una libreria di studio.'],
     steps: [['Installa e accedi', 'Aggiungi QuizSolver a Chrome gratis. Il tuo account sincronizza domande risolte, note e quiz di pratica tra estensione e sito.'], ['Risolvi o scansiona', 'Clicca Risolvi pagina corrente. Per immagini, canvas, PDF o layout insoliti usa FocusScan solo sull’area della domanda.'], ['Ripassa e condividi', 'Ogni domanda risolta viene salvata nella cronologia per creare flashcard, quiz di pratica o link condivisi.']],
     features: ['Funzioni QuizSolver', 'Tutto ciò che serve per risolvere quiz più velocemente', 'Per domande visibili, domande in immagini, modalità suggerimento, overlay rapido e sistema completo di ripasso.', ['Rilevamento domande', 'Clicca Risolvi pagina corrente: l’estensione legge domanda, opzioni, tipo e immagini prima di suggerire una risposta.'], ['Modalità suggerimento', 'Usala quando non vuoi clic automatici. QuizSolver evidenzia solo la risposta probabile.'], ['FocusScan', 'Seleziona un’area quando la domanda è in immagine, canvas, PDF o layout insolito.'], ['Overlay rapido', 'Apri una piccola finestra spostabile sulla pagina con azioni rapide.'], ['Cronologia e note', 'Salva domande risolte con risposta, spiegazione, fonte, immagini e note personali.'], ['Quiz di pratica', 'Trasforma domande salvate in un quiz e controlla le risposte corrette alla fine.'], ['Condividi domande', 'Scegli domande recenti e crea un link pubblico.'], ['Kahoot Quiz ID', 'Se l’host nasconde le domande, Quiz ID apre un banco risposte senza crediti AI.']],
@@ -1012,7 +1015,7 @@ const HOME_LOCALE_TEXT: Record<Exclude<Locale, 'en' | 'pl'>, any> = {
     primary: 'Встановити з Chrome Web Store',
     secondary: 'Як це працює',
     proof: ['Testportal, Moodle, Canvas, Forms та інші', 'Нотатки й зображення зберігаються з питаннями', 'Квізи з історії можна ділитися'],
-    socialProof: 'Оцінка 5.0/5 у Chrome Web Store. Стань одним із перших користувачів!',
+    socialProof: 'Приєднуйся до перших користувачів QuizSolver і допоможи створити AI quiz solver для реального навчання.',
     how: ['Як працює QuizSolver', '3 кроки, щоб розв’язати квіз з AI', 'Встанови один раз, розв’язуй на підтримуваних платформах і автоматично збирай власну бібліотеку для навчання.'],
     steps: [['Встанови й увійди', 'Додай QuizSolver у Chrome безкоштовно. Акаунт синхронізує розв’язані питання, нотатки і тренувальні квізи між розширенням та сайтом.'], ['Розв’язуй або скануй', 'Натисни Розв’язати сторінку. Для зображень, canvas, PDF або незвичного макета виділи лише область питання через FocusScan.'], ['Повторюй і ділись', 'Кожне розв’язане питання зберігається в історії, щоб робити картки, тренувальні квізи або посилання для інших.']],
     features: ['Функції QuizSolver', 'Усе потрібне, щоб розв’язувати квізи швидше', 'Для видимих питань, питань у зображеннях, режиму підказки, швидкого overlay і повної системи повторення.', ['Виявлення питань', 'Натисни Розв’язати сторінку: розширення читає питання, варіанти, тип і зображення перед підказкою.'], ['Режим підказки', 'Використовуй, коли не хочеш автоматичних кліків. QuizSolver лише підсвічує ймовірну відповідь.'], ['FocusScan', 'Виділи область, якщо питання в зображенні, canvas, PDF або незвичному макеті.'], ['Швидкий overlay', 'Відкрий маленьке рухоме вікно на сторінці з швидкими діями.'], ['Історія і нотатки', 'Зберігай розв’язані питання з відповіддю, поясненням, джерелом, зображеннями і нотатками.'], ['Квіз з історії', 'Перетвори збережені питання на тренувальний квіз і перевір правильні відповіді після завершення.'], ['Поширення питань', 'Обери останні питання і створи публічне посилання для інших.'], ['Kahoot Quiz ID', 'Якщо хост ховає питання, Quiz ID відкриває банк відповідей без витрати AI-кредитів.']],
