@@ -182,7 +182,7 @@ type AuthModal = 'login' | 'register' | 'verify' | 'forgot' | 'reset';
               <a class="nav-link" [href]="homeHash('features')">{{ copy.nav.features }}</a>
               <a class="nav-link" [href]="pathFor('quiz')">{{ copy.common.historyQuiz }}</a>
               <a class="nav-link" [href]="pathFor('credits')">{{ copy.common.buyCredits }}</a>
-              <a class="nav-link" [href]="pathFor('dashboard')">{{ copy.common.dashboard }}</a>
+              <a class="nav-link" [href]="pathFor('dashboard')" rel="nofollow">{{ copy.common.dashboard }}</a>
               <a class="nav-link" [href]="pathFor('blog')">Blog</a>
             </div>
           </div>
@@ -1041,9 +1041,8 @@ export class ShellComponent implements OnInit, AfterViewInit, OnDestroy {
     return `${pathFor('home', this.locale)}#${hash}`;
   }
 
-  protected authHref(type: 'login' | 'register'): string {
-    const currentPath = this.currentAuthPath();
-    return `${currentPath}?auth=${type}`;
+  protected authHref(_type: 'login' | 'register'): string {
+    return this.currentAuthPath();
   }
 
   private currentAuthPath(): string {

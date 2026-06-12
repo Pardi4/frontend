@@ -12,13 +12,6 @@ Disallow: /es/dashboard
 Disallow: /fr/dashboard
 Disallow: /it/dashboard
 Disallow: /uk/dashboard
-Disallow: /quiz
-Disallow: /pl/quiz
-Disallow: /de/quiz
-Disallow: /es/quiz
-Disallow: /fr/quiz
-Disallow: /it/quiz
-Disallow: /uk/quiz
 Disallow: /admin
 Disallow: /success
 Disallow: /pl/success

@@ -12,24 +12,51 @@ const browserDistFolder = join(import.meta.dirname, '../browser');
 const app = express();
 const angularApp = new AngularNodeAppEngine();
 
+const privateNoindexPaths = ['/dashboard', '/success', '/admin', '/404'];
+const publicQueryParamsToDrop = ['auth', 'error', 'q'];
+
+function shouldSkipPathCleanup(req: express.Request): boolean {
+  return req.path === '/api'
+    || req.path.startsWith('/api/')
+    || req.path === '/extension-auth/callback'
+    || /\.[a-z0-9]{2,8}$/i.test(req.path);
+}
+
+function cleanPublicPageUrl(req: express.Request): string {
+  const queryIndex = req.originalUrl.indexOf('?');
+  const pathPart = queryIndex === -1 ? req.originalUrl : req.originalUrl.slice(0, queryIndex);
+  const queryPart = queryIndex === -1 ? '' : req.originalUrl.slice(queryIndex + 1);
+  const cleanPath = pathPart.length > 1 ? pathPart.replace(/\/+$/, '') || '/' : pathPart;
+  const params = new URLSearchParams(queryPart);
+  const preserveAuthError = params.has('auth') && params.has('error');
+
+  if (preserveAuthError && !params.has('q') && cleanPath === pathPart) {
+    return req.originalUrl;
+  }
+
+  (preserveAuthError ? ['q'] : publicQueryParamsToDrop).forEach(param => params.delete(param));
+  const cleanQuery = params.toString();
+
+  return `${cleanPath}${cleanQuery ? `?${cleanQuery}` : ''}`;
+}
+
 app.use((req, res, next) => {
-  const noindexPaths = ['/dashboard', '/quiz', '/success', '/admin'];
-  const isNoindex = noindexPaths.some(p => req.path === p || req.path.match(new RegExp(`^/[a-z]{2}${p}`)));
+  if (req.method !== 'GET' && req.method !== 'HEAD') return next();
+  if (shouldSkipPathCleanup(req)) return next();
+
+  const cleanUrl = cleanPublicPageUrl(req);
+  if (cleanUrl !== req.originalUrl) {
+    return res.redirect(301, cleanUrl);
+  }
+  return next();
+});
+
+app.use((req, res, next) => {
+  const isNoindex = privateNoindexPaths.some(p => req.path === p || req.path.match(new RegExp(`^/[a-z]{2}${p}`)));
   if (isNoindex) {
     res.setHeader('X-Robots-Tag', 'noindex, follow');
   }
   next();
-});
-
-app.use((req, res, next) => {
-  if (req.method !== 'GET' && req.method !== 'HEAD') return next();
-  if (req.path.length <= 1 || !req.path.endsWith('/')) return next();
-  if (/\.[a-z0-9]{2,8}$/i.test(req.path)) return next();
-
-  const queryIndex = req.originalUrl.indexOf('?');
-  const pathPart = queryIndex === -1 ? req.originalUrl : req.originalUrl.slice(0, queryIndex);
-  const query = queryIndex === -1 ? '' : req.originalUrl.slice(queryIndex);
-  return res.redirect(301, `${pathPart.replace(/\/+$/, '')}${query}`);
 });
 
 /**

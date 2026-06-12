@@ -54,6 +54,14 @@ function blogCategoryRoute(category, locale) {
   return `${locale.prefix}/blog/category/${category}`.replace(/\/+/g, '/');
 }
 
+function categoryHasPosts(category, locale) {
+  return posts.some(post => post.category === category && post.locale === locale.code);
+}
+
+function categoryLocales(category) {
+  return locales.filter(locale => categoryHasPosts(category, locale));
+}
+
 function priority(route) {
   if (route === '/' || /^\/(pl|de|es|fr|it|uk)$/.test(route)) return '1.0';
   if (route.includes('kahoot-ai-bot') || route.includes('quiz-solver-ai') || route.includes('testportal-quiz-solver') || route.includes('google-forms-quiz-solver')) return '0.9';
@@ -114,17 +122,19 @@ function blogUrl(post) {
 
 function categoryUrl(category, locale) {
   const route = blogCategoryRoute(category, locale);
+  const alternatesForCategory = categoryLocales(category);
+  const defaultLocale = alternatesForCategory.find(item => item.code === 'en') || alternatesForCategory[0] || locale;
   const newestPost = posts
     .filter(post => post.category === category && post.locale === locale.code)
     .sort((a, b) => String(b.dateModified || b.datePublished).localeCompare(String(a.dateModified || a.datePublished)))[0];
-  const alternates = locales
-    .map(item => `    <xhtml:link rel="alternate" hreflang="${item.htmlLang}" href="${siteUrl}${blogCategoryRoute(category, item)}"/>`)
+  const alternates = alternatesForCategory
+    .map(item => `    <xhtml:link rel="alternate" hreflang="${item.htmlLang}" href="${xmlEscape(`${siteUrl}${blogCategoryRoute(category, item)}`)}"/>`)
     .join('\n');
   return [
     '  <url>',
     `    <loc>${xmlEscape(`${siteUrl}${route}`)}</loc>`,
     alternates,
-    `    <xhtml:link rel="alternate" hreflang="x-default" href="${xmlEscape(`${siteUrl}${blogCategoryRoute(category, locales[0])}`)}"/>`,
+    `    <xhtml:link rel="alternate" hreflang="x-default" href="${xmlEscape(`${siteUrl}${blogCategoryRoute(category, defaultLocale)}`)}"/>`,
     `    <lastmod>${xmlEscape(newestPost?.dateModified || newestPost?.datePublished || '2026-06-01')}</lastmod>`,
     '    <changefreq>weekly</changefreq>',
     `    <priority>${priority(route)}</priority>`,
@@ -134,7 +144,7 @@ function categoryUrl(category, locale) {
 
 const urls = [
   ...indexedPageKeys.flatMap(pageKey => locales.map(locale => pageUrl(pageKey, locale))),
-  ...categories.flatMap(category => locales.map(locale => categoryUrl(category, locale))),
+  ...categories.flatMap(category => categoryLocales(category).map(locale => categoryUrl(category, locale))),
   ...posts.map(blogUrl)
 ];
 

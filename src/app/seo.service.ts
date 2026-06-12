@@ -27,6 +27,9 @@ const PLATFORM_PAGE_KEYS = [
   'microsoftForms', 'blackboard', 'quizlet', 'socrative', 'kahoot', 'quizizz'
 ];
 
+const categoryHasPosts = (locale: Locale, slug: string): boolean =>
+  BLOG_POSTS.some(post => post.locale === locale && post.category === slug);
+
 @Injectable({ providedIn: 'root' })
 export class SeoService {
   constructor(
@@ -222,7 +225,9 @@ export class SeoService {
           abs(pathFor('credits', locale)),
           abs(pathFor('quiz', locale)),
           abs(pathFor('blog', locale)),
-          ...BLOG_CATEGORY_ORDER.map(category => abs(pathFor('blogCategory', locale).replace(':category', category))),
+          ...BLOG_CATEGORY_ORDER
+            .filter(category => categoryHasPosts(locale, category))
+            .map(category => abs(pathFor('blogCategory', locale).replace(':category', category))),
           abs(pathFor('kahoot', locale)),
           abs(pathFor('testportal', locale)),
           abs(pathFor('googleForms', locale))
@@ -402,13 +407,17 @@ export class SeoService {
     this.document.head.appendChild(script);
   }
 
-  applyBlogCategory(category: BlogCategoryCopy, locale: Locale): void {
+  applyBlogCategory(category: BlogCategoryCopy, locale: Locale, options: { robots?: string } = {}): void {
     const copy = contentFor(locale);
     const meta = { title: category.metaTitle, description: category.metaDescription };
     const canonicalPath = pathFor('blogCategory', locale).replace(':category', category.slug);
     const canonical = abs(canonicalPath);
     const locOpt = localeOption(locale);
-    const robots = 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1';
+    const robots = options.robots || 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1';
+    const localesWithCategoryPosts = SUPPORTED_LOCALES.filter(opt => {
+      const localizedCategory = categoryFor(opt.code, category.slug);
+      return !!localizedCategory && categoryHasPosts(opt.code, localizedCategory.slug);
+    });
 
     this.document.documentElement.lang = copy['htmlLang'] || locale;
     this.title.setTitle(meta.title);
@@ -431,7 +440,7 @@ export class SeoService {
     this.upsertMeta('property', 'og:image:alt', category.title);
     this.upsertMeta('property', 'og:locale', locOpt.ogLocale);
 
-    SUPPORTED_LOCALES
+    localesWithCategoryPosts
       .filter(opt => opt.code !== locale)
       .forEach(opt => {
         const selector = `[property="og:locale:alternate"][data-loc="${opt.code}"]`;
@@ -456,14 +465,18 @@ export class SeoService {
     this.upsertMeta('name', 'twitter:image:alt', category.title);
 
     this.upsertLink('canonical', canonical);
-    SUPPORTED_LOCALES.forEach(opt => {
+    localesWithCategoryPosts.forEach(opt => {
       const localizedCategory = categoryFor(opt.code, category.slug);
       if (localizedCategory) {
         const route = pathFor('blogCategory', opt.code).replace(':category', localizedCategory.slug);
         this.upsertAlternate(opt.htmlLang, abs(route));
       }
     });
-    this.upsertAlternate('x-default', abs(pathFor('blogCategory', 'en').replace(':category', category.slug)));
+    const defaultLocale = localesWithCategoryPosts.find(opt => opt.code === 'en') || localesWithCategoryPosts[0];
+    const defaultCategory = defaultLocale ? categoryFor(defaultLocale.code, category.slug) : undefined;
+    if (defaultLocale && defaultCategory) {
+      this.upsertAlternate('x-default', abs(pathFor('blogCategory', defaultLocale.code).replace(':category', defaultCategory.slug)));
+    }
 
     const homeUrl = `${SITE_URL}/`;
     const posts = BLOG_POSTS

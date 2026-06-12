@@ -26,7 +26,15 @@ const blogCategoryRoutes: ServerRoute[] = SUPPORTED_LOCALES.map(({ code }) => ({
   renderMode: RenderMode.Prerender,
   fallback: PrerenderFallback.None,
   async getPrerenderParams() {
-    return BLOG_CATEGORY_ORDER.map(category => ({ category }));
+    const categoriesWithPosts = new Set(
+      BLOG_POSTS
+        .filter(post => post.locale === code)
+        .map(post => post.category)
+    );
+
+    return BLOG_CATEGORY_ORDER
+      .filter(category => categoriesWithPosts.has(category))
+      .map(category => ({ category }));
   }
 }));
 

@@ -343,17 +343,28 @@ export class BlogListComponent implements OnInit {
     this.c = contentFor(this.locale);
     this.data = pageData('blog', this.locale);
     this.labels = this.labelsFor(this.locale);
-    this.categories = categoriesFor(this.locale);
-    this.category = categoryFor(this.locale, this.route.snapshot.paramMap.get('category'));
+    const requestedCategorySlug = this.route.snapshot.paramMap.get('category');
+    const availableCategorySlugs = new Set(
+      BLOG_POSTS
+        .filter(post => post.locale === this.locale)
+        .map(post => post.category)
+    );
+
+    this.categories = categoriesFor(this.locale).filter(item => availableCategorySlugs.has(item.slug));
+    this.category = categoryFor(this.locale, requestedCategorySlug);
     this.posts = BLOG_POSTS
       .filter(post => post.locale === this.locale)
       .filter(post => !this.category || post.category === this.category.slug)
       .sort((a, b) => b.datePublished.localeCompare(a.datePublished));
 
     if (this.category) {
-      this.seo.applyBlogCategory(this.category, this.locale);
+      this.seo.applyBlogCategory(this.category, this.locale, {
+        robots: this.posts.length > 0 ? undefined : 'noindex, follow'
+      });
     } else {
-      this.seo.applyPage('blog', this.locale);
+      this.seo.applyPage('blog', this.locale, {
+        robots: requestedCategorySlug ? 'noindex, follow' : undefined
+      });
     }
   }
 
