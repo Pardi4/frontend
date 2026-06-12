@@ -12,7 +12,6 @@ Disallow: /es/dashboard
 Disallow: /fr/dashboard
 Disallow: /it/dashboard
 Disallow: /uk/dashboard
-Disallow: /admin
 Disallow: /success
 Disallow: /pl/success
 Disallow: /de/success

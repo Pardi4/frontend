@@ -1,6 +1,8 @@
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { Component, Inject, OnInit, PLATFORM_ID, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Meta, Title } from '@angular/platform-browser';
+import { ADMIN_PANEL_URL } from '../admin-path';
 
 type AdminTab = 'users' | 'purchases' | 'bugs' | 'support' | 'cache' | 'leaderboard' | 'system';
 
@@ -1100,11 +1102,17 @@ export class AdminComponent implements OnInit {
   private token = '';
   private readonly isBrowser: boolean;
 
-  constructor(@Inject(PLATFORM_ID) platformId: object) {
+  constructor(
+    @Inject(PLATFORM_ID) platformId: object,
+    private readonly title: Title,
+    private readonly meta: Meta
+  ) {
     this.isBrowser = isPlatformBrowser(platformId);
   }
 
   async ngOnInit(): Promise<void> {
+    this.title.setTitle('Admin Console | QuizSolver');
+    this.meta.updateTag({ name: 'robots', content: 'noindex, nofollow' });
     if (!this.isBrowser) return;
     this.token = localStorage.getItem('qs_admin_token') || localStorage.getItem('qs_token') || '';
     if (!this.token) return;
@@ -1159,7 +1167,7 @@ export class AdminComponent implements OnInit {
 
   protected startGoogleLogin(): void {
     if (!this.isBrowser) return;
-    window.location.href = `/api/auth/google/start?redirect=${encodeURIComponent('/admin')}`;
+    window.location.href = `/api/auth/google/start?redirect=${encodeURIComponent(ADMIN_PANEL_URL)}`;
   }
 
   protected async refresh(): Promise<void> {

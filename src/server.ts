@@ -6,19 +6,32 @@ import {
 } from '@angular/ssr/node';
 import express from 'express';
 import { join } from 'node:path';
+import { ADMIN_PANEL_URL } from './app/admin-path';
 
 const browserDistFolder = join(import.meta.dirname, '../browser');
 
 const app = express();
 const angularApp = new AngularNodeAppEngine();
 
-const privateNoindexPaths = ['/dashboard', '/success', '/admin', '/404'];
+const privateNoindexPaths = ['/dashboard', '/success', '/404', '/admin', ADMIN_PANEL_URL];
 const publicQueryParamsToDrop = ['auth', 'error', 'q'];
+const legacyAdminPaths = ['/admin', '/admin/', '/admin.html', '/admin-app.js'];
+
+function isLegacyAdminPath(pathname: string): boolean {
+  const cleanPath = pathname.replace(/\/+$/, '') || '/';
+  return cleanPath === '/admin' || cleanPath === '/admin.html' || cleanPath === '/admin-app.js';
+}
+
+function isAdminPanelPath(pathname: string): boolean {
+  const cleanPath = pathname.replace(/\/+$/, '') || '/';
+  return cleanPath === ADMIN_PANEL_URL;
+}
 
 function shouldSkipPathCleanup(req: express.Request): boolean {
   return req.path === '/api'
     || req.path.startsWith('/api/')
     || req.path === '/extension-auth/callback'
+    || isLegacyAdminPath(req.path)
     || /\.[a-z0-9]{2,8}$/i.test(req.path);
 }
 
@@ -40,6 +53,19 @@ function cleanPublicPageUrl(req: express.Request): string {
   return `${cleanPath}${cleanQuery ? `?${cleanQuery}` : ''}`;
 }
 
+app.get(legacyAdminPaths, (_req, res) => {
+  res
+    .status(404)
+    .setHeader('X-Robots-Tag', 'noindex, nofollow');
+  res
+    .type('html')
+    .send('<!doctype html><html><head><meta charset="utf-8"><meta name="robots" content="noindex,nofollow"><title>Not found</title></head><body>Not found</body></html>');
+});
+
+app.use('/api', (_req, res) => {
+  res.status(404).json({ error: 'Endpoint not found.' });
+});
+
 app.use((req, res, next) => {
   if (req.method !== 'GET' && req.method !== 'HEAD') return next();
   if (shouldSkipPathCleanup(req)) return next();
@@ -54,7 +80,7 @@ app.use((req, res, next) => {
 app.use((req, res, next) => {
   const isNoindex = privateNoindexPaths.some(p => req.path === p || req.path.match(new RegExp(`^/[a-z]{2}${p}`)));
   if (isNoindex) {
-    res.setHeader('X-Robots-Tag', 'noindex, follow');
+    res.setHeader('X-Robots-Tag', isAdminPanelPath(req.path) ? 'noindex, nofollow' : 'noindex, follow');
   }
   next();
 });
