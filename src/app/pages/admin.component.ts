@@ -358,13 +358,21 @@ type AdminTab = 'users' | 'purchases' | 'bugs' | 'support' | 'cache' | 'leaderbo
               <div class="cache-list">
                 <article class="glass clickable-row" *ngFor="let hit of cache().topHits || []" (click)="showQuestionDetails(hit)">
                   <p style="font-weight: 500;">{{ hit.questionText }}</p>
-                  <span class="badge badge-outline" style="text-transform: capitalize;">
-                    {{ hit.questionType }} | {{ hit.hitCount }} hits
-                  </span>
+                  <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center;">
+                    <span class="badge badge-outline" style="text-transform: capitalize;">
+                      {{ hit.questionType }} | {{ hit.options?.length || 0 }} options | {{ hit.hitCount }} hits
+                    </span>
+                    <span class="status-pill danger" *ngIf="isWeakQuestionText(hit.questionText)">Weak text</span>
+                  </div>
                 </article>
                 <div class="empty-panel" style="text-align: center; padding: 2rem;" *ngIf="!(cache().topHits || []).length">
                   <p class="text-secondary">No cache hits yet.</p>
                 </div>
+              </div>
+              <div class="pagination" *ngIf="cachePagination().pages > 1">
+                <button type="button" *ngFor="let page of cachePageNumbers()" [class.active]="page === cachePagination().page" (click)="loadCache(page)">
+                  {{ page }}
+                </button>
               </div>
             </section>
 
@@ -411,12 +419,28 @@ type AdminTab = 'users' | 'purchases' | 'bugs' | 'support' | 'cache' | 'leaderbo
         <div class="modal-card glass anim-slide-up" (click)="$event.stopPropagation()">
           <header class="modal-header">
             <h3>Question details</h3>
-            <button class="btn-close" type="button" (click)="selectedQuestion.set(null)">x</button>
+            <div class="row-actions">
+              <button type="button" class="danger" *ngIf="selectedQuestion()?.cacheId" (click)="deleteCacheEntry(selectedQuestion())">Delete cache</button>
+              <button class="btn-close" type="button" (click)="selectedQuestion.set(null)">x</button>
+            </div>
           </header>
           <div class="modal-body">
             <div class="detail-group">
               <label>Type</label>
               <span class="badge badge-outline" style="text-transform: uppercase;">{{ selectedQuestion()?.questionType }}</span>
+            </div>
+            <div class="detail-group" *ngIf="selectedQuestion()?.hitCount != null" style="margin-top: 1rem;">
+              <label>Cache hits</label>
+              <strong style="color: var(--text-primary);">{{ selectedQuestion()?.hitCount }}</strong>
+            </div>
+            <div class="detail-group" style="margin-top: 1rem;">
+              <label>Counts</label>
+              <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                <span class="badge badge-outline">Options: {{ selectedQuestion()?.options?.length || 0 }}</span>
+                <span class="badge badge-outline">Prompts: {{ selectedQuestion()?.prompts?.length || 0 }}</span>
+                <span class="badge badge-outline">Rows: {{ selectedQuestion()?.rows?.length || 0 }}</span>
+                <span class="badge badge-outline">Answer items: {{ answerItems(selectedQuestion()).length }}</span>
+              </div>
             </div>
             <div class="detail-group" style="margin-top: 1.5rem;">
               <label>Question text</label>
@@ -424,7 +448,7 @@ type AdminTab = 'users' | 'purchases' | 'bugs' | 'support' | 'cache' | 'leaderbo
             </div>
             
             <div class="detail-group" *ngIf="selectedQuestion()?.options?.length" style="margin-top: 1.5rem;">
-              <label>Options</label>
+              <label>Options ({{ selectedQuestion()?.options?.length || 0 }})</label>
               <ul class="options-list">
                 <li *ngFor="let opt of selectedQuestion()?.options; let i = index">
                   <span class="option-idx">{{ i + 1 }}.</span> {{ opt }}
@@ -433,7 +457,7 @@ type AdminTab = 'users' | 'purchases' | 'bugs' | 'support' | 'cache' | 'leaderbo
             </div>
 
             <div class="detail-group" *ngIf="selectedQuestion()?.prompts?.length" style="margin-top: 1.5rem;">
-              <label>Prompts (matching)</label>
+              <label>Prompts ({{ selectedQuestion()?.prompts?.length || 0 }})</label>
               <ul class="options-list">
                 <li *ngFor="let prompt of selectedQuestion()?.prompts; let i = index">
                   <span class="option-idx">P{{ i + 1 }}:</span> {{ prompt }}
@@ -442,7 +466,7 @@ type AdminTab = 'users' | 'purchases' | 'bugs' | 'support' | 'cache' | 'leaderbo
             </div>
 
             <div class="detail-group" *ngIf="selectedQuestion()?.rows?.length" style="margin-top: 1.5rem;">
-              <label>Rows (matrix)</label>
+              <label>Rows ({{ selectedQuestion()?.rows?.length || 0 }})</label>
               <ul class="options-list">
                 <li *ngFor="let row of selectedQuestion()?.rows; let i = index">
                   <span class="option-idx">R{{ i + 1 }}:</span> {{ row }}
@@ -450,8 +474,18 @@ type AdminTab = 'users' | 'purchases' | 'bugs' | 'support' | 'cache' | 'leaderbo
               </ul>
             </div>
 
+            <div class="detail-group" *ngIf="answerItems(selectedQuestion()).length" style="margin-top: 1.5rem;">
+              <label>Answer items ({{ answerItems(selectedQuestion()).length }})</label>
+              <ul class="options-list">
+                <li *ngFor="let item of answerItems(selectedQuestion())">
+                  <span class="option-idx">{{ item.label }}</span> {{ item.value }}
+                  <small *ngIf="item.raw !== null" style="display: block; margin-top: 0.35rem; color: var(--text-secondary);">raw: {{ item.raw }}</small>
+                </li>
+              </ul>
+            </div>
+
             <div class="detail-group" style="margin-top: 1.5rem; padding: 1rem; background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.2); border-radius: var(--radius-md);">
-              <label style="color: var(--accent-emerald);">Answer</label>
+              <label style="color: var(--accent-emerald);">Answer summary</label>
               <strong style="color: #fff; font-size: 1.1rem; display: block; margin-top: 0.25rem;">{{ formatAnswer(selectedQuestion()) }}</strong>
             </div>
 
@@ -1343,6 +1377,7 @@ export class AdminComponent implements OnInit {
   protected readonly leaderboard = signal<any[]>([]);
   protected readonly health = signal<any>({});
   protected readonly pagination = signal<any>({ page: 1, pages: 1, total: 0 });
+  protected readonly cachePagination = signal<any>({ page: 1, pages: 1, total: 0 });
 
   protected readonly selectedQuestion = signal<any | null>(null);
   protected readonly selectedUserHistory = signal<any | null>(null);
@@ -1548,10 +1583,24 @@ export class AdminComponent implements OnInit {
     if (!this.confirm('Clear all cached answers?')) return;
     const result = await this.api('/api/admin/cache/clear', { method: 'DELETE' });
     if (result.success) {
-      await Promise.all([this.loadCache(), this.loadStats()]);
+      await Promise.all([this.loadCache(1), this.loadStats()]);
       return;
     }
     this.error.set(result.error || 'Could not clear cache.');
+  }
+
+  protected async deleteCacheEntry(question: any): Promise<void> {
+    const cacheId = question?.cacheId;
+    if (!cacheId) return;
+    if (!this.confirm('Delete this cached answer?')) return;
+
+    const result = await this.api(`/api/admin/cache/${cacheId}`, { method: 'DELETE' });
+    if (result.success) {
+      this.selectedQuestion.set(null);
+      await Promise.all([this.loadCache(this.cachePagination().page || 1), this.loadStats()]);
+      return;
+    }
+    this.error.set(result.error || 'Could not delete cache entry.');
   }
 
   protected statsCards(): Array<{ label: string; value: string; revenue?: boolean }> {
@@ -1761,9 +1810,13 @@ export class AdminComponent implements OnInit {
     this.error.set(result.error || 'Could not delete support message.');
   }
 
-  private async loadCache(): Promise<void> {
-    const result = await this.api('/api/admin/cache/stats');
-    if (result.success) this.cache.set(result);
+  protected async loadCache(page = 1): Promise<void> {
+    const params = new URLSearchParams({ page: String(page), limit: '25' });
+    const result = await this.api(`/api/admin/cache/stats?${params.toString()}`);
+    if (result.success) {
+      this.cache.set(result);
+      this.cachePagination.set(result.pagination || { page, pages: 1, total: result.totalMatching || result.totalCached || 0 });
+    }
   }
 
   private async loadLeaderboard(): Promise<void> {
@@ -1801,16 +1854,90 @@ export class AdminComponent implements OnInit {
     return Array.from({ length: pages }, (_, index) => index + 1);
   }
 
+  protected cachePageNumbers(): number[] {
+    const pages = Number(this.cachePagination().pages || 1);
+    return Array.from({ length: pages }, (_, index) => index + 1);
+  }
+
   protected showQuestionDetails(q: any): void {
     this.selectedQuestion.set({
+      cacheId: q._id || q.cachedAnswerId || null,
       questionText: q.questionText,
       questionType: q.questionType || q.type,
       options: q.options || [],
       prompts: q.prompts || [],
       rows: q.rows || [],
       answer: q.answer,
-      explanation: q.explanation || ''
+      explanation: q.explanation || '',
+      hitCount: q.hitCount ?? null
     });
+  }
+
+  protected isWeakQuestionText(text: string): boolean {
+    const compact = String(text || '')
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .toLowerCase()
+      .replace(/\s+/g, ' ')
+      .trim();
+    if (!compact) return false;
+
+    const hasMeta =
+      /\b(?:domanda|question|pytanie|pregunta|frage|aufgabe|vraag|pergunta|quesito)\s*\d+\s*(?:di|of|de|del|von|z|\/)\s*\d+\b/i.test(compact) ||
+      /\b(?:scelta\s+multipla|multiple\s+choice|single\s+choice|single\s+answer|multiple\s+answers|true\s*\/\s*false|vero\s*\/\s*falso|opcion\s+multiple|opcao\s+multipla|choix\s+multiple|mehrfachauswahl|wielokrotny\s+wybor|jednokrotny\s+wybor)\b/i.test(compact);
+    const stripped = compact
+      .replace(/\b(?:domanda|question|pytanie|pregunta|frage|aufgabe|vraag|pergunta|quesito)\s*\d+\s*(?:di|of|de|del|von|z|\/)\s*\d+\b/gi, ' ')
+      .replace(/\b(?:scelta\s+multipla|multiple\s+choice|single\s+choice|single\s+answer|multiple\s+answers|true\s*\/\s*false|vero\s*\/\s*falso|opcion\s+multiple|opcao\s+multipla|choix\s+multiple|mehrfachauswahl|wielokrotny\s+wybor|jednokrotny\s+wybor)\b/gi, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+    const words = stripped.split(/\s+/).filter(Boolean);
+    return hasMeta && (stripped.length < 12 || words.length < 3);
+  }
+
+  protected answerItems(q: any): Array<{ label: string; value: string; raw: string | null }> {
+    if (!q || q.answer === undefined || q.answer === null) return [];
+    const type = q.questionType || q.type;
+    const options = q.options || [];
+    const answer = q.answer;
+    const itemValue = (raw: unknown): { value: string; raw: string | null } => {
+      const idx = Number(raw);
+      const optionText = Number.isInteger(idx) ? options[idx] : '';
+      const rawText = this.rawAnswerValue(raw);
+      return {
+        value: optionText || rawText,
+        raw: optionText ? rawText : null
+      };
+    };
+
+    if (type === 'radio') {
+      const item = itemValue(answer);
+      return [{ label: 'A1', ...item }];
+    }
+
+    if (Array.isArray(answer)) {
+      const labels = type === 'matching'
+        ? (q.prompts || [])
+        : type === 'matrix'
+          ? (q.rows || [])
+          : [];
+      return answer.map((raw, index) => {
+        const item = itemValue(raw);
+        const source = labels[index] ? `${labels[index]} ->` : `A${index + 1}`;
+        return { label: source, ...item };
+      });
+    }
+
+    return [{ label: 'A1', value: this.rawAnswerValue(answer), raw: null }];
+  }
+
+  private rawAnswerValue(value: unknown): string {
+    if (typeof value === 'string') return value;
+    if (typeof value === 'number' || typeof value === 'boolean') return String(value);
+    try {
+      return JSON.stringify(value);
+    } catch {
+      return String(value);
+    }
   }
 
   protected formatAnswer(q: any): string {
