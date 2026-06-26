@@ -404,7 +404,7 @@ type AuthModal = 'login' | 'register' | 'verify' | 'forgot' | 'reset';
       width: 2.5rem;
       height: 2.5rem;
       border-radius: var(--radius-md);
-      background: #101318 url('/logo-96.png?v=20260626') center / cover no-repeat;
+      background: #101318 url('/logo-96.png?v=20260627') center / cover no-repeat;
       box-shadow: 0 12px 28px rgba(14, 165, 233, 0.18);
       color: transparent;
       font-weight: 800;

@@ -1089,7 +1089,7 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      background: #101318 url('/logo-512.png?v=20260626') center / cover no-repeat;
+      background: #101318 url('/logo-512.png?v=20260627') center / cover no-repeat;
       color: transparent;
       font-size: 0;
       font-weight: 800;

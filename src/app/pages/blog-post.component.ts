@@ -3,8 +3,29 @@ import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SeoService } from '../seo.service';
 import { BLOG_POSTS, BlogPost } from '../blog-content';
-import { Locale, contentFor, pathFor, CHROME_WEB_STORE_URL } from '../site-content';
+import { Locale, PageKey, pageData, pathFor, CHROME_WEB_STORE_URL } from '../site-content';
 import { ShellComponent } from './shell.component';
+
+type RelatedPlatform = {
+  pageKey: PageKey;
+  label: string;
+  href: string;
+};
+
+const BLOG_PLATFORM_KEYWORDS: Array<{ key: string; pageKey: PageKey }> = [
+  { key: 'kahoot', pageKey: 'kahoot' },
+  { key: 'testportal', pageKey: 'testportal' },
+  { key: 'moodle', pageKey: 'moodle' },
+  { key: 'canvas', pageKey: 'canvas' },
+  { key: 'google-forms', pageKey: 'googleForms' },
+  { key: 'google forms', pageKey: 'googleForms' },
+  { key: 'microsoft-forms', pageKey: 'microsoftForms' },
+  { key: 'microsoft forms', pageKey: 'microsoftForms' },
+  { key: 'blackboard', pageKey: 'blackboard' },
+  { key: 'quizlet', pageKey: 'quizlet' },
+  { key: 'socrative', pageKey: 'socrative' },
+  { key: 'quizizz', pageKey: 'quizizz' }
+];
 
 @Component({
   standalone: true,
@@ -18,6 +39,14 @@ import { ShellComponent } from './shell.component';
             <span>{{ labels.back }}</span>
           </a>
         </div>
+
+        <nav class="breadcrumbs" aria-label="Breadcrumb">
+          <a [href]="getHomeUrl()">QuizSolver</a>
+          <span>/</span>
+          <a [href]="getBlogListUrl()">Blog</a>
+          <span>/</span>
+          <span>{{ post.title }}</span>
+        </nav>
 
         <header class="post-header">
           <div class="post-meta">
@@ -40,6 +69,17 @@ import { ShellComponent } from './shell.component';
         <article class="post-content glass">
           <div [innerHTML]="post.content"></div>
         </article>
+
+        <section class="related-platforms glass reveal" *ngIf="relatedPlatforms().length">
+          <p class="eyebrow">{{ labels.relatedEyebrow }}</p>
+          <h2>{{ labels.relatedTitle }}</h2>
+          <div class="related-platform-list">
+            <a class="related-platform-link" *ngFor="let platform of relatedPlatforms()" [href]="platform.href">
+              <span>{{ platform.label }}</span>
+              <span class="arrow">→</span>
+            </a>
+          </div>
+        </section>
 
         <section class="post-cta glass reveal">
           <div class="cta-gradient"></div>
@@ -99,6 +139,27 @@ import { ShellComponent } from './shell.component';
     }
     .back-link .arrow {
       font-family: system-ui, -apple-system, sans-serif;
+    }
+    .breadcrumbs {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 2rem;
+      color: var(--text-tertiary);
+      font-size: 0.9rem;
+    }
+    .breadcrumbs a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-weight: 700;
+    }
+    .breadcrumbs a:hover {
+      color: var(--accent-cyan);
+    }
+    .breadcrumbs span:last-child {
+      color: var(--text-primary);
+      font-weight: 700;
     }
 
     .post-header {
@@ -162,6 +223,40 @@ import { ShellComponent } from './shell.component';
       padding: 3rem;
       border-radius: var(--radius-lg);
       margin-bottom: 4rem;
+    }
+    .related-platforms {
+      padding: 2rem;
+      border-radius: var(--radius-lg);
+      margin-bottom: 4rem;
+    }
+    .related-platforms h2 {
+      font-size: 1.5rem;
+      margin-bottom: 1.25rem;
+    }
+    .related-platform-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 0.75rem;
+    }
+    .related-platform-link {
+      min-height: 3.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      padding: 0.9rem 1rem;
+      border: 1px solid #2b3545;
+      border-radius: 10px;
+      background: #171c24;
+      color: var(--text-primary);
+      text-decoration: none;
+      font-weight: 800;
+    }
+    .related-platform-link:hover {
+      border-color: rgba(6, 182, 212, 0.55);
+    }
+    .related-platform-link .arrow {
+      color: var(--accent-cyan);
     }
 
     /* Markdown/HTML rendered styles */
@@ -378,8 +473,35 @@ export class BlogPostComponent implements OnInit {
     return pathFor('blog', this.locale);
   }
 
+  protected getHomeUrl(): string {
+    return pathFor('home', this.locale);
+  }
+
   protected getDemoUrl(): string {
     return pathFor('demo', this.locale);
+  }
+
+  protected relatedPlatforms(): RelatedPlatform[] {
+    if (!this.post) return [];
+    const haystack = [
+      this.post.category,
+      this.post.slug,
+      this.post.title,
+      this.post.metaDescription,
+      ...(this.post.tags || [])
+    ].join(' ').toLowerCase();
+    const pageKeys = BLOG_PLATFORM_KEYWORDS
+      .filter(item => haystack.includes(item.key))
+      .map(item => item.pageKey);
+    const uniquePageKeys = [...new Set(pageKeys.length ? pageKeys : ['quizSolverAi' as PageKey])].slice(0, 4);
+    return uniquePageKeys.map(pageKey => {
+      const data = pageData(pageKey, this.locale) || pageData(pageKey, 'en') || {};
+      return {
+        pageKey,
+        label: data.shortName ? `${data.shortName} Quiz Solver` : data.title || 'AI Quiz Solver',
+        href: pathFor(pageKey, this.locale)
+      };
+    });
   }
 
   private labelsFor(locale: Locale) {
@@ -476,6 +598,14 @@ export class BlogPostComponent implements OnInit {
         goBlog: 'До блогу'
       }
     };
-    return labels[locale] || labels.en;
+    labels.en.relatedEyebrow = 'Related';
+    labels.en.relatedTitle = 'Related platform guides';
+    labels.pl.relatedEyebrow = 'Powiązane';
+    labels.pl.relatedTitle = 'Powiązane poradniki platform';
+    return {
+      relatedEyebrow: labels.en.relatedEyebrow,
+      relatedTitle: labels.en.relatedTitle,
+      ...(labels[locale] || labels.en)
+    };
   }
 }

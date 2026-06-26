@@ -152,6 +152,249 @@ const genericLocalizedDraft = (locale: Locale): ArticleDraft => {
   return drafts[locale] || drafts.en;
 };
 
+const TRANSLATED_ARTICLE_DRAFTS: Record<string, ArticleDraft> = {
+  'testportal-quiz-solver-anleitung': {
+    intro: [
+      "Testportal-Tests sind oft strenger aufgebaut als ein normales Formular. Du siehst eine Frage pro Bildschirm, einen Timer, gemischte Antwortoptionen und manchmal Hinweise, wenn das Browserfenster den Fokus verliert.",
+      "QuizSolver liest den sichtbaren Fragetext, verbindet ihn mit den aktuellen Antwortoptionen und speichert das Ergebnis im Verlauf, damit die Frage später als Lernmaterial nutzbar bleibt."
+    ],
+    sections: [
+      { heading: "Was QuizSolver auf Testportal liest", paragraphs: ["Die Erweiterung sucht nach der echten Frage, nicht nur nach Labels wie \"Frage 5\". Sie erkennt außerdem, ob eine Frage eine oder mehrere richtige Antworten haben kann."], bullets: ["Single-Choice-Fragen", "Multiple-Choice-Fragen", "sichtbare kurze Aufgaben", "Bilder und Diagramme mit FocusScan"] },
+      { heading: "Warum Timer den Ablauf verändern", paragraphs: ["Der Timer verändert nicht die KI-Logik, aber er macht einen stabilen Ablauf wichtiger. Wiederholtes Senden derselben Frage durch Doppelklicks, Refresh oder Retry sollte vermieden werden."] },
+      { heading: "Wann FocusScan sinnvoll ist", paragraphs: ["Wenn Testportal eine Frage als Bild, PDF-Ausschnitt oder gesperrten Text zeigt, markierst du nur den Bereich mit Frage und Antworten. Eine enge Auswahl liefert der KI saubereren Kontext."] },
+      { heading: "Nach der Antwort lernen", paragraphs: ["Speichere schwierige Fragen, füge Notizen hinzu und wiederhole sie später aus dem Verlauf. So wird eine einzelne Antwort zu einem kleinen privaten Übungsset."], bullets: ["Erklärungen speichern", "schwache Themen markieren", "Fragen später als Wiederholung nutzen"] }
+    ]
+  },
+  'guia-testportal-quiz-solver': {
+    intro: [
+      "Los tests de Testportal suelen ser más estrictos que un formulario normal. Puedes ver una pregunta por pantalla, un temporizador, opciones mezcladas y avisos si la ventana pierde el foco.",
+      "QuizSolver lee la pregunta visible, la combina con las respuestas visibles y guarda el resultado en el historial para que puedas repasarlo después."
+    ],
+    sections: [
+      { heading: "Qué lee QuizSolver en Testportal", paragraphs: ["La extensión busca el texto real de la pregunta, no solo etiquetas como \"Pregunta 5\". También detecta si el formato es de opción única o de varias respuestas."], bullets: ["preguntas de opción única", "preguntas de respuesta múltiple", "enunciados cortos visibles", "imágenes y gráficos con FocusScan"] },
+      { heading: "Cómo afecta el temporizador", paragraphs: ["El temporizador no cambia el razonamiento de la IA, pero sí exige un flujo estable. Lo importante es no enviar la misma pregunta varias veces por doble clic, recarga o reintento."] },
+      { heading: "Cuándo usar FocusScan", paragraphs: ["Si Testportal muestra la pregunta como imagen, PDF o texto bloqueado, selecciona solo la zona de pregunta y respuestas. Cuanto más limpia sea la selección, mejor contexto recibe la IA."] },
+      { heading: "Repasar después de responder", paragraphs: ["Guarda las preguntas difíciles, añade notas y vuelve a ellas desde el historial. Así una respuesta rápida se convierte en material de estudio."], bullets: ["guardar explicaciones", "marcar temas débiles", "crear repaso desde el historial"] }
+    ]
+  },
+  'guide-testportal-quiz-solver': {
+    intro: [
+      "Les tests Testportal sont souvent plus stricts qu’un simple formulaire. Une question peut apparaître par écran avec minuteur, réponses mélangées et alertes lorsque la fenêtre perd le focus.",
+      "QuizSolver lit la question visible, l’associe aux réponses affichées et conserve le résultat dans l’historique pour la révision."
+    ],
+    sections: [
+      { heading: "Ce que QuizSolver lit sur Testportal", paragraphs: ["L’extension recherche le vrai texte de la question, pas seulement des libellés comme \"Question 5\". Elle détecte aussi si la question accepte une ou plusieurs réponses."], bullets: ["questions à choix unique", "questions à choix multiple", "consignes courtes visibles", "images et graphiques avec FocusScan"] },
+      { heading: "Pourquoi le minuteur compte", paragraphs: ["Le minuteur ne change pas le raisonnement de l’IA, mais rend le flux plus sensible. Il faut éviter de renvoyer la même question après un double clic, une actualisation ou un nouvel essai."] },
+      { heading: "Quand utiliser FocusScan", paragraphs: ["Si Testportal affiche une question sous forme d’image, de PDF ou de texte bloqué, sélectionnez seulement la zone de la question et des réponses. Un cadrage propre donne un meilleur contexte."] },
+      { heading: "Réviser après la réponse", paragraphs: ["Sauvegardez les questions difficiles, ajoutez une note et revenez-y depuis l’historique. Une réponse isolée devient alors une vraie base de révision."], bullets: ["sauvegarder les explications", "marquer les thèmes faibles", "réviser avec l’historique"] }
+    ]
+  },
+  'guida-testportal-quiz-solver': {
+    intro: [
+      "I test su Testportal sono spesso più rigidi di un normale modulo. Puoi vedere una domanda per schermata, un timer, risposte mescolate e avvisi quando la finestra perde il focus.",
+      "QuizSolver legge la domanda visibile, la collega alle opzioni presenti sullo schermo e salva il risultato nella cronologia per il ripasso."
+    ],
+    sections: [
+      { heading: "Cosa legge QuizSolver su Testportal", paragraphs: ["L’estensione cerca il testo reale della domanda, non solo etichette come \"Domanda 5\". Riconosce anche se la domanda richiede una o più risposte."], bullets: ["scelta singola", "risposta multipla", "brevi prompt visibili", "immagini e grafici con FocusScan"] },
+      { heading: "Come cambia il flusso con il timer", paragraphs: ["Il timer non cambia il ragionamento dell’AI, ma rende più importante evitare invii duplicati causati da doppio clic, refresh o retry."] },
+      { heading: "Quando usare FocusScan", paragraphs: ["Se Testportal mostra la domanda come immagine, PDF o testo bloccato, seleziona solo l’area con domanda e risposte. Una selezione precisa dà all’AI un contesto migliore."] },
+      { heading: "Ripassare dopo la risposta", paragraphs: ["Salva le domande difficili, aggiungi note e ripassale dalla cronologia. Così una risposta veloce diventa materiale di studio."], bullets: ["salvare spiegazioni", "segnare argomenti deboli", "ripassare dalla cronologia"] }
+    ]
+  },
+  'testportal-quiz-solver-posibnyk': {
+    intro: [
+      "Тести Testportal часто суворіші за звичайну форму: одне питання на екрані, таймер, перемішані варіанти та попередження, коли вікно браузера втрачає фокус.",
+      "QuizSolver читає видимий текст питання, зіставляє його з поточними варіантами відповідей і зберігає результат в історії для повторення."
+    ],
+    sections: [
+      { heading: "Що QuizSolver читає в Testportal", paragraphs: ["Розширення шукає справжній текст питання, а не лише написи на кшталт \"Питання 5\". Також воно визначає, чи потрібна одна відповідь, чи кілька."], bullets: ["питання з одним варіантом", "питання з кількома варіантами", "короткі видимі завдання", "зображення та графіки через FocusScan"] },
+      { heading: "Як таймер впливає на роботу", paragraphs: ["Таймер не змінює логіку AI, але робить стабільний процес важливішим. Варто уникати повторного надсилання того самого питання через подвійний клік, оновлення або повторну спробу."] },
+      { heading: "Коли використовувати FocusScan", paragraphs: ["Якщо питання показано як зображення, PDF або заблокований текст, виділіть лише область питання й відповідей. Чистіша область дає AI кращий контекст."] },
+      { heading: "Повторення після відповіді", paragraphs: ["Зберігайте складні питання, додавайте нотатки та повертайтеся до них з історії. Так одна відповідь стає матеріалом для навчання."], bullets: ["зберігати пояснення", "позначати слабкі теми", "повторювати питання з історії"] }
+    ]
+  },
+  'moodle-quiz-solver-anleitung': {
+    intro: [
+      "Moodle-Quizze wirken einfach, aber viele Kurse nutzen gemischte Antworten, mehrere Seiten, Review-Einschränkungen und verschiedene Fragetypen in einem Versuch.",
+      "QuizSolver funktioniert am besten, wenn es den aktuellen Moodle-Frageblock liest, das Antwortformat erkennt und den Kontext für spätere Wiederholung speichert."
+    ],
+    sections: [
+      { heading: "Wichtige Moodle-Layouts", paragraphs: ["Manche Kurse zeigen alle Fragen auf einer Seite, andere teilen den Test auf mehrere Seiten auf. Der Parser sollte nur die sichtbare Frage lösen und Navigationstexte auslassen."], bullets: ["eine Seite", "mehrere Seiten", "gemischte Optionen", "Review-Seiten mit Feedback"] },
+      { heading: "Gemischte Antworten", paragraphs: ["Wenn Moodle Antworten mischt, reicht die Position A, B oder C nicht aus. QuizSolver vergleicht den sichtbaren Text jeder Option und arbeitet mit dem tatsächlichen Inhalt."] },
+      { heading: "Unterstützte Fragetypen", paragraphs: ["Typische Moodle-Tests enthalten Radio-Buttons, Checkboxen, Dropdowns, Kurzantworten und Bilder. Bei eingebetteten Grafiken hilft FocusScan."] },
+      { heading: "Nach dem Absenden wiederholen", paragraphs: ["Review-Seiten in Moodle sind gutes Lernmaterial. Speichere Erklärungen, vergleiche sie mit Feedback und erstelle daraus eine Liste schwacher Themen."] }
+    ]
+  },
+  'guia-moodle-quiz-solver': {
+    intro: [
+      "Los cuestionarios de Moodle parecen simples, pero muchos cursos usan respuestas mezcladas, intentos en varias páginas, restricciones de revisión y tipos de pregunta mezclados.",
+      "QuizSolver funciona mejor cuando lee el bloque actual de Moodle, detecta el formato de respuesta y guarda el contexto para repasar después."
+    ],
+    sections: [
+      { heading: "Diseños de Moodle que importan", paragraphs: ["Algunos cursos muestran todo en una página y otros dividen el intento. El parser debe resolver solo la pregunta visible y evitar textos de navegación o revisión."], bullets: ["intentos en una página", "intentos en varias páginas", "opciones mezcladas", "pantallas de revisión"] },
+      { heading: "Respuestas mezcladas", paragraphs: ["Cuando Moodle mezcla respuestas, la posición de la opción no identifica la respuesta. QuizSolver compara el texto visible de cada opción y razona sobre el contenido real."] },
+      { heading: "Tipos de pregunta", paragraphs: ["Moodle puede combinar radio, checkboxes, desplegables, respuestas cortas e imágenes. Si la pregunta está dentro de una imagen o documento, FocusScan captura la zona necesaria."] },
+      { heading: "Repaso tras enviar", paragraphs: ["Las pantallas de revisión de Moodle son material de estudio valioso. Guarda explicaciones, compáralas con el feedback visible y crea una lista de temas débiles."] }
+    ]
+  },
+  'guide-moodle-quiz-solver': {
+    intro: [
+      "Les quiz Moodle peuvent sembler simples, mais beaucoup de cours utilisent des réponses mélangées, plusieurs pages, des restrictions de révision et plusieurs types de questions.",
+      "QuizSolver est plus fiable lorsqu’il lit le bloc de question actuel, détecte le format de réponse et garde assez de contexte pour la révision."
+    ],
+    sections: [
+      { heading: "Mises en page Moodle importantes", paragraphs: ["Certains cours affichent tout sur une page, d’autres divisent la tentative. Le parser doit résoudre la question visible et ignorer la navigation ou les textes de revue."], bullets: ["tentative sur une page", "tentative sur plusieurs pages", "options mélangées", "écrans de revue"] },
+      { heading: "Réponses mélangées", paragraphs: ["Lorsque Moodle mélange les réponses, la position A, B ou C ne suffit pas. QuizSolver compare le texte visible de chaque option et raisonne sur le contenu réel."] },
+      { heading: "Types de questions", paragraphs: ["Moodle peut combiner boutons radio, cases à cocher, listes déroulantes, réponses courtes et images. FocusScan aide lorsque le texte est dans une image ou un document."] },
+      { heading: "Réviser après l’envoi", paragraphs: ["Les écrans de revue Moodle sont utiles pour apprendre. Sauvegardez les explications, comparez-les au feedback visible et repérez les thèmes faibles."] }
+    ]
+  },
+  'guida-moodle-quiz-solver': {
+    intro: [
+      "I quiz Moodle possono sembrare semplici, ma molti corsi usano risposte casuali, tentativi su più pagine, limiti alla revisione e tipi di domanda misti.",
+      "QuizSolver funziona meglio quando legge il blocco domanda corrente, riconosce il formato della risposta e salva abbastanza contesto per il ripasso."
+    ],
+    sections: [
+      { heading: "Layout Moodle importanti", paragraphs: ["Alcuni corsi mostrano tutto in una pagina, altri dividono il tentativo. Il parser deve risolvere solo la domanda visibile ed evitare testi di navigazione."] , bullets: ["tentativi su una pagina", "tentativi su più pagine", "opzioni casuali", "schermate di revisione"] },
+      { heading: "Risposte casuali", paragraphs: ["Quando Moodle mescola le risposte, la posizione A, B o C non basta. QuizSolver confronta il testo visibile di ogni opzione e ragiona sul contenuto reale."] },
+      { heading: "Tipi di domanda", paragraphs: ["Moodle può combinare radio, checkbox, menu a tendina, risposte brevi e immagini. FocusScan aiuta quando il testo è dentro un’immagine o un documento."] },
+      { heading: "Ripasso dopo l’invio", paragraphs: ["Le schermate di revisione Moodle sono materiale utile. Salva spiegazioni, confrontale con il feedback visibile e crea una lista degli argomenti deboli."] }
+    ]
+  },
+  'moodle-quiz-solver-posibnyk': {
+    intro: [
+      "Тести Moodle можуть виглядати простими, але багато курсів використовують перемішані відповіді, кілька сторінок, обмеження перегляду та різні типи питань.",
+      "QuizSolver найкраще працює, коли читає поточний блок питання Moodle, визначає формат відповіді та зберігає контекст для повторення."
+    ],
+    sections: [
+      { heading: "Важливі макети Moodle", paragraphs: ["Одні курси показують усі питання на одній сторінці, інші розбивають тест. Парсер має розв’язувати лише видиме питання й не додавати навігацію до запиту AI."], bullets: ["одна сторінка", "кілька сторінок", "перемішані варіанти", "екрани перегляду"] },
+      { heading: "Перемішані відповіді", paragraphs: ["Коли Moodle перемішує відповіді, позиція A, B або C не є надійним ідентифікатором. QuizSolver порівнює видимий текст кожного варіанта."] },
+      { heading: "Типи питань", paragraphs: ["У Moodle можуть бути radio, checkbox, списки, короткі відповіді та зображення. Якщо текст захований у графіці або документі, допомагає FocusScan."] },
+      { heading: "Повторення після надсилання", paragraphs: ["Екрани перегляду Moodle корисні для навчання. Зберігайте пояснення, порівнюйте їх із видимим фідбеком і позначайте слабкі теми."] }
+    ]
+  },
+  'canvas-quiz-solver-anleitung': {
+    intro: [
+      "Canvas kann Quizze als Classic Quizzes oder New Quizzes anzeigen, und die Struktur ist nicht immer gleich. Ein Solver darf Frage, Navigation und Kursanweisungen nicht vermischen.",
+      "QuizSolver isoliert die sichtbare Canvas-Frage, erkennt die Antwortfelder und speichert die Erklärung im Verlauf."
+    ],
+    sections: [
+      { heading: "Classic Quizzes und New Quizzes", paragraphs: ["Classic Quizzes haben meist vorhersehbare Blöcke, New Quizzes wirken eher wie eine App. Wichtig bleibt: erst die nächste Frage lesen, dann die sichtbaren Antwortoptionen verbinden."] },
+      { heading: "Bilder und Dateien", paragraphs: ["Canvas-Kurse enthalten oft Screenshots, Diagramme, Formeln oder eingebettete Dateien. Wenn HTML-Text fehlt, erfasst FocusScan den relevanten Bereich."], bullets: ["Diagramme", "Formel-Screenshots", "gesperrter Text", "reichere Canvas-Layouts"] },
+      { heading: "Mehrere richtige Antworten", paragraphs: ["Checkbox-Fragen brauchen andere Anweisungen als Single-Choice. QuizSolver markiert den Typ, bevor die Frage an AI geht."] },
+      { heading: "Erklärungen speichern", paragraphs: ["Canvas-Feedback ist nicht immer dauerhaft verfügbar. Ein gespeicherter Verlauf hilft bei Wiederholungen, Nachprüfungen und ähnlichen Aufgaben."] }
+    ]
+  },
+  'guia-canvas-quiz-solver': {
+    intro: [
+      "Canvas puede mostrar cuestionarios como Classic Quizzes o New Quizzes, y la estructura no siempre es igual. Un solver no debe mezclar la pregunta con navegación o instrucciones del curso.",
+      "QuizSolver intenta aislar la pregunta visible de Canvas, detectar los controles de respuesta y guardar la explicación en el historial."
+    ],
+    sections: [
+      { heading: "Classic Quizzes y New Quizzes", paragraphs: ["Classic Quizzes suele tener bloques previsibles, mientras New Quizzes puede parecer una app. La regla es leer la pregunta cercana y asociarla con las opciones visibles."] },
+      { heading: "Imágenes y archivos", paragraphs: ["Los cursos de Canvas pueden incluir capturas, diagramas, fórmulas o archivos incrustados. Si el parser no ve texto suficiente, FocusScan captura la zona correcta."], bullets: ["diagramas", "fórmulas como imagen", "texto bloqueado", "diseños avanzados de Canvas"] },
+      { heading: "Preguntas de varias respuestas", paragraphs: ["Los checkboxes necesitan instrucciones distintas a una pregunta de opción única. QuizSolver marca el tipo antes de resolver."] },
+      { heading: "Guardar explicaciones", paragraphs: ["El feedback de Canvas no siempre queda disponible. Guardar pregunta, respuesta y explicación crea una ruta de repaso para exámenes o tareas similares."] }
+    ]
+  },
+  'guide-canvas-quiz-solver': {
+    intro: [
+      "Canvas peut afficher des quiz via Classic Quizzes ou New Quizzes, avec une structure parfois très différente. Un solver ne doit pas mélanger question, navigation et consignes du cours.",
+      "QuizSolver isole la question Canvas visible, détecte les contrôles de réponse et conserve l’explication dans l’historique."
+    ],
+    sections: [
+      { heading: "Classic Quizzes et New Quizzes", paragraphs: ["Classic Quizzes expose souvent des blocs prévisibles, tandis que New Quizzes ressemble davantage à une application. Il faut lire la question proche puis l’associer aux choix visibles."] },
+      { heading: "Images et fichiers", paragraphs: ["Les cours Canvas incluent souvent captures, diagrammes, formules ou fichiers intégrés. Si le texte HTML manque, FocusScan capture la zone utile."], bullets: ["diagrammes", "formules en image", "texte bloqué", "mises en page Canvas riches"] },
+      { heading: "Questions à réponses multiples", paragraphs: ["Les cases à cocher demandent une instruction différente du choix unique. QuizSolver identifie le type avant de résoudre la question."] },
+      { heading: "Sauvegarder les explications", paragraphs: ["Le feedback Canvas n’est pas toujours disponible longtemps. Sauvegarder la question, la réponse et l’explication crée une base de révision."] }
+    ]
+  },
+  'guida-canvas-quiz-solver': {
+    intro: [
+      "Canvas può mostrare quiz come Classic Quizzes o New Quizzes, con strutture diverse. Un solver non deve mescolare domanda, navigazione e istruzioni del corso.",
+      "QuizSolver isola la domanda visibile, riconosce i controlli di risposta e salva la spiegazione nella cronologia."
+    ],
+    sections: [
+      { heading: "Classic Quizzes e New Quizzes", paragraphs: ["Classic Quizzes ha spesso blocchi prevedibili, mentre New Quizzes può sembrare un’app. La regola è leggere la domanda più vicina e collegarla alle opzioni visibili."] },
+      { heading: "Immagini e file", paragraphs: ["I corsi Canvas includono spesso screenshot, diagrammi, formule o file incorporati. Se manca testo HTML leggibile, FocusScan cattura l’area utile."], bullets: ["diagrammi", "formule in immagine", "testo bloccato", "layout Canvas più ricchi"] },
+      { heading: "Domande con più risposte", paragraphs: ["Le checkbox richiedono istruzioni diverse rispetto alla scelta singola. QuizSolver riconosce il tipo prima di risolvere."] },
+      { heading: "Salvare le spiegazioni", paragraphs: ["Il feedback di Canvas non resta sempre disponibile. Salvare domanda, risposta e spiegazione crea materiale di ripasso per esami e compiti simili."] }
+    ]
+  },
+  'canvas-quiz-solver-posibnyk': {
+    intro: [
+      "Canvas може показувати тести через Classic Quizzes або New Quizzes, і структура сторінки не завжди однакова. Важливо не змішувати питання з навігацією чи інструкціями курсу.",
+      "QuizSolver ізолює видиме питання Canvas, визначає поля відповідей і зберігає пояснення в історії."
+    ],
+    sections: [
+      { heading: "Classic Quizzes і New Quizzes", paragraphs: ["Classic Quizzes часто має передбачувані блоки, а New Quizzes може виглядати як окрема програма. Правило одне: читати найближче питання й видимі варіанти."] },
+      { heading: "Зображення та файли", paragraphs: ["Курси Canvas часто містять скриншоти, діаграми, формули або вкладені файли. Якщо HTML-тексту недостатньо, FocusScan захоплює потрібну область."], bullets: ["діаграми", "формули як зображення", "заблокований текст", "складніші макети Canvas"] },
+      { heading: "Питання з кількома відповідями", paragraphs: ["Checkbox-питання потребують іншої інструкції, ніж вибір одного варіанта. QuizSolver визначає тип перед розв’язанням."] },
+      { heading: "Збереження пояснень", paragraphs: ["Фідбек Canvas не завжди доступний довго. Збережені питання, відповіді й пояснення створюють матеріал для повторення."] }
+    ]
+  },
+  'erkennt-testportal-tabs-und-fensterwechsel': {
+    intro: [
+      "Testportal sieht nicht magisch den ganzen Computer, kann aber Ereignisse erkennen, die normale Webseiten im Browser beobachten dürfen.",
+      "Dazu gehören Tab-Sichtbarkeit, Fokusverlust, Verlassen des Vollbildmodus und Zeit außerhalb der aktiven Testseite."
+    ],
+    sections: [
+      { heading: "Was Testportal typischerweise erkennt", paragraphs: ["Eine Quizseite kann wissen, dass ihr Tab nicht mehr aktiv ist oder das Browserfenster den Fokus verloren hat. Das sagt nicht exakt, was passiert ist, kann aber im Bericht erscheinen."], bullets: ["Tab- oder Appwechsel", "Vollbild verlassen", "Fokusverlust", "Zeit außerhalb des Tests"] },
+      { heading: "Was eine normale Webseite nicht sieht", paragraphs: ["Ohne separate Proctoring-App kann eine Webseite keine Programme scannen, andere Tabs lesen, lokale Dateien öffnen oder den Desktop heimlich beobachten."] },
+      { heading: "Welche Rolle Erweiterungen spielen", paragraphs: ["Eine Chrome-Erweiterung läuft im Browser, aber die Testseite kennt nicht automatisch jede installierte Erweiterung. Erkennung passiert meist indirekt."] },
+      { heading: "Sicherere KI-Nutzung", paragraphs: ["Am sichersten ist KI vor und nach bewerteten Versuchen: Fragen speichern, Erklärungen lesen, Notizen erstellen und schwache Themen wiederholen."] }
+    ]
+  },
+  'testportal-detecta-pestanas-y-cambio-de-ventana': {
+    intro: [
+      "Testportal no ve mágicamente todo el ordenador, pero sí puede reaccionar a eventos que una página web normal puede observar.",
+      "Los más comunes son cambios de visibilidad de la pestaña, pérdida de foco, salida de pantalla completa y tiempo fuera del test activo."
+    ],
+    sections: [
+      { heading: "Qué suele detectar Testportal", paragraphs: ["Una página de quiz puede saber que su pestaña ya no está activa o que la ventana perdió el foco. No revela exactamente qué hizo el usuario, pero puede registrarse."], bullets: ["cambio de pestaña o app", "salida de pantalla completa", "eventos de foco", "tiempo fuera del test"] },
+      { heading: "Qué no ve una web normal", paragraphs: ["Sin una app de supervisión separada, una web no puede leer programas abiertos, inspeccionar otras pestañas, acceder a archivos locales ni mirar el escritorio."] },
+      { heading: "Dónde entran las extensiones", paragraphs: ["Una extensión de Chrome corre en el navegador, pero la página del test no conoce automáticamente todas las extensiones instaladas. La detección suele ser indirecta."] },
+      { heading: "Uso más seguro de IA", paragraphs: ["Lo más seguro es usar IA antes y después de intentos evaluados: guardar preguntas, leer explicaciones, crear notas y repasar puntos débiles."] }
+    ]
+  },
+  'testportal-detecte-onglets-et-changement-de-fenetre': {
+    intro: [
+      "Testportal ne voit pas magiquement tout l’ordinateur, mais peut réagir à des événements qu’une page web normale a le droit d’observer.",
+      "Les signaux courants sont la perte de visibilité de l’onglet, la perte de focus, la sortie du plein écran et le temps hors de la page active."
+    ],
+    sections: [
+      { heading: "Ce que Testportal détecte généralement", paragraphs: ["Une page de quiz peut savoir que son onglet n’est plus actif ou que la fenêtre a perdu le focus. Cela ne dit pas exactement ce que l’utilisateur a fait, mais peut être journalisé."] , bullets: ["changement d’onglet ou d’application", "sortie du plein écran", "perte de focus", "temps hors du test"] },
+      { heading: "Ce qu’une page normale ne voit pas", paragraphs: ["Sans application de surveillance séparée, une page web ne peut pas lire les programmes ouverts, inspecter d’autres onglets, accéder aux fichiers locaux ou voir le bureau."] },
+      { heading: "Le rôle des extensions", paragraphs: ["Une extension Chrome fonctionne dans le navigateur, mais la page du test ne connaît pas automatiquement toutes les extensions installées. La détection est souvent indirecte."] },
+      { heading: "Usage plus sûr de l’IA", paragraphs: ["L’usage le plus sûr reste avant et après les tentatives évaluées : sauvegarder les questions, lire les explications, créer des notes et réviser les points faibles."] }
+    ]
+  },
+  'testportal-rileva-schede-e-cambio-finestra': {
+    intro: [
+      "Testportal non vede magicamente tutto il computer, ma può reagire agli eventi che una normale pagina web può osservare.",
+      "I segnali più comuni sono cambio di visibilità della scheda, perdita del focus, uscita dallo schermo intero e tempo lontano dalla pagina del test."
+    ],
+    sections: [
+      { heading: "Cosa può rilevare Testportal", paragraphs: ["Una pagina quiz può sapere che la scheda non è più attiva o che la finestra ha perso il focus. Non dice esattamente cosa è successo, ma può essere registrato."] , bullets: ["cambio scheda o app", "uscita da schermo intero", "perdita del focus", "tempo fuori dal test"] },
+      { heading: "Cosa non vede una pagina normale", paragraphs: ["Senza un’app di proctoring separata, una pagina non può leggere programmi aperti, ispezionare altre schede, accedere ai file locali o vedere il desktop."] },
+      { heading: "Il ruolo delle estensioni", paragraphs: ["Un’estensione Chrome gira nel browser, ma la pagina del test non conosce automaticamente tutte le estensioni installate. La rilevazione è di solito indiretta."] },
+      { heading: "Uso più sicuro dell’AI", paragraphs: ["L’uso più sicuro è prima e dopo i tentativi valutati: salvare domande, leggere spiegazioni, creare note e ripassare argomenti deboli."] }
+    ]
+  },
+  'chy-testportal-vyiavliaie-vkladky-ta-zminu-vikna': {
+    intro: [
+      "Testportal не бачить магічно весь комп’ютер, але може реагувати на події, які звичайна вебсторінка має право спостерігати.",
+      "Найчастіше це зміна видимості вкладки, втрата фокусу, вихід із повного екрана та час поза активною сторінкою тесту."
+    ],
+    sections: [
+      { heading: "Що Testportal зазвичай може виявити", paragraphs: ["Сторінка тесту може знати, що її вкладка більше не активна або що вікно втратило фокус. Це не показує точну дію користувача, але може бути записано."] , bullets: ["перехід на іншу вкладку чи програму", "вихід із повного екрана", "втрата фокусу", "час поза тестом"] },
+      { heading: "Чого звичайна сторінка не бачить", paragraphs: ["Без окремої програми прокторингу сайт не може читати відкриті програми, переглядати інші вкладки, відкривати локальні файли або бачити робочий стіл."] },
+      { heading: "Де тут розширення", paragraphs: ["Chrome-розширення працює у браузері, але сторінка тесту не знає автоматично всі встановлені розширення. Виявлення зазвичай непряме."] },
+      { heading: "Безпечніше використання AI", paragraphs: ["Найбезпечніше використовувати AI до і після оцінюваних спроб: зберігати питання, читати пояснення, робити нотатки й повторювати слабкі теми."] }
+    ]
+  }
+};
+
 const ARTICLE_DRAFTS: Record<string, ArticleDraft> = {
   'czy-testportal-wykrywa-karty': {
     intro: [
@@ -542,6 +785,183 @@ const ARTICLE_DRAFTS: Record<string, ArticleDraft> = {
         paragraphs: ['A trustworthy extension should explain what is sent to AI, when a credit is spent and which data is saved. Transparent limits are better than vague claims that the tool works everywhere.']
       }
     ]
+  },
+  'testportal-quiz-solver-guide': {
+    intro: [
+      'Testportal quiz pages are usually stricter than a simple form. A student may see one question at a time, a visible timer, answer options that are shuffled between attempts and warnings when the browser loses focus. That layout is exactly why a generic copy-paste workflow often fails.',
+      'QuizSolver is designed to read the visible question context from the current Testportal screen, match it with the visible answer choices and keep a saved history so the question is useful again after the attempt ends.'
+    ],
+    sections: [
+      {
+        heading: 'What QuizSolver reads on Testportal',
+        paragraphs: ['The extension looks for the actual question text, not only labels such as "Question 5". It also collects the answer options, detects whether the question is single-choice or multiple-choice and keeps nearby image context when the quiz includes diagrams or screenshots.'],
+        bullets: ['single-choice radio questions', 'multiple-answer checkbox questions', 'short visible prompts', 'image and chart questions through FocusScan']
+      },
+      {
+        heading: 'How timers change the workflow',
+        paragraphs: ['A timer does not change the AI reasoning, but it changes the ergonomics. The important part is to avoid repeatedly sending the same question because of double clicks, refreshes or retries. QuizSolver stores a normalized question fingerprint and can reuse the saved result instead of spending another credit for the same prompt.']
+      },
+      {
+        heading: 'When to use FocusScan',
+        paragraphs: ['If Testportal displays the question as an image, inside a locked document preview or in a layout that does not expose clean HTML text, FocusScan is the safer mode. Select only the question and answer area. A tight selection gives AI cleaner context than a full-page screenshot with navigation, timers and unrelated labels.']
+      },
+      {
+        heading: 'What to do after the answer',
+        paragraphs: ['The strongest Testportal workflow starts after the first solve. Save difficult questions, add a note, mark weak topics and review them later from question history. This turns a one-time answer into a private practice set for the next test.'],
+        bullets: ['save explanations for review', 'filter weak questions later', 'turn previous Testportal questions into practice material']
+      }
+    ]
+  },
+  'testportal-quiz-solver-jak-dziala': {
+    intro: [
+      'Testportal często działa inaczej niż zwykły formularz. Widzisz jedno pytanie naraz, licznik czasu, przyciski nawigacji, czasem tryb pełnoekranowy i odpowiedzi losowane w innej kolejności. Dlatego samo kopiowanie tekstu do chatu szybko robi się chaotyczne.',
+      'QuizSolver skupia się na aktualnie widocznej treści pytania, widocznych odpowiedziach i typie pola. Po rozwiązaniu zapisuje pytanie w historii, żeby później można było wrócić do niego jak do materiału powtórkowego.'
+    ],
+    sections: [
+      {
+        heading: 'Co rozszerzenie czyta na Testportalu',
+        paragraphs: ['Parser powinien brać prawdziwą treść pytania, a nie same napisy typu "Pytanie 5". QuizSolver łączy tekst pytania z opcjami odpowiedzi, rozpoznaje radio, checkboxy i sytuacje, w których potrzebny jest FocusScan.'],
+        bullets: ['pytania jednokrotnego wyboru', 'pytania wielokrotnego wyboru', 'krótkie widoczne polecenia', 'obrazy, wykresy i zablokowany tekst przez FocusScan']
+      },
+      {
+        heading: 'Dlaczego timer jest wazny',
+        paragraphs: ['Timer nie zmienia samego rozumowania AI, ale wymusza szybki i stabilny workflow. Najgorszy przypadek to ponowne wysłanie tego samego pytania przez odświeżenie, podwójne kliknięcie albo retry. Dlatego QuizSolver opiera się na odcisku pytania i historii, żeby nie traktować tej samej treści jak nowego zadania.']
+      },
+      {
+        heading: 'Kiedy użyć FocusScan',
+        paragraphs: ['Gdy pytanie jest obrazem, fragmentem PDF albo elementem, którego strona nie wystawia jako czystego tekstu HTML, zaznacz tylko obszar pytania i odpowiedzi. Im mniej na screenie licznika, menu i numeracji, tym lepszy kontekst dostaje AI.']
+      },
+      {
+        heading: 'Najlepszy sposób na naukę po teście',
+        paragraphs: ['Po rozwiązaniu pytania warto zapisać wyjaśnienie, dodać notatkę i oznaczyć trudny temat. Historia pytań jest mocniejsza niż pojedyncza odpowiedź, bo pozwala zbudować własny zestaw powtórkowy przed kolejnym sprawdzianem.'],
+        bullets: ['wracaj do wyjaśnień', 'oznaczaj pytania, które sprawiły problem', 'rób powtórkę z historii zamiast zaczynać od zera']
+      }
+    ]
+  },
+  'moodle-quiz-solver-guide': {
+    intro: [
+      'Moodle quizzes can look simple, but many courses use shuffled answers, multi-page attempts, review restrictions and mixed question types inside the same activity. That makes Moodle one of the platforms where structured parsing matters more than raw page text.',
+      'QuizSolver works best when it reads the current Moodle question block, detects the answer format and stores the result with enough context to review it later.'
+    ],
+    sections: [
+      {
+        heading: 'Moodle layouts that matter',
+        paragraphs: ['Some Moodle courses show all questions on one page. Others split the quiz into pages or use one question per screen. The extension should solve the visible question only and avoid bundling navigation text, page numbers or unrelated review labels into the AI prompt.'],
+        bullets: ['one-page attempts', 'multi-page attempts', 'shuffled options', 'review pages with saved feedback']
+      },
+      {
+        heading: 'Shuffled answers and multiple attempts',
+        paragraphs: ['When Moodle shuffles answers, option order is not a reliable identifier. QuizSolver compares the text of each visible option and asks AI to reason over the actual choices, so an answer saved from one order does not blindly map to a different order.']
+      },
+      {
+        heading: 'Question types supported',
+        paragraphs: ['Typical Moodle quizzes mix radio choices, checkboxes, dropdowns, short answers and matching-like layouts. If a question includes an image, chart or embedded document, FocusScan can capture the exact region that contains the missing context.']
+      },
+      {
+        heading: 'Review after submitting',
+        paragraphs: ['Moodle review screens are valuable study material. Save explanations, compare them with instructor feedback when it is visible and build a practice set from the questions that took the longest or had the weakest confidence.']
+      }
+    ]
+  },
+  'moodle-quiz-solver-jak-uzyc': {
+    intro: [
+      'Quizy Moodle potrafią być proste tylko z wyglądu. Kurs może losować odpowiedzi, dzielić test na kilka stron, blokować podgląd po wysłaniu albo mieszać wiele typów pytań w jednym podejściu.',
+      'QuizSolver najlepiej działa wtedy, gdy analizuje aktualny blok pytania, rozpoznaje typ odpowiedzi i zapisuje wynik z kontekstem potrzebnym do późniejszej powtórki.'
+    ],
+    sections: [
+      {
+        heading: 'Układy Moodle, które trzeba rozróżniać',
+        paragraphs: ['Czasem Moodle pokazuje wszystkie pytania na jednej stronie, a czasem tylko jedno pytanie na ekran. Dobry parser nie powinien wysyłać do AI numeracji, panelu nawigacji ani tekstów typu "Następna strona" jako treści pytania.'],
+        bullets: ['test na jednej stronie', 'test na wielu stronach', 'losowa kolejność odpowiedzi', 'ekran podglądu po zakończonym podejściu']
+      },
+      {
+        heading: 'Losowe odpowiedzi i kolejne podejścia',
+        paragraphs: ['Przy losowych odpowiedziach sama pozycja A, B, C nie wystarcza. QuizSolver powinien porównywać treść widocznych opcji i prosić AI o decyzję na podstawie realnych odpowiedzi, a nie na podstawie starej kolejności z poprzedniego podejścia.']
+      },
+      {
+        heading: 'Typy pytań w Moodle',
+        paragraphs: ['Najczęściej trafiają się radio, checkboxy, listy rozwijane, krótkie odpowiedzi i pytania z obrazem. Gdy tekst jest częścią grafiki albo osadzonego dokumentu, FocusScan pozwala zaznaczyć tylko potrzebny fragment.']
+      },
+      {
+        heading: 'Powtórka po wysłaniu quizu',
+        paragraphs: ['Ekran podglądu w Moodle jest świetnym materiałem do nauki. Zapisz pytania, sprawdź wyjaśnienia, porównaj je z feedbackiem prowadzącego i zrób listę tematów, które wymagają powrotu.']
+      }
+    ]
+  },
+  'canvas-quiz-solver-guide': {
+    intro: [
+      'Canvas can serve quizzes through Classic Quizzes or New Quizzes, and the page structure is not always the same. A solver that only scrapes a large text blob can mix question content with instructions, navigation and unrelated labels.',
+      'QuizSolver aims to isolate the visible Canvas question, identify the answer controls and keep the explanation in history so a solved quiz becomes useful revision material.'
+    ],
+    sections: [
+      {
+        heading: 'Classic Quizzes vs New Quizzes',
+        paragraphs: ['Classic Quizzes usually expose predictable question blocks, while New Quizzes can use a more app-like layout. The important rule is the same: read the closest question text, then pair it with the visible answer choices before asking AI.']
+      },
+      {
+        heading: 'Image and file-based prompts',
+        paragraphs: ['Canvas courses often include screenshots, diagrams, formulas or images inside a prompt. When the normal parser cannot read enough text, FocusScan can capture the prompt and choices as a screenshot-based input.'],
+        bullets: ['charts and diagrams', 'formula screenshots', 'locked text or embedded files', 'questions inside richer Canvas layouts']
+      },
+      {
+        heading: 'Multiple-answer questions',
+        paragraphs: ['Checkbox questions need different instructions than single-choice questions. QuizSolver marks the type before solving so AI can return one answer for radio fields or multiple answers when the visible control allows it.']
+      },
+      {
+        heading: 'Save explanations for review',
+        paragraphs: ['Canvas quiz feedback is not always available forever. Saving the question, answer and explanation creates a personal review trail you can use before finals, retakes or similar assignments.']
+      }
+    ]
+  },
+  'canvas-quiz-solver-jak-uzyc': {
+    intro: [
+      'Canvas ma różne układy quizów: Classic Quizzes, New Quizzes, pytania z obrazem, instrukcje kursu i czasem bardziej aplikacyjny interfejs. Jeżeli solver bierze cały tekst strony, łatwo pomylić polecenie z nawigacją albo opisem kursu.',
+      'QuizSolver celuje w widoczną treść pytania, opcje odpowiedzi i typ kontrolki. Potem zapisuje wyjaśnienie, żeby pytanie nie zniknęło po zamknięciu quizu.'
+    ],
+    sections: [
+      {
+        heading: 'Classic Quizzes i New Quizzes',
+        paragraphs: ['Classic Quizzes zwykle mają bardziej przewidywalne bloki pytań. New Quizzes mogą wyglądać jak osobna aplikacja. W obu przypadkach najważniejsze jest czytanie najbliższego pytania razem z odpowiedziami, a nie losowych tekstów z całej strony.']
+      },
+      {
+        heading: 'Pytania z obrazem i plikiem',
+        paragraphs: ['W Canvas często pojawiają się wykresy, screeny, wzory albo elementy wstawione jako obraz. Gdy parser nie widzi pełnego tekstu, FocusScan pozwala zaznaczyć obszar z pytaniem i odpowiedziami.'],
+        bullets: ['wykresy i diagramy', 'wzory jako screen', 'zablokowany tekst', 'pytania w bogatszym układzie Canvas']
+      },
+      {
+        heading: 'Pytania wielokrotnego wyboru',
+        paragraphs: ['Checkbox wymaga innej instrukcji niż radio. QuizSolver rozpoznaje typ pytania przed wysłaniem do AI, żeby odpowiedź mogła zawierać jedną opcję albo kilka opcji, gdy pytanie tego wymaga.']
+      },
+      {
+        heading: 'Historia jako material do nauki',
+        paragraphs: ['Feedback w Canvas nie zawsze jest dostępny długo. Zapisanie pytania, odpowiedzi i wyjaśnienia tworzy prywatną ścieżkę powtórki przed kolokwium, poprawką albo podobnym zadaniem.']
+      }
+    ]
+  },
+  'does-testportal-detect-tabs-and-window-switching': {
+    intro: [
+      'Testportal cannot magically see an entire computer through a normal browser tab, but it can react to events that websites are allowed to observe. The most common signals are tab visibility changes, window focus loss, fullscreen exits and time spent away from the active test page.',
+      'That difference matters. A realistic understanding of detection is more useful than myths about hidden screen access, and it also helps students use AI tools more responsibly for preparation and review.'
+    ],
+    sections: [
+      {
+        heading: 'What Testportal can usually detect',
+        paragraphs: ['A web quiz can know that its tab is no longer active or that the browser window lost focus. That does not reveal exactly what the user did, but the platform may log it as leaving the test environment.'],
+        bullets: ['switching to another tab or app', 'leaving fullscreen mode', 'focus loss events', 'time away from the active test tab']
+      },
+      {
+        heading: 'What a normal website cannot see',
+        paragraphs: ['Without a separate proctoring app or browser-level permission, a website cannot read the list of open programs, inspect unrelated tabs, access local files or silently watch the full desktop. Browsers intentionally block that kind of access.']
+      },
+      {
+        heading: 'Where extensions fit in',
+        paragraphs: ['A Chrome extension runs in the browser, but that does not mean the quiz page automatically knows every extension installed by the user. Detection is usually indirect: focus changes, unusual page behavior, pasted text patterns or external proctoring software.']
+      },
+      {
+        heading: 'Safer AI use for Testportal',
+        paragraphs: ['The safest way to use AI is before and after assessed attempts: save practice questions, read explanations, create notes and turn weak areas into review quizzes. QuizSolver history is built for that study loop.']
+      }
+    ]
   }
 };
 
@@ -552,6 +972,6 @@ export const BLOG_POST_MANIFEST: BlogPostMetadata[] = metadata;
 export const BLOG_POSTS: BlogPost[] = metadata
   .map((post) => ({
     ...post,
-    content: renderArticle(post.locale, ARTICLE_DRAFTS[post.slug] || genericLocalizedDraft(post.locale))
+    content: renderArticle(post.locale, ARTICLE_DRAFTS[post.slug] || TRANSLATED_ARTICLE_DRAFTS[post.slug] || genericLocalizedDraft(post.locale))
   }))
   .sort((a, b) => b.datePublished.localeCompare(a.datePublished));

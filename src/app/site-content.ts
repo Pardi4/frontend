@@ -197,8 +197,8 @@ const en: SiteCopy = {
     title: "AI Quiz Solver Chrome Extension",
     subtitle: "Solve and review quiz questions on Testportal, Moodle, Canvas, Google Forms, Kahoot and more",
     meta: {
-      title: "QuizSolver — AI Quiz Solver Chrome Extension",
-      description: "Solve online quiz questions with AI hints, explanations, FocusScan, notes and Kahoot Quiz ID mode in QuizSolver."
+      title: "QuizSolver — AI Quiz Solver for Testportal, Moodle & Kahoot",
+      description: "QuizSolver solves Testportal, Moodle, Kahoot, Canvas, Google Forms and more with AI answer suggestions, explanations and a free Chrome extension."
     }
   },
   common: {
@@ -1434,6 +1434,45 @@ function enhancePlatformTutorials(copy: SiteCopy, locale: Locale): SiteCopy {
   return copy;
 }
 
+function ensurePlatformSeoDepth(copy: SiteCopy, locale: Locale): SiteCopy {
+  (Object.entries(copy.platformPages) as Array<[keyof SiteCopy['platformPages'], PlatformCopy]>).forEach(([pageKey, page]) => {
+    const name = page.shortName || page.platformName || 'the platform';
+    const isKahoot = pageKey === 'kahoot';
+    const extraFaq = locale === 'pl'
+      ? [
+          { question: `Jakie typy pytań na ${name} obsługuje QuizSolver?`, answer: 'QuizSolver wykrywa pytania jednokrotnego wyboru, wielokrotnego wyboru, pola tekstowe, listy rozwijane, układy dopasowań, obrazy i widoczne treści osadzone. Przy nietypowym komponencie najlepiej użyć FocusScan.' },
+          { question: `Czy QuizSolver sam wysyła quiz na ${name}?`, answer: 'Nie. Rozszerzenie pokazuje sugestię odpowiedzi i wyjaśnienie, ale decyzja o kliknięciu lub wysłaniu zostaje po Twojej stronie. Tryb Hint mode może pokazać tylko subtelną podpowiedź.' },
+          { question: isKahoot ? 'Czy tryb Quiz ID działa bez widocznego pytania?' : `Czy QuizSolver działa, gdy ${name} ma pytania w obrazkach?`, answer: isKahoot ? 'Tak. Gdy host ukrywa treść pytania, tryb Quiz ID pozwala przeszukać bank odpowiedzi bez używania kredytów AI.' : 'Tak. FocusScan pozwala zaznaczyć fragment ekranu, więc działa także przy obrazach, PDF-ach, canvasach i układach, których zwykły parser nie widzi jako tekst HTML.' }
+        ]
+      : [
+          { question: `Which ${name} question types does QuizSolver support?`, answer: 'QuizSolver detects single-choice answers, multiple-choice answers, text fields, dropdowns, matching-style layouts, images and visible embedded content. For unusual components, FocusScan can read the selected screen region.' },
+          { question: `Does QuizSolver submit my ${name} quiz automatically?`, answer: 'No. The extension shows an answer suggestion and explanation, while the final click or submission stays under your control. Hint mode can show only a subtle visual clue.' },
+          { question: isKahoot ? 'Does Quiz ID mode work when the question is hidden?' : `Can QuizSolver solve image questions on ${name}?`, answer: isKahoot ? 'Yes. When the host hides the question, Quiz ID mode lets you search the answer bank without spending AI credits.' : 'Yes. FocusScan lets you select a screen region, so it works for images, PDF fragments, canvas content and layouts that are not exposed as normal HTML text.' }
+        ];
+    const existingQuestions = new Set((page.faq || []).map(item => item.question));
+    page.faq = [
+      ...(page.faq || []),
+      ...extraFaq.filter(item => !existingQuestions.has(item.question))
+    ];
+
+    const extraSections = locale === 'pl'
+      ? [
+          { title: `Jak QuizSolver rozpoznaje pytania na ${name}`, text: `Strona ${name} może pokazywać pytania jako tekst, kafelki odpowiedzi, pola wyboru, obrazy albo elementy osadzone. QuizSolver najpierw analizuje widoczny kontekst pytania i odpowiedzi, a dopiero potem przygotowuje sugestię AI, dzięki czemu nie opiera się na samym nagłówku typu "Pytanie 5".` },
+          { title: `Historia pytań z ${name}`, text: `Po rozwiązaniu możesz zapisać pytanie, odpowiedź, wyjaśnienie i własną notatkę w historii. To zmienia jednorazowy quiz w materiał do powtórki, który można później filtrować, oznaczać jako ulubiony i przerabiać jako quiz treningowy.` }
+        ]
+      : [
+          { title: `How QuizSolver reads ${name} questions`, text: `${name} can show questions as plain text, answer tiles, form controls, images or embedded content. QuizSolver analyzes the visible question context and answer options before asking AI, so it does not rely on generic labels such as "Question 5".` },
+          { title: `${name} question history`, text: `After solving, you can save the question, answer, explanation and your own note to history. That turns a one-time quiz attempt into review material you can filter, favorite and practice again later.` }
+        ];
+    const existingSections = new Set((page.keywordSections || []).map(item => item.title));
+    page.keywordSections = [
+      ...(page.keywordSections || []),
+      ...extraSections.filter(item => !existingSections.has(item.title))
+    ];
+  });
+  return copy;
+}
+
 const de = buildLocalizedSiteCopy('de');
 const es = buildLocalizedSiteCopy('es');
 const fr = buildLocalizedSiteCopy('fr');
@@ -1449,6 +1488,8 @@ enhancePlatformTutorials(es, 'es');
 enhancePlatformTutorials(fr, 'fr');
 enhancePlatformTutorials(it, 'it');
 enhancePlatformTutorials(uk, 'uk');
+ensurePlatformSeoDepth(en, 'en');
+ensurePlatformSeoDepth(pl, 'pl');
 
 function applyCompactSeo(copy: SiteCopy, locale: Locale): void {
   const templates: Record<Locale, {
@@ -1496,7 +1537,9 @@ function applyCompactSeo(copy: SiteCopy, locale: Locale): void {
   copy.quizPage.metaDescription = seo.quiz;
   copy.privacyPage.metaDescription = seo.privacy;
   (Object.values(copy.platformPages) as PlatformCopy[]).forEach((page) => {
-    page.meta.description = seo.platform(page.platformName || page.shortName || 'online');
+    if (!page.meta?.description || page.meta.description.length > 168) {
+      page.meta.description = seo.platform(page.platformName || page.shortName || 'online');
+    }
   });
 }
 

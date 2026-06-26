@@ -26,6 +26,99 @@ type PlatformUi = {
   intro: (platform: string) => string;
 };
 
+type PlatformDetail = {
+  eyebrow: string;
+  title: string;
+  paragraphs: string[];
+  typesTitle: string;
+  types: string[];
+};
+
+const PLATFORM_CONTEXT: Partial<Record<PageKey, { en: string; pl: string }>> = {
+  quizSolverAi: {
+    en: 'QuizSolver is built for messy real quiz pages, not only clean demo forms. It checks the visible question, nearby answer controls, images, headings and page context before it sends a compact request to AI.',
+    pl: 'QuizSolver jest projektowany pod prawdziwe, nieidealne strony z quizami, a nie tylko proste formularze demo. Sprawdza widoczne pytanie, pobliskie odpowiedzi, obrazy, nagłówki i kontekst strony zanim wyśle zwięzłe zapytanie do AI.'
+  },
+  testportal: {
+    en: 'Testportal often combines timers, one-question screens, radio answers, checkboxes and images inside a focused test interface. QuizSolver keeps the work in the browser side panel so the question can be reviewed without leaving the test tab.',
+    pl: 'Testportal często łączy timer, widok jednego pytania, odpowiedzi radio, checkboxy i obrazy w skoncentrowanym interfejsie testu. QuizSolver trzyma pracę w panelu przeglądarki, żeby dało się sprawdzić pytanie bez opuszczania karty testu.'
+  },
+  moodle: {
+    en: 'Moodle quizzes can mix classic multiple choice, multi-answer questions, cloze-style content, math notation, attachments and long course-specific wording. QuizSolver focuses on the active question block and keeps the answer context together.',
+    pl: 'Quizy Moodle potrafią mieszać pytania jednokrotnego wyboru, wielokrotnego wyboru, cloze, notację matematyczną, załączniki i długie treści kursowe. QuizSolver skupia się na aktywnym bloku pytania i zachowuje kontekst odpowiedzi razem.'
+  },
+  canvas: {
+    en: 'Canvas LMS can show quizzes through classic quizzes, New Quizzes and embedded LTI tools. QuizSolver reads the visible assessment area first, then FocusScan covers frames, images or custom layouts when the regular DOM is not enough.',
+    pl: 'Canvas LMS może pokazywać testy przez Classic Quizzes, New Quizzes i osadzone narzędzia LTI. QuizSolver najpierw czyta widoczny obszar testu, a FocusScan pomaga przy ramkach, obrazach i układach, których zwykły DOM nie wystarcza.'
+  },
+  googleForms: {
+    en: 'Google Forms quizzes use sections, required fields, radio groups, checkboxes, dropdowns, short answers and image prompts. QuizSolver keeps each visible form question separate so options from the next section do not leak into the current answer.',
+    pl: 'Quizy Google Forms używają sekcji, pól wymaganych, grup radio, checkboxów, list rozwijanych, krótkich odpowiedzi i pytań z obrazami. QuizSolver rozdziela widoczne pytania, żeby opcje z kolejnej sekcji nie mieszały się z aktualną odpowiedzią.'
+  },
+  microsoftForms: {
+    en: 'Microsoft Forms can render questions as cards with ratings, choices, text fields and media blocks. QuizSolver reads the active card structure and uses FocusScan when a school or company theme changes the default layout.',
+    pl: 'Microsoft Forms potrafi renderować pytania jako karty z ocenami, wyborami, polami tekstowymi i multimediami. QuizSolver czyta strukturę aktywnej karty i używa FocusScan, gdy motyw szkoły lub firmy zmienia domyślny układ.'
+  },
+  blackboard: {
+    en: 'Blackboard assessments vary between Classic and Ultra interfaces, long question pools and embedded course content. QuizSolver targets the visible test item and keeps explanations useful for reviewing the concept later.',
+    pl: 'Testy Blackboard różnią się między widokiem Classic i Ultra, pulami pytań oraz treścią osadzoną z kursu. QuizSolver celuje w widoczny element testu i zapisuje wyjaśnienie tak, żeby później dało się powtórzyć pojęcie.'
+  },
+  quizlet: {
+    en: 'Quizlet is often used for flashcards, definitions, matching and written practice. QuizSolver treats the prompt and candidate answer as a study pair, which helps verify meaning instead of only guessing the next tile.',
+    pl: 'Quizlet jest często używany do fiszek, definicji, dopasowań i odpowiedzi pisemnych. QuizSolver traktuje pytanie i możliwą odpowiedź jako parę do nauki, co pomaga sprawdzić znaczenie zamiast tylko zgadywać kolejny kafelek.'
+  },
+  socrative: {
+    en: 'Socrative quizzes are live and move quickly, so the extension prioritizes the currently visible prompt and answer controls. The goal is fast feedback while still keeping the final choice under the student’s control.',
+    pl: 'Quizy Socrative są prowadzone na żywo i często idą szybko, dlatego rozszerzenie priorytetowo traktuje aktualnie widoczne pytanie oraz kontrolki odpowiedzi. Celem jest szybka podpowiedź bez odbierania użytkownikowi finalnej decyzji.'
+  },
+  kahoot: {
+    en: 'Kahoot is different because some games show the question on the player screen while others show only colored answer tiles. QuizSolver supports both visible-question mode and Quiz ID answer-bank mode for hidden-question games.',
+    pl: 'Kahoot jest inny, bo część gier pokazuje pytanie na ekranie gracza, a część tylko kolorowe kafelki odpowiedzi. QuizSolver obsługuje tryb widocznego pytania oraz bank odpowiedzi po Quiz ID dla gier z ukrytym pytaniem.'
+  },
+  quizizz: {
+    en: 'Quizizz can appear as live games, homework, practice sets and meme-heavy question cards. QuizSolver reads the visible prompt, options and media so the answer suggestion stays tied to the exact card on screen.',
+    pl: 'Quizizz może działać jako gra live, zadanie domowe, zestaw ćwiczeń albo karta pytania z multimediami. QuizSolver czyta widoczną treść, opcje i media, żeby sugestia odpowiedzi była powiązana z dokładnie tą kartą na ekranie.'
+  }
+};
+
+const DEFAULT_TYPES_EN = [
+  'Single-choice and multiple-choice answers',
+  'Typed short answers and dropdown fields',
+  'Question images, diagrams and screenshots through FocusScan',
+  'Long prompts with answer explanations saved to history'
+];
+
+const DEFAULT_TYPES_PL = [
+  'Pytania jednokrotnego i wielokrotnego wyboru',
+  'Krótkie odpowiedzi tekstowe i listy rozwijane',
+  'Obrazy, wykresy i zrzuty ekranu przez FocusScan',
+  'Długie treści z wyjaśnieniami zapisywanymi w historii'
+];
+
+function buildPlatformDetail(pageKey: PageKey, locale: Locale, platform: string): PlatformDetail {
+  const isPl = locale === 'pl';
+  const context = PLATFORM_CONTEXT[pageKey]?.[isPl ? 'pl' : 'en']
+    || (isPl
+      ? `QuizSolver analizuje widoczny kontekst na ${platform}, a nie tylko pierwszy nagłówek znaleziony na stronie. Dzięki temu łatwiej uniknąć sytuacji, w której do AI trafia sam licznik typu "Pytanie 5" zamiast właściwej treści.`
+      : `QuizSolver analyzes the visible context on ${platform}, not just the first heading found on the page. That helps avoid sending a generic label such as "Question 5" instead of the real prompt.`);
+
+  return {
+    eyebrow: isPl ? 'Wykrywanie pytań' : 'Question detection',
+    title: isPl ? `Jak QuizSolver działa na ${platform}` : `How QuizSolver works on ${platform}`,
+    paragraphs: [
+      context,
+      isPl
+        ? 'Parser porównuje treść pytania z pobliskimi odpowiedziami, kontrolkami formularza, obrazami i widocznym układem strony. Jeżeli standardowe wykrywanie nie zwraca sensownego pytania, FocusScan pozwala ręcznie zaznaczyć dokładny fragment ekranu i ponowić analizę bez mieszania treści z innych części strony.'
+        : 'The parser compares the question text with nearby answer choices, form controls, images and the visible page layout. If standard detection does not return a meaningful question, FocusScan lets you select the exact screen region and retry without mixing content from other parts of the page.',
+      isPl
+        ? 'Każde zapisane pytanie może trafić do historii razem z odpowiedzią, wyjaśnieniem i notatką. Dzięki temu strona platformy nie kończy się na jednorazowej podpowiedzi: z rozwiązanych zadań powstaje prywatna baza powtórek i quizów treningowych.'
+        : 'Every saved question can go to history with the answer, explanation and your own note. That means the platform workflow does not stop at a one-time hint: solved tasks become a private review library and practice quiz source.'
+    ],
+    typesTitle: isPl ? `Obsługiwane pytania na ${platform}` : `Supported question types on ${platform}`,
+    types: isPl ? DEFAULT_TYPES_PL : DEFAULT_TYPES_EN
+  };
+}
+
 const PLATFORM_UI: Record<Locale, PlatformUi> = {
   en: {
     install: 'Install extension',
@@ -36,7 +129,7 @@ const PLATFORM_UI: Record<Locale, PlatformUi> = {
     notes: 'Notes and history quiz',
     sharing: 'Shareable quizzes',
     howToStart: 'How to start',
-    featuresTitle: 'Features in this workflow',
+    featuresTitle: 'Supported question types and signals',
     platforms: 'Platforms',
     otherGuides: 'Other QuizSolver guides',
     guidesIntro: 'Choose your platform and get a step-by-step guide tailored to that quiz system.',
@@ -55,7 +148,7 @@ const PLATFORM_UI: Record<Locale, PlatformUi> = {
     notes: 'Notatki i quiz z historii',
     sharing: 'Udostępnianie quizu z pytań',
     howToStart: 'Jak zacząć',
-    featuresTitle: 'Funkcje w tym workflow',
+    featuresTitle: 'Obsługiwane typy pytań i sygnały',
     platforms: 'Platformy',
     otherGuides: 'Inne poradniki QuizSolver',
     guidesIntro: 'Wybierz platformę i zobacz instrukcję krok po kroku dopasowaną do konkretnego systemu quizów.',
@@ -204,6 +297,25 @@ const PLATFORM_UI: Record<Locale, PlatformUi> = {
             <div class="platform-stat" *ngFor="let stat of ui.stats">
               <span>{{ stat }}</span>
             </div>
+          </div>
+        </section>
+
+        <section class="section platform-detail-section">
+          <div class="container platform-detail-grid">
+            <article class="platform-detail-copy reveal">
+              <p class="eyebrow">{{ detail.eyebrow }}</p>
+              <h2>{{ detail.title }}</h2>
+              <p class="text-secondary" *ngFor="let paragraph of detail.paragraphs">{{ paragraph }}</p>
+            </article>
+            <aside class="question-types-panel glass reveal delay-100">
+              <h2>{{ detail.typesTitle }}</h2>
+              <ul class="question-types-list">
+                <li *ngFor="let type of detail.types">
+                  <span class="type-dot" aria-hidden="true"></span>
+                  <span>{{ type }}</span>
+                </li>
+              </ul>
+            </aside>
           </div>
         </section>
 
@@ -378,6 +490,52 @@ const PLATFORM_UI: Record<Locale, PlatformUi> = {
       font-family: var(--font-heading);
       font-size: 0.95rem;
       font-weight: 850;
+    }
+    .platform-detail-section {
+      padding-top: 2rem;
+    }
+    .platform-detail-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.85fr);
+      gap: 2rem;
+      align-items: start;
+    }
+    .platform-detail-copy h2,
+    .question-types-panel h2 {
+      font-size: 1.75rem;
+      margin-bottom: 1rem;
+    }
+    .platform-detail-copy p {
+      font-size: 1rem;
+      line-height: 1.75;
+      margin-bottom: 1rem;
+    }
+    .question-types-panel {
+      padding: 2rem;
+    }
+    .question-types-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .question-types-list li {
+      display: grid;
+      grid-template-columns: 0.7rem minmax(0, 1fr);
+      gap: 0.75rem;
+      align-items: start;
+      color: var(--text-secondary);
+      line-height: 1.55;
+    }
+    .type-dot {
+      width: 0.55rem;
+      height: 0.55rem;
+      margin-top: 0.45rem;
+      border-radius: 999px;
+      background: var(--accent-cyan);
+      box-shadow: 0 0 0 4px rgba(6, 182, 212, 0.12);
     }
     .check-list {
       display: flex;
@@ -556,7 +714,7 @@ const PLATFORM_UI: Record<Locale, PlatformUi> = {
     }
 
     @media (max-width: 992px) {
-      .platform-hero-grid, .two-col-grid {
+      .platform-hero-grid, .platform-detail-grid, .two-col-grid {
         grid-template-columns: 1fr;
         gap: 2rem;
       }
@@ -581,6 +739,7 @@ export class PlatformComponent implements OnInit {
   protected whatItDoesTitle = '';
   protected ui = PLATFORM_UI.en;
   protected storeUrl = CHROME_WEB_STORE_URL;
+  protected detail = buildPlatformDetail('quizSolverAi', 'en', 'AI quiz solver');
 
   ngOnInit(): void {
     this.locale = (this.route.snapshot.data['locale'] || 'en') as Locale;
@@ -590,6 +749,7 @@ export class PlatformComponent implements OnInit {
     this.platformLabel = this.data?.shortName || this.data?.platformName || 'AI quiz solver';
     this.platformIntro = this.ui.intro(this.platformLabel);
     this.whatItDoesTitle = this.ui.whatItDoes(this.platformLabel);
+    this.detail = buildPlatformDetail(this.pageKey, this.locale, this.platformLabel);
     this.seo.applyPage(this.pageKey, this.locale);
   }
 

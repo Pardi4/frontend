@@ -795,8 +795,8 @@ const HOME_COPY: Partial<Record<Locale, any>> & { en: any; pl: any } = {
   en: {
     hero: {
       eyebrow: 'AI quiz solver Chrome extension',
-      headingStart: 'Unlock the ultimate',
-      headingAccent: 'Quiz Solving Power',
+      headingStart: 'AI Quiz Solver Chrome Extension —',
+      headingAccent: 'Solve Any Quiz Instantly',
       lead: 'Instantly solve quizzes on Testportal, Moodle, Kahoot, Canvas, Google Forms and 7 more platforms. Get AI answer suggestions with step-by-step explanations — free to install.',
       primary: 'Install from Chrome Web Store',
       secondary: 'See how it works',

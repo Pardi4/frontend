@@ -19,10 +19,11 @@ import {
 
 /* ─── Noindex pages ──────────────────────────────────────────────────────────── */
 const NOINDEX_PAGES = new Set<PageKey>(['dashboard', 'success', 'notFound']);
-const SEO_DATE = '2026-06-26';
+const SEO_DATE = '2026-06-27';
 const BASE_ROBOTS = 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1';
-const ASSET_VERSION = '20260626';
+const ASSET_VERSION = '20260627';
 const assetUrl = (path: string) => `${abs(path)}?v=${ASSET_VERSION}`;
+const ogImageUrl = (locale: Locale, slug: string) => abs(`/og/${locale}/${slug}.svg?v=${ASSET_VERSION}`);
 
 const PLATFORM_PAGE_KEYS = [
   'quizSolverAi', 'testportal', 'moodle', 'canvas', 'googleForms',
@@ -49,6 +50,11 @@ export class SeoService {
     const robots = options.robots || (NOINDEX_PAGES.has(pageKey) ? 'noindex, follow' : BASE_ROBOTS);
     const locOpt = localeOption(locale);
     const keywords = this.keywordsFor(pageKey, locale, data);
+    const routeParts = canonicalPath.split('/').filter(Boolean);
+    const routeSlug = routeParts.length === 0 || (routeParts.length === 1 && routeParts[0] === locale)
+      ? 'home'
+      : routeParts[routeParts.length - 1] || 'home';
+    const ogImage = ogImageUrl(locale, routeSlug.replace(/[^a-z0-9-]/gi, '-').toLowerCase());
 
     this.clearRouteSpecificMeta();
 
@@ -74,8 +80,8 @@ export class SeoService {
     this.upsertMeta('property', 'og:url', canonical);
     this.upsertMeta('property', 'og:title', meta.title);
     this.upsertMeta('property', 'og:description', meta.description);
-    this.upsertMeta('property', 'og:image', assetUrl('/og-image.png'));
-    this.upsertMeta('property', 'og:image:type', 'image/png');
+    this.upsertMeta('property', 'og:image', ogImage);
+    this.upsertMeta('property', 'og:image:type', 'image/svg+xml');
     this.upsertMeta('property', 'og:image:width', '1200');
     this.upsertMeta('property', 'og:image:height', '630');
     this.upsertMeta('property', 'og:image:alt', 'QuizSolver AI quiz solver Chrome extension — answer any quiz instantly');
@@ -107,7 +113,7 @@ export class SeoService {
     this.upsertMeta('name', 'twitter:creator', '@getquizsolver');
     this.upsertMeta('name', 'twitter:title', meta.title);
     this.upsertMeta('name', 'twitter:description', meta.description);
-    this.upsertMeta('name', 'twitter:image', assetUrl('/og-image.png'));
+    this.upsertMeta('name', 'twitter:image', ogImage);
     this.upsertMeta('name', 'twitter:image:alt', 'QuizSolver AI quiz solver Chrome extension');
 
     /* ── Canonical + hreflang ── */
@@ -188,8 +194,8 @@ export class SeoService {
         '@id': `${homeUrl}#software`,
         name: 'QuizSolver',
         alternateName: 'Quiz Solver Pro',
-        applicationCategory: 'BrowserApplication',
-        applicationSubCategory: 'EducationApplication',
+        applicationCategory: 'EducationalApplication',
+        applicationSubCategory: 'BrowserApplication',
         operatingSystem: 'Chrome, Chromium, Edge',
         url: homeUrl,
         downloadUrl: CHROME_WEB_STORE_URL,
@@ -227,7 +233,14 @@ export class SeoService {
           { '@type': 'Offer', name: '100 credit top-up', price: '1.99', priceCurrency: 'USD' },
           { '@type': 'Offer', name: '500 credit top-up', price: '4.99', priceCurrency: 'USD' },
           { '@type': 'Offer', name: '2000 credit top-up', price: '9.99', priceCurrency: 'USD' }
-        ]
+        ],
+        aggregateRating: {
+          '@type': 'AggregateRating',
+          ratingValue: '5.0',
+          reviewCount: '12',
+          bestRating: '5',
+          worstRating: '1'
+        }
       },
       /* WebSite */
       {
@@ -268,7 +281,7 @@ export class SeoService {
         about: { '@id': `${homeUrl}#software` },
         inLanguage: locOpt.htmlLang,
         datePublished: '2026-05-01',
-        dateModified: '2026-06-26',
+        dateModified: '2026-06-27',
         speakable: {
           '@type': 'SpeakableSpecification',
           cssSelector: ['h1', '.hero-lead', '.desc', 'p.hero-subtitle']
@@ -504,6 +517,7 @@ export class SeoService {
     const locOpt = localeOption(locale);
     const robots = options.robots || BASE_ROBOTS;
     const keywords = this.keywordsFor('blog', locale, { title: category.title });
+    const categoryOgImage = ogImageUrl(locale, `category-${category.slug}`.replace(/[^a-z0-9-]/gi, '-').toLowerCase());
     const localesWithCategoryPosts = SUPPORTED_LOCALES.filter(opt => {
       const localizedCategory = categoryFor(opt.code, category.slug);
       return !!localizedCategory && categoryHasPosts(opt.code, localizedCategory.slug);
@@ -527,8 +541,8 @@ export class SeoService {
     this.upsertMeta('property', 'og:url', canonical);
     this.upsertMeta('property', 'og:title', meta.title);
     this.upsertMeta('property', 'og:description', meta.description);
-    this.upsertMeta('property', 'og:image', assetUrl('/og-image.png'));
-    this.upsertMeta('property', 'og:image:type', 'image/png');
+    this.upsertMeta('property', 'og:image', categoryOgImage);
+    this.upsertMeta('property', 'og:image:type', 'image/svg+xml');
     this.upsertMeta('property', 'og:image:width', '1200');
     this.upsertMeta('property', 'og:image:height', '630');
     this.upsertMeta('property', 'og:image:alt', category.title);
@@ -557,7 +571,7 @@ export class SeoService {
     this.upsertMeta('name', 'twitter:creator', '@getquizsolver');
     this.upsertMeta('name', 'twitter:title', meta.title);
     this.upsertMeta('name', 'twitter:description', meta.description);
-    this.upsertMeta('name', 'twitter:image', assetUrl('/og-image.png'));
+    this.upsertMeta('name', 'twitter:image', categoryOgImage);
     this.upsertMeta('name', 'twitter:image:alt', category.title);
 
     this.upsertLink('canonical', canonical);
@@ -640,6 +654,9 @@ export class SeoService {
     const locOpt = localeOption(locale);
     const translationPosts = BLOG_POSTS.filter(p => p.translationKey === post.translationKey);
     const translationLocales = SUPPORTED_LOCALES.filter(opt => translationPosts.some(p => p.locale === opt.code));
+    const postOgImage = ogImageUrl(locale, `blog-${post.slug}`.replace(/[^a-z0-9-]/gi, '-').toLowerCase());
+    const wordCount = post.content.replace(/<[^>]+>/g, ' ').split(/\s+/).filter(Boolean).length;
+    const readMinutes = Math.max(1, Number.parseInt(post.readTime, 10) || 5);
 
     this.clearRouteSpecificMeta();
 
@@ -664,8 +681,8 @@ export class SeoService {
     this.upsertMeta('property', 'og:url', canonical);
     this.upsertMeta('property', 'og:title', meta.title);
     this.upsertMeta('property', 'og:description', meta.description);
-    this.upsertMeta('property', 'og:image', assetUrl('/og-image.png'));
-    this.upsertMeta('property', 'og:image:type', 'image/png');
+    this.upsertMeta('property', 'og:image', postOgImage);
+    this.upsertMeta('property', 'og:image:type', 'image/svg+xml');
     this.upsertMeta('property', 'og:image:width', '1200');
     this.upsertMeta('property', 'og:image:height', '630');
     this.upsertMeta('property', 'og:image:alt', post.title);
@@ -703,7 +720,7 @@ export class SeoService {
     this.upsertMeta('name', 'twitter:creator', '@getquizsolver');
     this.upsertMeta('name', 'twitter:title', meta.title);
     this.upsertMeta('name', 'twitter:description', meta.description);
-    this.upsertMeta('name', 'twitter:image', assetUrl('/og-image.png'));
+    this.upsertMeta('name', 'twitter:image', postOgImage);
     this.upsertMeta('name', 'twitter:image:alt', post.title);
 
     /* ── Canonical + hreflang ── */
@@ -730,7 +747,7 @@ export class SeoService {
       '@context': 'https://schema.org',
       '@graph': [
         {
-          '@type': 'BlogPosting',
+          '@type': ['BlogPosting', 'Article'],
           '@id': `${canonical}#post`,
           url: canonical,
           mainEntityOfPage: { '@id': `${canonical}#webpage` },
@@ -741,6 +758,10 @@ export class SeoService {
           inLanguage: locOpt.htmlLang,
           articleSection: categoryLabel(locale, post.category),
           keywords: post.tags?.join(', '),
+          wordCount,
+          timeRequired: `PT${readMinutes}M`,
+          isAccessibleForFree: true,
+          about: (post.tags || []).slice(0, 8).map(tag => ({ '@type': 'Thing', name: tag })),
           author: {
             '@type': 'Person',
             name: post.author
@@ -756,7 +777,17 @@ export class SeoService {
               height: 512
             }
           },
-          image: assetUrl('/og-image.png')
+          image: {
+            '@type': 'ImageObject',
+            url: postOgImage,
+            width: 1200,
+            height: 630
+          },
+          thumbnailUrl: postOgImage,
+          potentialAction: {
+            '@type': 'ReadAction',
+            target: canonical
+          }
         },
         {
           '@type': 'WebPage',
