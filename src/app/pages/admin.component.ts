@@ -1,5 +1,5 @@
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { Component, Inject, OnInit, PLATFORM_ID, signal } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit, PLATFORM_ID, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Meta, Title } from '@angular/platform-browser';
 import { ADMIN_PANEL_URL } from '../admin-path';
@@ -123,9 +123,12 @@ type AdminTab = 'users' | 'purchases' | 'bugs' | 'support' | 'cache' | 'leaderbo
                       <td>{{ user.stats?.totalQuestionsSolved || 0 }}</td>
                       <td>{{ user.streak?.current || 0 }}</td>
                       <td>
-                        <span class="status-pill" [class.danger]="user.isBanned">
-                          {{ user.isBanned ? 'Banned' : 'Active' }}
+                        <span class="status-pill" [class.danger]="user.isBanned" [class.pending]="!user.isBanned && !user.isExtensionActive">
+                          {{ userStatusLabel(user) }}
                         </span>
+                        <small style="display: block; margin-top: 0.35rem; color: var(--text-secondary);">
+                          {{ userExtensionLastSeen(user) }}
+                        </small>
                       </td>
                       <td>
                         <div class="row-actions">
@@ -176,6 +179,7 @@ type AdminTab = 'users' | 'purchases' | 'bugs' | 'support' | 'cache' | 'leaderbo
                       <th>Credits</th>
                       <th>Price</th>
                       <th>Provider</th>
+                      <th>Applied</th>
                       <th>Reason</th>
                       <th>Date</th>
                     </tr>
@@ -187,11 +191,17 @@ type AdminTab = 'users' | 'purchases' | 'bugs' | 'support' | 'cache' | 'leaderbo
                       <td>{{ purchase.credits }}</td>
                       <td><span style="font-weight: 600; color: var(--accent-cyan);">{{ purchase.priceUsd ? formatMoney(purchase.priceUsd) : '-' }}</span></td>
                       <td style="text-transform: uppercase; font-size: 0.85rem;">{{ purchase.provider }}</td>
+                      <td>
+                        <span class="status-pill" [class.pending]="!purchase.creditsApplied">
+                          {{ purchase.creditsApplied ? 'Applied' : 'Pending' }}
+                        </span>
+                        <button type="button" *ngIf="!purchase.creditsApplied" (click)="applyPurchaseCredits(purchase.id)" style="display: block; margin-top: 0.4rem; color: var(--accent-cyan);">Apply</button>
+                      </td>
                       <td>{{ purchase.reason || '-' }}</td>
                       <td>{{ formatDate(purchase.date) }}</td>
                     </tr>
                     <tr *ngIf="!purchases().length">
-                      <td colspan="7" class="empty-cell" style="text-align: center; padding: 3rem;">No purchases yet.</td>
+                      <td colspan="8" class="empty-cell" style="text-align: center; padding: 3rem;">No purchases yet.</td>
                     </tr>
                   </tbody>
                 </table>
@@ -349,11 +359,19 @@ type AdminTab = 'users' | 'purchases' | 'bugs' | 'support' | 'cache' | 'leaderbo
                   <p class="eyebrow">AI cache</p>
                   <h2>Cached answers</h2>
                 </div>
-                <button class="btn btn-outline" type="button" (click)="clearCache()">Clear cache</button>
+                <form class="admin-search" (ngSubmit)="loadCache(1)">
+                  <input class="form-input" type="search" name="cacheSearch" [(ngModel)]="cacheSearch" placeholder="Search cached question text">
+                  <button class="btn btn-primary" type="submit">Search</button>
+                  <button class="btn btn-outline" type="button" *ngIf="cacheSearch" (click)="cacheSearch = ''; loadCache(1)">Reset</button>
+                  <button class="btn btn-outline" type="button" (click)="clearCache()">Clear cache</button>
+                </form>
               </div>
               <div class="cache-summary">
                 <strong>{{ cache().totalCached || 0 }}</strong>
                 <span class="text-secondary">Total cached answers</span>
+                <span class="text-secondary" *ngIf="cacheSearch.trim()">
+                  Showing {{ cachePagination().total || 0 }} matching entries
+                </span>
               </div>
               <div class="cache-list">
                 <article class="glass clickable-row" *ngFor="let hit of cache().topHits || []" (click)="showQuestionDetails(hit)">
@@ -408,6 +426,53 @@ type AdminTab = 'users' | 'purchases' | 'bugs' | 'support' | 'cache' | 'leaderbo
                   <span class="text-secondary" style="font-size: 0.75rem; text-transform: uppercase;">{{ item.label }}</span>
                   <strong [class.ok]="item.ok" style="font-size: 1.35rem; margin-top: 0.25rem;">{{ item.value }}</strong>
                 </article>
+              </div>
+
+              <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border);">
+                <div class="panel-head" style="margin-bottom: 1rem;">
+                  <div>
+                    <p class="eyebrow">Billing safety</p>
+                    <h3 style="margin: 0.25rem 0 0; font-family: var(--font-heading); font-size: 1.15rem;">Credit dedupe monitor</h3>
+                  </div>
+                  <button class="btn btn-outline" type="button" (click)="loadBillingSafety()">Refresh billing</button>
+                </div>
+                <div class="health-grid">
+                  <article class="glass" *ngFor="let item of billingSafetyCards()">
+                    <span class="text-secondary" style="font-size: 0.75rem; text-transform: uppercase;">{{ item.label }}</span>
+                    <strong [class.ok]="item.ok" style="font-size: 1.35rem; margin-top: 0.25rem;">{{ item.value }}</strong>
+                  </article>
+                </div>
+
+                <div class="admin-alert" *ngIf="(billingSafety().duplicateGroups || []).length" style="margin-top: 1rem;">
+                  Potential duplicate charged groups found. Review immediately.
+                </div>
+
+                <div class="table-scroll" *ngIf="(billingSafety().duplicateGroups || []).length" style="margin-top: 1rem;">
+                  <table class="admin-table">
+                    <thead>
+                      <tr>
+                        <th>User</th>
+                        <th>Question hash</th>
+                        <th>Charges</th>
+                        <th>Actions</th>
+                        <th>Last charged</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let group of billingSafety().duplicateGroups">
+                        <td><strong>{{ group.email || group.userId || 'Unknown user' }}</strong></td>
+                        <td>{{ shortHash(group.questionHash) }}</td>
+                        <td>{{ group.count }} / {{ group.credits }} credits</td>
+                        <td>{{ (group.actions || []).join(', ') }}</td>
+                        <td>{{ formatDate(group.lastChargedAt) }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <div class="empty-panel" *ngIf="!(billingSafety().duplicateGroups || []).length" style="text-align: center; padding: 1.25rem; margin-top: 1rem;">
+                  <p class="text-secondary">No duplicate charged groups detected.</p>
+                </div>
               </div>
             </section>
           </section>
@@ -826,7 +891,6 @@ type AdminTab = 'users' | 'purchases' | 'bugs' | 'support' | 'cache' | 'leaderbo
       font-size: 0.8rem;
       color: var(--text-secondary);
     }
-
     /* Row Actions */
     .row-actions {
       display: flex;
@@ -1352,7 +1416,7 @@ type AdminTab = 'users' | 'purchases' | 'bugs' | 'support' | 'cache' | 'leaderbo
     }
   `]
 })
-export class AdminComponent implements OnInit {
+export class AdminComponent implements OnInit, OnDestroy {
   protected readonly tabs: Array<{ id: AdminTab; label: string; short: string }> = [
     { id: 'users', label: 'Users', short: 'US' },
     { id: 'purchases', label: 'Purchases', short: 'PY' },
@@ -1376,6 +1440,7 @@ export class AdminComponent implements OnInit {
   protected readonly cache = signal<any>({});
   protected readonly leaderboard = signal<any[]>([]);
   protected readonly health = signal<any>({});
+  protected readonly billingSafety = signal<any>({});
   protected readonly pagination = signal<any>({ page: 1, pages: 1, total: 0 });
   protected readonly cachePagination = signal<any>({ page: 1, pages: 1, total: 0 });
 
@@ -1388,6 +1453,7 @@ export class AdminComponent implements OnInit {
   protected email = '';
   protected password = '';
   protected userSearch = '';
+  protected cacheSearch = '';
   protected supportSearch = '';
   protected supportStatusFilter = '';
   protected supportReplyText = '';
@@ -1396,6 +1462,7 @@ export class AdminComponent implements OnInit {
 
   private token = '';
   private readonly isBrowser: boolean;
+  private usersRefreshTimer: ReturnType<typeof setInterval> | null = null;
 
   constructor(
     @Inject(PLATFORM_ID) platformId: object,
@@ -1416,6 +1483,7 @@ export class AdminComponent implements OnInit {
     if (me.success && me.user?.role === 'admin') {
       this.isAuthed.set(true);
       await this.refresh();
+      this.startUsersRefreshTimer();
       return;
     }
 
@@ -1451,13 +1519,33 @@ export class AdminComponent implements OnInit {
     localStorage.setItem('qs_token', this.token);
     this.isAuthed.set(true);
     await this.refresh();
+    this.startUsersRefreshTimer();
   }
 
   protected logout(): void {
     if (this.token) void this.api('/api/auth/logout', { method: 'POST' });
     this.token = '';
     this.isAuthed.set(false);
+    this.stopUsersRefreshTimer();
     if (this.isBrowser) localStorage.removeItem('qs_admin_token');
+  }
+
+  ngOnDestroy(): void {
+    this.stopUsersRefreshTimer();
+  }
+
+  private startUsersRefreshTimer(): void {
+    if (!this.isBrowser || this.usersRefreshTimer) return;
+    this.usersRefreshTimer = setInterval(() => {
+      if (!this.isAuthed() || this.activeTab() !== 'users') return;
+      void this.loadUsers(this.pagination().page || 1);
+    }, 30000);
+  }
+
+  private stopUsersRefreshTimer(): void {
+    if (!this.usersRefreshTimer) return;
+    clearInterval(this.usersRefreshTimer);
+    this.usersRefreshTimer = null;
   }
 
   protected startGoogleLogin(): void {
@@ -1475,7 +1563,8 @@ export class AdminComponent implements OnInit {
       this.loadSupportMessages(),
       this.loadCache(),
       this.loadLeaderboard(),
-      this.loadHealth()
+      this.loadHealth(),
+      this.loadBillingSafety()
     ]);
   }
 
@@ -1634,6 +1723,19 @@ export class AdminComponent implements OnInit {
     ];
   }
 
+  protected billingSafetyCards(): Array<{ label: string; value: string; ok?: boolean }> {
+    const b = this.billingSafety();
+    const duplicates = (b.duplicateGroups || []).length;
+    return [
+      { label: 'Charged records', value: this.formatNumber(b.chargedRecords), ok: true },
+      { label: 'Charged 24h', value: this.formatNumber(b.chargedLast24h), ok: true },
+      { label: 'Duplicate groups', value: this.formatNumber(duplicates), ok: duplicates === 0 },
+      { label: 'Stale claims', value: this.formatNumber(b.staleClaims), ok: Number(b.staleClaims || 0) === 0 },
+      { label: 'Waived', value: this.formatNumber(b.waivedRecords) },
+      { label: 'All claims', value: this.formatNumber(b.totalClaims) }
+    ];
+  }
+
   protected filteredSupportMessages(): any[] {
     const q = this.supportSearch.trim().toLowerCase();
     const messages = this.supportMessages();
@@ -1715,8 +1817,7 @@ export class AdminComponent implements OnInit {
   }
 
   protected pageNumbers(): number[] {
-    const pages = Number(this.pagination().pages || 1);
-    return Array.from({ length: pages }, (_, index) => index + 1);
+    return this.paginationWindow(this.pagination());
   }
 
   protected formatNumber(value: unknown): string {
@@ -1736,6 +1837,19 @@ export class AdminComponent implements OnInit {
     return new Intl.DateTimeFormat('en-US', { dateStyle: 'medium', timeStyle: 'short' }).format(date);
   }
 
+  protected userStatusLabel(user: any): string {
+    if (user?.isBanned) return 'Banned';
+    return user?.isExtensionActive ? 'Active' : 'Offline';
+  }
+
+  protected userExtensionLastSeen(user: any): string {
+    if (user?.isBanned) return 'Suspended account';
+    if (!user?.extensionLastSeenAt) return 'Extension not seen';
+    const prefix = user?.isExtensionActive ? 'Now' : 'Last seen';
+    const reason = user?.extensionLastSeenReason ? ` - ${user.extensionLastSeenReason}` : '';
+    return `${prefix}: ${this.formatDate(user.extensionLastSeenAt)}${reason}`;
+  }
+
   private async loadStats(): Promise<void> {
     const result = await this.api('/api/admin/stats');
     if (result.success) this.stats.set(result.stats || {});
@@ -1744,6 +1858,20 @@ export class AdminComponent implements OnInit {
   private async loadPurchases(): Promise<void> {
     const result = await this.api('/api/admin/purchases');
     if (result.success) this.purchases.set(result.purchases || []);
+  }
+
+  protected async applyPurchaseCredits(purchaseId: string): Promise<void> {
+    if (!purchaseId) return;
+    const result = await this.api(`/api/admin/purchases/${purchaseId}/apply`, { method: 'POST' });
+    if (result.success) {
+      await Promise.all([
+        this.loadPurchases(),
+        this.loadUsers(this.pagination().page || 1),
+        this.loadStats()
+      ]);
+      return;
+    }
+    this.error.set(result.error || 'Could not apply purchase credits.');
   }
 
   private async loadBugs(): Promise<void> {
@@ -1812,6 +1940,8 @@ export class AdminComponent implements OnInit {
 
   protected async loadCache(page = 1): Promise<void> {
     const params = new URLSearchParams({ page: String(page), limit: '25' });
+    const search = this.cacheSearch.trim();
+    if (search) params.set('q', search);
     const result = await this.api(`/api/admin/cache/stats?${params.toString()}`);
     if (result.success) {
       this.cache.set(result);
@@ -1827,6 +1957,11 @@ export class AdminComponent implements OnInit {
   private async loadHealth(): Promise<void> {
     const result = await this.api('/api/admin/system/health');
     if (result.success) this.health.set(result.health || {});
+  }
+
+  protected async loadBillingSafety(): Promise<void> {
+    const result = await this.api('/api/admin/billing/safety');
+    if (result.success) this.billingSafety.set(result.billing || {});
   }
 
   protected async openUserHistory(user: any): Promise<void> {
@@ -1850,13 +1985,24 @@ export class AdminComponent implements OnInit {
   }
 
   protected userQuestionsPageNumbers(): number[] {
-    const pages = Number(this.userQuestionsPagination().pages || 1);
-    return Array.from({ length: pages }, (_, index) => index + 1);
+    return this.paginationWindow(this.userQuestionsPagination());
   }
 
   protected cachePageNumbers(): number[] {
-    const pages = Number(this.cachePagination().pages || 1);
-    return Array.from({ length: pages }, (_, index) => index + 1);
+    return this.paginationWindow(this.cachePagination());
+  }
+
+  private paginationWindow(pagination: any, radius = 3): number[] {
+    const pages = Math.max(1, Number(pagination?.pages || 1));
+    const current = Math.min(Math.max(1, Number(pagination?.page || 1)), pages);
+    const start = Math.max(1, current - radius);
+    const end = Math.min(pages, current + radius);
+    return Array.from({ length: end - start + 1 }, (_, index) => start + index);
+  }
+
+  protected shortHash(value: unknown): string {
+    const text = String(value || '');
+    return text.length > 18 ? `${text.slice(0, 10)}...${text.slice(-6)}` : text || '-';
   }
 
   protected showQuestionDetails(q: any): void {
