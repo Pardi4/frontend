@@ -24,7 +24,8 @@ function isLegacyAdminPath(pathname: string): boolean {
 
 function isAdminPanelPath(pathname: string): boolean {
   const cleanPath = pathname.replace(/\/+$/, '') || '/';
-  return cleanPath === ADMIN_PANEL_URL;
+  return cleanPath === ADMIN_PANEL_URL ||
+    new RegExp(`^/[a-z]{2}${ADMIN_PANEL_URL}$`).test(cleanPath);
 }
 
 function shouldSkipPathCleanup(req: express.Request): boolean {
@@ -32,6 +33,7 @@ function shouldSkipPathCleanup(req: express.Request): boolean {
     || req.path.startsWith('/api/')
     || req.path === '/extension-auth/callback'
     || isLegacyAdminPath(req.path)
+    || isAdminPanelPath(req.path)
     || /\.[a-z0-9]{2,8}$/i.test(req.path);
 }
 

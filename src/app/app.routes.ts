@@ -23,7 +23,8 @@ const sharedQuizRoutes = (): Routes =>
 export const routes: Routes = [
   ...localizedRoutes('home', () => import('./pages/home.component').then(m => m.HomeComponent)),
   ...localizedRoutes('dashboard', () => import('./pages/dashboard.component').then(m => m.DashboardComponent)),
-  { path: ADMIN_PANEL_ROUTE_PATH, loadComponent: () => import('./pages/admin.component').then(m => m.AdminComponent) },
+  { path: ADMIN_PANEL_ROUTE_PATH, loadComponent: () => import('./pages/admin.component').then(m => m.AdminComponent), data: { locale: 'en' } },
+  { path: `pl/${ADMIN_PANEL_ROUTE_PATH}`, loadComponent: () => import('./pages/admin.component').then(m => m.AdminComponent), data: { locale: 'pl' } },
   ...localizedRoutes('credits', () => import('./pages/credits.component').then(m => m.CreditsComponent)),
   ...localizedRoutes('quiz', () => import('./pages/quiz.component').then(m => m.QuizComponent)),
   ...localizedRoutes('demo', () => import('./pages/demo.component').then(m => m.DemoComponent)),

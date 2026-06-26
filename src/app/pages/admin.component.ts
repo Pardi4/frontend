@@ -1,10 +1,401 @@
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { Component, Inject, OnDestroy, OnInit, PLATFORM_ID, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { Meta, Title } from '@angular/platform-browser';
-import { ADMIN_PANEL_URL } from '../admin-path';
+import { ADMIN_PANEL_ROUTE_PATH, ADMIN_PANEL_URL } from '../admin-path';
 
 type AdminTab = 'users' | 'purchases' | 'bugs' | 'support' | 'cache' | 'leaderboard' | 'system';
+type AdminLocale = 'en' | 'pl';
+
+const ADMIN_COPY = {
+  en: {
+    adminConsole: 'Admin console',
+    loginIntro: 'Operational control for credits, users, cache and platform health.',
+    continueGoogle: 'Continue with Google',
+    or: 'or',
+    email: 'Email',
+    password: 'Password',
+    signingIn: 'Signing in...',
+    signIn: 'Sign in',
+    adminSections: 'Admin sections',
+    refresh: 'Refresh',
+    logout: 'Logout',
+    liveOperations: 'Live operations',
+    dashboard: 'Dashboard',
+    publicSite: 'Public site',
+    users: 'Users',
+    purchases: 'Purchases',
+    bugs: 'Bugs',
+    support: 'Support',
+    cache: 'Cache',
+    leaderboard: 'Leaderboard',
+    system: 'System',
+    usersHint: 'accounts',
+    purchasesHint: 'billing',
+    bugsHint: 'reports',
+    supportHint: 'mail',
+    cacheHint: 'answers',
+    leaderboardHint: 'ranking',
+    systemHint: 'health',
+    usersTitle: 'Users and credits',
+    purchasesTitle: 'Purchases and grants',
+    bugsTitle: 'Bug reports',
+    supportTitle: 'Support inbox',
+    cacheTitle: 'Answer cache',
+    leaderboardTitle: 'Leaderboard',
+    systemTitle: 'System health',
+    usersDescription: 'Track accounts, live extension usage, bans, credits and question history.',
+    purchasesDescription: 'Review payment records, manual grants and pending credit application.',
+    bugsDescription: 'Read user-submitted bug reports with source URLs.',
+    supportDescription: 'Handle unread support mail, linked accounts and quick credit adjustments.',
+    cacheDescription: 'Inspect cached AI answers, weak question text and high-hit questions.',
+    leaderboardDescription: 'Review public ranking data and excluded users.',
+    systemDescription: 'Monitor service health, database state and credit dedupe safety.',
+    accountsCredits: 'Accounts and credits',
+    searchEmailName: 'Search email or name',
+    search: 'Search',
+    user: 'User',
+    role: 'Role',
+    credits: 'Credits',
+    questions: 'Questions',
+    streak: 'Streak',
+    status: 'Status',
+    actions: 'Actions',
+    noDisplayName: 'No display name',
+    unlimited: 'unlimited',
+    history: 'History',
+    grant: 'Grant',
+    unban: 'Unban',
+    ban: 'Ban',
+    showLb: 'Show LB',
+    hideLb: 'Hide LB',
+    delete: 'Delete',
+    noUsers: 'No users found.',
+    revenue: 'Revenue',
+    pack: 'Pack',
+    price: 'Price',
+    provider: 'Provider',
+    applied: 'Applied',
+    pending: 'Pending',
+    reason: 'Reason',
+    date: 'Date',
+    apply: 'Apply',
+    noPurchases: 'No purchases yet.',
+    reports: 'Reports',
+    unknownUser: 'Unknown user',
+    noBugReports: 'No bug reports.',
+    inbox: 'Inbox',
+    supportMail: 'Support mail',
+    searchSupport: 'Search sender, subject, text',
+    allMessages: 'All messages',
+    open: 'Open',
+    closed: 'Closed',
+    filter: 'Filter',
+    noSubject: '(No subject)',
+    account: 'Account',
+    noSupport: 'No support messages.',
+    from: 'From',
+    to: 'To',
+    received: 'Received',
+    copyEmail: 'Copy email',
+    close: 'Close',
+    linkedAccount: 'Linked account',
+    grantCredits: 'Grant credits',
+    noLinkedAccount: 'No linked account',
+    unknownEmail: 'Unknown email',
+    noLinkedAccountNote: 'This sender email does not match a QuizSolver account.',
+    replies: 'Replies',
+    reply: 'Reply',
+    replyPlaceholder: 'Write a helpful answer...',
+    sendReply: 'Send reply',
+    selectMessage: 'Select a message to read and reply.',
+    aiCache: 'AI cache',
+    cachedAnswers: 'Cached answers',
+    searchCache: 'Search cached question text',
+    reset: 'Reset',
+    clearCache: 'Clear cache',
+    options: 'options',
+    hits: 'hits',
+    weakText: 'Weak text',
+    openDetails: 'Open details',
+    noCacheHits: 'No cache hits yet.',
+    community: 'Community',
+    noLeaderboard: 'No leaderboard data.',
+    healthCheck: 'Health check',
+    billingSafety: 'Billing safety',
+    creditDedupeMonitor: 'Credit dedupe monitor',
+    refreshBilling: 'Refresh billing',
+    duplicateWarning: 'Potential duplicate charged groups found. Review immediately.',
+    questionHash: 'Question hash',
+    charges: 'Charges',
+    lastCharged: 'Last charged',
+    noDuplicateGroups: 'No duplicate charged groups detected.',
+    questionDetails: 'Question details',
+    deleteCache: 'Delete cache',
+    type: 'Type',
+    cacheHits: 'Cache hits',
+    counts: 'Counts',
+    prompts: 'Prompts',
+    rows: 'Rows',
+    answerItems: 'Answer items',
+    questionText: 'Question text',
+    answerSummary: 'Answer summary',
+    explanation: 'Explanation',
+    solveHistory: 'Solve History',
+    noSolvedQuestions: 'No questions solved by this user yet.',
+    manualCredits: 'Manual credits',
+    cancel: 'Cancel',
+    active: 'Active',
+    offline: 'Offline',
+    banned: 'Banned',
+    suspendedAccount: 'Suspended account',
+    extensionNotSeen: 'Extension not seen',
+    now: 'Now',
+    lastSeen: 'Last seen',
+    unreadSupport: 'Unread support',
+    newEmailsWaiting: 'New emails waiting',
+    creditSafety: 'Credit safety',
+    duplicateGroupsNeedReview: 'Duplicate groups need review',
+    noDuplicateChargeGroups: 'No duplicate charge groups',
+    usingExtensionNow: 'Using extension now',
+    activeHeartbeat: 'Active by recent heartbeat',
+    visibleUsers: 'Visible users',
+    totalInSearch: 'total in search',
+    activeNow: 'Active now',
+    blockedAccounts: 'Blocked accounts',
+    visibleCredits: 'Visible credits',
+    solvedQuestionsVisible: 'solved questions visible',
+    visibleEntries: 'Visible entries',
+    allStoredCacheRecords: 'All stored cache records',
+    matchingCurrentSearch: 'Matching current search',
+    currentCachePageTotal: 'Current cache page total',
+    hitsOnPage: 'Hits on page',
+    usageVisibleRows: 'Usage in visible rows',
+    needsParserReview: 'Needs parser/cache review',
+    loginRequired: 'Email and password are required.',
+    loginFailed: 'Login failed.',
+    adminRequired: 'Admin access required.',
+    creditsGreaterThanZero: 'Credits must be greater than 0.',
+    couldNotGrantCredits: 'Could not grant credits.',
+    banConfirm: 'Ban this user?',
+    couldNotBanUser: 'Could not ban user.',
+    couldNotUnbanUser: 'Could not unban user.',
+    couldNotUpdateLeaderboard: 'Could not update leaderboard setting.',
+    deleteUserConfirmPrefix: 'Delete',
+    deleteUserConfirmSuffix: 'This cannot be undone.',
+    couldNotDeleteUser: 'Could not delete user.',
+    clearCacheConfirm: 'Clear all cached answers?',
+    couldNotClearCache: 'Could not clear cache.',
+    deleteCacheConfirm: 'Delete this cached answer?',
+    couldNotDeleteCache: 'Could not delete cache entry.',
+    couldNotApplyPurchase: 'Could not apply purchase credits.',
+    noMessagePreview: 'No message preview.',
+    noMessageBody: 'No message body.',
+    couldNotCopyEmail: 'Could not copy email address.',
+    couldNotSendReply: 'Could not send support reply.',
+    deleteSupportConfirmPrefix: 'Delete support message from',
+    unknownSender: 'unknown sender',
+    couldNotDeleteSupport: 'Could not delete support message.',
+    supportAdjustment: 'Support adjustment',
+    questionHistoryAdjustment: 'Question history adjustment',
+    adminManualGrant: 'Admin manual grant'
+  },
+  pl: {
+    adminConsole: 'Panel admina',
+    loginIntro: 'Kontrola kredytów, użytkowników, cache i stanu platformy.',
+    continueGoogle: 'Kontynuuj z Google',
+    or: 'albo',
+    email: 'Email',
+    password: 'Hasło',
+    signingIn: 'Logowanie...',
+    signIn: 'Zaloguj',
+    adminSections: 'Sekcje panelu admina',
+    refresh: 'Odśwież',
+    logout: 'Wyloguj',
+    liveOperations: 'Operacje na żywo',
+    dashboard: 'Dashboard',
+    publicSite: 'Strona publiczna',
+    users: 'Użytkownicy',
+    purchases: 'Płatności',
+    bugs: 'Błędy',
+    support: 'Support',
+    cache: 'Cache',
+    leaderboard: 'Ranking',
+    system: 'System',
+    usersHint: 'konta',
+    purchasesHint: 'billing',
+    bugsHint: 'zgłoszenia',
+    supportHint: 'maile',
+    cacheHint: 'odpowiedzi',
+    leaderboardHint: 'ranking',
+    systemHint: 'zdrowie',
+    usersTitle: 'Użytkownicy i kredyty',
+    purchasesTitle: 'Płatności i granty',
+    bugsTitle: 'Zgłoszenia błędów',
+    supportTitle: 'Skrzynka supportu',
+    cacheTitle: 'Cache odpowiedzi',
+    leaderboardTitle: 'Ranking',
+    systemTitle: 'Stan systemu',
+    usersDescription: 'Kontroluj konta, aktywność rozszerzenia, bany, kredyty i historię pytań.',
+    purchasesDescription: 'Przeglądaj płatności, ręczne granty i oczekujące dodania kredytów.',
+    bugsDescription: 'Czytaj zgłoszenia błędów od użytkowników razem z adresami stron.',
+    supportDescription: 'Obsługuj nowe maile, powiązane konta i szybkie korekty kredytów.',
+    cacheDescription: 'Sprawdzaj odpowiedzi AI w cache, słabą treść pytań i najczęstsze trafienia.',
+    leaderboardDescription: 'Przeglądaj dane rankingu publicznego i wykluczonych użytkowników.',
+    systemDescription: 'Monitoruj stan usługi, bazę danych i zabezpieczenia przed podwójnym naliczaniem.',
+    accountsCredits: 'Konta i kredyty',
+    searchEmailName: 'Szukaj emaila lub nazwy',
+    search: 'Szukaj',
+    user: 'Użytkownik',
+    role: 'Rola',
+    credits: 'Kredyty',
+    questions: 'Pytania',
+    streak: 'Seria',
+    status: 'Status',
+    actions: 'Akcje',
+    noDisplayName: 'Brak nazwy',
+    unlimited: 'bez limitu',
+    history: 'Historia',
+    grant: 'Dodaj',
+    unban: 'Odbanuj',
+    ban: 'Zbanuj',
+    showLb: 'Pokaż w rank.',
+    hideLb: 'Ukryj w rank.',
+    delete: 'Usuń',
+    noUsers: 'Nie znaleziono użytkowników.',
+    revenue: 'Przychód',
+    pack: 'Pakiet',
+    price: 'Cena',
+    provider: 'Dostawca',
+    applied: 'Dodane',
+    pending: 'Oczekuje',
+    reason: 'Powód',
+    date: 'Data',
+    apply: 'Dodaj',
+    noPurchases: 'Brak płatności.',
+    reports: 'Zgłoszenia',
+    unknownUser: 'Nieznany użytkownik',
+    noBugReports: 'Brak zgłoszeń błędów.',
+    inbox: 'Skrzynka',
+    supportMail: 'Maile supportu',
+    searchSupport: 'Szukaj nadawcy, tematu, treści',
+    allMessages: 'Wszystkie wiadomości',
+    open: 'Otwarte',
+    closed: 'Zamknięte',
+    filter: 'Filtruj',
+    noSubject: '(Brak tematu)',
+    account: 'Konto',
+    noSupport: 'Brak wiadomości supportu.',
+    from: 'Od',
+    to: 'Do',
+    received: 'Odebrano',
+    copyEmail: 'Kopiuj email',
+    close: 'Zamknij',
+    linkedAccount: 'Powiązane konto',
+    grantCredits: 'Dodaj kredyty',
+    noLinkedAccount: 'Brak powiązanego konta',
+    unknownEmail: 'Nieznany email',
+    noLinkedAccountNote: 'Ten email nadawcy nie pasuje do konta QuizSolver.',
+    replies: 'Odpowiedzi',
+    reply: 'Odpowiedź',
+    replyPlaceholder: 'Napisz pomocną odpowiedź...',
+    sendReply: 'Wyślij odpowiedź',
+    selectMessage: 'Wybierz wiadomość, żeby ją przeczytać i odpisać.',
+    aiCache: 'Cache AI',
+    cachedAnswers: 'Odpowiedzi w cache',
+    searchCache: 'Szukaj treści pytania w cache',
+    reset: 'Reset',
+    clearCache: 'Wyczyść cache',
+    options: 'opcji',
+    hits: 'trafień',
+    weakText: 'Słaba treść',
+    openDetails: 'Otwórz szczegóły',
+    noCacheHits: 'Brak trafień cache.',
+    community: 'Społeczność',
+    noLeaderboard: 'Brak danych rankingu.',
+    healthCheck: 'Stan usługi',
+    billingSafety: 'Bezpieczeństwo billingowe',
+    creditDedupeMonitor: 'Monitor deduplikacji kredytów',
+    refreshBilling: 'Odśwież billing',
+    duplicateWarning: 'Wykryto możliwe podwójnie naliczone grupy. Sprawdź od razu.',
+    questionHash: 'Hash pytania',
+    charges: 'Naliczono',
+    lastCharged: 'Ostatnie naliczenie',
+    noDuplicateGroups: 'Brak wykrytych podwójnie naliczonych grup.',
+    questionDetails: 'Szczegóły pytania',
+    deleteCache: 'Usuń z cache',
+    type: 'Typ',
+    cacheHits: 'Trafienia cache',
+    counts: 'Liczniki',
+    prompts: 'Prompty',
+    rows: 'Wiersze',
+    answerItems: 'Elementy odpowiedzi',
+    questionText: 'Treść pytania',
+    answerSummary: 'Podsumowanie odpowiedzi',
+    explanation: 'Wyjaśnienie',
+    solveHistory: 'Historia pytań',
+    noSolvedQuestions: 'Ten użytkownik nie ma jeszcze rozwiązanych pytań.',
+    manualCredits: 'Ręczne kredyty',
+    cancel: 'Anuluj',
+    active: 'Aktywny',
+    offline: 'Offline',
+    banned: 'Zbanowany',
+    suspendedAccount: 'Konto zawieszone',
+    extensionNotSeen: 'Nie widziano rozszerzenia',
+    now: 'Teraz',
+    lastSeen: 'Ostatnio widziany',
+    unreadSupport: 'Nieprzeczytany support',
+    newEmailsWaiting: 'Nowe maile czekają',
+    creditSafety: 'Bezpieczeństwo kredytów',
+    duplicateGroupsNeedReview: 'Grupy duplikatów do sprawdzenia',
+    noDuplicateChargeGroups: 'Brak podwójnych naliczeń',
+    usingExtensionNow: 'Używa teraz rozszerzenia',
+    activeHeartbeat: 'Aktywny według ostatniego heartbeat',
+    visibleUsers: 'Widoczni użytkownicy',
+    totalInSearch: 'łącznie w wyszukiwaniu',
+    activeNow: 'Aktywni teraz',
+    blockedAccounts: 'Zablokowane konta',
+    visibleCredits: 'Widoczne kredyty',
+    solvedQuestionsVisible: 'rozwiązanych pytań w widoku',
+    visibleEntries: 'Widoczne wpisy',
+    allStoredCacheRecords: 'Wszystkie rekordy cache',
+    matchingCurrentSearch: 'Pasuje do obecnego wyszukiwania',
+    currentCachePageTotal: 'Łącznie dla obecnej strony cache',
+    hitsOnPage: 'Trafienia na stronie',
+    usageVisibleRows: 'Użycie w widocznych wierszach',
+    needsParserReview: 'Do sprawdzenia parser/cache',
+    loginRequired: 'Email i hasło są wymagane.',
+    loginFailed: 'Logowanie nie powiodło się.',
+    adminRequired: 'Wymagany dostęp admina.',
+    creditsGreaterThanZero: 'Liczba kredytów musi być większa od 0.',
+    couldNotGrantCredits: 'Nie udało się dodać kredytów.',
+    banConfirm: 'Zbanować tego użytkownika?',
+    couldNotBanUser: 'Nie udało się zbanować użytkownika.',
+    couldNotUnbanUser: 'Nie udało się odbanować użytkownika.',
+    couldNotUpdateLeaderboard: 'Nie udało się zmienić ustawień rankingu.',
+    deleteUserConfirmPrefix: 'Usunąć',
+    deleteUserConfirmSuffix: 'Tej operacji nie da się cofnąć.',
+    couldNotDeleteUser: 'Nie udało się usunąć użytkownika.',
+    clearCacheConfirm: 'Wyczyścić wszystkie odpowiedzi w cache?',
+    couldNotClearCache: 'Nie udało się wyczyścić cache.',
+    deleteCacheConfirm: 'Usunąć tę odpowiedź z cache?',
+    couldNotDeleteCache: 'Nie udało się usunąć wpisu cache.',
+    couldNotApplyPurchase: 'Nie udało się dodać kredytów z płatności.',
+    noMessagePreview: 'Brak podglądu wiadomości.',
+    noMessageBody: 'Brak treści wiadomości.',
+    couldNotCopyEmail: 'Nie udało się skopiować adresu email.',
+    couldNotSendReply: 'Nie udało się wysłać odpowiedzi supportu.',
+    deleteSupportConfirmPrefix: 'Usunąć wiadomość supportu od',
+    unknownSender: 'nieznanego nadawcy',
+    couldNotDeleteSupport: 'Nie udało się usunąć wiadomości supportu.',
+    supportAdjustment: 'Korekta supportu',
+    questionHistoryAdjustment: 'Korekta z historii pytań',
+    adminManualGrant: 'Ręczny grant admina'
+  }
+} as const;
+
+type AdminCopyKey = keyof typeof ADMIN_COPY.en;
 
 @Component({
   standalone: true,
@@ -17,27 +408,27 @@ type AdminTab = 'users' | 'purchases' | 'bugs' | 'support' | 'cache' | 'leaderbo
             <span>QS</span>
             <strong>QuizSolver Admin</strong>
           </a>
-          <h1>Admin console</h1>
+          <h1>{{ tr('adminConsole') }}</h1>
           <p class="text-secondary" style="margin-top: 0.5rem; margin-bottom: 2rem;">
-            Operational control for credits, users, cache and platform health.
+            {{ tr('loginIntro') }}
           </p>
           <button class="btn btn-outline btn-block google-auth-btn" type="button" (click)="startGoogleLogin()">
             <span>G</span>
-            Continue with Google
+            {{ tr('continueGoogle') }}
           </button>
-          <div class="auth-divider"><span>or</span></div>
+          <div class="auth-divider"><span>{{ tr('or') }}</span></div>
           <form (ngSubmit)="login()">
             <label class="form-label">
-              <span>Email</span>
+              <span>{{ tr('email') }}</span>
               <input class="form-input" type="email" name="email" [(ngModel)]="email" autocomplete="email">
             </label>
             <label class="form-label" style="margin-top: 1.25rem; display: block;">
-              <span>Password</span>
+              <span>{{ tr('password') }}</span>
               <input class="form-input" type="password" name="password" [(ngModel)]="password" autocomplete="current-password">
             </label>
             <div class="form-error" *ngIf="error()" style="margin-top: 1.25rem;">{{ error() }}</div>
             <button class="btn btn-primary btn-block" type="submit" [disabled]="loading()" style="margin-top: 2rem;">
-              {{ loading() ? 'Signing in...' : 'Sign in' }}
+              {{ loading() ? tr('signingIn') : tr('signIn') }}
             </button>
           </form>
         </div>
@@ -51,34 +442,49 @@ type AdminTab = 'users' | 'purchases' | 'bugs' | 'support' | 'cache' | 'leaderbo
                 <span>QS</span>
                 <strong>Admin</strong>
               </a>
-              <nav class="admin-tabs" aria-label="Admin sections">
+              <nav class="admin-tabs" [attr.aria-label]="tr('adminSections')">
                 <button type="button" *ngFor="let tab of tabs" [class.active]="activeTab() === tab.id" (click)="activeTab.set(tab.id)">
                   <span class="tab-short">{{ tab.short }}</span>
-                  <span class="tab-label">{{ tab.label }}</span>
+                  <span class="tab-copy">
+                    <span class="tab-label">{{ tabLabel(tab.id) }}</span>
+                    <small>{{ tabHint(tab.id) }}</small>
+                  </span>
                   <span class="tab-badge" *ngIf="tab.id === 'support' && supportBadgeCount()">{{ supportBadgeCount() }}</span>
                 </button>
               </nav>
             </div>
             <div class="admin-sidebar-foot">
-              <button class="btn btn-outline btn-block" type="button" (click)="refresh()">Refresh</button>
-              <button class="btn btn-ghost btn-block" type="button" (click)="logout()">Logout</button>
+              <div class="admin-language-switch" aria-label="Admin language">
+                <a [class.active]="adminLocale() === 'en'" [href]="adminLocaleUrl('en')">EN</a>
+                <a [class.active]="adminLocale() === 'pl'" [href]="adminLocaleUrl('pl')">PL</a>
+              </div>
+              <button class="btn btn-outline btn-block" type="button" (click)="refresh()">{{ tr('refresh') }}</button>
+              <button class="btn btn-ghost btn-block" type="button" (click)="logout()">{{ tr('logout') }}</button>
             </div>
           </aside>
 
           <section class="admin-main">
             <header class="admin-header">
               <div>
-                <p class="eyebrow">Live operations</p>
-                <h1>QuizSolver control room</h1>
-                <p class="text-secondary" style="margin-top: 0.25rem;">Keep user access, credits, cache and system health visible in one place.</p>
+                <p class="eyebrow">{{ tr('liveOperations') }}</p>
+                <h1>{{ activeTabTitle() }}</h1>
+                <p class="text-secondary" style="margin-top: 0.25rem;">{{ activeTabDescription() }}</p>
               </div>
               <div class="admin-header-actions">
-                <a class="btn btn-outline" href="/dashboard">Dashboard</a>
-                <a class="btn btn-primary" href="/">Public site</a>
+                <a class="btn btn-outline" [href]="adminLocale() === 'pl' ? '/pl/dashboard' : '/dashboard'">{{ tr('dashboard') }}</a>
+                <a class="btn btn-primary" [href]="adminLocale() === 'pl' ? '/pl' : '/'">{{ tr('publicSite') }}</a>
               </div>
             </header>
 
             <div class="admin-alert anim-slide-up" *ngIf="error()">{{ error() }}</div>
+
+            <section class="operations-strip" *ngIf="adminNoticeCards().length">
+              <article *ngFor="let notice of adminNoticeCards()" [class.warn]="notice.tone === 'warn'" [class.ok]="notice.tone === 'ok'">
+                <span>{{ notice.label }}</span>
+                <strong>{{ notice.value }}</strong>
+                <small>{{ notice.note }}</small>
+              </article>
+            </section>
 
             <section class="admin-stats">
               <article class="glass" *ngFor="let card of statsCards()">
@@ -90,67 +496,75 @@ type AdminTab = 'users' | 'purchases' | 'bugs' | 'support' | 'cache' | 'leaderbo
             <section class="admin-panel glass" *ngIf="activeTab() === 'users'">
               <div class="panel-head">
                 <div>
-                  <p class="eyebrow">Users</p>
-                  <h2>Accounts and credits</h2>
+                  <p class="eyebrow">{{ tr('users') }}</p>
+                  <h2>{{ tr('accountsCredits') }}</h2>
                 </div>
                 <form class="admin-search" (ngSubmit)="loadUsers(1)">
-                  <input class="form-input" type="search" name="search" [(ngModel)]="userSearch" placeholder="Search email or name">
-                  <button class="btn btn-primary" type="submit">Search</button>
+                  <input class="form-input" type="search" name="search" [(ngModel)]="userSearch" [placeholder]="tr('searchEmailName')">
+                  <button class="btn btn-primary" type="submit">{{ tr('search') }}</button>
                 </form>
+              </div>
+
+              <div class="insight-grid">
+                <article *ngFor="let card of usersSummaryCards()">
+                  <span>{{ card.label }}</span>
+                  <strong [class.ok]="card.ok" [class.warn]="card.warn">{{ card.value }}</strong>
+                  <small>{{ card.note }}</small>
+                </article>
               </div>
 
               <div class="table-scroll">
                 <table class="admin-table">
                   <thead>
                     <tr>
-                      <th>User</th>
-                      <th>Role</th>
-                      <th>Credits</th>
-                      <th>Questions</th>
-                      <th>Streak</th>
-                      <th>Status</th>
-                      <th>Actions</th>
+                      <th>{{ tr('user') }}</th>
+                      <th>{{ tr('role') }}</th>
+                      <th>{{ tr('credits') }}</th>
+                      <th>{{ tr('questions') }}</th>
+                      <th>{{ tr('streak') }}</th>
+                      <th>{{ tr('status') }}</th>
+                      <th>{{ tr('actions') }}</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr *ngFor="let user of users()">
-                      <td>
-                        <a href="javascript:void(0)" (click)="openUserHistory(user)" style="font-weight: 700; color: var(--accent-cyan); text-decoration: none; display: block; width: fit-content;">{{ user.email }}</a>
-                        <span style="font-size: 0.8rem; margin-top: 0.15rem; display: block;">{{ user.displayName || 'No display name' }}</span>
+                      <td class="user-cell">
+                        <button type="button" class="link-button primary-link" (click)="openUserHistory(user)">{{ user.email }}</button>
+                        <span>{{ user.displayName || tr('noDisplayName') }}</span>
                       </td>
-                      <td style="text-transform: capitalize;">{{ user.role }}</td>
-                      <td>{{ user.role === 'admin' ? 'unlimited' : user.credits }}</td>
-                      <td>{{ user.stats?.totalQuestionsSolved || 0 }}</td>
-                      <td>{{ user.streak?.current || 0 }}</td>
+                      <td><span class="badge badge-outline role-badge">{{ user.role }}</span></td>
+                      <td><strong class="metric-value">{{ user.role === 'admin' ? tr('unlimited') : user.credits }}</strong></td>
+                      <td><strong class="metric-value">{{ user.stats?.totalQuestionsSolved || 0 }}</strong></td>
+                      <td><strong class="metric-value">{{ user.streak?.current || 0 }}</strong></td>
                       <td>
                         <span class="status-pill" [class.danger]="user.isBanned" [class.pending]="!user.isBanned && !user.isExtensionActive">
                           {{ userStatusLabel(user) }}
                         </span>
-                        <small style="display: block; margin-top: 0.35rem; color: var(--text-secondary);">
+                        <small class="muted-line">
                           {{ userExtensionLastSeen(user) }}
                         </small>
                       </td>
                       <td>
                         <div class="row-actions">
-                          <button type="button" (click)="openUserHistory(user)" style="color: var(--accent-cyan);">History</button>
+                          <button type="button" (click)="openUserHistory(user)" style="color: var(--accent-cyan);">{{ tr('history') }}</button>
                           <button type="button" (click)="quickGrant(user.id, 50)">+50</button>
                           <button type="button" (click)="quickGrant(user.id, 100)">+100</button>
                           <button type="button" (click)="quickGrant(user.id, 200)">+200</button>
-                          <button type="button" (click)="openGrantModal(user)">Grant</button>
+                          <button type="button" (click)="openGrantModal(user)">{{ tr('grant') }}</button>
                           <button type="button" (click)="user.isBanned ? unbanUser(user.id) : banUser(user.id)">
-                            {{ user.isBanned ? 'Unban' : 'Ban' }}
+                            {{ user.isBanned ? tr('unban') : tr('ban') }}
                           </button>
                           <button type="button" (click)="toggleLeaderboard(user.id, !user.excludeFromLeaderboard)">
-                            {{ user.excludeFromLeaderboard ? 'Show LB' : 'Hide LB' }}
+                            {{ user.excludeFromLeaderboard ? tr('showLb') : tr('hideLb') }}
                           </button>
                           <button type="button" class="danger" *ngIf="user.role !== 'admin'" (click)="deleteUser(user.id, user.email)">
-                            Delete
+                            {{ tr('delete') }}
                           </button>
                         </div>
                       </td>
                     </tr>
                     <tr *ngIf="!users().length">
-                      <td colspan="7" class="empty-cell" style="text-align: center; padding: 3rem;">No users found.</td>
+                      <td colspan="7" class="empty-cell" style="text-align: center; padding: 3rem;">{{ tr('noUsers') }}</td>
                     </tr>
                   </tbody>
                 </table>
@@ -166,42 +580,42 @@ type AdminTab = 'users' | 'purchases' | 'bugs' | 'support' | 'cache' | 'leaderbo
             <section class="admin-panel glass" *ngIf="activeTab() === 'purchases'">
               <div class="panel-head">
                 <div>
-                  <p class="eyebrow">Revenue</p>
-                  <h2>Purchases and grants</h2>
+                  <p class="eyebrow">{{ tr('revenue') }}</p>
+                  <h2>{{ tr('purchasesTitle') }}</h2>
                 </div>
               </div>
               <div class="table-scroll">
                 <table class="admin-table">
                   <thead>
                     <tr>
-                      <th>User</th>
-                      <th>Pack</th>
-                      <th>Credits</th>
-                      <th>Price</th>
-                      <th>Provider</th>
-                      <th>Applied</th>
-                      <th>Reason</th>
-                      <th>Date</th>
+                      <th>{{ tr('user') }}</th>
+                      <th>{{ tr('pack') }}</th>
+                      <th>{{ tr('credits') }}</th>
+                      <th>{{ tr('price') }}</th>
+                      <th>{{ tr('provider') }}</th>
+                      <th>{{ tr('applied') }}</th>
+                      <th>{{ tr('reason') }}</th>
+                      <th>{{ tr('date') }}</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr *ngFor="let purchase of purchases()">
-                      <td><strong>{{ purchase.user || 'Unknown' }}</strong></td>
+                      <td><strong>{{ purchase.user || tr('unknownUser') }}</strong></td>
                       <td>{{ purchase.pack }}</td>
                       <td>{{ purchase.credits }}</td>
                       <td><span style="font-weight: 600; color: var(--accent-cyan);">{{ purchase.priceUsd ? formatMoney(purchase.priceUsd) : '-' }}</span></td>
                       <td style="text-transform: uppercase; font-size: 0.85rem;">{{ purchase.provider }}</td>
                       <td>
                         <span class="status-pill" [class.pending]="!purchase.creditsApplied">
-                          {{ purchase.creditsApplied ? 'Applied' : 'Pending' }}
+                          {{ purchase.creditsApplied ? tr('applied') : tr('pending') }}
                         </span>
-                        <button type="button" *ngIf="!purchase.creditsApplied" (click)="applyPurchaseCredits(purchase.id)" style="display: block; margin-top: 0.4rem; color: var(--accent-cyan);">Apply</button>
+                        <button type="button" *ngIf="!purchase.creditsApplied" (click)="applyPurchaseCredits(purchase.id)" style="display: block; margin-top: 0.4rem; color: var(--accent-cyan);">{{ tr('apply') }}</button>
                       </td>
                       <td>{{ purchase.reason || '-' }}</td>
                       <td>{{ formatDate(purchase.date) }}</td>
                     </tr>
                     <tr *ngIf="!purchases().length">
-                      <td colspan="8" class="empty-cell" style="text-align: center; padding: 3rem;">No purchases yet.</td>
+                      <td colspan="8" class="empty-cell" style="text-align: center; padding: 3rem;">{{ tr('noPurchases') }}</td>
                     </tr>
                   </tbody>
                 </table>
@@ -211,14 +625,14 @@ type AdminTab = 'users' | 'purchases' | 'bugs' | 'support' | 'cache' | 'leaderbo
             <section class="admin-panel glass" *ngIf="activeTab() === 'bugs'">
               <div class="panel-head">
                 <div>
-                  <p class="eyebrow">Reports</p>
-                  <h2>Bug reports</h2>
+                  <p class="eyebrow">{{ tr('reports') }}</p>
+                  <h2>{{ tr('bugsTitle') }}</h2>
                 </div>
               </div>
               <div class="bug-list">
                 <article class="glass" *ngFor="let bug of bugs()">
                   <div class="bug-meta">
-                    <strong>{{ bug.user || 'Unknown user' }}</strong>
+                    <strong>{{ bug.user || tr('unknownUser') }}</strong>
                     <span class="text-secondary" style="font-size: 0.8rem;">{{ formatDate(bug.date) }}</span>
                   </div>
                   <a [href]="bug.url" target="_blank" rel="noopener" style="word-break: break-all;">{{ bug.url }}</a>
@@ -227,7 +641,7 @@ type AdminTab = 'users' | 'purchases' | 'bugs' | 'support' | 'cache' | 'leaderbo
                   </p>
                 </article>
                 <div class="empty-panel" style="text-align: center; padding: 2rem;" *ngIf="!bugs().length">
-                  <p class="text-secondary">No bug reports.</p>
+                  <p class="text-secondary">{{ tr('noBugReports') }}</p>
                 </div>
               </div>
             </section>
@@ -235,18 +649,18 @@ type AdminTab = 'users' | 'purchases' | 'bugs' | 'support' | 'cache' | 'leaderbo
             <section class="admin-panel glass" *ngIf="activeTab() === 'support'">
               <div class="panel-head">
                 <div>
-                  <p class="eyebrow">Inbox</p>
-                  <h2>Support mail</h2>
+                  <p class="eyebrow">{{ tr('inbox') }}</p>
+                  <h2>{{ tr('supportMail') }}</h2>
                 </div>
                 <form class="admin-search" (ngSubmit)="loadSupportMessages()">
-                  <input class="form-input" type="search" name="supportSearch" [(ngModel)]="supportSearch" placeholder="Search sender, subject, text">
+                  <input class="form-input" type="search" name="supportSearch" [(ngModel)]="supportSearch" [placeholder]="tr('searchSupport')">
                   <select class="form-select" name="supportStatusFilter" [(ngModel)]="supportStatusFilter">
-                    <option value="">All messages</option>
-                    <option value="open">Open</option>
-                    <option value="pending">Pending</option>
-                    <option value="closed">Closed</option>
+                    <option value="">{{ tr('allMessages') }}</option>
+                    <option value="open">{{ tr('open') }}</option>
+                    <option value="pending">{{ tr('pending') }}</option>
+                    <option value="closed">{{ tr('closed') }}</option>
                   </select>
-                  <button class="btn btn-primary" type="submit">Filter</button>
+                  <button class="btn btn-primary" type="submit">{{ tr('filter') }}</button>
                 </form>
               </div>
 
@@ -263,17 +677,17 @@ type AdminTab = 'users' | 'purchases' | 'bugs' | 'support' | 'cache' | 'leaderbo
                     <span class="support-avatar">{{ supportInitials(message) }}</span>
                     <span class="support-item-main">
                       <span class="support-item-row">
-                        <strong>{{ message.subject || '(No subject)' }}</strong>
-                        <span class="status-pill" [class.danger]="message.status === 'open'" [class.pending]="message.status === 'pending'">{{ message.status }}</span>
+                        <strong>{{ message.subject || tr('noSubject') }}</strong>
+                        <span class="status-pill" [class.danger]="message.status === 'open'" [class.pending]="message.status === 'pending'">{{ supportStatusLabel(message.status) }}</span>
                       </span>
                       <span class="support-sender">{{ supportSender(message) }}</span>
-                      <span class="badge badge-outline" *ngIf="message.linkedUser">Account: {{ message.linkedUser.credits }} credits</span>
+                      <span class="badge badge-outline" *ngIf="message.linkedUser">{{ tr('account') }}: {{ message.linkedUser.credits }} {{ tr('credits') }}</span>
                       <span class="support-preview">{{ supportPreview(message) }}</span>
                       <small>{{ formatDate(message.receivedAt) }} - {{ supportSourceLabel(message.source) }}</small>
                     </span>
                   </button>
                   <div class="empty-panel" *ngIf="!filteredSupportMessages().length">
-                    <p class="text-secondary">No support messages.</p>
+                    <p class="text-secondary">{{ tr('noSupport') }}</p>
                   </div>
                 </div>
 
@@ -281,44 +695,44 @@ type AdminTab = 'users' | 'purchases' | 'bugs' | 'support' | 'cache' | 'leaderbo
                   <header>
                     <div>
                       <p class="eyebrow">{{ supportSourceLabel(selectedSupportMessage()?.source) }}</p>
-                      <h3>{{ selectedSupportMessage()?.subject || '(No subject)' }}</h3>
+                      <h3>{{ selectedSupportMessage()?.subject || tr('noSubject') }}</h3>
                       <div class="support-meta-grid">
-                        <span><strong>From</strong>{{ supportSender(selectedSupportMessage()) }} &lt;{{ selectedSupportMessage()?.fromEmail || '-' }}&gt;</span>
-                        <span><strong>To</strong>{{ selectedSupportMessage()?.toEmail || 'support@getquizsolver.com' }}</span>
-                        <span><strong>Received</strong>{{ formatDate(selectedSupportMessage()?.receivedAt) }}</span>
-                        <span><strong>Status</strong>{{ selectedSupportMessage()?.status }}</span>
+                        <span><strong>{{ tr('from') }}</strong>{{ supportSender(selectedSupportMessage()) }} &lt;{{ selectedSupportMessage()?.fromEmail || '-' }}&gt;</span>
+                        <span><strong>{{ tr('to') }}</strong>{{ selectedSupportMessage()?.toEmail || 'support@getquizsolver.com' }}</span>
+                        <span><strong>{{ tr('received') }}</strong>{{ formatDate(selectedSupportMessage()?.receivedAt) }}</span>
+                        <span><strong>{{ tr('status') }}</strong>{{ supportStatusLabel(selectedSupportMessage()?.status) }}</span>
                       </div>
                     </div>
                     <div class="row-actions">
-                      <a class="support-action-link" [href]="supportMailto(selectedSupportMessage())">Email</a>
-                      <button type="button" (click)="copySupportEmail(selectedSupportMessage())">Copy email</button>
-                      <button type="button" (click)="updateSupportStatus(selectedSupportMessage(), 'open')">Open</button>
-                      <button type="button" (click)="updateSupportStatus(selectedSupportMessage(), 'pending')">Pending</button>
-                      <button type="button" (click)="updateSupportStatus(selectedSupportMessage(), 'closed')">Close</button>
-                      <button type="button" class="danger" (click)="deleteSupportMessage(selectedSupportMessage())">Delete</button>
+                      <a class="support-action-link" [href]="supportMailto(selectedSupportMessage())">{{ tr('email') }}</a>
+                      <button type="button" (click)="copySupportEmail(selectedSupportMessage())">{{ tr('copyEmail') }}</button>
+                      <button type="button" (click)="updateSupportStatus(selectedSupportMessage(), 'open')">{{ tr('open') }}</button>
+                      <button type="button" (click)="updateSupportStatus(selectedSupportMessage(), 'pending')">{{ tr('pending') }}</button>
+                      <button type="button" (click)="updateSupportStatus(selectedSupportMessage(), 'closed')">{{ tr('close') }}</button>
+                      <button type="button" class="danger" (click)="deleteSupportMessage(selectedSupportMessage())">{{ tr('delete') }}</button>
                     </div>
                   </header>
 
                   <div class="support-linked-user" *ngIf="selectedSupportMessage()?.linkedUser as linkedUser; else noLinkedSupportUser">
                     <div>
-                      <span>Linked account</span>
+                      <span>{{ tr('linkedAccount') }}</span>
                       <strong>{{ linkedUser.email }}</strong>
-                      <small>{{ linkedUser.role }} - {{ linkedUser.credits }} credits - {{ linkedUser.stats?.totalQuestionsSolved || 0 }} questions</small>
+                      <small>{{ linkedUser.role }} - {{ linkedUser.credits }} {{ tr('credits') }} - {{ linkedUser.stats?.totalQuestionsSolved || 0 }} {{ tr('questions') }}</small>
                     </div>
                     <div class="row-actions">
-                      <button type="button" (click)="openUserHistory(linkedUser)">History</button>
-                      <button type="button" (click)="openGrantModal(linkedUser, 'Support adjustment')">Grant credits</button>
+                      <button type="button" (click)="openUserHistory(linkedUser)">{{ tr('history') }}</button>
+                      <button type="button" (click)="openGrantModal(linkedUser, tr('supportAdjustment'))">{{ tr('grantCredits') }}</button>
                       <button type="button" (click)="linkedUser.isBanned ? unbanUser(linkedUser.id) : banUser(linkedUser.id)">
-                        {{ linkedUser.isBanned ? 'Unban' : 'Ban' }}
+                        {{ linkedUser.isBanned ? tr('unban') : tr('ban') }}
                       </button>
                     </div>
                   </div>
                   <ng-template #noLinkedSupportUser>
                     <div class="support-linked-user muted">
                       <div>
-                        <span>No linked account</span>
-                        <strong>{{ selectedSupportMessage()?.fromEmail || 'Unknown email' }}</strong>
-                        <small>This sender email does not match a QuizSolver account.</small>
+                        <span>{{ tr('noLinkedAccount') }}</span>
+                        <strong>{{ selectedSupportMessage()?.fromEmail || tr('unknownEmail') }}</strong>
+                        <small>{{ tr('noLinkedAccountNote') }}</small>
                       </div>
                     </div>
                   </ng-template>
@@ -328,7 +742,7 @@ type AdminTab = 'users' | 'purchases' | 'bugs' | 'support' | 'cache' | 'leaderbo
                   </div>
 
                   <div class="support-replies" *ngIf="(selectedSupportMessage()?.replies || []).length">
-                    <h4>Replies</h4>
+                    <h4>{{ tr('replies') }}</h4>
                     <article class="support-reply" *ngFor="let reply of selectedSupportMessage()?.replies">
                       <strong>{{ reply.admin }}</strong>
                       <small>{{ formatDate(reply.sentAt) }} - {{ reply.delivery }}</small>
@@ -338,16 +752,16 @@ type AdminTab = 'users' | 'purchases' | 'bugs' | 'support' | 'cache' | 'leaderbo
 
                   <form class="support-reply-form" (ngSubmit)="replySupportMessage()">
                     <label class="form-label">
-                      <span>Reply</span>
-                      <textarea name="supportReplyText" [(ngModel)]="supportReplyText" rows="7" placeholder="Write a helpful answer..."></textarea>
+                      <span>{{ tr('reply') }}</span>
+                      <textarea name="supportReplyText" [(ngModel)]="supportReplyText" rows="7" [placeholder]="tr('replyPlaceholder')"></textarea>
                     </label>
-                    <button class="btn btn-primary" type="submit" [disabled]="!supportReplyText.trim()">Send reply</button>
+                    <button class="btn btn-primary" type="submit" [disabled]="!supportReplyText.trim()">{{ tr('sendReply') }}</button>
                   </form>
                 </article>
 
                 <ng-template #supportEmpty>
                   <div class="support-detail support-empty">
-                    <p class="text-secondary">Select a message to read and reply.</p>
+                    <p class="text-secondary">{{ tr('selectMessage') }}</p>
                   </div>
                 </ng-template>
               </div>
@@ -356,35 +770,38 @@ type AdminTab = 'users' | 'purchases' | 'bugs' | 'support' | 'cache' | 'leaderbo
             <section class="admin-panel glass" *ngIf="activeTab() === 'cache'">
               <div class="panel-head">
                 <div>
-                  <p class="eyebrow">AI cache</p>
-                  <h2>Cached answers</h2>
+                  <p class="eyebrow">{{ tr('aiCache') }}</p>
+                  <h2>{{ tr('cachedAnswers') }}</h2>
                 </div>
                 <form class="admin-search" (ngSubmit)="loadCache(1)">
-                  <input class="form-input" type="search" name="cacheSearch" [(ngModel)]="cacheSearch" placeholder="Search cached question text">
-                  <button class="btn btn-primary" type="submit">Search</button>
-                  <button class="btn btn-outline" type="button" *ngIf="cacheSearch" (click)="cacheSearch = ''; loadCache(1)">Reset</button>
-                  <button class="btn btn-outline" type="button" (click)="clearCache()">Clear cache</button>
+                  <input class="form-input" type="search" name="cacheSearch" [(ngModel)]="cacheSearch" [placeholder]="tr('searchCache')">
+                  <button class="btn btn-primary" type="submit">{{ tr('search') }}</button>
+                  <button class="btn btn-outline" type="button" *ngIf="cacheSearch" (click)="cacheSearch = ''; loadCache(1)">{{ tr('reset') }}</button>
+                  <button class="btn btn-outline" type="button" (click)="clearCache()">{{ tr('clearCache') }}</button>
                 </form>
               </div>
               <div class="cache-summary">
-                <strong>{{ cache().totalCached || 0 }}</strong>
-                <span class="text-secondary">Total cached answers</span>
-                <span class="text-secondary" *ngIf="cacheSearch.trim()">
-                  Showing {{ cachePagination().total || 0 }} matching entries
-                </span>
+                <article *ngFor="let card of cacheSummaryCards()" [class.warn]="card.warn">
+                  <span>{{ card.label }}</span>
+                  <strong>{{ card.value }}</strong>
+                  <small>{{ card.note }}</small>
+                </article>
               </div>
               <div class="cache-list">
                 <article class="glass clickable-row" *ngFor="let hit of cache().topHits || []" (click)="showQuestionDetails(hit)">
-                  <p style="font-weight: 500;">{{ hit.questionText }}</p>
-                  <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center;">
-                    <span class="badge badge-outline" style="text-transform: capitalize;">
-                      {{ hit.questionType }} | {{ hit.options?.length || 0 }} options | {{ hit.hitCount }} hits
-                    </span>
-                    <span class="status-pill danger" *ngIf="isWeakQuestionText(hit.questionText)">Weak text</span>
+                  <div class="cache-question-main">
+                    <p>{{ hit.questionText }}</p>
+                    <div class="meta-chips">
+                      <span class="badge badge-outline role-badge">{{ hit.questionType }}</span>
+                      <span class="badge badge-outline">{{ hit.options?.length || 0 }} {{ tr('options') }}</span>
+                      <span class="badge badge-outline">{{ hit.hitCount }} {{ tr('hits') }}</span>
+                      <span class="status-pill danger" *ngIf="isWeakQuestionText(hit.questionText)">{{ tr('weakText') }}</span>
+                    </div>
                   </div>
+                  <span class="open-hint">{{ tr('openDetails') }}</span>
                 </article>
                 <div class="empty-panel" style="text-align: center; padding: 2rem;" *ngIf="!(cache().topHits || []).length">
-                  <p class="text-secondary">No cache hits yet.</p>
+                  <p class="text-secondary">{{ tr('noCacheHits') }}</p>
                 </div>
               </div>
               <div class="pagination" *ngIf="cachePagination().pages > 1">
@@ -397,19 +814,19 @@ type AdminTab = 'users' | 'purchases' | 'bugs' | 'support' | 'cache' | 'leaderbo
             <section class="admin-panel glass" *ngIf="activeTab() === 'leaderboard'">
               <div class="panel-head">
                 <div>
-                  <p class="eyebrow">Community</p>
-                  <h2>Leaderboard</h2>
+                  <p class="eyebrow">{{ tr('community') }}</p>
+                  <h2>{{ tr('leaderboard') }}</h2>
                 </div>
               </div>
               <div class="leaderboard-admin">
                 <article class="glass" *ngFor="let entry of leaderboard()" style="margin-bottom: 0.5rem; border-radius: var(--radius-md);">
                   <strong style="color: var(--accent-cyan);">#{{ entry.rank }}</strong>
                   <span style="font-weight: 600;">{{ entry.name }}</span>
-                  <span class="text-secondary">{{ entry.questionsSolved }} questions</span>
-                  <span class="badge badge-outline">Streak: {{ entry.streak }}</span>
+                  <span class="text-secondary">{{ entry.questionsSolved }} {{ tr('questions') }}</span>
+                  <span class="badge badge-outline">{{ tr('streak') }}: {{ entry.streak }}</span>
                 </article>
                 <div class="empty-panel" style="text-align: center; padding: 2rem;" *ngIf="!leaderboard().length">
-                  <p class="text-secondary">No leaderboard data.</p>
+                  <p class="text-secondary">{{ tr('noLeaderboard') }}</p>
                 </div>
               </div>
             </section>
@@ -417,8 +834,8 @@ type AdminTab = 'users' | 'purchases' | 'bugs' | 'support' | 'cache' | 'leaderbo
             <section class="admin-panel glass" *ngIf="activeTab() === 'system'">
               <div class="panel-head">
                 <div>
-                  <p class="eyebrow">System</p>
-                  <h2>Health check</h2>
+                  <p class="eyebrow">{{ tr('system') }}</p>
+                  <h2>{{ tr('healthCheck') }}</h2>
                 </div>
               </div>
               <div class="health-grid">
@@ -431,10 +848,10 @@ type AdminTab = 'users' | 'purchases' | 'bugs' | 'support' | 'cache' | 'leaderbo
               <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border);">
                 <div class="panel-head" style="margin-bottom: 1rem;">
                   <div>
-                    <p class="eyebrow">Billing safety</p>
-                    <h3 style="margin: 0.25rem 0 0; font-family: var(--font-heading); font-size: 1.15rem;">Credit dedupe monitor</h3>
+                    <p class="eyebrow">{{ tr('billingSafety') }}</p>
+                    <h3 style="margin: 0.25rem 0 0; font-family: var(--font-heading); font-size: 1.15rem;">{{ tr('creditDedupeMonitor') }}</h3>
                   </div>
-                  <button class="btn btn-outline" type="button" (click)="loadBillingSafety()">Refresh billing</button>
+                  <button class="btn btn-outline" type="button" (click)="loadBillingSafety()">{{ tr('refreshBilling') }}</button>
                 </div>
                 <div class="health-grid">
                   <article class="glass" *ngFor="let item of billingSafetyCards()">
@@ -444,23 +861,23 @@ type AdminTab = 'users' | 'purchases' | 'bugs' | 'support' | 'cache' | 'leaderbo
                 </div>
 
                 <div class="admin-alert" *ngIf="(billingSafety().duplicateGroups || []).length" style="margin-top: 1rem;">
-                  Potential duplicate charged groups found. Review immediately.
+                  {{ tr('duplicateWarning') }}
                 </div>
 
                 <div class="table-scroll" *ngIf="(billingSafety().duplicateGroups || []).length" style="margin-top: 1rem;">
                   <table class="admin-table">
                     <thead>
                       <tr>
-                        <th>User</th>
-                        <th>Question hash</th>
-                        <th>Charges</th>
-                        <th>Actions</th>
-                        <th>Last charged</th>
+                        <th>{{ tr('user') }}</th>
+                        <th>{{ tr('questionHash') }}</th>
+                        <th>{{ tr('charges') }}</th>
+                        <th>{{ tr('actions') }}</th>
+                        <th>{{ tr('lastCharged') }}</th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr *ngFor="let group of billingSafety().duplicateGroups">
-                        <td><strong>{{ group.email || group.userId || 'Unknown user' }}</strong></td>
+                        <td><strong>{{ group.email || group.userId || tr('unknownUser') }}</strong></td>
                         <td>{{ shortHash(group.questionHash) }}</td>
                         <td>{{ group.count }} / {{ group.credits }} credits</td>
                         <td>{{ (group.actions || []).join(', ') }}</td>
@@ -471,7 +888,7 @@ type AdminTab = 'users' | 'purchases' | 'bugs' | 'support' | 'cache' | 'leaderbo
                 </div>
 
                 <div class="empty-panel" *ngIf="!(billingSafety().duplicateGroups || []).length" style="text-align: center; padding: 1.25rem; margin-top: 1rem;">
-                  <p class="text-secondary">No duplicate charged groups detected.</p>
+                  <p class="text-secondary">{{ tr('noDuplicateGroups') }}</p>
                 </div>
               </div>
             </section>
@@ -483,37 +900,37 @@ type AdminTab = 'users' | 'purchases' | 'bugs' | 'support' | 'cache' | 'leaderbo
       <div class="modal-overlay" *ngIf="selectedQuestion()" (click)="selectedQuestion.set(null)" style="z-index: 1100;">
         <div class="modal-card glass anim-slide-up" (click)="$event.stopPropagation()">
           <header class="modal-header">
-            <h3>Question details</h3>
+            <h3>{{ tr('questionDetails') }}</h3>
             <div class="row-actions">
-              <button type="button" class="danger" *ngIf="selectedQuestion()?.cacheId" (click)="deleteCacheEntry(selectedQuestion())">Delete cache</button>
+              <button type="button" class="danger" *ngIf="selectedQuestion()?.cacheId" (click)="deleteCacheEntry(selectedQuestion())">{{ tr('deleteCache') }}</button>
               <button class="btn-close" type="button" (click)="selectedQuestion.set(null)">x</button>
             </div>
           </header>
           <div class="modal-body">
             <div class="detail-group">
-              <label>Type</label>
+              <label>{{ tr('type') }}</label>
               <span class="badge badge-outline" style="text-transform: uppercase;">{{ selectedQuestion()?.questionType }}</span>
             </div>
             <div class="detail-group" *ngIf="selectedQuestion()?.hitCount != null" style="margin-top: 1rem;">
-              <label>Cache hits</label>
+              <label>{{ tr('cacheHits') }}</label>
               <strong style="color: var(--text-primary);">{{ selectedQuestion()?.hitCount }}</strong>
             </div>
             <div class="detail-group" style="margin-top: 1rem;">
-              <label>Counts</label>
+              <label>{{ tr('counts') }}</label>
               <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
-                <span class="badge badge-outline">Options: {{ selectedQuestion()?.options?.length || 0 }}</span>
-                <span class="badge badge-outline">Prompts: {{ selectedQuestion()?.prompts?.length || 0 }}</span>
-                <span class="badge badge-outline">Rows: {{ selectedQuestion()?.rows?.length || 0 }}</span>
-                <span class="badge badge-outline">Answer items: {{ answerItems(selectedQuestion()).length }}</span>
+                <span class="badge badge-outline">{{ tr('options') }}: {{ selectedQuestion()?.options?.length || 0 }}</span>
+                <span class="badge badge-outline">{{ tr('prompts') }}: {{ selectedQuestion()?.prompts?.length || 0 }}</span>
+                <span class="badge badge-outline">{{ tr('rows') }}: {{ selectedQuestion()?.rows?.length || 0 }}</span>
+                <span class="badge badge-outline">{{ tr('answerItems') }}: {{ answerItems(selectedQuestion()).length }}</span>
               </div>
             </div>
             <div class="detail-group" style="margin-top: 1.5rem;">
-              <label>Question text</label>
+              <label>{{ tr('questionText') }}</label>
               <p class="question-text-full">{{ selectedQuestion()?.questionText }}</p>
             </div>
             
             <div class="detail-group" *ngIf="selectedQuestion()?.options?.length" style="margin-top: 1.5rem;">
-              <label>Options ({{ selectedQuestion()?.options?.length || 0 }})</label>
+              <label>{{ tr('options') }} ({{ selectedQuestion()?.options?.length || 0 }})</label>
               <ul class="options-list">
                 <li *ngFor="let opt of selectedQuestion()?.options; let i = index">
                   <span class="option-idx">{{ i + 1 }}.</span> {{ opt }}
@@ -522,7 +939,7 @@ type AdminTab = 'users' | 'purchases' | 'bugs' | 'support' | 'cache' | 'leaderbo
             </div>
 
             <div class="detail-group" *ngIf="selectedQuestion()?.prompts?.length" style="margin-top: 1.5rem;">
-              <label>Prompts ({{ selectedQuestion()?.prompts?.length || 0 }})</label>
+              <label>{{ tr('prompts') }} ({{ selectedQuestion()?.prompts?.length || 0 }})</label>
               <ul class="options-list">
                 <li *ngFor="let prompt of selectedQuestion()?.prompts; let i = index">
                   <span class="option-idx">P{{ i + 1 }}:</span> {{ prompt }}
@@ -531,7 +948,7 @@ type AdminTab = 'users' | 'purchases' | 'bugs' | 'support' | 'cache' | 'leaderbo
             </div>
 
             <div class="detail-group" *ngIf="selectedQuestion()?.rows?.length" style="margin-top: 1.5rem;">
-              <label>Rows ({{ selectedQuestion()?.rows?.length || 0 }})</label>
+              <label>{{ tr('rows') }} ({{ selectedQuestion()?.rows?.length || 0 }})</label>
               <ul class="options-list">
                 <li *ngFor="let row of selectedQuestion()?.rows; let i = index">
                   <span class="option-idx">R{{ i + 1 }}:</span> {{ row }}
@@ -540,7 +957,7 @@ type AdminTab = 'users' | 'purchases' | 'bugs' | 'support' | 'cache' | 'leaderbo
             </div>
 
             <div class="detail-group" *ngIf="answerItems(selectedQuestion()).length" style="margin-top: 1.5rem;">
-              <label>Answer items ({{ answerItems(selectedQuestion()).length }})</label>
+              <label>{{ tr('answerItems') }} ({{ answerItems(selectedQuestion()).length }})</label>
               <ul class="options-list">
                 <li *ngFor="let item of answerItems(selectedQuestion())">
                   <span class="option-idx">{{ item.label }}</span> {{ item.value }}
@@ -550,12 +967,12 @@ type AdminTab = 'users' | 'purchases' | 'bugs' | 'support' | 'cache' | 'leaderbo
             </div>
 
             <div class="detail-group" style="margin-top: 1.5rem; padding: 1rem; background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.2); border-radius: var(--radius-md);">
-              <label style="color: var(--accent-emerald);">Answer summary</label>
+              <label style="color: var(--accent-emerald);">{{ tr('answerSummary') }}</label>
               <strong style="color: #fff; font-size: 1.1rem; display: block; margin-top: 0.25rem;">{{ formatAnswer(selectedQuestion()) }}</strong>
             </div>
 
             <div class="detail-group" *ngIf="selectedQuestion()?.explanation" style="margin-top: 1.5rem;">
-              <label>Explanation</label>
+              <label>{{ tr('explanation') }}</label>
               <p class="explanation-text">{{ selectedQuestion()?.explanation }}</p>
             </div>
           </div>
@@ -567,11 +984,11 @@ type AdminTab = 'users' | 'purchases' | 'bugs' | 'support' | 'cache' | 'leaderbo
         <div class="modal-card glass anim-slide-up" style="max-width: 800px;" (click)="$event.stopPropagation()">
           <header class="modal-header">
             <div>
-              <p class="eyebrow" style="margin: 0;">Solve History</p>
+              <p class="eyebrow" style="margin: 0;">{{ tr('solveHistory') }}</p>
               <h3 style="margin-top: 0.25rem;">{{ selectedUserHistory()?.email }}</h3>
             </div>
             <div class="modal-actions">
-              <button class="btn btn-outline" type="button" (click)="openGrantModal(selectedUserHistory(), 'Question history adjustment')">Grant credits</button>
+              <button class="btn btn-outline" type="button" (click)="openGrantModal(selectedUserHistory(), tr('questionHistoryAdjustment'))">{{ tr('grantCredits') }}</button>
               <button class="btn-close" type="button" (click)="closeUserHistory()">x</button>
             </div>
           </header>
@@ -580,9 +997,9 @@ type AdminTab = 'users' | 'purchases' | 'bugs' | 'support' | 'cache' | 'leaderbo
               <table class="admin-table" style="min-width: 100%;">
                 <thead>
                   <tr>
-                    <th>Question</th>
-                    <th>Type</th>
-                    <th>Date</th>
+                    <th>{{ tr('questionText') }}</th>
+                    <th>{{ tr('type') }}</th>
+                    <th>{{ tr('date') }}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -594,7 +1011,7 @@ type AdminTab = 'users' | 'purchases' | 'bugs' | 'support' | 'cache' | 'leaderbo
                     <td>{{ formatDate(q.lastSeenAt) }}</td>
                   </tr>
                   <tr *ngIf="!userQuestions().length">
-                    <td colspan="3" class="empty-cell" style="text-align: center; padding: 3rem;">No questions solved by this user yet.</td>
+                    <td colspan="3" class="empty-cell" style="text-align: center; padding: 3rem;">{{ tr('noSolvedQuestions') }}</td>
                   </tr>
                 </tbody>
               </table>
@@ -614,23 +1031,23 @@ type AdminTab = 'users' | 'purchases' | 'bugs' | 'support' | 'cache' | 'leaderbo
         <div class="modal-card glass anim-slide-up" (click)="$event.stopPropagation()">
           <header class="modal-header">
             <div>
-              <p class="eyebrow" style="margin: 0;">Manual credits</p>
+              <p class="eyebrow" style="margin: 0;">{{ tr('manualCredits') }}</p>
               <h3 style="margin-top: 0.25rem;">{{ selectedGrantUser()?.email }}</h3>
             </div>
             <button class="btn-close" type="button" (click)="closeGrantModal()">x</button>
           </header>
           <form class="modal-body" style="display: flex; flex-direction: column; gap: 1rem;" (ngSubmit)="grantCustomCredits()">
             <label class="form-label">
-              <span>Credits</span>
+              <span>{{ tr('credits') }}</span>
               <input class="form-input" type="number" name="grantAmount" min="1" max="10000" step="1" [(ngModel)]="grantAmount">
             </label>
             <label class="form-label">
-              <span>Reason</span>
+              <span>{{ tr('reason') }}</span>
               <input class="form-input" type="text" name="grantReason" maxlength="200" [(ngModel)]="grantReason">
             </label>
             <div class="modal-actions end">
-              <button class="btn btn-outline" type="button" (click)="closeGrantModal()">Cancel</button>
-              <button class="btn btn-primary" type="submit">Grant credits</button>
+              <button class="btn btn-outline" type="button" (click)="closeGrantModal()">{{ tr('cancel') }}</button>
+              <button class="btn btn-primary" type="submit">{{ tr('grantCredits') }}</button>
             </div>
           </form>
         </div>
@@ -744,6 +1161,17 @@ type AdminTab = 'users' | 'purchases' | 'bugs' | 'support' | 'cache' | 'leaderbo
       flex: 1;
       min-width: 0;
     }
+    .admin-tabs button .tab-copy {
+      display: grid;
+      gap: 0.08rem;
+      flex: 1;
+      min-width: 0;
+    }
+    .admin-tabs button .tab-copy small {
+      color: var(--text-secondary);
+      font-size: 0.7rem;
+      line-height: 1.15;
+    }
     .admin-tabs button .tab-badge {
       min-width: 1.35rem;
       height: 1.35rem;
@@ -776,6 +1204,28 @@ type AdminTab = 'users' | 'purchases' | 'bugs' | 'support' | 'cache' | 'leaderbo
       display: flex;
       flex-direction: column;
       gap: 0.5rem;
+    }
+    .admin-language-switch {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.35rem;
+      padding: 0.3rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      background: rgba(255, 255, 255, 0.025);
+    }
+    .admin-language-switch a {
+      border-radius: var(--radius-sm);
+      color: var(--text-secondary);
+      font-size: 0.78rem;
+      font-weight: 800;
+      padding: 0.45rem 0.6rem;
+      text-align: center;
+      text-decoration: none;
+    }
+    .admin-language-switch a.active {
+      background: var(--accent-cyan);
+      color: var(--bg-deep);
     }
 
     /* Main content */
@@ -827,6 +1277,70 @@ type AdminTab = 'users' | 'purchases' | 'bugs' | 'support' | 'cache' | 'leaderbo
     }
     .admin-stats article strong.revenue {
       color: var(--accent-emerald);
+    }
+
+    .operations-strip {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .operations-strip article,
+    .insight-grid article,
+    .cache-summary article {
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      background: rgba(255, 255, 255, 0.025);
+      padding: 1rem 1.1rem;
+      display: grid;
+      gap: 0.25rem;
+      min-width: 0;
+    }
+    .operations-strip article.warn,
+    .cache-summary article.warn {
+      border-color: rgba(244, 63, 94, 0.35);
+      background: rgba(244, 63, 94, 0.08);
+    }
+    .operations-strip article.ok {
+      border-color: rgba(16, 185, 129, 0.28);
+      background: rgba(16, 185, 129, 0.07);
+    }
+    .operations-strip span,
+    .insight-grid span,
+    .cache-summary span {
+      color: var(--text-secondary);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .operations-strip strong,
+    .insight-grid strong,
+    .cache-summary strong {
+      color: var(--text-primary);
+      font-family: var(--font-heading);
+      font-size: 1.45rem;
+      line-height: 1.1;
+      overflow-wrap: anywhere;
+    }
+    .operations-strip small,
+    .insight-grid small,
+    .cache-summary small {
+      color: var(--text-secondary);
+      font-size: 0.78rem;
+      line-height: 1.35;
+    }
+    .insight-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .insight-grid strong.ok {
+      color: var(--accent-emerald);
+    }
+    .insight-grid strong.warn {
+      color: var(--accent-rose);
     }
 
     /* Admin panels */
@@ -897,7 +1411,8 @@ type AdminTab = 'users' | 'purchases' | 'bugs' | 'support' | 'cache' | 'leaderbo
       gap: 0.5rem;
       flex-wrap: wrap;
     }
-    .row-actions button {
+    .row-actions button,
+    .row-actions a {
       background: rgba(255, 255, 255, 0.04);
       border: 1px solid var(--border);
       padding: 0.35rem 0.75rem;
@@ -906,8 +1421,10 @@ type AdminTab = 'users' | 'purchases' | 'bugs' | 'support' | 'cache' | 'leaderbo
       font-weight: 600;
       color: var(--text-primary);
       transition: all 0.2s;
+      text-decoration: none;
     }
-    .row-actions button:hover {
+    .row-actions button:hover,
+    .row-actions a:hover {
       background: rgba(6, 182, 212, 0.1);
       border-color: var(--accent-cyan);
       color: var(--accent-cyan);
@@ -919,6 +1436,54 @@ type AdminTab = 'users' | 'purchases' | 'bugs' | 'support' | 'cache' | 'leaderbo
       background: rgba(244, 63, 94, 0.1);
       border-color: var(--accent-rose);
       color: var(--accent-rose);
+    }
+    .user-cell {
+      min-width: 240px;
+    }
+    .link-button {
+      appearance: none;
+      border: 0;
+      background: transparent;
+      padding: 0;
+      color: inherit;
+      font: inherit;
+      cursor: pointer;
+      text-align: left;
+    }
+    .primary-link {
+      display: block;
+      width: fit-content;
+      color: var(--accent-cyan);
+      font-weight: 800;
+      text-decoration: none;
+    }
+    .primary-link:hover {
+      color: #67e8f9;
+    }
+    .muted-line {
+      display: block;
+      margin-top: 0.35rem;
+      color: var(--text-secondary);
+      font-size: 0.78rem;
+    }
+    .metric-value {
+      color: var(--text-primary);
+      font-family: var(--font-heading);
+      font-size: 1.02rem;
+    }
+    .role-badge {
+      text-transform: capitalize;
+    }
+    .admin-table .badge,
+    .admin-table .status-pill {
+      display: inline-flex;
+      width: fit-content;
+    }
+    .meta-chips {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.45rem;
     }
 
     /* Pagination */
@@ -975,6 +1540,157 @@ type AdminTab = 'users' | 'purchases' | 'bugs' | 'support' | 'cache' | 'leaderbo
     }
 
     /* Support */
+    .support-summary {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .support-summary article {
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      background: rgba(255, 255, 255, 0.025);
+      padding: 1rem;
+      display: grid;
+      gap: 0.2rem;
+    }
+    .support-summary article.warn {
+      border-color: rgba(244, 63, 94, 0.35);
+      background: rgba(244, 63, 94, 0.08);
+    }
+    .support-summary article.ok {
+      border-color: rgba(16, 185, 129, 0.28);
+      background: rgba(16, 185, 129, 0.06);
+    }
+    .support-summary span {
+      color: var(--text-secondary);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .support-summary strong {
+      color: var(--text-primary);
+      font-family: var(--font-heading);
+      font-size: 1.55rem;
+    }
+    .support-layout {
+      display: grid;
+      grid-template-columns: minmax(280px, 0.9fr) minmax(0, 1.6fr);
+      gap: 1.25rem;
+      align-items: start;
+    }
+    .support-list {
+      display: grid;
+      gap: 0.65rem;
+      max-height: 720px;
+      overflow-y: auto;
+      padding-right: 0.35rem;
+    }
+    .support-item {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      background: rgba(255, 255, 255, 0.02);
+      color: var(--text-primary);
+      display: grid;
+      grid-template-columns: 2.4rem minmax(0, 1fr);
+      gap: 0.85rem;
+      padding: 0.95rem;
+      text-align: left;
+      transition: border-color 0.2s, background 0.2s, transform 0.2s;
+    }
+    .support-item:hover,
+    .support-item.active {
+      border-color: rgba(6, 182, 212, 0.42);
+      background: rgba(6, 182, 212, 0.07);
+    }
+    .support-item.unread {
+      border-color: rgba(244, 63, 94, 0.38);
+      background: rgba(244, 63, 94, 0.07);
+    }
+    .support-avatar {
+      width: 2.4rem;
+      height: 2.4rem;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(6, 182, 212, 0.14);
+      color: var(--accent-cyan);
+      font-size: 0.78rem;
+      font-weight: 800;
+    }
+    .support-item-main,
+    .support-item-row {
+      display: grid;
+      min-width: 0;
+      gap: 0.35rem;
+    }
+    .support-item-row {
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: start;
+    }
+    .support-item-row strong,
+    .support-sender,
+    .support-preview {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .support-sender {
+      color: var(--accent-cyan);
+      font-size: 0.82rem;
+      font-weight: 700;
+    }
+    .support-preview {
+      color: var(--text-secondary);
+      font-size: 0.83rem;
+      line-height: 1.35;
+    }
+    .support-item small {
+      color: var(--text-secondary);
+      font-size: 0.74rem;
+    }
+    .support-detail {
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      background: rgba(255, 255, 255, 0.018);
+      padding: 1.25rem;
+      min-height: 520px;
+    }
+    .support-detail header {
+      display: flex;
+      justify-content: space-between;
+      gap: 1.25rem;
+      align-items: flex-start;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .support-detail h3 {
+      margin: 0.25rem 0 0;
+      font-size: 1.25rem;
+      line-height: 1.25;
+    }
+    .support-meta-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.65rem;
+      margin-top: 1rem;
+    }
+    .support-meta-grid span {
+      display: grid;
+      gap: 0.15rem;
+      color: var(--text-secondary);
+      font-size: 0.82rem;
+      overflow-wrap: anywhere;
+    }
+    .support-meta-grid strong {
+      color: var(--text-primary);
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
     .support-linked-user {
       margin-top: 1rem;
       padding: 1rem;
@@ -1001,23 +1717,81 @@ type AdminTab = 'users' | 'purchases' | 'bugs' | 'support' | 'cache' | 'leaderbo
       color: var(--text-primary);
       margin: 0.15rem 0;
     }
+    .support-body {
+      margin-top: 1rem;
+      padding: 1rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      background: rgba(10, 12, 22, 0.32);
+      color: var(--text-primary);
+      line-height: 1.62;
+      white-space: pre-wrap;
+    }
+    .support-body p {
+      margin: 0 0 0.85rem;
+    }
+    .support-body p:last-child {
+      margin-bottom: 0;
+    }
+    .support-replies {
+      margin-top: 1rem;
+      display: grid;
+      gap: 0.75rem;
+    }
+    .support-replies h4 {
+      margin: 0;
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .support-reply {
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 0.9rem 1rem;
+      background: rgba(255, 255, 255, 0.025);
+    }
+    .support-reply small {
+      display: block;
+      color: var(--text-secondary);
+      margin-top: 0.2rem;
+      font-size: 0.78rem;
+    }
+    .support-reply p {
+      margin: 0.65rem 0 0;
+      color: var(--text-primary);
+      line-height: 1.5;
+    }
+    .support-reply-form {
+      display: grid;
+      gap: 0.85rem;
+      margin-top: 1rem;
+    }
+    .support-reply-form textarea {
+      width: 100%;
+      min-height: 150px;
+      resize: vertical;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      background: rgba(255, 255, 255, 0.035);
+      color: var(--text-primary);
+      padding: 0.85rem 1rem;
+      font: inherit;
+      line-height: 1.5;
+    }
+    .support-empty {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
 
     /* Cache panel */
     .cache-summary {
-      display: flex;
-      flex-direction: column;
-      gap: 0.25rem;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 1rem;
       margin-bottom: 2rem;
-      background: rgba(6, 182, 212, 0.04);
-      border: 1px dashed var(--accent-cyan);
-      padding: 1.5rem;
-      border-radius: var(--radius-lg);
-      text-align: center;
-    }
-    .cache-summary strong {
-      font-size: 2.5rem;
-      font-family: var(--font-heading);
-      color: var(--accent-cyan);
     }
     .cache-list {
       display: flex;
@@ -1030,6 +1804,26 @@ type AdminTab = 'users' | 'purchases' | 'bugs' | 'support' | 'cache' | 'leaderbo
       justify-content: space-between;
       align-items: center;
       gap: 1rem;
+    }
+    .cache-question-main {
+      display: grid;
+      gap: 0.65rem;
+      min-width: 0;
+    }
+    .cache-question-main p {
+      margin: 0;
+      color: var(--text-primary);
+      font-weight: 650;
+      line-height: 1.45;
+      overflow-wrap: anywhere;
+    }
+    .open-hint {
+      color: var(--accent-cyan);
+      font-size: 0.78rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      white-space: nowrap;
     }
 
     /* Leaderboard admin */
@@ -1200,6 +1994,10 @@ type AdminTab = 'users' | 'purchases' | 'bugs' | 'support' | 'cache' | 'leaderbo
       .admin-stats {
         grid-template-columns: repeat(2, 1fr);
       }
+      .insight-grid,
+      .cache-summary {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
     }
     @media (max-width: 992px) {
       .admin-shell {
@@ -1227,6 +2025,9 @@ type AdminTab = 'users' | 'purchases' | 'bugs' | 'support' | 'cache' | 'leaderbo
       }
       .health-grid {
         grid-template-columns: 1fr;
+      }
+      .operations-strip {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
       }
       .support-layout {
         grid-template-columns: 1fr;
@@ -1288,6 +2089,12 @@ type AdminTab = 'users' | 'purchases' | 'bugs' | 'support' | 'cache' | 'leaderbo
       .admin-tabs button .tab-label {
         flex: none;
       }
+      .admin-tabs button .tab-copy {
+        flex: none;
+      }
+      .admin-tabs button .tab-copy small {
+        display: none;
+      }
       .admin-tabs button .tab-badge {
         margin-left: 0;
       }
@@ -1316,6 +2123,13 @@ type AdminTab = 'users' | 'purchases' | 'bugs' | 'support' | 'cache' | 'leaderbo
       }
       .admin-stats {
         grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.75rem;
+        margin-bottom: 1rem;
+      }
+      .operations-strip,
+      .insight-grid,
+      .cache-summary {
+        grid-template-columns: 1fr;
         gap: 0.75rem;
         margin-bottom: 1rem;
       }
@@ -1396,6 +2210,9 @@ type AdminTab = 'users' | 'purchases' | 'bugs' | 'support' | 'cache' | 'leaderbo
       .health-grid article {
         padding: 1rem;
       }
+      .open-hint {
+        white-space: normal;
+      }
     }
 
     @media (max-width: 430px) {
@@ -1428,6 +2245,7 @@ export class AdminComponent implements OnInit, OnDestroy {
   ];
 
   protected readonly activeTab = signal<AdminTab>('users');
+  protected readonly adminLocale = signal<AdminLocale>('en');
   protected readonly isAuthed = signal(false);
   protected readonly loading = signal(false);
   protected readonly error = signal('');
@@ -1458,7 +2276,7 @@ export class AdminComponent implements OnInit, OnDestroy {
   protected supportStatusFilter = '';
   protected supportReplyText = '';
   protected grantAmount = 100;
-  protected grantReason = 'Support adjustment';
+  protected grantReason: string = ADMIN_COPY.en.supportAdjustment;
 
   private token = '';
   private readonly isBrowser: boolean;
@@ -1466,6 +2284,7 @@ export class AdminComponent implements OnInit, OnDestroy {
 
   constructor(
     @Inject(PLATFORM_ID) platformId: object,
+    private readonly route: ActivatedRoute,
     private readonly title: Title,
     private readonly meta: Meta
   ) {
@@ -1473,7 +2292,12 @@ export class AdminComponent implements OnInit, OnDestroy {
   }
 
   async ngOnInit(): Promise<void> {
-    this.title.setTitle('Admin Console | QuizSolver');
+    const routeLocale = this.route.snapshot.data['locale'] as AdminLocale | undefined;
+    const storedLocale = this.isBrowser ? localStorage.getItem('qs_admin_locale') as AdminLocale | null : null;
+    const locale = routeLocale === 'pl' ? 'pl' : routeLocale === 'en' ? 'en' : storedLocale === 'pl' ? 'pl' : 'en';
+    this.adminLocale.set(locale);
+    if (this.isBrowser) localStorage.setItem('qs_admin_locale', locale);
+    this.title.setTitle(`${this.tr('adminConsole')} | QuizSolver`);
     this.meta.updateTag({ name: 'robots', content: 'noindex, nofollow' });
     if (!this.isBrowser) return;
     this.token = localStorage.getItem('qs_admin_token') || localStorage.getItem('qs_token') || '';
@@ -1493,7 +2317,7 @@ export class AdminComponent implements OnInit, OnDestroy {
   protected async login(): Promise<void> {
     this.error.set('');
     if (!this.email || !this.password) {
-      this.error.set('Email and password are required.');
+      this.error.set(this.tr('loginRequired'));
       return;
     }
 
@@ -1505,12 +2329,12 @@ export class AdminComponent implements OnInit, OnDestroy {
     this.loading.set(false);
 
     if (!result.success || !result.token) {
-      this.error.set(result.error || 'Login failed.');
+      this.error.set(result.error || this.tr('loginFailed'));
       return;
     }
 
     if (result.user?.role !== 'admin') {
-      this.error.set('Admin access required.');
+      this.error.set(this.tr('adminRequired'));
       return;
     }
 
@@ -1550,7 +2374,8 @@ export class AdminComponent implements OnInit, OnDestroy {
 
   protected startGoogleLogin(): void {
     if (!this.isBrowser) return;
-    window.location.href = `/api/auth/google/start?redirect=${encodeURIComponent(ADMIN_PANEL_URL)}`;
+    const redirect = this.adminLocale() === 'pl' ? `/pl/${ADMIN_PANEL_ROUTE_PATH}` : ADMIN_PANEL_URL;
+    window.location.href = `/api/auth/google/start?redirect=${encodeURIComponent(redirect)}&lang=${this.adminLocale()}`;
   }
 
   protected async refresh(): Promise<void> {
@@ -1587,10 +2412,10 @@ export class AdminComponent implements OnInit, OnDestroy {
       await Promise.all([this.loadUsers(this.pagination().page), this.loadStats()]);
       return;
     }
-    this.error.set(result.error || 'Could not grant credits.');
+    this.error.set(result.error || this.tr('couldNotGrantCredits'));
   }
 
-  protected openGrantModal(user: any, reason = 'Admin manual grant'): void {
+  protected openGrantModal(user: any, reason = this.tr('adminManualGrant')): void {
     if (!user?.id) return;
     this.selectedGrantUser.set(user);
     this.grantAmount = 100;
@@ -1604,9 +2429,9 @@ export class AdminComponent implements OnInit, OnDestroy {
   protected async grantCustomCredits(): Promise<void> {
     const user = this.selectedGrantUser();
     const credits = Math.floor(Number(this.grantAmount || 0));
-    const reason = String(this.grantReason || 'Admin manual grant').trim().substring(0, 200);
+    const reason = String(this.grantReason || this.tr('adminManualGrant')).trim().substring(0, 200);
     if (!user?.id || credits <= 0) {
-      this.error.set('Credits must be greater than 0.');
+      this.error.set(this.tr('creditsGreaterThanZero'));
       return;
     }
 
@@ -1624,17 +2449,17 @@ export class AdminComponent implements OnInit, OnDestroy {
       ]);
       return;
     }
-    this.error.set(result.error || 'Could not grant credits.');
+    this.error.set(result.error || this.tr('couldNotGrantCredits'));
   }
 
   protected async banUser(userId: string): Promise<void> {
-    if (!this.confirm('Ban this user?')) return;
+    if (!this.confirm(this.tr('banConfirm'))) return;
     const result = await this.api(`/api/admin/users/${userId}/ban`, { method: 'POST' });
     if (result.success) {
       await Promise.all([this.loadUsers(this.pagination().page), this.loadSupportMessages()]);
       return;
     }
-    this.error.set(result.error || 'Could not ban user.');
+    this.error.set(result.error || this.tr('couldNotBanUser'));
   }
 
   protected async unbanUser(userId: string): Promise<void> {
@@ -1643,7 +2468,7 @@ export class AdminComponent implements OnInit, OnDestroy {
       await Promise.all([this.loadUsers(this.pagination().page), this.loadSupportMessages()]);
       return;
     }
-    this.error.set(result.error || 'Could not unban user.');
+    this.error.set(result.error || this.tr('couldNotUnbanUser'));
   }
 
   protected async toggleLeaderboard(userId: string, exclude: boolean): Promise<void> {
@@ -1655,33 +2480,33 @@ export class AdminComponent implements OnInit, OnDestroy {
       await Promise.all([this.loadUsers(this.pagination().page), this.loadLeaderboard()]);
       return;
     }
-    this.error.set(result.error || 'Could not update leaderboard setting.');
+    this.error.set(result.error || this.tr('couldNotUpdateLeaderboard'));
   }
 
   protected async deleteUser(userId: string, email: string): Promise<void> {
-    if (!this.confirm(`Delete ${email}? This cannot be undone.`)) return;
+    if (!this.confirm(`${this.tr('deleteUserConfirmPrefix')} ${email}? ${this.tr('deleteUserConfirmSuffix')}`)) return;
     const result = await this.api(`/api/admin/users/${userId}`, { method: 'DELETE' });
     if (result.success) {
       await Promise.all([this.loadUsers(this.pagination().page), this.loadStats()]);
       return;
     }
-    this.error.set(result.error || 'Could not delete user.');
+    this.error.set(result.error || this.tr('couldNotDeleteUser'));
   }
 
   protected async clearCache(): Promise<void> {
-    if (!this.confirm('Clear all cached answers?')) return;
+    if (!this.confirm(this.tr('clearCacheConfirm'))) return;
     const result = await this.api('/api/admin/cache/clear', { method: 'DELETE' });
     if (result.success) {
       await Promise.all([this.loadCache(1), this.loadStats()]);
       return;
     }
-    this.error.set(result.error || 'Could not clear cache.');
+    this.error.set(result.error || this.tr('couldNotClearCache'));
   }
 
   protected async deleteCacheEntry(question: any): Promise<void> {
     const cacheId = question?.cacheId;
     if (!cacheId) return;
-    if (!this.confirm('Delete this cached answer?')) return;
+    if (!this.confirm(this.tr('deleteCacheConfirm'))) return;
 
     const result = await this.api(`/api/admin/cache/${cacheId}`, { method: 'DELETE' });
     if (result.success) {
@@ -1689,22 +2514,141 @@ export class AdminComponent implements OnInit, OnDestroy {
       await Promise.all([this.loadCache(this.cachePagination().page || 1), this.loadStats()]);
       return;
     }
-    this.error.set(result.error || 'Could not delete cache entry.');
+    this.error.set(result.error || this.tr('couldNotDeleteCache'));
+  }
+
+  protected tr(key: AdminCopyKey): string {
+    return ADMIN_COPY[this.adminLocale()][key] || ADMIN_COPY.en[key] || key;
+  }
+
+  protected adminLocaleUrl(locale: AdminLocale): string {
+    return locale === 'pl' ? `/pl/${ADMIN_PANEL_ROUTE_PATH}` : ADMIN_PANEL_URL;
+  }
+
+  protected tabLabel(tab: AdminTab): string {
+    const labels: Record<AdminTab, AdminCopyKey> = {
+      users: 'users',
+      purchases: 'purchases',
+      bugs: 'bugs',
+      support: 'support',
+      cache: 'cache',
+      leaderboard: 'leaderboard',
+      system: 'system'
+    };
+    return this.tr(labels[tab]);
+  }
+
+  protected tabHint(tab: AdminTab): string {
+    const hints: Record<AdminTab, AdminCopyKey> = {
+      users: 'usersHint',
+      purchases: 'purchasesHint',
+      bugs: 'bugsHint',
+      support: 'supportHint',
+      cache: 'cacheHint',
+      leaderboard: 'leaderboardHint',
+      system: 'systemHint'
+    };
+    return this.tr(hints[tab]);
+  }
+
+  protected activeTabTitle(): string {
+    const titles: Record<AdminTab, AdminCopyKey> = {
+      users: 'usersTitle',
+      purchases: 'purchasesTitle',
+      bugs: 'bugsTitle',
+      support: 'supportTitle',
+      cache: 'cacheTitle',
+      leaderboard: 'leaderboardTitle',
+      system: 'systemTitle'
+    };
+    return this.tr(titles[this.activeTab()]);
+  }
+
+  protected activeTabDescription(): string {
+    const descriptions: Record<AdminTab, AdminCopyKey> = {
+      users: 'usersDescription',
+      purchases: 'purchasesDescription',
+      bugs: 'bugsDescription',
+      support: 'supportDescription',
+      cache: 'cacheDescription',
+      leaderboard: 'leaderboardDescription',
+      system: 'systemDescription'
+    };
+    return this.tr(descriptions[this.activeTab()]);
+  }
+
+  protected adminNoticeCards(): Array<{ label: string; value: string; note: string; tone?: 'warn' | 'ok' }> {
+    const supportUnread = this.supportBadgeCount();
+    const duplicates = (this.billingSafety().duplicateGroups || []).length;
+    const activeUsers = this.users().filter(user => this.isUserExtensionActive(user)).length;
+    const notices: Array<{ label: string; value: string; note: string; tone?: 'warn' | 'ok' }> = [];
+
+    if (supportUnread > 0) {
+      notices.push({
+        label: this.tr('unreadSupport'),
+        value: this.formatNumber(supportUnread),
+        note: this.tr('newEmailsWaiting'),
+        tone: 'warn'
+      });
+    }
+
+    notices.push({
+      label: this.tr('creditSafety'),
+      value: duplicates ? this.formatNumber(duplicates) : 'OK',
+      note: duplicates ? this.tr('duplicateGroupsNeedReview') : this.tr('noDuplicateChargeGroups'),
+      tone: duplicates ? 'warn' : 'ok'
+    });
+
+    notices.push({
+      label: this.tr('usingExtensionNow'),
+      value: this.formatNumber(activeUsers),
+      note: this.tr('activeHeartbeat'),
+      tone: activeUsers ? 'ok' : undefined
+    });
+
+    return notices;
+  }
+
+  protected usersSummaryCards(): Array<{ label: string; value: string; note: string; ok?: boolean; warn?: boolean }> {
+    const users = this.users();
+    const active = users.filter(user => this.isUserExtensionActive(user)).length;
+    const banned = users.filter(user => user.isBanned).length;
+    const credits = users.reduce((sum, user) => sum + (user.role === 'admin' ? 0 : Number(user.credits || 0)), 0);
+    const questions = users.reduce((sum, user) => sum + Number(user.stats?.totalQuestionsSolved || 0), 0);
+    return [
+      { label: this.tr('visibleUsers'), value: this.formatNumber(users.length), note: `${this.formatNumber(this.pagination().total || users.length)} ${this.tr('totalInSearch')}` },
+      { label: this.tr('activeNow'), value: this.formatNumber(active), note: this.tr('activeHeartbeat'), ok: active > 0 },
+      { label: this.tr('banned'), value: this.formatNumber(banned), note: this.tr('blockedAccounts'), warn: banned > 0 },
+      { label: this.tr('visibleCredits'), value: this.formatNumber(credits), note: `${this.formatNumber(questions)} ${this.tr('solvedQuestionsVisible')}` }
+    ];
+  }
+
+  protected cacheSummaryCards(): Array<{ label: string; value: string; note: string; warn?: boolean }> {
+    const hits = this.cache().topHits || [];
+    const weak = hits.filter((hit: any) => this.isWeakQuestionText(hit.questionText)).length;
+    const totalHits = hits.reduce((sum: number, hit: any) => sum + Number(hit.hitCount || 0), 0);
+    const matching = this.cachePagination().total || this.cache().totalMatching || this.cache().totalCached || 0;
+    return [
+      { label: this.tr('cachedAnswers'), value: this.formatNumber(this.cache().totalCached || 0), note: this.tr('allStoredCacheRecords') },
+      { label: this.tr('visibleEntries'), value: this.formatNumber(matching), note: this.cacheSearch.trim() ? this.tr('matchingCurrentSearch') : this.tr('currentCachePageTotal') },
+      { label: this.tr('hitsOnPage'), value: this.formatNumber(totalHits), note: this.tr('usageVisibleRows') },
+      { label: this.tr('weakText'), value: this.formatNumber(weak), note: this.tr('needsParserReview'), warn: weak > 0 }
+    ];
   }
 
   protected statsCards(): Array<{ label: string; value: string; revenue?: boolean }> {
     const s = this.stats();
     return [
-      { label: 'Users', value: this.formatNumber(s.totalUsers) },
-      { label: 'Questions', value: this.formatNumber(s.totalQuestions) },
-      { label: 'Cached answers', value: this.formatNumber(s.cachedAnswers) },
-      { label: 'Revenue', value: this.formatMoney(s.totalRevenue || 0), revenue: true },
-      { label: 'Month revenue', value: this.formatMoney(s.monthRevenue || 0), revenue: true },
-      { label: 'Purchases today', value: this.formatNumber(s.todayPurchases) },
-      { label: 'Bug reports', value: this.formatNumber(s.totalBugReports) },
-      { label: 'Open support', value: this.formatNumber(s.openSupportMessages) },
-      { label: 'Unread support', value: this.formatNumber(s.unreadSupportMessages) },
-      { label: 'Banned', value: this.formatNumber(s.bannedUsers) }
+      { label: this.tr('users'), value: this.formatNumber(s.totalUsers) },
+      { label: this.tr('questions'), value: this.formatNumber(s.totalQuestions) },
+      { label: this.tr('cachedAnswers'), value: this.formatNumber(s.cachedAnswers) },
+      { label: this.tr('revenue'), value: this.formatMoney(s.totalRevenue || 0), revenue: true },
+      { label: this.adminLocale() === 'pl' ? 'Przychód mies.' : 'Month revenue', value: this.formatMoney(s.monthRevenue || 0), revenue: true },
+      { label: this.adminLocale() === 'pl' ? 'Płatności dziś' : 'Purchases today', value: this.formatNumber(s.todayPurchases) },
+      { label: this.tr('bugsTitle'), value: this.formatNumber(s.totalBugReports) },
+      { label: this.adminLocale() === 'pl' ? 'Otwarty support' : 'Open support', value: this.formatNumber(s.openSupportMessages) },
+      { label: this.tr('unreadSupport'), value: this.formatNumber(s.unreadSupportMessages) },
+      { label: this.tr('banned'), value: this.formatNumber(s.bannedUsers) }
     ];
   }
 
@@ -1727,12 +2671,12 @@ export class AdminComponent implements OnInit, OnDestroy {
     const b = this.billingSafety();
     const duplicates = (b.duplicateGroups || []).length;
     return [
-      { label: 'Charged records', value: this.formatNumber(b.chargedRecords), ok: true },
-      { label: 'Charged 24h', value: this.formatNumber(b.chargedLast24h), ok: true },
-      { label: 'Duplicate groups', value: this.formatNumber(duplicates), ok: duplicates === 0 },
-      { label: 'Stale claims', value: this.formatNumber(b.staleClaims), ok: Number(b.staleClaims || 0) === 0 },
-      { label: 'Waived', value: this.formatNumber(b.waivedRecords) },
-      { label: 'All claims', value: this.formatNumber(b.totalClaims) }
+      { label: this.adminLocale() === 'pl' ? 'Naliczone rekordy' : 'Charged records', value: this.formatNumber(b.chargedRecords), ok: true },
+      { label: this.adminLocale() === 'pl' ? 'Naliczone 24h' : 'Charged 24h', value: this.formatNumber(b.chargedLast24h), ok: true },
+      { label: this.adminLocale() === 'pl' ? 'Grupy duplikatów' : 'Duplicate groups', value: this.formatNumber(duplicates), ok: duplicates === 0 },
+      { label: this.adminLocale() === 'pl' ? 'Stare claimy' : 'Stale claims', value: this.formatNumber(b.staleClaims), ok: Number(b.staleClaims || 0) === 0 },
+      { label: this.adminLocale() === 'pl' ? 'Umorzone' : 'Waived', value: this.formatNumber(b.waivedRecords) },
+      { label: this.adminLocale() === 'pl' ? 'Wszystkie claimy' : 'All claims', value: this.formatNumber(b.totalClaims) }
     ];
   }
 
@@ -1756,10 +2700,10 @@ export class AdminComponent implements OnInit, OnDestroy {
     const pending = messages.filter(message => message.status === 'pending').length;
     const unread = messages.filter(message => !message.isRead).length;
     return [
-      { label: 'Visible', value: this.formatNumber(visible) },
-      { label: 'Open', value: this.formatNumber(open), tone: open ? 'warn' : 'ok' },
-      { label: 'Pending', value: this.formatNumber(pending) },
-      { label: 'Unread', value: this.formatNumber(unread), tone: unread ? 'warn' : 'ok' }
+      { label: this.adminLocale() === 'pl' ? 'Widoczne' : 'Visible', value: this.formatNumber(visible) },
+      { label: this.tr('open'), value: this.formatNumber(open), tone: open ? 'warn' : 'ok' },
+      { label: this.tr('pending'), value: this.formatNumber(pending) },
+      { label: this.adminLocale() === 'pl' ? 'Nieprzeczytane' : 'Unread', value: this.formatNumber(unread), tone: unread ? 'warn' : 'ok' }
     ];
   }
 
@@ -1785,19 +2729,27 @@ export class AdminComponent implements OnInit, OnDestroy {
 
   protected supportPreview(message: any): string {
     const text = String(message?.text || message?.html || '').replace(/\s+/g, ' ').trim();
-    if (!text) return 'No message preview.';
+    if (!text) return this.tr('noMessagePreview');
     return text.length > 130 ? `${text.slice(0, 127)}...` : text;
   }
 
   protected supportParagraphs(value: unknown): string[] {
     const text = String(value || '').replace(/\r\n/g, '\n').trim();
-    if (!text) return ['No message body.'];
+    if (!text) return [this.tr('noMessageBody')];
     return text.split(/\n{2,}/).map(part => part.trim()).filter(Boolean);
   }
 
   protected supportSourceLabel(value: unknown): string {
     const raw = String(value || 'support').replace(/[-_]/g, ' ').trim();
     return raw ? raw.charAt(0).toUpperCase() + raw.slice(1) : 'Support';
+  }
+
+  protected supportStatusLabel(value: unknown): string {
+    const status = String(value || '').toLowerCase();
+    if (status === 'open') return this.tr('open');
+    if (status === 'pending') return this.tr('pending');
+    if (status === 'closed') return this.tr('closed');
+    return String(value || '-');
   }
 
   protected supportMailto(message: any): string {
@@ -1812,7 +2764,7 @@ export class AdminComponent implements OnInit, OnDestroy {
     try {
       await navigator.clipboard.writeText(email);
     } catch {
-      this.error.set('Could not copy email address.');
+      this.error.set(this.tr('couldNotCopyEmail'));
     }
   }
 
@@ -1822,30 +2774,34 @@ export class AdminComponent implements OnInit, OnDestroy {
 
   protected formatNumber(value: unknown): string {
     const number = Number(value || 0);
-    return new Intl.NumberFormat('en-US').format(number);
+    return new Intl.NumberFormat(this.adminLocale() === 'pl' ? 'pl-PL' : 'en-US').format(number);
   }
 
   protected formatMoney(value: unknown): string {
     const number = Number(value || 0);
-    return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(number);
+    return new Intl.NumberFormat(this.adminLocale() === 'pl' ? 'pl-PL' : 'en-US', { style: 'currency', currency: 'USD' }).format(number);
   }
 
   protected formatDate(value: unknown): string {
     if (!value) return '-';
     const date = new Date(String(value));
     if (Number.isNaN(date.getTime())) return '-';
-    return new Intl.DateTimeFormat('en-US', { dateStyle: 'medium', timeStyle: 'short' }).format(date);
+    return new Intl.DateTimeFormat(this.adminLocale() === 'pl' ? 'pl-PL' : 'en-US', { dateStyle: 'medium', timeStyle: 'short' }).format(date);
+  }
+
+  protected isUserExtensionActive(user: any): boolean {
+    return !!user?.isExtensionActive && !user?.isBanned;
   }
 
   protected userStatusLabel(user: any): string {
-    if (user?.isBanned) return 'Banned';
-    return user?.isExtensionActive ? 'Active' : 'Offline';
+    if (user?.isBanned) return this.tr('banned');
+    return this.isUserExtensionActive(user) ? this.tr('active') : this.tr('offline');
   }
 
   protected userExtensionLastSeen(user: any): string {
-    if (user?.isBanned) return 'Suspended account';
-    if (!user?.extensionLastSeenAt) return 'Extension not seen';
-    const prefix = user?.isExtensionActive ? 'Now' : 'Last seen';
+    if (user?.isBanned) return this.tr('suspendedAccount');
+    if (!user?.extensionLastSeenAt) return this.tr('extensionNotSeen');
+    const prefix = user?.isExtensionActive ? this.tr('now') : this.tr('lastSeen');
     const reason = user?.extensionLastSeenReason ? ` - ${user.extensionLastSeenReason}` : '';
     return `${prefix}: ${this.formatDate(user.extensionLastSeenAt)}${reason}`;
   }
@@ -1871,7 +2827,7 @@ export class AdminComponent implements OnInit, OnDestroy {
       ]);
       return;
     }
-    this.error.set(result.error || 'Could not apply purchase credits.');
+    this.error.set(result.error || this.tr('couldNotApplyPurchase'));
   }
 
   private async loadBugs(): Promise<void> {
@@ -1923,19 +2879,19 @@ export class AdminComponent implements OnInit, OnDestroy {
       await Promise.all([this.loadSupportMessages(), this.loadStats()]);
       return;
     }
-    this.error.set(result.error || 'Could not send support reply.');
+    this.error.set(result.error || this.tr('couldNotSendReply'));
   }
 
   protected async deleteSupportMessage(message: any): Promise<void> {
     if (!message?.id) return;
-    if (!this.confirm(`Delete support message from ${message.fromEmail || 'unknown sender'}?`)) return;
+    if (!this.confirm(`${this.tr('deleteSupportConfirmPrefix')} ${message.fromEmail || this.tr('unknownSender')}?`)) return;
     const result = await this.api(`/api/admin/support/messages/${message.id}`, { method: 'DELETE' });
     if (result.success) {
       this.selectedSupportMessage.set(null);
       await Promise.all([this.loadSupportMessages(), this.loadStats()]);
       return;
     }
-    this.error.set(result.error || 'Could not delete support message.');
+    this.error.set(result.error || this.tr('couldNotDeleteSupport'));
   }
 
   protected async loadCache(page = 1): Promise<void> {
