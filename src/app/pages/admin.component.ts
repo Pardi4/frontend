@@ -53,8 +53,9 @@ type AdminTab = 'users' | 'purchases' | 'bugs' | 'support' | 'cache' | 'leaderbo
               </a>
               <nav class="admin-tabs" aria-label="Admin sections">
                 <button type="button" *ngFor="let tab of tabs" [class.active]="activeTab() === tab.id" (click)="activeTab.set(tab.id)">
-                  <span>{{ tab.short }}</span>
-                  {{ tab.label }}
+                  <span class="tab-short">{{ tab.short }}</span>
+                  <span class="tab-label">{{ tab.label }}</span>
+                  <span class="tab-badge" *ngIf="tab.id === 'support' && supportBadgeCount()">{{ supportBadgeCount() }}</span>
                 </button>
               </nav>
             </div>
@@ -114,8 +115,8 @@ type AdminTab = 'users' | 'purchases' | 'bugs' | 'support' | 'cache' | 'leaderbo
                   <tbody>
                     <tr *ngFor="let user of users()">
                       <td>
-                        <strong>{{ user.email }}</strong>
-                        <span style="font-size: 0.8rem; margin-top: 0.15rem;">{{ user.displayName || 'No display name' }}</span>
+                        <a href="javascript:void(0)" (click)="openUserHistory(user)" style="font-weight: 700; color: var(--accent-cyan); text-decoration: none; display: block; width: fit-content;">{{ user.email }}</a>
+                        <span style="font-size: 0.8rem; margin-top: 0.15rem; display: block;">{{ user.displayName || 'No display name' }}</span>
                       </td>
                       <td style="text-transform: capitalize;">{{ user.role }}</td>
                       <td>{{ user.role === 'admin' ? 'unlimited' : user.credits }}</td>
@@ -128,9 +129,11 @@ type AdminTab = 'users' | 'purchases' | 'bugs' | 'support' | 'cache' | 'leaderbo
                       </td>
                       <td>
                         <div class="row-actions">
+                          <button type="button" (click)="openUserHistory(user)" style="color: var(--accent-cyan);">History</button>
                           <button type="button" (click)="quickGrant(user.id, 50)">+50</button>
                           <button type="button" (click)="quickGrant(user.id, 100)">+100</button>
                           <button type="button" (click)="quickGrant(user.id, 200)">+200</button>
+                          <button type="button" (click)="openGrantModal(user)">Grant</button>
                           <button type="button" (click)="user.isBanned ? unbanUser(user.id) : banUser(user.id)">
                             {{ user.isBanned ? 'Unban' : 'Ban' }}
                           </button>
@@ -254,8 +257,9 @@ type AdminTab = 'users' | 'purchases' | 'bugs' | 'support' | 'cache' | 'leaderbo
                         <span class="status-pill" [class.danger]="message.status === 'open'" [class.pending]="message.status === 'pending'">{{ message.status }}</span>
                       </span>
                       <span class="support-sender">{{ supportSender(message) }}</span>
+                      <span class="badge badge-outline" *ngIf="message.linkedUser">Account: {{ message.linkedUser.credits }} credits</span>
                       <span class="support-preview">{{ supportPreview(message) }}</span>
-                      <small>{{ formatDate(message.receivedAt) }} · {{ supportSourceLabel(message.source) }}</small>
+                      <small>{{ formatDate(message.receivedAt) }} - {{ supportSourceLabel(message.source) }}</small>
                     </span>
                   </button>
                   <div class="empty-panel" *ngIf="!filteredSupportMessages().length">
@@ -281,8 +285,33 @@ type AdminTab = 'users' | 'purchases' | 'bugs' | 'support' | 'cache' | 'leaderbo
                       <button type="button" (click)="updateSupportStatus(selectedSupportMessage(), 'open')">Open</button>
                       <button type="button" (click)="updateSupportStatus(selectedSupportMessage(), 'pending')">Pending</button>
                       <button type="button" (click)="updateSupportStatus(selectedSupportMessage(), 'closed')">Close</button>
+                      <button type="button" class="danger" (click)="deleteSupportMessage(selectedSupportMessage())">Delete</button>
                     </div>
                   </header>
+
+                  <div class="support-linked-user" *ngIf="selectedSupportMessage()?.linkedUser as linkedUser; else noLinkedSupportUser">
+                    <div>
+                      <span>Linked account</span>
+                      <strong>{{ linkedUser.email }}</strong>
+                      <small>{{ linkedUser.role }} - {{ linkedUser.credits }} credits - {{ linkedUser.stats?.totalQuestionsSolved || 0 }} questions</small>
+                    </div>
+                    <div class="row-actions">
+                      <button type="button" (click)="openUserHistory(linkedUser)">History</button>
+                      <button type="button" (click)="openGrantModal(linkedUser, 'Support adjustment')">Grant credits</button>
+                      <button type="button" (click)="linkedUser.isBanned ? unbanUser(linkedUser.id) : banUser(linkedUser.id)">
+                        {{ linkedUser.isBanned ? 'Unban' : 'Ban' }}
+                      </button>
+                    </div>
+                  </div>
+                  <ng-template #noLinkedSupportUser>
+                    <div class="support-linked-user muted">
+                      <div>
+                        <span>No linked account</span>
+                        <strong>{{ selectedSupportMessage()?.fromEmail || 'Unknown email' }}</strong>
+                        <small>This sender email does not match a QuizSolver account.</small>
+                      </div>
+                    </div>
+                  </ng-template>
 
                   <div class="support-body">
                     <p *ngFor="let paragraph of supportParagraphs(selectedSupportMessage()?.text)">{{ paragraph }}</p>
@@ -292,7 +321,7 @@ type AdminTab = 'users' | 'purchases' | 'bugs' | 'support' | 'cache' | 'leaderbo
                     <h4>Replies</h4>
                     <article class="support-reply" *ngFor="let reply of selectedSupportMessage()?.replies">
                       <strong>{{ reply.admin }}</strong>
-                      <small>{{ formatDate(reply.sentAt) }} · {{ reply.delivery }}</small>
+                      <small>{{ formatDate(reply.sentAt) }} - {{ reply.delivery }}</small>
                       <p>{{ reply.text }}</p>
                     </article>
                   </div>
@@ -327,7 +356,7 @@ type AdminTab = 'users' | 'purchases' | 'bugs' | 'support' | 'cache' | 'leaderbo
                 <span class="text-secondary">Total cached answers</span>
               </div>
               <div class="cache-list">
-                <article class="glass" *ngFor="let hit of cache().topHits || []">
+                <article class="glass clickable-row" *ngFor="let hit of cache().topHits || []" (click)="showQuestionDetails(hit)">
                   <p style="font-weight: 500;">{{ hit.questionText }}</p>
                   <span class="badge badge-outline" style="text-transform: capitalize;">
                     {{ hit.questionType }} | {{ hit.hitCount }} hits
@@ -376,6 +405,137 @@ type AdminTab = 'users' | 'purchases' | 'bugs' | 'support' | 'cache' | 'leaderbo
           </section>
         </section>
       </ng-template>
+
+      <!-- Question Detail Modal -->
+      <div class="modal-overlay" *ngIf="selectedQuestion()" (click)="selectedQuestion.set(null)" style="z-index: 1100;">
+        <div class="modal-card glass anim-slide-up" (click)="$event.stopPropagation()">
+          <header class="modal-header">
+            <h3>Question details</h3>
+            <button class="btn-close" type="button" (click)="selectedQuestion.set(null)">x</button>
+          </header>
+          <div class="modal-body">
+            <div class="detail-group">
+              <label>Type</label>
+              <span class="badge badge-outline" style="text-transform: uppercase;">{{ selectedQuestion()?.questionType }}</span>
+            </div>
+            <div class="detail-group" style="margin-top: 1.5rem;">
+              <label>Question text</label>
+              <p class="question-text-full">{{ selectedQuestion()?.questionText }}</p>
+            </div>
+            
+            <div class="detail-group" *ngIf="selectedQuestion()?.options?.length" style="margin-top: 1.5rem;">
+              <label>Options</label>
+              <ul class="options-list">
+                <li *ngFor="let opt of selectedQuestion()?.options; let i = index">
+                  <span class="option-idx">{{ i + 1 }}.</span> {{ opt }}
+                </li>
+              </ul>
+            </div>
+
+            <div class="detail-group" *ngIf="selectedQuestion()?.prompts?.length" style="margin-top: 1.5rem;">
+              <label>Prompts (matching)</label>
+              <ul class="options-list">
+                <li *ngFor="let prompt of selectedQuestion()?.prompts; let i = index">
+                  <span class="option-idx">P{{ i + 1 }}:</span> {{ prompt }}
+                </li>
+              </ul>
+            </div>
+
+            <div class="detail-group" *ngIf="selectedQuestion()?.rows?.length" style="margin-top: 1.5rem;">
+              <label>Rows (matrix)</label>
+              <ul class="options-list">
+                <li *ngFor="let row of selectedQuestion()?.rows; let i = index">
+                  <span class="option-idx">R{{ i + 1 }}:</span> {{ row }}
+                </li>
+              </ul>
+            </div>
+
+            <div class="detail-group" style="margin-top: 1.5rem; padding: 1rem; background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.2); border-radius: var(--radius-md);">
+              <label style="color: var(--accent-emerald);">Answer</label>
+              <strong style="color: #fff; font-size: 1.1rem; display: block; margin-top: 0.25rem;">{{ formatAnswer(selectedQuestion()) }}</strong>
+            </div>
+
+            <div class="detail-group" *ngIf="selectedQuestion()?.explanation" style="margin-top: 1.5rem;">
+              <label>Explanation</label>
+              <p class="explanation-text">{{ selectedQuestion()?.explanation }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- User Solve History Modal -->
+      <div class="modal-overlay" *ngIf="selectedUserHistory()" (click)="closeUserHistory()" style="z-index: 1000;">
+        <div class="modal-card glass anim-slide-up" style="max-width: 800px;" (click)="$event.stopPropagation()">
+          <header class="modal-header">
+            <div>
+              <p class="eyebrow" style="margin: 0;">Solve History</p>
+              <h3 style="margin-top: 0.25rem;">{{ selectedUserHistory()?.email }}</h3>
+            </div>
+            <div class="modal-actions">
+              <button class="btn btn-outline" type="button" (click)="openGrantModal(selectedUserHistory(), 'Question history adjustment')">Grant credits</button>
+              <button class="btn-close" type="button" (click)="closeUserHistory()">x</button>
+            </div>
+          </header>
+          <div class="modal-body" style="padding-top: 1rem;">
+            <div class="table-scroll" style="margin: 0; border: 1px solid var(--border); border-radius: var(--radius-md);">
+              <table class="admin-table" style="min-width: 100%;">
+                <thead>
+                  <tr>
+                    <th>Question</th>
+                    <th>Type</th>
+                    <th>Date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let q of userQuestions()" (click)="showQuestionDetails(q)" class="clickable-row">
+                    <td style="max-width: 400px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                      <strong>{{ q.questionText }}</strong>
+                    </td>
+                    <td style="text-transform: capitalize;">{{ q.questionType }}</td>
+                    <td>{{ formatDate(q.lastSeenAt) }}</td>
+                  </tr>
+                  <tr *ngIf="!userQuestions().length">
+                    <td colspan="3" class="empty-cell" style="text-align: center; padding: 3rem;">No questions solved by this user yet.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="pagination" *ngIf="userQuestionsPagination().pages > 1" style="margin-top: 1.5rem;">
+              <button type="button" *ngFor="let page of userQuestionsPageNumbers()" [class.active]="page === userQuestionsPagination().page" (click)="loadUserQuestions(selectedUserHistory().id, page)">
+                {{ page }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Credit Grant Modal -->
+      <div class="modal-overlay" *ngIf="selectedGrantUser()" (click)="closeGrantModal()" style="z-index: 1200;">
+        <div class="modal-card glass anim-slide-up" (click)="$event.stopPropagation()">
+          <header class="modal-header">
+            <div>
+              <p class="eyebrow" style="margin: 0;">Manual credits</p>
+              <h3 style="margin-top: 0.25rem;">{{ selectedGrantUser()?.email }}</h3>
+            </div>
+            <button class="btn-close" type="button" (click)="closeGrantModal()">x</button>
+          </header>
+          <form class="modal-body" style="display: flex; flex-direction: column; gap: 1rem;" (ngSubmit)="grantCustomCredits()">
+            <label class="form-label">
+              <span>Credits</span>
+              <input class="form-input" type="number" name="grantAmount" min="1" max="10000" step="1" [(ngModel)]="grantAmount">
+            </label>
+            <label class="form-label">
+              <span>Reason</span>
+              <input class="form-input" type="text" name="grantReason" maxlength="200" [(ngModel)]="grantReason">
+            </label>
+            <div class="modal-actions end">
+              <button class="btn btn-outline" type="button" (click)="closeGrantModal()">Cancel</button>
+              <button class="btn btn-primary" type="submit">Grant credits</button>
+            </div>
+          </form>
+        </div>
+      </div>
     </main>
   `,
   styles: [`
@@ -473,13 +633,31 @@ type AdminTab = 'users' | 'purchases' | 'bugs' | 'support' | 'cache' | 'leaderbo
       text-align: left;
       border: 1px solid transparent;
     }
-    .admin-tabs button span {
+    .admin-tabs button .tab-short {
       background: rgba(255, 255, 255, 0.05);
       font-size: 0.75rem;
       font-weight: 700;
       padding: 0.15rem 0.4rem;
       border-radius: var(--radius-sm);
       color: var(--text-secondary);
+    }
+    .admin-tabs button .tab-label {
+      flex: 1;
+      min-width: 0;
+    }
+    .admin-tabs button .tab-badge {
+      min-width: 1.35rem;
+      height: 1.35rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 0.35rem;
+      border-radius: 999px;
+      background: var(--accent-rose);
+      color: #fff;
+      font-size: 0.72rem;
+      font-weight: 800;
+      margin-left: auto;
     }
     .admin-tabs button:hover {
       background: rgba(255, 255, 255, 0.03);
@@ -490,7 +668,7 @@ type AdminTab = 'users' | 'purchases' | 'bugs' | 'support' | 'cache' | 'leaderbo
       color: var(--accent-cyan);
       border: 1px solid rgba(6, 182, 212, 0.2);
     }
-    .admin-tabs button.active span {
+    .admin-tabs button.active .tab-short {
       background: var(--accent-cyan);
       color: var(--bg-deep);
     }
@@ -698,6 +876,34 @@ type AdminTab = 'users' | 'purchases' | 'bugs' | 'support' | 'cache' | 'leaderbo
       font-size: 0.85rem;
     }
 
+    /* Support */
+    .support-linked-user {
+      margin-top: 1rem;
+      padding: 1rem;
+      border: 1px solid rgba(6, 182, 212, 0.2);
+      border-radius: var(--radius-md);
+      background: rgba(6, 182, 212, 0.05);
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      align-items: center;
+    }
+    .support-linked-user.muted {
+      border-color: var(--border);
+      background: rgba(255, 255, 255, 0.02);
+    }
+    .support-linked-user span,
+    .support-linked-user small {
+      display: block;
+      color: var(--text-secondary);
+      font-size: 0.8rem;
+    }
+    .support-linked-user strong {
+      display: block;
+      color: var(--text-primary);
+      margin: 0.15rem 0;
+    }
+
     /* Cache panel */
     .cache-summary {
       display: flex;
@@ -773,6 +979,123 @@ type AdminTab = 'users' | 'purchases' | 'bugs' | 'support' | 'cache' | 'leaderbo
       color: var(--accent-rose);
       border-radius: var(--radius-md);
       margin-bottom: 2rem;
+    }
+
+    /* Modal styles */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(10, 12, 22, 0.8);
+      backdrop-filter: blur(8px);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+    .modal-card {
+      width: 100%;
+      max-width: 600px;
+      background: rgba(16, 19, 31, 0.95);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+      display: flex;
+      flex-direction: column;
+      max-height: 85vh;
+    }
+    .modal-header {
+      padding: 1.5rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .modal-header h3 {
+      font-size: 1.25rem;
+      margin: 0;
+      color: var(--text-primary);
+    }
+    .modal-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+    .modal-actions.end {
+      justify-content: flex-end;
+      margin-top: 0.5rem;
+    }
+    .btn-close {
+      background: none;
+      border: none;
+      color: var(--text-secondary);
+      font-size: 1.75rem;
+      cursor: pointer;
+      line-height: 1;
+      padding: 0;
+      font-family: inherit;
+    }
+    .btn-close:hover {
+      color: var(--text-primary);
+    }
+    .modal-body {
+      padding: 1.5rem;
+      overflow-y: auto;
+    }
+    .detail-group label {
+      display: block;
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+    .question-text-full {
+      font-size: 1.05rem;
+      font-weight: 500;
+      color: #fff;
+      line-height: 1.5;
+      margin: 0;
+      white-space: pre-wrap;
+    }
+    .options-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .options-list li {
+      padding: 0.65rem 1rem;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      font-size: 0.95rem;
+    }
+    .option-idx {
+      font-weight: 700;
+      color: var(--accent-cyan);
+      margin-right: 0.5rem;
+    }
+    .explanation-text {
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin: 0;
+      white-space: pre-wrap;
+    }
+    .clickable-row {
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .clickable-row:hover {
+      background: rgba(6, 182, 212, 0.06);
     }
 
     @media (max-width: 1200px) {
@@ -859,9 +1182,16 @@ type AdminTab = 'users' | 'purchases' | 'bugs' | 'support' | 'cache' | 'leaderbo
         white-space: normal;
         flex-direction: column;
       }
-      .admin-tabs button span {
+      .admin-tabs button .tab-short,
+      .admin-tabs button .tab-badge {
         font-size: 0.62rem;
         padding: 0.12rem 0.3rem;
+      }
+      .admin-tabs button .tab-label {
+        flex: none;
+      }
+      .admin-tabs button .tab-badge {
+        margin-left: 0;
       }
       .admin-sidebar-foot {
         display: grid;
@@ -946,6 +1276,7 @@ type AdminTab = 'users' | 'purchases' | 'bugs' | 'support' | 'cache' | 'leaderbo
         padding: 1rem;
       }
       .support-detail header,
+      .support-linked-user,
       .bug-meta,
       .cache-list article {
         flex-direction: column;
@@ -1013,12 +1344,20 @@ export class AdminComponent implements OnInit {
   protected readonly health = signal<any>({});
   protected readonly pagination = signal<any>({ page: 1, pages: 1, total: 0 });
 
+  protected readonly selectedQuestion = signal<any | null>(null);
+  protected readonly selectedUserHistory = signal<any | null>(null);
+  protected readonly selectedGrantUser = signal<any | null>(null);
+  protected readonly userQuestions = signal<any[]>([]);
+  protected readonly userQuestionsPagination = signal<any>({ page: 1, pages: 1, total: 0 });
+
   protected email = '';
   protected password = '';
   protected userSearch = '';
   protected supportSearch = '';
   protected supportStatusFilter = '';
   protected supportReplyText = '';
+  protected grantAmount = 100;
+  protected grantReason = 'Support adjustment';
 
   private token = '';
   private readonly isBrowser: boolean;
@@ -1127,11 +1466,48 @@ export class AdminComponent implements OnInit {
     this.error.set(result.error || 'Could not grant credits.');
   }
 
+  protected openGrantModal(user: any, reason = 'Admin manual grant'): void {
+    if (!user?.id) return;
+    this.selectedGrantUser.set(user);
+    this.grantAmount = 100;
+    this.grantReason = reason;
+  }
+
+  protected closeGrantModal(): void {
+    this.selectedGrantUser.set(null);
+  }
+
+  protected async grantCustomCredits(): Promise<void> {
+    const user = this.selectedGrantUser();
+    const credits = Math.floor(Number(this.grantAmount || 0));
+    const reason = String(this.grantReason || 'Admin manual grant').trim().substring(0, 200);
+    if (!user?.id || credits <= 0) {
+      this.error.set('Credits must be greater than 0.');
+      return;
+    }
+
+    const result = await this.api(`/api/admin/users/${user.id}/grant-credits`, {
+      method: 'POST',
+      body: JSON.stringify({ credits, reason })
+    });
+    if (result.success) {
+      this.closeGrantModal();
+      await Promise.all([
+        this.loadUsers(this.pagination().page),
+        this.loadStats(),
+        this.loadPurchases(),
+        this.loadSupportMessages()
+      ]);
+      return;
+    }
+    this.error.set(result.error || 'Could not grant credits.');
+  }
+
   protected async banUser(userId: string): Promise<void> {
     if (!this.confirm('Ban this user?')) return;
     const result = await this.api(`/api/admin/users/${userId}/ban`, { method: 'POST' });
     if (result.success) {
-      await this.loadUsers(this.pagination().page);
+      await Promise.all([this.loadUsers(this.pagination().page), this.loadSupportMessages()]);
       return;
     }
     this.error.set(result.error || 'Could not ban user.');
@@ -1140,7 +1516,7 @@ export class AdminComponent implements OnInit {
   protected async unbanUser(userId: string): Promise<void> {
     const result = await this.api(`/api/admin/users/${userId}/unban`, { method: 'POST' });
     if (result.success) {
-      await this.loadUsers(this.pagination().page);
+      await Promise.all([this.loadUsers(this.pagination().page), this.loadSupportMessages()]);
       return;
     }
     this.error.set(result.error || 'Could not unban user.');
@@ -1189,6 +1565,7 @@ export class AdminComponent implements OnInit {
       { label: 'Purchases today', value: this.formatNumber(s.todayPurchases) },
       { label: 'Bug reports', value: this.formatNumber(s.totalBugReports) },
       { label: 'Open support', value: this.formatNumber(s.openSupportMessages) },
+      { label: 'Unread support', value: this.formatNumber(s.unreadSupportMessages) },
       { label: 'Banned', value: this.formatNumber(s.bannedUsers) }
     ];
   }
@@ -1233,6 +1610,12 @@ export class AdminComponent implements OnInit {
       { label: 'Pending', value: this.formatNumber(pending) },
       { label: 'Unread', value: this.formatNumber(unread), tone: unread ? 'warn' : 'ok' }
     ];
+  }
+
+  protected supportBadgeCount(): number {
+    const fromStats = Number(this.stats().unreadSupportMessages || 0);
+    if (fromStats > 0) return fromStats;
+    return this.supportMessages().filter(message => !message.isRead).length;
   }
 
   protected supportSender(message: any): string {
@@ -1366,6 +1749,18 @@ export class AdminComponent implements OnInit {
     this.error.set(result.error || 'Could not send support reply.');
   }
 
+  protected async deleteSupportMessage(message: any): Promise<void> {
+    if (!message?.id) return;
+    if (!this.confirm(`Delete support message from ${message.fromEmail || 'unknown sender'}?`)) return;
+    const result = await this.api(`/api/admin/support/messages/${message.id}`, { method: 'DELETE' });
+    if (result.success) {
+      this.selectedSupportMessage.set(null);
+      await Promise.all([this.loadSupportMessages(), this.loadStats()]);
+      return;
+    }
+    this.error.set(result.error || 'Could not delete support message.');
+  }
+
   private async loadCache(): Promise<void> {
     const result = await this.api('/api/admin/cache/stats');
     if (result.success) this.cache.set(result);
@@ -1379,6 +1774,72 @@ export class AdminComponent implements OnInit {
   private async loadHealth(): Promise<void> {
     const result = await this.api('/api/admin/system/health');
     if (result.success) this.health.set(result.health || {});
+  }
+
+  protected async openUserHistory(user: any): Promise<void> {
+    this.selectedUserHistory.set(user);
+    await this.loadUserQuestions(user.id, 1);
+  }
+
+  protected closeUserHistory(): void {
+    this.selectedUserHistory.set(null);
+    this.userQuestions.set([]);
+    this.userQuestionsPagination.set({ page: 1, pages: 1, total: 0 });
+  }
+
+  protected async loadUserQuestions(userId: string, page = 1): Promise<void> {
+    const params = new URLSearchParams({ page: String(page), limit: '15' });
+    const result = await this.api(`/api/admin/users/${userId}/questions?${params.toString()}`);
+    if (result.success) {
+      this.userQuestions.set(result.questions || []);
+      this.userQuestionsPagination.set(result.pagination || { page, pages: 1, total: 0 });
+    }
+  }
+
+  protected userQuestionsPageNumbers(): number[] {
+    const pages = Number(this.userQuestionsPagination().pages || 1);
+    return Array.from({ length: pages }, (_, index) => index + 1);
+  }
+
+  protected showQuestionDetails(q: any): void {
+    this.selectedQuestion.set({
+      questionText: q.questionText,
+      questionType: q.questionType || q.type,
+      options: q.options || [],
+      prompts: q.prompts || [],
+      rows: q.rows || [],
+      answer: q.answer,
+      explanation: q.explanation || ''
+    });
+  }
+
+  protected formatAnswer(q: any): string {
+    if (!q) return '';
+    const type = q.questionType || q.type;
+    const options = q.options || [];
+    const answer = q.answer;
+    if (type === 'radio') {
+      const idx = Number(answer);
+      return options[idx] || String(answer);
+    }
+    if (type === 'checkbox' && Array.isArray(answer)) {
+      return answer.map(idx => options[Number(idx)] || String(idx)).join(', ');
+    }
+    if (type === 'matching' && Array.isArray(answer)) {
+      const prompts = q.prompts || [];
+      return answer.map((idx, i) => {
+        const label = prompts[i] ? `${prompts[i]} -> ` : '';
+        return `${label}${options[Number(idx)] || String(idx)}`;
+      }).join(' | ');
+    }
+    if (type === 'matrix' && Array.isArray(answer)) {
+      const rows = q.rows || [];
+      return answer.map((idx, i) => {
+        const label = rows[i] ? `${rows[i]} -> ` : '';
+        return `${label}${options[Number(idx)] || String(idx)}`;
+      }).join(' | ');
+    }
+    return String(answer ?? '');
   }
 
   private confirm(message: string): boolean {
