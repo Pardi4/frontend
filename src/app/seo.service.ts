@@ -19,7 +19,9 @@ import {
 
 /* ─── Noindex pages ──────────────────────────────────────────────────────────── */
 const NOINDEX_PAGES = new Set<PageKey>(['dashboard', 'success', 'notFound']);
-const ASSET_VERSION = '20260531';
+const SEO_DATE = '2026-06-26';
+const BASE_ROBOTS = 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1';
+const ASSET_VERSION = '20260626';
 const assetUrl = (path: string) => `${abs(path)}?v=${ASSET_VERSION}`;
 
 const PLATFORM_PAGE_KEYS = [
@@ -44,8 +46,11 @@ export class SeoService {
     const meta = this.resolveMeta(pageKey, locale, data);
     const canonicalPath = pathFor(pageKey, locale);
     const canonical = abs(canonicalPath);
-    const robots = options.robots || (NOINDEX_PAGES.has(pageKey) ? 'noindex, follow' : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1');
+    const robots = options.robots || (NOINDEX_PAGES.has(pageKey) ? 'noindex, follow' : BASE_ROBOTS);
     const locOpt = localeOption(locale);
+    const keywords = this.keywordsFor(pageKey, locale, data);
+
+    this.clearRouteSpecificMeta();
 
     /* ── HTML lang ── */
     this.document.documentElement.lang = copy['htmlLang'] || locale;
@@ -54,14 +59,17 @@ export class SeoService {
     this.title.setTitle(meta.title);
     this.upsertMeta('name', 'description', meta.description);
     this.upsertMeta('name', 'robots', robots);
+    this.upsertMeta('name', 'googlebot', robots);
+    this.upsertMeta('name', 'bingbot', robots);
     this.upsertMeta('name', 'author', 'QuizSolver');
+    this.upsertMeta('name', 'keywords', keywords);
     this.upsertMeta('name', 'theme-color', '#030712');
     this.upsertMeta('name', 'application-name', 'QuizSolver');
     this.upsertMeta('name', 'rating', 'general');
 
     /* ── Open Graph ── */
     const isPlatform = PLATFORM_PAGE_KEYS.includes(pageKey as any);
-    this.upsertMeta('property', 'og:type', isPlatform ? 'article' : 'website');
+    this.upsertMeta('property', 'og:type', pageKey === 'credits' ? 'product' : isPlatform ? 'article' : 'website');
     this.upsertMeta('property', 'og:site_name', 'QuizSolver');
     this.upsertMeta('property', 'og:url', canonical);
     this.upsertMeta('property', 'og:title', meta.title);
@@ -91,6 +99,9 @@ export class SeoService {
       });
 
     /* ── Twitter / X ── */
+    this.upsertMeta('property', 'og:updated_time', SEO_DATE);
+    this.setOgLocaleAlternates(SUPPORTED_LOCALES, locale);
+
     this.upsertMeta('name', 'twitter:card', 'summary_large_image');
     this.upsertMeta('name', 'twitter:site', '@getquizsolver');
     this.upsertMeta('name', 'twitter:creator', '@getquizsolver');
@@ -103,6 +114,10 @@ export class SeoService {
     this.upsertLink('canonical', canonical);
     SUPPORTED_LOCALES.forEach(opt => this.upsertAlternate(opt.htmlLang, abs(pathFor(pageKey, opt.code))));
     this.upsertAlternate('x-default', abs(pathFor(pageKey, 'en')));
+    this.setHreflangAlternates(
+      SUPPORTED_LOCALES.map(opt => ({ hreflang: opt.htmlLang, href: abs(pathFor(pageKey, opt.code)) })),
+      abs(pathFor(pageKey, 'en'))
+    );
 
     /* ── JSON-LD ── */
     this.upsertJsonLd(this.buildJsonLd(pageKey, locale, data, meta, canonical));
@@ -389,6 +404,66 @@ export class SeoService {
     this.document.head.appendChild(el);
   }
 
+  private clearRouteSpecificMeta(): void {
+    [
+      ['property', 'article:published_time'],
+      ['property', 'article:modified_time'],
+      ['property', 'article:section'],
+      ['property', 'product:price:amount'],
+      ['property', 'product:price:currency']
+    ].forEach(([attr, key]) => this.removeAllMeta(attr as 'name' | 'property', key));
+    this.document.head.querySelectorAll('meta[property="article:tag"]').forEach(el => el.remove());
+  }
+
+  private setOgLocaleAlternates(locales: typeof SUPPORTED_LOCALES, currentLocale: Locale): void {
+    this.document.head.querySelectorAll('meta[property="og:locale:alternate"]').forEach(el => el.remove());
+    locales
+      .filter(opt => opt.code !== currentLocale)
+      .forEach(opt => {
+        const el = this.document.createElement('meta');
+        el.setAttribute('property', 'og:locale:alternate');
+        el.setAttribute('content', opt.ogLocale);
+        el.setAttribute('data-loc', opt.code);
+        this.document.head.appendChild(el);
+      });
+  }
+
+  private setHreflangAlternates(alternates: Array<{ hreflang: string; href: string }>, defaultHref: string): void {
+    this.document.head.querySelectorAll('link[rel="alternate"][hreflang]').forEach(el => el.remove());
+    [...alternates, { hreflang: 'x-default', href: defaultHref }].forEach(item => {
+      const link = this.document.createElement('link');
+      link.setAttribute('rel', 'alternate');
+      link.setAttribute('hreflang', item.hreflang);
+      link.setAttribute('href', item.href);
+      this.document.head.appendChild(link);
+    });
+  }
+
+  private keywordsFor(pageKey: PageKey, locale: Locale, data: any): string {
+    const platformName = data?.platformName || data?.shortName || '';
+    const base = [
+      'QuizSolver',
+      'AI quiz solver',
+      'quiz solver Chrome extension',
+      'online quiz answers',
+      'FocusScan OCR',
+      'quiz answer explanations',
+      'study notes',
+      'practice quiz'
+    ];
+    if (pageKey === 'credits') base.push('AI credits', 'QuizSolver credits', 'one-time credit packs');
+    if (pageKey === 'quiz') base.push('quiz history', 'practice test generator', 'saved quiz questions');
+    if (pageKey === 'demo') base.push('interactive quiz solver demo', 'Chrome extension demo');
+    if (pageKey === 'blog') base.push('AI study guides', 'quiz platform guides', 'Kahoot guides');
+    if (platformName) {
+      base.unshift(`${platformName} quiz solver`, `${platformName} AI answers`, `${platformName} Chrome extension`);
+    }
+    if (locale === 'pl') {
+      base.push('rozwiązywanie quizów AI', 'odpowiedzi do quizów', 'rozszerzenie Chrome do quizów');
+    }
+    return [...new Set(base)].join(', ');
+  }
+
   private upsertLink(rel: string, href: string): void {
     const selector = `link[rel="${rel}"]`;
     let link = this.document.head.querySelector<HTMLLinkElement>(selector);
@@ -427,17 +502,22 @@ export class SeoService {
     const canonicalPath = pathFor('blogCategory', locale).replace(':category', category.slug);
     const canonical = abs(canonicalPath);
     const locOpt = localeOption(locale);
-    const robots = options.robots || 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1';
+    const robots = options.robots || BASE_ROBOTS;
+    const keywords = this.keywordsFor('blog', locale, { title: category.title });
     const localesWithCategoryPosts = SUPPORTED_LOCALES.filter(opt => {
       const localizedCategory = categoryFor(opt.code, category.slug);
       return !!localizedCategory && categoryHasPosts(opt.code, localizedCategory.slug);
     });
 
+    this.clearRouteSpecificMeta();
     this.document.documentElement.lang = copy['htmlLang'] || locale;
     this.title.setTitle(meta.title);
     this.upsertMeta('name', 'description', meta.description);
     this.upsertMeta('name', 'robots', robots);
+    this.upsertMeta('name', 'googlebot', robots);
+    this.upsertMeta('name', 'bingbot', robots);
     this.upsertMeta('name', 'author', 'QuizSolver');
+    this.upsertMeta('name', 'keywords', keywords);
     this.upsertMeta('name', 'theme-color', '#030712');
     this.upsertMeta('name', 'application-name', 'QuizSolver');
     this.upsertMeta('name', 'rating', 'general');
@@ -453,6 +533,7 @@ export class SeoService {
     this.upsertMeta('property', 'og:image:height', '630');
     this.upsertMeta('property', 'og:image:alt', category.title);
     this.upsertMeta('property', 'og:locale', locOpt.ogLocale);
+    this.upsertMeta('property', 'og:updated_time', SEO_DATE);
 
     localesWithCategoryPosts
       .filter(opt => opt.code !== locale)
@@ -469,6 +550,7 @@ export class SeoService {
           this.document.head.appendChild(el);
         }
       });
+    this.setOgLocaleAlternates(localesWithCategoryPosts, locale);
 
     this.upsertMeta('name', 'twitter:card', 'summary_large_image');
     this.upsertMeta('name', 'twitter:site', '@getquizsolver');
@@ -491,6 +573,19 @@ export class SeoService {
     if (defaultLocale && defaultCategory) {
       this.upsertAlternate('x-default', abs(pathFor('blogCategory', defaultLocale.code).replace(':category', defaultCategory.slug)));
     }
+    this.setHreflangAlternates(
+      localesWithCategoryPosts
+        .map(opt => {
+          const localizedCategory = categoryFor(opt.code, category.slug);
+          return localizedCategory
+            ? { hreflang: opt.htmlLang, href: abs(pathFor('blogCategory', opt.code).replace(':category', localizedCategory.slug)) }
+            : null;
+        })
+        .filter(Boolean) as Array<{ hreflang: string; href: string }>,
+      defaultLocale && defaultCategory
+        ? abs(pathFor('blogCategory', defaultLocale.code).replace(':category', defaultCategory.slug))
+        : canonical
+    );
 
     const homeUrl = `${SITE_URL}/`;
     const posts = BLOG_POSTS
@@ -541,8 +636,12 @@ export class SeoService {
     const meta = { title: post.metaTitle, description: post.metaDescription };
     const canonicalPath = pathFor('blogPost', locale).replace(':slug', post.slug);
     const canonical = abs(canonicalPath);
-    const robots = 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1';
+    const robots = BASE_ROBOTS;
     const locOpt = localeOption(locale);
+    const translationPosts = BLOG_POSTS.filter(p => p.translationKey === post.translationKey);
+    const translationLocales = SUPPORTED_LOCALES.filter(opt => translationPosts.some(p => p.locale === opt.code));
+
+    this.clearRouteSpecificMeta();
 
     /* ── HTML lang ── */
     this.document.documentElement.lang = copy['htmlLang'] || locale;
@@ -551,7 +650,10 @@ export class SeoService {
     this.title.setTitle(meta.title);
     this.upsertMeta('name', 'description', meta.description);
     this.upsertMeta('name', 'robots', robots);
+    this.upsertMeta('name', 'googlebot', robots);
+    this.upsertMeta('name', 'bingbot', robots);
     this.upsertMeta('name', 'author', post.author);
+    this.upsertMeta('name', 'keywords', [...(post.tags || []), 'QuizSolver', 'AI quiz solver', 'Chrome extension'].join(', '));
     this.upsertMeta('name', 'theme-color', '#030712');
     this.upsertMeta('name', 'application-name', 'QuizSolver');
     this.upsertMeta('name', 'rating', 'general');
@@ -568,6 +670,11 @@ export class SeoService {
     this.upsertMeta('property', 'og:image:height', '630');
     this.upsertMeta('property', 'og:image:alt', post.title);
     this.upsertMeta('property', 'og:locale', locOpt.ogLocale);
+    this.upsertMeta('property', 'article:published_time', post.datePublished);
+    this.upsertMeta('property', 'article:modified_time', post.dateModified);
+    this.upsertMeta('property', 'article:section', categoryLabel(locale, post.category));
+    (post.tags || []).slice(0, 8).forEach(tag => this.appendMeta('property', 'article:tag', tag));
+    this.upsertMeta('property', 'og:updated_time', post.dateModified);
 
     /* All OG locale alternates */
     SUPPORTED_LOCALES
@@ -585,6 +692,10 @@ export class SeoService {
           this.document.head.appendChild(el);
         }
       });
+    this.setOgLocaleAlternates(
+      translationLocales.length ? translationLocales : SUPPORTED_LOCALES.filter(opt => opt.code === locale),
+      locale
+    );
 
     /* ── Twitter / X ── */
     this.upsertMeta('name', 'twitter:card', 'summary_large_image');
@@ -606,6 +717,13 @@ export class SeoService {
     });
     const defaultPost = BLOG_POSTS.find(p => p.translationKey === post.translationKey && p.locale === 'en') || post;
     this.upsertAlternate('x-default', abs(pathFor('blogPost', defaultPost.locale).replace(':slug', defaultPost.slug)));
+    this.setHreflangAlternates(
+      (translationPosts.length ? translationPosts : [post]).map(match => ({
+        hreflang: localeOption(match.locale).htmlLang,
+        href: abs(pathFor('blogPost', match.locale).replace(':slug', match.slug))
+      })),
+      abs(pathFor('blogPost', defaultPost.locale).replace(':slug', defaultPost.slug))
+    );
 
     const homeUrl = `${SITE_URL}/`;
     const blogPostSchema = {

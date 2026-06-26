@@ -34,6 +34,23 @@ QuizSolver is an AI-powered Chrome extension for students. When a student is tak
 
 QuizSolver uses a credit-based system. Users receive free starting credits upon registration. Additional credits are purchased as one-time top-up packages (no subscription required). Credits are consumed per AI query; Kahoot Quiz ID lookups do not consume credits.
 
+## Important URLs
+
+- Home: https://getquizsolver.com/
+- AI quiz solver landing page: https://getquizsolver.com/quiz-solver-ai
+- Interactive demo: https://getquizsolver.com/demo
+- Credits and one-time top-ups: https://getquizsolver.com/credits
+- Saved quiz history and practice mode: https://getquizsolver.com/quiz
+- Blog and platform guides: https://getquizsolver.com/blog
+- Testportal guide: https://getquizsolver.com/testportal-quiz-solver
+- Google Forms guide: https://getquizsolver.com/google-forms-quiz-solver
+- Kahoot AI bot guide: https://getquizsolver.com/kahoot-ai-bot
+- Quizizz guide: https://getquizsolver.com/quizizz-solver
+
+## Credit Delivery Note
+
+Credit purchases are delivered to the QuizSolver account email entered during checkout. Users should use the same email as their QuizSolver account and avoid changing it during Lemon Squeezy checkout, otherwise credits may not attach automatically.
+
 ## How to Install
 
 1. Visit the Chrome Web Store: https://chromewebstore.google.com/detail/quiz-solver-pro/cjchfdnplpjkihigljnicebnhjkpndik

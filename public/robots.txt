@@ -26,6 +26,13 @@ Disallow: /es/404
 Disallow: /fr/404
 Disallow: /it/404
 Disallow: /uk/404
+Disallow: /api
+Disallow: /api/
+Disallow: /extension-auth/
+Disallow: /admin
+Disallow: /admin/
+Disallow: /admin.html
+Disallow: /admin-app.js
 
 # Sitemap location
 Sitemap: https://getquizsolver.com/sitemap.xml

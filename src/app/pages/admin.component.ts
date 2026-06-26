@@ -226,6 +226,7 @@ type AdminTab = 'users' | 'purchases' | 'bugs' | 'support' | 'cache' | 'leaderbo
                   <h2>Support mail</h2>
                 </div>
                 <form class="admin-search" (ngSubmit)="loadSupportMessages()">
+                  <input class="form-input" type="search" name="supportSearch" [(ngModel)]="supportSearch" placeholder="Search sender, subject, text">
                   <select class="form-select" name="supportStatusFilter" [(ngModel)]="supportStatusFilter">
                     <option value="">All messages</option>
                     <option value="open">Open</option>
@@ -236,15 +237,28 @@ type AdminTab = 'users' | 'purchases' | 'bugs' | 'support' | 'cache' | 'leaderbo
                 </form>
               </div>
 
+              <div class="support-summary">
+                <article *ngFor="let item of supportSummaryCards()" [class.warn]="item.tone === 'warn'" [class.ok]="item.tone === 'ok'">
+                  <span>{{ item.label }}</span>
+                  <strong>{{ item.value }}</strong>
+                </article>
+              </div>
+
               <div class="support-layout">
                 <div class="support-list">
-                  <button class="support-item" type="button" *ngFor="let message of supportMessages()" [class.active]="selectedSupportMessage()?.id === message.id" [class.unread]="!message.isRead" (click)="selectSupportMessage(message)">
-                    <span class="status-pill" [class.danger]="message.status === 'open'">{{ message.status }}</span>
-                    <strong>{{ message.subject || '(No subject)' }}</strong>
-                    <span>{{ message.fromName || message.fromEmail }}</span>
-                    <small>{{ formatDate(message.receivedAt) }}</small>
+                  <button class="support-item" type="button" *ngFor="let message of filteredSupportMessages()" [class.active]="selectedSupportMessage()?.id === message.id" [class.unread]="!message.isRead" (click)="selectSupportMessage(message)">
+                    <span class="support-avatar">{{ supportInitials(message) }}</span>
+                    <span class="support-item-main">
+                      <span class="support-item-row">
+                        <strong>{{ message.subject || '(No subject)' }}</strong>
+                        <span class="status-pill" [class.danger]="message.status === 'open'" [class.pending]="message.status === 'pending'">{{ message.status }}</span>
+                      </span>
+                      <span class="support-sender">{{ supportSender(message) }}</span>
+                      <span class="support-preview">{{ supportPreview(message) }}</span>
+                      <small>{{ formatDate(message.receivedAt) }} · {{ supportSourceLabel(message.source) }}</small>
+                    </span>
                   </button>
-                  <div class="empty-panel" *ngIf="!supportMessages().length">
+                  <div class="empty-panel" *ngIf="!filteredSupportMessages().length">
                     <p class="text-secondary">No support messages.</p>
                   </div>
                 </div>
@@ -252,26 +266,33 @@ type AdminTab = 'users' | 'purchases' | 'bugs' | 'support' | 'cache' | 'leaderbo
                 <article class="support-detail" *ngIf="selectedSupportMessage(); else supportEmpty">
                   <header>
                     <div>
-                      <p class="eyebrow">{{ selectedSupportMessage()?.source || 'support' }}</p>
+                      <p class="eyebrow">{{ supportSourceLabel(selectedSupportMessage()?.source) }}</p>
                       <h3>{{ selectedSupportMessage()?.subject || '(No subject)' }}</h3>
-                      <p class="text-secondary">
-                        {{ selectedSupportMessage()?.fromName || 'Sender' }} &lt;{{ selectedSupportMessage()?.fromEmail }}&gt;
-                      </p>
+                      <div class="support-meta-grid">
+                        <span><strong>From</strong>{{ supportSender(selectedSupportMessage()) }} &lt;{{ selectedSupportMessage()?.fromEmail || '-' }}&gt;</span>
+                        <span><strong>To</strong>{{ selectedSupportMessage()?.toEmail || 'support@getquizsolver.com' }}</span>
+                        <span><strong>Received</strong>{{ formatDate(selectedSupportMessage()?.receivedAt) }}</span>
+                        <span><strong>Status</strong>{{ selectedSupportMessage()?.status }}</span>
+                      </div>
                     </div>
                     <div class="row-actions">
+                      <a class="support-action-link" [href]="supportMailto(selectedSupportMessage())">Email</a>
+                      <button type="button" (click)="copySupportEmail(selectedSupportMessage())">Copy email</button>
                       <button type="button" (click)="updateSupportStatus(selectedSupportMessage(), 'open')">Open</button>
                       <button type="button" (click)="updateSupportStatus(selectedSupportMessage(), 'pending')">Pending</button>
                       <button type="button" (click)="updateSupportStatus(selectedSupportMessage(), 'closed')">Close</button>
                     </div>
                   </header>
 
-                  <pre class="support-body">{{ selectedSupportMessage()?.text || 'No message body.' }}</pre>
+                  <div class="support-body">
+                    <p *ngFor="let paragraph of supportParagraphs(selectedSupportMessage()?.text)">{{ paragraph }}</p>
+                  </div>
 
                   <div class="support-replies" *ngIf="(selectedSupportMessage()?.replies || []).length">
                     <h4>Replies</h4>
-                    <article *ngFor="let reply of selectedSupportMessage()?.replies">
+                    <article class="support-reply" *ngFor="let reply of selectedSupportMessage()?.replies">
                       <strong>{{ reply.admin }}</strong>
-                      <small>{{ formatDate(reply.sentAt) }} | {{ reply.delivery }}</small>
+                      <small>{{ formatDate(reply.sentAt) }} · {{ reply.delivery }}</small>
                       <p>{{ reply.text }}</p>
                     </article>
                   </div>
@@ -392,7 +413,7 @@ type AdminTab = 'users' | 'purchases' | 'bugs' | 'support' | 'cache' | 'leaderbo
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      background: #101318 url('/logo-512.png?v=20260531') center / cover no-repeat;
+      background: #101318 url('/logo-512.png?v=20260626') center / cover no-repeat;
       color: transparent;
       font-size: 0;
       font-weight: 800;
@@ -551,7 +572,7 @@ type AdminTab = 'users' | 'purchases' | 'bugs' | 'support' | 'cache' | 'leaderbo
       display: flex;
       gap: 0.5rem;
       width: 100%;
-      max-width: 400px;
+      max-width: 760px;
     }
 
     /* Data Tables */
@@ -677,116 +698,6 @@ type AdminTab = 'users' | 'purchases' | 'bugs' | 'support' | 'cache' | 'leaderbo
       font-size: 0.85rem;
     }
 
-    /* Support inbox */
-    .support-layout {
-      display: grid;
-      grid-template-columns: minmax(260px, 0.85fr) minmax(0, 1.65fr);
-      gap: 1.5rem;
-      align-items: start;
-    }
-    .support-list {
-      display: flex;
-      flex-direction: column;
-      gap: 0.75rem;
-      max-height: 720px;
-      overflow-y: auto;
-      padding-right: 0.25rem;
-    }
-    .support-item {
-      display: grid;
-      gap: 0.35rem;
-      padding: 1rem;
-      text-align: left;
-      color: var(--text-secondary);
-      background: rgba(255, 255, 255, 0.025);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
-      transition: border-color 0.2s, background 0.2s, transform 0.2s;
-    }
-    .support-item:hover,
-    .support-item.active {
-      border-color: rgba(6, 182, 212, 0.35);
-      background: rgba(6, 182, 212, 0.07);
-      transform: translateY(-1px);
-    }
-    .support-item.unread strong {
-      color: var(--accent-cyan);
-    }
-    .support-item strong {
-      color: var(--text-primary);
-      line-height: 1.25;
-    }
-    .support-item small {
-      color: var(--text-tertiary);
-      font-size: 0.75rem;
-    }
-    .support-detail {
-      min-height: 420px;
-      padding: 1.5rem;
-      background: rgba(255, 255, 255, 0.025);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-    }
-    .support-detail header {
-      display: flex;
-      justify-content: space-between;
-      gap: 1rem;
-      align-items: flex-start;
-      padding-bottom: 1rem;
-      border-bottom: 1px solid var(--border);
-      margin-bottom: 1rem;
-    }
-    .support-detail h3 {
-      font-size: 1.35rem;
-      line-height: 1.2;
-      margin-bottom: 0.35rem;
-    }
-    .support-body {
-      white-space: pre-wrap;
-      word-break: break-word;
-      margin: 0 0 1.5rem;
-      padding: 1rem;
-      border-radius: var(--radius-md);
-      background: rgba(3, 7, 18, 0.38);
-      border: 1px solid rgba(148, 163, 184, 0.12);
-      color: var(--text-primary);
-      font-family: var(--font-body);
-      line-height: 1.6;
-    }
-    .support-replies {
-      display: grid;
-      gap: 0.75rem;
-      margin-bottom: 1.5rem;
-    }
-    .support-replies h4 {
-      font-size: 1rem;
-      color: var(--text-secondary);
-    }
-    .support-replies article {
-      padding: 1rem;
-      border-radius: var(--radius-md);
-      background: rgba(139, 92, 246, 0.07);
-      border: 1px solid rgba(139, 92, 246, 0.16);
-    }
-    .support-replies small {
-      display: block;
-      color: var(--text-tertiary);
-      margin: 0.25rem 0 0.5rem;
-    }
-    .support-reply-form {
-      display: grid;
-      gap: 1rem;
-    }
-    .support-reply-form .btn {
-      justify-self: end;
-    }
-    .support-empty {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-    }
-
     /* Cache panel */
     .cache-summary {
       display: flex;
@@ -899,6 +810,9 @@ type AdminTab = 'users' | 'purchases' | 'bugs' | 'support' | 'cache' | 'leaderbo
       .support-layout {
         grid-template-columns: 1fr;
       }
+      .support-summary {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
     }
     @media (max-width: 768px) {
       .admin-login {
@@ -1003,7 +917,7 @@ type AdminTab = 'users' | 'purchases' | 'bugs' | 'support' | 'cache' | 'leaderbo
       .admin-search {
         max-width: 100%;
         display: grid;
-        grid-template-columns: minmax(0, 1fr) auto;
+        grid-template-columns: minmax(0, 1fr) minmax(120px, 0.6fr) auto;
       }
       .table-scroll {
         margin: 1rem -1rem -1rem;
@@ -1037,6 +951,9 @@ type AdminTab = 'users' | 'purchases' | 'bugs' | 'support' | 'cache' | 'leaderbo
         flex-direction: column;
         align-items: stretch;
       }
+      .support-meta-grid {
+        grid-template-columns: 1fr;
+      }
       .support-reply-form .btn {
         justify-self: stretch;
       }
@@ -1059,6 +976,9 @@ type AdminTab = 'users' | 'purchases' | 'bugs' | 'support' | 'cache' | 'leaderbo
       .admin-search,
       .admin-header-actions,
       .admin-sidebar-foot {
+        grid-template-columns: 1fr;
+      }
+      .support-summary {
         grid-template-columns: 1fr;
       }
       .admin-stats {
@@ -1096,6 +1016,7 @@ export class AdminComponent implements OnInit {
   protected email = '';
   protected password = '';
   protected userSearch = '';
+  protected supportSearch = '';
   protected supportStatusFilter = '';
   protected supportReplyText = '';
 
@@ -1287,6 +1208,80 @@ export class AdminComponent implements OnInit {
     ];
   }
 
+  protected filteredSupportMessages(): any[] {
+    const q = this.supportSearch.trim().toLowerCase();
+    const messages = this.supportMessages();
+    if (!q) return messages;
+    return messages.filter(message => [
+      message.fromEmail,
+      message.fromName,
+      message.subject,
+      message.text,
+      message.source
+    ].some(value => String(value || '').toLowerCase().includes(q)));
+  }
+
+  protected supportSummaryCards(): Array<{ label: string; value: string; tone?: 'warn' | 'ok' }> {
+    const messages = this.supportMessages();
+    const visible = this.filteredSupportMessages().length;
+    const open = messages.filter(message => message.status === 'open').length;
+    const pending = messages.filter(message => message.status === 'pending').length;
+    const unread = messages.filter(message => !message.isRead).length;
+    return [
+      { label: 'Visible', value: this.formatNumber(visible) },
+      { label: 'Open', value: this.formatNumber(open), tone: open ? 'warn' : 'ok' },
+      { label: 'Pending', value: this.formatNumber(pending) },
+      { label: 'Unread', value: this.formatNumber(unread), tone: unread ? 'warn' : 'ok' }
+    ];
+  }
+
+  protected supportSender(message: any): string {
+    const name = String(message?.fromName || '').trim();
+    const email = String(message?.fromEmail || '').trim();
+    if (name && email && name.toLowerCase() !== email.toLowerCase()) return name;
+    return email || name || 'Unknown sender';
+  }
+
+  protected supportInitials(message: any): string {
+    const source = this.supportSender(message).replace(/@.*/, '').replace(/[^a-z0-9 ]/gi, ' ').trim();
+    const parts = source.split(/\s+/).filter(Boolean);
+    const initials = parts.length > 1 ? `${parts[0][0]}${parts[1][0]}` : (parts[0] || 'QS').slice(0, 2);
+    return initials.toUpperCase();
+  }
+
+  protected supportPreview(message: any): string {
+    const text = String(message?.text || message?.html || '').replace(/\s+/g, ' ').trim();
+    if (!text) return 'No message preview.';
+    return text.length > 130 ? `${text.slice(0, 127)}...` : text;
+  }
+
+  protected supportParagraphs(value: unknown): string[] {
+    const text = String(value || '').replace(/\r\n/g, '\n').trim();
+    if (!text) return ['No message body.'];
+    return text.split(/\n{2,}/).map(part => part.trim()).filter(Boolean);
+  }
+
+  protected supportSourceLabel(value: unknown): string {
+    const raw = String(value || 'support').replace(/[-_]/g, ' ').trim();
+    return raw ? raw.charAt(0).toUpperCase() + raw.slice(1) : 'Support';
+  }
+
+  protected supportMailto(message: any): string {
+    const email = String(message?.fromEmail || '').trim();
+    const subject = `Re: ${message?.subject || 'QuizSolver support'}`;
+    return email ? `mailto:${encodeURIComponent(email)}?subject=${encodeURIComponent(subject)}` : 'mailto:support@getquizsolver.com';
+  }
+
+  protected async copySupportEmail(message: any): Promise<void> {
+    const email = String(message?.fromEmail || '').trim();
+    if (!email || !this.isBrowser || !navigator.clipboard) return;
+    try {
+      await navigator.clipboard.writeText(email);
+    } catch {
+      this.error.set('Could not copy email address.');
+    }
+  }
+
   protected pageNumbers(): number[] {
     const pages = Number(this.pagination().pages || 1);
     return Array.from({ length: pages }, (_, index) => index + 1);
@@ -1327,6 +1322,7 @@ export class AdminComponent implements OnInit {
   protected async loadSupportMessages(): Promise<void> {
     const params = new URLSearchParams();
     if (this.supportStatusFilter) params.set('status', this.supportStatusFilter);
+    if (this.supportSearch.trim()) params.set('q', this.supportSearch.trim());
     const result = await this.api(`/api/admin/support/messages${params.toString() ? `?${params.toString()}` : ''}`);
     if (!result.success) return;
     const messages = result.messages || [];

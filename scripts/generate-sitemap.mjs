@@ -5,6 +5,7 @@ import { fileURLToPath } from 'node:url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.join(__dirname, '..');
 const siteUrl = 'https://getquizsolver.com';
+const contentLastmod = process.env.SITEMAP_LASTMOD || '2026-06-26';
 const posts = JSON.parse(fs.readFileSync(path.join(root, 'src', 'app', 'blog-posts.json'), 'utf8'));
 const categories = [...new Set(posts.map(post => post.category).filter(Boolean))];
 
@@ -90,7 +91,7 @@ function pageUrl(pageKey, locale) {
     `    <loc>${siteUrl}${route === '/' ? '/' : route}</loc>`,
     alternates,
     `    <xhtml:link rel="alternate" hreflang="x-default" href="${siteUrl}${routeFor(slugs[pageKey], locales[0]) === '/' ? '/' : routeFor(slugs[pageKey], locales[0])}"/>`,
-    '    <lastmod>2026-06-01</lastmod>',
+    `    <lastmod>${contentLastmod}</lastmod>`,
     `    <changefreq>${pageKey === 'privacy' ? 'yearly' : pageKey === 'blog' ? 'weekly' : 'monthly'}</changefreq>`,
     `    <priority>${priority(route)}</priority>`,
     '  </url>'
@@ -135,7 +136,7 @@ function categoryUrl(category, locale) {
     `    <loc>${xmlEscape(`${siteUrl}${route}`)}</loc>`,
     alternates,
     `    <xhtml:link rel="alternate" hreflang="x-default" href="${xmlEscape(`${siteUrl}${blogCategoryRoute(category, defaultLocale)}`)}"/>`,
-    `    <lastmod>${xmlEscape(newestPost?.dateModified || newestPost?.datePublished || '2026-06-01')}</lastmod>`,
+    `    <lastmod>${xmlEscape(newestPost?.dateModified || newestPost?.datePublished || contentLastmod)}</lastmod>`,
     '    <changefreq>weekly</changefreq>',
     `    <priority>${priority(route)}</priority>`,
     '  </url>'
