@@ -127,6 +127,14 @@ export class SeoService {
     const homeUrl = `${SITE_URL}/`;
     const locOpt = localeOption(locale);
 
+    const webpageType = pageKey === 'credits'
+      ? 'CollectionPage'
+      : pageKey === 'blog'
+        ? 'Blog'
+        : pageKey === 'blogCategory'
+          ? 'CollectionPage'
+          : 'WebPage';
+
     const graph: any[] = [
       /* Organization */
       {
@@ -235,7 +243,7 @@ export class SeoService {
       },
       /* WebPage */
       {
-        '@type': (pageKey === 'home' || PLATFORM_PAGE_KEYS.includes(pageKey as any)) ? 'WebPage' : 'Article',
+        '@type': webpageType,
         '@id': `${canonical}#webpage`,
         url: canonical,
         name: meta.title,
@@ -245,7 +253,7 @@ export class SeoService {
         about: { '@id': `${homeUrl}#software` },
         inLanguage: locOpt.htmlLang,
         datePublished: '2026-05-01',
-        dateModified: '2026-05-31',
+        dateModified: '2026-06-26',
         speakable: {
           '@type': 'SpeakableSpecification',
           cssSelector: ['h1', '.hero-lead', '.desc', 'p.hero-subtitle']
@@ -344,13 +352,19 @@ export class SeoService {
         name: 'QuizSolver AI Credits',
         description: 'Prepaid AI credits for solving quiz questions, getting explanations, and using study tools in the QuizSolver Chrome extension.',
         brand: { '@id': `${homeUrl}#organization` },
+        category: 'Prepaid AI quiz credits',
         url: canonical,
         image: assetUrl('/og-image.png'),
+        isRelatedTo: { '@id': `${homeUrl}#software` },
+        additionalProperty: [
+          { '@type': 'PropertyValue', name: 'Delivery', value: 'Automatic credit top-up after payment confirmation' },
+          { '@type': 'PropertyValue', name: 'Billing', value: 'One-time purchase, no subscription' }
+        ],
         offers: [
-          { '@type': 'Offer', name: 'Free starter credits', price: '0', priceCurrency: 'USD', availability: 'https://schema.org/InStock' },
-          { '@type': 'Offer', name: '100 AI credits', price: '1.99', priceCurrency: 'USD', availability: 'https://schema.org/InStock' },
-          { '@type': 'Offer', name: '500 AI credits', price: '4.99', priceCurrency: 'USD', availability: 'https://schema.org/InStock' },
-          { '@type': 'Offer', name: '2000 AI credits', price: '9.99', priceCurrency: 'USD', availability: 'https://schema.org/InStock' }
+          { '@type': 'Offer', name: 'Free starter credits', price: '0', priceCurrency: 'USD', availability: 'https://schema.org/InStock', url: canonical, seller: { '@id': `${homeUrl}#organization` } },
+          { '@type': 'Offer', name: '100 AI credits', price: '1.99', priceCurrency: 'USD', availability: 'https://schema.org/InStock', url: canonical, seller: { '@id': `${homeUrl}#organization` } },
+          { '@type': 'Offer', name: '500 AI credits', price: '4.99', priceCurrency: 'USD', availability: 'https://schema.org/InStock', url: canonical, seller: { '@id': `${homeUrl}#organization` } },
+          { '@type': 'Offer', name: '2000 AI credits', price: '9.99', priceCurrency: 'USD', availability: 'https://schema.org/InStock', url: canonical, seller: { '@id': `${homeUrl}#organization` } }
         ]
       });
     }

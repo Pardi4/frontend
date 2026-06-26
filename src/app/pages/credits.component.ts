@@ -54,6 +54,14 @@ import { ShellComponent } from './shell.component';
             <span>{{ copy.lowText }}</span>
           </section>
 
+          <section class="checkout-warning glass">
+            <div>
+              <strong>{{ label('emailWarningTitle') }}</strong>
+              <span>{{ label('emailWarningText') }}</span>
+            </div>
+            <code>{{ api.currentUser()?.email }}</code>
+          </section>
+
           <section class="payment-error glass" *ngIf="buyError()">
             {{ buyError() }}
           </section>
@@ -71,12 +79,44 @@ import { ShellComponent } from './shell.component';
                 <h3>{{ pack.name[locale] }}</h3>
                 <div class="pack-price">{{ pack.price }}</div>
                 <p class="text-secondary">{{ pack.caption[locale] }}</p>
-                <button class="btn btn-block" [class.btn-primary]="pack.id === 'popular'" [class.btn-outline]="pack.id !== 'popular'" type="button" (click)="buyPack(pack.id)" [disabled]="buying() === pack.id">
+                <button class="btn btn-block" [class.btn-primary]="pack.id === 'popular'" [class.btn-outline]="pack.id !== 'popular'" type="button" (click)="confirmPack(pack.id)" [disabled]="buying() === pack.id">
                   {{ buying() === pack.id ? copy.loading : pack.button[locale] }}
                 </button>
               </article>
             </div>
           </section>
+
+          <section class="credits-faq" *ngIf="faqItems().length">
+            <div class="section-header compact">
+              <p class="eyebrow">FAQ</p>
+              <h2>{{ label('faqTitle') }}</h2>
+            </div>
+            <div class="faq-grid">
+              <article class="faq-item glass" *ngFor="let item of faqItems()">
+                <h3>{{ item.question }}</h3>
+                <p class="text-secondary">{{ item.answer }}</p>
+              </article>
+            </div>
+          </section>
+
+          <div class="checkout-confirm-backdrop" *ngIf="pendingPack()" (click)="cancelCheckout()">
+            <section class="checkout-confirm glass" (click)="$event.stopPropagation()">
+              <p class="eyebrow">{{ label('confirmBadge') }}</p>
+              <h2>{{ label('confirmTitle') }}</h2>
+              <p class="text-secondary">{{ label('confirmText') }}</p>
+              <div class="confirm-email">
+                <span>{{ label('confirmEmailLabel') }}</span>
+                <code>{{ api.currentUser()?.email }}</code>
+              </div>
+              <p class="confirm-note">{{ label('confirmNote') }}</p>
+              <div class="confirm-actions">
+                <button class="btn btn-outline" type="button" (click)="cancelCheckout()">{{ label('confirmBack') }}</button>
+                <button class="btn btn-primary" type="button" (click)="continueCheckout()" [disabled]="!!buying()">
+                  {{ buying() ? copy.loading : label('confirmContinue') }}
+                </button>
+              </div>
+            </section>
+          </div>
         </ng-template>
       </div>
     </qs-shell>
@@ -180,6 +220,39 @@ import { ShellComponent } from './shell.component';
       color: var(--accent-amber);
       white-space: nowrap;
     }
+    .checkout-warning {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem 1.25rem;
+      margin-bottom: 2rem;
+      border-color: rgba(245, 158, 11, 0.32);
+      background: rgba(245, 158, 11, 0.075);
+    }
+    .checkout-warning div {
+      display: grid;
+      gap: 0.25rem;
+    }
+    .checkout-warning strong {
+      color: var(--accent-amber);
+      font-size: 0.95rem;
+    }
+    .checkout-warning span {
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+    .checkout-warning code,
+    .confirm-email code {
+      border: 1px solid rgba(148, 163, 184, 0.28);
+      border-radius: var(--radius-sm);
+      background: rgba(3, 7, 18, 0.42);
+      color: var(--text-primary);
+      font-family: var(--font-body);
+      font-weight: 800;
+      padding: 0.45rem 0.6rem;
+      word-break: break-all;
+    }
     .payment-error {
       padding: 1rem 1.25rem;
       margin-bottom: 2rem;
@@ -246,10 +319,83 @@ import { ShellComponent } from './shell.component';
     .package-card .btn {
       margin-top: auto;
     }
+    .section-header.compact {
+      margin-top: 4rem;
+    }
+    .section-header.compact h2 {
+      font-size: clamp(1.8rem, 3vw, 2.4rem);
+    }
+    .faq-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+    .faq-item {
+      padding: 1.35rem;
+    }
+    .faq-item h3 {
+      font-size: 1rem;
+      line-height: 1.3;
+      margin-bottom: 0.55rem;
+    }
+    .faq-item p {
+      margin: 0;
+      line-height: 1.55;
+    }
+    .checkout-confirm-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      display: grid;
+      place-items: center;
+      padding: 1rem;
+      background: rgba(3, 7, 18, 0.72);
+      backdrop-filter: blur(12px);
+    }
+    .checkout-confirm {
+      width: min(520px, 100%);
+      padding: 2rem;
+    }
+    .checkout-confirm h2 {
+      font-size: clamp(1.55rem, 4vw, 2rem);
+      margin: 0.35rem 0 0.75rem;
+    }
+    .confirm-email {
+      display: grid;
+      gap: 0.45rem;
+      margin: 1.25rem 0;
+    }
+    .confirm-email span {
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .confirm-note {
+      border-left: 3px solid var(--accent-amber);
+      color: var(--text-primary);
+      margin: 0 0 1.5rem;
+      padding-left: 0.85rem;
+      line-height: 1.55;
+    }
+    .confirm-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
     @media (max-width: 900px) {
       .packages-deck {
         grid-template-columns: 1fr;
         max-width: 460px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      .faq-grid {
+        grid-template-columns: 1fr;
+        max-width: 560px;
         margin-left: auto;
         margin-right: auto;
       }
@@ -271,9 +417,18 @@ import { ShellComponent } from './shell.component';
         align-items: flex-start;
         flex-direction: column;
       }
+      .checkout-warning {
+        align-items: stretch;
+        flex-direction: column;
+      }
       .package-card,
-      .login-card {
+      .login-card,
+      .checkout-confirm {
         padding: 1.5rem;
+      }
+      .confirm-actions {
+        display: grid;
+        grid-template-columns: 1fr;
       }
     }
   `]
@@ -284,6 +439,7 @@ export class CreditsComponent implements OnInit {
   protected readonly api = inject(ApiService);
   protected readonly buying = signal('');
   protected readonly buyError = signal('');
+  protected readonly pendingPack = signal('');
 
   protected locale: Locale = 'en';
   protected data = pageData('credits', 'en');
@@ -330,6 +486,30 @@ export class CreditsComponent implements OnInit {
     return pathFor('dashboard', this.locale);
   }
 
+  protected label(key: string): string {
+    return this.copy?.[key] || CREDITS_COPY.en[key] || key;
+  }
+
+  protected faqItems(): Array<{ question: string; answer: string }> {
+    return this.copy?.faq || CREDITS_COPY.en.faq || [];
+  }
+
+  protected confirmPack(pack: string): void {
+    this.buyError.set('');
+    this.pendingPack.set(pack);
+  }
+
+  protected cancelCheckout(): void {
+    if (this.buying()) return;
+    this.pendingPack.set('');
+  }
+
+  protected async continueCheckout(): Promise<void> {
+    const pack = this.pendingPack();
+    if (!pack) return;
+    await this.buyPack(pack);
+  }
+
   protected async buyPack(pack: string): Promise<void> {
     if (!this.api.token()) return;
     this.buyError.set('');
@@ -339,6 +519,7 @@ export class CreditsComponent implements OnInit {
       body: JSON.stringify({ pack })
     });
     this.buying.set('');
+    this.pendingPack.set('');
     if (result.success && result.checkoutUrl) window.location.href = result.checkoutUrl;
     else this.buyError.set(result.error || this.copy.paymentError);
   }
@@ -365,7 +546,22 @@ const CREDITS_COPY: Partial<Record<Locale, any>> & { en: any; pl: any } = {
     packagesText: 'Your saved questions and study history stay available even when you are not buying new credits.',
     popular: 'Popular',
     loading: 'Redirecting...',
-    paymentError: 'Payments are temporarily unavailable. Try again later.'
+    paymentError: 'Payments are temporarily unavailable. Try again later.',
+    emailWarningTitle: 'Use your QuizSolver account email',
+    emailWarningText: 'Credits are assigned to the account email shown here. Keep this email in Lemon Squeezy checkout and do not replace it with a different one.',
+    confirmBadge: 'Before checkout',
+    confirmTitle: 'Confirm your account email',
+    confirmText: 'Lemon Squeezy will open in a new checkout page. Keep the same email so credits land on the correct QuizSolver account.',
+    confirmEmailLabel: 'QuizSolver account email',
+    confirmNote: 'If you change this email at checkout, the credit top-up may be delayed or require support to attach it manually.',
+    confirmBack: 'Go back',
+    confirmContinue: 'Continue to checkout',
+    faqTitle: 'Credit questions',
+    faq: [
+      { question: 'How are credits delivered?', answer: 'After Lemon Squeezy confirms the order, credits are added automatically to the QuizSolver account you are logged into.' },
+      { question: 'Do credits expire?', answer: 'Purchased credits are one-time top-ups. Your saved questions and study history stay available even when you are not buying new credits.' },
+      { question: 'Can I change the checkout email?', answer: 'Do not change it. Use the same email as your QuizSolver account so the top-up can be matched immediately.' }
+    ]
   },
   pl: {
     badge: 'Kredyty',
@@ -387,6 +583,21 @@ const CREDITS_COPY: Partial<Record<Locale, any>> & { en: any; pl: any } = {
     packagesText: 'Zapisane pytania i historia nauki zostają dostępne nawet wtedy, gdy nie kupujesz nowych kredytów.',
     popular: 'Popularne',
     loading: 'Przekierowanie...',
+    emailWarningTitle: 'Uzyj emaila z konta QuizSolver',
+    emailWarningText: 'Kredyty sa przypisywane do konta z emailem pokazanym tutaj. Nie zmieniaj tego emaila w checkoutcie Lemon Squeezy.',
+    confirmBadge: 'Przed platnoscia',
+    confirmTitle: 'Potwierdz email konta',
+    confirmText: 'Za chwile otworzy sie checkout Lemon Squeezy. Zostaw ten sam email, zeby kredyty trafily na poprawne konto QuizSolver.',
+    confirmEmailLabel: 'Email konta QuizSolver',
+    confirmNote: 'Jesli zmienisz email w checkoutcie, doladowanie moze sie opoznic albo bedzie wymagac recznego dopiecia przez support.',
+    confirmBack: 'Wroc',
+    confirmContinue: 'Przejdz do platnosci',
+    faqTitle: 'Pytania o kredyty',
+    faq: [
+      { question: 'Jak dostane kredyty?', answer: 'Po potwierdzeniu zamowienia przez Lemon Squeezy kredyty automatycznie trafia na konto QuizSolver, na ktorym jestes zalogowany.' },
+      { question: 'Czy kredyty wygasaja?', answer: 'Kupione kredyty sa jednorazowym doladowaniem. Zapisane pytania i historia nauki zostaja dostepne niezaleznie od kolejnych zakupow.' },
+      { question: 'Czy moge zmienic email w checkoutcie?', answer: 'Nie zmieniaj go. Uzyj tego samego emaila co na koncie QuizSolver, zeby doladowanie zostalo przypisane od razu.' }
+    ],
     paymentError: 'Płatności są chwilowo niedostępne. Spróbuj ponownie później.'
   }
 };
