@@ -158,6 +158,7 @@ const ADMIN_COPY = {
     creditSafety: 'Credit safety',
     duplicateGroupsNeedReview: 'Duplicate groups need review',
     noDuplicateChargeGroups: 'No duplicate charge groups',
+    clickToReview: 'Click to review details',
     usingExtensionNow: 'Using extension now',
     activeHeartbeat: 'Active by recent heartbeat',
     visibleUsers: 'Visible users',
@@ -479,11 +480,11 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
             <div class="admin-alert anim-slide-up" *ngIf="error()">{{ error() }}</div>
 
             <section class="operations-strip" *ngIf="adminNoticeCards().length">
-              <article *ngFor="let notice of adminNoticeCards()" [class.warn]="notice.tone === 'warn'" [class.ok]="notice.tone === 'ok'">
+              <button class="operation-card" type="button" *ngFor="let notice of adminNoticeCards()" [class.warn]="notice.tone === 'warn'" [class.ok]="notice.tone === 'ok'" (click)="openAdminNotice(notice)">
                 <span>{{ notice.label }}</span>
                 <strong>{{ notice.value }}</strong>
                 <small>{{ notice.note }}</small>
-              </article>
+              </button>
             </section>
 
             <section class="admin-stats">
@@ -845,7 +846,7 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
                 </article>
               </div>
 
-              <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border);">
+              <div id="admin-billing-safety" style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border);">
                 <div class="panel-head" style="margin-bottom: 1rem;">
                   <div>
                     <p class="eyebrow">{{ tr('billingSafety') }}</p>
@@ -877,7 +878,12 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
                     </thead>
                     <tbody>
                       <tr *ngFor="let group of billingSafety().duplicateGroups">
-                        <td><strong>{{ group.email || group.userId || tr('unknownUser') }}</strong></td>
+                        <td>
+                          <strong>{{ group.email || group.userId || tr('unknownUser') }}</strong>
+                          <button class="link-button primary-link" type="button" *ngIf="group.userId" (click)="openUserHistory({ id: group.userId, email: group.email || group.userId })">
+                            {{ tr('history') }}
+                          </button>
+                        </td>
                         <td>{{ shortHash(group.questionHash) }}</td>
                         <td>{{ group.count }} / {{ group.credits }} credits</td>
                         <td>{{ (group.actions || []).join(', ') }}</td>
@@ -1285,7 +1291,7 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
       gap: 1rem;
       margin-bottom: 1.5rem;
     }
-    .operations-strip article,
+    .operations-strip .operation-card,
     .insight-grid article,
     .cache-summary article {
       border: 1px solid var(--border);
@@ -1295,13 +1301,23 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
       display: grid;
       gap: 0.25rem;
       min-width: 0;
+      color: inherit;
+      font: inherit;
+      text-align: left;
+      cursor: pointer;
+      transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
     }
-    .operations-strip article.warn,
+    .operations-strip .operation-card:hover {
+      border-color: rgba(6, 182, 212, 0.42);
+      background: rgba(6, 182, 212, 0.06);
+      transform: translateY(-1px);
+    }
+    .operations-strip .operation-card.warn,
     .cache-summary article.warn {
       border-color: rgba(244, 63, 94, 0.35);
       background: rgba(244, 63, 94, 0.08);
     }
-    .operations-strip article.ok {
+    .operations-strip .operation-card.ok {
       border-color: rgba(16, 185, 129, 0.28);
       background: rgba(16, 185, 129, 0.07);
     }
@@ -2518,7 +2534,8 @@ export class AdminComponent implements OnInit, OnDestroy {
   }
 
   protected tr(key: AdminCopyKey): string {
-    return ADMIN_COPY[this.adminLocale()][key] || ADMIN_COPY.en[key] || key;
+    const copy = ADMIN_COPY[this.adminLocale()] as Partial<Record<AdminCopyKey, string>>;
+    return copy[key] || ADMIN_COPY.en[key] || key;
   }
 
   protected adminLocaleUrl(locale: AdminLocale): string {
@@ -2577,36 +2594,55 @@ export class AdminComponent implements OnInit, OnDestroy {
     return this.tr(descriptions[this.activeTab()]);
   }
 
-  protected adminNoticeCards(): Array<{ label: string; value: string; note: string; tone?: 'warn' | 'ok' }> {
+  protected adminNoticeCards(): Array<{ label: string; value: string; note: string; tone?: 'warn' | 'ok'; targetTab?: AdminTab; targetId?: string }> {
     const supportUnread = this.supportBadgeCount();
     const duplicates = (this.billingSafety().duplicateGroups || []).length;
     const activeUsers = this.users().filter(user => this.isUserExtensionActive(user)).length;
-    const notices: Array<{ label: string; value: string; note: string; tone?: 'warn' | 'ok' }> = [];
+    const reviewDetails = this.adminLocale() === 'pl' ? 'Kliknij, aby sprawdzic szczegoly' : this.tr('clickToReview');
+    const notices: Array<{ label: string; value: string; note: string; tone?: 'warn' | 'ok'; targetTab?: AdminTab; targetId?: string }> = [];
 
     if (supportUnread > 0) {
       notices.push({
         label: this.tr('unreadSupport'),
         value: this.formatNumber(supportUnread),
-        note: this.tr('newEmailsWaiting'),
-        tone: 'warn'
+        note: `${this.tr('newEmailsWaiting')} - ${reviewDetails}`,
+        tone: 'warn',
+        targetTab: 'support'
       });
     }
 
     notices.push({
       label: this.tr('creditSafety'),
       value: duplicates ? this.formatNumber(duplicates) : 'OK',
-      note: duplicates ? this.tr('duplicateGroupsNeedReview') : this.tr('noDuplicateChargeGroups'),
-      tone: duplicates ? 'warn' : 'ok'
+      note: `${duplicates ? this.tr('duplicateGroupsNeedReview') : this.tr('noDuplicateChargeGroups')} - ${reviewDetails}`,
+      tone: duplicates ? 'warn' : 'ok',
+      targetTab: 'system',
+      targetId: 'admin-billing-safety'
     });
 
     notices.push({
       label: this.tr('usingExtensionNow'),
       value: this.formatNumber(activeUsers),
-      note: this.tr('activeHeartbeat'),
-      tone: activeUsers ? 'ok' : undefined
+      note: `${this.tr('activeHeartbeat')} - ${reviewDetails}`,
+      tone: activeUsers ? 'ok' : undefined,
+      targetTab: 'users'
     });
 
     return notices;
+  }
+
+  protected openAdminNotice(notice: { targetTab?: AdminTab; targetId?: string }): void {
+    if (notice.targetTab) {
+      this.activeTab.set(notice.targetTab);
+      if (notice.targetTab === 'system') void this.loadBillingSafety();
+      if (notice.targetTab === 'support') void this.loadSupportMessages();
+      if (notice.targetTab === 'users') void this.loadUsers(this.pagination().page || 1);
+    }
+    if (notice.targetId && this.isBrowser) {
+      setTimeout(() => {
+        document.getElementById(notice.targetId || '')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 80);
+    }
   }
 
   protected usersSummaryCards(): Array<{ label: string; value: string; note: string; ok?: boolean; warn?: boolean }> {
