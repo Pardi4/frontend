@@ -2674,7 +2674,10 @@ export class AdminComponent implements OnInit, OnDestroy {
       { label: this.adminLocale() === 'pl' ? 'Naliczone rekordy' : 'Charged records', value: this.formatNumber(b.chargedRecords), ok: true },
       { label: this.adminLocale() === 'pl' ? 'Naliczone 24h' : 'Charged 24h', value: this.formatNumber(b.chargedLast24h), ok: true },
       { label: this.adminLocale() === 'pl' ? 'Grupy duplikatów' : 'Duplicate groups', value: this.formatNumber(duplicates), ok: duplicates === 0 },
+      { label: this.adminLocale() === 'pl' ? 'Aktywne claimy' : 'Active claims', value: this.formatNumber(b.activeClaims), ok: Number(b.activeClaims || 0) < 5 },
       { label: this.adminLocale() === 'pl' ? 'Stare claimy' : 'Stale claims', value: this.formatNumber(b.staleClaims), ok: Number(b.staleClaims || 0) === 0 },
+      { label: this.adminLocale() === 'pl' ? 'Przerwane' : 'Aborted', value: this.formatNumber(b.abortedRecords) },
+      { label: this.adminLocale() === 'pl' ? 'Odrzucone' : 'Declined', value: this.formatNumber(b.declinedRecords) },
       { label: this.adminLocale() === 'pl' ? 'Umorzone' : 'Waived', value: this.formatNumber(b.waivedRecords) },
       { label: this.adminLocale() === 'pl' ? 'Wszystkie claimy' : 'All claims', value: this.formatNumber(b.totalClaims) }
     ];
