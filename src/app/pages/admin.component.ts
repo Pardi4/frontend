@@ -126,6 +126,21 @@ const ADMIN_COPY = {
     billingSafety: 'Billing safety',
     creditDedupeMonitor: 'Credit dedupe monitor',
     refreshBilling: 'Refresh billing',
+    creditUsageLog: 'Credit usage log',
+    creditUsageDescription: 'Search exactly what was billed, waived or rejected for each user and question.',
+    searchCreditUsage: 'Search email, question text or hash',
+    allStatuses: 'All statuses',
+    allActions: 'All actions',
+    charged: 'Charged',
+    claimed: 'Claimed',
+    waived: 'Waived',
+    aborted: 'Aborted',
+    declined: 'Declined',
+    billableCredits: 'Billable credits',
+    creditEvent: 'Credit event',
+    chargedCredits: 'Charged credits',
+    noCreditUsage: 'No credit usage records for this filter.',
+    viewQuestion: 'View question',
     duplicateWarning: 'Potential duplicate charged groups found. Review immediately.',
     questionHash: 'Question hash',
     charges: 'Charges',
@@ -320,6 +335,21 @@ const ADMIN_COPY = {
     creditDedupeMonitor: 'Monitor deduplikacji kredytów',
     refreshBilling: 'Odśwież billing',
     duplicateWarning: 'Wykryto możliwe podwójnie naliczone grupy. Sprawdź od razu.',
+    creditUsageLog: 'Log kredytow',
+    creditUsageDescription: 'Sprawdz dokladnie co zostalo naliczone, umorzone albo odrzucone dla usera i pytania.',
+    searchCreditUsage: 'Szukaj emaila, tresci pytania lub hasha',
+    allStatuses: 'Wszystkie statusy',
+    allActions: 'Wszystkie akcje',
+    charged: 'Pobrano',
+    claimed: 'Claim',
+    waived: 'Umorzono',
+    aborted: 'Przerwano',
+    declined: 'Odrzucono',
+    billableCredits: 'Kredyty platne',
+    creditEvent: 'Zdarzenie kredytowe',
+    chargedCredits: 'Pobrane kredyty',
+    noCreditUsage: 'Brak rekordow kredytow dla tego filtra.',
+    viewQuestion: 'Zobacz pytanie',
     questionHash: 'Hash pytania',
     charges: 'Naliczono',
     lastCharged: 'Ostatnie naliczenie',
@@ -870,6 +900,7 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
                     <thead>
                       <tr>
                         <th>{{ tr('user') }}</th>
+                        <th>{{ tr('questionText') }}</th>
                         <th>{{ tr('questionHash') }}</th>
                         <th>{{ tr('charges') }}</th>
                         <th>{{ tr('actions') }}</th>
@@ -884,6 +915,10 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
                             {{ tr('history') }}
                           </button>
                         </td>
+                        <td class="question-audit-cell">
+                          <strong>{{ group.questionText || shortHash(group.questionHash) }}</strong>
+                          <span *ngIf="group.answerText">{{ tr('answerSummary') }}: {{ group.answerText }}</span>
+                        </td>
                         <td>{{ shortHash(group.questionHash) }}</td>
                         <td>{{ group.count }} / {{ group.credits }} credits</td>
                         <td>{{ (group.actions || []).join(', ') }}</td>
@@ -895,6 +930,111 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
 
                 <div class="empty-panel" *ngIf="!(billingSafety().duplicateGroups || []).length" style="text-align: center; padding: 1.25rem; margin-top: 1rem;">
                   <p class="text-secondary">{{ tr('noDuplicateGroups') }}</p>
+                </div>
+
+                <div class="credit-usage-panel">
+                  <div class="panel-head" style="margin-bottom: 1rem;">
+                    <div>
+                      <p class="eyebrow">{{ tr('creditEvent') }}</p>
+                      <h3 style="margin: 0.25rem 0 0; font-family: var(--font-heading); font-size: 1.15rem;">{{ tr('creditUsageLog') }}</h3>
+                      <p class="text-secondary" style="margin: 0.4rem 0 0;">{{ tr('creditUsageDescription') }}</p>
+                    </div>
+                    <button class="btn btn-outline" type="button" (click)="loadBillingUsage(1)">{{ tr('refresh') }}</button>
+                  </div>
+
+                  <form class="admin-search credit-usage-filters" (ngSubmit)="loadBillingUsage(1)">
+                    <input type="text" [(ngModel)]="billingUsageSearch" name="billingUsageSearch" [placeholder]="tr('searchCreditUsage')">
+                    <select [(ngModel)]="billingUsageStatus" name="billingUsageStatus">
+                      <option value="">{{ tr('allStatuses') }}</option>
+                      <option value="charged">{{ tr('charged') }}</option>
+                      <option value="claimed">{{ tr('claimed') }}</option>
+                      <option value="waived">{{ tr('waived') }}</option>
+                      <option value="aborted">{{ tr('aborted') }}</option>
+                      <option value="declined">{{ tr('declined') }}</option>
+                    </select>
+                    <select [(ngModel)]="billingUsageAction" name="billingUsageAction">
+                      <option value="">{{ tr('allActions') }}</option>
+                      <option value="solve">solve</option>
+                      <option value="solve-snapshot">solve-snapshot</option>
+                      <option value="explain">explain</option>
+                      <option value="follow-up">follow-up</option>
+                    </select>
+                    <button class="btn btn-primary" type="submit">{{ tr('search') }}</button>
+                  </form>
+
+                  <div class="health-grid credit-usage-summary">
+                    <article class="glass">
+                      <span>{{ tr('visibleEntries') }}</span>
+                      <strong>{{ formatNumber(billingUsagePagination().total || 0) }}</strong>
+                    </article>
+                    <article class="glass">
+                      <span>{{ tr('charged') }}</span>
+                      <strong class="ok">{{ formatNumber(billingUsageSummary().chargedRecords || 0) }}</strong>
+                    </article>
+                    <article class="glass">
+                      <span>{{ tr('chargedCredits') }}</span>
+                      <strong class="ok">{{ formatNumber(billingUsageSummary().chargedCredits || 0) }}</strong>
+                    </article>
+                    <article class="glass">
+                      <span>{{ tr('status') }}</span>
+                      <strong>{{ billingUsageStatus ? creditUsageStatusLabel(billingUsageStatus) : tr('allStatuses') }}</strong>
+                    </article>
+                  </div>
+
+                  <div class="table-scroll" style="margin-top: 1rem;">
+                    <table class="admin-table credit-usage-table">
+                      <thead>
+                        <tr>
+                          <th>{{ tr('questionText') }}</th>
+                          <th>{{ tr('user') }}</th>
+                          <th>{{ tr('creditEvent') }}</th>
+                          <th>{{ tr('chargedCredits') }}</th>
+                          <th>{{ tr('date') }}</th>
+                          <th>{{ tr('actions') }}</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let item of billingUsageRows()">
+                          <td class="question-audit-cell">
+                            <strong>{{ item.questionText }}</strong>
+                            <span *ngIf="item.answerText">{{ tr('answerSummary') }}: {{ item.answerText }}</span>
+                            <span>{{ item.questionType || item.action }} - {{ shortHash(item.questionHash) }}</span>
+                          </td>
+                          <td>
+                            <strong>{{ item.email }}</strong>
+                            <span *ngIf="item.displayName">{{ item.displayName }}</span>
+                          </td>
+                          <td>
+                            <span class="status-pill" [class.ok]="creditUsageStatusClass(item.status) === 'ok'" [class.pending]="creditUsageStatusClass(item.status) === 'pending'" [class.danger]="creditUsageStatusClass(item.status) === 'danger'">
+                              {{ creditUsageStatusLabel(item.status) }}
+                            </span>
+                            <span>{{ item.action }}</span>
+                            <span *ngIf="item.waivedReason">{{ item.waivedReason }}</span>
+                          </td>
+                          <td>
+                            <strong class="metric-value">{{ item.creditsCharged || 0 }}</strong>
+                            <span>{{ tr('billableCredits') }}: {{ item.credits || 0 }}</span>
+                          </td>
+                          <td>{{ formatDate(item.time) }}</td>
+                          <td>
+                            <div class="row-actions">
+                              <button type="button" (click)="showQuestionDetails(item)">{{ tr('viewQuestion') }}</button>
+                              <button type="button" *ngIf="item.userId" (click)="openUserHistory({ id: item.userId, email: item.email })">{{ tr('history') }}</button>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr *ngIf="!billingUsageRows().length">
+                          <td colspan="6" class="empty-cell">{{ tr('noCreditUsage') }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <div class="pagination" *ngIf="billingUsagePagination().pages > 1">
+                    <button type="button" *ngFor="let page of billingUsagePageNumbers()" [class.active]="page === billingUsagePagination().page" (click)="loadBillingUsage(page)">
+                      {{ page }}
+                    </button>
+                  </div>
                 </div>
               </div>
             </section>
@@ -1500,6 +1640,46 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
       align-items: center;
       flex-wrap: wrap;
       gap: 0.45rem;
+    }
+    .credit-usage-panel {
+      margin-top: 1.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+    }
+    .credit-usage-filters {
+      display: grid;
+      grid-template-columns: minmax(220px, 1fr) minmax(140px, 180px) minmax(140px, 180px) auto;
+      max-width: none;
+    }
+    .credit-usage-filters select {
+      width: 100%;
+      padding: 0.8rem 1rem;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-primary);
+      outline: none;
+    }
+    .credit-usage-summary {
+      margin-top: 1rem;
+    }
+    .question-audit-cell {
+      min-width: 320px;
+      max-width: 560px;
+    }
+    .question-audit-cell strong {
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      line-height: 1.35;
+    }
+    .question-audit-cell span {
+      margin-top: 0.35rem;
+      overflow-wrap: anywhere;
+    }
+    .credit-usage-table td {
+      vertical-align: top;
     }
 
     /* Pagination */
@@ -2177,6 +2357,9 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
         display: grid;
         grid-template-columns: minmax(0, 1fr) minmax(120px, 0.6fr) auto;
       }
+      .credit-usage-filters {
+        grid-template-columns: 1fr;
+      }
       .table-scroll {
         margin: 1rem -1rem -1rem;
         -webkit-overflow-scrolling: touch;
@@ -2275,8 +2458,10 @@ export class AdminComponent implements OnInit, OnDestroy {
   protected readonly leaderboard = signal<any[]>([]);
   protected readonly health = signal<any>({});
   protected readonly billingSafety = signal<any>({});
+  protected readonly billingUsage = signal<any>({ usage: [], summary: {} });
   protected readonly pagination = signal<any>({ page: 1, pages: 1, total: 0 });
   protected readonly cachePagination = signal<any>({ page: 1, pages: 1, total: 0 });
+  protected readonly billingUsagePagination = signal<any>({ page: 1, pages: 1, total: 0 });
 
   protected readonly selectedQuestion = signal<any | null>(null);
   protected readonly selectedUserHistory = signal<any | null>(null);
@@ -2288,6 +2473,9 @@ export class AdminComponent implements OnInit, OnDestroy {
   protected password = '';
   protected userSearch = '';
   protected cacheSearch = '';
+  protected billingUsageSearch = '';
+  protected billingUsageStatus = 'charged';
+  protected billingUsageAction = '';
   protected supportSearch = '';
   protected supportStatusFilter = '';
   protected supportReplyText = '';
@@ -2405,7 +2593,8 @@ export class AdminComponent implements OnInit, OnDestroy {
       this.loadCache(),
       this.loadLeaderboard(),
       this.loadHealth(),
-      this.loadBillingSafety()
+      this.loadBillingSafety(),
+      this.loadBillingUsage()
     ]);
   }
 
@@ -2634,7 +2823,10 @@ export class AdminComponent implements OnInit, OnDestroy {
   protected openAdminNotice(notice: { targetTab?: AdminTab; targetId?: string }): void {
     if (notice.targetTab) {
       this.activeTab.set(notice.targetTab);
-      if (notice.targetTab === 'system') void this.loadBillingSafety();
+      if (notice.targetTab === 'system') {
+        void this.loadBillingSafety();
+        void this.loadBillingUsage(this.billingUsagePagination().page || 1);
+      }
       if (notice.targetTab === 'support') void this.loadSupportMessages();
       if (notice.targetTab === 'users') void this.loadUsers(this.pagination().page || 1);
     }
@@ -2959,6 +3151,19 @@ export class AdminComponent implements OnInit, OnDestroy {
     if (result.success) this.billingSafety.set(result.billing || {});
   }
 
+  protected async loadBillingUsage(page = 1): Promise<void> {
+    const params = new URLSearchParams({ page: String(page), limit: '25' });
+    const search = this.billingUsageSearch.trim();
+    if (search) params.set('q', search);
+    if (this.billingUsageStatus) params.set('status', this.billingUsageStatus);
+    if (this.billingUsageAction) params.set('action', this.billingUsageAction);
+    const result = await this.api(`/api/admin/billing/usage?${params.toString()}`);
+    if (result.success) {
+      this.billingUsage.set({ usage: result.usage || [], summary: result.summary || {} });
+      this.billingUsagePagination.set(result.pagination || { page, pages: 1, total: 0 });
+    }
+  }
+
   protected async openUserHistory(user: any): Promise<void> {
     this.selectedUserHistory.set(user);
     await this.loadUserQuestions(user.id, 1);
@@ -2985,6 +3190,37 @@ export class AdminComponent implements OnInit, OnDestroy {
 
   protected cachePageNumbers(): number[] {
     return this.paginationWindow(this.cachePagination());
+  }
+
+  protected billingUsagePageNumbers(): number[] {
+    return this.paginationWindow(this.billingUsagePagination());
+  }
+
+  protected billingUsageRows(): any[] {
+    return this.billingUsage().usage || [];
+  }
+
+  protected billingUsageSummary(): any {
+    return this.billingUsage().summary || {};
+  }
+
+  protected creditUsageStatusLabel(value: unknown): string {
+    const status = String(value || '').toLowerCase();
+    if (status === 'charged') return this.tr('charged');
+    if (status === 'claimed') return this.tr('claimed');
+    if (status === 'waived') return this.tr('waived');
+    if (status === 'aborted') return this.tr('aborted');
+    if (status === 'declined') return this.tr('declined');
+    return status || '-';
+  }
+
+  protected creditUsageStatusClass(value: unknown): string {
+    const status = String(value || '').toLowerCase();
+    if (status === 'charged') return 'ok';
+    if (status === 'claimed') return 'pending';
+    if (status === 'declined' || status === 'aborted') return 'danger';
+    if (status === 'waived') return 'muted';
+    return '';
   }
 
   private paginationWindow(pagination: any, radius = 3): number[] {
