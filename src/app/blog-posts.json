@@ -881,5 +881,20 @@
     "author": "QuizSolver Team",
     "locale": "uk",
     "readTime": "6 min"
+  },
+  {
+    "translationKey": "socrative-platform-guide",
+    "slug": "socrative-quiz-solver-guide",
+    "category": "platform-guides",
+    "tags": ["socrative", "platform guide", "quiz solver", "chrome extension", "exit ticket"],
+    "title": "Socrative Quiz Solver Guide: live rooms, exit tickets and AI explanations",
+    "metaTitle": "Socrative Quiz Solver Guide | QuizSolver",
+    "metaDescription": "Learn how QuizSolver works with Socrative live rooms, quizzes, quick questions and exit tickets using AI suggestions, FocusScan and saved history.",
+    "datePublished": "2026-06-28",
+    "dateModified": "2026-06-28",
+    "excerpt": "A practical Socrative guide for live classroom questions, answer choices, short responses, screenshots and saved explanations.",
+    "author": "QuizSolver Team",
+    "locale": "en",
+    "readTime": "7 min"
   }
 ]

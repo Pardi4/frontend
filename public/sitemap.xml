@@ -1810,7 +1810,7 @@
     <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/blog/category/platform-guides"/>
     <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/blog/category/platform-guides"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/blog/category/platform-guides"/>
-    <lastmod>2026-06-27</lastmod>
+    <lastmod>2026-06-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.75</priority>
   </url>
@@ -2605,6 +2605,14 @@
     <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/blog/chy-testportal-vyiavliaie-vkladky-ta-zminu-vikna"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/blog/does-testportal-detect-tabs-and-window-switching"/>
     <lastmod>2026-06-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://getquizsolver.com/blog/socrative-quiz-solver-guide</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/blog/socrative-quiz-solver-guide"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/blog/socrative-quiz-solver-guide"/>
+    <lastmod>2026-06-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>

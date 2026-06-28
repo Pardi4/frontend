@@ -9,6 +9,7 @@
   <meta name="color-scheme" content="dark">
   <meta name="application-name" content="QuizSolver">
   <meta name="rating" content="general">
+  <meta name="email-protection" content="disable">
 
   <!-- SEO Core -->
   <meta name="description" content="QuizSolver is a free AI-powered Chrome extension that instantly solves quizzes on Testportal, Google Forms, Moodle, Canvas, Microsoft Forms, Kahoot, Quizizz, Socrative and more. Get answer suggestions, explanations, study notes, and practice quizzes. Install in seconds.">
@@ -176,11 +177,8 @@
   <link rel="apple-touch-icon" sizes="512x512" href="/logo-512.png?v=20260628">
   <link rel="manifest" href="/manifest.webmanifest?v=20260628">
 
-  <!-- Performance: preconnect to font providers -->
-  <link rel="preload" as="image" href="/logo-96.png?v=20260628" fetchpriority="high">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Performance: preload the small nav logo used in the first viewport -->
+  <link rel="preload" as="image" href="/logo-96.webp?v=20260628" type="image/webp" fetchpriority="high">
 </head>
 <body>
   <app-root></app-root>

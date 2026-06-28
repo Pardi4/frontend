@@ -396,6 +396,36 @@ const TRANSLATED_ARTICLE_DRAFTS: Record<string, ArticleDraft> = {
 };
 
 const ARTICLE_DRAFTS: Record<string, ArticleDraft> = {
+  'socrative-quiz-solver-guide': {
+    intro: [
+      'Socrative is built for live classroom activity: rooms, quick questions, quizzes, exit tickets and fast answer collection. That speed is useful for teachers, but it also means a student often sees one compact question at a time with limited context around it.',
+      'QuizSolver works best on Socrative when it focuses on the current visible question, reads the answer choices or short-response field and saves the explanation afterward. The goal is not only to move faster during practice, but to turn live questions into revision material you can study later.'
+    ],
+    sections: [
+      {
+        heading: 'What QuizSolver reads on Socrative',
+        paragraphs: ['A Socrative activity may show multiple-choice answers, true/false choices, short-answer prompts or exit-ticket questions. QuizSolver tries to isolate the visible prompt and pair it with the controls currently shown on the page instead of sending room labels, navigation text or unrelated classroom UI to AI.'],
+        bullets: ['multiple-choice and true/false choices', 'short-response prompts', 'exit-ticket questions', 'visible images or diagrams through FocusScan']
+      },
+      {
+        heading: 'Live rooms need a clean workflow',
+        paragraphs: ['Because Socrative questions can change quickly, the safest workflow is simple: wait until the question is fully visible, open QuizSolver, review the suggested answer and avoid repeated clicks on the same prompt. If the question text did not change, saved history can help avoid treating the same item as a fresh solve.']
+      },
+      {
+        heading: 'When FocusScan is better than normal parsing',
+        paragraphs: ['Some Socrative activities include screenshots, diagrams, formulas or projected text that is not exposed as clean HTML. In those cases, FocusScan is more reliable: select only the question area and the answer options. A small, focused capture gives AI better context than a full-page screenshot with the room code, timer or extra labels.']
+      },
+      {
+        heading: 'Use explanations after the activity',
+        paragraphs: ['The most useful part of a Socrative solve is often the explanation saved afterward. A live question disappears quickly, but saved history keeps the prompt, answer and reasoning available for review before the next class or quiz.'],
+        bullets: ['save confusing Socrative questions', 'add notes while the topic is still fresh', 'turn repeated mistakes into a practice set']
+      },
+      {
+        heading: 'Best settings for stable Socrative solving',
+        paragraphs: ['Use the extension on the active Socrative tab, keep only the relevant question visible when possible and switch to FocusScan when the parser sees only generic labels. For unusual layouts, a screenshot-based solve is usually cleaner than forcing the universal parser to guess from incomplete page text.']
+      }
+    ]
+  },
   'czy-testportal-wykrywa-karty': {
     intro: [
       'Testportal nie widzi magicznie całego Twojego komputera, ale potrafi rejestrować zdarzenia dostępne dla zwykłej strony internetowej. Najczęściej chodzi o utratę fokusu okna, opuszczenie karty, przełączenie aplikacji albo wyjście z trybu pełnoekranowego.',

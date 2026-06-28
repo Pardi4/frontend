@@ -1278,7 +1278,10 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      background: #101318 url('/logo-512.png?v=20260627') center / cover no-repeat;
+      background: #101318 image-set(
+        url('/logo-96.webp?v=20260628') type('image/webp'),
+        url('/logo-96.png?v=20260628') type('image/png')
+      ) center / cover no-repeat;
       color: transparent;
       font-size: 0;
       font-weight: 800;
