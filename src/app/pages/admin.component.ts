@@ -7,6 +7,7 @@ import { ADMIN_PANEL_ROUTE_PATH, ADMIN_PANEL_URL } from '../admin-path';
 
 type AdminTab = 'users' | 'purchases' | 'bugs' | 'support' | 'cache' | 'leaderboard' | 'system';
 type AdminLocale = 'en' | 'pl';
+type UserSortOption = 'createdAt_desc' | 'createdAt_asc' | 'credits_desc' | 'credits_asc' | 'lastOnline_desc' | 'lastOnline_asc' | 'questions_desc' | 'questions_asc' | 'streak_desc' | 'streak_asc';
 
 const ADMIN_COPY = {
   en: {
@@ -55,6 +56,17 @@ const ADMIN_COPY = {
     accountsCredits: 'Accounts and credits',
     searchEmailName: 'Search email or name',
     search: 'Search',
+    sortUsers: 'Sort users',
+    sortNewestUsers: 'Newest users',
+    sortOldestUsers: 'Oldest users',
+    sortMostCredits: 'Most credits',
+    sortFewestCredits: 'Fewest credits',
+    sortLastOnline: 'Last online',
+    sortLongestOffline: 'Longest offline',
+    sortMostQuestions: 'Most questions',
+    sortFewestQuestions: 'Fewest questions',
+    sortHighestStreak: 'Highest streak',
+    sortLowestStreak: 'Lowest streak',
     user: 'User',
     role: 'Role',
     credits: 'Credits',
@@ -273,6 +285,17 @@ const ADMIN_COPY = {
     accountsCredits: 'Konta i kredyty',
     searchEmailName: 'Szukaj emaila lub nazwy',
     search: 'Szukaj',
+    sortUsers: 'Sortuj użytkowników',
+    sortNewestUsers: 'Najnowsi użytkownicy',
+    sortOldestUsers: 'Najstarsi użytkownicy',
+    sortMostCredits: 'Najwięcej kredytów',
+    sortFewestCredits: 'Najmniej kredytów',
+    sortLastOnline: 'Ostatnio online',
+    sortLongestOffline: 'Najdłużej offline',
+    sortMostQuestions: 'Najwięcej pytań',
+    sortFewestQuestions: 'Najmniej pytań',
+    sortHighestStreak: 'Najwyższa seria',
+    sortLowestStreak: 'Najniższa seria',
     user: 'Użytkownik',
     role: 'Rola',
     credits: 'Kredyty',
@@ -553,6 +576,9 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
                 </div>
                 <form class="admin-search" (ngSubmit)="loadUsers(1)">
                   <input class="form-input" type="search" name="search" [(ngModel)]="userSearch" [placeholder]="tr('searchEmailName')">
+                  <select class="form-select" name="userSort" [(ngModel)]="userSort" (ngModelChange)="loadUsers(1)" [attr.aria-label]="tr('sortUsers')">
+                    <option *ngFor="let option of userSortOptions()" [value]="option.value">{{ option.label }}</option>
+                  </select>
                   <button class="btn btn-primary" type="submit">{{ tr('search') }}</button>
                 </form>
               </div>
@@ -2530,6 +2556,7 @@ export class AdminComponent implements OnInit, OnDestroy {
   protected email = '';
   protected password = '';
   protected userSearch = '';
+  protected userSort: UserSortOption = 'createdAt_desc';
   protected cacheSearch = '';
   protected billingUsageSearch = '';
   protected billingUsageStatus = 'charged';
@@ -2662,6 +2689,7 @@ export class AdminComponent implements OnInit, OnDestroy {
   protected async loadUsers(page = 1): Promise<void> {
     const params = new URLSearchParams({ page: String(page), limit: '25' });
     if (this.userSearch.trim()) params.set('search', this.userSearch.trim());
+    params.set('sort', this.userSort);
     const result = await this.api(`/api/admin/users?${params.toString()}`);
     if (result.success) {
       this.users.set(result.users || []);
@@ -2842,6 +2870,21 @@ export class AdminComponent implements OnInit, OnDestroy {
       system: 'systemDescription'
     };
     return this.tr(descriptions[this.activeTab()]);
+  }
+
+  protected userSortOptions(): Array<{ value: UserSortOption; label: string }> {
+    return [
+      { value: 'createdAt_desc', label: this.tr('sortNewestUsers') },
+      { value: 'createdAt_asc', label: this.tr('sortOldestUsers') },
+      { value: 'credits_desc', label: this.tr('sortMostCredits') },
+      { value: 'credits_asc', label: this.tr('sortFewestCredits') },
+      { value: 'lastOnline_desc', label: this.tr('sortLastOnline') },
+      { value: 'lastOnline_asc', label: this.tr('sortLongestOffline') },
+      { value: 'questions_desc', label: this.tr('sortMostQuestions') },
+      { value: 'questions_asc', label: this.tr('sortFewestQuestions') },
+      { value: 'streak_desc', label: this.tr('sortHighestStreak') },
+      { value: 'streak_asc', label: this.tr('sortLowestStreak') }
+    ];
   }
 
   protected adminNoticeCards(): Array<{ label: string; value: string; note: string; tone?: 'warn' | 'ok'; targetTab?: AdminTab; targetId?: string }> {
