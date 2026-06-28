@@ -5,7 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Meta, Title } from '@angular/platform-browser';
 import { ADMIN_PANEL_ROUTE_PATH, ADMIN_PANEL_URL } from '../admin-path';
 
-type AdminTab = 'users' | 'purchases' | 'bugs' | 'support' | 'cache' | 'leaderboard' | 'system';
+type AdminTab = 'users' | 'purchases' | 'bugs' | 'support' | 'cache' | 'parser' | 'leaderboard' | 'system';
 type AdminLocale = 'en' | 'pl';
 type UserSortOption = 'createdAt_desc' | 'createdAt_asc' | 'credits_desc' | 'credits_asc' | 'lastOnline_desc' | 'lastOnline_asc' | 'questions_desc' | 'questions_asc' | 'streak_desc' | 'streak_asc';
 
@@ -30,6 +30,7 @@ const ADMIN_COPY = {
     bugs: 'Bugs',
     support: 'Support',
     cache: 'Cache',
+    parser: 'Parser',
     leaderboard: 'Leaderboard',
     system: 'System',
     usersHint: 'accounts',
@@ -37,6 +38,7 @@ const ADMIN_COPY = {
     bugsHint: 'reports',
     supportHint: 'mail',
     cacheHint: 'answers',
+    parserHint: 'signals',
     leaderboardHint: 'ranking',
     systemHint: 'health',
     usersTitle: 'Users and credits',
@@ -44,6 +46,7 @@ const ADMIN_COPY = {
     bugsTitle: 'Bug reports',
     supportTitle: 'Support inbox',
     cacheTitle: 'Answer cache',
+    parserTitle: 'Parser health',
     leaderboardTitle: 'Leaderboard',
     systemTitle: 'System health',
     usersDescription: 'Track accounts, live extension usage, bans, credits and question history.',
@@ -51,6 +54,7 @@ const ADMIN_COPY = {
     bugsDescription: 'Read user-submitted bug reports with source URLs.',
     supportDescription: 'Handle unread support mail, linked accounts and quick credit adjustments.',
     cacheDescription: 'Inspect cached AI answers, weak question text and high-hit questions.',
+    parserDescription: 'Monitor parser success, platform failures, snapshots and extraction confidence.',
     leaderboardDescription: 'Review public ranking data and excluded users.',
     systemDescription: 'Monitor service health, database state and credit dedupe safety.',
     accountsCredits: 'Accounts and credits',
@@ -123,6 +127,22 @@ const ADMIN_COPY = {
     sendReply: 'Send reply',
     selectMessage: 'Select a message to read and reply.',
     aiCache: 'AI cache',
+    parserHealth: 'Parser health',
+    parserAnalytics: 'Platform analytics',
+    parserEvents: 'Parser events',
+    parserRecentReports: 'Recent parser reports',
+    parserFailureRate: 'Failure rate',
+    parserConfidence: 'Confidence',
+    parserFailures: 'Failures',
+    parserReports: 'Reports',
+    parserPlatform: 'Platform',
+    parserOutcome: 'Outcome',
+    parserReason: 'Reason',
+    parserSnapshot: 'Snapshot',
+    parserWindow: 'Window',
+    parserQuestionsFound: 'Questions found',
+    parserOptionsFound: 'Options found',
+    parserNoEvents: 'No parser events yet.',
     cachedAnswers: 'Cached answers',
     searchCache: 'Search cached question text',
     reset: 'Reset',
@@ -259,6 +279,7 @@ const ADMIN_COPY = {
     bugs: 'Błędy',
     support: 'Support',
     cache: 'Cache',
+    parser: 'Parser',
     leaderboard: 'Ranking',
     system: 'System',
     usersHint: 'konta',
@@ -266,6 +287,7 @@ const ADMIN_COPY = {
     bugsHint: 'zgłoszenia',
     supportHint: 'maile',
     cacheHint: 'odpowiedzi',
+    parserHint: 'sygnały',
     leaderboardHint: 'ranking',
     systemHint: 'zdrowie',
     usersTitle: 'Użytkownicy i kredyty',
@@ -273,6 +295,7 @@ const ADMIN_COPY = {
     bugsTitle: 'Zgłoszenia błędów',
     supportTitle: 'Skrzynka supportu',
     cacheTitle: 'Cache odpowiedzi',
+    parserTitle: 'Zdrowie parsera',
     leaderboardTitle: 'Ranking',
     systemTitle: 'Stan systemu',
     usersDescription: 'Kontroluj konta, aktywność rozszerzenia, bany, kredyty i historię pytań.',
@@ -280,6 +303,7 @@ const ADMIN_COPY = {
     bugsDescription: 'Czytaj zgłoszenia błędów od użytkowników razem z adresami stron.',
     supportDescription: 'Obsługuj nowe maile, powiązane konta i szybkie korekty kredytów.',
     cacheDescription: 'Sprawdzaj odpowiedzi AI w cache, słabą treść pytań i najczęstsze trafienia.',
+    parserDescription: 'Monitoruj skuteczność parsera, błędy platform, snapshoty i confidence ekstrakcji.',
     leaderboardDescription: 'Przeglądaj dane rankingu publicznego i wykluczonych użytkowników.',
     systemDescription: 'Monitoruj stan usługi, bazę danych i zabezpieczenia przed podwójnym naliczaniem.',
     accountsCredits: 'Konta i kredyty',
@@ -352,6 +376,22 @@ const ADMIN_COPY = {
     sendReply: 'Wyślij odpowiedź',
     selectMessage: 'Wybierz wiadomość, żeby ją przeczytać i odpisać.',
     aiCache: 'Cache AI',
+    parserHealth: 'Zdrowie parsera',
+    parserAnalytics: 'Analityka platform',
+    parserEvents: 'Eventy parsera',
+    parserRecentReports: 'Ostatnie zgłoszenia parsera',
+    parserFailureRate: 'Failure rate',
+    parserConfidence: 'Confidence',
+    parserFailures: 'Błędy',
+    parserReports: 'Zgłoszenia',
+    parserPlatform: 'Platforma',
+    parserOutcome: 'Wynik',
+    parserReason: 'Powód',
+    parserSnapshot: 'Snapshot',
+    parserWindow: 'Okno',
+    parserQuestionsFound: 'Wykryte pytania',
+    parserOptionsFound: 'Wykryte opcje',
+    parserNoEvents: 'Brak eventów parsera.',
     cachedAnswers: 'Odpowiedzi w cache',
     searchCache: 'Szukaj treści pytania w cache',
     reset: 'Reset',
@@ -517,7 +557,7 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
                 <strong>Admin</strong>
               </a>
               <nav class="admin-tabs" [attr.aria-label]="tr('adminSections')">
-                <button type="button" *ngFor="let tab of tabs" [class.active]="activeTab() === tab.id" (click)="activeTab.set(tab.id)">
+                <button type="button" *ngFor="let tab of tabs" [class.active]="activeTab() === tab.id" (click)="setActiveTab(tab.id)">
                   <span class="tab-short">{{ tab.short }}</span>
                   <span class="tab-copy">
                     <span class="tab-label">{{ tabLabel(tab.id) }}</span>
@@ -895,6 +935,121 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
                 <button type="button" *ngFor="let page of cachePageNumbers()" [class.active]="page === cachePagination().page" (click)="loadCache(page)">
                   {{ page }}
                 </button>
+              </div>
+            </section>
+
+            <section class="admin-panel glass" *ngIf="activeTab() === 'parser'">
+              <div class="panel-head">
+                <div>
+                  <p class="eyebrow">{{ tr('parserHealth') }}</p>
+                  <h2>{{ tr('parserAnalytics') }}</h2>
+                </div>
+                <form class="admin-search" (ngSubmit)="loadParserEvents(1)">
+                  <input class="form-input" type="search" name="parserSearch" [(ngModel)]="parserSearch" placeholder="Search URL, platform, reason">
+                  <select class="form-select" name="parserOutcomeFilter" [(ngModel)]="parserOutcomeFilter" (ngModelChange)="loadParserEvents(1)" [attr.aria-label]="tr('parserOutcome')">
+                    <option value="">All outcomes</option>
+                    <option value="success">success</option>
+                    <option value="partial">partial</option>
+                    <option value="empty">empty</option>
+                    <option value="weak">weak</option>
+                    <option value="error">error</option>
+                    <option value="reported">reported</option>
+                  </select>
+                  <button class="btn btn-primary" type="submit">{{ tr('search') }}</button>
+                  <button class="btn btn-outline" type="button" (click)="loadParserHealth(); loadParserEvents(parserEventsPagination().page || 1)">{{ tr('refresh') }}</button>
+                </form>
+              </div>
+
+              <div class="health-grid">
+                <article class="glass" *ngFor="let card of parserHealthCards()">
+                  <span class="text-secondary" style="font-size: 0.75rem; text-transform: uppercase;">{{ card.label }}</span>
+                  <strong [class.ok]="card.ok" [class.warn]="card.warn" style="font-size: 1.35rem; margin-top: 0.25rem;">{{ card.value }}</strong>
+                  <small class="text-secondary">{{ card.note }}</small>
+                </article>
+              </div>
+
+              <div class="table-scroll" style="margin-bottom: 1.5rem;">
+                <table class="admin-table">
+                  <thead>
+                    <tr>
+                      <th>{{ tr('parserPlatform') }}</th>
+                      <th>{{ tr('parserEvents') }}</th>
+                      <th>{{ tr('parserFailures') }}</th>
+                      <th>{{ tr('parserFailureRate') }}</th>
+                      <th>{{ tr('parserConfidence') }}</th>
+                      <th>{{ tr('parserReason') }}</th>
+                      <th>{{ tr('lastSeen') }}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let item of parserHealth().platforms || []">
+                      <td><strong>{{ item.platform }}</strong></td>
+                      <td>{{ item.count }}</td>
+                      <td><span class="status-pill" [class.danger]="item.failed">{{ item.failed }}</span></td>
+                      <td>{{ formatPercent(item.failureRate || 0) }}</td>
+                      <td>{{ formatPercent(item.avgConfidence || 0) }}</td>
+                      <td>{{ (item.topReasons || []).join(', ') || '-' }}</td>
+                      <td>{{ formatDate(item.lastSeenAt) }}</td>
+                    </tr>
+                    <tr *ngIf="!(parserHealth().platforms || []).length">
+                      <td colspan="7" class="empty-cell" style="text-align: center; padding: 2rem;">{{ tr('parserNoEvents') }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div class="table-scroll">
+                <table class="admin-table">
+                  <thead>
+                    <tr>
+                      <th>{{ tr('date') }}</th>
+                      <th>{{ tr('parserPlatform') }}</th>
+                      <th>{{ tr('parserOutcome') }}</th>
+                      <th>{{ tr('parserConfidence') }}</th>
+                      <th>{{ tr('parserQuestionsFound') }}</th>
+                      <th>{{ tr('parserReason') }}</th>
+                      <th>URL</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let event of parserEvents()">
+                      <td>{{ formatDate(event.createdAt) }}</td>
+                      <td><strong>{{ event.platform }}</strong><span>{{ event.hostname }}</span></td>
+                      <td><span class="status-pill" [class.danger]="event.outcome === 'empty' || event.outcome === 'weak' || event.outcome === 'error'" [class.ok]="event.outcome === 'success'">{{ event.outcome }}</span></td>
+                      <td>{{ formatPercent(event.confidence || 0) }}</td>
+                      <td>{{ event.questionCount }} / {{ event.optionCount }} {{ tr('parserOptionsFound') }}</td>
+                      <td class="question-audit-cell">
+                        <strong>{{ event.reason || '-' }}</strong>
+                        <span>{{ event.snapshot?.questionTexts?.[0] || event.snapshot?.bodyText || '' }}</span>
+                      </td>
+                      <td><a class="primary-link" [href]="event.url" target="_blank" rel="noopener">{{ event.url || '-' }}</a></td>
+                    </tr>
+                    <tr *ngIf="!parserEvents().length">
+                      <td colspan="7" class="empty-cell" style="text-align: center; padding: 2rem;">{{ tr('parserNoEvents') }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div class="pagination" *ngIf="parserEventsPagination().pages > 1">
+                <button type="button" *ngFor="let page of parserEventPageNumbers()" [class.active]="page === parserEventsPagination().page" (click)="loadParserEvents(page)">
+                  {{ page }}
+                </button>
+              </div>
+
+              <div class="cache-list" style="margin-top: 1.5rem;" *ngIf="(parserHealth().recentBugReports || []).length">
+                <h3 style="margin: 0 0 1rem; font-family: var(--font-heading); font-size: 1.05rem;">{{ tr('parserRecentReports') }}</h3>
+                <article class="glass" *ngFor="let report of parserHealth().recentBugReports">
+                  <div class="cache-question-main">
+                    <p>{{ report.parserSnapshot?.questionTexts?.[0] || report.parserDiagnostics?.reason || report.url }}</p>
+                    <div class="meta-chips">
+                      <span class="badge badge-outline role-badge">{{ report.platform || 'unknown' }}</span>
+                      <span class="badge badge-outline">{{ formatPercent(report.parserDiagnostics?.confidence || 0) }}</span>
+                      <span class="badge badge-outline">{{ formatDate(report.date) }}</span>
+                    </div>
+                  </div>
+                  <a class="open-hint" [href]="report.url" target="_blank" rel="noopener">{{ report.url }}</a>
+                </article>
               </div>
             </section>
 
@@ -2523,6 +2678,7 @@ export class AdminComponent implements OnInit, OnDestroy {
     { id: 'bugs', label: 'Bugs', short: 'BG' },
     { id: 'support', label: 'Support', short: 'SP' },
     { id: 'cache', label: 'Cache', short: 'CA' },
+    { id: 'parser', label: 'Parser', short: 'PR' },
     { id: 'leaderboard', label: 'Leaderboard', short: 'LB' },
     { id: 'system', label: 'System', short: 'SY' }
   ];
@@ -2539,12 +2695,15 @@ export class AdminComponent implements OnInit, OnDestroy {
   protected readonly supportMessages = signal<any[]>([]);
   protected readonly selectedSupportMessage = signal<any | null>(null);
   protected readonly cache = signal<any>({});
+  protected readonly parserHealth = signal<any>({ summary: {}, platforms: [], recentEvents: [], recentBugReports: [] });
+  protected readonly parserEvents = signal<any[]>([]);
   protected readonly leaderboard = signal<any[]>([]);
   protected readonly health = signal<any>({});
   protected readonly billingSafety = signal<any>({});
   protected readonly billingUsage = signal<any>({ usage: [], summary: {} });
   protected readonly pagination = signal<any>({ page: 1, pages: 1, total: 0 });
   protected readonly cachePagination = signal<any>({ page: 1, pages: 1, total: 0 });
+  protected readonly parserEventsPagination = signal<any>({ page: 1, pages: 1, total: 0 });
   protected readonly billingUsagePagination = signal<any>({ page: 1, pages: 1, total: 0 });
 
   protected readonly selectedQuestion = signal<any | null>(null);
@@ -2558,6 +2717,8 @@ export class AdminComponent implements OnInit, OnDestroy {
   protected userSearch = '';
   protected userSort: UserSortOption = 'createdAt_desc';
   protected cacheSearch = '';
+  protected parserSearch = '';
+  protected parserOutcomeFilter = '';
   protected billingUsageSearch = '';
   protected billingUsageStatus = 'charged';
   protected billingUsageAction = '';
@@ -2655,6 +2816,7 @@ export class AdminComponent implements OnInit, OnDestroy {
       if (this.activeTab() === 'bugs') void this.loadBugs();
       if (this.activeTab() === 'support') void this.loadSupportMessages();
       if (this.activeTab() === 'users') void this.loadUsers(this.pagination().page || 1);
+      if (this.activeTab() === 'parser') void this.loadParserHealth();
     }, 30000);
   }
 
@@ -2670,6 +2832,14 @@ export class AdminComponent implements OnInit, OnDestroy {
     window.location.href = `/api/auth/google/start?redirect=${encodeURIComponent(redirect)}&lang=${this.adminLocale()}`;
   }
 
+  protected setActiveTab(tab: AdminTab): void {
+    this.activeTab.set(tab);
+    if (tab === 'parser') {
+      void this.loadParserHealth();
+      void this.loadParserEvents(this.parserEventsPagination().page || 1);
+    }
+  }
+
   protected async refresh(): Promise<void> {
     this.error.set('');
     await Promise.all([
@@ -2679,6 +2849,8 @@ export class AdminComponent implements OnInit, OnDestroy {
       this.loadBugs(),
       this.loadSupportMessages(),
       this.loadCache(),
+      this.loadParserHealth(),
+      this.loadParserEvents(),
       this.loadLeaderboard(),
       this.loadHealth(),
       this.loadBillingSafety(),
@@ -2827,6 +2999,7 @@ export class AdminComponent implements OnInit, OnDestroy {
       bugs: 'bugs',
       support: 'support',
       cache: 'cache',
+      parser: 'parser',
       leaderboard: 'leaderboard',
       system: 'system'
     };
@@ -2840,6 +3013,7 @@ export class AdminComponent implements OnInit, OnDestroy {
       bugs: 'bugsHint',
       support: 'supportHint',
       cache: 'cacheHint',
+      parser: 'parserHint',
       leaderboard: 'leaderboardHint',
       system: 'systemHint'
     };
@@ -2853,6 +3027,7 @@ export class AdminComponent implements OnInit, OnDestroy {
       bugs: 'bugsTitle',
       support: 'supportTitle',
       cache: 'cacheTitle',
+      parser: 'parserTitle',
       leaderboard: 'leaderboardTitle',
       system: 'systemTitle'
     };
@@ -2866,6 +3041,7 @@ export class AdminComponent implements OnInit, OnDestroy {
       bugs: 'bugsDescription',
       support: 'supportDescription',
       cache: 'cacheDescription',
+      parser: 'parserDescription',
       leaderboard: 'leaderboardDescription',
       system: 'systemDescription'
     };
@@ -2892,6 +3068,8 @@ export class AdminComponent implements OnInit, OnDestroy {
     const supportUnread = this.supportBadgeCount();
     const duplicates = (this.billingSafety().duplicateGroups || []).length;
     const activeUsers = this.users().filter(user => this.isUserExtensionActive(user)).length;
+    const parserSummary = this.parserHealth().summary || {};
+    const parserIssues = Number(parserSummary.failed || 0) + Number(parserSummary.reported || 0);
     const reviewDetails = this.adminLocale() === 'pl' ? 'Kliknij, aby sprawdzic szczegoly' : this.tr('clickToReview');
     const notices: Array<{ label: string; value: string; note: string; tone?: 'warn' | 'ok'; targetTab?: AdminTab; targetId?: string }> = [];
 
@@ -2912,6 +3090,16 @@ export class AdminComponent implements OnInit, OnDestroy {
         note: `${this.tr('newEmailsWaiting')} - ${reviewDetails}`,
         tone: 'warn',
         targetTab: 'support'
+      });
+    }
+
+    if (parserIssues > 0) {
+      notices.push({
+        label: this.tr('parserHealth'),
+        value: this.formatNumber(parserIssues),
+        note: `${this.tr('parserFailures')} / ${this.tr('parserReports')} - ${reviewDetails}`,
+        tone: 'warn',
+        targetTab: 'parser'
       });
     }
 
@@ -2937,7 +3125,7 @@ export class AdminComponent implements OnInit, OnDestroy {
 
   protected openAdminNotice(notice: { targetTab?: AdminTab; targetId?: string }): void {
     if (notice.targetTab) {
-      this.activeTab.set(notice.targetTab);
+      this.setActiveTab(notice.targetTab);
       if (notice.targetTab === 'system') {
         void this.loadBillingSafety();
         void this.loadBillingUsage(this.billingUsagePagination().page || 1);
@@ -2977,6 +3165,19 @@ export class AdminComponent implements OnInit, OnDestroy {
       { label: this.tr('visibleEntries'), value: this.formatNumber(matching), note: this.cacheSearch.trim() ? this.tr('matchingCurrentSearch') : this.tr('currentCachePageTotal') },
       { label: this.tr('hitsOnPage'), value: this.formatNumber(totalHits), note: this.tr('usageVisibleRows') },
       { label: this.tr('weakText'), value: this.formatNumber(weak), note: this.tr('needsParserReview'), warn: weak > 0 }
+    ];
+  }
+
+  protected parserHealthCards(): Array<{ label: string; value: string; note: string; ok?: boolean; warn?: boolean }> {
+    const summary = this.parserHealth().summary || {};
+    const total = Number(summary.total || 0);
+    const failed = Number(summary.failed || 0);
+    const reported = Number(summary.reported || 0);
+    return [
+      { label: this.tr('parserEvents'), value: this.formatNumber(total), note: `${this.tr('parserWindow')}: ${this.parserHealth().windowDays || 7}d` },
+      { label: this.tr('parserFailureRate'), value: this.formatPercent(summary.failureRate || 0), note: `${this.formatNumber(failed)} ${this.tr('parserFailures')}`, warn: Number(summary.failureRate || 0) > 0.15 },
+      { label: this.tr('parserConfidence'), value: this.formatPercent(summary.avgConfidence || 0), note: `${this.formatNumber(summary.avgQuestions || 0)} avg questions`, ok: Number(summary.avgConfidence || 0) >= 0.7 },
+      { label: this.tr('parserReports'), value: this.formatNumber(reported), note: this.tr('parserRecentReports'), warn: reported > 0 }
     ];
   }
 
@@ -3126,9 +3327,21 @@ export class AdminComponent implements OnInit, OnDestroy {
     return this.paginationWindow(this.pagination());
   }
 
+  protected parserEventPageNumbers(): number[] {
+    return this.paginationWindow(this.parserEventsPagination());
+  }
+
   protected formatNumber(value: unknown): string {
     const number = Number(value || 0);
     return new Intl.NumberFormat(this.adminLocale() === 'pl' ? 'pl-PL' : 'en-US').format(number);
+  }
+
+  protected formatPercent(value: unknown): string {
+    const number = Number(value || 0);
+    return new Intl.NumberFormat(this.adminLocale() === 'pl' ? 'pl-PL' : 'en-US', {
+      style: 'percent',
+      maximumFractionDigits: 0
+    }).format(number);
   }
 
   protected formatMoney(value: unknown): string {
@@ -3307,6 +3520,23 @@ export class AdminComponent implements OnInit, OnDestroy {
     if (result.success) {
       this.cache.set(result);
       this.cachePagination.set(result.pagination || { page, pages: 1, total: result.totalMatching || result.totalCached || 0 });
+    }
+  }
+
+  protected async loadParserHealth(): Promise<void> {
+    const result = await this.api('/api/admin/parser/health?days=7');
+    if (result.success) this.parserHealth.set(result);
+  }
+
+  protected async loadParserEvents(page = 1): Promise<void> {
+    const params = new URLSearchParams({ page: String(page), limit: '25' });
+    const search = this.parserSearch.trim();
+    if (search) params.set('q', search);
+    if (this.parserOutcomeFilter) params.set('outcome', this.parserOutcomeFilter);
+    const result = await this.api(`/api/admin/parser/events?${params.toString()}`);
+    if (result.success) {
+      this.parserEvents.set(result.events || []);
+      this.parserEventsPagination.set(result.pagination || { page, pages: 1, total: 0 });
     }
   }
 
