@@ -141,6 +141,11 @@ const ADMIN_COPY = {
     chargedCredits: 'Charged credits',
     noCreditUsage: 'No credit usage records for this filter.',
     viewQuestion: 'View question',
+    firstCharged: 'First charged',
+    timeSpan: 'Time span',
+    reviewInLog: 'Review in log',
+    possibleRefund: 'Possible refund',
+    duplicateReason: 'Same user, action and question charged inside the review window.',
     duplicateWarning: 'Potential duplicate charged groups found. Review immediately.',
     questionHash: 'Question hash',
     charges: 'Charges',
@@ -350,6 +355,11 @@ const ADMIN_COPY = {
     chargedCredits: 'Pobrane kredyty',
     noCreditUsage: 'Brak rekordow kredytow dla tego filtra.',
     viewQuestion: 'Zobacz pytanie',
+    firstCharged: 'Pierwsze pobranie',
+    timeSpan: 'Odstep czasu',
+    reviewInLog: 'Sprawdz w logu',
+    possibleRefund: 'Zwrot?',
+    duplicateReason: 'Ten sam user, akcja i pytanie naliczone w oknie kontroli.',
     questionHash: 'Hash pytania',
     charges: 'Naliczono',
     lastCharged: 'Ostatnie naliczenie',
@@ -918,11 +928,24 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
                         <td class="question-audit-cell">
                           <strong>{{ group.questionText || shortHash(group.questionHash) }}</strong>
                           <span *ngIf="group.answerText">{{ tr('answerSummary') }}: {{ group.answerText }}</span>
+                          <span>{{ tr('duplicateReason') }}</span>
                         </td>
                         <td>{{ shortHash(group.questionHash) }}</td>
-                        <td>{{ group.count }} / {{ group.credits }} credits</td>
-                        <td>{{ (group.actions || []).join(', ') }}</td>
-                        <td>{{ formatDate(group.lastChargedAt) }}</td>
+                        <td>
+                          <strong>{{ group.count }} / {{ group.credits }} credits</strong>
+                          <span>{{ tr('timeSpan') }}: {{ formatDurationMs(group.spanMs) }}</span>
+                        </td>
+                        <td>
+                          <strong>{{ group.action || (group.actions || []).join(', ') }}</strong>
+                          <span>{{ tr('firstCharged') }}: {{ formatDate(group.firstChargedAt) }}</span>
+                        </td>
+                        <td>
+                          <strong>{{ formatDate(group.lastChargedAt) }}</strong>
+                          <div class="row-actions" style="margin-top: 0.5rem;">
+                            <button type="button" (click)="reviewDuplicateGroup(group)">{{ tr('reviewInLog') }}</button>
+                            <button type="button" *ngIf="group.userId" (click)="openGrantModal({ id: group.userId, email: group.email || group.userId }, tr('possibleRefund'))">{{ tr('possibleRefund') }}</button>
+                          </div>
+                        </td>
                       </tr>
                     </tbody>
                   </table>
@@ -3018,6 +3041,31 @@ export class AdminComponent implements OnInit, OnDestroy {
     const date = new Date(String(value));
     if (Number.isNaN(date.getTime())) return '-';
     return new Intl.DateTimeFormat(this.adminLocale() === 'pl' ? 'pl-PL' : 'en-US', { dateStyle: 'medium', timeStyle: 'short' }).format(date);
+  }
+
+  protected formatDurationMs(value: unknown): string {
+    const ms = Math.max(0, Number(value || 0));
+    if (!Number.isFinite(ms)) return '-';
+    const seconds = Math.floor(ms / 1000);
+    if (seconds < 60) return `${seconds}s`;
+    const minutes = Math.floor(seconds / 60);
+    const restSeconds = seconds % 60;
+    if (minutes < 60) return `${minutes}m ${restSeconds}s`;
+    const hours = Math.floor(minutes / 60);
+    const restMinutes = minutes % 60;
+    return `${hours}h ${restMinutes}m`;
+  }
+
+  protected reviewDuplicateGroup(group: any): void {
+    this.billingUsageSearch = String(group?.questionHash || group?.email || '').trim();
+    this.billingUsageStatus = '';
+    this.billingUsageAction = String(group?.action || '').trim();
+    void this.loadBillingUsage(1);
+    if (this.isBrowser) {
+      setTimeout(() => {
+        document.querySelector('.credit-usage-panel')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 80);
+    }
   }
 
   protected isUserExtensionActive(user: any): boolean {
