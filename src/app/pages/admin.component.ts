@@ -174,7 +174,11 @@ const ADMIN_COPY = {
     now: 'Now',
     lastSeen: 'Last seen',
     unreadSupport: 'Unread support',
+    unreadBugs: 'New bug reports',
     newEmailsWaiting: 'New emails waiting',
+    newBugReportsWaiting: 'New bug reports waiting',
+    markRead: 'Mark read',
+    markAllRead: 'Mark all read',
     creditSafety: 'Credit safety',
     duplicateGroupsNeedReview: 'Duplicate groups need review',
     noDuplicateChargeGroups: 'No duplicate charge groups',
@@ -218,6 +222,7 @@ const ADMIN_COPY = {
     deleteSupportConfirmPrefix: 'Delete support message from',
     unknownSender: 'unknown sender',
     couldNotDeleteSupport: 'Could not delete support message.',
+    couldNotUpdateBugReport: 'Could not update bug report.',
     supportAdjustment: 'Support adjustment',
     questionHistoryAdjustment: 'Question history adjustment',
     adminManualGrant: 'Admin manual grant'
@@ -387,7 +392,11 @@ const ADMIN_COPY = {
     now: 'Teraz',
     lastSeen: 'Ostatnio widziany',
     unreadSupport: 'Nieprzeczytany support',
+    unreadBugs: 'Nowe bledy',
     newEmailsWaiting: 'Nowe maile czekają',
+    newBugReportsWaiting: 'Nowe zgloszenia bledow czekaja',
+    markRead: 'Oznacz jako przeczytane',
+    markAllRead: 'Oznacz wszystkie',
     creditSafety: 'Bezpieczeństwo kredytów',
     duplicateGroupsNeedReview: 'Grupy duplikatów do sprawdzenia',
     noDuplicateChargeGroups: 'Brak podwójnych naliczeń',
@@ -430,6 +439,7 @@ const ADMIN_COPY = {
     deleteSupportConfirmPrefix: 'Usunąć wiadomość supportu od',
     unknownSender: 'nieznanego nadawcy',
     couldNotDeleteSupport: 'Nie udało się usunąć wiadomości supportu.',
+    couldNotUpdateBugReport: 'Nie udalo sie zaktualizowac zgloszenia bledu.',
     supportAdjustment: 'Korekta supportu',
     questionHistoryAdjustment: 'Korekta z historii pytań',
     adminManualGrant: 'Ręczny grant admina'
@@ -490,6 +500,7 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
                     <span class="tab-label">{{ tabLabel(tab.id) }}</span>
                     <small>{{ tabHint(tab.id) }}</small>
                   </span>
+                  <span class="tab-badge" *ngIf="tab.id === 'bugs' && bugBadgeCount()">{{ bugBadgeCount() }}</span>
                   <span class="tab-badge" *ngIf="tab.id === 'support' && supportBadgeCount()">{{ supportBadgeCount() }}</span>
                 </button>
               </nav>
@@ -669,12 +680,21 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
                   <p class="eyebrow">{{ tr('reports') }}</p>
                   <h2>{{ tr('bugsTitle') }}</h2>
                 </div>
+                <div class="row-actions" *ngIf="bugBadgeCount()">
+                  <button type="button" (click)="markAllBugReportsRead()">{{ tr('markAllRead') }}</button>
+                </div>
               </div>
               <div class="bug-list">
-                <article class="glass" *ngFor="let bug of bugs()">
+                <article class="glass" *ngFor="let bug of bugs()" [class.unread]="!bug.isRead">
                   <div class="bug-meta">
-                    <strong>{{ bug.user || tr('unknownUser') }}</strong>
-                    <span class="text-secondary" style="font-size: 0.8rem;">{{ formatDate(bug.date) }}</span>
+                    <div>
+                      <strong>{{ bug.user || tr('unknownUser') }}</strong>
+                      <span class="status-pill danger" *ngIf="!bug.isRead">{{ tr('unreadBugs') }}</span>
+                    </div>
+                    <div class="row-actions">
+                      <span class="text-secondary" style="font-size: 0.8rem;">{{ formatDate(bug.date) }}</span>
+                      <button type="button" *ngIf="!bug.isRead" (click)="markBugReportRead(bug)">{{ tr('markRead') }}</button>
+                    </div>
                   </div>
                   <a [href]="bug.url" target="_blank" rel="noopener" style="word-break: break-all;">{{ bug.url }}</a>
                   <p class="text-secondary" *ngIf="bug.description" style="margin-top: 0.75rem; color: var(--text-primary);">
@@ -1748,10 +1768,22 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
       flex-direction: column;
       gap: 0.5rem;
     }
+    .bug-list article.unread {
+      border-color: rgba(244, 63, 94, 0.38);
+      background: rgba(244, 63, 94, 0.07);
+      box-shadow: 0 18px 42px rgba(244, 63, 94, 0.08);
+    }
     .bug-meta {
       display: flex;
       justify-content: space-between;
       align-items: center;
+      gap: 1rem;
+    }
+    .bug-meta > div {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.65rem;
     }
     .bug-list article a {
       color: var(--accent-cyan);
@@ -2507,7 +2539,7 @@ export class AdminComponent implements OnInit, OnDestroy {
 
   private token = '';
   private readonly isBrowser: boolean;
-  private usersRefreshTimer: ReturnType<typeof setInterval> | null = null;
+  private adminRefreshTimer: ReturnType<typeof setInterval> | null = null;
 
   constructor(
     @Inject(PLATFORM_ID) platformId: object,
@@ -2534,7 +2566,7 @@ export class AdminComponent implements OnInit, OnDestroy {
     if (me.success && me.user?.role === 'admin') {
       this.isAuthed.set(true);
       await this.refresh();
-      this.startUsersRefreshTimer();
+      this.startAdminRefreshTimer();
       return;
     }
 
@@ -2570,33 +2602,36 @@ export class AdminComponent implements OnInit, OnDestroy {
     localStorage.setItem('qs_token', this.token);
     this.isAuthed.set(true);
     await this.refresh();
-    this.startUsersRefreshTimer();
+    this.startAdminRefreshTimer();
   }
 
   protected logout(): void {
     if (this.token) void this.api('/api/auth/logout', { method: 'POST' });
     this.token = '';
     this.isAuthed.set(false);
-    this.stopUsersRefreshTimer();
+    this.stopAdminRefreshTimer();
     if (this.isBrowser) localStorage.removeItem('qs_admin_token');
   }
 
   ngOnDestroy(): void {
-    this.stopUsersRefreshTimer();
+    this.stopAdminRefreshTimer();
   }
 
-  private startUsersRefreshTimer(): void {
-    if (!this.isBrowser || this.usersRefreshTimer) return;
-    this.usersRefreshTimer = setInterval(() => {
-      if (!this.isAuthed() || this.activeTab() !== 'users') return;
-      void this.loadUsers(this.pagination().page || 1);
+  private startAdminRefreshTimer(): void {
+    if (!this.isBrowser || this.adminRefreshTimer) return;
+    this.adminRefreshTimer = setInterval(() => {
+      if (!this.isAuthed()) return;
+      void this.loadStats();
+      if (this.activeTab() === 'bugs') void this.loadBugs();
+      if (this.activeTab() === 'support') void this.loadSupportMessages();
+      if (this.activeTab() === 'users') void this.loadUsers(this.pagination().page || 1);
     }, 30000);
   }
 
-  private stopUsersRefreshTimer(): void {
-    if (!this.usersRefreshTimer) return;
-    clearInterval(this.usersRefreshTimer);
-    this.usersRefreshTimer = null;
+  private stopAdminRefreshTimer(): void {
+    if (!this.adminRefreshTimer) return;
+    clearInterval(this.adminRefreshTimer);
+    this.adminRefreshTimer = null;
   }
 
   protected startGoogleLogin(): void {
@@ -2807,11 +2842,22 @@ export class AdminComponent implements OnInit, OnDestroy {
   }
 
   protected adminNoticeCards(): Array<{ label: string; value: string; note: string; tone?: 'warn' | 'ok'; targetTab?: AdminTab; targetId?: string }> {
+    const unreadBugs = this.bugBadgeCount();
     const supportUnread = this.supportBadgeCount();
     const duplicates = (this.billingSafety().duplicateGroups || []).length;
     const activeUsers = this.users().filter(user => this.isUserExtensionActive(user)).length;
     const reviewDetails = this.adminLocale() === 'pl' ? 'Kliknij, aby sprawdzic szczegoly' : this.tr('clickToReview');
     const notices: Array<{ label: string; value: string; note: string; tone?: 'warn' | 'ok'; targetTab?: AdminTab; targetId?: string }> = [];
+
+    if (unreadBugs > 0) {
+      notices.push({
+        label: this.tr('unreadBugs'),
+        value: this.formatNumber(unreadBugs),
+        note: `${this.tr('newBugReportsWaiting')} - ${reviewDetails}`,
+        tone: 'warn',
+        targetTab: 'bugs'
+      });
+    }
 
     if (supportUnread > 0) {
       notices.push({
@@ -2850,6 +2896,7 @@ export class AdminComponent implements OnInit, OnDestroy {
         void this.loadBillingSafety();
         void this.loadBillingUsage(this.billingUsagePagination().page || 1);
       }
+      if (notice.targetTab === 'bugs') void this.loadBugs();
       if (notice.targetTab === 'support') void this.loadSupportMessages();
       if (notice.targetTab === 'users') void this.loadUsers(this.pagination().page || 1);
     }
@@ -2897,6 +2944,7 @@ export class AdminComponent implements OnInit, OnDestroy {
       { label: this.adminLocale() === 'pl' ? 'Przychód mies.' : 'Month revenue', value: this.formatMoney(s.monthRevenue || 0), revenue: true },
       { label: this.adminLocale() === 'pl' ? 'Płatności dziś' : 'Purchases today', value: this.formatNumber(s.todayPurchases) },
       { label: this.tr('bugsTitle'), value: this.formatNumber(s.totalBugReports) },
+      { label: this.tr('unreadBugs'), value: this.formatNumber(s.unreadBugReports) },
       { label: this.adminLocale() === 'pl' ? 'Otwarty support' : 'Open support', value: this.formatNumber(s.openSupportMessages) },
       { label: this.tr('unreadSupport'), value: this.formatNumber(s.unreadSupportMessages) },
       { label: this.tr('banned'), value: this.formatNumber(s.bannedUsers) }
@@ -2965,6 +3013,12 @@ export class AdminComponent implements OnInit, OnDestroy {
     const fromStats = Number(this.stats().unreadSupportMessages || 0);
     if (fromStats > 0) return fromStats;
     return this.supportMessages().filter(message => !message.isRead).length;
+  }
+
+  protected bugBadgeCount(): number {
+    const fromStats = Number(this.stats().unreadBugReports || 0);
+    if (fromStats > 0) return fromStats;
+    return this.bugs().filter(report => !report.isRead).length;
   }
 
   protected supportSender(message: any): string {
@@ -3112,6 +3166,32 @@ export class AdminComponent implements OnInit, OnDestroy {
   private async loadBugs(): Promise<void> {
     const result = await this.api('/api/admin/bug-reports');
     if (result.success) this.bugs.set(result.reports || []);
+  }
+
+  protected async markBugReportRead(report: any): Promise<void> {
+    if (!report?.id || report.isRead) return;
+    const result = await this.api(`/api/admin/bug-reports/${report.id}`, {
+      method: 'PATCH',
+      body: JSON.stringify({ isRead: true })
+    });
+    if (result.success) {
+      this.bugs.set(this.bugs().map(item =>
+        item.id === report.id ? { ...item, isRead: true, readAt: result.report?.readAt || new Date().toISOString() } : item
+      ));
+      await this.loadStats();
+      return;
+    }
+    this.error.set(result.error || this.tr('couldNotUpdateBugReport'));
+  }
+
+  protected async markAllBugReportsRead(): Promise<void> {
+    const result = await this.api('/api/admin/bug-reports/mark-all-read', { method: 'POST' });
+    if (result.success) {
+      this.bugs.set(this.bugs().map(item => ({ ...item, isRead: true, readAt: item.readAt || new Date().toISOString() })));
+      await this.loadStats();
+      return;
+    }
+    this.error.set(result.error || this.tr('couldNotUpdateBugReport'));
   }
 
   protected async loadSupportMessages(): Promise<void> {

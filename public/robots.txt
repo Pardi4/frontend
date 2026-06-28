@@ -33,5 +33,9 @@ Disallow: /admin
 Disallow: /admin/
 Disallow: /admin.html
 Disallow: /admin-app.js
+Disallow: /qs-console-851-c4f9
+Disallow: /qs-console-851-c4f9/
+Disallow: /pl/qs-console-851-c4f9
+Disallow: /pl/qs-console-851-c4f9/
 
 Sitemap: https://getquizsolver.com/sitemap.xml

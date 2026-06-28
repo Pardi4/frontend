@@ -19,9 +19,9 @@ import {
 
 /* ─── Noindex pages ──────────────────────────────────────────────────────────── */
 const NOINDEX_PAGES = new Set<PageKey>(['dashboard', 'success', 'notFound']);
-const SEO_DATE = '2026-06-27';
+const SEO_DATE = '2026-06-28';
 const BASE_ROBOTS = 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1';
-const ASSET_VERSION = '20260627';
+const ASSET_VERSION = '20260628';
 const assetUrl = (path: string) => `${abs(path)}?v=${ASSET_VERSION}`;
 const ogImageUrl = (locale: Locale, slug: string) => abs(`/og/${locale}/${slug}.svg?v=${ASSET_VERSION}`);
 
@@ -201,6 +201,7 @@ export class SeoService {
         downloadUrl: CHROME_WEB_STORE_URL,
         installUrl: CHROME_WEB_STORE_URL,
         sameAs: [CHROME_WEB_STORE_URL],
+        softwareVersion: '0.911',
         inLanguage: SUPPORTED_LOCALES.map(opt => opt.htmlLang),
         description: 'QuizSolver is a Chrome extension that uses AI to instantly suggest answers and explanations for quiz questions on Testportal, Moodle, Canvas LMS, Google Forms, Kahoot, Quizizz, Blackboard, Microsoft Forms, Quizlet, and Socrative. It works in the browser side panel without tab switching and saves all solved questions for later review.',
         screenshot: assetUrl('/og-image.png'),
@@ -281,7 +282,7 @@ export class SeoService {
         about: { '@id': `${homeUrl}#software` },
         inLanguage: locOpt.htmlLang,
         datePublished: '2026-05-01',
-        dateModified: '2026-06-27',
+        dateModified: SEO_DATE,
         speakable: {
           '@type': 'SpeakableSpecification',
           cssSelector: ['h1', '.hero-lead', '.desc', 'p.hero-subtitle']
