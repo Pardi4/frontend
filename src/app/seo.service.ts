@@ -201,7 +201,7 @@ export class SeoService {
         downloadUrl: CHROME_WEB_STORE_URL,
         installUrl: CHROME_WEB_STORE_URL,
         sameAs: [CHROME_WEB_STORE_URL],
-        softwareVersion: '0.911',
+        softwareVersion: '0.912',
         inLanguage: SUPPORTED_LOCALES.map(opt => opt.htmlLang),
         description: 'QuizSolver is a Chrome extension that uses AI to instantly suggest answers and explanations for quiz questions on Testportal, Moodle, Canvas LMS, Google Forms, Kahoot, Quizizz, Blackboard, Microsoft Forms, Quizlet, and Socrative. It works in the browser side panel without tab switching and saves all solved questions for later review.',
         screenshot: assetUrl('/og-image.png'),
