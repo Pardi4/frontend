@@ -583,20 +583,20 @@ const CREDITS_COPY: Partial<Record<Locale, any>> & { en: any; pl: any } = {
     packagesText: 'Zapisane pytania i historia nauki zostają dostępne nawet wtedy, gdy nie kupujesz nowych kredytów.',
     popular: 'Popularne',
     loading: 'Przekierowanie...',
-    emailWarningTitle: 'Uzyj emaila z konta QuizSolver',
-    emailWarningText: 'Kredyty sa przypisywane do konta z emailem pokazanym tutaj. Nie zmieniaj tego emaila w checkoutcie Lemon Squeezy.',
-    confirmBadge: 'Przed platnoscia',
-    confirmTitle: 'Potwierdz email konta',
-    confirmText: 'Za chwile otworzy sie checkout Lemon Squeezy. Zostaw ten sam email, zeby kredyty trafily na poprawne konto QuizSolver.',
-    confirmEmailLabel: 'Email konta QuizSolver',
-    confirmNote: 'Jesli zmienisz email w checkoutcie, doladowanie moze sie opoznic albo bedzie wymagac recznego dopiecia przez support.',
-    confirmBack: 'Wroc',
-    confirmContinue: 'Przejdz do platnosci',
+    emailWarningTitle: 'Użyj e-maila z konta QuizSolver',
+    emailWarningText: 'Kredyty są przypisywane do konta z e-mailem pokazanym tutaj. Nie zmieniaj tego e-maila w checkoutcie Lemon Squeezy.',
+    confirmBadge: 'Przed płatnością',
+    confirmTitle: 'Potwierdź e-mail konta',
+    confirmText: 'Za chwilę otworzy się checkout Lemon Squeezy. Zostaw ten sam e-mail, żeby kredyty trafiły na poprawne konto QuizSolver.',
+    confirmEmailLabel: 'E-mail konta QuizSolver',
+    confirmNote: 'Jeśli zmienisz e-mail w checkoutcie, doładowanie może się opóźnić albo będzie wymagać ręcznego dopięcia przez support.',
+    confirmBack: 'Wróć',
+    confirmContinue: 'Przejdź do płatności',
     faqTitle: 'Pytania o kredyty',
     faq: [
-      { question: 'Jak dostane kredyty?', answer: 'Po potwierdzeniu zamowienia przez Lemon Squeezy kredyty automatycznie trafia na konto QuizSolver, na ktorym jestes zalogowany.' },
-      { question: 'Czy kredyty wygasaja?', answer: 'Kupione kredyty sa jednorazowym doladowaniem. Zapisane pytania i historia nauki zostaja dostepne niezaleznie od kolejnych zakupow.' },
-      { question: 'Czy moge zmienic email w checkoutcie?', answer: 'Nie zmieniaj go. Uzyj tego samego emaila co na koncie QuizSolver, zeby doladowanie zostalo przypisane od razu.' }
+      { question: 'Jak dostanę kredyty?', answer: 'Po potwierdzeniu zamówienia przez Lemon Squeezy kredyty automatycznie trafią na konto QuizSolver, na którym jesteś zalogowany.' },
+      { question: 'Czy kredyty wygasają?', answer: 'Kupione kredyty są jednorazowym doładowaniem. Zapisane pytania i historia nauki zostają dostępne niezależnie od kolejnych zakupów.' },
+      { question: 'Czy mogę zmienić e-mail w checkoutcie?', answer: 'Nie zmieniaj go. Użyj tego samego e-maila co na koncie QuizSolver, żeby doładowanie zostało przypisane od razu.' }
     ],
     paymentError: 'Płatności są chwilowo niedostępne. Spróbuj ponownie później.'
   }

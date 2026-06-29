@@ -665,7 +665,7 @@ const pl: SiteCopy = {
     faq: [
       { question: "Czym są kredyty QuizSolver?", answer: "Kredyty QuizSolver to przedpłacone jednostki do odpowiedzi AI, wyjaśnień, dodatkowych pytań i FocusScan. Jeden kredyt to jedna odpowiedź AI." },
       { question: "Czy to subskrypcja?", answer: "Nie. Pakiety kredytów QuizSolver są jednorazowym zakupem bez cyklicznej opłaty." },
-      { question: "Jakiego emaila użyć przy płatności?", answer: "Użyj tego samego emaila co na koncie QuizSolver i nie zmieniaj go w checkoutcie. Dzięki temu kredyty trafią od razu na właściwe konto." }
+      { question: "Jakiego e-maila użyć przy płatności?", answer: "Użyj tego samego e-maila co na koncie QuizSolver i nie zmieniaj go w checkoutcie. Dzięki temu kredyty trafią od razu na właściwe konto." }
     ]
   },
   quizPage: {

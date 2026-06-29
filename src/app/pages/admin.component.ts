@@ -311,7 +311,7 @@ const ADMIN_COPY = {
     leaderboardDescription: 'Przeglądaj dane rankingu publicznego i wykluczonych użytkowników.',
     systemDescription: 'Monitoruj stan usługi, bazę danych i zabezpieczenia przed podwójnym naliczaniem.',
     accountsCredits: 'Konta i kredyty',
-    searchEmailName: 'Szukaj emaila lub nazwy',
+    searchEmailName: 'Szukaj e-maila lub nazwy',
     search: 'Szukaj',
     sortUsers: 'Sortuj użytkowników',
     sortNewestUsers: 'Najnowsi użytkownicy',
@@ -367,13 +367,13 @@ const ADMIN_COPY = {
     from: 'Od',
     to: 'Do',
     received: 'Odebrano',
-    copyEmail: 'Kopiuj email',
+    copyEmail: 'Kopiuj e-mail',
     close: 'Zamknij',
     linkedAccount: 'Powiązane konto',
     grantCredits: 'Dodaj kredyty',
     noLinkedAccount: 'Brak powiązanego konta',
-    unknownEmail: 'Nieznany email',
-    noLinkedAccountNote: 'Ten email nadawcy nie pasuje do konta QuizSolver.',
+    unknownEmail: 'Nieznany e-mail',
+    noLinkedAccountNote: 'Ten e-mail nadawcy nie pasuje do konta QuizSolver.',
     replies: 'Odpowiedzi',
     reply: 'Odpowiedź',
     replyPlaceholder: 'Napisz pomocną odpowiedź...',
@@ -413,8 +413,8 @@ const ADMIN_COPY = {
     refreshBilling: 'Odśwież billing',
     duplicateWarning: 'Wykryto możliwe podwójnie naliczone grupy. Sprawdź od razu.',
     creditUsageLog: 'Log kredytow',
-    creditUsageDescription: 'Sprawdz dokladnie co zostalo naliczone, umorzone albo odrzucone dla usera i pytania.',
-    searchCreditUsage: 'Szukaj emaila, tresci pytania lub hasha',
+    creditUsageDescription: 'Sprawdź dokładnie co zostało naliczone, umorzone albo odrzucone dla użytkownika i pytania.',
+    searchCreditUsage: 'Szukaj e-maila, treści pytania lub hasha',
     allStatuses: 'Wszystkie statusy',
     allActions: 'Wszystkie akcje',
     charged: 'Pobrano',
@@ -431,7 +431,7 @@ const ADMIN_COPY = {
     timeSpan: 'Odstep czasu',
     reviewInLog: 'Sprawdz w logu',
     possibleRefund: 'Zwrot?',
-    duplicateReason: 'Ten sam user, akcja i pytanie naliczone w oknie kontroli.',
+    duplicateReason: 'Ten sam użytkownik, akcja i pytanie naliczone w oknie kontroli.',
     questionHash: 'Hash pytania',
     charges: 'Naliczono',
     lastCharged: 'Ostatnie naliczenie',
@@ -461,7 +461,7 @@ const ADMIN_COPY = {
     unreadSupport: 'Nieprzeczytany support',
     unreadBugs: 'Nowe bledy',
     newEmailsWaiting: 'Nowe maile czekają',
-    newBugReportsWaiting: 'Nowe zgloszenia bledow czekaja',
+    newBugReportsWaiting: 'Nowe zgłoszenia błędów czekają',
     markRead: 'Oznacz jako przeczytane',
     markAllRead: 'Oznacz wszystkie',
     creditSafety: 'Bezpieczeństwo kredytów',
@@ -501,12 +501,12 @@ const ADMIN_COPY = {
     couldNotApplyPurchase: 'Nie udało się dodać kredytów z płatności.',
     noMessagePreview: 'Brak podglądu wiadomości.',
     noMessageBody: 'Brak treści wiadomości.',
-    couldNotCopyEmail: 'Nie udało się skopiować adresu email.',
+    couldNotCopyEmail: 'Nie udało się skopiować adresu e-mail.',
     couldNotSendReply: 'Nie udało się wysłać odpowiedzi supportu.',
     deleteSupportConfirmPrefix: 'Usunąć wiadomość supportu od',
     unknownSender: 'nieznanego nadawcy',
     couldNotDeleteSupport: 'Nie udało się usunąć wiadomości supportu.',
-    couldNotUpdateBugReport: 'Nie udalo sie zaktualizowac zgloszenia bledu.',
+    couldNotUpdateBugReport: 'Nie udało się zaktualizować zgłoszenia błędu.',
     supportAdjustment: 'Korekta supportu',
     questionHistoryAdjustment: 'Korekta z historii pytań',
     adminManualGrant: 'Ręczny grant admina'
@@ -980,6 +980,37 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
               </div>
 
               <div class="parser-workspace">
+                <section class="parser-block parser-domain-block">
+                  <div class="parser-block-head">
+                    <div>
+                      <h3>{{ adminLocale() === 'pl' ? 'Domeny wymagajace uwagi' : 'Domains needing attention' }}</h3>
+                      <p>{{ adminLocale() === 'pl' ? 'Ranking stron z największą liczbą błędów, zgłoszeń i częściowych odczytów.' : 'Sites ranked by parser failures, reports and partial reads.' }}</p>
+                    </div>
+                  </div>
+                  <div class="parser-platform-list" *ngIf="parserDomainRows().length; else noParserDomains">
+                    <article class="parser-platform-row parser-domain-row" *ngFor="let item of parserDomainRows()">
+                      <div class="parser-row-head">
+                        <div class="parser-row-main">
+                          <strong>{{ item.hostname || shortUrl(item.sampleUrl) || 'unknown site' }}</strong>
+                          <span>{{ formatNumber(item.count || 0) }} {{ tr('parserEvents') }} - {{ (item.platforms || []).join(', ') || 'universal' }}</span>
+                        </div>
+                        <span class="status-pill" [class.danger]="item.failed || item.reported">{{ formatNumber((item.failed || 0) + (item.reported || 0)) }} {{ tr('parserFailures') }}</span>
+                      </div>
+                      <div class="parser-row-metrics">
+                        <span>{{ tr('parserFailureRate') }}: <strong>{{ formatPercent(item.failureRate || 0) }}</strong></span>
+                        <span>{{ tr('parserConfidence') }}: <strong>{{ formatPercent(item.avgConfidence || 0) }}</strong></span>
+                        <span>{{ tr('parserReports') }}: <strong>{{ formatNumber(item.reported || 0) }}</strong></span>
+                        <span>{{ tr('lastSeen') }}: <strong>{{ formatDate(item.lastSeenAt) }}</strong></span>
+                      </div>
+                      <p class="parser-reason-line">{{ parserReasons(item) }}</p>
+                      <a class="primary-link parser-url" *ngIf="item.sampleUrl" [href]="item.sampleUrl" target="_blank" rel="noopener">{{ shortUrl(item.sampleUrl) }}</a>
+                    </article>
+                  </div>
+                  <ng-template #noParserDomains>
+                    <div class="empty-panel">{{ tr('parserNoEvents') }}</div>
+                  </ng-template>
+                </section>
+
                 <section class="parser-block parser-problem-block">
                   <div class="parser-block-head">
                     <div>
@@ -1083,7 +1114,7 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
                 <div class="parser-block-head">
                   <div>
                     <h3>{{ tr('parserRecentReports') }}</h3>
-                    <p>{{ adminLocale() === 'pl' ? 'Zgloszenia uzytkownikow powiazane z parserem.' : 'User reports linked with parser diagnostics.' }}</p>
+                    <p>{{ adminLocale() === 'pl' ? 'Zgłoszenia użytkowników powiązane z parserem.' : 'User reports linked with parser diagnostics.' }}</p>
                   </div>
                 </div>
                 <div class="parser-report-list">
@@ -2367,8 +2398,13 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
       gap: 1.25rem;
       align-items: start;
     }
+    .parser-domain-block,
     .parser-problem-block {
       grid-column: 1 / -1;
+    }
+    .parser-domain-row {
+      border-color: rgba(14, 165, 233, 0.24);
+      background: rgba(14, 165, 233, 0.045);
     }
     .parser-problem-card {
       border-color: rgba(244, 63, 94, 0.24);
@@ -2918,7 +2954,7 @@ export class AdminComponent implements OnInit, OnDestroy {
   protected readonly supportMessages = signal<any[]>([]);
   protected readonly selectedSupportMessage = signal<any | null>(null);
   protected readonly cache = signal<any>({});
-  protected readonly parserHealth = signal<any>({ summary: {}, platforms: [], recentEvents: [], recentBugReports: [] });
+  protected readonly parserHealth = signal<any>({ summary: {}, platforms: [], problemGroups: [], domainRanking: [], recentEvents: [], recentBugReports: [] });
   protected readonly parserEvents = signal<any[]>([]);
   protected readonly leaderboard = signal<any[]>([]);
   protected readonly health = signal<any>({});
@@ -3413,6 +3449,10 @@ export class AdminComponent implements OnInit, OnDestroy {
 
   protected parserPlatformRows(): any[] {
     return (this.parserHealth().platforms || []).slice(0, 12);
+  }
+
+  protected parserDomainRows(): any[] {
+    return (this.parserHealth().domainRanking || []).slice(0, 8);
   }
 
   protected parserProblemRows(): any[] {
