@@ -18,6 +18,30 @@ interface DemoQuestion {
   prompts?: string[];
   placeholder?: string;
   correctText: string;
+  hint?: string;
+  explanation?: string;
+}
+
+interface DemoLabels {
+  quizMeta: string;
+  scoreLabel: string;
+  answeredLabel: string;
+  accuracyLabel: string;
+  checkAnswer: string;
+  showHint: string;
+  simulateSolver: string;
+  resetAnswers: string;
+  correctTitle: string;
+  wrongTitle: string;
+  emptyTitle: string;
+  hintTitle: string;
+  explanationLabel: string;
+  resultTitle: string;
+  resultText: string;
+  finalPrimary: string;
+  finalSecondary: string;
+  sideTitle: string;
+  sideText: string;
 }
 
 interface DemoCopy {
@@ -40,8 +64,42 @@ interface DemoCopy {
   chooseOption: string;
   popupTitle: string;
   popupSteps: string[];
+  labels?: Partial<DemoLabels>;
+  proofItems?: string[];
   questions: DemoQuestion[];
 }
+
+interface DemoAnswerState {
+  value?: string;
+  matches?: string[];
+  checked?: boolean;
+  correct?: boolean;
+  empty?: boolean;
+  hinted?: boolean;
+  solved?: boolean;
+}
+
+const DEFAULT_DEMO_LABELS: DemoLabels = {
+  quizMeta: 'Live practice quiz',
+  scoreLabel: 'Score',
+  answeredLabel: 'Answered',
+  accuracyLabel: 'Accuracy',
+  checkAnswer: 'Check answer',
+  showHint: 'Show hint',
+  simulateSolver: 'Simulate QuizSolver',
+  resetAnswers: 'Reset answers',
+  correctTitle: 'Correct',
+  wrongTitle: 'Not quite',
+  emptyTitle: 'Choose an answer first',
+  hintTitle: 'Hint',
+  explanationLabel: 'Why this answer works',
+  resultTitle: 'Demo complete',
+  resultText: 'You have tested radio, hint mode, text input, dropdown matching and selected-text solving. The real extension uses the same workflow on supported quiz pages.',
+  finalPrimary: 'Install the extension',
+  finalSecondary: 'Practice again',
+  sideTitle: 'What QuizSolver would do',
+  sideText: 'Open the extension on this page, solve the current question, or use the quick overlay for selected text. This demo mirrors the real extension flow without spending credits.'
+};
 
 const COPY: Partial<Record<Locale, DemoCopy>> & { en: DemoCopy; pl: DemoCopy } = {
   en: {
@@ -70,6 +128,13 @@ const COPY: Partial<Record<Locale, DemoCopy>> & { en: DemoCopy; pl: DemoCopy } =
       'Use the text and dropdown examples to see how non-radio questions are handled.',
       'Open Quick overlay with the popup button or Alt+Q, select question text, then solve only that selection.'
     ],
+    labels: {
+      quizMeta: 'Safe interactive quiz',
+      resultText: 'You have tried the same patterns QuizSolver handles on real pages: choices, hint mode, typed answers, matching fields and selected text.',
+      sideTitle: 'Extension preview',
+      sideText: 'Use this page like a real quiz. Answer manually, ask for a hint, or simulate how QuizSolver would fill the current question.'
+    },
+    proofItems: ['Works without credits on this demo', 'Shows why an answer is correct', 'Built to match real quiz layouts'],
     questions: [
       {
         id: 'demo-radio',
@@ -79,7 +144,9 @@ const COPY: Partial<Record<Locale, DemoCopy>> & { en: DemoCopy; pl: DemoCopy } =
         instruction: 'Click Solve current page in the extension popup. QuizSolver should choose the correct option.',
         question: 'What should you take when it is raining outside?',
         options: ['Sunglasses', 'Umbrella', 'Beach towel', 'Ice skates'],
-        correctText: 'Umbrella'
+        correctText: 'Umbrella',
+        hint: 'Think about the object that keeps rain away from you.',
+        explanation: 'An umbrella is designed to shield you from rain. The other options are useful in different weather or activities.'
       },
       {
         id: 'demo-hidden',
@@ -89,7 +156,9 @@ const COPY: Partial<Record<Locale, DemoCopy>> & { en: DemoCopy; pl: DemoCopy } =
         instruction: 'Turn on Hint mode in the popup before solving. The answer should be hinted instead of clicked.',
         question: 'Which item do people usually keep in a fridge?',
         options: ['Blanket', 'Milk', 'Notebook', 'Keys'],
-        correctText: 'Milk'
+        correctText: 'Milk',
+        hint: 'Look for the food item that needs to stay cold.',
+        explanation: 'Milk is commonly stored in a refrigerator to keep it fresh. A blanket, notebook and keys do not need cold storage.'
       },
       {
         id: 'demo-text',
@@ -99,7 +168,9 @@ const COPY: Partial<Record<Locale, DemoCopy>> & { en: DemoCopy; pl: DemoCopy } =
         instruction: 'Solve the page and the extension will fill the text input with a local demo answer.',
         question: 'How many days are in a normal week?',
         placeholder: 'Type the answer here',
-        correctText: '7'
+        correctText: '7',
+        hint: 'Count the standard weekdays from Monday through Sunday.',
+        explanation: 'A normal calendar week has seven days, so the typed answer should be 7.'
       },
       {
         id: 'demo-matching',
@@ -110,7 +181,9 @@ const COPY: Partial<Record<Locale, DemoCopy>> & { en: DemoCopy; pl: DemoCopy } =
         question: 'Match each everyday activity with the place where it usually happens.',
         prompts: ['Cooking', 'Sleeping', 'Shopping'],
         options: ['Kitchen', 'Bedroom', 'Store'],
-        correctText: 'Cooking = Kitchen, Sleeping = Bedroom, Shopping = Store'
+        correctText: 'Cooking = Kitchen, Sleeping = Bedroom, Shopping = Store',
+        hint: 'Match each action to the room or place where you would normally do it.',
+        explanation: 'Cooking usually happens in a kitchen, sleeping in a bedroom, and shopping in a store.'
       },
       {
         id: 'demo-selected',
@@ -120,7 +193,9 @@ const COPY: Partial<Record<Locale, DemoCopy>> & { en: DemoCopy; pl: DemoCopy } =
         instruction: 'Select the question text, press Alt+Q or open Quick overlay, then solve selected text.',
         question: 'Which QuizSolver tool opens a small window with fast actions?',
         options: ['Quick overlay', 'Credit checkout', 'Admin panel', 'Browser history'],
-        correctText: 'Quick overlay'
+        correctText: 'Quick overlay',
+        hint: 'The answer is the small floating control opened with Alt+Q.',
+        explanation: 'Quick overlay is the floating QuizSolver window for fast actions such as solving selected text.'
       }
     ]
   },
@@ -204,6 +279,119 @@ const COPY: Partial<Record<Locale, DemoCopy>> & { en: DemoCopy; pl: DemoCopy } =
       }
     ]
   }
+};
+
+COPY.pl = {
+  eyebrow: 'Interaktywne demo',
+  title: 'Sprawdź QuizSolver na quizie, który działa jak prawdziwy',
+  lead: 'Odpowiedz samodzielnie, poproś o podpowiedź albo zasymuluj działanie rozszerzenia. Demo pokazuje wybór odpowiedzi, tryb podpowiedzi, pole tekstowe, dopasowania i rozwiązywanie zaznaczonego tekstu bez zużywania kredytów.',
+  install: 'Zainstaluj rozszerzenie',
+  openStore: 'Otwórz Chrome Web Store',
+  demoBadge: 'Bez zużycia kredytów',
+  localBadge: 'Prawdziwy przepływ quizu',
+  mapTitle: 'Jak przejść demo',
+  mapText: 'Przejdź pytania jak zwykły quiz. Możesz sprawdzić własną odpowiedź, zobaczyć hint albo kliknąć symulację QuizSolver, żeby zobaczyć jak rozszerzenie pomaga na realnych stronach.',
+  prev: 'Poprzednie',
+  next: 'Następne pytanie',
+  restart: 'Zacznij od nowa',
+  startTour: 'Uruchom tutorial rozszerzenia',
+  selectText: 'Zaznacz tekst pytania',
+  selectedTip: 'Zaznacz sam tekst pytania, otwórz szybki overlay i kliknij rozwiązywanie zaznaczonego tekstu.',
+  yourAnswer: 'Twoja odpowiedź',
+  chooseOption: 'Wybierz',
+  popupTitle: 'Podgląd pracy rozszerzenia',
+  popupSteps: [
+    'Odpowiedz ręcznie albo użyj przycisku Symuluj QuizSolver.',
+    'Włącz podpowiedź, żeby zobaczyć delikatną wskazówkę zamiast gotowego kliknięcia.',
+    'Sprawdź pole tekstowe i zobacz, że demo zachowuje się jak formularz quizowy.',
+    'Przejdź dopasowania w dropdownach, tak jak w LMS-ach i formularzach.',
+    'Na końcu zaznacz tekst pytania i sprawdź przepływ Quick overlay.'
+  ],
+  labels: {
+    quizMeta: 'Bezpieczny quiz testowy',
+    scoreLabel: 'Wynik',
+    answeredLabel: 'Sprawdzone',
+    accuracyLabel: 'Skuteczność',
+    checkAnswer: 'Sprawdź odpowiedź',
+    showHint: 'Pokaż podpowiedź',
+    simulateSolver: 'Symuluj QuizSolver',
+    resetAnswers: 'Wyczyść odpowiedzi',
+    correctTitle: 'Poprawnie',
+    wrongTitle: 'Jeszcze nie',
+    emptyTitle: 'Najpierw wybierz odpowiedź',
+    hintTitle: 'Podpowiedź',
+    explanationLabel: 'Dlaczego to działa',
+    resultTitle: 'Demo ukończone',
+    resultText: 'Przeszedłeś typy pytań, które QuizSolver obsługuje na realnych stronach: odpowiedzi wyboru, hint mode, tekst, dropdowny i zaznaczony tekst.',
+    finalPrimary: 'Zainstaluj rozszerzenie',
+    finalSecondary: 'Przećwicz jeszcze raz',
+    sideTitle: 'Co zrobiłby QuizSolver',
+    sideText: 'Otwórz rozszerzenie na tej stronie, rozwiąż aktualne pytanie albo użyj Quick overlay dla zaznaczonego tekstu. Ten quiz pokazuje realny przepływ bez zużywania kredytów.'
+  },
+  proofItems: ['Nie zużywa kredytów w demo', 'Tłumaczy poprawną odpowiedź', 'Pokazuje realne typy quizów'],
+  questions: [
+    {
+      id: 'demo-radio',
+      type: 'radio',
+      kicker: 'Krok 1',
+      title: 'Pytanie jednokrotnego wyboru',
+      instruction: 'Wybierz odpowiedź samodzielnie albo zasymuluj działanie rozszerzenia.',
+      question: 'Co warto zabrać, gdy na zewnątrz pada deszcz?',
+      options: ['Okulary przeciwsłoneczne', 'Parasol', 'Ręcznik plażowy', 'Łyżwy'],
+      correctText: 'Parasol',
+      hint: 'Szukaj rzeczy, która chroni przed deszczem.',
+      explanation: 'Parasol chroni przed deszczem. Pozostałe rzeczy pasują do słońca, plaży albo jazdy po lodzie.'
+    },
+    {
+      id: 'demo-hidden',
+      type: 'hidden',
+      kicker: 'Krok 2',
+      title: 'Tryb podpowiedzi',
+      instruction: 'To pokazuje sytuację, w której użytkownik chce tylko wskazówkę, a nie automatyczne kliknięcie.',
+      question: 'Co najczęściej trzymamy w lodówce, żeby było świeże?',
+      options: ['Koc', 'Mleko', 'Zeszyt', 'Klucze'],
+      correctText: 'Mleko',
+      hint: 'Wybierz produkt spożywczy, który zwykle musi być chłodzony.',
+      explanation: 'Mleko przechowuje się w lodówce, żeby dłużej zachowało świeżość. Koc, zeszyt i klucze nie wymagają chłodzenia.'
+    },
+    {
+      id: 'demo-text',
+      type: 'text',
+      kicker: 'Krok 3',
+      title: 'Odpowiedź wpisywana',
+      instruction: 'Wpisz odpowiedź w pole tekstowe albo pozwól demo uzupełnić ją jak rozszerzenie.',
+      question: 'Ile dni ma zwykły tydzień?',
+      placeholder: 'Wpisz odpowiedź tutaj',
+      correctText: '7',
+      hint: 'Policz dni od poniedziałku do niedzieli.',
+      explanation: 'Standardowy tydzień kalendarzowy ma siedem dni, więc poprawna odpowiedź to 7.'
+    },
+    {
+      id: 'demo-matching',
+      type: 'matching',
+      kicker: 'Krok 4',
+      title: 'Dropdowny i dopasowanie',
+      instruction: 'Dopasuj każdą czynność do miejsca. Tak wyglądają pytania spotykane w LMS-ach i formularzach.',
+      question: 'Dopasuj codzienną czynność do miejsca, w którym zwykle się odbywa.',
+      prompts: ['Gotowanie', 'Spanie', 'Zakupy'],
+      options: ['Kuchnia', 'Sypialnia', 'Sklep'],
+      correctText: 'Gotowanie = Kuchnia, Spanie = Sypialnia, Zakupy = Sklep',
+      hint: 'Połącz czynność z najbardziej naturalnym miejscem.',
+      explanation: 'Gotujemy w kuchni, śpimy w sypialni, a zakupy robimy w sklepie.'
+    },
+    {
+      id: 'demo-selected',
+      type: 'selected',
+      kicker: 'Krok 5',
+      title: 'Quick overlay i zaznaczony tekst',
+      instruction: 'Zaznacz tekst pytania, użyj Alt+Q albo przycisku w demo, a potem rozwiąż tylko zaznaczenie.',
+      question: 'Które narzędzie QuizSolver otwiera małe okno z szybkimi akcjami?',
+      options: ['Quick overlay', 'Płatność za kredyty', 'Panel admina', 'Historia przeglądarki'],
+      correctText: 'Quick overlay',
+      hint: 'To małe pływające okno uruchamiane skrótem Alt+Q.',
+      explanation: 'Quick overlay to małe okno QuizSolver z szybkimi akcjami, między innymi rozwiązywaniem zaznaczonego tekstu.'
+    }
+  ]
 };
 
 const DEMO_LOCALE_COPY: Record<Exclude<Locale, 'en' | 'pl'>, Omit<DemoCopy, 'questions'>> = {
@@ -374,6 +562,11 @@ const DEMO_QUESTIONS: Record<Exclude<Locale, 'en' | 'pl'>, DemoQuestion[]> = {
               <div class="demo-badges" aria-label="Demo guarantees">
                 <span>{{ copy.demoBadge }}</span>
                 <span>{{ copy.localBadge }}</span>
+                <span>{{ label('quizMeta') }}</span>
+              </div>
+
+              <div class="demo-proof" *ngIf="proofItems().length">
+                <span *ngFor="let item of proofItems()">{{ item }}</span>
               </div>
 
               <!-- Warning Card -->
@@ -402,6 +595,26 @@ const DEMO_QUESTIONS: Record<Exclude<Locale, 'en' | 'pl'>, DemoQuestion[]> = {
                   <p>{{ step }}</p>
                 </li>
               </ol>
+
+              <div class="demo-score-panel">
+                <div class="score-head">
+                  <span>{{ label('scoreLabel') }}</span>
+                  <strong>{{ score() }} / {{ copy.questions.length }}</strong>
+                </div>
+                <div class="score-meter" aria-hidden="true">
+                  <i [style.width.%]="progressPercent()"></i>
+                </div>
+                <dl class="score-stats">
+                  <div>
+                    <dt>{{ label('answeredLabel') }}</dt>
+                    <dd>{{ answeredCount() }}</dd>
+                  </div>
+                  <div>
+                    <dt>{{ label('accuracyLabel') }}</dt>
+                    <dd>{{ accuracyPercent() }}%</dd>
+                  </div>
+                </dl>
+              </div>
             </aside>
           </div>
         </section>
@@ -409,8 +622,13 @@ const DEMO_QUESTIONS: Record<Exclude<Locale, 'en' | 'pl'>, DemoQuestion[]> = {
         <section class="container demo-workspace" *ngIf="currentQuestion() as question">
           <aside class="demo-side glass">
             <p class="eyebrow">{{ copy.popupTitle }}</p>
-            <h2>{{ question.title }}</h2>
-            <p>{{ question.instruction }}</p>
+            <h2>{{ label('sideTitle') }}</h2>
+            <p>{{ label('sideText') }}</p>
+            <div class="demo-current-step">
+              <span>{{ question.kicker }}</span>
+              <strong>{{ question.title }}</strong>
+              <p>{{ question.instruction }}</p>
+            </div>
             <div class="mock-popup" aria-hidden="true">
               <div class="mock-popup-head">
                 <strong>QS</strong>
@@ -436,23 +654,40 @@ const DEMO_QUESTIONS: Record<Exclude<Locale, 'en' | 'pl'>, DemoQuestion[]> = {
               <span class="question-count">{{ current() + 1 }} / {{ copy.questions.length }}</span>
             </div>
 
+            <p class="question-instruction">{{ question.instruction }}</p>
+
             <fieldset class="demo-options" *ngIf="question.type === 'radio' || question.type === 'hidden' || question.type === 'selected'">
               <legend class="sr-only">{{ question.question }}</legend>
-              <label class="demo-option" *ngFor="let option of question.options; let i = index">
-                <input type="radio" [name]="question.id" [value]="i">
+              <label
+                class="demo-option"
+                *ngFor="let option of question.options; let i = index"
+                [class.selected]="answerValue(question.id) === option"
+                [class.correct-reveal]="isChecked(question) && option === question.correctText"
+                [class.wrong-reveal]="isChecked(question) && answerValue(question.id) === option && option !== question.correctText">
+                <input
+                  type="radio"
+                  [name]="question.id"
+                  [value]="option"
+                  [checked]="answerValue(question.id) === option"
+                  (change)="setAnswer(question, option)">
                 <span>{{ option }}</span>
               </label>
             </fieldset>
 
             <label class="text-answer" *ngIf="question.type === 'text'">
               <span>{{ copy.yourAnswer }}</span>
-              <input type="text" [name]="question.id + '-answer'" [placeholder]="question.placeholder || ''">
+              <input
+                type="text"
+                [name]="question.id + '-answer'"
+                [placeholder]="question.placeholder || ''"
+                [value]="answerValue(question.id)"
+                (input)="setAnswer(question, $any($event.target).value)">
             </label>
 
             <div class="matching-board" *ngIf="question.type === 'matching'">
               <label class="match-row" *ngFor="let prompt of question.prompts; let i = index">
                 <span>{{ prompt }}</span>
-                <select [name]="question.id + '-' + i">
+                <select [name]="question.id + '-' + i" [value]="matchValue(question.id, i)" (change)="setMatchAnswer(question, i, $any($event.target).value)">
                   <option value="">{{ copy.chooseOption }}</option>
                   <option *ngFor="let option of question.options" [value]="option">{{ option }}</option>
                 </select>
@@ -464,6 +699,27 @@ const DEMO_QUESTIONS: Record<Exclude<Locale, 'en' | 'pl'>, DemoQuestion[]> = {
               <p>{{ copy.selectedTip }}</p>
             </div>
 
+            <section
+              class="demo-feedback"
+              *ngIf="feedbackVisible(question)"
+              [class.success]="feedbackKind(question) === 'correct'"
+              [class.warning]="feedbackKind(question) === 'wrong'"
+              [class.info]="feedbackKind(question) === 'hint'"
+              [class.empty]="feedbackKind(question) === 'empty'">
+              <strong>{{ feedbackTitle(question) }}</strong>
+              <p>{{ feedbackMessage(question) }}</p>
+              <div class="demo-explanation" *ngIf="showExplanation(question)">
+                <span>{{ label('explanationLabel') }}</span>
+                <p>{{ question.explanation }}</p>
+              </div>
+            </section>
+
+            <div class="demo-controls">
+              <button class="btn btn-outline" type="button" (click)="showHint(question)">{{ label('showHint') }}</button>
+              <button class="btn btn-outline" type="button" data-qs-tour="mock-solve" (click)="simulateSolver(question)">{{ label('simulateSolver') }}</button>
+              <button class="btn btn-primary" type="button" (click)="checkAnswer(question)">{{ label('checkAnswer') }}</button>
+            </div>
+
             <div class="demo-nav">
               <button class="btn btn-outline" type="button" (click)="previous()" [disabled]="current() === 0">{{ copy.prev }}</button>
               <button class="btn btn-primary" type="button" data-qs-tour="next" (click)="next()">
@@ -471,6 +727,18 @@ const DEMO_QUESTIONS: Record<Exclude<Locale, 'en' | 'pl'>, DemoQuestion[]> = {
               </button>
             </div>
           </article>
+        </section>
+
+        <section class="container demo-finish" *ngIf="isDemoComplete()">
+          <div>
+            <p class="eyebrow">{{ label('scoreLabel') }} {{ score() }} / {{ copy.questions.length }}</p>
+            <h2>{{ label('resultTitle') }}</h2>
+            <p>{{ label('resultText') }}</p>
+          </div>
+          <div class="demo-finish-actions">
+            <a [href]="storeUrl" target="_blank" rel="noopener" class="btn btn-primary">{{ label('finalPrimary') }}</a>
+            <button class="btn btn-outline" type="button" (click)="resetAnswers()">{{ label('finalSecondary') }}</button>
+          </div>
         </section>
       </div>
     </qs-shell>
@@ -540,6 +808,33 @@ const DEMO_QUESTIONS: Record<Exclude<Locale, 'en' | 'pl'>, DemoQuestion[]> = {
       overflow-wrap: anywhere;
     }
 
+    .demo-proof {
+      display: grid;
+      gap: 0.55rem;
+      margin-top: 1.15rem;
+      max-width: 720px;
+    }
+
+    .demo-proof span {
+      position: relative;
+      padding-left: 1.35rem;
+      color: #dbeafe;
+      font-size: 0.94rem;
+      line-height: 1.45;
+    }
+
+    .demo-proof span::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0.48rem;
+      width: 0.48rem;
+      height: 0.48rem;
+      border-radius: 50%;
+      background: #22c55e;
+      box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.14);
+    }
+
     .demo-map,
     .demo-side,
     .demo-card {
@@ -595,6 +890,66 @@ const DEMO_QUESTIONS: Record<Exclude<Locale, 'en' | 'pl'>, DemoQuestion[]> = {
       line-height: 1.35;
     }
 
+    .demo-score-panel {
+      display: grid;
+      gap: 0.75rem;
+      margin-top: 1rem;
+      padding: 0.9rem;
+      border: 1px solid rgba(14, 165, 233, 0.26);
+      border-radius: 10px;
+      background: rgba(14, 165, 233, 0.08);
+    }
+
+    .score-head,
+    .score-stats,
+    .score-stats div {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+    }
+
+    .score-head span,
+    .score-stats dt {
+      color: var(--text-secondary);
+      font-size: 0.84rem;
+      font-weight: 800;
+    }
+
+    .score-head strong,
+    .score-stats dd {
+      color: var(--text-primary);
+      font-weight: 900;
+    }
+
+    .score-meter {
+      height: 0.6rem;
+      border-radius: 999px;
+      overflow: hidden;
+      background: rgba(148, 163, 184, 0.16);
+    }
+
+    .score-meter i {
+      display: block;
+      height: 100%;
+      min-width: 0.35rem;
+      border-radius: inherit;
+      background: linear-gradient(90deg, #22c55e, #0ea5e9);
+      transition: width 0.22s ease;
+    }
+
+    .score-stats {
+      margin: 0;
+    }
+
+    .score-stats div {
+      flex: 1 1 0;
+      padding: 0.55rem 0.65rem;
+      border: 1px solid rgba(148, 163, 184, 0.14);
+      border-radius: 8px;
+      background: rgba(15, 23, 42, 0.22);
+    }
+
     .demo-workspace {
       grid-template-columns: minmax(280px, 0.42fr) minmax(0, 1fr);
       align-items: start;
@@ -608,6 +963,36 @@ const DEMO_QUESTIONS: Record<Exclude<Locale, 'en' | 'pl'>, DemoQuestion[]> = {
 
     .demo-side > p:not(.eyebrow) {
       margin-bottom: 1rem;
+    }
+
+    .demo-current-step {
+      display: grid;
+      gap: 0.25rem;
+      margin: 1rem 0;
+      padding: 0.85rem;
+      border: 1px solid rgba(124, 92, 252, 0.22);
+      border-radius: 10px;
+      background: rgba(124, 92, 252, 0.08);
+    }
+
+    .demo-current-step span {
+      color: #c4b5fd;
+      font-size: 0.78rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .demo-current-step strong {
+      color: var(--text-primary);
+      font-size: 1rem;
+    }
+
+    .demo-current-step p {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      line-height: 1.45;
+      margin: 0;
     }
 
     .mock-popup {
@@ -700,6 +1085,13 @@ const DEMO_QUESTIONS: Record<Exclude<Locale, 'en' | 'pl'>, DemoQuestion[]> = {
       font-size: clamp(1.5rem, 3vw, 2.25rem);
     }
 
+    .question-instruction {
+      margin: -0.45rem 0 1.1rem;
+      color: var(--text-secondary);
+      font-size: 0.96rem;
+      line-height: 1.55;
+    }
+
     .question-count {
       flex: 0 0 auto;
       height: 2.3rem;
@@ -732,6 +1124,21 @@ const DEMO_QUESTIONS: Record<Exclude<Locale, 'en' | 'pl'>, DemoQuestion[]> = {
     .demo-option:hover {
       border-color: rgba(6, 182, 212, 0.35);
       background: rgba(6, 182, 212, 0.08);
+    }
+
+    .demo-option.selected {
+      border-color: rgba(14, 165, 233, 0.62);
+      background: rgba(14, 165, 233, 0.13);
+    }
+
+    .demo-option.correct-reveal {
+      border-color: rgba(34, 197, 94, 0.7);
+      background: rgba(34, 197, 94, 0.12);
+    }
+
+    .demo-option.wrong-reveal {
+      border-color: rgba(248, 113, 113, 0.68);
+      background: rgba(248, 113, 113, 0.1);
     }
 
     .demo-option input {
@@ -806,7 +1213,106 @@ const DEMO_QUESTIONS: Record<Exclude<Locale, 'en' | 'pl'>, DemoQuestion[]> = {
       font-size: 0.92rem;
     }
 
+    .demo-feedback {
+      display: grid;
+      gap: 0.5rem;
+      margin-top: 1.15rem;
+      padding: 1rem;
+      border: 1px solid rgba(148, 163, 184, 0.22);
+      border-radius: 10px;
+      background: rgba(15, 23, 42, 0.42);
+    }
+
+    .demo-feedback strong {
+      color: var(--text-primary);
+      font-size: 1rem;
+    }
+
+    .demo-feedback > p,
+    .demo-explanation p {
+      margin: 0;
+      color: var(--text-secondary);
+      line-height: 1.55;
+    }
+
+    .demo-feedback.success {
+      border-color: rgba(34, 197, 94, 0.42);
+      background: rgba(34, 197, 94, 0.09);
+    }
+
+    .demo-feedback.warning {
+      border-color: rgba(248, 113, 113, 0.38);
+      background: rgba(248, 113, 113, 0.08);
+    }
+
+    .demo-feedback.info {
+      border-color: rgba(14, 165, 233, 0.4);
+      background: rgba(14, 165, 233, 0.08);
+    }
+
+    .demo-feedback.empty {
+      border-color: rgba(245, 158, 11, 0.38);
+      background: rgba(245, 158, 11, 0.08);
+    }
+
+    .demo-explanation {
+      display: grid;
+      gap: 0.35rem;
+      margin-top: 0.35rem;
+      padding-top: 0.75rem;
+      border-top: 1px solid rgba(148, 163, 184, 0.2);
+    }
+
+    .demo-explanation span {
+      color: #bae6fd;
+      font-size: 0.78rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .demo-controls {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 0.75rem;
+      margin-top: 1.1rem;
+      padding-top: 1rem;
+      border-top: 1px solid rgba(43, 53, 69, 0.72);
+    }
+
     .demo-nav {
+      justify-content: flex-end;
+    }
+
+    .demo-finish {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-top: 1.75rem;
+      padding: 1.25rem;
+      border: 1px solid rgba(34, 197, 94, 0.26);
+      border-radius: 12px;
+      background: linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(14, 165, 233, 0.08));
+    }
+
+    .demo-finish h2 {
+      margin: 0.25rem 0 0.35rem;
+      font-size: 1.45rem;
+    }
+
+    .demo-finish p {
+      max-width: 760px;
+      color: var(--text-secondary);
+      line-height: 1.55;
+      margin: 0;
+    }
+
+    .demo-finish-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
       justify-content: flex-end;
     }
 
@@ -873,11 +1379,25 @@ const DEMO_QUESTIONS: Record<Exclude<Locale, 'en' | 'pl'>, DemoQuestion[]> = {
       }
 
       .demo-badges span,
-      .demo-actions .btn {
+      .demo-actions .btn,
+      .demo-controls .btn,
+      .demo-finish-actions .btn {
         width: 100%;
         justify-content: center;
         text-align: center;
         white-space: normal;
+      }
+
+      .demo-proof {
+        max-width: calc(100vw - 2rem);
+      }
+
+      .score-stats,
+      .demo-controls,
+      .demo-finish,
+      .demo-finish-actions {
+        flex-direction: column;
+        align-items: stretch;
       }
 
       .match-row,
@@ -964,11 +1484,18 @@ export class DemoComponent implements OnInit, OnDestroy {
         text: 'Щоб протестувати це інтерактивне демо, у вас має бути встановлене та увімкнене офіційне розширення QuizSolver для Chrome. Завантажте його безкоштовно з Chrome Web Store.'
       }
     };
+    if (this.locale === 'pl') {
+      return {
+        title: 'Wymagane rozszerzenie Chrome',
+        text: 'Aby przetestować demo razem z prawdziwym popupem QuizSolver, zainstaluj i włącz oficjalne rozszerzenie Chrome.'
+      };
+    }
     return warnings[this.locale] || warnings.en;
   }
 
   protected copy = COPY.en;
   protected readonly current = signal(0);
+  protected readonly answers = signal<Record<string, DemoAnswerState>>({});
   private readonly route = inject(ActivatedRoute);
   private readonly seo = inject(SeoService);
   private readonly platformId = inject(PLATFORM_ID);
@@ -998,6 +1525,161 @@ export class DemoComponent implements OnInit, OnDestroy {
     return this.copy.questions[this.current()];
   }
 
+  protected label(key: keyof DemoLabels): string {
+    return this.copy.labels?.[key] || DEFAULT_DEMO_LABELS[key];
+  }
+
+  protected proofItems(): string[] {
+    return this.copy.proofItems?.length ? this.copy.proofItems : (COPY.en.proofItems || []);
+  }
+
+  protected answerValue(questionId: string): string {
+    return this.answers()[questionId]?.value || '';
+  }
+
+  protected matchValue(questionId: string, index: number): string {
+    return this.answers()[questionId]?.matches?.[index] || '';
+  }
+
+  protected setAnswer(question: DemoQuestion, value: string): void {
+    this.updateAnswer(question.id, {
+      value,
+      checked: false,
+      correct: false,
+      empty: false,
+      solved: false
+    });
+  }
+
+  protected setMatchAnswer(question: DemoQuestion, index: number, value: string): void {
+    const current = [...(this.answers()[question.id]?.matches || [])];
+    current[index] = value;
+    this.updateAnswer(question.id, {
+      matches: current,
+      checked: false,
+      correct: false,
+      empty: false,
+      solved: false
+    });
+  }
+
+  protected showHint(question: DemoQuestion): void {
+    this.updateAnswer(question.id, {
+      hinted: true,
+      checked: false,
+      empty: false
+    });
+  }
+
+  protected checkAnswer(question: DemoQuestion): void {
+    const empty = !this.hasAnswer(question);
+    this.updateAnswer(question.id, {
+      checked: true,
+      correct: !empty && this.isAnswerCorrect(question),
+      empty,
+      hinted: false,
+      solved: false
+    });
+  }
+
+  protected simulateSolver(question: DemoQuestion): void {
+    if (question.type === 'matching') {
+      this.updateAnswer(question.id, {
+        matches: this.expectedMatches(question),
+        checked: true,
+        correct: true,
+        empty: false,
+        hinted: false,
+        solved: true
+      });
+      return;
+    }
+
+    this.updateAnswer(question.id, {
+      value: question.correctText,
+      checked: true,
+      correct: true,
+      empty: false,
+      hinted: false,
+      solved: true
+    });
+  }
+
+  protected isChecked(question: DemoQuestion): boolean {
+    const state = this.answers()[question.id];
+    return !!state?.checked && !state.empty;
+  }
+
+  protected isCorrect(question: DemoQuestion): boolean {
+    return !!this.answers()[question.id]?.correct;
+  }
+
+  protected feedbackVisible(question: DemoQuestion): boolean {
+    const state = this.answers()[question.id];
+    return !!state && (!!state.hinted || !!state.checked || !!state.empty);
+  }
+
+  protected feedbackKind(question: DemoQuestion): 'correct' | 'wrong' | 'hint' | 'empty' {
+    const state = this.answers()[question.id];
+    if (state?.hinted && !state.checked) return 'hint';
+    if (state?.empty) return 'empty';
+    if (state?.correct) return 'correct';
+    return 'wrong';
+  }
+
+  protected feedbackTitle(question: DemoQuestion): string {
+    const kind = this.feedbackKind(question);
+    if (kind === 'correct') return this.label('correctTitle');
+    if (kind === 'hint') return this.label('hintTitle');
+    if (kind === 'empty') return this.label('emptyTitle');
+    return this.label('wrongTitle');
+  }
+
+  protected feedbackMessage(question: DemoQuestion): string {
+    const state = this.answers()[question.id];
+    const kind = this.feedbackKind(question);
+    if (kind === 'correct') {
+      return state?.solved ? `${this.label('simulateSolver')}: ${question.correctText}` : question.correctText;
+    }
+    if (kind === 'empty') return question.instruction;
+    return question.hint || question.instruction;
+  }
+
+  protected showExplanation(question: DemoQuestion): boolean {
+    const state = this.answers()[question.id];
+    return !!question.explanation && !!state?.checked && !state.empty;
+  }
+
+  protected score(): number {
+    return this.copy.questions.filter(question => this.answers()[question.id]?.correct).length;
+  }
+
+  protected answeredCount(): number {
+    return this.copy.questions.filter(question => {
+      const state = this.answers()[question.id];
+      return !!state?.checked && !state.empty;
+    }).length;
+  }
+
+  protected progressPercent(): number {
+    return Math.round((this.answeredCount() / Math.max(1, this.copy.questions.length)) * 100);
+  }
+
+  protected accuracyPercent(): number {
+    const answered = this.answeredCount();
+    return answered ? Math.round((this.score() / answered) * 100) : 0;
+  }
+
+  protected isDemoComplete(): boolean {
+    return this.answeredCount() >= this.copy.questions.length;
+  }
+
+  protected resetAnswers(): void {
+    this.answers.set({});
+    this.current.set(0);
+    this.scrollToWorkspace();
+  }
+
   protected next(): void {
     const scrollSnapshot = this.captureScroll();
     this.current.update((value) => value >= this.copy.questions.length - 1 ? 0 : value + 1);
@@ -1025,6 +1707,50 @@ export class DemoComponent implements OnInit, OnDestroy {
   protected startGuidedTour(): void {
     if (!isPlatformBrowser(this.platformId)) return;
     window.dispatchEvent(new CustomEvent('qs-demo-start-tour'));
+  }
+
+  private updateAnswer(questionId: string, patch: DemoAnswerState): void {
+    this.answers.update((answers) => ({
+      ...answers,
+      [questionId]: {
+        ...(answers[questionId] || {}),
+        ...patch
+      }
+    }));
+  }
+
+  private hasAnswer(question: DemoQuestion): boolean {
+    const state = this.answers()[question.id];
+    if (question.type === 'matching') {
+      const expectedCount = question.prompts?.length || 0;
+      return expectedCount > 0
+        && this.expectedMatches(question).length === expectedCount
+        && Array.from({ length: expectedCount }).every((_, index) => !!state?.matches?.[index]);
+    }
+    return !!this.normalizeAnswer(state?.value);
+  }
+
+  private isAnswerCorrect(question: DemoQuestion): boolean {
+    const state = this.answers()[question.id];
+    if (question.type === 'matching') {
+      const expected = this.expectedMatches(question);
+      return expected.length > 0 && expected.every((answer, index) =>
+        this.normalizeAnswer(state?.matches?.[index]) === this.normalizeAnswer(answer)
+      );
+    }
+    return this.normalizeAnswer(state?.value) === this.normalizeAnswer(question.correctText);
+  }
+
+  private expectedMatches(question: DemoQuestion): string[] {
+    if (question.type !== 'matching') return [];
+    return String(question.correctText || '')
+      .split(',')
+      .map((part) => part.split('=').pop()?.trim() || '')
+      .filter(Boolean);
+  }
+
+  private normalizeAnswer(value: string | undefined): string {
+    return String(value || '').trim().toLowerCase().replace(/\s+/g, ' ');
   }
 
   private scrollToWorkspace(): void {
