@@ -1232,13 +1232,13 @@ function enhancePlatformTutorials(copy: SiteCopy, locale: Locale): SiteCopy {
       ],
       genericFeatures: [
         'Detects visible questions, answer choices, typed inputs, checkboxes and dropdowns.',
-        'FocusScan helps when a question is inside an image, iframe, custom layout or locked container.',
+        'FocusScan helps when a question is inside an image, a custom layout or a page section the normal parser cannot read as text.',
         'Hint mode can show a subtle clue while leaving the final click to you.',
         'History, notes and practice quizzes turn solved questions into study material.'
       ],
       genericFaq: (name) => [
         { question: `How do I start QuizSolver on ${name}?`, answer: `Open the ${name} quiz, click the QS icon in Chrome, then choose Solve current page. The extension reads only the visible question you ask it to solve.` },
-        { question: 'What if the extension does not detect the question?', answer: 'Use FocusScan, drag a box around the question and answer area, then run the scan again. This is useful for images, unusual layouts and embedded frames.' },
+        { question: 'What if the extension does not detect the question?', answer: 'Use FocusScan, drag a box around the question and answer area, then run the scan again. This helps with images, unusual layouts and page content that is not exposed as normal text.' },
         { question: 'Can I review the questions later?', answer: 'Yes. Save solved questions to History & quiz, add notes, mark favorites and create a practice quiz from your saved history.' }
       ],
       kahootSteps: [
@@ -1271,13 +1271,13 @@ function enhancePlatformTutorials(copy: SiteCopy, locale: Locale): SiteCopy {
       ],
       genericFeatures: [
         'Wykrywa widoczne pytania, odpowiedzi, pola tekstowe, checkboxy i listy rozwijane.',
-        'FocusScan pomaga przy pytaniach w obrazkach, iframe, nietypowym layoucie albo zablokowanym kontenerze.',
+        'FocusScan pomaga przy pytaniach w obrazkach, nietypowym układzie strony albo treści, której zwykły parser nie odczytuje jako tekstu.',
         'Hint mode może pokazać subtelną wskazówkę, zostawiając finalne kliknięcie Tobie.',
         'Historia, notatki i quizy powtórkowe zmieniają rozwiązane pytania w materiał do nauki.'
       ],
       genericFaq: (name) => [
         { question: `Jak uruchomić QuizSolver na ${name}?`, answer: `Otwórz quiz na ${name}, kliknij ikonę QS w Chrome i wybierz Rozwiąż bieżącą stronę. Rozszerzenie czyta tylko pytanie, które sam zlecisz do rozwiązania.` },
-        { question: 'Co zrobić, gdy pytanie nie zostanie wykryte?', answer: 'Użyj FocusScan, przeciągnij ramkę wokół pytania i odpowiedzi, a potem uruchom skan ponownie. To pomaga przy obrazkach, nietypowych układach i osadzonych ramkach.' },
+        { question: 'Co zrobić, gdy pytanie nie zostanie wykryte?', answer: 'Użyj FocusScan, przeciągnij ramkę wokół pytania i odpowiedzi, a potem uruchom skan ponownie. To pomaga przy obrazkach, nietypowych układach i elementach strony, które nie są zwykłym tekstem.' },
         { question: 'Czy mogę wrócić do pytań później?', answer: 'Tak. Zapisuj pytania w Historii i quizie, dodawaj notatki, oznaczaj ulubione i twórz quiz powtórkowy z własnej historii.' }
       ],
       kahootSteps: [
@@ -1308,7 +1308,7 @@ function enhancePlatformTutorials(copy: SiteCopy, locale: Locale): SiteCopy {
         'Prüfe die vorgeschlagene Antwort und Erklärung, bevor du absendest. Nutze Hint mode, wenn du nur einen dezenten Hinweis möchtest.',
         'Speichere wichtige Fragen in Historie & Quiz, füge eine Notiz hinzu und starte später ein Übungsquiz.'
       ],
-      genericFeatures: ['Erkennt sichtbare Fragen, Optionen, Texteingaben, Checkboxen und Dropdowns.', 'FocusScan hilft bei Bildern, iFrames und ungewöhnlichen Layouts.', 'Hint mode zeigt einen dezenten Hinweis, ohne die Kontrolle zu übernehmen.', 'Historie, Notizen und Übungsquizze machen aus Antworten Lernmaterial.'],
+      genericFeatures: ['Erkennt sichtbare Fragen, Optionen, Texteingaben, Checkboxen und Dropdowns.', 'FocusScan hilft bei Bildern, ungewöhnlichen Layouts und Inhalten, die nicht als normaler Text lesbar sind.', 'Hint mode zeigt einen dezenten Hinweis, ohne die Kontrolle zu übernehmen.', 'Historie, Notizen und Übungsquizze machen aus Antworten Lernmaterial.'],
       genericFaq: (name) => [
         { question: `Wie starte ich QuizSolver auf ${name}?`, answer: `Öffne das ${name}-Quiz, klicke auf das QS-Symbol und wähle Aktuelle Seite lösen.` },
         { question: 'Was mache ich, wenn die Frage nicht erkannt wird?', answer: 'Nutze FocusScan und ziehe einen Rahmen um Frage und Antworten.' },
@@ -1331,7 +1331,7 @@ function enhancePlatformTutorials(copy: SiteCopy, locale: Locale): SiteCopy {
         'Revisa la respuesta sugerida y la explicación antes de enviar. Usa Hint mode si prefieres una pista discreta.',
         'Guarda preguntas útiles en Historial y quiz, añade una nota y practica después con ese conjunto.'
       ],
-      genericFeatures: ['Detecta preguntas visibles, opciones, campos de texto, checkboxes y desplegables.', 'FocusScan ayuda con imágenes, iframes y diseños especiales.', 'Hint mode muestra una pista sin hacer el clic final.', 'Historial, notas y quizzes de práctica convierten respuestas en material de estudio.'],
+      genericFeatures: ['Detecta preguntas visibles, opciones, campos de texto, checkboxes y desplegables.', 'FocusScan ayuda con imágenes, diseños especiales y contenido que no aparece como texto normal.', 'Hint mode muestra una pista sin hacer el clic final.', 'Historial, notas y quizzes de práctica convierten respuestas en material de estudio.'],
       genericFaq: (name) => [
         { question: `¿Cómo uso QuizSolver en ${name}?`, answer: `Abre el quiz de ${name}, pulsa el icono QS y elige Resolver página actual.` },
         { question: '¿Qué hago si no detecta la pregunta?', answer: 'Usa FocusScan y dibuja un cuadro alrededor de la pregunta y las opciones.' },
@@ -1354,7 +1354,7 @@ function enhancePlatformTutorials(copy: SiteCopy, locale: Locale): SiteCopy {
         'Vérifiez la réponse proposée et l’explication avant d’envoyer. Activez Hint mode pour un indice discret.',
         'Enregistrez les questions utiles dans Historique et quiz, ajoutez une note et révisez-les plus tard.'
       ],
-      genericFeatures: ['Détecte questions visibles, options, champs texte, cases et listes déroulantes.', 'FocusScan aide avec images, iframes et mises en page inhabituelles.', 'Hint mode affiche un indice sans cliquer à votre place.', 'Historique, notes et quiz d’entraînement transforment les réponses en révision.'],
+      genericFeatures: ['Détecte questions visibles, options, champs texte, cases et listes déroulantes.', 'FocusScan aide avec les images, les mises en page inhabituelles et le contenu qui n’apparaît pas comme du texte normal.', 'Hint mode affiche un indice sans cliquer à votre place.', 'Historique, notes et quiz d’entraînement transforment les réponses en révision.'],
       genericFaq: (name) => [
         { question: `Comment utiliser QuizSolver sur ${name} ?`, answer: `Ouvrez le quiz ${name}, cliquez sur l’icône QS et choisissez Résoudre la page.` },
         { question: 'Et si la question n’est pas détectée ?', answer: 'Utilisez FocusScan et encadrez la question avec les réponses.' },
@@ -1377,7 +1377,7 @@ function enhancePlatformTutorials(copy: SiteCopy, locale: Locale): SiteCopy {
         'Controlla risposta e spiegazione prima di inviare. Usa Hint mode per un suggerimento discreto.',
         'Salva le domande utili in Cronologia e quiz, aggiungi una nota e ripassale più tardi.'
       ],
-      genericFeatures: ['Rileva domande visibili, opzioni, campi testo, checkbox e menu a tendina.', 'FocusScan aiuta con immagini, iframe e layout insoliti.', 'Hint mode mostra un indizio senza cliccare al posto tuo.', 'Cronologia, note e quiz di pratica trasformano le risposte in studio.'],
+      genericFeatures: ['Rileva domande visibili, opzioni, campi testo, checkbox e menu a tendina.', 'FocusScan aiuta con immagini, layout insoliti e contenuti che non risultano testo normale.', 'Hint mode mostra un indizio senza cliccare al posto tuo.', 'Cronologia, note e quiz di pratica trasformano le risposte in studio.'],
       genericFaq: (name) => [
         { question: `Come uso QuizSolver su ${name}?`, answer: `Apri il quiz ${name}, clicca QS e scegli Risolvi pagina corrente.` },
         { question: 'E se non rileva la domanda?', answer: 'Usa FocusScan e seleziona l’area con domanda e risposte.' },
@@ -1400,7 +1400,7 @@ function enhancePlatformTutorials(copy: SiteCopy, locale: Locale): SiteCopy {
         'Перевір запропоновану відповідь і пояснення перед відправкою. Увімкни Hint mode для непомітної підказки.',
         'Збережи корисні питання в History & quiz, додай нотатку і повтори їх пізніше.'
       ],
-      genericFeatures: ['Розпізнає видимі питання, варіанти, текстові поля, checkbox і dropdown.', 'FocusScan допомагає з картинками, iframe і незвичними макетами.', 'Hint mode показує підказку без фінального кліку.', 'Історія, нотатки і тренувальні квізи перетворюють відповіді на навчання.'],
+      genericFeatures: ['Розпізнає видимі питання, варіанти, текстові поля, checkbox і dropdown.', 'FocusScan допомагає з картинками, незвичними макетами та вмістом, який не читається як звичайний текст.', 'Hint mode показує підказку без фінального кліку.', 'Історія, нотатки і тренувальні квізи перетворюють відповіді на навчання.'],
       genericFaq: (name) => [
         { question: `Як запустити QuizSolver на ${name}?`, answer: `Відкрий квіз ${name}, натисни QS і вибери Solve current page.` },
         { question: 'Що робити, якщо питання не знайдено?', answer: 'Використай FocusScan і виділи область з питанням та відповідями.' },
@@ -1435,35 +1435,138 @@ function enhancePlatformTutorials(copy: SiteCopy, locale: Locale): SiteCopy {
 }
 
 function ensurePlatformSeoDepth(copy: SiteCopy, locale: Locale): SiteCopy {
+  const templates: Record<Locale, {
+    questionTypes: (name: string) => string;
+    questionTypesAnswer: string;
+    submitQuestion: (name: string) => string;
+    submitAnswer: string;
+    imageQuestion: (name: string) => string;
+    imageAnswer: string;
+    kahootQuestion: string;
+    kahootAnswer: string;
+    readTitle: (name: string) => string;
+    readText: (name: string) => string;
+    historyTitle: (name: string) => string;
+    historyText: string;
+  }> = {
+    en: {
+      questionTypes: (name) => `Which ${name} question types does QuizSolver support?`,
+      questionTypesAnswer: 'QuizSolver detects single-choice answers, multiple-choice answers, text fields, dropdowns, matching-style layouts, images and visible page content. For unusual components, FocusScan can read the selected screen region.',
+      submitQuestion: (name) => `Does QuizSolver submit my ${name} quiz automatically?`,
+      submitAnswer: 'No. The extension shows an answer suggestion and explanation, while the final click or submission stays under your control. Hint mode can show only a subtle visual clue.',
+      imageQuestion: (name) => `Can QuizSolver solve image questions on ${name}?`,
+      imageAnswer: 'Yes. FocusScan lets you select a screen region, so it works for images, PDF fragments, canvas content and layouts that are not exposed as normal page text.',
+      kahootQuestion: 'Does Quiz ID mode work when the question is hidden?',
+      kahootAnswer: 'Yes. When the host hides the question, Quiz ID mode lets you search the answer bank without spending AI credits.',
+      readTitle: (name) => `How QuizSolver reads ${name} questions`,
+      readText: (name) => `${name} can show questions as plain text, answer tiles, form controls, images or custom page components. QuizSolver analyzes the visible question context and answer options before asking AI, so it does not rely on generic labels such as "Question 5".`,
+      historyTitle: (name) => `${name} question history`,
+      historyText: 'After solving, you can save the question, answer, explanation and your own note to history. That turns a one-time quiz attempt into review material you can filter, favorite and practice again later.'
+    },
+    pl: {
+      questionTypes: (name) => `Jakie typy pytań na ${name} obsługuje QuizSolver?`,
+      questionTypesAnswer: 'QuizSolver wykrywa pytania jednokrotnego wyboru, wielokrotnego wyboru, pola tekstowe, listy rozwijane, układy dopasowań, obrazy i widoczną treść strony. Przy nietypowym komponencie najlepiej użyć FocusScan.',
+      submitQuestion: (name) => `Czy QuizSolver sam wysyła quiz na ${name}?`,
+      submitAnswer: 'Nie. Rozszerzenie pokazuje sugestię odpowiedzi i wyjaśnienie, ale decyzja o kliknięciu lub wysłaniu zostaje po Twojej stronie. Tryb Hint mode może pokazać tylko subtelną podpowiedź.',
+      imageQuestion: (name) => `Czy QuizSolver działa, gdy ${name} ma pytania w obrazkach?`,
+      imageAnswer: 'Tak. FocusScan pozwala zaznaczyć fragment ekranu, więc działa także przy obrazach, PDF-ach, canvasach i układach, których zwykły parser nie widzi jako tekstu strony.',
+      kahootQuestion: 'Czy tryb Quiz ID działa bez widocznego pytania?',
+      kahootAnswer: 'Tak. Gdy host ukrywa treść pytania, tryb Quiz ID pozwala przeszukać bank odpowiedzi bez używania kredytów AI.',
+      readTitle: (name) => `Jak QuizSolver rozpoznaje pytania na ${name}`,
+      readText: (name) => `Strona ${name} może pokazywać pytania jako tekst, kafelki odpowiedzi, pola wyboru, obrazy albo nietypowe elementy strony. QuizSolver najpierw analizuje widoczny kontekst pytania i odpowiedzi, a dopiero potem przygotowuje sugestię AI, dzięki czemu nie opiera się na samym nagłówku typu "Pytanie 5".`,
+      historyTitle: (name) => `Historia pytań z ${name}`,
+      historyText: 'Po rozwiązaniu możesz zapisać pytanie, odpowiedź, wyjaśnienie i własną notatkę w historii. To zmienia jednorazowy quiz w materiał do powtórki, który można później filtrować, oznaczać jako ulubiony i przerabiać jako quiz treningowy.'
+    },
+    de: {
+      questionTypes: (name) => `Welche Fragetypen auf ${name} unterstützt QuizSolver?`,
+      questionTypesAnswer: 'QuizSolver erkennt Single Choice, Multiple Choice, Textfelder, Dropdowns, Matching-Layouts, Bilder und sichtbare Seiteninhalte. Bei ungewöhnlichen Komponenten liest FocusScan den markierten Bildschirmbereich.',
+      submitQuestion: (name) => `Sendet QuizSolver mein ${name}-Quiz automatisch ab?`,
+      submitAnswer: 'Nein. Die Erweiterung zeigt eine Antwortempfehlung und Erklärung; der finale Klick oder das Absenden bleibt unter deiner Kontrolle. Hint mode kann nur einen dezenten Hinweis anzeigen.',
+      imageQuestion: (name) => `Kann QuizSolver Bildfragen auf ${name} lösen?`,
+      imageAnswer: 'Ja. Mit FocusScan markierst du einen Bildschirmbereich, daher funktioniert es auch bei Bildern, PDF-Ausschnitten, Canvas-Inhalten und Layouts, die nicht als normaler Seitentext verfügbar sind.',
+      kahootQuestion: 'Funktioniert Quiz ID, wenn die Frage verborgen ist?',
+      kahootAnswer: 'Ja. Wenn der Host die Frage verbirgt, kannst du mit Quiz ID die Antwortbank durchsuchen, ohne AI-Credits zu verbrauchen.',
+      readTitle: (name) => `Wie QuizSolver ${name}-Fragen liest`,
+      readText: (name) => `${name} kann Fragen als Text, Antwortkacheln, Formularfelder, Bilder oder spezielle Seitenkomponenten anzeigen. QuizSolver analysiert zuerst den sichtbaren Kontext und die Antwortoptionen, damit es sich nicht nur auf Labels wie "Question 5" stützt.`,
+      historyTitle: (name) => `${name}-Fragenhistorie`,
+      historyText: 'Nach dem Lösen kannst du Frage, Antwort, Erklärung und eigene Notizen speichern. So wird ein einzelner Quizversuch zu wiederholbarem Lernmaterial.'
+    },
+    es: {
+      questionTypes: (name) => `¿Qué tipos de preguntas de ${name} admite QuizSolver?`,
+      questionTypesAnswer: 'QuizSolver detecta respuestas de opción única, opción múltiple, campos de texto, desplegables, diseños de emparejamiento, imágenes y contenido visible de la página. Para componentes inusuales, FocusScan lee la zona seleccionada de la pantalla.',
+      submitQuestion: (name) => `¿QuizSolver envía mi quiz de ${name} automáticamente?`,
+      submitAnswer: 'No. La extensión muestra una sugerencia de respuesta y una explicación; el clic final o el envío quedan bajo tu control. Hint mode puede mostrar solo una pista visual discreta.',
+      imageQuestion: (name) => `¿QuizSolver puede resolver preguntas con imágenes en ${name}?`,
+      imageAnswer: 'Sí. FocusScan permite seleccionar una región de la pantalla, así que funciona con imágenes, fragmentos PDF, canvas y diseños que no aparecen como texto normal de la página.',
+      kahootQuestion: '¿Funciona Quiz ID cuando la pregunta está oculta?',
+      kahootAnswer: 'Sí. Cuando el host oculta la pregunta, el modo Quiz ID permite buscar en el banco de respuestas sin gastar créditos de IA.',
+      readTitle: (name) => `Cómo QuizSolver lee preguntas de ${name}`,
+      readText: (name) => `${name} puede mostrar preguntas como texto, tarjetas de respuesta, controles de formulario, imágenes o componentes especiales de página. QuizSolver analiza el contexto visible y las opciones antes de consultar a la IA, así que no depende de etiquetas genéricas como "Question 5".`,
+      historyTitle: (name) => `Historial de preguntas de ${name}`,
+      historyText: 'Después de resolver, puedes guardar la pregunta, respuesta, explicación y tu propia nota. Así un intento único se convierte en material de repaso para filtrar, marcar y practicar de nuevo.'
+    },
+    fr: {
+      questionTypes: (name) => `Quels types de questions ${name} QuizSolver prend-il en charge ?`,
+      questionTypesAnswer: 'QuizSolver détecte les réponses à choix unique, choix multiple, champs texte, listes déroulantes, mises en correspondance, images et contenu visible de la page. Pour les composants inhabituels, FocusScan lit la zone sélectionnée à l’écran.',
+      submitQuestion: (name) => `QuizSolver envoie-t-il automatiquement mon quiz ${name} ?`,
+      submitAnswer: 'Non. L’extension affiche une suggestion de réponse et une explication; le clic final ou l’envoi reste sous votre contrôle. Hint mode peut afficher seulement un indice discret.',
+      imageQuestion: (name) => `QuizSolver peut-il résoudre les questions en image sur ${name} ?`,
+      imageAnswer: 'Oui. FocusScan permet de sélectionner une zone de l’écran, donc il fonctionne avec les images, fragments PDF, canvas et mises en page qui ne sont pas exposés comme texte normal.',
+      kahootQuestion: 'Le mode Quiz ID fonctionne-t-il si la question est masquée ?',
+      kahootAnswer: 'Oui. Quand l’hôte masque la question, le mode Quiz ID permet de chercher dans la banque de réponses sans utiliser de crédits IA.',
+      readTitle: (name) => `Comment QuizSolver lit les questions ${name}`,
+      readText: (name) => `${name} peut afficher les questions comme texte, tuiles de réponse, champs de formulaire, images ou composants de page spéciaux. QuizSolver analyse le contexte visible et les options avant de demander à l’IA, il ne dépend donc pas d’étiquettes génériques comme "Question 5".`,
+      historyTitle: (name) => `Historique des questions ${name}`,
+      historyText: 'Après la résolution, vous pouvez enregistrer la question, la réponse, l’explication et votre note. Un quiz ponctuel devient ainsi un support de révision à filtrer, marquer et retravailler.'
+    },
+    it: {
+      questionTypes: (name) => `Quali tipi di domande di ${name} supporta QuizSolver?`,
+      questionTypesAnswer: 'QuizSolver rileva risposte a scelta singola, scelta multipla, campi testo, menu a tendina, layout di abbinamento, immagini e contenuti visibili della pagina. Per componenti insoliti, FocusScan legge l’area selezionata dello schermo.',
+      submitQuestion: (name) => `QuizSolver invia automaticamente il mio quiz ${name}?`,
+      submitAnswer: 'No. L’estensione mostra un suggerimento e una spiegazione; il clic finale o l’invio restano sotto il tuo controllo. Hint mode può mostrare solo un indizio discreto.',
+      imageQuestion: (name) => `QuizSolver può risolvere domande con immagini su ${name}?`,
+      imageAnswer: 'Sì. FocusScan permette di selezionare una regione dello schermo, quindi funziona con immagini, frammenti PDF, canvas e layout che non sono disponibili come normale testo della pagina.',
+      kahootQuestion: 'La modalità Quiz ID funziona quando la domanda è nascosta?',
+      kahootAnswer: 'Sì. Quando l’host nasconde la domanda, Quiz ID permette di cercare nel banco risposte senza consumare crediti AI.',
+      readTitle: (name) => `Come QuizSolver legge le domande ${name}`,
+      readText: (name) => `${name} può mostrare domande come testo, riquadri risposta, controlli modulo, immagini o componenti speciali della pagina. QuizSolver analizza il contesto visibile e le opzioni prima di chiedere all’AI, quindi non dipende da etichette generiche come "Question 5".`,
+      historyTitle: (name) => `Cronologia domande ${name}`,
+      historyText: 'Dopo la soluzione puoi salvare domanda, risposta, spiegazione e una tua nota. Così un singolo quiz diventa materiale di ripasso da filtrare, segnare e praticare di nuovo.'
+    },
+    uk: {
+      questionTypes: (name) => `Які типи питань ${name} підтримує QuizSolver?`,
+      questionTypesAnswer: 'QuizSolver розпізнає один варіант відповіді, кілька варіантів, текстові поля, dropdown, завдання на відповідність, зображення та видимий вміст сторінки. Для незвичних компонентів FocusScan читає вибрану область екрана.',
+      submitQuestion: (name) => `Чи QuizSolver автоматично надсилає мій квіз ${name}?`,
+      submitAnswer: 'Ні. Розширення показує запропоновану відповідь і пояснення, а фінальний клік або відправлення залишаються під твоїм контролем. Hint mode може показати лише непомітну підказку.',
+      imageQuestion: (name) => `Чи може QuizSolver розв’язувати питання із зображеннями на ${name}?`,
+      imageAnswer: 'Так. FocusScan дозволяє вибрати область екрана, тому працює із зображеннями, PDF-фрагментами, canvas та макетами, які не доступні як звичайний текст сторінки.',
+      kahootQuestion: 'Чи працює Quiz ID, якщо питання приховане?',
+      kahootAnswer: 'Так. Коли host приховує питання, режим Quiz ID дозволяє шукати у банку відповідей без витрати AI-кредитів.',
+      readTitle: (name) => `Як QuizSolver читає питання ${name}`,
+      readText: (name) => `${name} може показувати питання як текст, плитки відповідей, поля форми, зображення або спеціальні компоненти сторінки. QuizSolver аналізує видимий контекст і варіанти відповідей перед запитом до AI, тому не спирається лише на загальні написи на кшталт "Question 5".`,
+      historyTitle: (name) => `Історія питань ${name}`,
+      historyText: 'Після розв’язання можна зберегти питання, відповідь, пояснення і власну нотатку. Так одноразовий квіз стає матеріалом для повторення, який можна фільтрувати, позначати і проходити знову.'
+    }
+  };
+  const template = templates[locale] || templates.en;
   (Object.entries(copy.platformPages) as Array<[keyof SiteCopy['platformPages'], PlatformCopy]>).forEach(([pageKey, page]) => {
     const name = page.shortName || page.platformName || 'the platform';
     const isKahoot = pageKey === 'kahoot';
-    const extraFaq = locale === 'pl'
-      ? [
-          { question: `Jakie typy pytań na ${name} obsługuje QuizSolver?`, answer: 'QuizSolver wykrywa pytania jednokrotnego wyboru, wielokrotnego wyboru, pola tekstowe, listy rozwijane, układy dopasowań, obrazy i widoczne treści osadzone. Przy nietypowym komponencie najlepiej użyć FocusScan.' },
-          { question: `Czy QuizSolver sam wysyła quiz na ${name}?`, answer: 'Nie. Rozszerzenie pokazuje sugestię odpowiedzi i wyjaśnienie, ale decyzja o kliknięciu lub wysłaniu zostaje po Twojej stronie. Tryb Hint mode może pokazać tylko subtelną podpowiedź.' },
-          { question: isKahoot ? 'Czy tryb Quiz ID działa bez widocznego pytania?' : `Czy QuizSolver działa, gdy ${name} ma pytania w obrazkach?`, answer: isKahoot ? 'Tak. Gdy host ukrywa treść pytania, tryb Quiz ID pozwala przeszukać bank odpowiedzi bez używania kredytów AI.' : 'Tak. FocusScan pozwala zaznaczyć fragment ekranu, więc działa także przy obrazach, PDF-ach, canvasach i układach, których zwykły parser nie widzi jako tekst HTML.' }
-        ]
-      : [
-          { question: `Which ${name} question types does QuizSolver support?`, answer: 'QuizSolver detects single-choice answers, multiple-choice answers, text fields, dropdowns, matching-style layouts, images and visible embedded content. For unusual components, FocusScan can read the selected screen region.' },
-          { question: `Does QuizSolver submit my ${name} quiz automatically?`, answer: 'No. The extension shows an answer suggestion and explanation, while the final click or submission stays under your control. Hint mode can show only a subtle visual clue.' },
-          { question: isKahoot ? 'Does Quiz ID mode work when the question is hidden?' : `Can QuizSolver solve image questions on ${name}?`, answer: isKahoot ? 'Yes. When the host hides the question, Quiz ID mode lets you search the answer bank without spending AI credits.' : 'Yes. FocusScan lets you select a screen region, so it works for images, PDF fragments, canvas content and layouts that are not exposed as normal HTML text.' }
-        ];
+    const extraFaq = [
+      { question: template.questionTypes(name), answer: template.questionTypesAnswer },
+      { question: template.submitQuestion(name), answer: template.submitAnswer },
+      { question: isKahoot ? template.kahootQuestion : template.imageQuestion(name), answer: isKahoot ? template.kahootAnswer : template.imageAnswer }
+    ];
     const existingQuestions = new Set((page.faq || []).map(item => item.question));
     page.faq = [
       ...(page.faq || []),
       ...extraFaq.filter(item => !existingQuestions.has(item.question))
     ];
 
-    const extraSections = locale === 'pl'
-      ? [
-          { title: `Jak QuizSolver rozpoznaje pytania na ${name}`, text: `Strona ${name} może pokazywać pytania jako tekst, kafelki odpowiedzi, pola wyboru, obrazy albo elementy osadzone. QuizSolver najpierw analizuje widoczny kontekst pytania i odpowiedzi, a dopiero potem przygotowuje sugestię AI, dzięki czemu nie opiera się na samym nagłówku typu "Pytanie 5".` },
-          { title: `Historia pytań z ${name}`, text: `Po rozwiązaniu możesz zapisać pytanie, odpowiedź, wyjaśnienie i własną notatkę w historii. To zmienia jednorazowy quiz w materiał do powtórki, który można później filtrować, oznaczać jako ulubiony i przerabiać jako quiz treningowy.` }
-        ]
-      : [
-          { title: `How QuizSolver reads ${name} questions`, text: `${name} can show questions as plain text, answer tiles, form controls, images or embedded content. QuizSolver analyzes the visible question context and answer options before asking AI, so it does not rely on generic labels such as "Question 5".` },
-          { title: `${name} question history`, text: `After solving, you can save the question, answer, explanation and your own note to history. That turns a one-time quiz attempt into review material you can filter, favorite and practice again later.` }
-        ];
+    const extraSections = [
+      { title: template.readTitle(name), text: template.readText(name) },
+      { title: template.historyTitle(name), text: template.historyText }
+    ];
     const existingSections = new Set((page.keywordSections || []).map(item => item.title));
     page.keywordSections = [
       ...(page.keywordSections || []),
@@ -1490,6 +1593,11 @@ enhancePlatformTutorials(it, 'it');
 enhancePlatformTutorials(uk, 'uk');
 ensurePlatformSeoDepth(en, 'en');
 ensurePlatformSeoDepth(pl, 'pl');
+ensurePlatformSeoDepth(de, 'de');
+ensurePlatformSeoDepth(es, 'es');
+ensurePlatformSeoDepth(fr, 'fr');
+ensurePlatformSeoDepth(it, 'it');
+ensurePlatformSeoDepth(uk, 'uk');
 
 function applyCompactSeo(copy: SiteCopy, locale: Locale): void {
   const templates: Record<Locale, {

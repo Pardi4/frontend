@@ -9,6 +9,10 @@ type AdminTab = 'users' | 'purchases' | 'bugs' | 'support' | 'cache' | 'parser' 
 type AdminLocale = 'en' | 'pl';
 type UserSortOption = 'createdAt_desc' | 'createdAt_asc' | 'credits_desc' | 'credits_asc' | 'lastOnline_desc' | 'lastOnline_asc' | 'questions_desc' | 'questions_asc' | 'streak_desc' | 'streak_asc';
 
+const ADMIN_ACTIVE_TAB_KEY = 'qs_admin_active_tab';
+const ADMIN_TAB_IDS: AdminTab[] = ['users', 'purchases', 'bugs', 'support', 'cache', 'parser', 'leaderboard', 'system'];
+const isAdminTab = (value: unknown): value is AdminTab => ADMIN_TAB_IDS.includes(value as AdminTab);
+
 const ADMIN_COPY = {
   en: {
     adminConsole: 'Admin console',
@@ -593,6 +597,13 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
 
             <div class="admin-alert anim-slide-up" *ngIf="error()">{{ error() }}</div>
 
+            <div class="attention-head" *ngIf="adminNoticeCards().length">
+              <div>
+                <span>{{ adminLocale() === 'pl' ? 'Wymaga uwagi' : 'Needs attention' }}</span>
+                <small>{{ adminLocale() === 'pl' ? 'Najwazniejsze rzeczy do sprawdzenia teraz.' : 'What needs review right now.' }}</small>
+              </div>
+            </div>
+
             <section class="operations-strip" *ngIf="adminNoticeCards().length">
               <button class="operation-card" type="button" *ngFor="let notice of adminNoticeCards()" [class.warn]="notice.tone === 'warn'" [class.ok]="notice.tone === 'ok'" (click)="openAdminNotice(notice)">
                 <span>{{ notice.label }}</span>
@@ -939,15 +950,15 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
             </section>
 
             <section class="admin-panel glass" *ngIf="activeTab() === 'parser'">
-              <div class="panel-head">
+              <div class="panel-head parser-panel-head">
                 <div>
                   <p class="eyebrow">{{ tr('parserHealth') }}</p>
                   <h2>{{ tr('parserAnalytics') }}</h2>
                 </div>
-                <form class="admin-search" (ngSubmit)="loadParserEvents(1)">
-                  <input class="form-input" type="search" name="parserSearch" [(ngModel)]="parserSearch" placeholder="Search URL, platform, reason">
+                <form class="admin-search parser-filters" (ngSubmit)="loadParserEvents(1)">
+                  <input class="form-input" type="search" name="parserSearch" [(ngModel)]="parserSearch" [placeholder]="adminLocale() === 'pl' ? 'Szukaj URL, platformy lub powodu' : 'Search URL, platform or reason'">
                   <select class="form-select" name="parserOutcomeFilter" [(ngModel)]="parserOutcomeFilter" (ngModelChange)="loadParserEvents(1)" [attr.aria-label]="tr('parserOutcome')">
-                    <option value="">All outcomes</option>
+                    <option value="">{{ adminLocale() === 'pl' ? 'Wszystkie wyniki' : 'All outcomes' }}</option>
                     <option value="success">success</option>
                     <option value="partial">partial</option>
                     <option value="empty">empty</option>
@@ -960,75 +971,106 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
                 </form>
               </div>
 
-              <div class="health-grid">
-                <article class="glass" *ngFor="let card of parserHealthCards()">
+              <div class="health-grid parser-health-grid">
+                <article *ngFor="let card of parserHealthCards()">
                   <span class="text-secondary" style="font-size: 0.75rem; text-transform: uppercase;">{{ card.label }}</span>
                   <strong [class.ok]="card.ok" [class.warn]="card.warn" style="font-size: 1.35rem; margin-top: 0.25rem;">{{ card.value }}</strong>
                   <small class="text-secondary">{{ card.note }}</small>
                 </article>
               </div>
 
-              <div class="table-scroll" style="margin-bottom: 1.5rem;">
-                <table class="admin-table">
-                  <thead>
-                    <tr>
-                      <th>{{ tr('parserPlatform') }}</th>
-                      <th>{{ tr('parserEvents') }}</th>
-                      <th>{{ tr('parserFailures') }}</th>
-                      <th>{{ tr('parserFailureRate') }}</th>
-                      <th>{{ tr('parserConfidence') }}</th>
-                      <th>{{ tr('parserReason') }}</th>
-                      <th>{{ tr('lastSeen') }}</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr *ngFor="let item of parserHealth().platforms || []">
-                      <td><strong>{{ item.platform }}</strong></td>
-                      <td>{{ item.count }}</td>
-                      <td><span class="status-pill" [class.danger]="item.failed">{{ item.failed }}</span></td>
-                      <td>{{ formatPercent(item.failureRate || 0) }}</td>
-                      <td>{{ formatPercent(item.avgConfidence || 0) }}</td>
-                      <td>{{ (item.topReasons || []).join(', ') || '-' }}</td>
-                      <td>{{ formatDate(item.lastSeenAt) }}</td>
-                    </tr>
-                    <tr *ngIf="!(parserHealth().platforms || []).length">
-                      <td colspan="7" class="empty-cell" style="text-align: center; padding: 2rem;">{{ tr('parserNoEvents') }}</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
+              <div class="parser-workspace">
+                <section class="parser-block parser-problem-block">
+                  <div class="parser-block-head">
+                    <div>
+                      <h3>{{ adminLocale() === 'pl' ? 'Top problemy' : 'Top issues' }}</h3>
+                      <p>{{ adminLocale() === 'pl' ? 'Grupowanie po stronie, platformie i powodzie bledu.' : 'Grouped by site, platform and failure reason.' }}</p>
+                    </div>
+                  </div>
+                  <div class="parser-event-list" *ngIf="parserProblemRows().length; else noParserProblems">
+                    <article class="parser-event-card parser-problem-card" *ngFor="let group of parserProblemRows()">
+                      <div class="parser-event-head">
+                        <div class="parser-row-main">
+                          <strong>{{ parserProblemSite(group) }}</strong>
+                          <span>{{ group.platform || 'universal' }} - {{ group.outcome || 'unknown' }}</span>
+                        </div>
+                        <span class="status-pill danger">{{ formatNumber(group.count || 0) }}</span>
+                      </div>
+                      <p class="parser-reason-line">{{ group.reason || (adminLocale() === 'pl' ? 'Brak powodu' : 'No reason recorded') }}</p>
+                      <p class="parser-snapshot" *ngIf="group.sampleText">{{ truncateUi(group.sampleText, 180) }}</p>
+                      <div class="parser-event-meta">
+                        <span>{{ tr('parserConfidence') }}: {{ formatPercent(group.avgConfidence || 0) }}</span>
+                        <span>{{ tr('parserQuestionsFound') }}: {{ formatNumber(group.avgQuestions || 0) }}</span>
+                        <span>{{ tr('lastSeen') }}: {{ formatDate(group.lastSeenAt) }}</span>
+                        <a class="primary-link parser-url" *ngIf="group.sampleUrl" [href]="group.sampleUrl" target="_blank" rel="noopener">{{ shortUrl(group.sampleUrl) }}</a>
+                      </div>
+                    </article>
+                  </div>
+                  <ng-template #noParserProblems>
+                    <div class="empty-panel">{{ adminLocale() === 'pl' ? 'Brak pogrupowanych problemow.' : 'No grouped parser issues.' }}</div>
+                  </ng-template>
+                </section>
 
-              <div class="table-scroll">
-                <table class="admin-table">
-                  <thead>
-                    <tr>
-                      <th>{{ tr('date') }}</th>
-                      <th>{{ tr('parserPlatform') }}</th>
-                      <th>{{ tr('parserOutcome') }}</th>
-                      <th>{{ tr('parserConfidence') }}</th>
-                      <th>{{ tr('parserQuestionsFound') }}</th>
-                      <th>{{ tr('parserReason') }}</th>
-                      <th>URL</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr *ngFor="let event of parserEvents()">
-                      <td>{{ formatDate(event.createdAt) }}</td>
-                      <td><strong>{{ event.platform }}</strong><span>{{ event.hostname }}</span></td>
-                      <td><span class="status-pill" [class.danger]="event.outcome === 'empty' || event.outcome === 'weak' || event.outcome === 'error'" [class.ok]="event.outcome === 'success'">{{ event.outcome }}</span></td>
-                      <td>{{ formatPercent(event.confidence || 0) }}</td>
-                      <td>{{ event.questionCount }} / {{ event.optionCount }} {{ tr('parserOptionsFound') }}</td>
-                      <td class="question-audit-cell">
-                        <strong>{{ event.reason || '-' }}</strong>
-                        <span>{{ event.snapshot?.questionTexts?.[0] || event.snapshot?.bodyText || '' }}</span>
-                      </td>
-                      <td><a class="primary-link" [href]="event.url" target="_blank" rel="noopener">{{ event.url || '-' }}</a></td>
-                    </tr>
-                    <tr *ngIf="!parserEvents().length">
-                      <td colspan="7" class="empty-cell" style="text-align: center; padding: 2rem;">{{ tr('parserNoEvents') }}</td>
-                    </tr>
-                  </tbody>
-                </table>
+                <section class="parser-block">
+                  <div class="parser-block-head">
+                    <div>
+                      <h3>{{ tr('parserPlatform') }}</h3>
+                      <p>{{ adminLocale() === 'pl' ? 'Najwazniejsze platformy i powody problemow.' : 'Key platforms and the most common problem reasons.' }}</p>
+                    </div>
+                  </div>
+                  <div class="parser-platform-list" *ngIf="parserPlatformRows().length; else noParserPlatforms">
+                    <article class="parser-platform-row" *ngFor="let item of parserPlatformRows()">
+                      <div class="parser-row-head">
+                        <div class="parser-row-main">
+                          <strong>{{ item.platform || 'unknown' }}</strong>
+                          <span>{{ formatNumber(item.count || 0) }} {{ tr('parserEvents') }}</span>
+                        </div>
+                        <span class="status-pill" [class.danger]="item.failed">{{ formatNumber(item.failed || 0) }} {{ tr('parserFailures') }}</span>
+                      </div>
+                      <div class="parser-row-metrics">
+                        <span>{{ tr('parserFailureRate') }}: <strong>{{ formatPercent(item.failureRate || 0) }}</strong></span>
+                        <span>{{ tr('parserConfidence') }}: <strong>{{ formatPercent(item.avgConfidence || 0) }}</strong></span>
+                        <span>{{ tr('lastSeen') }}: <strong>{{ formatDate(item.lastSeenAt) }}</strong></span>
+                      </div>
+                      <p class="parser-reason-line">{{ parserReasons(item) }}</p>
+                    </article>
+                  </div>
+                  <ng-template #noParserPlatforms>
+                    <div class="empty-panel">{{ tr('parserNoEvents') }}</div>
+                  </ng-template>
+                </section>
+
+                <section class="parser-block">
+                  <div class="parser-block-head">
+                    <div>
+                      <h3>{{ tr('parserEvents') }}</h3>
+                      <p>{{ adminLocale() === 'pl' ? 'Ostatnie zdarzenia z krotkim opisem i linkiem.' : 'Recent events with a short snapshot and source link.' }}</p>
+                    </div>
+                  </div>
+                  <div class="parser-event-list" *ngIf="parserEvents().length; else noParserEvents">
+                    <article class="parser-event-card" *ngFor="let event of parserEvents()">
+                      <div class="parser-event-head">
+                        <div class="parser-row-main">
+                          <strong>{{ event.platform || 'unknown' }}</strong>
+                          <span>{{ parserHost(event) }}</span>
+                        </div>
+                        <span class="status-pill" [class.ok]="parserOutcomeTone(event.outcome) === 'ok'" [class.pending]="parserOutcomeTone(event.outcome) === 'pending'" [class.danger]="parserOutcomeTone(event.outcome) === 'danger'">{{ event.outcome || '-' }}</span>
+                      </div>
+                      <p class="parser-reason-line">{{ event.reason || '-' }}</p>
+                      <p class="parser-snapshot">{{ parserEventPreview(event) }}</p>
+                      <div class="parser-event-meta">
+                        <span>{{ formatPercent(event.confidence || 0) }}</span>
+                        <span>{{ formatNumber(event.questionCount || 0) }} {{ tr('parserQuestionsFound') }}</span>
+                        <span>{{ formatNumber(event.optionCount || 0) }} {{ tr('parserOptionsFound') }}</span>
+                        <span>{{ formatDate(event.createdAt) }}</span>
+                        <a class="primary-link parser-url" [href]="event.url" target="_blank" rel="noopener">{{ shortUrl(event.url) }}</a>
+                      </div>
+                    </article>
+                  </div>
+                  <ng-template #noParserEvents>
+                    <div class="empty-panel">{{ tr('parserNoEvents') }}</div>
+                  </ng-template>
+                </section>
               </div>
 
               <div class="pagination" *ngIf="parserEventsPagination().pages > 1">
@@ -1037,20 +1079,27 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
                 </button>
               </div>
 
-              <div class="cache-list" style="margin-top: 1.5rem;" *ngIf="(parserHealth().recentBugReports || []).length">
-                <h3 style="margin: 0 0 1rem; font-family: var(--font-heading); font-size: 1.05rem;">{{ tr('parserRecentReports') }}</h3>
-                <article class="glass" *ngFor="let report of parserHealth().recentBugReports">
-                  <div class="cache-question-main">
-                    <p>{{ report.parserSnapshot?.questionTexts?.[0] || report.parserDiagnostics?.reason || report.url }}</p>
-                    <div class="meta-chips">
-                      <span class="badge badge-outline role-badge">{{ report.platform || 'unknown' }}</span>
-                      <span class="badge badge-outline">{{ formatPercent(report.parserDiagnostics?.confidence || 0) }}</span>
-                      <span class="badge badge-outline">{{ formatDate(report.date) }}</span>
-                    </div>
+              <section class="parser-block parser-reports" *ngIf="(parserHealth().recentBugReports || []).length">
+                <div class="parser-block-head">
+                  <div>
+                    <h3>{{ tr('parserRecentReports') }}</h3>
+                    <p>{{ adminLocale() === 'pl' ? 'Zgloszenia uzytkownikow powiazane z parserem.' : 'User reports linked with parser diagnostics.' }}</p>
                   </div>
-                  <a class="open-hint" [href]="report.url" target="_blank" rel="noopener">{{ report.url }}</a>
-                </article>
-              </div>
+                </div>
+                <div class="parser-report-list">
+                  <article class="parser-report-row" *ngFor="let report of parserHealth().recentBugReports">
+                    <div class="cache-question-main">
+                      <p>{{ report.parserSnapshot?.questionTexts?.[0] || report.parserDiagnostics?.reason || report.url }}</p>
+                      <div class="meta-chips">
+                        <span class="badge badge-outline role-badge">{{ report.platform || 'unknown' }}</span>
+                        <span class="badge badge-outline">{{ formatPercent(report.parserDiagnostics?.confidence || 0) }}</span>
+                        <span class="badge badge-outline">{{ formatDate(report.date) }}</span>
+                      </div>
+                    </div>
+                    <a class="open-hint" [href]="report.url" target="_blank" rel="noopener">{{ shortUrl(report.url) }}</a>
+                  </article>
+                </div>
+              </section>
             </section>
 
             <section class="admin-panel glass" *ngIf="activeTab() === 'leaderboard'">
@@ -1650,6 +1699,29 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
     }
     .admin-stats article strong.revenue {
       color: var(--accent-emerald);
+    }
+
+    .attention-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 0.75rem;
+    }
+    .attention-head div {
+      display: grid;
+      gap: 0.15rem;
+    }
+    .attention-head span {
+      color: var(--text-primary);
+      font-size: 0.82rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    .attention-head small {
+      color: var(--text-secondary);
+      font-size: 0.78rem;
     }
 
     .operations-strip {
@@ -2261,6 +2333,140 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
       white-space: nowrap;
     }
 
+    /* Parser panel */
+    .parser-panel-head {
+      align-items: flex-start;
+    }
+    .parser-filters {
+      max-width: 900px;
+      flex-wrap: wrap;
+    }
+    .parser-filters .form-input {
+      min-width: 260px;
+      flex: 1 1 260px;
+    }
+    .parser-filters .form-select {
+      min-width: 150px;
+      flex: 0 0 170px;
+    }
+    .parser-health-grid {
+      margin-bottom: 1.5rem;
+    }
+    .parser-health-grid article,
+    .parser-block,
+    .parser-platform-row,
+    .parser-event-card,
+    .parser-report-row {
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.035);
+      border-radius: var(--radius-md);
+    }
+    .parser-workspace {
+      display: grid;
+      grid-template-columns: minmax(280px, 0.9fr) minmax(360px, 1.35fr);
+      gap: 1.25rem;
+      align-items: start;
+    }
+    .parser-problem-block {
+      grid-column: 1 / -1;
+    }
+    .parser-problem-card {
+      border-color: rgba(244, 63, 94, 0.24);
+      background: rgba(244, 63, 94, 0.055);
+    }
+    .parser-block {
+      padding: 1.25rem;
+    }
+    .parser-reports {
+      margin-top: 1.25rem;
+    }
+    .parser-block-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    .parser-block-head h3 {
+      margin: 0;
+      color: var(--text-primary);
+      font-family: var(--font-heading);
+      font-size: 1rem;
+    }
+    .parser-block-head p {
+      margin: 0.25rem 0 0;
+      color: var(--text-secondary);
+      font-size: 0.86rem;
+      line-height: 1.4;
+    }
+    .parser-platform-list,
+    .parser-event-list,
+    .parser-report-list {
+      display: grid;
+      gap: 0.75rem;
+    }
+    .parser-platform-row,
+    .parser-event-card,
+    .parser-report-row {
+      padding: 1rem;
+    }
+    .parser-row-head,
+    .parser-event-head,
+    .parser-report-row {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    .parser-row-main {
+      min-width: 0;
+    }
+    .parser-row-main strong {
+      display: block;
+      color: var(--text-primary);
+      overflow-wrap: anywhere;
+    }
+    .parser-row-main span {
+      display: block;
+      margin-top: 0.2rem;
+      color: var(--text-secondary);
+      font-size: 0.82rem;
+      overflow-wrap: anywhere;
+    }
+    .parser-row-metrics,
+    .parser-event-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+      margin-top: 0.75rem;
+    }
+    .parser-row-metrics span,
+    .parser-event-meta span {
+      padding: 0.28rem 0.48rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: var(--text-secondary);
+      font-size: 0.78rem;
+    }
+    .parser-row-metrics strong {
+      color: var(--text-primary);
+    }
+    .parser-reason-line,
+    .parser-snapshot {
+      margin: 0.75rem 0 0;
+      color: var(--text-secondary);
+      font-size: 0.86rem;
+      line-height: 1.45;
+      overflow-wrap: anywhere;
+    }
+    .parser-snapshot {
+      color: var(--text-primary);
+    }
+    .parser-url {
+      max-width: 100%;
+      overflow-wrap: anywhere;
+      font-size: 0.8rem;
+    }
+
     /* Leaderboard admin */
     .leaderboard-admin {
       display: flex;
@@ -2461,6 +2667,9 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
       .health-grid {
         grid-template-columns: 1fr;
       }
+      .parser-workspace {
+        grid-template-columns: 1fr;
+      }
       .operations-strip {
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
@@ -2595,6 +2804,20 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
         max-width: 100%;
         display: grid;
         grid-template-columns: minmax(0, 1fr) minmax(120px, 0.6fr) auto;
+      }
+      .parser-filters {
+        grid-template-columns: 1fr;
+      }
+      .parser-filters .form-input,
+      .parser-filters .form-select {
+        min-width: 0;
+        width: 100%;
+      }
+      .parser-row-head,
+      .parser-event-head,
+      .parser-report-row {
+        flex-direction: column;
+        align-items: stretch;
       }
       .credit-usage-filters {
         grid-template-columns: 1fr;
@@ -2750,6 +2973,8 @@ export class AdminComponent implements OnInit, OnDestroy {
     this.title.setTitle(`${this.tr('adminConsole')} | QuizSolver`);
     this.meta.updateTag({ name: 'robots', content: 'noindex, nofollow' });
     if (!this.isBrowser) return;
+    const storedTab = localStorage.getItem(ADMIN_ACTIVE_TAB_KEY);
+    if (isAdminTab(storedTab)) this.activeTab.set(storedTab);
     this.token = localStorage.getItem('qs_admin_token') || localStorage.getItem('qs_token') || '';
     if (!this.token) return;
 
@@ -2834,6 +3059,7 @@ export class AdminComponent implements OnInit, OnDestroy {
 
   protected setActiveTab(tab: AdminTab): void {
     this.activeTab.set(tab);
+    if (this.isBrowser) localStorage.setItem(ADMIN_ACTIVE_TAB_KEY, tab);
     if (tab === 'parser') {
       void this.loadParserHealth();
       void this.loadParserEvents(this.parserEventsPagination().page || 1);
@@ -3094,10 +3320,14 @@ export class AdminComponent implements OnInit, OnDestroy {
     }
 
     if (parserIssues > 0) {
+      const topProblem = this.parserProblemRows()[0];
+      const problemNote = topProblem
+        ? `${topProblem.hostname || topProblem.platform || this.tr('parserHealth')}: ${this.truncateText(topProblem.reason || topProblem.outcome || '', 52)}`
+        : `${this.tr('parserFailures')} / ${this.tr('parserReports')}`;
       notices.push({
-        label: this.tr('parserHealth'),
-        value: this.formatNumber(parserIssues),
-        note: `${this.tr('parserFailures')} / ${this.tr('parserReports')} - ${reviewDetails}`,
+        label: topProblem ? (this.adminLocale() === 'pl' ? 'Najwiekszy problem parsera' : 'Top parser issue') : this.tr('parserHealth'),
+        value: topProblem ? this.formatNumber(topProblem.count || parserIssues) : this.formatNumber(parserIssues),
+        note: `${problemNote} - ${reviewDetails}`,
         tone: 'warn',
         targetTab: 'parser'
       });
@@ -3179,6 +3409,75 @@ export class AdminComponent implements OnInit, OnDestroy {
       { label: this.tr('parserConfidence'), value: this.formatPercent(summary.avgConfidence || 0), note: `${this.formatNumber(summary.avgQuestions || 0)} avg questions`, ok: Number(summary.avgConfidence || 0) >= 0.7 },
       { label: this.tr('parserReports'), value: this.formatNumber(reported), note: this.tr('parserRecentReports'), warn: reported > 0 }
     ];
+  }
+
+  protected parserPlatformRows(): any[] {
+    return (this.parserHealth().platforms || []).slice(0, 12);
+  }
+
+  protected parserProblemRows(): any[] {
+    return (this.parserHealth().problemGroups || []).slice(0, 10);
+  }
+
+  protected parserProblemSite(group: any): string {
+    const host = String(group?.hostname || '').trim();
+    if (host) return host;
+    const short = this.shortUrl(group?.sampleUrl);
+    return short && short !== '-' ? short : 'unknown site';
+  }
+
+  protected truncateUi(value: unknown, max = 160): string {
+    return this.truncateText(value, max);
+  }
+
+  protected parserReasons(item: any): string {
+    const reasons = Array.isArray(item?.topReasons)
+      ? item.topReasons.map((reason: unknown) => String(reason || '').trim()).filter(Boolean)
+      : [];
+    return reasons.length ? this.truncateText(reasons.join(', '), 180) : '-';
+  }
+
+  protected parserOutcomeTone(outcome: unknown): 'ok' | 'pending' | 'danger' | '' {
+    const value = String(outcome || '').toLowerCase();
+    if (value === 'success') return 'ok';
+    if (value === 'partial' || value === 'reported') return 'pending';
+    if (value === 'empty' || value === 'weak' || value === 'error') return 'danger';
+    return '';
+  }
+
+  protected parserHost(event: any): string {
+    const host = String(event?.hostname || '').trim();
+    if (host) return host;
+    try {
+      return new URL(String(event?.url || '')).hostname || '-';
+    } catch {
+      return '-';
+    }
+  }
+
+  protected parserEventPreview(event: any): string {
+    const snapshot = event?.snapshot || {};
+    const question = Array.isArray(snapshot.questionTexts) ? snapshot.questionTexts.find(Boolean) : '';
+    const body = snapshot.bodyText || '';
+    const fallback = event?.reason || event?.url || '';
+    return this.truncateText(question || body || fallback || '-', 220);
+  }
+
+  protected shortUrl(value: unknown): string {
+    const url = String(value || '').trim();
+    if (!url) return '-';
+    try {
+      const parsed = new URL(url);
+      return this.truncateText(`${parsed.hostname}${parsed.pathname}`, 90);
+    } catch {
+      return this.truncateText(url, 90);
+    }
+  }
+
+  private truncateText(value: unknown, max = 160): string {
+    const text = String(value || '').replace(/\s+/g, ' ').trim();
+    if (!text) return '-';
+    return text.length > max ? `${text.slice(0, Math.max(0, max - 3))}...` : text;
   }
 
   protected statsCards(): Array<{ label: string; value: string; revenue?: boolean }> {
