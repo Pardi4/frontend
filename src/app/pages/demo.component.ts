@@ -96,7 +96,7 @@ const DEFAULT_DEMO_LABELS: DemoLabels = {
   resultTitle: 'Demo complete',
   resultText: 'You have tested radio, hint mode, text input, dropdown matching and selected-text solving. The real extension uses the same workflow on supported quiz pages.',
   finalPrimary: 'Install the extension',
-  finalSecondary: 'Practice again',
+  finalSecondary: 'Restart quiz',
   sideTitle: 'What QuizSolver would do',
   sideText: 'Open the extension on this page, solve the current question, or use the quick overlay for selected text. This demo mirrors the real extension flow without spending credits.'
 };
@@ -114,7 +114,7 @@ const COPY: Partial<Record<Locale, DemoCopy>> & { en: DemoCopy; pl: DemoCopy } =
     mapText: 'Click Start extension tutorial first. The extension will point at this demo quiz step by step; then open the QuizSolver popup, follow the highlighted action, and move to the next question.',
     prev: 'Previous',
     next: 'Next question',
-    restart: 'Restart demo',
+    restart: 'Restart quiz',
     startTour: 'Start extension tutorial',
     selectText: 'Select demo question text',
     selectedTip: 'Select the question text, open the quick overlay, then click Solve selected text.',
@@ -130,7 +130,7 @@ const COPY: Partial<Record<Locale, DemoCopy>> & { en: DemoCopy; pl: DemoCopy } =
     ],
     labels: {
       quizMeta: 'Safe interactive quiz',
-      resultText: 'You have tried the same patterns QuizSolver handles on real pages: choices, hint mode, typed answers, matching fields and selected text.',
+      resultText: 'You have completed a realistic mini quiz with choices, hint mode, typed answers, matching fields and selected text.',
       sideTitle: 'Extension preview',
       sideText: 'Use this page like a real quiz. Answer manually, ask for a hint, or simulate how QuizSolver would fill the current question.'
     },
@@ -140,62 +140,62 @@ const COPY: Partial<Record<Locale, DemoCopy>> & { en: DemoCopy; pl: DemoCopy } =
         id: 'demo-radio',
         type: 'radio',
         kicker: 'Step 1',
-        title: 'Standard solve',
-        instruction: 'Click Solve current page in the extension popup. QuizSolver should choose the correct option.',
-        question: 'What should you take when it is raining outside?',
-        options: ['Sunglasses', 'Umbrella', 'Beach towel', 'Ice skates'],
-        correctText: 'Umbrella',
-        hint: 'Think about the object that keeps rain away from you.',
-        explanation: 'An umbrella is designed to shield you from rain. The other options are useful in different weather or activities.'
+        title: 'Biology multiple choice',
+        instruction: 'Answer manually or simulate how QuizSolver selects the best option on a standard quiz card.',
+        question: 'Which organelle is mainly responsible for producing ATP in eukaryotic cells?',
+        options: ['Nucleus', 'Mitochondrion', 'Ribosome', 'Cell membrane'],
+        correctText: 'Mitochondrion',
+        hint: 'Look for the organelle often called the cell powerhouse.',
+        explanation: 'Mitochondria perform cellular respiration and produce most of the ATP used as energy by eukaryotic cells.'
       },
       {
         id: 'demo-hidden',
         type: 'hidden',
         kicker: 'Step 2',
-        title: 'Hidden mode',
-        instruction: 'Turn on Hint mode in the popup before solving. The answer should be hinted instead of clicked.',
-        question: 'Which item do people usually keep in a fridge?',
-        options: ['Blanket', 'Milk', 'Notebook', 'Keys'],
-        correctText: 'Milk',
-        hint: 'Look for the food item that needs to stay cold.',
-        explanation: 'Milk is commonly stored in a refrigerator to keep it fresh. A blanket, notebook and keys do not need cold storage.'
+        title: 'Hint mode on a history question',
+        instruction: 'Use Hint mode when you want guidance without automatically clicking the answer.',
+        question: 'Which source is the strongest example of primary historical evidence?',
+        options: ['A textbook chapter', 'A diary written during the event', 'A modern documentary', 'An encyclopedia summary'],
+        correctText: 'A diary written during the event',
+        hint: 'Primary evidence is created close to the event by someone who directly experienced it.',
+        explanation: 'A diary written during the event is a primary source because it records first-hand information from that time.'
       },
       {
         id: 'demo-text',
         type: 'text',
         kicker: 'Step 3',
-        title: 'Typed answer',
-        instruction: 'Solve the page and the extension will fill the text input with a local demo answer.',
-        question: 'How many days are in a normal week?',
-        placeholder: 'Type the answer here',
-        correctText: '7',
-        hint: 'Count the standard weekdays from Monday through Sunday.',
-        explanation: 'A normal calendar week has seven days, so the typed answer should be 7.'
+        title: 'Typed math answer',
+        instruction: 'Type the answer yourself or let the demo fill the text field like the extension would.',
+        question: 'What is the value of 12 x 8?',
+        placeholder: 'Type the number',
+        correctText: '96',
+        hint: 'Break it into 10 x 8 plus 2 x 8.',
+        explanation: '12 x 8 equals 96 because 10 x 8 is 80 and 2 x 8 is 16, giving 96 together.'
       },
       {
         id: 'demo-matching',
         type: 'matching',
         kicker: 'Step 4',
-        title: 'Dropdown and matching',
-        instruction: 'This step shows multi-select matching. QuizSolver fills each dropdown with the matching concept.',
-        question: 'Match each everyday activity with the place where it usually happens.',
-        prompts: ['Cooking', 'Sleeping', 'Shopping'],
-        options: ['Kitchen', 'Bedroom', 'Store'],
-        correctText: 'Cooking = Kitchen, Sleeping = Bedroom, Shopping = Store',
-        hint: 'Match each action to the room or place where you would normally do it.',
-        explanation: 'Cooking usually happens in a kitchen, sleeping in a bedroom, and shopping in a store.'
+        title: 'Science matching dropdowns',
+        instruction: 'Match each concept to its definition. This mirrors dropdown and matching questions found in LMS quizzes.',
+        question: 'Match each science term with the correct definition.',
+        prompts: ['Photosynthesis', 'Evaporation', 'Gravity'],
+        options: ['Plants make glucose using light', 'Liquid changes into gas', 'Force attracting objects with mass'],
+        correctText: 'Photosynthesis = Plants make glucose using light, Evaporation = Liquid changes into gas, Gravity = Force attracting objects with mass',
+        hint: 'Think about what happens to light in plants, water in heat, and objects with mass.',
+        explanation: 'Photosynthesis uses light to make glucose, evaporation changes liquid into gas, and gravity attracts objects with mass.'
       },
       {
         id: 'demo-selected',
         type: 'selected',
         kicker: 'Step 5',
-        title: 'Quick overlay and selected text',
-        instruction: 'Select the question text, press Alt+Q or open Quick overlay, then solve selected text.',
-        question: 'Which QuizSolver tool opens a small window with fast actions?',
-        options: ['Quick overlay', 'Credit checkout', 'Admin panel', 'Browser history'],
-        correctText: 'Quick overlay',
-        hint: 'The answer is the small floating control opened with Alt+Q.',
-        explanation: 'Quick overlay is the floating QuizSolver window for fast actions such as solving selected text.'
+        title: 'Quick overlay for selected text',
+        instruction: 'Select only the question text, press Alt+Q, and solve the selected fragment instead of the whole page.',
+        question: 'Which QuizSolver action is best when a messy page contains extra text around the actual question?',
+        options: ['Solve selected text', 'Credit checkout', 'Admin panel', 'Browser history'],
+        correctText: 'Solve selected text',
+        hint: 'Use the action that works only on the text you highlighted.',
+        explanation: 'Solve selected text sends only the highlighted question to QuizSolver, which helps when the full-page parser sees too much unrelated content.'
       }
     ]
   },
@@ -211,7 +211,7 @@ const COPY: Partial<Record<Locale, DemoCopy>> & { en: DemoCopy; pl: DemoCopy } =
     mapText: 'Najpierw kliknij Uruchom tutorial w rozszerzeniu. Rozszerzenie pokaże po kolei, gdzie patrzeć i co kliknąć; potem otwórz popup QuizSolver, wykonaj podświetloną akcję i przejdź do następnego pytania.',
     prev: 'Poprzednie',
     next: 'Następne pytanie',
-    restart: 'Zacznij od nowa',
+    restart: 'Uruchom ponownie',
     startTour: 'Uruchom tutorial w rozszerzeniu',
     selectText: 'Zaznacz tekst pytania',
     selectedTip: 'Zaznacz sam tekst pytania, otwórz szybki overlay i kliknij Rozwiąż zaznaczony tekst.',
@@ -322,9 +322,9 @@ COPY.pl = {
     hintTitle: 'Podpowiedź',
     explanationLabel: 'Dlaczego to działa',
     resultTitle: 'Demo ukończone',
-    resultText: 'Przeszedłeś typy pytań, które QuizSolver obsługuje na realnych stronach: odpowiedzi wyboru, hint mode, tekst, dropdowny i zaznaczony tekst.',
+    resultText: 'To był pełny mini-quiz: wybór odpowiedzi, hint mode, pole tekstowe, dropdowny i zaznaczony tekst. Takie typy pytań QuizSolver obsługuje na realnych stronach.',
     finalPrimary: 'Zainstaluj rozszerzenie',
-    finalSecondary: 'Przećwicz jeszcze raz',
+    finalSecondary: 'Uruchom ponownie',
     sideTitle: 'Co zrobiłby QuizSolver',
     sideText: 'Otwórz rozszerzenie na tej stronie, rozwiąż aktualne pytanie albo użyj Quick overlay dla zaznaczonego tekstu. Ten quiz pokazuje realny przepływ bez zużywania kredytów.'
   },
@@ -334,62 +334,62 @@ COPY.pl = {
       id: 'demo-radio',
       type: 'radio',
       kicker: 'Krok 1',
-      title: 'Pytanie jednokrotnego wyboru',
-      instruction: 'Wybierz odpowiedź samodzielnie albo zasymuluj działanie rozszerzenia.',
-      question: 'Co warto zabrać, gdy na zewnątrz pada deszcz?',
-      options: ['Okulary przeciwsłoneczne', 'Parasol', 'Ręcznik plażowy', 'Łyżwy'],
-      correctText: 'Parasol',
-      hint: 'Szukaj rzeczy, która chroni przed deszczem.',
-      explanation: 'Parasol chroni przed deszczem. Pozostałe rzeczy pasują do słońca, plaży albo jazdy po lodzie.'
+      title: 'Biologia: jednokrotny wybór',
+      instruction: 'Wybierz odpowiedź samodzielnie albo zasymuluj działanie rozszerzenia na typowej karcie pytania.',
+      question: 'Które organellum odpowiada głównie za produkcję ATP w komórkach eukariotycznych?',
+      options: ['Jądro komórkowe', 'Mitochondrium', 'Rybosom', 'Błona komórkowa'],
+      correctText: 'Mitochondrium',
+      hint: 'Szukaj organellum nazywanego często elektrownią komórki.',
+      explanation: 'Mitochondria przeprowadzają oddychanie komórkowe i wytwarzają większość ATP, czyli podstawowego nośnika energii w komórkach eukariotycznych.'
     },
     {
       id: 'demo-hidden',
       type: 'hidden',
       kicker: 'Krok 2',
-      title: 'Tryb podpowiedzi',
-      instruction: 'To pokazuje sytuację, w której użytkownik chce tylko wskazówkę, a nie automatyczne kliknięcie.',
-      question: 'Co najczęściej trzymamy w lodówce, żeby było świeże?',
-      options: ['Koc', 'Mleko', 'Zeszyt', 'Klucze'],
-      correctText: 'Mleko',
-      hint: 'Wybierz produkt spożywczy, który zwykle musi być chłodzony.',
-      explanation: 'Mleko przechowuje się w lodówce, żeby dłużej zachowało świeżość. Koc, zeszyt i klucze nie wymagają chłodzenia.'
+      title: 'Historia: tryb podpowiedzi',
+      instruction: 'Ten krok pokazuje sytuację, w której użytkownik chce wskazówkę, a nie automatyczne kliknięcie.',
+      question: 'Które źródło jest najlepszym przykładem pierwotnego źródła historycznego?',
+      options: ['Rozdział w podręczniku', 'Dziennik napisany podczas wydarzenia', 'Współczesny film dokumentalny', 'Hasło w encyklopedii'],
+      correctText: 'Dziennik napisany podczas wydarzenia',
+      hint: 'Źródło pierwotne powstaje blisko opisywanego wydarzenia i zwykle pochodzi od bezpośredniego świadka.',
+      explanation: 'Dziennik napisany podczas wydarzenia jest źródłem pierwotnym, bo zawiera bezpośredni zapis z czasu, którego dotyczy.'
     },
     {
       id: 'demo-text',
       type: 'text',
       kicker: 'Krok 3',
-      title: 'Odpowiedź wpisywana',
-      instruction: 'Wpisz odpowiedź w pole tekstowe albo pozwól demo uzupełnić ją jak rozszerzenie.',
-      question: 'Ile dni ma zwykły tydzień?',
-      placeholder: 'Wpisz odpowiedź tutaj',
-      correctText: '7',
-      hint: 'Policz dni od poniedziałku do niedzieli.',
-      explanation: 'Standardowy tydzień kalendarzowy ma siedem dni, więc poprawna odpowiedź to 7.'
+      title: 'Matematyka: odpowiedź wpisywana',
+      instruction: 'Wpisz wynik w pole tekstowe albo pozwól demo uzupełnić je tak, jak zrobiłoby to rozszerzenie.',
+      question: 'Ile wynosi 12 x 8?',
+      placeholder: 'Wpisz liczbę',
+      correctText: '96',
+      hint: 'Rozbij działanie na 10 x 8 oraz 2 x 8.',
+      explanation: '12 x 8 = 96, ponieważ 10 x 8 daje 80, a 2 x 8 daje 16. Razem to 96.'
     },
     {
       id: 'demo-matching',
       type: 'matching',
       kicker: 'Krok 4',
-      title: 'Dropdowny i dopasowanie',
-      instruction: 'Dopasuj każdą czynność do miejsca. Tak wyglądają pytania spotykane w LMS-ach i formularzach.',
-      question: 'Dopasuj codzienną czynność do miejsca, w którym zwykle się odbywa.',
-      prompts: ['Gotowanie', 'Spanie', 'Zakupy'],
-      options: ['Kuchnia', 'Sypialnia', 'Sklep'],
-      correctText: 'Gotowanie = Kuchnia, Spanie = Sypialnia, Zakupy = Sklep',
-      hint: 'Połącz czynność z najbardziej naturalnym miejscem.',
-      explanation: 'Gotujemy w kuchni, śpimy w sypialni, a zakupy robimy w sklepie.'
+      title: 'Nauka: dropdowny i dopasowanie',
+      instruction: 'Dopasuj pojęcia do definicji. Tak wyglądają pytania spotykane w LMS-ach i formularzach.',
+      question: 'Dopasuj pojęcie naukowe do właściwej definicji.',
+      prompts: ['Fotosynteza', 'Parowanie', 'Grawitacja'],
+      options: ['Rośliny tworzą glukozę ze światła', 'Ciecz zmienia się w gaz', 'Siła przyciągająca obiekty z masą'],
+      correctText: 'Fotosynteza = Rośliny tworzą glukozę ze światła, Parowanie = Ciecz zmienia się w gaz, Grawitacja = Siła przyciągająca obiekty z masą',
+      hint: 'Pomyśl o świetle u roślin, wodzie pod wpływem ciepła i obiektach posiadających masę.',
+      explanation: 'Fotosynteza wykorzystuje światło do tworzenia glukozy, parowanie zmienia ciecz w gaz, a grawitacja przyciąga obiekty z masą.'
     },
     {
       id: 'demo-selected',
       type: 'selected',
       kicker: 'Krok 5',
       title: 'Quick overlay i zaznaczony tekst',
-      instruction: 'Zaznacz tekst pytania, użyj Alt+Q albo przycisku w demo, a potem rozwiąż tylko zaznaczenie.',
-      question: 'Które narzędzie QuizSolver otwiera małe okno z szybkimi akcjami?',
-      options: ['Quick overlay', 'Płatność za kredyty', 'Panel admina', 'Historia przeglądarki'],
-      correctText: 'Quick overlay',
-      hint: 'To małe pływające okno uruchamiane skrótem Alt+Q.',
-      explanation: 'Quick overlay to małe okno QuizSolver z szybkimi akcjami, między innymi rozwiązywaniem zaznaczonego tekstu.'
+      instruction: 'Zaznacz tylko tekst pytania, użyj Alt+Q i rozwiąż fragment zamiast całej strony.',
+      question: 'Która akcja QuizSolver najlepiej sprawdza się, gdy strona ma dużo dodatkowego tekstu wokół właściwego pytania?',
+      options: ['Rozwiąż zaznaczony tekst', 'Płatność za kredyty', 'Panel admina', 'Historia przeglądarki'],
+      correctText: 'Rozwiąż zaznaczony tekst',
+      hint: 'Wybierz akcję, która pracuje tylko na zaznaczonym fragmencie.',
+      explanation: 'Rozwiąż zaznaczony tekst wysyła do QuizSolver tylko podświetlone pytanie, co pomaga, gdy pełny parser strony widzi zbyt dużo pobocznej treści.'
     }
   ]
 };
@@ -722,7 +722,7 @@ const DEMO_QUESTIONS: Record<Exclude<Locale, 'en' | 'pl'>, DemoQuestion[]> = {
 
             <div class="demo-nav">
               <button class="btn btn-outline" type="button" (click)="previous()" [disabled]="current() === 0">{{ copy.prev }}</button>
-              <button class="btn btn-primary" type="button" data-qs-tour="next" (click)="next()">
+              <button class="btn btn-primary" type="button" data-qs-tour="next" (click)="nextOrRestart()">
                 {{ current() === copy.questions.length - 1 ? copy.restart : copy.next }}
               </button>
             </div>
@@ -734,6 +734,11 @@ const DEMO_QUESTIONS: Record<Exclude<Locale, 'en' | 'pl'>, DemoQuestion[]> = {
             <p class="eyebrow">{{ label('scoreLabel') }} {{ score() }} / {{ copy.questions.length }}</p>
             <h2>{{ label('resultTitle') }}</h2>
             <p>{{ label('resultText') }}</p>
+            <div class="demo-finish-stats" aria-label="Quiz result">
+              <span>{{ label('scoreLabel') }}: <strong>{{ score() }} / {{ copy.questions.length }}</strong></span>
+              <span>{{ label('answeredLabel') }}: <strong>{{ answeredCount() }}</strong></span>
+              <span>{{ label('accuracyLabel') }}: <strong>{{ accuracyPercent() }}%</strong></span>
+            </div>
           </div>
           <div class="demo-finish-actions">
             <a [href]="storeUrl" target="_blank" rel="noopener" class="btn btn-primary">{{ label('finalPrimary') }}</a>
@@ -1309,6 +1314,27 @@ const DEMO_QUESTIONS: Record<Exclude<Locale, 'en' | 'pl'>, DemoQuestion[]> = {
       margin: 0;
     }
 
+    .demo-finish-stats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-top: 0.9rem;
+    }
+
+    .demo-finish-stats span {
+      padding: 0.52rem 0.7rem;
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      border-radius: 8px;
+      background: rgba(15, 23, 42, 0.28);
+      color: var(--text-secondary);
+      font-size: 0.88rem;
+      font-weight: 800;
+    }
+
+    .demo-finish-stats strong {
+      color: var(--text-primary);
+    }
+
     .demo-finish-actions {
       display: flex;
       flex-wrap: wrap;
@@ -1395,6 +1421,7 @@ const DEMO_QUESTIONS: Record<Exclude<Locale, 'en' | 'pl'>, DemoQuestion[]> = {
       .score-stats,
       .demo-controls,
       .demo-finish,
+      .demo-finish-stats,
       .demo-finish-actions {
         flex-direction: column;
         align-items: stretch;
@@ -1684,6 +1711,14 @@ export class DemoComponent implements OnInit, OnDestroy {
     const scrollSnapshot = this.captureScroll();
     this.current.update((value) => value >= this.copy.questions.length - 1 ? 0 : value + 1);
     this.restoreScroll(scrollSnapshot);
+  }
+
+  protected nextOrRestart(): void {
+    if (this.current() >= this.copy.questions.length - 1) {
+      this.resetAnswers();
+      return;
+    }
+    this.next();
   }
 
   protected previous(): void {
