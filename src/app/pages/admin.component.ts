@@ -146,6 +146,10 @@ const ADMIN_COPY = {
     parserWindow: 'Window',
     parserQuestionsFound: 'Questions found',
     parserOptionsFound: 'Options found',
+    parserPageSnapshot: 'Page snapshot',
+    parserPageText: 'Page text',
+    parserPageCode: 'Page code',
+    parserAutoReport: 'Auto parser report',
     parserNoEvents: 'No parser events yet.',
     cachedAnswers: 'Cached answers',
     searchCache: 'Search cached question text',
@@ -395,6 +399,10 @@ const ADMIN_COPY = {
     parserWindow: 'Okno',
     parserQuestionsFound: 'Wykryte pytania',
     parserOptionsFound: 'Wykryte opcje',
+    parserPageSnapshot: 'Snapshot strony',
+    parserPageText: 'Tekst strony',
+    parserPageCode: 'Kod strony',
+    parserAutoReport: 'Auto raport parsera',
     parserNoEvents: 'Brak eventów parsera.',
     cachedAnswers: 'Odpowiedzi w cache',
     searchCache: 'Szukaj treści pytania w cache',
@@ -767,6 +775,7 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
                     <div>
                       <strong>{{ bug.user || tr('unknownUser') }}</strong>
                       <span class="status-pill danger" *ngIf="!bug.isRead">{{ tr('unreadBugs') }}</span>
+                      <span class="status-pill pending" *ngIf="bug.source === 'parser-auto'">{{ tr('parserAutoReport') }}</span>
                     </div>
                     <div class="row-actions">
                       <span class="text-secondary" style="font-size: 0.8rem;">{{ formatDate(bug.date) }}</span>
@@ -777,6 +786,22 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
                   <p class="text-secondary" *ngIf="bug.description" style="margin-top: 0.75rem; color: var(--text-primary);">
                     {{ bug.description }}
                   </p>
+                  <div class="meta-chips" *ngIf="bug.platform || bug.parserDiagnostics?.outcome || bug.hasPageCode">
+                    <span class="badge badge-outline" *ngIf="bug.platform">{{ bug.platform }}</span>
+                    <span class="badge badge-outline" *ngIf="bug.parserDiagnostics?.outcome">{{ bug.parserDiagnostics.outcome }}</span>
+                    <span class="badge badge-outline" *ngIf="bug.hasPageCode">{{ tr('parserPageCode') }}</span>
+                  </div>
+                  <details class="parser-snapshot-details" *ngIf="bug.parserSnapshot?.bodyText || bug.parserSnapshot?.htmlSnippet">
+                    <summary>{{ tr('parserPageSnapshot') }}</summary>
+                    <div class="parser-snapshot-pane" *ngIf="bug.parserSnapshot?.bodyText">
+                      <strong>{{ tr('parserPageText') }}</strong>
+                      <pre class="parser-snapshot-code">{{ bug.parserSnapshot.bodyText }}</pre>
+                    </div>
+                    <div class="parser-snapshot-pane" *ngIf="bug.parserSnapshot?.htmlSnippet">
+                      <strong>{{ tr('parserPageCode') }}</strong>
+                      <pre class="parser-snapshot-code">{{ bug.parserSnapshot.htmlSnippet }}</pre>
+                    </div>
+                  </details>
                 </article>
                 <div class="empty-panel" style="text-align: center; padding: 2rem;" *ngIf="!bugs().length">
                   <p class="text-secondary">{{ tr('noBugReports') }}</p>
@@ -1093,9 +1118,21 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
                         <span>{{ formatPercent(event.confidence || 0) }}</span>
                         <span>{{ formatNumber(event.questionCount || 0) }} {{ tr('parserQuestionsFound') }}</span>
                         <span>{{ formatNumber(event.optionCount || 0) }} {{ tr('parserOptionsFound') }}</span>
+                        <span *ngIf="event.hasPageCode">{{ tr('parserPageCode') }}</span>
                         <span>{{ formatDate(event.createdAt) }}</span>
                         <a class="primary-link parser-url" [href]="event.url" target="_blank" rel="noopener">{{ shortUrl(event.url) }}</a>
                       </div>
+                      <details class="parser-snapshot-details" *ngIf="event.snapshot?.bodyText || event.snapshot?.htmlSnippet">
+                        <summary>{{ tr('parserPageSnapshot') }}</summary>
+                        <div class="parser-snapshot-pane" *ngIf="event.snapshot?.bodyText">
+                          <strong>{{ tr('parserPageText') }}</strong>
+                          <pre class="parser-snapshot-code">{{ event.snapshot.bodyText }}</pre>
+                        </div>
+                        <div class="parser-snapshot-pane" *ngIf="event.snapshot?.htmlSnippet">
+                          <strong>{{ tr('parserPageCode') }}</strong>
+                          <pre class="parser-snapshot-code">{{ event.snapshot.htmlSnippet }}</pre>
+                        </div>
+                      </details>
                     </article>
                   </div>
                   <ng-template #noParserEvents>
@@ -1123,9 +1160,22 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
                       <p>{{ report.parserSnapshot?.questionTexts?.[0] || report.parserDiagnostics?.reason || report.url }}</p>
                       <div class="meta-chips">
                         <span class="badge badge-outline role-badge">{{ report.platform || 'unknown' }}</span>
+                        <span class="badge badge-outline" *ngIf="report.source === 'parser-auto'">{{ tr('parserAutoReport') }}</span>
                         <span class="badge badge-outline">{{ formatPercent(report.parserDiagnostics?.confidence || 0) }}</span>
+                        <span class="badge badge-outline" *ngIf="report.hasPageCode">{{ tr('parserPageCode') }}</span>
                         <span class="badge badge-outline">{{ formatDate(report.date) }}</span>
                       </div>
+                      <details class="parser-snapshot-details" *ngIf="report.parserSnapshot?.bodyText || report.parserSnapshot?.htmlSnippet">
+                        <summary>{{ tr('parserPageSnapshot') }}</summary>
+                        <div class="parser-snapshot-pane" *ngIf="report.parserSnapshot?.bodyText">
+                          <strong>{{ tr('parserPageText') }}</strong>
+                          <pre class="parser-snapshot-code">{{ report.parserSnapshot.bodyText }}</pre>
+                        </div>
+                        <div class="parser-snapshot-pane" *ngIf="report.parserSnapshot?.htmlSnippet">
+                          <strong>{{ tr('parserPageCode') }}</strong>
+                          <pre class="parser-snapshot-code">{{ report.parserSnapshot.htmlSnippet }}</pre>
+                        </div>
+                      </details>
                     </div>
                     <a class="open-hint" [href]="report.url" target="_blank" rel="noopener">{{ shortUrl(report.url) }}</a>
                   </article>
@@ -2496,6 +2546,46 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
     }
     .parser-snapshot {
       color: var(--text-primary);
+    }
+    .parser-snapshot-details {
+      margin-top: 0.8rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      background: rgba(2, 6, 23, 0.26);
+      overflow: hidden;
+    }
+    .parser-snapshot-details summary {
+      cursor: pointer;
+      padding: 0.65rem 0.75rem;
+      color: var(--text-primary);
+      font-size: 0.8rem;
+      font-weight: 800;
+      list-style-position: inside;
+    }
+    .parser-snapshot-pane {
+      display: grid;
+      gap: 0.45rem;
+      padding: 0.75rem;
+      border-top: 1px solid var(--border);
+    }
+    .parser-snapshot-pane strong {
+      color: var(--text-secondary);
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .parser-snapshot-code {
+      max-height: 280px;
+      margin: 0;
+      overflow: auto;
+      white-space: pre-wrap;
+      word-break: break-word;
+      border: 1px solid rgba(148, 163, 184, 0.18);
+      border-radius: var(--radius-sm);
+      padding: 0.75rem;
+      background: rgba(15, 23, 42, 0.78);
+      color: #dbeafe;
+      font: 11px/1.45 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
     }
     .parser-url {
       max-width: 100%;
