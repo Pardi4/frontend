@@ -149,6 +149,7 @@ const ADMIN_COPY = {
     parserPageSnapshot: 'Page snapshot',
     parserPageText: 'Page text',
     parserPageCode: 'Page code',
+    parserDownloadPageCode: 'Download page code',
     parserAutoReport: 'Auto parser report',
     parserNoEvents: 'No parser events yet.',
     cachedAnswers: 'Cached answers',
@@ -402,6 +403,7 @@ const ADMIN_COPY = {
     parserPageSnapshot: 'Snapshot strony',
     parserPageText: 'Tekst strony',
     parserPageCode: 'Kod strony',
+    parserDownloadPageCode: 'Pobierz kod strony',
     parserAutoReport: 'Auto raport parsera',
     parserNoEvents: 'Brak eventów parsera.',
     cachedAnswers: 'Odpowiedzi w cache',
@@ -791,8 +793,12 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
                     <span class="badge badge-outline" *ngIf="bug.parserDiagnostics?.outcome">{{ bug.parserDiagnostics.outcome }}</span>
                     <span class="badge badge-outline" *ngIf="bug.hasPageCode">{{ tr('parserPageCode') }}</span>
                   </div>
-                  <details class="parser-snapshot-details" *ngIf="bug.parserSnapshot?.bodyText || bug.parserSnapshot?.htmlSnippet">
+                  <details class="parser-snapshot-details" *ngIf="bug.parserSnapshot?.bodyText || bug.parserSnapshot?.htmlSnippet || bug.parserSnapshot?.fullHtmlFile?.id">
                     <summary>{{ tr('parserPageSnapshot') }}</summary>
+                    <button class="parser-snapshot-download" type="button" *ngIf="bug.parserSnapshot?.fullHtmlFile?.id" (click)="downloadParserSnapshotFile(bug.parserSnapshot.fullHtmlFile)">
+                      {{ tr('parserDownloadPageCode') }}
+                      <span>{{ formatBytes(bug.parserSnapshot.fullHtmlFile.bytes) }}</span>
+                    </button>
                     <div class="parser-snapshot-pane" *ngIf="bug.parserSnapshot?.bodyText">
                       <strong>{{ tr('parserPageText') }}</strong>
                       <pre class="parser-snapshot-code">{{ bug.parserSnapshot.bodyText }}</pre>
@@ -1122,8 +1128,12 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
                         <span>{{ formatDate(event.createdAt) }}</span>
                         <a class="primary-link parser-url" [href]="event.url" target="_blank" rel="noopener">{{ shortUrl(event.url) }}</a>
                       </div>
-                      <details class="parser-snapshot-details" *ngIf="event.snapshot?.bodyText || event.snapshot?.htmlSnippet">
+                      <details class="parser-snapshot-details" *ngIf="event.snapshot?.bodyText || event.snapshot?.htmlSnippet || event.snapshot?.fullHtmlFile?.id">
                         <summary>{{ tr('parserPageSnapshot') }}</summary>
+                        <button class="parser-snapshot-download" type="button" *ngIf="event.snapshot?.fullHtmlFile?.id" (click)="downloadParserSnapshotFile(event.snapshot.fullHtmlFile)">
+                          {{ tr('parserDownloadPageCode') }}
+                          <span>{{ formatBytes(event.snapshot.fullHtmlFile.bytes) }}</span>
+                        </button>
                         <div class="parser-snapshot-pane" *ngIf="event.snapshot?.bodyText">
                           <strong>{{ tr('parserPageText') }}</strong>
                           <pre class="parser-snapshot-code">{{ event.snapshot.bodyText }}</pre>
@@ -1165,8 +1175,12 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
                         <span class="badge badge-outline" *ngIf="report.hasPageCode">{{ tr('parserPageCode') }}</span>
                         <span class="badge badge-outline">{{ formatDate(report.date) }}</span>
                       </div>
-                      <details class="parser-snapshot-details" *ngIf="report.parserSnapshot?.bodyText || report.parserSnapshot?.htmlSnippet">
+                      <details class="parser-snapshot-details" *ngIf="report.parserSnapshot?.bodyText || report.parserSnapshot?.htmlSnippet || report.parserSnapshot?.fullHtmlFile?.id">
                         <summary>{{ tr('parserPageSnapshot') }}</summary>
+                        <button class="parser-snapshot-download" type="button" *ngIf="report.parserSnapshot?.fullHtmlFile?.id" (click)="downloadParserSnapshotFile(report.parserSnapshot.fullHtmlFile)">
+                          {{ tr('parserDownloadPageCode') }}
+                          <span>{{ formatBytes(report.parserSnapshot.fullHtmlFile.bytes) }}</span>
+                        </button>
                         <div class="parser-snapshot-pane" *ngIf="report.parserSnapshot?.bodyText">
                           <strong>{{ tr('parserPageText') }}</strong>
                           <pre class="parser-snapshot-code">{{ report.parserSnapshot.bodyText }}</pre>
@@ -2587,6 +2601,26 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
       color: #dbeafe;
       font: 11px/1.45 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
     }
+    .parser-snapshot-download {
+      width: calc(100% - 1.5rem);
+      margin: 0 0.75rem 0.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      border: 1px solid rgba(34, 211, 238, 0.32);
+      border-radius: var(--radius-sm);
+      padding: 0.62rem 0.75rem;
+      background: rgba(14, 165, 233, 0.09);
+      color: var(--accent-cyan);
+      font-size: 0.8rem;
+      font-weight: 800;
+      text-align: left;
+    }
+    .parser-snapshot-download span {
+      color: var(--text-secondary);
+      font-weight: 700;
+    }
     .parser-url {
       max-width: 100%;
       overflow-wrap: anywhere;
@@ -3765,6 +3799,14 @@ export class AdminComponent implements OnInit, OnDestroy {
     return new Intl.NumberFormat(this.adminLocale() === 'pl' ? 'pl-PL' : 'en-US').format(number);
   }
 
+  protected formatBytes(value: unknown): string {
+    const bytes = Math.max(0, Number(value || 0));
+    if (!Number.isFinite(bytes) || bytes <= 0) return '-';
+    if (bytes < 1024) return `${Math.round(bytes)} B`;
+    if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+    return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+  }
+
   protected formatPercent(value: unknown): string {
     const number = Number(value || 0);
     return new Intl.NumberFormat(this.adminLocale() === 'pl' ? 'pl-PL' : 'en-US', {
@@ -3807,6 +3849,31 @@ export class AdminComponent implements OnInit, OnDestroy {
       setTimeout(() => {
         document.querySelector('.credit-usage-panel')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }, 80);
+    }
+  }
+
+  protected async downloadParserSnapshotFile(file: any): Promise<void> {
+    const fileId = String(file?.id || '').trim();
+    if (!this.isBrowser || !fileId || !this.token) return;
+    try {
+      const response = await fetch(`/api/admin/parser/snapshot-file/${encodeURIComponent(fileId)}`, {
+        headers: { Authorization: `Bearer ${this.token}` }
+      });
+      if (!response.ok) {
+        this.error.set(`Snapshot download failed: HTTP ${response.status}`);
+        return;
+      }
+      const blob = await response.blob();
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = String(file?.filename || `parser-page-${fileId}.txt`);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(url);
+    } catch {
+      this.error.set('Snapshot download failed.');
     }
   }
 
