@@ -600,15 +600,21 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
                 <strong>Admin</strong>
               </a>
               <nav class="admin-tabs" [attr.aria-label]="tr('adminSections')">
-                <button type="button" *ngFor="let tab of tabs" [class.active]="activeTab() === tab.id" (click)="setActiveTab(tab.id)">
-                  <span class="tab-short">{{ tab.short }}</span>
-                  <span class="tab-copy">
-                    <span class="tab-label">{{ tabLabel(tab.id) }}</span>
-                    <small>{{ tabHint(tab.id) }}</small>
-                  </span>
-                  <span class="tab-badge" *ngIf="tab.id === 'bugs' && bugBadgeCount()">{{ bugBadgeCount() }}</span>
-                  <span class="tab-badge" *ngIf="tab.id === 'support' && supportBadgeCount()">{{ supportBadgeCount() }}</span>
-                </button>
+                <section class="tab-group" *ngFor="let group of tabGroups()">
+                  <header class="tab-group-head">
+                    <span>{{ group.label }}</span>
+                    <small>{{ group.note }}</small>
+                  </header>
+                  <button type="button" *ngFor="let tab of group.tabs" [class.active]="activeTab() === tab.id" (click)="setActiveTab(tab.id)">
+                    <span class="tab-short">{{ tab.short }}</span>
+                    <span class="tab-copy">
+                      <span class="tab-label">{{ tabLabel(tab.id) }}</span>
+                      <small>{{ tabHint(tab.id) }}</small>
+                    </span>
+                    <span class="tab-badge" *ngIf="tab.id === 'bugs' && bugBadgeCount()">{{ bugBadgeCount() }}</span>
+                    <span class="tab-badge" *ngIf="tab.id === 'support' && supportBadgeCount()">{{ supportBadgeCount() }}</span>
+                  </button>
+                </section>
               </nav>
             </div>
             <div class="admin-sidebar-foot">
@@ -637,25 +643,43 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
             <div class="admin-alert anim-slide-up" *ngIf="error()">{{ error() }}</div>
             <div class="admin-alert success anim-slide-up" *ngIf="notice()">{{ notice() }}</div>
 
-            <div class="attention-head" *ngIf="adminNoticeCards().length">
-              <div>
-                <span>{{ adminLocale() === 'pl' ? 'Wymaga uwagi' : 'Needs attention' }}</span>
-                <small>{{ adminLocale() === 'pl' ? 'Najwazniejsze rzeczy do sprawdzenia teraz.' : 'What needs review right now.' }}</small>
-              </div>
-            </div>
+            <section class="admin-command-center">
+              <article class="command-card priority-card">
+                <header class="command-card-head">
+                  <div>
+                    <span>{{ adminLocale() === 'pl' ? 'Priorytety' : 'Priority queue' }}</span>
+                    <small>{{ adminLocale() === 'pl' ? 'Najważniejsze rzeczy do sprawdzenia teraz.' : 'The things worth checking first.' }}</small>
+                  </div>
+                  <button class="mini-action" type="button" (click)="refresh()">{{ tr('refresh') }}</button>
+                </header>
+                <div class="operations-strip" *ngIf="adminNoticeCards().length; else noAdminNotices">
+                  <button class="operation-card" type="button" *ngFor="let notice of adminNoticeCards()" [class.warn]="notice.tone === 'warn'" [class.ok]="notice.tone === 'ok'" (click)="openAdminNotice(notice)">
+                    <span>{{ notice.label }}</span>
+                    <strong>{{ notice.value }}</strong>
+                    <small>{{ notice.note }}</small>
+                  </button>
+                </div>
+                <ng-template #noAdminNotices>
+                  <div class="empty-priority">
+                    <strong>{{ adminLocale() === 'pl' ? 'Brak pilnych spraw' : 'No urgent items' }}</strong>
+                    <span>{{ adminLocale() === 'pl' ? 'Support, błędy i billing wyglądają spokojnie.' : 'Support, bug reports and billing look quiet.' }}</span>
+                  </div>
+                </ng-template>
+              </article>
 
-            <section class="operations-strip" *ngIf="adminNoticeCards().length">
-              <button class="operation-card" type="button" *ngFor="let notice of adminNoticeCards()" [class.warn]="notice.tone === 'warn'" [class.ok]="notice.tone === 'ok'" (click)="openAdminNotice(notice)">
-                <span>{{ notice.label }}</span>
-                <strong>{{ notice.value }}</strong>
-                <small>{{ notice.note }}</small>
-              </button>
-            </section>
-
-            <section class="admin-stats">
-              <article class="glass" *ngFor="let card of statsCards()">
-                <span>{{ card.label }}</span>
-                <strong [class.revenue]="card.revenue">{{ card.value }}</strong>
+              <article class="command-card metrics-card">
+                <header class="command-card-head">
+                  <div>
+                    <span>{{ adminLocale() === 'pl' ? 'Stan platformy' : 'Platform snapshot' }}</span>
+                    <small>{{ adminLocale() === 'pl' ? 'Szybki podgląd najważniejszych liczb.' : 'A quick read of the main counters.' }}</small>
+                  </div>
+                </header>
+                <section class="admin-stats">
+                  <article *ngFor="let card of statsCards()">
+                    <span>{{ card.label }}</span>
+                    <strong [class.revenue]="card.revenue">{{ card.value }}</strong>
+                  </article>
+                </section>
               </article>
             </section>
 
@@ -1688,13 +1712,20 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
     /* Shell & Sidebar */
     .admin-shell {
       display: grid;
-      grid-template-columns: 260px 1fr;
+      grid-template-columns: 292px minmax(0, 1fr);
       min-height: 100vh;
+      background:
+        radial-gradient(circle at top left, rgba(6, 182, 212, 0.1), transparent 28rem),
+        linear-gradient(180deg, rgba(15, 23, 42, 0.2), rgba(2, 6, 23, 0.18));
     }
     .admin-sidebar {
-      background: rgba(10, 12, 22, 0.6);
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      background: rgba(8, 11, 20, 0.82);
       border-right: 1px solid var(--border);
-      padding: 2rem 1.5rem;
+      padding: 1.4rem 1rem;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -1703,15 +1734,39 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
     .admin-tabs {
       display: flex;
       flex-direction: column;
-      gap: 0.5rem;
-      margin: 2.5rem 0;
+      gap: 1.15rem;
+      margin: 1.75rem 0;
+    }
+    .tab-group {
+      display: grid;
+      gap: 0.4rem;
+    }
+    .tab-group-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 0.75rem;
+      padding: 0 0.45rem;
+    }
+    .tab-group-head span {
+      color: var(--text-primary);
+      font-size: 0.72rem;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .tab-group-head small {
+      color: var(--text-secondary);
+      font-size: 0.68rem;
+      white-space: nowrap;
     }
     .admin-tabs button {
       display: flex;
       align-items: center;
       gap: 0.75rem;
-      padding: 0.85rem 1rem;
-      border-radius: var(--radius-md);
+      min-height: 3.1rem;
+      padding: 0.7rem 0.75rem;
+      border-radius: var(--radius-sm);
       color: var(--text-secondary);
       font-size: 0.95rem;
       font-weight: 500;
@@ -1719,6 +1774,7 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
       width: 100%;
       text-align: left;
       border: 1px solid transparent;
+      background: rgba(255, 255, 255, 0.018);
     }
     .admin-tabs button .tab-short {
       background: rgba(255, 255, 255, 0.05);
@@ -1758,13 +1814,14 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
       margin-left: auto;
     }
     .admin-tabs button:hover {
-      background: rgba(255, 255, 255, 0.03);
+      background: rgba(255, 255, 255, 0.055);
       color: var(--text-primary);
     }
     .admin-tabs button.active {
-      background: rgba(6, 182, 212, 0.08);
+      background: linear-gradient(135deg, rgba(6, 182, 212, 0.15), rgba(16, 185, 129, 0.07));
       color: var(--accent-cyan);
-      border: 1px solid rgba(6, 182, 212, 0.2);
+      border: 1px solid rgba(6, 182, 212, 0.32);
+      box-shadow: 0 12px 28px rgba(8, 145, 178, 0.12);
     }
     .admin-tabs button.active .tab-short {
       background: var(--accent-cyan);
@@ -1801,19 +1858,27 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
 
     /* Main content */
     .admin-main {
-      padding: 3rem;
+      padding: 1.5rem clamp(1rem, 2.4vw, 2.25rem) 3rem;
       overflow-y: auto;
       max-height: 100vh;
     }
     .admin-header {
+      position: sticky;
+      top: 0;
+      z-index: 35;
       display: flex;
       justify-content: space-between;
       align-items: center;
       gap: 2rem;
-      margin-bottom: 3rem;
+      margin: -1.5rem calc(clamp(1rem, 2.4vw, 2.25rem) * -1) 1.25rem;
+      padding: 1.35rem clamp(1rem, 2.4vw, 2.25rem);
+      border-bottom: 1px solid rgba(148, 163, 184, 0.12);
+      background: rgba(8, 11, 20, 0.82);
+      backdrop-filter: blur(20px);
     }
     .admin-header h1 {
-      font-size: 2.25rem;
+      font-size: clamp(1.55rem, 2.3vw, 2.15rem);
+      letter-spacing: 0;
     }
     .admin-header-actions {
       display: flex;
@@ -1821,17 +1886,88 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
     }
 
     /* Stats */
+    .admin-command-center {
+      display: grid;
+      grid-template-columns: minmax(360px, 1.12fr) minmax(360px, 0.88fr);
+      gap: 1rem;
+      margin-bottom: 1.25rem;
+    }
+    .command-card {
+      border: 1px solid rgba(148, 163, 184, 0.15);
+      border-radius: var(--radius-md);
+      background: rgba(15, 23, 42, 0.58);
+      padding: 1.1rem;
+      box-shadow: 0 22px 70px rgba(0, 0, 0, 0.16);
+    }
+    .command-card-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 0.85rem;
+    }
+    .command-card-head div {
+      display: grid;
+      gap: 0.18rem;
+    }
+    .command-card-head span {
+      color: var(--text-primary);
+      font-size: 0.82rem;
+      font-weight: 900;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    .command-card-head small,
+    .empty-priority span {
+      color: var(--text-secondary);
+      font-size: 0.78rem;
+      line-height: 1.35;
+    }
+    .mini-action {
+      border: 1px solid rgba(148, 163, 184, 0.18);
+      border-radius: var(--radius-sm);
+      padding: 0.45rem 0.7rem;
+      background: rgba(255, 255, 255, 0.035);
+      color: var(--text-primary);
+      font-size: 0.78rem;
+      font-weight: 800;
+    }
+    .mini-action:hover {
+      border-color: rgba(6, 182, 212, 0.36);
+      color: var(--accent-cyan);
+    }
+    .empty-priority {
+      min-height: 7.2rem;
+      display: grid;
+      place-content: center;
+      gap: 0.25rem;
+      border: 1px dashed rgba(148, 163, 184, 0.24);
+      border-radius: var(--radius-sm);
+      text-align: center;
+      background: rgba(255, 255, 255, 0.02);
+    }
+    .empty-priority strong {
+      color: var(--accent-emerald);
+      font-family: var(--font-heading);
+      font-size: 1.05rem;
+    }
     .admin-stats {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 1.5rem;
-      margin-bottom: 3rem;
+      gap: 0.7rem;
+      margin-bottom: 0;
+    }
+    .metrics-card .admin-stats {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
     .admin-stats article {
-      padding: 1.75rem;
+      padding: 0.85rem 0.9rem;
       display: flex;
       flex-direction: column;
       gap: 0.25rem;
+      border: 1px solid rgba(148, 163, 184, 0.14);
+      border-radius: var(--radius-sm);
+      background: rgba(255, 255, 255, 0.024);
     }
     .admin-stats article span {
       font-size: 0.8rem;
@@ -1841,7 +1977,7 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
       font-weight: 600;
     }
     .admin-stats article strong {
-      font-size: 2rem;
+      font-size: 1.35rem;
       font-weight: 800;
       font-family: var(--font-heading);
       color: var(--text-primary);
@@ -1875,17 +2011,17 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
 
     .operations-strip {
       display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 1rem;
-      margin-bottom: 1.5rem;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.7rem;
+      margin-bottom: 0;
     }
     .operations-strip .operation-card,
     .insight-grid article,
     .cache-summary article {
       border: 1px solid var(--border);
-      border-radius: var(--radius-md);
+      border-radius: var(--radius-sm);
       background: rgba(255, 255, 255, 0.025);
-      padding: 1rem 1.1rem;
+      padding: 0.85rem 0.9rem;
       display: grid;
       gap: 0.25rem;
       min-width: 0;
@@ -1923,7 +2059,7 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
     .cache-summary strong {
       color: var(--text-primary);
       font-family: var(--font-heading);
-      font-size: 1.45rem;
+      font-size: 1.25rem;
       line-height: 1.1;
       overflow-wrap: anywhere;
     }
@@ -1949,19 +2085,22 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
 
     /* Admin panels */
     .admin-panel {
-      padding: 2.5rem;
-      margin-bottom: 2rem;
+      padding: clamp(1rem, 2vw, 1.5rem);
+      margin-bottom: 1.25rem;
+      border: 1px solid rgba(148, 163, 184, 0.16);
+      background: rgba(15, 23, 42, 0.52);
+      box-shadow: 0 18px 60px rgba(0, 0, 0, 0.12);
     }
     .panel-head {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 2rem;
-      margin-bottom: 2rem;
+      gap: 1rem;
+      margin-bottom: 1rem;
       flex-wrap: wrap;
     }
     .panel-head h2 {
-      font-size: 1.75rem;
+      font-size: clamp(1.25rem, 1.7vw, 1.55rem);
     }
     .admin-search {
       display: flex;
@@ -1992,8 +2131,10 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
     /* Data Tables */
     .table-scroll {
       overflow-x: auto;
-      margin: 1.5rem -2.5rem -2.5rem;
-      border-top: 1px solid var(--border);
+      margin: 1rem 0 0;
+      border: 1px solid rgba(148, 163, 184, 0.16);
+      border-radius: var(--radius-sm);
+      background: rgba(2, 6, 23, 0.22);
     }
     .admin-table {
       width: 100%;
@@ -2002,11 +2143,15 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
       font-size: 0.95rem;
     }
     .admin-table th {
-      padding: 1.25rem 2.5rem;
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      padding: 0.9rem 1rem;
       font-family: var(--font-heading);
       font-weight: 600;
       color: var(--text-secondary);
       border-bottom: 1px solid var(--border);
+      background: rgba(11, 18, 32, 0.95);
       font-size: 0.85rem;
       text-transform: uppercase;
       letter-spacing: 0.05em;
@@ -2042,7 +2187,7 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
       color: var(--accent-cyan);
     }
     .admin-table td {
-      padding: 1.25rem 2.5rem;
+      padding: 1rem;
       border-bottom: 1px solid var(--border);
       vertical-align: middle;
     }
@@ -2915,6 +3060,9 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
     }
 
     @media (max-width: 1200px) {
+      .admin-command-center {
+        grid-template-columns: 1fr;
+      }
       .admin-stats {
         grid-template-columns: repeat(2, 1fr);
       }
@@ -2928,24 +3076,39 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
         grid-template-columns: 1fr;
       }
       .admin-sidebar {
+        position: sticky;
+        top: 0;
+        z-index: 40;
+        height: auto;
+        overflow: visible;
         border-right: none;
         border-bottom: 1px solid var(--border);
         padding: 1.5rem;
       }
       .admin-tabs {
-        flex-direction: row;
-        overflow-x: auto;
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        overflow: visible;
         margin: 1.5rem 0;
       }
+      .tab-group {
+        min-width: 0;
+      }
+      .tab-group-head {
+        display: none;
+      }
       .admin-tabs button {
-        width: auto;
-        white-space: nowrap;
+        width: 100%;
+        white-space: normal;
       }
       .admin-sidebar-foot {
         flex-direction: row;
       }
       .admin-main {
         padding: 1.5rem;
+      }
+      .admin-header {
+        margin: -1.5rem -1.5rem 1rem;
       }
       .health-grid {
         grid-template-columns: 1fr;
@@ -2996,6 +3159,9 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
         margin: 0 0 0.75rem;
         overflow: visible;
       }
+      .tab-group {
+        gap: 0.35rem;
+      }
       .admin-tabs button {
         justify-content: center;
         gap: 0.3rem;
@@ -3039,7 +3205,8 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
         flex-direction: column;
         align-items: stretch;
         gap: 1rem;
-        margin-bottom: 1rem;
+        margin: -1rem -1rem 1rem;
+        padding: 1rem;
       }
       .admin-header h1 {
         font-size: 1.55rem;
@@ -3059,6 +3226,9 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
         grid-template-columns: 1fr;
         gap: 0.75rem;
         margin-bottom: 1rem;
+      }
+      .admin-command-center .operations-strip {
+        margin-bottom: 0;
       }
       .admin-stats article {
         padding: 1rem;
@@ -3106,7 +3276,7 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
         grid-template-columns: 1fr;
       }
       .table-scroll {
-        margin: 1rem -1rem -1rem;
+        margin: 1rem 0 0;
         -webkit-overflow-scrolling: touch;
       }
       .admin-table {
@@ -3161,7 +3331,7 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
 
     @media (max-width: 430px) {
       .admin-tabs {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
+        grid-template-columns: repeat(2, minmax(0, 1fr));
       }
       .admin-search,
       .admin-header-actions,
@@ -3561,6 +3731,37 @@ export class AdminComponent implements OnInit, OnDestroy {
       system: 'systemHint'
     };
     return this.tr(hints[tab]);
+  }
+
+  protected tabGroups(): Array<{ label: string; note: string; tabs: Array<{ id: AdminTab; label: string; short: string }> }> {
+    const pl = this.adminLocale() === 'pl';
+    const groups: Array<{ label: string; note: string; ids: AdminTab[] }> = [
+      {
+        label: pl ? 'Operacje' : 'Operations',
+        note: pl ? 'użytkownicy i kontakt' : 'users and contact',
+        ids: ['users', 'support', 'bugs']
+      },
+      {
+        label: pl ? 'Wiedza' : 'Knowledge',
+        note: pl ? 'parser i odpowiedzi' : 'parser and answers',
+        ids: ['parser', 'cache']
+      },
+      {
+        label: pl ? 'Finanse' : 'Revenue',
+        note: pl ? 'płatności i billing' : 'payments and billing',
+        ids: ['purchases', 'system']
+      },
+      {
+        label: pl ? 'Publiczne' : 'Public',
+        note: pl ? 'ranking' : 'ranking',
+        ids: ['leaderboard']
+      }
+    ];
+    return groups.map(group => ({
+      label: group.label,
+      note: group.note,
+      tabs: this.tabs.filter(tab => group.ids.includes(tab.id))
+    }));
   }
 
   protected activeTabTitle(): string {
