@@ -1042,6 +1042,7 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
                       <span class="badge badge-outline role-badge">{{ hit.questionType }}</span>
                       <span class="badge badge-outline">{{ hit.options?.length || 0 }} {{ tr('options') }}</span>
                       <span class="badge badge-outline">{{ hit.hitCount }} {{ tr('hits') }}</span>
+                      <span class="badge badge-outline">{{ tr('lastSeen') }}: {{ formatDate(hit.lastUsedAt || hit.createdAt) }}</span>
                       <span class="status-pill danger" *ngIf="isWeakQuestionText(hit.questionText)">{{ tr('weakText') }}</span>
                     </div>
                   </div>
@@ -1080,7 +1081,7 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
                 </form>
               </div>
 
-              <div class="health-grid parser-health-grid">
+              <div class="parser-health-grid">
                 <article *ngFor="let card of parserHealthCards()">
                   <span class="text-secondary" style="font-size: 0.75rem; text-transform: uppercase;">{{ card.label }}</span>
                   <strong [class.ok]="card.ok" [class.warn]="card.warn" style="font-size: 1.35rem; margin-top: 0.25rem;">{{ card.value }}</strong>
@@ -1092,8 +1093,8 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
                 <section class="parser-block parser-domain-block">
                   <div class="parser-block-head">
                     <div>
-                      <h3>{{ adminLocale() === 'pl' ? 'Domeny wymagajace uwagi' : 'Domains needing attention' }}</h3>
-                      <p>{{ adminLocale() === 'pl' ? 'Ranking stron z największą liczbą błędów, zgłoszeń i częściowych odczytów.' : 'Sites ranked by parser failures, reports and partial reads.' }}</p>
+                      <h3>{{ adminLocale() === 'pl' ? 'Strony z problemami' : 'Problem sites' }}</h3>
+                      <p>{{ adminLocale() === 'pl' ? 'Gdzie parser najczęściej nie znajduje pytań albo widzi tylko część strony.' : 'Where the parser most often misses questions or reads only part of the page.' }}</p>
                     </div>
                   </div>
                   <div class="parser-platform-list" *ngIf="parserDomainRows().length; else noParserDomains">
@@ -1123,8 +1124,8 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
                 <section class="parser-block parser-problem-block">
                   <div class="parser-block-head">
                     <div>
-                      <h3>{{ adminLocale() === 'pl' ? 'Top problemy' : 'Top issues' }}</h3>
-                      <p>{{ adminLocale() === 'pl' ? 'Grupowanie po stronie, platformie i powodzie bledu.' : 'Grouped by site, platform and failure reason.' }}</p>
+                      <h3>{{ adminLocale() === 'pl' ? 'Napraw najpierw' : 'Fix first' }}</h3>
+                      <p>{{ adminLocale() === 'pl' ? 'Najbardziej powtarzalne błędy, z powodem i przykładem strony do sprawdzenia.' : 'The most repeated failures, with reason and a sample page to inspect.' }}</p>
                     </div>
                   </div>
                   <div class="parser-event-list" *ngIf="parserProblemRows().length; else noParserProblems">
@@ -1137,6 +1138,7 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
                         <span class="status-pill danger">{{ formatNumber(group.count || 0) }}</span>
                       </div>
                       <p class="parser-reason-line">{{ group.reason || (adminLocale() === 'pl' ? 'Brak powodu' : 'No reason recorded') }}</p>
+                      <p class="parser-next-step">{{ adminLocale() === 'pl' ? 'Kolejny krok: otwórz snapshot, sprawdź selektory i popraw regułę parsera dla tej domeny.' : 'Next step: open the snapshot, check selectors and patch the parser rule for this site.' }}</p>
                       <p class="parser-snapshot" *ngIf="group.sampleText">{{ truncateUi(group.sampleText, 180) }}</p>
                       <div class="parser-event-meta">
                         <span>{{ tr('parserConfidence') }}: {{ formatPercent(group.avgConfidence || 0) }}</span>
@@ -1151,11 +1153,11 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
                   </ng-template>
                 </section>
 
-                <section class="parser-block">
+                <section class="parser-block parser-platform-block">
                   <div class="parser-block-head">
                     <div>
                       <h3>{{ tr('parserPlatform') }}</h3>
-                      <p>{{ adminLocale() === 'pl' ? 'Najwazniejsze platformy i powody problemow.' : 'Key platforms and the most common problem reasons.' }}</p>
+                      <p>{{ adminLocale() === 'pl' ? 'Kontekst pomocniczy: które platformy generują najwięcej zdarzeń.' : 'Supporting context: which platforms generate the most events.' }}</p>
                     </div>
                   </div>
                   <div class="parser-platform-list" *ngIf="parserPlatformRows().length; else noParserPlatforms">
@@ -1180,11 +1182,11 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
                   </ng-template>
                 </section>
 
-                <section class="parser-block">
+                <section class="parser-block parser-events-block">
                   <div class="parser-block-head">
                     <div>
                       <h3>{{ tr('parserEvents') }}</h3>
-                      <p>{{ adminLocale() === 'pl' ? 'Ostatnie zdarzenia z krotkim opisem i linkiem.' : 'Recent events with a short snapshot and source link.' }}</p>
+                      <p>{{ adminLocale() === 'pl' ? 'Świeże przykłady z krótkim opisem, linkiem i snapshotem HTML.' : 'Fresh examples with a short preview, source link and HTML snapshot.' }}</p>
                     </div>
                   </div>
                   <div class="parser-event-list" *ngIf="parserEvents().length; else noParserEvents">
@@ -2708,6 +2710,9 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
       flex: 0 0 170px;
     }
     .parser-health-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 0.85rem;
       margin-bottom: 1.5rem;
     }
     .parser-health-grid article,
@@ -2719,15 +2724,33 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
       background: rgba(255, 255, 255, 0.035);
       border-radius: var(--radius-md);
     }
+    .parser-health-grid article {
+      display: grid;
+      gap: 0.25rem;
+      padding: 1rem;
+    }
     .parser-workspace {
       display: grid;
-      grid-template-columns: minmax(280px, 0.9fr) minmax(360px, 1.35fr);
+      grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
       gap: 1.25rem;
       align-items: start;
     }
-    .parser-domain-block,
     .parser-problem-block {
+      order: 1;
+    }
+    .parser-domain-block {
+      order: 2;
+    }
+    .parser-events-block {
+      order: 3;
       grid-column: 1 / -1;
+    }
+    .parser-platform-block {
+      order: 4;
+      grid-column: 1 / -1;
+    }
+    .parser-events-block .parser-event-list {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
     .parser-domain-row {
       border-color: rgba(14, 165, 233, 0.24);
@@ -2814,12 +2837,21 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
       color: var(--text-primary);
     }
     .parser-reason-line,
-    .parser-snapshot {
+    .parser-snapshot,
+    .parser-next-step {
       margin: 0.75rem 0 0;
       color: var(--text-secondary);
       font-size: 0.86rem;
       line-height: 1.45;
       overflow-wrap: anywhere;
+    }
+    .parser-next-step {
+      padding: 0.65rem 0.75rem;
+      border: 1px solid rgba(6, 182, 212, 0.22);
+      border-radius: var(--radius-sm);
+      background: rgba(6, 182, 212, 0.055);
+      color: var(--accent-cyan);
+      font-weight: 750;
     }
     .parser-snapshot {
       color: var(--text-primary);
@@ -3066,6 +3098,9 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
       .admin-stats {
         grid-template-columns: repeat(2, 1fr);
       }
+      .parser-health-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
       .insight-grid,
       .cache-summary {
         grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -3114,6 +3149,9 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
         grid-template-columns: 1fr;
       }
       .parser-workspace {
+        grid-template-columns: 1fr;
+      }
+      .parser-events-block .parser-event-list {
         grid-template-columns: 1fr;
       }
       .operations-strip {
