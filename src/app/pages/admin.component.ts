@@ -170,6 +170,11 @@ const ADMIN_COPY = {
     parserDownloadPageCode: 'Download page code',
     parserAutoReport: 'Auto parser report',
     parserNoEvents: 'No parser events yet.',
+    clearFilteredParserEvents: 'Clear filtered',
+    clearAllParserEvents: 'Clear all events',
+    clearFilteredParserEventsConfirm: 'Delete parser events matching the current filters? User bug reports will stay.',
+    clearAllParserEventsConfirm: 'Delete every parser event? User bug reports will stay, but parser analytics will reset.',
+    parserEventsCleared: 'Parser events cleared',
     cachedAnswers: 'Cached answers',
     searchCache: 'Search cached question text',
     reset: 'Reset',
@@ -279,6 +284,7 @@ const ADMIN_COPY = {
     unknownSender: 'unknown sender',
     couldNotDeleteSupport: 'Could not delete support message.',
     couldNotUpdateBugReport: 'Could not update bug report.',
+    couldNotClearParserEvents: 'Could not clear parser events.',
     supportAdjustment: 'Support adjustment',
     questionHistoryAdjustment: 'Question history adjustment',
     adminManualGrant: 'Admin manual grant'
@@ -420,6 +426,11 @@ const ADMIN_COPY = {
     parserDownloadPageCode: 'Pobierz kod strony',
     parserAutoReport: 'Auto raport parsera',
     parserNoEvents: 'Brak eventów parsera.',
+    clearFilteredParserEvents: 'Wyczyść filtrowane',
+    clearAllParserEvents: 'Wyczyść wszystko',
+    clearFilteredParserEventsConfirm: 'Usunąć eventy parsera pasujące do obecnych filtrów? Zgłoszenia użytkowników zostaną.',
+    clearAllParserEventsConfirm: 'Usunąć wszystkie eventy parsera? Zgłoszenia użytkowników zostaną, ale analityka parsera się zresetuje.',
+    parserEventsCleared: 'Eventy parsera wyczyszczone',
     cachedAnswers: 'Odpowiedzi w cache',
     searchCache: 'Szukaj treści pytania w cache',
     reset: 'Reset',
@@ -528,6 +539,7 @@ const ADMIN_COPY = {
     unknownSender: 'nieznanego nadawcy',
     couldNotDeleteSupport: 'Nie udało się usunąć wiadomości supportu.',
     couldNotUpdateBugReport: 'Nie udało się zaktualizować zgłoszenia błędu.',
+    couldNotClearParserEvents: 'Nie udało się wyczyścić eventów parsera.',
     supportAdjustment: 'Korekta supportu',
     questionHistoryAdjustment: 'Korekta z historii pytań',
     adminManualGrant: 'Ręczny grant admina'
@@ -1057,6 +1069,8 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
                   </select>
                   <button class="btn btn-primary" type="submit">{{ tr('search') }}</button>
                   <button class="btn btn-outline" type="button" (click)="loadParserHealth(); loadParserEvents(parserEventsPagination().page || 1)">{{ tr('refresh') }}</button>
+                  <button class="btn btn-outline danger-outline" type="button" *ngIf="hasParserEventFilters()" (click)="clearParserEvents(false)">{{ tr('clearFilteredParserEvents') }}</button>
+                  <button class="btn btn-outline danger-outline" type="button" (click)="clearParserEvents(true)">{{ tr('clearAllParserEvents') }}</button>
                 </form>
               </div>
 
@@ -2210,6 +2224,15 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
       background: rgba(244, 63, 94, 0.1);
       border-color: var(--accent-rose);
       color: var(--accent-rose);
+    }
+    .btn.danger-outline {
+      border-color: rgba(244, 63, 94, 0.34);
+      color: var(--accent-rose);
+    }
+    .btn.danger-outline:hover {
+      background: rgba(244, 63, 94, 0.1);
+      border-color: var(--accent-rose);
+      color: #fecdd3;
     }
     .user-cell {
       min-width: 240px;
@@ -3963,6 +3986,10 @@ export class AdminComponent implements OnInit, OnDestroy {
     return this.truncateText(question || body || fallback || '-', 220);
   }
 
+  protected hasParserEventFilters(): boolean {
+    return !!this.parserSearch.trim() || !!this.parserOutcomeFilter;
+  }
+
   protected shortUrl(value: unknown): string {
     const url = String(value || '').trim();
     if (!url) return '-';
@@ -4411,6 +4438,31 @@ export class AdminComponent implements OnInit, OnDestroy {
       this.parserEvents.set(result.events || []);
       this.parserEventsPagination.set(result.pagination || { page, pages: 1, total: 0 });
     }
+  }
+
+  protected async clearParserEvents(all = false): Promise<void> {
+    if (!all && !this.hasParserEventFilters()) return;
+    const confirmMessage = all ? this.tr('clearAllParserEventsConfirm') : this.tr('clearFilteredParserEventsConfirm');
+    if (!this.confirm(confirmMessage)) return;
+
+    const params = new URLSearchParams();
+    const search = this.parserSearch.trim();
+    if (search) params.set('q', search);
+    if (this.parserOutcomeFilter) params.set('outcome', this.parserOutcomeFilter);
+
+    const endpoint = all
+      ? '/api/admin/parser/events/all'
+      : `/api/admin/parser/events?${params.toString()}`;
+    const result = await this.api(endpoint, { method: 'DELETE' });
+    if (result.success) {
+      this.showNotice(`${this.tr('parserEventsCleared')}: ${this.formatNumber(result.deleted || 0)}`);
+      await Promise.all([
+        this.loadParserHealth(),
+        this.loadParserEvents(1)
+      ]);
+      return;
+    }
+    this.error.set(result.error || this.tr('couldNotClearParserEvents'));
   }
 
   private async loadHealth(): Promise<void> {
