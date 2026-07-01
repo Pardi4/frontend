@@ -1576,6 +1576,96 @@ function ensurePlatformSeoDepth(copy: SiteCopy, locale: Locale): SiteCopy {
   return copy;
 }
 
+function appendUniqueByTitle<T extends { title: string }>(items: T[] | undefined, additions: T[]): T[] {
+  const existing = new Set((items || []).map(item => item.title));
+  return [
+    ...(items || []),
+    ...additions.filter(item => !existing.has(item.title))
+  ];
+}
+
+function appendUniqueByQuestion<T extends { question: string }>(items: T[] | undefined, additions: T[]): T[] {
+  const existing = new Set((items || []).map(item => item.question));
+  return [
+    ...(items || []),
+    ...additions.filter(item => !existing.has(item.question))
+  ];
+}
+
+function enhancePriorityPlatformSeo(copy: SiteCopy, locale: Locale): SiteCopy {
+  const isPl = locale === 'pl';
+  const pages = copy.platformPages;
+  const priorityContent: Partial<Record<keyof SiteCopy['platformPages'], {
+    metaDescription: string;
+    sections: Array<{ title: string; text: string }>;
+    faq: Array<{ question: string; answer: string }>;
+  }>> = {
+    testportal: {
+      metaDescription: isPl
+        ? 'Testportal quiz solver dla Chrome: AI odpowiedzi, FocusScan OCR, historia pytan, wsparcie timerow, obrazow, radio i checkboxow bez wychodzenia z karty.'
+        : 'Testportal quiz solver for Chrome: AI answers, FocusScan OCR, question history, timers, images, radio answers and checkboxes without leaving the test tab.',
+      sections: isPl ? [
+        { title: 'Testportal timers and focus warnings', text: 'Testportal often combines a visible timer, one-question screens and warnings when the test tab loses focus. QuizSolver keeps the workflow inside the browser side panel, so users can review a suggestion without opening a separate search tab or copying the question into another app.' },
+        { title: 'Testportal image questions and screenshots', text: 'When a Testportal question is a screenshot, chart, PDF fragment or locked text, FocusScan can capture only the prompt and choices. A clean selection gives AI better context than a full-page capture with timers, menus and navigation labels.' },
+        { title: 'Testportal review history', text: 'Solved Testportal questions can be saved with answer explanations and personal notes. This helps turn timed attempts into a repeatable study set for definitions, formulas, weak topics and similar questions that may appear later.' }
+      ] : [
+        { title: 'Testportal timers and focus warnings', text: 'Testportal often combines a visible timer, one-question screens and warnings when the test tab loses focus. QuizSolver keeps the workflow inside the browser side panel, so users can review a suggestion without opening a separate search tab or copying the question into another app.' },
+        { title: 'Testportal image questions and screenshots', text: 'When a Testportal question is a screenshot, chart, PDF fragment or locked text, FocusScan can capture only the prompt and choices. A clean selection gives AI better context than a full-page capture with timers, menus and navigation labels.' },
+        { title: 'Testportal review history', text: 'Solved Testportal questions can be saved with answer explanations and personal notes. This helps turn timed attempts into a repeatable study set for definitions, formulas, weak topics and similar questions that may appear later.' }
+      ],
+      faq: isPl ? [
+        { question: 'What should I do if Testportal shows only an image question?', answer: 'Use FocusScan and select only the question, answer choices and relevant diagram. Do not include the timer, browser toolbar or navigation buttons because they add noise to the AI prompt.' },
+        { question: 'Can QuizSolver handle shuffled Testportal answers?', answer: 'Yes. The extension reads the visible answer text, not only the position of the choice, so shuffled radio or checkbox options can still be matched to the current question.' },
+        { question: 'Why should I save Testportal questions after solving?', answer: 'Saved questions keep the answer, explanation and your note, which turns a timed Testportal attempt into review material for later practice.' }
+      ] : [
+        { question: 'What should I do if Testportal shows only an image question?', answer: 'Use FocusScan and select only the question, answer choices and relevant diagram. Do not include the timer, browser toolbar or navigation buttons because they add noise to the AI prompt.' },
+        { question: 'Can QuizSolver handle shuffled Testportal answers?', answer: 'Yes. The extension reads the visible answer text, not only the position of the choice, so shuffled radio or checkbox options can still be matched to the current question.' },
+        { question: 'Why should I save Testportal questions after solving?', answer: 'Saved questions keep the answer, explanation and your note, which turns a timed Testportal attempt into review material for later practice.' }
+      ]
+    },
+    moodle: {
+      metaDescription: isPl
+        ? 'Moodle quiz solver dla Chrome: AI odpowiedzi i wyjasnienia dla losowych odpowiedzi, testow wielostronicowych, obrazow, dropdownow i historii powtorek.'
+        : 'Moodle quiz solver for Chrome: AI answers and explanations for shuffled choices, multi-page attempts, image prompts, dropdowns and review history.',
+      sections: [
+        { title: 'Moodle shuffled answers', text: 'Moodle courses often randomize the order of answer choices between attempts. QuizSolver focuses on the visible answer text and question context, which is safer than relying on a previous A, B or C position from another attempt.' },
+        { title: 'Moodle multi-page attempts', text: 'Some Moodle quizzes show every question on one page, while others show one question per screen. The solver workflow is designed around the active question block, so navigation labels and unrelated review text are less likely to leak into the AI request.' },
+        { title: 'Moodle review screens', text: 'Moodle review pages can include instructor feedback, marks, partially correct notes and hidden correct answers. Saving the AI explanation and your own note creates study material even when the course later closes the review window.' }
+      ],
+      faq: [
+        { question: 'Does QuizSolver work with Moodle shuffled answers?', answer: 'Yes. It reads the visible choice text for the current attempt, so a cached or suggested answer can be compared against the actual options shown on screen.' },
+        { question: 'Can QuizSolver solve Moodle questions across multiple pages?', answer: 'Yes. Open the current Moodle question page, wait for it to load and run Solve current page. For one-page attempts, solve the visible question block you want to review.' },
+        { question: 'Can I use Moodle review pages for studying?', answer: 'Yes. Saved explanations, notes and previous questions can be turned into practice material even when Moodle feedback is limited or later hidden.' }
+      ]
+    },
+    canvas: {
+      metaDescription: isPl
+        ? 'Canvas quiz solver dla Chrome: AI odpowiedzi dla Canvas Classic Quizzes, New Quizzes, obrazow, LTI, checkboxow i historii pytan do powtorki.'
+        : 'Canvas quiz solver for Chrome: AI answers for Canvas Classic Quizzes, New Quizzes, images, LTI layouts, checkboxes and saved review history.',
+      sections: [
+        { title: 'Canvas Classic Quizzes and New Quizzes', text: 'Canvas can render assessments through Classic Quizzes, New Quizzes or embedded tools. QuizSolver starts with the visible assessment area and tries to keep the prompt, answer controls and explanation together instead of scraping unrelated course navigation.' },
+        { title: 'Canvas image and formula prompts', text: 'Canvas courses often include diagrams, formula screenshots, file previews and rich media. When the normal page parser does not expose enough text, FocusScan can capture the exact visual region that contains the question and choices.' },
+        { title: 'Canvas feedback and exam review', text: 'Canvas feedback may disappear after a deadline or be hidden by course settings. Saving the question, answer and explanation creates a private study trail for retakes, finals and similar assignments.' }
+      ],
+      faq: [
+        { question: 'Does QuizSolver support Canvas New Quizzes?', answer: 'Yes. It first tries to read the visible quiz area. If a New Quizzes or LTI layout hides text from the normal parser, FocusScan can capture the exact question region.' },
+        { question: 'Can QuizSolver read Canvas image or formula questions?', answer: 'Yes. FocusScan is designed for screenshots, diagrams, formulas and file-preview questions where the important content is visual.' },
+        { question: 'Why save Canvas quiz explanations?', answer: 'Canvas review visibility can be limited by course settings. Saving explanations gives you a private review trail before finals, retakes or similar assignments.' }
+      ]
+    }
+  };
+
+  (Object.entries(priorityContent) as Array<[keyof SiteCopy['platformPages'], NonNullable<typeof priorityContent[keyof SiteCopy['platformPages']]>]>).forEach(([key, addition]) => {
+    const page = pages[key];
+    if (!page) return;
+    page.meta.description = addition.metaDescription;
+    page.keywordSections = appendUniqueByTitle(page.keywordSections, addition.sections);
+    page.faq = appendUniqueByQuestion(page.faq, addition.faq);
+  });
+
+  return copy;
+}
+
 const de = buildLocalizedSiteCopy('de');
 const es = buildLocalizedSiteCopy('es');
 const fr = buildLocalizedSiteCopy('fr');
@@ -1598,6 +1688,8 @@ ensurePlatformSeoDepth(es, 'es');
 ensurePlatformSeoDepth(fr, 'fr');
 ensurePlatformSeoDepth(it, 'it');
 ensurePlatformSeoDepth(uk, 'uk');
+enhancePriorityPlatformSeo(en, 'en');
+enhancePriorityPlatformSeo(pl, 'pl');
 
 function applyCompactSeo(copy: SiteCopy, locale: Locale): void {
   const templates: Record<Locale, {

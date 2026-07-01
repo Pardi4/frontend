@@ -5,7 +5,7 @@ import { fileURLToPath } from 'node:url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.join(__dirname, '..');
 const siteUrl = 'https://getquizsolver.com';
-const contentLastmod = process.env.SITEMAP_LASTMOD || '2026-06-28';
+const contentLastmod = process.env.SITEMAP_LASTMOD || '2026-07-02';
 const posts = JSON.parse(fs.readFileSync(path.join(root, 'src', 'app', 'blog-posts.json'), 'utf8'));
 const categories = [...new Set(posts.map(post => post.category).filter(Boolean))];
 

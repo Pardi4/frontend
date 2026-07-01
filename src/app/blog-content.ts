@@ -62,6 +62,22 @@ const renderArticle = (locale: Locale, draft: ArticleDraft): string => `
   </article>
 `;
 
+const wordCountFromHtml = (html: string): number =>
+  html
+    .replace(/<script[\s\S]*?<\/script>/gi, ' ')
+    .replace(/<style[\s\S]*?<\/style>/gi, ' ')
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/&[a-z0-9#]+;/gi, ' ')
+    .split(/\s+/)
+    .filter(Boolean)
+    .length;
+
+const readingTimeFor = (html: string): string => {
+  const words = wordCountFromHtml(html);
+  const minutes = Math.max(2, Math.ceil(words / 220));
+  return `${minutes} min`;
+};
+
 const genericLocalizedDraft = (locale: Locale): ArticleDraft => {
   const drafts: Record<Locale, ArticleDraft> = {
     en: {
@@ -396,6 +412,126 @@ const TRANSLATED_ARTICLE_DRAFTS: Record<string, ArticleDraft> = {
 };
 
 const ARTICLE_DRAFTS: Record<string, ArticleDraft> = {
+  'testportal-timer-focus-warnings-quizsolver': {
+    intro: [
+      'Testportal quizzes feel different from a normal web form because time pressure, one-question screens and focus warnings all shape the workflow. A student is not only answering the question; they are also managing a timer, page transitions, shuffled answers and sometimes image-based prompts.',
+      'That is why a useful Testportal quiz solver guide needs to go deeper than "click a button and get an answer." The reliable workflow is about waiting for the right page state, reading the visible prompt, keeping the answer choices attached to the correct question and saving the explanation for review.'
+    ],
+    sections: [
+      {
+        heading: 'Why Testportal needs a platform-specific workflow',
+        paragraphs: [
+          'Many quiz platforms show several questions at once, but Testportal often shows only the active question. This can be helpful because the extension has a smaller area to inspect. It can also be fragile if the page has not finished loading. If a solver runs while the next screen is still rendering, the visible text may be a spinner, a navigation label or a generic "Question 7" heading.',
+          'QuizSolver is designed to wait for visible question content and pair it with nearby controls. That matters for radio answers, checkbox questions and prompts with images. A suggestion is only useful if the AI saw the same options the student sees on screen.'
+        ],
+        bullets: ['wait until the question and choices are visible', 'avoid double-clicking solve while the page changes', 'use FocusScan when the question is an image', 'save difficult answers to history']
+      },
+      {
+        heading: 'How timers change the solving flow',
+        paragraphs: [
+          'The timer does not change the reasoning task, but it changes user behavior. Under time pressure people click faster, refresh more often and retry the same question. That can create duplicate requests or answer suggestions tied to an older screen state.',
+          'A stable workflow is calmer: load the question, run Solve current page, review the answer, then move forward. If the same normalized question appears again, cache and saved history can reduce repeated AI work while still charging according to the product rules.'
+        ]
+      },
+      {
+        heading: 'Focus warnings and tab switching',
+        paragraphs: [
+          'A regular website can usually observe when its own tab loses focus or becomes hidden. That is why opening a separate search tab during a Testportal attempt can create unnecessary risk and friction. A side-panel workflow is more convenient because the quiz tab remains the working context.',
+          'This does not mean a website can magically inspect the whole computer. The practical point is simpler: avoid needless tab switching and keep the study workflow in one place.'
+        ]
+      },
+      {
+        heading: 'When FocusScan is the better option',
+        paragraphs: [
+          'If Testportal shows a diagram, screenshot, PDF fragment or locked text, page parsing may not capture enough useful content. FocusScan lets the user select exactly the region that matters: the prompt, the answer choices and any relevant visual.',
+          'The selection should be tight. A full-page screenshot often includes timer text, navigation, footer labels and unrelated instructions. That extra content can distract OCR and make the AI response less precise.'
+        ],
+        bullets: ['include the prompt', 'include visible choices', 'include the diagram if it matters', 'exclude timers and menus']
+      },
+      {
+        heading: 'What to save after the attempt',
+        paragraphs: [
+          'The best SEO promise is also the best product promise: the answer should not disappear after one click. Testportal questions saved with explanations become a private review set. Notes can mark why the question was hard, which concept was involved and what to practice later.',
+          'That turns Testportal from a stressful timed page into a source of reusable study material.'
+        ]
+      }
+    ]
+  },
+  'moodle-shuffled-answers-ai-quiz-solver': {
+    intro: [
+      'Moodle quizzes often look simple, but the details matter: shuffled answer order, multiple attempts, multi-page navigation, review screens, dropdowns, short answers and course-specific formatting can all appear in one activity.',
+      'A Moodle quiz solver should not treat the page as one large text blob. It has to identify the active question block, collect the choices that belong to that block and understand whether the answer is single-choice, multiple-answer, typed or selected from a dropdown.'
+    ],
+    sections: [
+      {
+        heading: 'Why shuffled answers are a big deal',
+        paragraphs: [
+          'When Moodle randomizes answer order, option position stops being reliable. An answer that was "B" in one attempt may become "D" in the next attempt. The only stable signal is the visible answer text and the surrounding question context.',
+          'QuizSolver is designed around that visible context. It reads the option text and asks AI to reason over the current choices instead of blindly mapping a saved position onto a new attempt.'
+        ],
+        bullets: ['do not rely on A/B/C positions', 'compare visible option text', 'watch for multiple-answer checkboxes', 'save explanations instead of only letters']
+      },
+      {
+        heading: 'One-page Moodle quizzes',
+        paragraphs: [
+          'Some Moodle courses show every question on one long page. This is convenient for reviewing, but it makes parsing more sensitive. A solver has to keep each answer group attached to the correct question and ignore navigation, page numbers and unrelated instructions.',
+          'For long pages, the safest user workflow is to scroll to the question being solved and run the extension when the relevant block is clearly visible.'
+        ]
+      },
+      {
+        heading: 'Multi-page attempts and loading states',
+        paragraphs: [
+          'Other Moodle quizzes show one question per page or split the attempt into groups. After clicking Next, the browser may briefly show a loading state. Running a solver during that transition can capture stale text or an incomplete question.',
+          'The practical fix is simple: wait for the next question and its answer controls to appear, then solve. This creates fewer duplicates and cleaner AI prompts.'
+        ]
+      },
+      {
+        heading: 'Review pages are valuable study data',
+        paragraphs: [
+          'Moodle review pages may show instructor feedback, marks, correct answers, partially correct warnings or only limited information depending on course settings. Even limited feedback is useful when combined with saved AI explanations.',
+          'QuizSolver history lets students keep the prompt, answer, explanation and personal note together. Over time this becomes a targeted revision library for the course.'
+        ],
+        bullets: ['save weak questions', 'add a short note', 'compare with instructor feedback', 'build a practice quiz from history']
+      }
+    ]
+  },
+  'canvas-new-quizzes-classic-quizzes-ai-solver': {
+    intro: [
+      'Canvas LMS has more than one quiz experience. Classic Quizzes, New Quizzes and embedded LTI tools can all present questions differently. A solver that works on one Canvas layout may fail on another if it only looks for a fixed selector or scrapes the entire page.',
+      'QuizSolver approaches Canvas by reading the visible assessment area first, then using FocusScan when a prompt is image-based, embedded or rendered in a custom layout.'
+    ],
+    sections: [
+      {
+        heading: 'Classic Quizzes vs New Quizzes',
+        paragraphs: [
+          'Classic Quizzes often expose clearer question blocks. New Quizzes can behave more like a dynamic application where answer controls, status messages and media live in different parts of the DOM. The reliable principle is the same for both: pair the closest prompt with the closest answer controls.',
+          'That prevents course navigation, assignment titles, due dates and unrelated labels from being sent to AI as if they were part of the question.'
+        ],
+        bullets: ['Classic Quizzes question blocks', 'New Quizzes dynamic cards', 'checkbox and radio controls', 'media-heavy prompts']
+      },
+      {
+        heading: 'Canvas image and formula questions',
+        paragraphs: [
+          'Canvas courses often include diagrams, screenshots, equations, charts and file previews. If the important part of the prompt is visual, normal page parsing may only see a container or a short image label.',
+          'FocusScan is designed for that case. Select the prompt, answer choices and relevant visual area. A tight capture gives OCR and AI a better chance of understanding the actual task.'
+        ]
+      },
+      {
+        heading: 'External tools and LTI layouts',
+        paragraphs: [
+          'Some Canvas assignments launch external quiz tools inside the LMS. These pages may use iframes or custom components, and their layout can be different from native Canvas quizzes.',
+          'When regular detection is not enough, FocusScan gives the user a manual path: capture the area that contains the question instead of waiting for one universal parser to understand every embedded tool.'
+        ]
+      },
+      {
+        heading: 'Save before review access changes',
+        paragraphs: [
+          'Canvas review settings can change after a deadline. Correct answers may be hidden, feedback may close or attempts may become unavailable. Saving the explanation at solve time protects the study value of the question.',
+          'Before a final exam or retake, saved Canvas questions can be filtered into a focused practice set, which is more useful than scrolling through old LMS pages.'
+        ]
+      }
+    ]
+  },
   'socrative-quiz-solver-guide': {
     intro: [
       'Socrative is built for live classroom activity: rooms, quick questions, quizzes, exit tickets and fast answer collection. That speed is useful for teachers, but it also means a student often sees one compact question at a time with limited context around it.',
@@ -1000,8 +1136,12 @@ const metadata = rawPosts as BlogPostMetadata[];
 export const BLOG_POST_MANIFEST: BlogPostMetadata[] = metadata;
 
 export const BLOG_POSTS: BlogPost[] = metadata
-  .map((post) => ({
-    ...post,
-    content: renderArticle(post.locale, ARTICLE_DRAFTS[post.slug] || TRANSLATED_ARTICLE_DRAFTS[post.slug] || genericLocalizedDraft(post.locale))
-  }))
+  .map((post) => {
+    const content = renderArticle(post.locale, ARTICLE_DRAFTS[post.slug] || TRANSLATED_ARTICLE_DRAFTS[post.slug] || genericLocalizedDraft(post.locale));
+    return {
+      ...post,
+      readTime: readingTimeFor(content),
+      content
+    };
+  })
   .sort((a, b) => b.datePublished.localeCompare(a.datePublished));

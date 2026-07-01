@@ -34,6 +34,17 @@ type PlatformDetail = {
   types: string[];
 };
 
+type PlatformPlaybook = {
+  eyebrow: string;
+  title: string;
+  intro: string[];
+  sections: Array<{
+    title: string;
+    paragraphs: string[];
+    bullets?: string[];
+  }>;
+};
+
 const PLATFORM_CONTEXT: Partial<Record<PageKey, { en: string; pl: string }>> = {
   quizSolverAi: {
     en: 'QuizSolver is built for messy real quiz pages, not only clean demo forms. It checks the visible question, nearby answer controls, images, headings and page context before it sends a compact request to AI.',
@@ -117,6 +128,239 @@ function buildPlatformDetail(pageKey: PageKey, locale: Locale, platform: string)
     typesTitle: isPl ? `Obsługiwane pytania na ${platform}` : `Supported question types on ${platform}`,
     types: isPl ? DEFAULT_TYPES_PL : DEFAULT_TYPES_EN
   };
+}
+
+function buildPlatformPlaybook(pageKey: PageKey, locale: Locale, platform: string): PlatformPlaybook {
+  const isPl = locale === 'pl';
+  const generic: PlatformPlaybook = {
+    eyebrow: isPl ? 'Praktyczny workflow' : 'Practical workflow',
+    title: isPl ? `Jak przygotowac ${platform} do stabilnego rozwiazywania` : `How to use QuizSolver reliably on ${platform}`,
+    intro: isPl
+      ? [
+          `Najlepsza strona platformowa nie powinna tylko obiecywac, ze narzedzie dziala. Powinna wyjasniac, co QuizSolver czyta na ${platform}, kiedy uzyc zwyklego wykrywania, a kiedy lepiej przejsc na FocusScan.`,
+          'Ten workflow jest pisany pod prawdziwe quizy: pytania z odpowiedziami radio, checkboxy, pola tekstowe, obrazy, dluzsze polecenia i strony, ktore zmieniaja uklad w zaleznosci od kursu albo nauczyciela.'
+        ]
+      : [
+          `A useful ${platform} solver page should explain the real workflow, not only repeat that AI answers are available. QuizSolver first reads visible question structure, nearby choices, field types and page context before it asks AI for a suggestion.`,
+          'This workflow is designed for real quiz pages: radio answers, checkboxes, text inputs, image prompts, long instructions and custom layouts that can change between schools, courses and teachers.'
+        ],
+    sections: [
+      {
+        title: isPl ? 'Zacznij od widocznego pytania' : 'Start with the visible question',
+        paragraphs: isPl
+          ? ['Poczekaj, az pytanie i odpowiedzi w pelni sie zaladuja. Jezeli strona renderuje pytania partiami, wczesne klikniecie moze zlapac sam naglowek, numer pytania albo tekst nawigacji zamiast tresci zadania.']
+          : ['Wait until the question and answer choices have fully loaded. On platforms that render quiz cards in stages, clicking too early can capture a heading, question number or navigation text instead of the actual prompt.']
+      },
+      {
+        title: isPl ? 'Sprawdz typ odpowiedzi' : 'Check the answer format',
+        paragraphs: isPl
+          ? ['Pytanie jednokrotnego wyboru, wiele poprawnych odpowiedzi, dropdown i krotka odpowiedz wymagaja innych instrukcji dla AI. QuizSolver stara sie wykryc typ kontrolki, zeby odpowiedz pasowala do tego, co faktycznie mozna zaznaczyc lub wpisac.']
+          : ['Single-choice, multiple-answer, dropdown and short-answer questions need different AI instructions. QuizSolver tries to detect the active control type so the suggested answer matches what the page can actually accept.']
+      },
+      {
+        title: isPl ? 'Zapisuj trudne pytania' : 'Save hard questions for review',
+        paragraphs: isPl
+          ? ['Najwieksza wartosc pojawia sie po pierwszej odpowiedzi. Zapisane pytania, wyjasnienia i notatki tworza prywatna baze powtorek, ktora pomaga znalezc slabe tematy przed kolejnym testem.']
+          : ['The biggest study value appears after the first answer. Saved questions, explanations and notes create a private review library that makes weak topics easier to find before the next attempt.']
+      }
+    ]
+  };
+
+  const custom: Partial<Record<PageKey, PlatformPlaybook>> = {
+    testportal: isPl ? {
+      eyebrow: 'Testportal workflow',
+      title: 'Jak QuizSolver dziala na Testportalu krok po kroku',
+      intro: [
+        'Testportal jest jedna z trudniejszych platform do ogarniecia, bo czesto laczy timer, pojedyncze pytanie na ekranie, losowa kolejnosc odpowiedzi, ostrzezenia o utracie fokusu i pytania z obrazami. To oznacza, ze zwykle kopiuj-wklej do AI jest niewygodne i latwo miesza tresc pytania z nawigacja testu.',
+        'QuizSolver traktuje Testportal jak osobny workflow. Najpierw szuka aktywnej tresci pytania, potem laczy ja z widocznymi odpowiedziami i typem pola. Dopiero taki uporzadkowany kontekst trafia do AI, a wynik moze zostac zapisany w historii razem z wyjasnieniem.'
+      ],
+      sections: [
+        {
+          title: 'Pytania z timerem i jednym ekranem',
+          paragraphs: [
+            'Na Testportalu czesto widzisz tylko jedno pytanie naraz. To pomaga parserowi, ale tylko wtedy, gdy strona zdazy zaladowac tresc i odpowiedzi. Jezeli klikniesz zbyt szybko po przejsciu dalej, solver moze zobaczyc pusty stan, loader albo sam numer pytania.',
+            'Najstabilniejszy schemat to poczekac az pojawia sie wszystkie odpowiedzi, uzyc Solve current page i dopiero potem sprawdzic sugestie. Przy quizach z dlugim limitem czasu warto unikac powtornego wysylania tego samego pytania, bo historia i cache moga wykorzystac poprzedni wynik.'
+          ],
+          bullets: ['jedno pytanie na ekranie', 'radio i checkboxy', 'losowa kolejnosc odpowiedzi', 'obrazy albo wykresy w tresci']
+        },
+        {
+          title: 'FocusScan przy obrazach i blokowanym tekscie',
+          paragraphs: [
+            'Nie wszystkie pytania sa czystym tekstem HTML. Nauczyciel moze wstawic screen, fragment PDF, wykres albo zadanie jako obraz. Wtedy standardowy parser moze miec za malo danych i lepszy jest FocusScan.',
+            'Najlepszy wybor obszaru to sam tekst pytania plus odpowiedzi. Nie zaznaczaj timera, menu, przyciskow nawigacji ani calej strony, bo taki szum obniza jakosc odpowiedzi i zwieksza ryzyko, ze AI odpowie na niewlasciwy fragment.'
+          ],
+          bullets: ['zaznacz tylko pytanie i odpowiedzi', 'unikaj licznika czasu w screenie', 'nie lap panelu nawigacji', 'uzyj historii do pozniejszej powtorki']
+        },
+        {
+          title: 'Co zapisac po rozwiazaniu',
+          paragraphs: [
+            'Testportal bywa uzywany do szybkich kartkowek, ale historia pytan zmienia jednorazowa odpowiedz w material do nauki. Po trudnym pytaniu warto zapisac wyjasnienie, dopisac wlasna notatke i oznaczyc temat, ktory sprawil problem.',
+            'Przy kolejnym podejsciu albo podobnym sprawdzianie nie zaczynasz od zera. Masz zestaw realnych pytan, ktore juz wystapily w kursie, razem z uzasadnieniem odpowiedzi i kontekstem platformy.'
+          ]
+        }
+      ]
+    } : {
+      eyebrow: 'Testportal workflow',
+      title: 'How QuizSolver handles Testportal quizzes in practice',
+      intro: [
+        'Testportal is one of the platforms where a generic AI copy-paste workflow breaks down quickly. A quiz can show one question per screen, a running timer, shuffled answers, focus-loss warnings and image-based prompts in the same attempt.',
+        'QuizSolver treats Testportal as a structured workflow. It looks for the active prompt, pairs it with the currently visible answer choices and detects whether the question expects one answer or multiple answers before sending a compact request to AI.'
+      ],
+      sections: [
+        {
+          title: 'Timed one-question screens',
+          paragraphs: [
+            'Many Testportal attempts show only one question at a time. That can make detection cleaner, but only after the page has fully rendered. If the extension is triggered while the next card is still loading, the visible text may be only a question number, a spinner or navigation labels.',
+            'The most reliable flow is to wait until the full question and answer set are visible, run Solve current page, review the suggestion and continue. If the same normalized question appears again, QuizSolver can reuse saved context instead of treating it as a brand-new prompt.'
+          ],
+          bullets: ['single-question screens', 'radio and checkbox answers', 'shuffled answer order', 'embedded images and diagrams']
+        },
+        {
+          title: 'When FocusScan is better than page parsing',
+          paragraphs: [
+            'Some Testportal questions are not exposed as clean page text. Teachers may use screenshots, PDF fragments, diagrams or locked content. In those cases FocusScan gives AI the missing visual context without relying on brittle HTML selectors.',
+            'The selection should be tight: include the prompt and answer choices, but leave out the timer, navigation buttons, side menus and browser chrome. A smaller, cleaner capture produces better OCR and reduces the chance of answering the wrong text.'
+          ],
+          bullets: ['select the prompt and answers only', 'exclude timers and navigation', 'use it for images or locked text', 'save the explanation afterward']
+        },
+        {
+          title: 'Turn the attempt into study material',
+          paragraphs: [
+            'The strongest Testportal workflow starts after the first answer. Saving the question, answer and explanation turns a temporary test screen into a private review item. Notes are useful for marking why the question was hard: concept gap, vocabulary, formula, definition or careless reading.',
+            'Later, those saved questions can become a practice set. That gives the page long-term learning value instead of reducing it to a one-time answer lookup.'
+          ]
+        }
+      ]
+    },
+    moodle: isPl ? {
+      eyebrow: 'Moodle workflow',
+      title: 'Jak uzywac QuizSolver na Moodle bez mieszania pytan',
+      intro: [
+        'Moodle wyglada spokojnie, ale w praktyce kursy potrafia laczyc pytania na jednej stronie, testy wielostronicowe, losowe odpowiedzi, review po wyslaniu, obrazki, wzory i pytania cloze. Dlatego parser musi rozumiec blok pytania, a nie tylko pobrac caly tekst strony.',
+        'QuizSolver skupia sie na aktywnym pytaniu i jego najblizszych odpowiedziach. To pomaga uniknac sytuacji, w ktorej do AI trafia numeracja, menu nawigacji albo feedback z poprzedniego pytania.'
+      ],
+      sections: [
+        {
+          title: 'Jedna strona kontra wiele stron',
+          paragraphs: [
+            'W niektorych kursach Moodle pokazuje caly quiz na jednej stronie. W innych kazde pytanie jest osobna karta albo osobna strona. Dla AI to duza roznica, bo przy widoku calego testu trzeba rozdzielic bloki pytan i nie mieszac odpowiedzi z sasiednich zadan.',
+            'Najlepiej rozwiazywac widoczny blok pytania i sprawdzac, czy odpowiedzi naleza do tego samego zadania. Przy dlugich quizach zapis historii pomaga wrocic do trudnych fragmentow bez przewijania calego podejscia.'
+          ],
+          bullets: ['test na jednej stronie', 'test wielostronicowy', 'losowe odpowiedzi', 'ekran review po zakonczeniu']
+        },
+        {
+          title: 'Losowe odpowiedzi i ponowne podejscia',
+          paragraphs: [
+            'Moodle czesto miesza kolejnosc opcji. Wtedy odpowiedz typu A albo B nie jest wystarczajaca, bo przy kolejnym podejsciu ta sama tresc moze miec inna pozycje. Solver powinien operowac na tresci odpowiedzi, nie na samym indeksie.',
+            'QuizSolver zapisuje kontekst pytania i moze porownywac widoczne opcje z trescia odpowiedzi. To zmniejsza ryzyko slepego przeniesienia starej pozycji odpowiedzi do nowego ukladu.'
+          ]
+        },
+        {
+          title: 'Review jako material do nauki',
+          paragraphs: [
+            'Ekrany podgladu po wyslaniu quizu sa bardzo wartosciowe. Czasem Moodle pokazuje poprawna odpowiedz, czasem tylko feedback, a czasem nic. W kazdym przypadku zapisane wyjasnienie i notatka daja Ci material do powtorki.',
+            'Najlepszy schemat to zapisac pytania, ktore zajely najwiecej czasu albo mialy niska pewnosc, a potem zrobic z nich mini quiz powtorkowy przed kolejnym podejsciem.'
+          ]
+        }
+      ]
+    } : {
+      eyebrow: 'Moodle workflow',
+      title: 'How QuizSolver handles Moodle quizzes without mixing questions',
+      intro: [
+        'Moodle looks simple until a course combines one-page attempts, multi-page attempts, shuffled answers, review restrictions, formulas, images and cloze-style content in one activity. A reliable solver needs to understand the current question block, not scrape every word on the page.',
+        'QuizSolver focuses on the active question and the nearest matching answers. That helps prevent navigation labels, review text or feedback from another question from leaking into the AI prompt.'
+      ],
+      sections: [
+        {
+          title: 'One-page attempts vs multi-page attempts',
+          paragraphs: [
+            'Some Moodle courses show the whole quiz on one page. Others split the attempt into pages or show only one question at a time. These layouts require different parsing behavior because the solver has to keep each prompt paired with its own controls.',
+            'For long one-page attempts, the safest workflow is to solve the visible question block and verify that the collected choices belong to that same block. For multi-page attempts, wait until the next question has fully loaded before triggering the extension again.'
+          ],
+          bullets: ['one-page attempts', 'multi-page attempts', 'shuffled answers', 'review pages and instructor feedback']
+        },
+        {
+          title: 'Shuffled choices and repeated attempts',
+          paragraphs: [
+            'Moodle often shuffles answer order between attempts. That means an old "option B" is not a stable answer. The meaningful unit is the visible text of the choice, and QuizSolver is designed to reason over that text instead of relying only on position.',
+            'This also matters for cached answers. A saved result should match the normalized question and the actual option text on screen before it is reused.'
+          ]
+        },
+        {
+          title: 'Use review screens as study material',
+          paragraphs: [
+            'Moodle review screens are valuable even when they do not show the full solution. Saving the question, AI explanation and your own note creates a memory of what was hard, what concept was involved and what to revisit.',
+            'Before the next attempt, a student can filter saved questions, mark weak topics and build a short practice quiz from previous Moodle prompts.'
+          ]
+        }
+      ]
+    },
+    canvas: isPl ? {
+      eyebrow: 'Canvas workflow',
+      title: 'Jak QuizSolver czyta Canvas Classic Quizzes i New Quizzes',
+      intro: [
+        'Canvas LMS ma kilka sposobow wyswietlania testow. Classic Quizzes zwykle maja przewidywalne bloki pytan, ale New Quizzes i integracje LTI potrafia wygladac jak osobna aplikacja z dynamicznymi kartami, obrazami i nietypowymi kontrolkami.',
+        'QuizSolver najpierw probuje czytac widoczny obszar testu. Gdy Canvas albo zewnetrzne narzedzie renderuje tresc w trudniejszym ukladzie, FocusScan pozwala zaznaczyc dokladny fragment ekranu.'
+      ],
+      sections: [
+        {
+          title: 'Classic Quizzes i New Quizzes',
+          paragraphs: [
+            'Classic Quizzes czesto udostepniaja czytelny HTML pytania i odpowiedzi. New Quizzes moga miec bardziej aplikacyjny interfejs, w ktorym tekst, odpowiedzi i statusy sa rozdzielone na wiele komponentow.',
+            'Dlatego najwazniejsze jest parowanie najblizszej tresci pytania z najblizszymi odpowiedziami. Solver nie powinien brac instrukcji kursu, tytulu zadania ani przyciskow nawigacji jako czesci pytania.'
+          ],
+          bullets: ['Classic Quizzes', 'New Quizzes', 'pytania z obrazem', 'zewnetrzne LTI i nietypowe uklady']
+        },
+        {
+          title: 'Pytania z obrazami i plikami',
+          paragraphs: [
+            'Canvas jest czesto uzywany do kursow z diagramami, screenami, wzorami i zalacznikami. Jezeli wazna czesc pytania jest obrazem, standardowy parser moze zobaczyc tylko podpis albo pusty kontener.',
+            'W takiej sytuacji FocusScan jest bardziej przewidywalny: zaznaczasz pytanie, widoczne odpowiedzi i ewentualny obraz. Taki kontekst jest czytelniejszy niz pelny ekran z menu kursu i komentarzami.'
+          ]
+        },
+        {
+          title: 'Historia przed egzaminem koncowym',
+          paragraphs: [
+            'Feedback w Canvas nie zawsze zostaje dostepny na stale. Zapisanie pytania i wyjasnienia chroni material przed zniknieciem po zamknieciu quizu albo po zmianie ustawien kursu.',
+            'Przed poprawka albo egzaminem koncowym historia QuizSolver moze dzialac jak prywatny zeszyt z realnymi pytaniami z kursu.'
+          ]
+        }
+      ]
+    } : {
+      eyebrow: 'Canvas workflow',
+      title: 'How QuizSolver reads Canvas Classic Quizzes and New Quizzes',
+      intro: [
+        'Canvas LMS can deliver assessments through Classic Quizzes, New Quizzes and external LTI tools. Classic Quizzes often expose predictable question blocks, while New Quizzes can behave more like a dynamic app with cards, media and custom controls.',
+        'QuizSolver starts with the visible assessment area. If Canvas or an embedded tool renders content in a way that is hard to parse as normal text, FocusScan can capture the exact question region instead.'
+      ],
+      sections: [
+        {
+          title: 'Classic Quizzes vs New Quizzes',
+          paragraphs: [
+            'Classic Quizzes usually provide a clearer relationship between the prompt and answer choices. New Quizzes may split status text, answer controls and media across multiple components, which makes raw page text less reliable.',
+            'The important rule is proximity: pair the closest question text with the closest answer controls, then ignore course navigation, assignment titles and unrelated instructions.'
+          ],
+          bullets: ['Classic Quizzes', 'New Quizzes', 'image prompts', 'embedded LTI layouts']
+        },
+        {
+          title: 'Image, formula and file-based questions',
+          paragraphs: [
+            'Canvas courses often include diagrams, screenshots, formulas and file previews. If the meaningful part of the prompt is an image, a normal parser may see only an empty container or an alt label that is not enough for a good answer.',
+            'FocusScan is more predictable in that case. Select the prompt, choices and relevant visual. Avoid full-page captures that include the course sidebar, comments, due dates or navigation.'
+          ]
+        },
+        {
+          title: 'Keep explanations before feedback disappears',
+          paragraphs: [
+            'Canvas feedback is not always available forever. An instructor can limit review visibility, hide correct answers or close the attempt after a deadline. Saving the AI explanation gives students a private study trail independent of those settings.',
+            'Before a final exam or retake, saved Canvas questions can be filtered into a focused practice set instead of being lost inside the LMS.'
+          ]
+        }
+      ]
+    }
+  };
+
+  return custom[pageKey] || generic;
 }
 
 const PLATFORM_UI: Record<Locale, PlatformUi> = {
@@ -316,6 +560,29 @@ const PLATFORM_UI: Record<Locale, PlatformUi> = {
                 </li>
               </ul>
             </aside>
+          </div>
+        </section>
+
+        <section class="section platform-playbook-section" *ngIf="playbook.sections.length">
+          <div class="container">
+            <header class="platform-playbook-header reveal">
+              <p class="eyebrow">{{ playbook.eyebrow }}</p>
+              <h2>{{ playbook.title }}</h2>
+              <p class="text-secondary" *ngFor="let paragraph of playbook.intro">{{ paragraph }}</p>
+            </header>
+
+            <div class="platform-playbook-grid">
+              <article class="playbook-card glass glass-hover reveal" *ngFor="let section of playbook.sections; let i = index" [class.delay-100]="(i % 3) === 1" [class.delay-200]="(i % 3) === 2">
+                <h3>{{ section.title }}</h3>
+                <p class="text-secondary" *ngFor="let paragraph of section.paragraphs">{{ paragraph }}</p>
+                <ul class="playbook-bullets" *ngIf="section.bullets?.length">
+                  <li *ngFor="let bullet of section.bullets">
+                    <span class="type-dot" aria-hidden="true"></span>
+                    <span>{{ bullet }}</span>
+                  </li>
+                </ul>
+              </article>
+            </div>
           </div>
         </section>
 
@@ -537,6 +804,55 @@ const PLATFORM_UI: Record<Locale, PlatformUi> = {
       background: var(--accent-cyan);
       box-shadow: 0 0 0 4px rgba(6, 182, 212, 0.12);
     }
+    .platform-playbook-section {
+      padding-top: 2rem;
+    }
+    .platform-playbook-header {
+      max-width: 880px;
+      margin-bottom: 2rem;
+    }
+    .platform-playbook-header h2 {
+      font-size: clamp(2rem, 4vw, 2.65rem);
+      margin: 0.5rem 0 1rem;
+    }
+    .platform-playbook-header p {
+      font-size: 1.03rem;
+      line-height: 1.75;
+      margin-bottom: 0.95rem;
+    }
+    .platform-playbook-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.25rem;
+    }
+    .playbook-card {
+      padding: 2rem;
+      border-radius: 14px;
+    }
+    .playbook-card h3 {
+      font-size: 1.25rem;
+      margin-bottom: 1rem;
+    }
+    .playbook-card p {
+      line-height: 1.7;
+      margin-bottom: 0.85rem;
+    }
+    .playbook-bullets {
+      list-style: none;
+      padding: 0;
+      margin: 1.2rem 0 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+    }
+    .playbook-bullets li {
+      display: grid;
+      grid-template-columns: 0.7rem minmax(0, 1fr);
+      gap: 0.75rem;
+      align-items: start;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
     .check-list {
       display: flex;
       flex-direction: column;
@@ -740,6 +1056,7 @@ export class PlatformComponent implements OnInit {
   protected ui = PLATFORM_UI.en;
   protected storeUrl = CHROME_WEB_STORE_URL;
   protected detail = buildPlatformDetail('quizSolverAi', 'en', 'AI quiz solver');
+  protected playbook = buildPlatformPlaybook('quizSolverAi', 'en', 'AI quiz solver');
 
   ngOnInit(): void {
     this.locale = (this.route.snapshot.data['locale'] || 'en') as Locale;
@@ -750,6 +1067,7 @@ export class PlatformComponent implements OnInit {
     this.platformIntro = this.ui.intro(this.platformLabel);
     this.whatItDoesTitle = this.ui.whatItDoes(this.platformLabel);
     this.detail = buildPlatformDetail(this.pageKey, this.locale, this.platformLabel);
+    this.playbook = buildPlatformPlaybook(this.pageKey, this.locale, this.platformLabel);
     this.seo.applyPage(this.pageKey, this.locale);
   }
 

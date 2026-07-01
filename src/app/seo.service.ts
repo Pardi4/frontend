@@ -19,9 +19,9 @@ import {
 
 /* ─── Noindex pages ──────────────────────────────────────────────────────────── */
 const NOINDEX_PAGES = new Set<PageKey>(['dashboard', 'success', 'notFound']);
-const SEO_DATE = '2026-06-28';
+const SEO_DATE = '2026-07-02';
 const BASE_ROBOTS = 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1';
-const ASSET_VERSION = '20260628';
+const ASSET_VERSION = '20260702';
 const assetUrl = (path: string) => `${abs(path)}?v=${ASSET_VERSION}`;
 const ogImageUrl = (locale: Locale, slug: string) => abs(`/og/${locale}/${slug}.svg?v=${ASSET_VERSION}`);
 
@@ -201,7 +201,7 @@ export class SeoService {
         downloadUrl: CHROME_WEB_STORE_URL,
         installUrl: CHROME_WEB_STORE_URL,
         sameAs: [CHROME_WEB_STORE_URL],
-        softwareVersion: '0.912',
+        softwareVersion: '0.920',
         inLanguage: SUPPORTED_LOCALES.map(opt => opt.htmlLang),
         description: 'QuizSolver is a Chrome extension that uses AI to instantly suggest answers and explanations for quiz questions on Testportal, Moodle, Canvas LMS, Google Forms, Kahoot, Quizizz, Blackboard, Microsoft Forms, Quizlet, and Socrative. It works in the browser side panel without tab switching and saves all solved questions for later review.',
         screenshot: assetUrl('/og-image.png'),
@@ -343,6 +343,44 @@ export class SeoService {
     }
 
     /* ItemList + home FAQ — home page only */
+    if (PLATFORM_PAGE_KEYS.includes(pageKey as any)) {
+      const articleKeywords = this.keywordsFor(pageKey, locale, data);
+      const articleBody = [
+        data?.subtitle,
+        ...(Array.isArray(data?.steps) ? data.steps : []),
+        ...(Array.isArray(data?.features) ? data.features : []),
+        ...(Array.isArray(data?.keywordSections) ? data.keywordSections.flatMap((section: any) => [section.title, section.text]) : []),
+        ...(Array.isArray(data?.faq) ? data.faq.flatMap((item: any) => [item.question, item.answer]) : [])
+      ].filter(Boolean).join('\n\n').slice(0, 5000);
+      graph.push({
+        '@type': ['Article', 'TechArticle'],
+        '@id': `${canonical}#article`,
+        url: canonical,
+        mainEntityOfPage: { '@id': `${canonical}#webpage` },
+        headline: data?.title || meta.title,
+        description: meta.description,
+        articleSection: 'Quiz platform guide',
+        datePublished: '2026-05-01',
+        dateModified: SEO_DATE,
+        inLanguage: locOpt.htmlLang,
+        isAccessibleForFree: true,
+        keywords: articleKeywords,
+        articleBody,
+        about: [
+          { '@id': `${homeUrl}#software` },
+          { '@type': 'Thing', name: data?.platformName || data?.shortName || 'Online quiz platform' }
+        ],
+        author: { '@id': `${homeUrl}#organization` },
+        publisher: { '@id': `${homeUrl}#organization` },
+        image: {
+          '@type': 'ImageObject',
+          url: ogImageUrl(locale, String(data?.shortName || pageKey).replace(/[^a-z0-9-]/gi, '-').toLowerCase()),
+          width: 1200,
+          height: 630
+        }
+      });
+    }
+
     if (pageKey === 'home') {
       const platforms = platformEntries(locale);
       graph.push({
