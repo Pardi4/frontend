@@ -40,6 +40,13 @@ import { ShellComponent } from './shell.component';
               <span class="rating-text">{{ text.hero.socialProof }}</span>
             </div>
 
+            <div class="hero-proof-grid delay-4" aria-label="QuizSolver proof points">
+              <div class="hero-proof-card glass" *ngFor="let item of text.hero.proof">
+                <span class="proof-icon" aria-hidden="true">✓</span>
+                <span>{{ item }}</span>
+              </div>
+            </div>
+
             <!-- Platform Trust Bar -->
             <div class="trust-bar delay-4">
               <div class="trust-marquee-wrapper">
@@ -296,7 +303,7 @@ import { ShellComponent } from './shell.component';
       flex-direction: column;
       align-items: center;
       gap: 0.5rem;
-      margin-bottom: 4.5rem;
+      margin-bottom: 1.25rem;
       font-size: 0.95rem;
       color: var(--text-secondary);
     }
@@ -315,6 +322,39 @@ import { ShellComponent } from './shell.component';
     .rating-text {
       font-family: var(--font-heading);
       font-weight: 500;
+    }
+    .hero-proof-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.85rem;
+      width: min(880px, 100%);
+      margin-bottom: 3.25rem;
+    }
+    .hero-proof-card {
+      min-height: 4.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.65rem;
+      padding: 0.9rem 1rem;
+      border-radius: 12px;
+      color: var(--text-primary);
+      font-family: var(--font-heading);
+      font-weight: 750;
+      line-height: 1.35;
+      text-align: left;
+    }
+    .proof-icon {
+      flex: 0 0 auto;
+      display: grid;
+      place-items: center;
+      width: 1.5rem;
+      height: 1.5rem;
+      border-radius: 999px;
+      background: rgba(6, 182, 212, 0.14);
+      color: var(--accent-cyan);
+      font-weight: 900;
+      border: 1px solid rgba(6, 182, 212, 0.26);
     }
 
     /* Floating background orbs */
@@ -741,6 +781,16 @@ import { ShellComponent } from './shell.component';
         transform: scale(1);
       }
     }
+    @media (max-width: 720px) {
+      .hero-proof-grid {
+        grid-template-columns: 1fr;
+        margin-bottom: 2.25rem;
+      }
+      .hero-proof-card {
+        min-height: 3.75rem;
+        justify-content: flex-start;
+      }
+    }
     @media (max-width: 480px) {
       .hero-section {
         padding: 5rem 0 3rem;
@@ -800,7 +850,7 @@ const HOME_COPY: Partial<Record<Locale, any>> & { en: any; pl: any } = {
       lead: 'Instantly solve quizzes on Testportal, Moodle, Kahoot, Canvas, Google Forms and 7 more platforms. Get AI answer suggestions with step-by-step explanations — free to install.',
       primary: 'Install from Chrome Web Store',
       secondary: 'See how it works',
-      proof: ['Testportal, Moodle, Canvas, Forms and more', 'Notes and images saved with questions', 'Shareable quizzes from history'],
+      proof: ['10+ quiz platforms supported', '7 interface languages and localized guides', 'Saved explanations, notes and practice quizzes'],
       socialProof: 'Join the first QuizSolver users shaping the AI quiz solver built for real study workflows.'
     },
     how: {
@@ -876,7 +926,7 @@ const HOME_COPY: Partial<Record<Locale, any>> & { en: any; pl: any } = {
       lead: 'Rozwiązuj quizy na Testportal, Moodle, Kahoot, Canvas, Google Forms i 7 kolejnych platformach. Dostajesz sugestie odpowiedzi AI z krótkim wyjaśnieniem krok po kroku — instalacja jest darmowa.',
       primary: 'Zainstaluj z Chrome Web Store',
       secondary: 'Zobacz jak to działa',
-      proof: ['Testportal, Moodle, Canvas, Forms i inne', 'Notatki i obrazy zapisywane z pytaniami', 'Udostępniane quizy z historii'],
+      proof: ['10+ obsługiwanych platform quizowych', '7 języków interfejsu i poradników', 'Wyjaśnienia, notatki i quizy z historii'],
       socialProof: 'Dołącz do pierwszych użytkowników i pomóż rozwijać najlepszy AI quiz solver do nauki, powtórek i quizów online.'
     },
     how: {

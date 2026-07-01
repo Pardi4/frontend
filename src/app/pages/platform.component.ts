@@ -45,6 +45,14 @@ type PlatformPlaybook = {
   }>;
 };
 
+type PlatformVisual = {
+  eyebrow: string;
+  title: string;
+  text: string;
+  alt: string;
+  image: string;
+};
+
 const PLATFORM_CONTEXT: Partial<Record<PageKey, { en: string; pl: string }>> = {
   quizSolverAi: {
     en: 'QuizSolver is built for messy real quiz pages, not only clean demo forms. It checks the visible question, nearby answer controls, images, headings and page context before it sends a compact request to AI.',
@@ -363,6 +371,21 @@ function buildPlatformPlaybook(pageKey: PageKey, locale: Locale, platform: strin
   return custom[pageKey] || generic;
 }
 
+function buildPlatformVisual(locale: Locale, platform: string): PlatformVisual {
+  const isPl = locale === 'pl';
+  return {
+    eyebrow: isPl ? 'Podgląd workflow' : 'Visual workflow',
+    title: isPl ? `Jak wygląda praca z QuizSolver na ${platform}` : `See the ${platform} solving flow`,
+    text: isPl
+      ? 'Strona platformy powinna pokazywać realny sposób pracy, a nie tylko obiecywać wynik. Ten podgląd łączy trzy najważniejsze elementy: wykrywanie pytania na stronie, FocusScan dla trudnych układów oraz zapis odpowiedzi z wyjaśnieniem do historii nauki.'
+      : 'A platform page should show the real workflow, not only promise an answer. This preview connects the three parts that matter most: page question detection, FocusScan for difficult layouts, and saved explanations in study history.',
+    alt: isPl
+      ? `Podgląd workflow QuizSolver dla ${platform}: wykrywanie pytania, FocusScan i zapisane wyjaśnienia`
+      : `QuizSolver workflow preview for ${platform}: question detection, FocusScan and saved explanations`,
+    image: '/platform-workflow-preview.svg'
+  };
+}
+
 const PLATFORM_UI: Record<Locale, PlatformUi> = {
   en: {
     install: 'Install extension',
@@ -583,6 +606,20 @@ const PLATFORM_UI: Record<Locale, PlatformUi> = {
                 </ul>
               </article>
             </div>
+          </div>
+        </section>
+
+        <section class="section platform-visual-section">
+          <div class="container platform-visual-grid">
+            <article class="platform-visual-copy reveal">
+              <p class="eyebrow">{{ visual.eyebrow }}</p>
+              <h2>{{ visual.title }}</h2>
+              <p class="text-secondary">{{ visual.text }}</p>
+            </article>
+            <figure class="platform-preview-frame glass reveal delay-100">
+              <img [src]="visual.image" [alt]="visual.alt" width="1200" height="780" loading="lazy">
+              <figcaption class="text-secondary">{{ visual.alt }}</figcaption>
+            </figure>
           </div>
         </section>
 
@@ -853,6 +890,42 @@ const PLATFORM_UI: Record<Locale, PlatformUi> = {
       color: var(--text-secondary);
       line-height: 1.5;
     }
+    .platform-visual-section {
+      padding-top: 1rem;
+    }
+    .platform-visual-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 0.88fr) minmax(320px, 1.12fr);
+      gap: 2rem;
+      align-items: center;
+    }
+    .platform-visual-copy h2 {
+      font-size: clamp(2rem, 4vw, 2.55rem);
+      margin: 0.5rem 0 1rem;
+    }
+    .platform-visual-copy p {
+      line-height: 1.75;
+      max-width: 680px;
+    }
+    .platform-preview-frame {
+      padding: 1rem;
+      margin: 0;
+      border-radius: 18px;
+    }
+    .platform-preview-frame img {
+      display: block;
+      width: 100%;
+      height: auto;
+      border-radius: 12px;
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      background: #0f172a;
+    }
+    .platform-preview-frame figcaption {
+      margin: 0.85rem 0 0;
+      font-size: 0.85rem;
+      line-height: 1.45;
+      text-align: center;
+    }
     .check-list {
       display: flex;
       flex-direction: column;
@@ -1030,7 +1103,7 @@ const PLATFORM_UI: Record<Locale, PlatformUi> = {
     }
 
     @media (max-width: 992px) {
-      .platform-hero-grid, .platform-detail-grid, .two-col-grid {
+      .platform-hero-grid, .platform-detail-grid, .platform-visual-grid, .two-col-grid {
         grid-template-columns: 1fr;
         gap: 2rem;
       }
@@ -1057,6 +1130,7 @@ export class PlatformComponent implements OnInit {
   protected storeUrl = CHROME_WEB_STORE_URL;
   protected detail = buildPlatformDetail('quizSolverAi', 'en', 'AI quiz solver');
   protected playbook = buildPlatformPlaybook('quizSolverAi', 'en', 'AI quiz solver');
+  protected visual = buildPlatformVisual('en', 'AI quiz solver');
 
   ngOnInit(): void {
     this.locale = (this.route.snapshot.data['locale'] || 'en') as Locale;
@@ -1068,6 +1142,7 @@ export class PlatformComponent implements OnInit {
     this.whatItDoesTitle = this.ui.whatItDoes(this.platformLabel);
     this.detail = buildPlatformDetail(this.pageKey, this.locale, this.platformLabel);
     this.playbook = buildPlatformPlaybook(this.pageKey, this.locale, this.platformLabel);
+    this.visual = buildPlatformVisual(this.locale, this.platformLabel);
     this.seo.applyPage(this.pageKey, this.locale);
   }
 
