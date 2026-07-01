@@ -7,11 +7,30 @@ import { ADMIN_PANEL_ROUTE_PATH, ADMIN_PANEL_URL } from '../admin-path';
 
 type AdminTab = 'users' | 'purchases' | 'bugs' | 'support' | 'cache' | 'parser' | 'leaderboard' | 'system';
 type AdminLocale = 'en' | 'pl';
-type UserSortOption = 'createdAt_desc' | 'createdAt_asc' | 'credits_desc' | 'credits_asc' | 'lastOnline_desc' | 'lastOnline_asc' | 'questions_desc' | 'questions_asc' | 'streak_desc' | 'streak_asc';
+type UserSortField = 'credits' | 'questions' | 'streak' | 'status';
+type UserSortDirection = 'asc' | 'desc';
+type UserSortOption = 'createdAt_desc' | 'createdAt_asc' | `${UserSortField}_${UserSortDirection}` | 'lastOnline_desc' | 'lastOnline_asc';
 
 const ADMIN_ACTIVE_TAB_KEY = 'qs_admin_active_tab';
+const ADMIN_USERS_STATE_KEY = 'qs_admin_users_state';
 const ADMIN_TAB_IDS: AdminTab[] = ['users', 'purchases', 'bugs', 'support', 'cache', 'parser', 'leaderboard', 'system'];
+const DEFAULT_USER_SORT: UserSortOption = 'createdAt_desc';
+const USER_SORT_VALUES: UserSortOption[] = [
+  'createdAt_desc',
+  'createdAt_asc',
+  'credits_desc',
+  'credits_asc',
+  'lastOnline_desc',
+  'lastOnline_asc',
+  'questions_desc',
+  'questions_asc',
+  'streak_desc',
+  'streak_asc',
+  'status_desc',
+  'status_asc'
+];
 const isAdminTab = (value: unknown): value is AdminTab => ADMIN_TAB_IDS.includes(value as AdminTab);
+const isUserSortOption = (value: unknown): value is UserSortOption => USER_SORT_VALUES.includes(value as UserSortOption);
 
 const ADMIN_COPY = {
   en: {
@@ -75,6 +94,11 @@ const ADMIN_COPY = {
     sortFewestQuestions: 'Fewest questions',
     sortHighestStreak: 'Highest streak',
     sortLowestStreak: 'Lowest streak',
+    clearUsersFilters: 'Clear filters',
+    exportVisibleUsers: 'Export visible CSV',
+    loadingUsers: 'Refreshing users...',
+    emailCopied: 'Email copied.',
+    usersExported: 'Visible users exported.',
     user: 'User',
     role: 'Role',
     credits: 'Credits',
@@ -329,6 +353,11 @@ const ADMIN_COPY = {
     sortFewestQuestions: 'Najmniej pytań',
     sortHighestStreak: 'Najwyższa seria',
     sortLowestStreak: 'Najniższa seria',
+    clearUsersFilters: 'Wyczyść filtry',
+    exportVisibleUsers: 'Eksport CSV',
+    loadingUsers: 'Odświeżam użytkowników...',
+    emailCopied: 'E-mail skopiowany.',
+    usersExported: 'Widoczni użytkownicy wyeksportowani.',
     user: 'Użytkownik',
     role: 'Rola',
     credits: 'Kredyty',
@@ -606,6 +635,7 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
             </header>
 
             <div class="admin-alert anim-slide-up" *ngIf="error()">{{ error() }}</div>
+            <div class="admin-alert success anim-slide-up" *ngIf="notice()">{{ notice() }}</div>
 
             <div class="attention-head" *ngIf="adminNoticeCards().length">
               <div>
@@ -634,13 +664,16 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
                 <div>
                   <p class="eyebrow">{{ tr('users') }}</p>
                   <h2>{{ tr('accountsCredits') }}</h2>
+                  <small class="panel-status" *ngIf="usersLoading()">{{ tr('loadingUsers') }}</small>
                 </div>
-                <form class="admin-search" (ngSubmit)="loadUsers(1)">
+                <form class="admin-search user-toolbar" (ngSubmit)="loadUsers(1)">
                   <input class="form-input" type="search" name="search" [(ngModel)]="userSearch" [placeholder]="tr('searchEmailName')">
                   <select class="form-select" name="userSort" [(ngModel)]="userSort" (ngModelChange)="loadUsers(1)" [attr.aria-label]="tr('sortUsers')">
                     <option *ngFor="let option of userSortOptions()" [value]="option.value">{{ option.label }}</option>
                   </select>
                   <button class="btn btn-primary" type="submit">{{ tr('search') }}</button>
+                  <button class="btn btn-outline" type="button" *ngIf="hasUserFilters()" (click)="resetUserFilters()">{{ tr('clearUsersFilters') }}</button>
+                  <button class="btn btn-outline" type="button" [disabled]="!users().length" (click)="exportVisibleUsersCsv()">{{ tr('exportVisibleUsers') }}</button>
                 </form>
               </div>
 
@@ -658,15 +691,35 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
                     <tr>
                       <th>{{ tr('user') }}</th>
                       <th>{{ tr('role') }}</th>
-                      <th>{{ tr('credits') }}</th>
-                      <th>{{ tr('questions') }}</th>
-                      <th>{{ tr('streak') }}</th>
-                      <th>{{ tr('status') }}</th>
+                      <th [attr.aria-sort]="userSortAria('credits')">
+                        <button type="button" class="sort-header" [class.active]="userSortDirection('credits')" (click)="cycleUserSort('credits')">
+                          <span>{{ tr('credits') }}</span>
+                          <span class="sort-indicator" aria-hidden="true">{{ userSortIndicator('credits') }}</span>
+                        </button>
+                      </th>
+                      <th [attr.aria-sort]="userSortAria('questions')">
+                        <button type="button" class="sort-header" [class.active]="userSortDirection('questions')" (click)="cycleUserSort('questions')">
+                          <span>{{ tr('questions') }}</span>
+                          <span class="sort-indicator" aria-hidden="true">{{ userSortIndicator('questions') }}</span>
+                        </button>
+                      </th>
+                      <th [attr.aria-sort]="userSortAria('streak')">
+                        <button type="button" class="sort-header" [class.active]="userSortDirection('streak')" (click)="cycleUserSort('streak')">
+                          <span>{{ tr('streak') }}</span>
+                          <span class="sort-indicator" aria-hidden="true">{{ userSortIndicator('streak') }}</span>
+                        </button>
+                      </th>
+                      <th [attr.aria-sort]="userSortAria('status')">
+                        <button type="button" class="sort-header" [class.active]="userSortDirection('status')" (click)="cycleUserSort('status')">
+                          <span>{{ tr('status') }}</span>
+                          <span class="sort-indicator" aria-hidden="true">{{ userSortIndicator('status') }}</span>
+                        </button>
+                      </th>
                       <th>{{ tr('actions') }}</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr *ngFor="let user of users()">
+                    <tr *ngFor="let user of users()" [class.user-active-row]="isUserExtensionActive(user)" [class.user-banned-row]="user.isBanned" [class.user-muted-row]="!user.isBanned && !isUserExtensionActive(user)">
                       <td class="user-cell">
                         <button type="button" class="link-button primary-link" (click)="openUserHistory(user)">{{ user.email }}</button>
                         <span>{{ user.displayName || tr('noDisplayName') }}</span>
@@ -686,6 +739,7 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
                       <td>
                         <div class="row-actions">
                           <button type="button" (click)="openUserHistory(user)" style="color: var(--accent-cyan);">{{ tr('history') }}</button>
+                          <button type="button" (click)="copyUserEmail(user)">{{ tr('copyEmail') }}</button>
                           <button type="button" (click)="quickGrant(user.id, 50)">+50</button>
                           <button type="button" (click)="quickGrant(user.id, 100)">+100</button>
                           <button type="button" (click)="quickGrant(user.id, 200)">+200</button>
@@ -1915,6 +1969,25 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
       width: 100%;
       max-width: 760px;
     }
+    .user-toolbar {
+      max-width: 980px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+    .user-toolbar .form-input {
+      min-width: 220px;
+      flex: 1 1 260px;
+    }
+    .user-toolbar .form-select {
+      flex: 0 1 220px;
+    }
+    .panel-status {
+      display: block;
+      margin-top: 0.35rem;
+      color: var(--accent-cyan);
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
 
     /* Data Tables */
     .table-scroll {
@@ -1938,10 +2011,49 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
       text-transform: uppercase;
       letter-spacing: 0.05em;
     }
+    .sort-header {
+      appearance: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      border: 0;
+      background: transparent;
+      padding: 0;
+      color: inherit;
+      font: inherit;
+      text-transform: inherit;
+      letter-spacing: inherit;
+      cursor: pointer;
+    }
+    .sort-header:hover,
+    .sort-header.active {
+      color: var(--text-primary);
+    }
+    .sort-indicator {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 1rem;
+      color: var(--text-secondary);
+      font-size: 0.8rem;
+      line-height: 1;
+    }
+    .sort-header.active .sort-indicator {
+      color: var(--accent-cyan);
+    }
     .admin-table td {
       padding: 1.25rem 2.5rem;
       border-bottom: 1px solid var(--border);
       vertical-align: middle;
+    }
+    .admin-table tr.user-active-row td:first-child {
+      box-shadow: inset 3px 0 0 rgba(16, 185, 129, 0.85);
+    }
+    .admin-table tr.user-banned-row td:first-child {
+      box-shadow: inset 3px 0 0 rgba(244, 63, 94, 0.9);
+    }
+    .admin-table tr.user-muted-row td:first-child {
+      box-shadow: inset 3px 0 0 rgba(148, 163, 184, 0.22);
     }
     .admin-table tr:last-child td {
       border-bottom: none;
@@ -1978,6 +2090,12 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
       background: rgba(6, 182, 212, 0.1);
       border-color: var(--accent-cyan);
       color: var(--accent-cyan);
+    }
+    .row-actions button:disabled,
+    .row-actions a[aria-disabled="true"],
+    .user-toolbar .btn:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
     }
     .row-actions button.danger {
       color: var(--accent-rose);
@@ -2673,6 +2791,11 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
       border-radius: var(--radius-md);
       margin-bottom: 2rem;
     }
+    .admin-alert.success {
+      background: rgba(16, 185, 129, 0.1);
+      border-color: rgba(16, 185, 129, 0.26);
+      color: var(--accent-emerald);
+    }
 
     /* Modal styles */
     .modal-overlay {
@@ -3071,8 +3194,10 @@ export class AdminComponent implements OnInit, OnDestroy {
   protected readonly isAuthed = signal(false);
   protected readonly loading = signal(false);
   protected readonly error = signal('');
+  protected readonly notice = signal('');
   protected readonly stats = signal<any>({});
   protected readonly users = signal<any[]>([]);
+  protected readonly usersLoading = signal(false);
   protected readonly purchases = signal<any[]>([]);
   protected readonly bugs = signal<any[]>([]);
   protected readonly supportMessages = signal<any[]>([]);
@@ -3098,7 +3223,7 @@ export class AdminComponent implements OnInit, OnDestroy {
   protected email = '';
   protected password = '';
   protected userSearch = '';
-  protected userSort: UserSortOption = 'createdAt_desc';
+  protected userSort: UserSortOption = DEFAULT_USER_SORT;
   protected cacheSearch = '';
   protected parserSearch = '';
   protected parserOutcomeFilter = '';
@@ -3114,6 +3239,7 @@ export class AdminComponent implements OnInit, OnDestroy {
   private token = '';
   private readonly isBrowser: boolean;
   private adminRefreshTimer: ReturnType<typeof setInterval> | null = null;
+  private noticeTimer: ReturnType<typeof setTimeout> | null = null;
 
   constructor(
     @Inject(PLATFORM_ID) platformId: object,
@@ -3135,6 +3261,7 @@ export class AdminComponent implements OnInit, OnDestroy {
     if (!this.isBrowser) return;
     const storedTab = localStorage.getItem(ADMIN_ACTIVE_TAB_KEY);
     if (isAdminTab(storedTab)) this.activeTab.set(storedTab);
+    this.restoreUsersState();
     this.token = localStorage.getItem('qs_admin_token') || localStorage.getItem('qs_token') || '';
     if (!this.token) return;
 
@@ -3191,6 +3318,7 @@ export class AdminComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.stopAdminRefreshTimer();
+    this.clearNoticeTimer();
   }
 
   private startAdminRefreshTimer(): void {
@@ -3245,14 +3373,43 @@ export class AdminComponent implements OnInit, OnDestroy {
   }
 
   protected async loadUsers(page = 1): Promise<void> {
+    this.persistUsersState();
     const params = new URLSearchParams({ page: String(page), limit: '25' });
     if (this.userSearch.trim()) params.set('search', this.userSearch.trim());
     params.set('sort', this.userSort);
-    const result = await this.api(`/api/admin/users?${params.toString()}`);
-    if (result.success) {
-      this.users.set(result.users || []);
-      this.pagination.set(result.pagination || { page, pages: 1, total: 0 });
+    this.usersLoading.set(true);
+    try {
+      const result = await this.api(`/api/admin/users?${params.toString()}`);
+      if (result.success) {
+        this.users.set(result.users || []);
+        this.pagination.set(result.pagination || { page, pages: 1, total: 0 });
+      }
+    } finally {
+      this.usersLoading.set(false);
     }
+  }
+
+  protected cycleUserSort(field: UserSortField): void {
+    const currentDirection = this.userSortDirection(field);
+    if (!currentDirection) {
+      this.userSort = `${field}_asc` as UserSortOption;
+    } else if (currentDirection === 'asc') {
+      this.userSort = `${field}_desc` as UserSortOption;
+    } else {
+      this.userSort = DEFAULT_USER_SORT;
+    }
+    void this.loadUsers(1);
+  }
+
+  protected hasUserFilters(): boolean {
+    return !!this.userSearch.trim() || this.userSort !== DEFAULT_USER_SORT;
+  }
+
+  protected resetUserFilters(): void {
+    this.userSearch = '';
+    this.userSort = DEFAULT_USER_SORT;
+    this.persistUsersState();
+    void this.loadUsers(1);
   }
 
   protected async quickGrant(userId: string, amount: number): Promise<void> {
@@ -3445,8 +3602,30 @@ export class AdminComponent implements OnInit, OnDestroy {
       { value: 'questions_desc', label: this.tr('sortMostQuestions') },
       { value: 'questions_asc', label: this.tr('sortFewestQuestions') },
       { value: 'streak_desc', label: this.tr('sortHighestStreak') },
-      { value: 'streak_asc', label: this.tr('sortLowestStreak') }
+      { value: 'streak_asc', label: this.tr('sortLowestStreak') },
+      { value: 'status_desc', label: `${this.tr('status')} \u2193` },
+      { value: 'status_asc', label: `${this.tr('status')} \u2191` }
     ];
+  }
+
+  protected userSortDirection(field: UserSortField): UserSortDirection | null {
+    if (this.userSort === `${field}_asc`) return 'asc';
+    if (this.userSort === `${field}_desc`) return 'desc';
+    return null;
+  }
+
+  protected userSortIndicator(field: UserSortField): string {
+    const direction = this.userSortDirection(field);
+    if (direction === 'asc') return '\u2191';
+    if (direction === 'desc') return '\u2193';
+    return '\u2195';
+  }
+
+  protected userSortAria(field: UserSortField): 'ascending' | 'descending' | 'none' {
+    const direction = this.userSortDirection(field);
+    if (direction === 'asc') return 'ascending';
+    if (direction === 'desc') return 'descending';
+    return 'none';
   }
 
   protected adminNoticeCards(): Array<{ label: string; value: string; note: string; tone?: 'warn' | 'ok'; targetTab?: AdminTab; targetId?: string }> {
@@ -3778,12 +3957,53 @@ export class AdminComponent implements OnInit, OnDestroy {
 
   protected async copySupportEmail(message: any): Promise<void> {
     const email = String(message?.fromEmail || '').trim();
-    if (!email || !this.isBrowser || !navigator.clipboard) return;
-    try {
-      await navigator.clipboard.writeText(email);
-    } catch {
+    if (!email) return;
+    const copied = await this.copyTextToClipboard(email);
+    if (copied) {
+      this.showNotice(this.tr('emailCopied'));
+    } else {
       this.error.set(this.tr('couldNotCopyEmail'));
     }
+  }
+
+  protected async copyUserEmail(user: any): Promise<void> {
+    const email = String(user?.email || '').trim();
+    if (!email) return;
+    const copied = await this.copyTextToClipboard(email);
+    if (copied) {
+      this.showNotice(this.tr('emailCopied'));
+    } else {
+      this.error.set(this.tr('couldNotCopyEmail'));
+    }
+  }
+
+  protected exportVisibleUsersCsv(): void {
+    if (!this.isBrowser || !this.users().length) return;
+    const rows = [
+      ['email', 'displayName', 'role', 'credits', 'questionsSolved', 'streak', 'status', 'lastSeenAt', 'createdAt'],
+      ...this.users().map(user => [
+        user.email || '',
+        user.displayName || '',
+        user.role || '',
+        user.role === 'admin' ? 'unlimited' : String(user.credits ?? ''),
+        String(user.stats?.totalQuestionsSolved || 0),
+        String(user.streak?.current || 0),
+        this.userStatusLabel(user),
+        user.extensionLastSeenAt ? this.formatDate(user.extensionLastSeenAt) : '',
+        user.createdAt ? this.formatDate(user.createdAt) : ''
+      ])
+    ];
+    const csv = rows.map(row => row.map(cell => this.csvCell(cell)).join(',')).join('\r\n');
+    const blob = new Blob([`\uFEFF${csv}`], { type: 'text/csv;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `quizsolver-users-${new Date().toISOString().slice(0, 10)}.csv`;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(url);
+    this.showNotice(this.tr('usersExported'));
   }
 
   protected pageNumbers(): number[] {
@@ -4244,6 +4464,70 @@ export class AdminComponent implements OnInit, OnDestroy {
       }).join(' | ');
     }
     return String(answer ?? '');
+  }
+
+  private restoreUsersState(): void {
+    if (!this.isBrowser) return;
+    try {
+      const raw = localStorage.getItem(ADMIN_USERS_STATE_KEY);
+      if (!raw) return;
+      const state = JSON.parse(raw);
+      if (typeof state.search === 'string') this.userSearch = state.search.substring(0, 100);
+      if (isUserSortOption(state.sort)) this.userSort = state.sort;
+    } catch {
+      localStorage.removeItem(ADMIN_USERS_STATE_KEY);
+    }
+  }
+
+  private persistUsersState(): void {
+    if (!this.isBrowser) return;
+    localStorage.setItem(ADMIN_USERS_STATE_KEY, JSON.stringify({
+      search: this.userSearch.trim().substring(0, 100),
+      sort: this.userSort
+    }));
+  }
+
+  private showNotice(message: string): void {
+    this.clearNoticeTimer();
+    this.error.set('');
+    this.notice.set(message);
+    if (!this.isBrowser) return;
+    this.noticeTimer = setTimeout(() => {
+      if (this.notice() === message) this.notice.set('');
+      this.noticeTimer = null;
+    }, 3500);
+  }
+
+  private clearNoticeTimer(): void {
+    if (!this.noticeTimer) return;
+    clearTimeout(this.noticeTimer);
+    this.noticeTimer = null;
+  }
+
+  private async copyTextToClipboard(text: string): Promise<boolean> {
+    if (!this.isBrowser) return false;
+    try {
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(text);
+        return true;
+      }
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.setAttribute('readonly', '');
+      textarea.style.position = 'fixed';
+      textarea.style.left = '-9999px';
+      document.body.appendChild(textarea);
+      textarea.select();
+      const copied = document.execCommand('copy');
+      textarea.remove();
+      return copied;
+    } catch {
+      return false;
+    }
+  }
+
+  private csvCell(value: unknown): string {
+    return `"${String(value ?? '').replace(/"/g, '""')}"`;
   }
 
   private confirm(message: string): boolean {
