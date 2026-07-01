@@ -5,7 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Meta, Title } from '@angular/platform-browser';
 import { ADMIN_PANEL_ROUTE_PATH, ADMIN_PANEL_URL } from '../admin-path';
 
-type AdminTab = 'users' | 'purchases' | 'bugs' | 'support' | 'cache' | 'parser' | 'leaderboard' | 'system';
+type AdminTab = 'users' | 'purchases' | 'bugs' | 'support' | 'cache' | 'parser' | 'system';
 type AdminLocale = 'en' | 'pl';
 type UserSortField = 'credits' | 'questions' | 'streak' | 'status';
 type UserSortDirection = 'asc' | 'desc';
@@ -13,7 +13,7 @@ type UserSortOption = 'createdAt_desc' | 'createdAt_asc' | `${UserSortField}_${U
 
 const ADMIN_ACTIVE_TAB_KEY = 'qs_admin_active_tab';
 const ADMIN_USERS_STATE_KEY = 'qs_admin_users_state';
-const ADMIN_TAB_IDS: AdminTab[] = ['users', 'purchases', 'bugs', 'support', 'cache', 'parser', 'leaderboard', 'system'];
+const ADMIN_TAB_IDS: AdminTab[] = ['users', 'purchases', 'bugs', 'support', 'cache', 'parser', 'system'];
 const DEFAULT_USER_SORT: UserSortOption = 'createdAt_desc';
 const USER_SORT_VALUES: UserSortOption[] = [
   'createdAt_desc',
@@ -54,7 +54,6 @@ const ADMIN_COPY = {
     support: 'Support',
     cache: 'Cache',
     parser: 'Parser',
-    leaderboard: 'Leaderboard',
     system: 'System',
     usersHint: 'accounts',
     purchasesHint: 'billing',
@@ -62,7 +61,6 @@ const ADMIN_COPY = {
     supportHint: 'mail',
     cacheHint: 'answers',
     parserHint: 'signals',
-    leaderboardHint: 'ranking',
     systemHint: 'health',
     usersTitle: 'Users and credits',
     purchasesTitle: 'Purchases and grants',
@@ -70,7 +68,6 @@ const ADMIN_COPY = {
     supportTitle: 'Support inbox',
     cacheTitle: 'Answer cache',
     parserTitle: 'Parser health',
-    leaderboardTitle: 'Leaderboard',
     systemTitle: 'System health',
     usersDescription: 'Track accounts, live extension usage, bans, credits and question history.',
     purchasesDescription: 'Review payment records, manual grants and pending credit application.',
@@ -78,7 +75,6 @@ const ADMIN_COPY = {
     supportDescription: 'Handle unread support mail, linked accounts and quick credit adjustments.',
     cacheDescription: 'Inspect cached AI answers, weak question text and high-hit questions.',
     parserDescription: 'Monitor parser success, platform failures, snapshots and extraction confidence.',
-    leaderboardDescription: 'Review public ranking data and excluded users.',
     systemDescription: 'Monitor service health, database state and credit dedupe safety.',
     accountsCredits: 'Accounts and credits',
     searchEmailName: 'Search email or name',
@@ -112,8 +108,6 @@ const ADMIN_COPY = {
     grant: 'Grant',
     unban: 'Unban',
     ban: 'Ban',
-    showLb: 'Show LB',
-    hideLb: 'Hide LB',
     delete: 'Delete',
     noUsers: 'No users found.',
     revenue: 'Revenue',
@@ -185,8 +179,6 @@ const ADMIN_COPY = {
     weakText: 'Weak text',
     openDetails: 'Open details',
     noCacheHits: 'No cache hits yet.',
-    community: 'Community',
-    noLeaderboard: 'No leaderboard data.',
     healthCheck: 'Health check',
     billingSafety: 'Billing safety',
     creditDedupeMonitor: 'Credit dedupe monitor',
@@ -271,7 +263,6 @@ const ADMIN_COPY = {
     banConfirm: 'Ban this user?',
     couldNotBanUser: 'Could not ban user.',
     couldNotUnbanUser: 'Could not unban user.',
-    couldNotUpdateLeaderboard: 'Could not update leaderboard setting.',
     deleteUserConfirmPrefix: 'Delete',
     deleteUserConfirmSuffix: 'This cannot be undone.',
     couldNotDeleteUser: 'Could not delete user.',
@@ -313,7 +304,6 @@ const ADMIN_COPY = {
     support: 'Support',
     cache: 'Cache',
     parser: 'Parser',
-    leaderboard: 'Ranking',
     system: 'System',
     usersHint: 'konta',
     purchasesHint: 'billing',
@@ -321,7 +311,6 @@ const ADMIN_COPY = {
     supportHint: 'maile',
     cacheHint: 'odpowiedzi',
     parserHint: 'sygnały',
-    leaderboardHint: 'ranking',
     systemHint: 'zdrowie',
     usersTitle: 'Użytkownicy i kredyty',
     purchasesTitle: 'Płatności i granty',
@@ -329,7 +318,6 @@ const ADMIN_COPY = {
     supportTitle: 'Skrzynka supportu',
     cacheTitle: 'Cache odpowiedzi',
     parserTitle: 'Zdrowie parsera',
-    leaderboardTitle: 'Ranking',
     systemTitle: 'Stan systemu',
     usersDescription: 'Kontroluj konta, aktywność rozszerzenia, bany, kredyty i historię pytań.',
     purchasesDescription: 'Przeglądaj płatności, ręczne granty i oczekujące dodania kredytów.',
@@ -337,7 +325,6 @@ const ADMIN_COPY = {
     supportDescription: 'Obsługuj nowe maile, powiązane konta i szybkie korekty kredytów.',
     cacheDescription: 'Sprawdzaj odpowiedzi AI w cache, słabą treść pytań i najczęstsze trafienia.',
     parserDescription: 'Monitoruj skuteczność parsera, błędy platform, snapshoty i confidence ekstrakcji.',
-    leaderboardDescription: 'Przeglądaj dane rankingu publicznego i wykluczonych użytkowników.',
     systemDescription: 'Monitoruj stan usługi, bazę danych i zabezpieczenia przed podwójnym naliczaniem.',
     accountsCredits: 'Konta i kredyty',
     searchEmailName: 'Szukaj e-maila lub nazwy',
@@ -371,8 +358,6 @@ const ADMIN_COPY = {
     grant: 'Dodaj',
     unban: 'Odbanuj',
     ban: 'Zbanuj',
-    showLb: 'Pokaż w rank.',
-    hideLb: 'Ukryj w rank.',
     delete: 'Usuń',
     noUsers: 'Nie znaleziono użytkowników.',
     revenue: 'Przychód',
@@ -444,8 +429,6 @@ const ADMIN_COPY = {
     weakText: 'Słaba treść',
     openDetails: 'Otwórz szczegóły',
     noCacheHits: 'Brak trafień cache.',
-    community: 'Społeczność',
-    noLeaderboard: 'Brak danych rankingu.',
     healthCheck: 'Stan usługi',
     billingSafety: 'Bezpieczeństwo billingowe',
     creditDedupeMonitor: 'Monitor deduplikacji kredytów',
@@ -529,7 +512,6 @@ const ADMIN_COPY = {
     banConfirm: 'Zbanować tego użytkownika?',
     couldNotBanUser: 'Nie udało się zbanować użytkownika.',
     couldNotUnbanUser: 'Nie udało się odbanować użytkownika.',
-    couldNotUpdateLeaderboard: 'Nie udało się zmienić ustawień rankingu.',
     deleteUserConfirmPrefix: 'Usunąć',
     deleteUserConfirmSuffix: 'Tej operacji nie da się cofnąć.',
     couldNotDeleteUser: 'Nie udało się usunąć użytkownika.',
@@ -770,9 +752,6 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
                           <button type="button" (click)="openGrantModal(user)">{{ tr('grant') }}</button>
                           <button type="button" (click)="user.isBanned ? unbanUser(user.id) : banUser(user.id)">
                             {{ user.isBanned ? tr('unban') : tr('ban') }}
-                          </button>
-                          <button type="button" (click)="toggleLeaderboard(user.id, !user.excludeFromLeaderboard)">
-                            {{ user.excludeFromLeaderboard ? tr('showLb') : tr('hideLb') }}
                           </button>
                           <button type="button" class="danger" *ngIf="user.role !== 'admin'" (click)="deleteUser(user.id, user.email)">
                             {{ tr('delete') }}
@@ -1275,26 +1254,6 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
                   </article>
                 </div>
               </section>
-            </section>
-
-            <section class="admin-panel glass" *ngIf="activeTab() === 'leaderboard'">
-              <div class="panel-head">
-                <div>
-                  <p class="eyebrow">{{ tr('community') }}</p>
-                  <h2>{{ tr('leaderboard') }}</h2>
-                </div>
-              </div>
-              <div class="leaderboard-admin">
-                <article class="glass" *ngFor="let entry of leaderboard()" style="margin-bottom: 0.5rem; border-radius: var(--radius-md);">
-                  <strong style="color: var(--accent-cyan);">#{{ entry.rank }}</strong>
-                  <span style="font-weight: 600;">{{ entry.name }}</span>
-                  <span class="text-secondary">{{ entry.questionsSolved }} {{ tr('questions') }}</span>
-                  <span class="badge badge-outline">{{ tr('streak') }}: {{ entry.streak }}</span>
-                </article>
-                <div class="empty-panel" style="text-align: center; padding: 2rem;" *ngIf="!leaderboard().length">
-                  <p class="text-secondary">{{ tr('noLeaderboard') }}</p>
-                </div>
-              </div>
             </section>
 
             <section class="admin-panel glass" *ngIf="activeTab() === 'system'">
@@ -2922,19 +2881,6 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
       font-size: 0.8rem;
     }
 
-    /* Leaderboard admin */
-    .leaderboard-admin {
-      display: flex;
-      flex-direction: column;
-      gap: 0.75rem;
-    }
-    .leaderboard-admin article {
-      display: grid;
-      grid-template-columns: 80px 1.5fr 1fr 1fr;
-      align-items: center;
-      padding: 1.25rem 1.5rem;
-    }
-
     /* Health System */
     .health-grid {
       display: grid;
@@ -3352,10 +3298,6 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
       .support-reply-form .btn {
         justify-self: stretch;
       }
-      .leaderboard-admin article {
-        grid-template-columns: 48px 1fr;
-        gap: 0.5rem;
-      }
       .cache-summary,
       .bug-list article,
       .cache-list article,
@@ -3393,7 +3335,6 @@ export class AdminComponent implements OnInit, OnDestroy {
     { id: 'support', label: 'Support', short: 'SP' },
     { id: 'cache', label: 'Cache', short: 'CA' },
     { id: 'parser', label: 'Parser', short: 'PR' },
-    { id: 'leaderboard', label: 'Leaderboard', short: 'LB' },
     { id: 'system', label: 'System', short: 'SY' }
   ];
 
@@ -3411,9 +3352,8 @@ export class AdminComponent implements OnInit, OnDestroy {
   protected readonly supportMessages = signal<any[]>([]);
   protected readonly selectedSupportMessage = signal<any | null>(null);
   protected readonly cache = signal<any>({});
-  protected readonly parserHealth = signal<any>({ summary: {}, platforms: [], problemGroups: [], domainRanking: [], recentEvents: [], recentBugReports: [] });
+  protected readonly parserHealth = signal<any>({ summary: {}, platforms: [], problemGroups: [], domainIssues: [], recentEvents: [], recentBugReports: [] });
   protected readonly parserEvents = signal<any[]>([]);
-  protected readonly leaderboard = signal<any[]>([]);
   protected readonly health = signal<any>({});
   protected readonly billingSafety = signal<any>({});
   protected readonly billingUsage = signal<any>({ usage: [], summary: {} });
@@ -3573,7 +3513,6 @@ export class AdminComponent implements OnInit, OnDestroy {
       this.loadCache(),
       this.loadParserHealth(),
       this.loadParserEvents(),
-      this.loadLeaderboard(),
       this.loadHealth(),
       this.loadBillingSafety(),
       this.loadBillingUsage()
@@ -3688,18 +3627,6 @@ export class AdminComponent implements OnInit, OnDestroy {
     this.error.set(result.error || this.tr('couldNotUnbanUser'));
   }
 
-  protected async toggleLeaderboard(userId: string, exclude: boolean): Promise<void> {
-    const result = await this.api(`/api/admin/users/${userId}/leaderboard`, {
-      method: 'PATCH',
-      body: JSON.stringify({ exclude })
-    });
-    if (result.success) {
-      await Promise.all([this.loadUsers(this.pagination().page), this.loadLeaderboard()]);
-      return;
-    }
-    this.error.set(result.error || this.tr('couldNotUpdateLeaderboard'));
-  }
-
   protected async deleteUser(userId: string, email: string): Promise<void> {
     if (!this.confirm(`${this.tr('deleteUserConfirmPrefix')} ${email}? ${this.tr('deleteUserConfirmSuffix')}`)) return;
     const result = await this.api(`/api/admin/users/${userId}`, { method: 'DELETE' });
@@ -3751,7 +3678,6 @@ export class AdminComponent implements OnInit, OnDestroy {
       support: 'support',
       cache: 'cache',
       parser: 'parser',
-      leaderboard: 'leaderboard',
       system: 'system'
     };
     return this.tr(labels[tab]);
@@ -3765,7 +3691,6 @@ export class AdminComponent implements OnInit, OnDestroy {
       support: 'supportHint',
       cache: 'cacheHint',
       parser: 'parserHint',
-      leaderboard: 'leaderboardHint',
       system: 'systemHint'
     };
     return this.tr(hints[tab]);
@@ -3789,11 +3714,6 @@ export class AdminComponent implements OnInit, OnDestroy {
         note: pl ? 'płatności i billing' : 'payments and billing',
         ids: ['purchases', 'system']
       },
-      {
-        label: pl ? 'Publiczne' : 'Public',
-        note: pl ? 'ranking' : 'ranking',
-        ids: ['leaderboard']
-      }
     ];
     return groups.map(group => ({
       label: group.label,
@@ -3810,7 +3730,6 @@ export class AdminComponent implements OnInit, OnDestroy {
       support: 'supportTitle',
       cache: 'cacheTitle',
       parser: 'parserTitle',
-      leaderboard: 'leaderboardTitle',
       system: 'systemTitle'
     };
     return this.tr(titles[this.activeTab()]);
@@ -3824,7 +3743,6 @@ export class AdminComponent implements OnInit, OnDestroy {
       support: 'supportDescription',
       cache: 'cacheDescription',
       parser: 'parserDescription',
-      leaderboard: 'leaderboardDescription',
       system: 'systemDescription'
     };
     return this.tr(descriptions[this.activeTab()]);
@@ -3994,7 +3912,7 @@ export class AdminComponent implements OnInit, OnDestroy {
   }
 
   protected parserDomainRows(): any[] {
-    return (this.parserHealth().domainRanking || []).slice(0, 8);
+    return (this.parserHealth().domainIssues || []).slice(0, 8);
   }
 
   protected parserProblemRows(): any[] {
@@ -4493,11 +4411,6 @@ export class AdminComponent implements OnInit, OnDestroy {
       this.parserEvents.set(result.events || []);
       this.parserEventsPagination.set(result.pagination || { page, pages: 1, total: 0 });
     }
-  }
-
-  private async loadLeaderboard(): Promise<void> {
-    const result = await this.api('/api/admin/leaderboard');
-    if (result.success) this.leaderboard.set(result.leaderboard || []);
   }
 
   private async loadHealth(): Promise<void> {
