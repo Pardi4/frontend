@@ -350,18 +350,19 @@ const en: SiteCopy = {
       shortName: "AI Solver",
       badge: "AI solver",
       title: "QuizSolver: The #1 AI Quiz Solver Chrome Extension",
-      subtitle: "Get instant AI answer suggestions on Testportal, Moodle, Canvas, Kahoot and 10+ other quiz platforms.",
-      meta: { title: "QuizSolver — AI Quiz Solver Chrome Extension | Free Install", description: "QuizSolver is the best AI quiz solver Chrome extension. Solve quizzes instantly on Testportal, Moodle, Canvas, Google Forms, Kahoot, Quizizz and more. Free to install. AI answers + explanations." },
+      subtitle: "Get instant AI answer suggestions with a universal parser for visible quiz pages plus tuned workflows for Testportal, Moodle, Canvas, Kahoot and 10+ platforms.",
+      meta: { title: "QuizSolver — Universal AI Quiz Solver Chrome Extension", description: "QuizSolver is a universal AI quiz solver Chrome extension. It reads visible quiz questions on many pages, with tuned workflows for Testportal, Moodle, Canvas, Google Forms, Kahoot, Quizizz and more." },
       stepsTitle: "How to get started",
       steps: ["Install the extension from Chrome Web Store", "Pin it to your toolbar for quick access", "Open a quiz and let the AI suggest answers in real time"],
-      features: ["Instant accurate answers", "Detailed concept explanations", "History saving for studying", "Cross-platform support"],
+      features: ["Universal visible-page quiz parser", "Instant answer suggestions", "Detailed concept explanations", "History saving for studying", "Cross-platform support"],
       keywordSections: [
+        { title: "Universal Quiz Parser", text: "QuizSolver is not limited to a single learning platform. The extension first tries to read the visible question, nearby answer choices, form controls and images on the current page, then prepares a clean AI prompt for review." },
         { title: "Smartest AI Quiz Companion", text: "QuizSolver runs directly in your Chrome browser, scanning questions on demand to deliver high-quality suggestions instantly." },
         { title: "Ace any test or assignment", text: "Whether it is single choice, multiple choice, or free text, the AI analyzes options and offers clear reasoning for every solution." }
       ],
       faq: [
         { question: "Is this extension free to use?", answer: "Yes, you receive free starting credits to try the extension. You can top up whenever you need more." },
-        { question: "Does it work on all web pages?", answer: "Absolutely. Using the FocusScan region tool, you can capture questions on any page, even inside canvases or images." }
+        { question: "Does QuizSolver work beyond the listed platforms?", answer: "Yes. QuizSolver includes a universal parser that tries to read visible quiz questions on other websites too. Tuned platform workflows improve reliability on popular systems, and FocusScan helps when a page uses images, canvas or unusual layouts." }
       ]
     },
     testportal: {
@@ -705,18 +706,19 @@ const pl: SiteCopy = {
       shortName: "AI Solver",
       badge: "Asystent AI",
       title: "QuizSolver — Najlepszy AI Quiz Solver na Chrome",
-      subtitle: "Natychmiastowe podpowiedzi AI na Testportal, Moodle, Canvas, Kahoot i 10+ innych platformach.",
-      meta: { title: "QuizSolver — AI Quiz Solver Chrome | Darmowa Instalacja", description: "QuizSolver to najlepsze rozszerzenie AI do quizów na Chrome. Rozwiązuj testy natychmiast na Testportal, Moodle, Canvas, Google Forms, Kahoot, Quizizz i więcej. Darmowa instalacja. Odpowiedzi + wyjaśnienia AI." },
+      subtitle: "Natychmiastowe podpowiedzi AI dzięki uniwersalnemu parserowi widocznych stron z quizami oraz dopracowanym workflow dla Testportal, Moodle, Canvas, Kahoot i 10+ platform.",
+      meta: { title: "QuizSolver — Uniwersalny AI Quiz Solver Chrome", description: "QuizSolver to uniwersalne rozszerzenie AI do quizów na Chrome. Czyta widoczne pytania na wielu stronach i ma dopracowane workflow dla Testportal, Moodle, Canvas, Google Forms, Kahoot, Quizizz i więcej." },
       stepsTitle: "Jak zacząć?",
       steps: ["Zainstaluj rozszerzenie z oficjalnego sklepu Chrome Web Store.", "Przypnij ikonę QuizSolver do paska narzędzi przeglądarki.", "Otwórz swój test i pozwól, aby sztuczna inteligencja na bieżąco proponowała poprawne odpowiedzi."],
-      features: ["Błyskawiczne odpowiedzi", "Szczegółowe wyjaśnienia pojęć", "Automatyczny zapis historii do nauki", "Pełna kompatybilność z wieloma platformami"],
+      features: ["Uniwersalny parser widocznych stron z quizami", "Błyskawiczne podpowiedzi odpowiedzi", "Szczegółowe wyjaśnienia pojęć", "Automatyczny zapis historii do nauki", "Pełna kompatybilność z wieloma platformami"],
       keywordSections: [
+        { title: "Uniwersalny parser quizów", text: "QuizSolver nie jest ograniczony do jednej platformy edukacyjnej. Rozszerzenie najpierw próbuje odczytać widoczne pytanie, pobliskie odpowiedzi, kontrolki formularza i obrazy na aktualnej stronie, a potem przygotowuje czysty kontekst dla AI." },
         { title: "Twój inteligentny asystent nauki", text: "QuizSolver działa bezpośrednio w przeglądarce, na żądanie analizując strukturę pytania i dostarczając precyzyjne podpowiedzi w ułamku sekundy." },
         { title: "Z łatwością poradzisz sobie z każdym pytaniem", text: "Niezależnie od tego, czy mierzysz się z pytaniami jednokrotnego wyboru, wielokrotnego wyboru, czy otwartymi, nasze AI precyzyjnie analizuje opcje i wyjaśnia każdy krok." }
       ],
       faq: [
         { question: "Czy rozszerzenie jest darmowe?", answer: "Tak, na start otrzymujesz darmowe kredyty na przetestowanie narzędzia. W każdej chwili możesz doładować swoje konto, jeśli będziesz potrzebować więcej." },
-        { question: "Czy działa na wszystkich stronach?", answer: "Tak. Dzięki innowacyjnemu narzędziu FocusScan możesz zaznaczyć dowolny obszar ekranu, co pozwala na odczytanie i rozwiązanie pytań wklejonych jako obrazki lub ukrytych w ramkach." }
+        { question: "Czy QuizSolver działa poza wymienionymi platformami?", answer: "Tak. QuizSolver ma uniwersalny parser, który próbuje odczytać widoczne pytania także na innych stronach z quizami. Dopracowane workflow zwiększają stabilność na popularnych platformach, a FocusScan pomaga przy obrazach, canvasach i nietypowych układach." }
       ]
     },
     testportal: {

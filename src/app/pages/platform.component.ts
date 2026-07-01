@@ -101,6 +101,7 @@ const PLATFORM_CONTEXT: Partial<Record<PageKey, { en: string; pl: string }>> = {
 };
 
 const DEFAULT_TYPES_EN = [
+  'Universal parser for visible quiz pages and custom layouts',
   'Single-choice and multiple-choice answers',
   'Typed short answers and dropdown fields',
   'Question images, diagrams and screenshots through FocusScan',
@@ -108,6 +109,7 @@ const DEFAULT_TYPES_EN = [
 ];
 
 const DEFAULT_TYPES_PL = [
+  'Uniwersalny parser widocznych stron z quizami i nietypowych układów',
   'Pytania jednokrotnego i wielokrotnego wyboru',
   'Krótkie odpowiedzi tekstowe i listy rozwijane',
   'Obrazy, wykresy i zrzuty ekranu przez FocusScan',
@@ -127,8 +129,8 @@ function buildPlatformDetail(pageKey: PageKey, locale: Locale, platform: string)
     paragraphs: [
       context,
       isPl
-        ? 'Parser porównuje treść pytania z pobliskimi odpowiedziami, kontrolkami formularza, obrazami i widocznym układem strony. Jeżeli standardowe wykrywanie nie zwraca sensownego pytania, FocusScan pozwala ręcznie zaznaczyć dokładny fragment ekranu i ponowić analizę bez mieszania treści z innych części strony.'
-        : 'The parser compares the question text with nearby answer choices, form controls, images and the visible page layout. If standard detection does not return a meaningful question, FocusScan lets you select the exact screen region and retry without mixing content from other parts of the page.',
+        ? 'Pod spodem działa uniwersalny parser: porównuje treść pytania z pobliskimi odpowiedziami, kontrolkami formularza, obrazami i widocznym układem strony. Dopracowane workflow dla popularnych platform zwiększają stabilność, a jeżeli standardowe wykrywanie nie zwraca sensownego pytania, FocusScan pozwala ręcznie zaznaczyć dokładny fragment ekranu.'
+        : 'Under the hood, QuizSolver uses a universal parser: it compares the question text with nearby answer choices, form controls, images and the visible page layout. Tuned workflows improve reliability on popular platforms, and if standard detection does not return a meaningful question, FocusScan lets you select the exact screen region.',
       isPl
         ? 'Każde zapisane pytanie może trafić do historii razem z odpowiedzią, wyjaśnieniem i notatką. Dzięki temu strona platformy nie kończy się na jednorazowej podpowiedzi: z rozwiązanych zadań powstaje prywatna baza powtórek i quizów treningowych.'
         : 'Every saved question can go to history with the answer, explanation and your own note. That means the platform workflow does not stop at a one-time hint: solved tasks become a private review library and practice quiz source.'
@@ -377,11 +379,11 @@ function buildPlatformVisual(locale: Locale, platform: string): PlatformVisual {
     eyebrow: isPl ? 'Podgląd workflow' : 'Visual workflow',
     title: isPl ? `Jak wygląda praca z QuizSolver na ${platform}` : `See the ${platform} solving flow`,
     text: isPl
-      ? 'Strona platformy powinna pokazywać realny sposób pracy, a nie tylko obiecywać wynik. Ten podgląd łączy trzy najważniejsze elementy: wykrywanie pytania na stronie, FocusScan dla trudnych układów oraz zapis odpowiedzi z wyjaśnieniem do historii nauki.'
-      : 'A platform page should show the real workflow, not only promise an answer. This preview connects the three parts that matter most: page question detection, FocusScan for difficult layouts, and saved explanations in study history.',
+      ? 'Strona platformy powinna pokazywać realny sposób pracy, a nie tylko obiecywać wynik. Ten podgląd łączy trzy najważniejsze elementy: uniwersalny parser widocznej strony, FocusScan dla trudnych układów oraz zapis odpowiedzi z wyjaśnieniem do historii nauki.'
+      : 'A platform page should show the real workflow, not only promise an answer. This preview connects the three parts that matter most: the universal visible-page parser, FocusScan for difficult layouts, and saved explanations in study history.',
     alt: isPl
-      ? `Podgląd workflow QuizSolver dla ${platform}: wykrywanie pytania, FocusScan i zapisane wyjaśnienia`
-      : `QuizSolver workflow preview for ${platform}: question detection, FocusScan and saved explanations`,
+      ? `Podgląd workflow QuizSolver dla ${platform}: uniwersalny parser, FocusScan i zapisane wyjaśnienia`
+      : `QuizSolver workflow preview for ${platform}: universal parser, FocusScan and saved explanations`,
     image: '/platform-workflow-preview.svg'
   };
 }
