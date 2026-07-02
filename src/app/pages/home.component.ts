@@ -27,7 +27,7 @@ import { ShellComponent } from './shell.component';
               <a class="btn btn-primary btn-lg" [href]="storeUrl" target="_blank" rel="noopener">
                 {{ text.hero.primary }}
               </a>
-              <a class="btn btn-outline btn-lg" href="#how-it-works">
+              <a class="btn btn-outline btn-lg" [href]="homeHash('how-it-works')">
                 {{ text.hero.secondary }}
               </a>
             </div>
@@ -832,6 +832,10 @@ export class HomeComponent implements OnInit {
 
   buyCredits() {
     window.location.href = pathFor('credits', this.locale);
+  }
+
+  protected homeHash(hash: string): string {
+    return `${pathFor('home', this.locale)}#${hash}`;
   }
 
   ngOnInit(): void {

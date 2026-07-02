@@ -434,9 +434,17 @@ function buildPlatformPlaybook(pageKey: PageKey, locale: Locale, platform: strin
 function buildPlatformVisual(pageKey: PageKey, locale: Locale, platform: string): PlatformVisual {
   const isPl = locale === 'pl';
   const imageByPage: Partial<Record<PageKey, string>> = {
-    testportal: '/platform-workflow-testportal.svg',
-    moodle: '/platform-workflow-moodle.svg',
-    canvas: '/platform-workflow-canvas.svg'
+    quizSolverAi: '/og-social/quiz-solver-ai.png',
+    testportal: '/og-social/testportal-quiz-solver.png',
+    moodle: '/og-social/moodle-quiz-solver.png',
+    canvas: '/og-social/canvas-quiz-solver.png',
+    googleForms: '/og-social/google-forms-quiz-solver.png',
+    microsoftForms: '/og-social/microsoft-forms-quiz-solver.png',
+    blackboard: '/og-social/blackboard-quiz-solver.png',
+    quizlet: '/og-social/quizlet-solver.png',
+    socrative: '/og-social/socrative-quiz-solver.png',
+    kahoot: '/og-social/kahoot-ai-bot.png',
+    quizizz: '/og-social/quizizz-solver.png'
   };
   if (isUniversalSolverPage(pageKey)) {
     return {
@@ -448,7 +456,7 @@ function buildPlatformVisual(pageKey: PageKey, locale: Locale, platform: string)
       alt: isPl
         ? 'Podgląd workflow QuizSolver: Universal Parser, FocusScan i zapisane wyjaśnienia'
         : 'QuizSolver universal workflow preview: Universal Parser, FocusScan and saved explanations',
-      image: '/platform-workflow-preview.svg'
+      image: imageByPage[pageKey] || '/og-social/quiz-solver-ai.png'
     };
   }
   return {
@@ -460,7 +468,7 @@ function buildPlatformVisual(pageKey: PageKey, locale: Locale, platform: string)
     alt: isPl
       ? `Podgląd workflow QuizSolver dla ${platform}: uniwersalny parser, FocusScan i zapisane wyjaśnienia`
       : `QuizSolver workflow preview for ${platform}: universal parser, FocusScan and saved explanations`,
-    image: imageByPage[pageKey] || '/platform-workflow-preview.svg'
+    image: imageByPage[pageKey] || '/og-social/quiz-solver-ai.png'
   };
 }
 
@@ -621,7 +629,7 @@ const PLATFORM_UI: Record<Locale, PlatformUi> = {
                 <a class="btn btn-primary btn-lg" [href]="storeUrl" target="_blank" rel="noopener">
                   {{ ui.install }}
                 </a>
-                <a class="btn btn-outline btn-lg" href="#platform-guides">
+                <a class="btn btn-outline btn-lg" [href]="pageHash('platform-guides')">
                   {{ ui.related }}
                 </a>
               </div>
@@ -695,7 +703,7 @@ const PLATFORM_UI: Record<Locale, PlatformUi> = {
               <p class="text-secondary">{{ visual.text }}</p>
             </article>
             <figure class="platform-preview-frame glass reveal delay-100">
-              <img [src]="visual.image" [alt]="visual.alt" width="1200" height="780" loading="lazy">
+              <img [src]="visual.image" [alt]="visual.alt" width="1200" height="630" loading="lazy">
               <figcaption class="text-secondary">{{ visual.alt }}</figcaption>
             </figure>
           </div>
@@ -1236,6 +1244,10 @@ export class PlatformComponent implements OnInit {
 
   protected pathFor(pageKey: PageKey): string {
     return pathFor(pageKey, this.locale);
+  }
+
+  protected pageHash(hash: string): string {
+    return `${pathFor(this.pageKey, this.locale)}#${hash}`;
   }
 
   protected relatedPages(): Array<{ pageKey: PageKey; data: any }> {
