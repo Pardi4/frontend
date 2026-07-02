@@ -357,12 +357,13 @@ const en: SiteCopy = {
       features: ["Universal visible-page quiz parser", "Instant answer suggestions", "Detailed concept explanations", "History saving for studying", "Cross-platform support"],
       keywordSections: [
         { title: "Universal Quiz Parser", text: "QuizSolver is not limited to a single learning platform. The extension first tries to read the visible question, nearby answer choices, form controls and images on the current page, then prepares a clean AI prompt for review." },
-        { title: "Smartest AI Quiz Companion", text: "QuizSolver runs directly in your Chrome browser, scanning questions on demand to deliver high-quality suggestions instantly." },
-        { title: "Ace any test or assignment", text: "Whether it is single choice, multiple choice, or free text, the AI analyzes options and offers clear reasoning for every solution." }
+        { title: "Continuous parser tuning", text: "When a page layout is not detected well, users can report it from the extension. Those reports help us review the failing layout, tune the parser profile and ship better support in later updates." },
+        { title: "FocusScan fallback for unusual pages", text: "If the page hides the question in an image, canvas, PDF preview or custom embed, FocusScan lets the user select the exact question area instead of relying on a full-page scrape." }
       ],
       faq: [
         { question: "Is this extension free to use?", answer: "Yes, you receive free starting credits to try the extension. You can top up whenever you need more." },
-        { question: "Does QuizSolver work beyond the listed platforms?", answer: "Yes. QuizSolver includes a universal parser that tries to read visible quiz questions on other websites too. Tuned platform workflows improve reliability on popular systems, and FocusScan helps when a page uses images, canvas or unusual layouts." }
+        { question: "Does QuizSolver work beyond the listed platforms?", answer: "Yes. QuizSolver includes Universal Parser, which tries to read visible quiz questions on other websites too. Tuned platform workflows improve reliability on popular systems, and FocusScan helps when a page uses images, canvas or unusual layouts." },
+        { question: "What happens when Universal Parser fails?", answer: "The user can report the page from the extension. We review failing layouts, tune parser profiles and add better support in later updates, so unsupported pages can become supported over time." }
       ]
     },
     testportal: {
@@ -375,10 +376,7 @@ const en: SiteCopy = {
       stepsTitle: "How to use with Testportal",
       steps: ["Log into Testportal and open your quiz page", "Start the test and activate the extension side panel", "Watch the AI auto-detect the question and display answers"],
       features: ["Auto-detection of Testportal questions", "Maintains response times within safe limits", "Supports images embedded in questions"],
-      keywordSections: [
-        { title: "Fast Testportal Helper", text: "Say goodbye to stressful time limits. Our extension parses Testportal HTML on the fly and presents answers without delaying your workflow." },
-        { title: "Safe and Reliable", text: "Designed to run locally within your browser context, QuizSolver respects the page layout and works exactly like an interactive study side-bar." }
-      ],
+      keywordSections: [],
       faq: [
         { question: "Does it bypass window-leave detection?", answer: "QuizSolver works in a side panel or directly on the page, meaning you do not have to click off the tab or leave the window to look up answers." },
         { question: "Does it support Polish Testportal?", answer: "Yes! QuizSolver works perfectly on both English and Polish test variations." }
@@ -394,10 +392,7 @@ const en: SiteCopy = {
       stepsTitle: "How to use on Moodle",
       steps: ["Open your course quiz on Moodle", "Activate QuizSolver with a single click", "Review AI suggestions and explanations before submitting"],
       features: ["Compatible with Moodle quiz formatting", "Save questions to study history automatically", "Handles math and science notations"],
-      keywordSections: [
-        { title: "Boost your LMS learning", text: "Moodle courses can have complex question banks. QuizSolver interprets standard text, code snippets, and multiple choice layouts with ease." },
-        { title: "Interactive study notes", text: "Every Moodle question you solve is saved in your dashboard, enabling quick review before midterms." }
-      ],
+      keywordSections: [],
       faq: [
         { question: "Can it handle essay questions?", answer: "Yes, it can generate detailed draft answers and outlines for open-ended or essay-style Moodle questions." },
         { question: "Does it require Moodle admin access?", answer: "No, it is a client-side extension that reads only what is displayed on your screen." }
@@ -413,10 +408,7 @@ const en: SiteCopy = {
       stepsTitle: "How to use with Canvas",
       steps: ["Open your Canvas course page", "Start the quiz and activate the QuizSolver side-panel", "Read and evaluate the suggested answers"],
       features: ["Canvas LMS compatibility", "Saves questions for learning", "Detailed explanation support"],
-      keywordSections: [
-        { title: "Streamline Canvas Assignments", text: "Canvas quizzes can be long and tedious. QuizSolver lets you tackle them with confidence by breaking down complex questions with AI reasoning." },
-        { title: "Learn as you solve", text: "Every answer suggestion comes with an optional step-by-step breakdown, so you learn the concepts behind the questions." }
-      ],
+      keywordSections: [],
       faq: [
         { question: "Does Canvas detect the extension?", answer: "QuizSolver operates inside the standard browser extension sandbox without injecting suspicious scripts into Canvas." },
         { question: "Does it support third-party LTI integrations in Canvas?", answer: "Yes, using the FocusScan feature, you can solve questions loaded inside external LTI frames." }
@@ -713,12 +705,13 @@ const pl: SiteCopy = {
       features: ["Uniwersalny parser widocznych stron z quizami", "Błyskawiczne podpowiedzi odpowiedzi", "Szczegółowe wyjaśnienia pojęć", "Automatyczny zapis historii do nauki", "Pełna kompatybilność z wieloma platformami"],
       keywordSections: [
         { title: "Uniwersalny parser quizów", text: "QuizSolver nie jest ograniczony do jednej platformy edukacyjnej. Rozszerzenie najpierw próbuje odczytać widoczne pytanie, pobliskie odpowiedzi, kontrolki formularza i obrazy na aktualnej stronie, a potem przygotowuje czysty kontekst dla AI." },
-        { title: "Twój inteligentny asystent nauki", text: "QuizSolver działa bezpośrednio w przeglądarce, na żądanie analizując strukturę pytania i dostarczając precyzyjne podpowiedzi w ułamku sekundy." },
-        { title: "Z łatwością poradzisz sobie z każdym pytaniem", text: "Niezależnie od tego, czy mierzysz się z pytaniami jednokrotnego wyboru, wielokrotnego wyboru, czy otwartymi, nasze AI precyzyjnie analizuje opcje i wyjaśnia każdy krok." }
+        { title: "Ciągłe dostrajanie parsera", text: "Gdy układ strony nie zostanie dobrze wykryty, użytkownik może zgłosić problem z rozszerzenia. Takie zgłoszenia pomagają nam sprawdzić problematyczny layout, dostroić profil parsera i dodać lepsze wsparcie w kolejnych aktualizacjach." },
+        { title: "FocusScan jako fallback dla nietypowych stron", text: "Jeśli strona ukrywa pytanie w obrazie, canvasie, podglądzie PDF albo niestandardowym embedzie, FocusScan pozwala zaznaczyć dokładny obszar pytania zamiast polegać na pełnym odczycie strony." }
       ],
       faq: [
         { question: "Czy rozszerzenie jest darmowe?", answer: "Tak, na start otrzymujesz darmowe kredyty na przetestowanie narzędzia. W każdej chwili możesz doładować swoje konto, jeśli będziesz potrzebować więcej." },
-        { question: "Czy QuizSolver działa poza wymienionymi platformami?", answer: "Tak. QuizSolver ma uniwersalny parser, który próbuje odczytać widoczne pytania także na innych stronach z quizami. Dopracowane workflow zwiększają stabilność na popularnych platformach, a FocusScan pomaga przy obrazach, canvasach i nietypowych układach." }
+        { question: "Czy QuizSolver działa poza wymienionymi platformami?", answer: "Tak. QuizSolver ma Universal Parser, który próbuje odczytać widoczne pytania także na innych stronach z quizami. Dopracowane workflow zwiększają stabilność na popularnych platformach, a FocusScan pomaga przy obrazach, canvasach i nietypowych układach." },
+        { question: "Co się dzieje, gdy Universal Parser zawiedzie?", answer: "Użytkownik może zgłosić stronę z poziomu rozszerzenia. Sprawdzamy problematyczne układy, dostrajamy profile parsera i dodajemy lepsze wsparcie w kolejnych aktualizacjach, więc nieobsługiwane strony mogą z czasem dostać pełniejsze wsparcie." }
       ]
     },
     testportal: {
@@ -731,10 +724,7 @@ const pl: SiteCopy = {
       stepsTitle: "Jak używać QuizSolver na Testportalu",
       steps: ["Zaloguj się na Testportal i przejdź do swojego testu.", "Uruchom panel boczny rozszerzenia QuizSolver w przeglądarce.", "Nasze AI automatycznie zidentyfikuje pytanie i wskaże sugerowane warianty odpowiedzi."],
       features: ["Automatyczne wykrywanie pytań i opcji wyboru", "Zachowanie bezpiecznych, naturalnych odstępów czasowych", "Pełne wsparcie dla pytań zawierających zdjęcia"],
-      keywordSections: [
-        { title: "Szybka pomoc na platformie Testportal", text: "Zapomnij o stresie związanym z uciekającym czasem. Nasze rozszerzenie analizuje treść w locie i wyświetla precyzyjne podpowiedzi bezpośrednio w panelu bocznym." },
-        { title: "Dyskrecja i bezpieczeństwo", text: "QuizSolver funkcjonuje lokalnie w kontekście przeglądarki, nie modyfikując struktury strony ani nie wyzwalając mechanizmów zabezpieczających platformy." }
-      ],
+      keywordSections: [],
       faq: [
         { question: "Czy Testportal wykrywa działanie rozszerzenia?", answer: "Nie. Ponieważ QuizSolver działa bezpośrednio w panelu bocznym Chrome (Side Panel), nie musisz klikać poza obszar testu ani opuszczać karty przeglądarki." },
         { question: "Czy działa na polskim Testportalu?", answer: "Tak! Nasze AI w pełni wspiera analizę pytań zarówno w języku polskim, jak i angielskim." }
@@ -750,9 +740,7 @@ const pl: SiteCopy = {
       stepsTitle: "Jak używać na Moodle",
       steps: ["Otwórz quiz na platformie Moodle.", "Uruchom rozszerzenie QuizSolver jednym kliknięciem.", "Zapoznaj się z podpowiedziami oraz wyjaśnieniami AI przed wysłaniem odpowiedzi."],
       features: ["Pełna kompatybilność z różnymi typami pytań na Moodle", "Automatyczne zapisywanie pytań do historii nauki", "Obsługa wzorów i notacji matematycznej (LaTeX)"],
-      keywordSections: [
-        { title: "Szybsza nauka na platformie Moodle", text: "Testy na Moodle bywają skomplikowane. QuizSolver błyskawicznie analizuje treść, kody źródłowe oraz opcje wyboru, pomagając Ci szybko zrozumieć trudne zagadnienia." }
-      ],
+      keywordSections: [],
       faq: [
         { question: "Czy radzi sobie z pytaniami otwartymi?", answer: "Tak, sztuczna inteligencja potrafi wygenerować logiczne konspekty oraz gotowe odpowiedzi do pytań otwartych i opisowych." }
       ]
@@ -767,9 +755,7 @@ const pl: SiteCopy = {
       stepsTitle: "Jak używać na Canvas",
       steps: ["Zaloguj się do Canvas i otwórz odpowiedni quiz.", "Uruchom panel boczny rozszerzenia QuizSolver w przeglądarce.", "Zapoznaj się z sugestiami i wyjaśnieniami wygenerowanymi przez AI."],
       features: ["Pełna integracja z systemem Canvas LMS", "Zapisywanie rozwiązanych pytań na później w historii", "Szczegółowe objaśnienia każdego zagadnienia"],
-      keywordSections: [
-        { title: "Skuteczna pomoc w quizach Canvas", text: "Kolokwia i quizy w systemie Canvas bywają wyjątkowo długie. Z QuizSolver przebrniesz przez nie bez stresu, mając u boku inteligentnego asystenta AI." }
-      ],
+      keywordSections: [],
       faq: [
         { question: "Czy system Canvas wykrywa to rozszerzenie?", answer: "Nie. Rozszerzenie działa w bezpiecznej, izolowanej piaskownicy przeglądarki Chrome i nie ingeruje w kod śledzący ani skrypty analityczne platformy Canvas." }
       ]
@@ -1551,6 +1537,7 @@ function ensurePlatformSeoDepth(copy: SiteCopy, locale: Locale): SiteCopy {
     }
   };
   const template = templates[locale] || templates.en;
+  const manuallyExpandedPages = new Set<keyof SiteCopy['platformPages']>(['quizSolverAi', 'testportal', 'moodle', 'canvas']);
   (Object.entries(copy.platformPages) as Array<[keyof SiteCopy['platformPages'], PlatformCopy]>).forEach(([pageKey, page]) => {
     const name = page.shortName || page.platformName || 'the platform';
     const isKahoot = pageKey === 'kahoot';
@@ -1565,10 +1552,12 @@ function ensurePlatformSeoDepth(copy: SiteCopy, locale: Locale): SiteCopy {
       ...extraFaq.filter(item => !existingQuestions.has(item.question))
     ];
 
-    const extraSections = [
-      { title: template.readTitle(name), text: template.readText(name) },
-      ...(pageKey === 'testportal' ? [] : [{ title: template.historyTitle(name), text: template.historyText }])
-    ];
+    const extraSections = manuallyExpandedPages.has(pageKey)
+      ? []
+      : [
+          { title: template.readTitle(name), text: template.readText(name) },
+          { title: template.historyTitle(name), text: template.historyText }
+        ];
     const existingSections = new Set((page.keywordSections || []).map(item => item.title));
     page.keywordSections = [
       ...(page.keywordSections || []),

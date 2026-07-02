@@ -118,8 +118,6 @@ export class SeoService {
 
     /* ── Canonical + hreflang ── */
     this.upsertLink('canonical', canonical);
-    SUPPORTED_LOCALES.forEach(opt => this.upsertAlternate(opt.htmlLang, abs(pathFor(pageKey, opt.code))));
-    this.upsertAlternate('x-default', abs(pathFor(pageKey, 'en')));
     this.setHreflangAlternates(
       SUPPORTED_LOCALES.map(opt => ({ hreflang: opt.htmlLang, href: abs(pathFor(pageKey, opt.code)) })),
       abs(pathFor(pageKey, 'en'))
@@ -527,17 +525,6 @@ export class SeoService {
     link.setAttribute('href', href);
   }
 
-  private upsertAlternate(hreflang: string, href: string): void {
-    let link = this.document.head.querySelector<HTMLLinkElement>(`link[rel="alternate"][hreflang="${hreflang}"]`);
-    if (!link) {
-      link = this.document.createElement('link');
-      link.setAttribute('rel', 'alternate');
-      link.setAttribute('hreflang', hreflang);
-      this.document.head.appendChild(link);
-    }
-    link.setAttribute('href', href);
-  }
-
   private upsertJsonLd(payload: unknown): void {
     const existing = this.document.head.querySelector<HTMLScriptElement>('script[data-quizsolver-schema="main"]');
     if (existing) existing.remove();
@@ -614,18 +601,8 @@ export class SeoService {
     this.upsertMeta('name', 'twitter:image:alt', category.title);
 
     this.upsertLink('canonical', canonical);
-    localesWithCategoryPosts.forEach(opt => {
-      const localizedCategory = categoryFor(opt.code, category.slug);
-      if (localizedCategory) {
-        const route = pathFor('blogCategory', opt.code).replace(':category', localizedCategory.slug);
-        this.upsertAlternate(opt.htmlLang, abs(route));
-      }
-    });
     const defaultLocale = localesWithCategoryPosts.find(opt => opt.code === 'en') || localesWithCategoryPosts[0];
     const defaultCategory = defaultLocale ? categoryFor(defaultLocale.code, category.slug) : undefined;
-    if (defaultLocale && defaultCategory) {
-      this.upsertAlternate('x-default', abs(pathFor('blogCategory', defaultLocale.code).replace(':category', defaultCategory.slug)));
-    }
     this.setHreflangAlternates(
       localesWithCategoryPosts
         .map(opt => {
@@ -765,14 +742,7 @@ export class SeoService {
     /* ── Canonical + hreflang ── */
     this.upsertLink('canonical', canonical);
 
-    SUPPORTED_LOCALES.forEach(opt => {
-      const match = BLOG_POSTS.find(p => p.translationKey === post.translationKey && p.locale === opt.code);
-      if (match) {
-        this.upsertAlternate(opt.htmlLang, abs(pathFor('blogPost', opt.code).replace(':slug', match.slug)));
-      }
-    });
     const defaultPost = BLOG_POSTS.find(p => p.translationKey === post.translationKey && p.locale === 'en') || post;
-    this.upsertAlternate('x-default', abs(pathFor('blogPost', defaultPost.locale).replace(':slug', defaultPost.slug)));
     this.setHreflangAlternates(
       (translationPosts.length ? translationPosts : [post]).map(match => ({
         hreflang: localeOption(match.locale).htmlLang,

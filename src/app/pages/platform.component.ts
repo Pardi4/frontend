@@ -373,8 +373,13 @@ function buildPlatformPlaybook(pageKey: PageKey, locale: Locale, platform: strin
   return custom[pageKey] || generic;
 }
 
-function buildPlatformVisual(locale: Locale, platform: string): PlatformVisual {
+function buildPlatformVisual(pageKey: PageKey, locale: Locale, platform: string): PlatformVisual {
   const isPl = locale === 'pl';
+  const imageByPage: Partial<Record<PageKey, string>> = {
+    testportal: '/platform-workflow-testportal.svg',
+    moodle: '/platform-workflow-moodle.svg',
+    canvas: '/platform-workflow-canvas.svg'
+  };
   return {
     eyebrow: isPl ? 'Podgląd workflow' : 'Visual workflow',
     title: isPl ? `Jak wygląda praca z QuizSolver na ${platform}` : `See the ${platform} solving flow`,
@@ -384,7 +389,7 @@ function buildPlatformVisual(locale: Locale, platform: string): PlatformVisual {
     alt: isPl
       ? `Podgląd workflow QuizSolver dla ${platform}: uniwersalny parser, FocusScan i zapisane wyjaśnienia`
       : `QuizSolver workflow preview for ${platform}: universal parser, FocusScan and saved explanations`,
-    image: '/platform-workflow-preview.svg'
+    image: imageByPage[pageKey] || '/platform-workflow-preview.svg'
   };
 }
 
@@ -1132,7 +1137,7 @@ export class PlatformComponent implements OnInit {
   protected storeUrl = CHROME_WEB_STORE_URL;
   protected detail = buildPlatformDetail('quizSolverAi', 'en', 'AI quiz solver');
   protected playbook = buildPlatformPlaybook('quizSolverAi', 'en', 'AI quiz solver');
-  protected visual = buildPlatformVisual('en', 'AI quiz solver');
+  protected visual = buildPlatformVisual('quizSolverAi', 'en', 'AI quiz solver');
 
   ngOnInit(): void {
     this.locale = (this.route.snapshot.data['locale'] || 'en') as Locale;
@@ -1144,7 +1149,7 @@ export class PlatformComponent implements OnInit {
     this.whatItDoesTitle = this.ui.whatItDoes(this.platformLabel);
     this.detail = buildPlatformDetail(this.pageKey, this.locale, this.platformLabel);
     this.playbook = buildPlatformPlaybook(this.pageKey, this.locale, this.platformLabel);
-    this.visual = buildPlatformVisual(this.locale, this.platformLabel);
+    this.visual = buildPlatformVisual(this.pageKey, this.locale, this.platformLabel);
     this.seo.applyPage(this.pageKey, this.locale);
   }
 
