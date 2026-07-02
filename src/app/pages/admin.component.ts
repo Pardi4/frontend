@@ -445,7 +445,7 @@ const ADMIN_COPY = {
     creditDedupeMonitor: 'Monitor deduplikacji kredytów',
     refreshBilling: 'Odśwież billing',
     duplicateWarning: 'Wykryto możliwe podwójnie naliczone grupy. Sprawdź od razu.',
-    creditUsageLog: 'Log kredytow',
+    creditUsageLog: 'Log kredytów',
     creditUsageDescription: 'Sprawdź dokładnie co zostało naliczone, umorzone albo odrzucone dla użytkownika i pytania.',
     searchCreditUsage: 'Szukaj e-maila, treści pytania lub hasha',
     allStatuses: 'Wszystkie statusy',
@@ -455,14 +455,14 @@ const ADMIN_COPY = {
     waived: 'Umorzono',
     aborted: 'Przerwano',
     declined: 'Odrzucono',
-    billableCredits: 'Kredyty platne',
+    billableCredits: 'Kredyty płatne',
     creditEvent: 'Zdarzenie kredytowe',
     chargedCredits: 'Pobrane kredyty',
-    noCreditUsage: 'Brak rekordow kredytow dla tego filtra.',
+    noCreditUsage: 'Brak rekordów kredytów dla tego filtra.',
     viewQuestion: 'Zobacz pytanie',
     firstCharged: 'Pierwsze pobranie',
-    timeSpan: 'Odstep czasu',
-    reviewInLog: 'Sprawdz w logu',
+    timeSpan: 'Odstęp czasu',
+    reviewInLog: 'Sprawdź w logu',
     possibleRefund: 'Zwrot?',
     duplicateReason: 'Ten sam użytkownik, akcja i pytanie naliczone w oknie kontroli.',
     questionHash: 'Hash pytania',
@@ -593,13 +593,27 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
                 <span>QS</span>
                 <strong>Admin</strong>
               </a>
+              <div class="admin-sidebar-status" aria-label="Admin quick status">
+                <button type="button" [class.warn]="supportBadgeCount()" (click)="setActiveTab('support')">
+                  <span>{{ tr('support') }}</span>
+                  <strong>{{ supportBadgeCount() || 0 }}</strong>
+                </button>
+                <button type="button" [class.warn]="bugBadgeCount()" (click)="setActiveTab('bugs')">
+                  <span>{{ tr('bugs') }}</span>
+                  <strong>{{ bugBadgeCount() || 0 }}</strong>
+                </button>
+                <button type="button" [class.warn]="(parserHealth().summary?.failed || 0) > 0" (click)="setActiveTab('parser')">
+                  <span>{{ tr('parser') }}</span>
+                  <strong>{{ parserHealth().summary?.failed || 0 }}</strong>
+                </button>
+              </div>
               <nav class="admin-tabs" [attr.aria-label]="tr('adminSections')">
                 <section class="tab-group" *ngFor="let group of tabGroups()">
                   <header class="tab-group-head">
                     <span>{{ group.label }}</span>
                     <small>{{ group.note }}</small>
                   </header>
-                  <button type="button" *ngFor="let tab of group.tabs" [class.active]="activeTab() === tab.id" (click)="setActiveTab(tab.id)">
+                  <button type="button" *ngFor="let tab of group.tabs" [class.active]="activeTab() === tab.id" [attr.aria-current]="activeTab() === tab.id ? 'page' : null" (click)="setActiveTab(tab.id)">
                     <span class="tab-short">{{ tab.short }}</span>
                     <span class="tab-copy">
                       <span class="tab-label">{{ tabLabel(tab.id) }}</span>
@@ -623,12 +637,13 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
 
           <section class="admin-main">
             <header class="admin-header">
-              <div>
+              <div class="admin-title-block">
                 <p class="eyebrow">{{ tr('liveOperations') }}</p>
                 <h1>{{ activeTabTitle() }}</h1>
                 <p class="text-secondary" style="margin-top: 0.25rem;">{{ activeTabDescription() }}</p>
               </div>
               <div class="admin-header-actions">
+                <button class="btn btn-outline" type="button" (click)="refresh()" [disabled]="loading()">{{ tr('refresh') }}</button>
                 <a class="btn btn-outline" [href]="adminLocale() === 'pl' ? '/pl/dashboard' : '/dashboard'">{{ tr('dashboard') }}</a>
                 <a class="btn btn-primary" [href]="adminLocale() === 'pl' ? '/pl' : '/'">{{ tr('publicSite') }}</a>
               </div>
@@ -3058,6 +3073,599 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
     }
     .clickable-row:hover {
       background: rgba(6, 182, 212, 0.06);
+    }
+
+    /* Admin redesign pass */
+    .admin-page {
+      --admin-surface: rgba(13, 18, 30, 0.82);
+      --admin-surface-strong: rgba(17, 24, 39, 0.9);
+      --admin-surface-soft: rgba(30, 41, 59, 0.42);
+      --admin-border: rgba(148, 163, 184, 0.17);
+      --admin-border-strong: rgba(148, 163, 184, 0.28);
+      --admin-muted: #94a3b8;
+      --admin-card-shadow: 0 22px 70px rgba(0, 0, 0, 0.22);
+      background:
+        radial-gradient(circle at 8% -8%, rgba(34, 211, 238, 0.13), transparent 28rem),
+        radial-gradient(circle at 92% 0%, rgba(16, 185, 129, 0.09), transparent 26rem),
+        linear-gradient(180deg, #060a12 0%, #08111f 48%, #05070d 100%);
+    }
+    .admin-page .btn,
+    .admin-page button,
+    .admin-page a,
+    .admin-page input,
+    .admin-page select,
+    .admin-page textarea {
+      outline-offset: 3px;
+    }
+    .admin-page .btn:focus-visible,
+    .admin-page button:focus-visible,
+    .admin-page a:focus-visible,
+    .admin-page input:focus-visible,
+    .admin-page select:focus-visible,
+    .admin-page textarea:focus-visible {
+      outline: 2px solid rgba(34, 211, 238, 0.72);
+      box-shadow: 0 0 0 4px rgba(34, 211, 238, 0.13);
+    }
+    .admin-shell {
+      grid-template-columns: 284px minmax(0, 1fr);
+      background: transparent;
+    }
+    .admin-sidebar {
+      background:
+        linear-gradient(180deg, rgba(9, 14, 25, 0.97), rgba(5, 8, 15, 0.94)),
+        radial-gradient(circle at 20% 0%, rgba(34, 211, 238, 0.12), transparent 16rem);
+      border-right: 1px solid var(--admin-border);
+      box-shadow: inset -1px 0 0 rgba(255, 255, 255, 0.025);
+      scrollbar-width: thin;
+      scrollbar-color: rgba(148, 163, 184, 0.35) transparent;
+    }
+    .admin-brand {
+      width: 100%;
+      margin-bottom: 1rem;
+      padding: 0.15rem 0.2rem;
+      text-decoration: none;
+    }
+    .admin-brand span {
+      width: 2.75rem;
+      height: 2.75rem;
+      border-radius: 0.9rem;
+      box-shadow:
+        0 14px 32px rgba(14, 165, 233, 0.22),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+    }
+    .admin-brand strong {
+      letter-spacing: 0;
+    }
+    .admin-sidebar-status {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.45rem;
+      margin: 0 0 1.1rem;
+    }
+    .admin-sidebar-status button {
+      display: grid;
+      gap: 0.18rem;
+      min-width: 0;
+      padding: 0.6rem 0.45rem;
+      border: 1px solid rgba(148, 163, 184, 0.16);
+      border-radius: 0.85rem;
+      background: rgba(255, 255, 255, 0.028);
+      color: var(--text-primary);
+      text-align: center;
+      transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+    }
+    .admin-sidebar-status button:hover {
+      transform: translateY(-1px);
+      border-color: rgba(34, 211, 238, 0.35);
+      background: rgba(34, 211, 238, 0.065);
+    }
+    .admin-sidebar-status button.warn {
+      border-color: rgba(244, 63, 94, 0.34);
+      background: rgba(244, 63, 94, 0.075);
+    }
+    .admin-sidebar-status span {
+      overflow: hidden;
+      color: var(--text-secondary);
+      font-size: 0.62rem;
+      font-weight: 850;
+      letter-spacing: 0.06em;
+      text-overflow: ellipsis;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+    .admin-sidebar-status strong {
+      color: #f8fafc;
+      font-family: var(--font-heading);
+      font-size: 1.08rem;
+      line-height: 1;
+    }
+    .admin-tabs {
+      gap: 0.85rem;
+      margin: 0.8rem 0 1.35rem;
+    }
+    .tab-group {
+      gap: 0.42rem;
+      padding: 0.55rem;
+      border: 1px solid rgba(148, 163, 184, 0.11);
+      border-radius: 1rem;
+      background: rgba(255, 255, 255, 0.02);
+    }
+    .tab-group-head {
+      padding: 0 0.22rem 0.16rem;
+    }
+    .tab-group-head span {
+      color: #dbeafe;
+      font-size: 0.67rem;
+    }
+    .tab-group-head small {
+      max-width: 7.5rem;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .admin-tabs button {
+      min-height: 3.45rem;
+      padding: 0.72rem;
+      border-radius: 0.9rem;
+      background: transparent;
+      border-color: transparent;
+    }
+    .admin-tabs button .tab-short {
+      width: 2.05rem;
+      height: 2.05rem;
+      display: inline-grid;
+      place-items: center;
+      flex: 0 0 auto;
+      padding: 0;
+      border-radius: 0.72rem;
+      background: rgba(148, 163, 184, 0.12);
+      color: #cbd5e1;
+      font-size: 0.68rem;
+      letter-spacing: 0.03em;
+    }
+    .admin-tabs button .tab-label {
+      color: #e5edf8;
+      font-weight: 800;
+    }
+    .admin-tabs button .tab-copy small {
+      color: #8fa2ba;
+    }
+    .admin-tabs button:hover {
+      background: rgba(255, 255, 255, 0.052);
+      border-color: rgba(148, 163, 184, 0.14);
+      transform: translateX(2px);
+    }
+    .admin-tabs button.active {
+      background:
+        linear-gradient(135deg, rgba(14, 165, 233, 0.16), rgba(16, 185, 129, 0.08)),
+        rgba(255, 255, 255, 0.035);
+      color: #e0f2fe;
+      border-color: rgba(34, 211, 238, 0.34);
+      box-shadow: 0 16px 34px rgba(8, 145, 178, 0.12);
+    }
+    .admin-tabs button.active .tab-short {
+      background: linear-gradient(135deg, #22d3ee, #10b981);
+      color: #04111d;
+      box-shadow: 0 10px 24px rgba(34, 211, 238, 0.18);
+    }
+    .admin-sidebar-foot {
+      padding-top: 0.85rem;
+      border-top: 1px solid rgba(148, 163, 184, 0.12);
+    }
+    .admin-language-switch {
+      border-radius: 999px;
+      background: rgba(2, 6, 23, 0.42);
+    }
+    .admin-language-switch a {
+      border-radius: 999px;
+    }
+    .admin-main {
+      max-height: none;
+      overflow: visible;
+      padding: 1.15rem clamp(1rem, 2vw, 2rem) 3rem;
+    }
+    .admin-header {
+      top: 0;
+      margin: -1.15rem calc(clamp(1rem, 2vw, 2rem) * -1) 1rem;
+      padding: 1.1rem clamp(1rem, 2vw, 2rem);
+      border-bottom: 1px solid var(--admin-border);
+      background: rgba(6, 10, 18, 0.86);
+      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.18);
+    }
+    .admin-title-block {
+      min-width: 0;
+      display: grid;
+      gap: 0.16rem;
+    }
+    .admin-title-block .eyebrow {
+      margin: 0;
+      color: #67e8f9;
+    }
+    .admin-header h1 {
+      margin: 0;
+      color: #f8fafc;
+      font-size: clamp(1.45rem, 2.1vw, 2rem);
+      line-height: 1.08;
+    }
+    .admin-title-block .text-secondary {
+      max-width: 62rem;
+      line-height: 1.45;
+    }
+    .admin-header-actions {
+      align-items: center;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+    .admin-header-actions .btn {
+      min-height: 2.45rem;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+    .admin-command-center {
+      grid-template-columns: minmax(0, 1.25fr) minmax(340px, 0.75fr);
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    .command-card,
+    .admin-panel,
+    .support-detail,
+    .modal-card {
+      border-radius: 1.1rem;
+      background:
+        linear-gradient(180deg, rgba(17, 24, 39, 0.86), rgba(10, 16, 28, 0.76)),
+        rgba(15, 23, 42, 0.5);
+      border: 1px solid var(--admin-border);
+      box-shadow: var(--admin-card-shadow);
+    }
+    .command-card {
+      padding: 1rem;
+    }
+    .command-card-head {
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid rgba(148, 163, 184, 0.12);
+    }
+    .command-card-head span {
+      color: #e2e8f0;
+      font-size: 0.76rem;
+    }
+    .mini-action,
+    .row-actions button,
+    .row-actions a,
+    .pagination button {
+      border-radius: 999px;
+    }
+    .operations-strip {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.65rem;
+    }
+    .operations-strip .operation-card,
+    .insight-grid article,
+    .cache-summary article,
+    .support-summary article,
+    .parser-health-grid article,
+    .admin-stats article,
+    .health-grid article {
+      border-radius: 0.95rem;
+      border-color: rgba(148, 163, 184, 0.15);
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.02)),
+        rgba(2, 6, 23, 0.18);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.035);
+    }
+    .operations-strip .operation-card.warn,
+    .support-summary article.warn,
+    .cache-summary article.warn {
+      border-color: rgba(251, 113, 133, 0.34);
+      background:
+        linear-gradient(180deg, rgba(244, 63, 94, 0.12), rgba(244, 63, 94, 0.045)),
+        rgba(2, 6, 23, 0.18);
+    }
+    .operations-strip .operation-card.ok,
+    .support-summary article.ok {
+      border-color: rgba(52, 211, 153, 0.28);
+      background:
+        linear-gradient(180deg, rgba(16, 185, 129, 0.11), rgba(16, 185, 129, 0.035)),
+        rgba(2, 6, 23, 0.18);
+    }
+    .operations-strip strong,
+    .insight-grid strong,
+    .cache-summary strong,
+    .support-summary strong,
+    .admin-stats article strong {
+      color: #f8fafc;
+      letter-spacing: 0;
+    }
+    .empty-priority {
+      min-height: 7.4rem;
+      border-radius: 0.95rem;
+      border-color: rgba(52, 211, 153, 0.24);
+      background: rgba(16, 185, 129, 0.045);
+    }
+    .admin-panel {
+      padding: clamp(1rem, 1.7vw, 1.45rem);
+      margin-bottom: 1rem;
+    }
+    .panel-head {
+      margin-bottom: 1rem;
+      padding-bottom: 0.95rem;
+      border-bottom: 1px solid rgba(148, 163, 184, 0.13);
+    }
+    .panel-head h2 {
+      margin: 0;
+      color: #f8fafc;
+      font-size: clamp(1.22rem, 1.55vw, 1.48rem);
+      line-height: 1.18;
+    }
+    .panel-head p {
+      max-width: 60rem;
+      line-height: 1.45;
+    }
+    .admin-search {
+      padding: 0.35rem;
+      border: 1px solid rgba(148, 163, 184, 0.13);
+      border-radius: 1rem;
+      background: rgba(2, 6, 23, 0.25);
+    }
+    .admin-search .form-input,
+    .admin-search .form-select,
+    .credit-usage-filters select,
+    .support-reply-form textarea,
+    .parser-filters .form-input,
+    .parser-filters .form-select {
+      min-height: 2.65rem;
+      border-color: rgba(148, 163, 184, 0.18);
+      background: rgba(15, 23, 42, 0.78);
+      color: #e5edf8;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.028);
+    }
+    .admin-search .form-input::placeholder,
+    .support-reply-form textarea::placeholder {
+      color: #718096;
+    }
+    .insight-grid,
+    .cache-summary,
+    .support-summary,
+    .parser-health-grid {
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+    .table-scroll {
+      border-radius: 1rem;
+      border-color: rgba(148, 163, 184, 0.15);
+      background: rgba(2, 6, 23, 0.26);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.025);
+    }
+    .admin-table {
+      font-size: 0.9rem;
+    }
+    .admin-table th {
+      padding: 0.82rem 0.95rem;
+      background: rgba(8, 13, 24, 0.96);
+      color: #9fb1c7;
+      font-size: 0.72rem;
+      font-weight: 850;
+    }
+    .admin-table td {
+      padding: 0.86rem 0.95rem;
+      border-bottom-color: rgba(148, 163, 184, 0.105);
+    }
+    .admin-table tbody tr {
+      transition: background 0.18s ease;
+    }
+    .admin-table tbody tr:hover td {
+      background: rgba(34, 211, 238, 0.045);
+    }
+    .sort-header {
+      min-height: 1.5rem;
+    }
+    .sort-header:hover,
+    .sort-header.active {
+      color: #e2e8f0;
+    }
+    .sort-indicator {
+      width: 1.2rem;
+      height: 1.2rem;
+      border-radius: 999px;
+      background: rgba(148, 163, 184, 0.09);
+    }
+    .sort-header.active .sort-indicator {
+      background: rgba(34, 211, 238, 0.12);
+    }
+    .row-actions {
+      gap: 0.36rem;
+    }
+    .row-actions button,
+    .row-actions a {
+      min-height: 2rem;
+      padding: 0.38rem 0.68rem;
+      border-color: rgba(148, 163, 184, 0.16);
+      background: rgba(255, 255, 255, 0.035);
+    }
+    .badge,
+    .status-pill,
+    .meta-chips span,
+    .parser-row-metrics span,
+    .parser-event-meta span {
+      border-radius: 999px;
+    }
+    .bug-list {
+      gap: 0.85rem;
+    }
+    .bug-list article,
+    .support-item,
+    .cache-list article,
+    .parser-block,
+    .parser-platform-row,
+    .parser-event-card,
+    .parser-report-row {
+      border-radius: 1rem;
+      border-color: rgba(148, 163, 184, 0.15);
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.018)),
+        rgba(2, 6, 23, 0.16);
+    }
+    .bug-list article.unread,
+    .support-item.unread {
+      border-color: rgba(251, 113, 133, 0.36);
+      background:
+        linear-gradient(180deg, rgba(244, 63, 94, 0.12), rgba(244, 63, 94, 0.04)),
+        rgba(2, 6, 23, 0.18);
+    }
+    .support-layout {
+      grid-template-columns: minmax(315px, 0.82fr) minmax(0, 1.55fr);
+      gap: 1rem;
+    }
+    .support-list {
+      max-height: calc(100vh - 22rem);
+      min-height: 24rem;
+      padding-right: 0.3rem;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(148, 163, 184, 0.35) transparent;
+    }
+    .support-item {
+      grid-template-columns: 2.25rem minmax(0, 1fr);
+      padding: 0.82rem;
+    }
+    .support-item:hover,
+    .support-item.active {
+      border-color: rgba(34, 211, 238, 0.38);
+      background: rgba(34, 211, 238, 0.065);
+      transform: translateY(-1px);
+    }
+    .support-avatar {
+      width: 2.25rem;
+      height: 2.25rem;
+      background: linear-gradient(135deg, rgba(34, 211, 238, 0.18), rgba(16, 185, 129, 0.12));
+    }
+    .support-detail {
+      min-height: calc(100vh - 20rem);
+      padding: 1.05rem;
+    }
+    .support-body,
+    .support-reply,
+    .support-linked-user {
+      border-radius: 0.95rem;
+      border-color: rgba(148, 163, 184, 0.14);
+      background: rgba(2, 6, 23, 0.24);
+    }
+    .cache-list article {
+      align-items: stretch;
+    }
+    .cache-question-main p {
+      color: #e2e8f0;
+    }
+    .open-hint {
+      align-self: center;
+      padding: 0.35rem 0.62rem;
+      border: 1px solid rgba(34, 211, 238, 0.22);
+      border-radius: 999px;
+      background: rgba(34, 211, 238, 0.07);
+    }
+    .parser-panel-head {
+      align-items: flex-start;
+    }
+    .parser-filters {
+      padding: 0.35rem;
+      border: 1px solid rgba(148, 163, 184, 0.13);
+      border-radius: 1rem;
+      background: rgba(2, 6, 23, 0.25);
+    }
+    .parser-workspace {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap: 1rem;
+    }
+    .parser-problem-block {
+      grid-column: span 6;
+      order: 1;
+    }
+    .parser-domain-block {
+      grid-column: span 6;
+      order: 2;
+    }
+    .parser-events-block {
+      grid-column: 1 / -1;
+      order: 3;
+    }
+    .parser-platform-block {
+      grid-column: 1 / -1;
+      order: 4;
+    }
+    .parser-reports {
+      grid-column: 1 / -1;
+      order: 5;
+    }
+    .parser-block {
+      padding: 1.05rem;
+    }
+    .parser-block-head {
+      align-items: flex-start;
+      padding-bottom: 0.8rem;
+      border-bottom: 1px solid rgba(148, 163, 184, 0.11);
+    }
+    .parser-block-head h3 {
+      color: #f8fafc;
+      font-size: 1.03rem;
+    }
+    .parser-domain-row {
+      border-color: rgba(14, 165, 233, 0.24);
+      box-shadow: inset 3px 0 0 rgba(14, 165, 233, 0.72);
+    }
+    .parser-problem-card {
+      border-color: rgba(244, 63, 94, 0.26);
+      box-shadow: inset 3px 0 0 rgba(244, 63, 94, 0.72);
+    }
+    .parser-platform-row {
+      display: grid;
+      gap: 0.75rem;
+    }
+    .parser-events-block .parser-event-list {
+      grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
+    }
+    .parser-event-card {
+      display: grid;
+      gap: 0.72rem;
+    }
+    .parser-event-head {
+      align-items: center;
+    }
+    .parser-row-metrics span,
+    .parser-event-meta span {
+      background: rgba(15, 23, 42, 0.62);
+      border-color: rgba(148, 163, 184, 0.14);
+    }
+    .parser-next-step {
+      border-radius: 0.85rem;
+    }
+    .parser-snapshot-details {
+      border-radius: 0.95rem;
+      background: rgba(2, 6, 23, 0.34);
+    }
+    .parser-snapshot-code {
+      max-height: 360px;
+      background: #050b16;
+      color: #dbeafe;
+    }
+    .parser-snapshot-download {
+      border-radius: 0.85rem;
+    }
+    .health-grid {
+      gap: 1rem;
+    }
+    .admin-alert {
+      margin-bottom: 1rem;
+      border-radius: 1rem;
+    }
+    .pagination {
+      margin-top: 1.2rem;
+    }
+    .modal-overlay {
+      background: rgba(2, 6, 23, 0.78);
+    }
+    .modal-card {
+      overflow: hidden;
+    }
+    .modal-header,
+    .modal-body {
+      background: transparent;
     }
 
     @media (max-width: 1200px) {
