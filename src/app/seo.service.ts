@@ -23,8 +23,23 @@ const SEO_DATE = '2026-07-02';
 const BASE_ROBOTS = 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1';
 const ASSET_VERSION = '20260702';
 const assetUrl = (path: string) => `${abs(path)}?v=${ASSET_VERSION}`;
-const ogImageUrl = (locale: Locale, slug: string) => abs(`/og/${locale}/${slug}.svg?v=${ASSET_VERSION}`);
-const twitterImageUrl = () => assetUrl('/og-image.png');
+const PLATFORM_SOCIAL_IMAGE_SLUGS = new Set([
+  'quiz-solver-ai',
+  'testportal-quiz-solver',
+  'moodle-quiz-solver',
+  'canvas-quiz-solver',
+  'google-forms-quiz-solver',
+  'microsoft-forms-quiz-solver',
+  'blackboard-quiz-solver',
+  'quizlet-solver',
+  'socrative-quiz-solver',
+  'kahoot-ai-bot',
+  'quizizz-solver'
+]);
+const socialImageUrl = (slug?: string) =>
+  slug && PLATFORM_SOCIAL_IMAGE_SLUGS.has(slug)
+    ? assetUrl(`/og-social/${slug}.png`)
+    : assetUrl('/og-image.png');
 
 const PLATFORM_PAGE_KEYS = [
   'quizSolverAi', 'testportal', 'moodle', 'canvas', 'googleForms',
@@ -55,8 +70,8 @@ export class SeoService {
     const routeSlug = routeParts.length === 0 || (routeParts.length === 1 && routeParts[0] === locale)
       ? 'home'
       : routeParts[routeParts.length - 1] || 'home';
-    const ogImage = ogImageUrl(locale, routeSlug.replace(/[^a-z0-9-]/gi, '-').toLowerCase());
-    const twitterImage = twitterImageUrl();
+    const socialSlug = routeSlug.replace(/[^a-z0-9-]/gi, '-').toLowerCase();
+    const socialImage = socialImageUrl(socialSlug);
 
     this.clearRouteSpecificMeta();
 
@@ -82,8 +97,8 @@ export class SeoService {
     this.upsertMeta('property', 'og:url', canonical);
     this.upsertMeta('property', 'og:title', meta.title);
     this.upsertMeta('property', 'og:description', meta.description);
-    this.upsertMeta('property', 'og:image', ogImage);
-    this.upsertMeta('property', 'og:image:type', 'image/svg+xml');
+    this.upsertMeta('property', 'og:image', socialImage);
+    this.upsertMeta('property', 'og:image:type', 'image/png');
     this.upsertMeta('property', 'og:image:width', '1200');
     this.upsertMeta('property', 'og:image:height', '630');
     this.upsertMeta('property', 'og:image:alt', 'QuizSolver AI quiz solver Chrome extension — answer any quiz instantly');
@@ -115,7 +130,7 @@ export class SeoService {
     this.upsertMeta('name', 'twitter:creator', '@getquizsolver');
     this.upsertMeta('name', 'twitter:title', meta.title);
     this.upsertMeta('name', 'twitter:description', meta.description);
-    this.upsertMeta('name', 'twitter:image', twitterImage);
+    this.upsertMeta('name', 'twitter:image', socialImage);
     this.upsertMeta('name', 'twitter:image:alt', 'QuizSolver AI quiz solver Chrome extension');
 
     /* ── Canonical + hreflang ── */
@@ -374,7 +389,7 @@ export class SeoService {
         publisher: { '@id': `${homeUrl}#organization` },
         image: {
           '@type': 'ImageObject',
-          url: ogImageUrl(locale, String(data?.shortName || pageKey).replace(/[^a-z0-9-]/gi, '-').toLowerCase()),
+          url: socialImageUrl(pathFor(pageKey, locale).split('/').filter(Boolean).pop()?.replace(/[^a-z0-9-]/gi, '-').toLowerCase()),
           width: 1200,
           height: 630
         }
@@ -547,8 +562,7 @@ export class SeoService {
     const locOpt = localeOption(locale);
     const robots = options.robots || BASE_ROBOTS;
     const keywords = this.keywordsFor('blog', locale, { title: category.title });
-    const categoryOgImage = ogImageUrl(locale, `category-${category.slug}`.replace(/[^a-z0-9-]/gi, '-').toLowerCase());
-    const categoryTwitterImage = twitterImageUrl();
+    const categorySocialImage = socialImageUrl();
     const localesWithCategoryPosts = SUPPORTED_LOCALES.filter(opt => {
       const localizedCategory = categoryFor(opt.code, category.slug);
       return !!localizedCategory && categoryHasPosts(opt.code, localizedCategory.slug);
@@ -572,8 +586,8 @@ export class SeoService {
     this.upsertMeta('property', 'og:url', canonical);
     this.upsertMeta('property', 'og:title', meta.title);
     this.upsertMeta('property', 'og:description', meta.description);
-    this.upsertMeta('property', 'og:image', categoryOgImage);
-    this.upsertMeta('property', 'og:image:type', 'image/svg+xml');
+    this.upsertMeta('property', 'og:image', categorySocialImage);
+    this.upsertMeta('property', 'og:image:type', 'image/png');
     this.upsertMeta('property', 'og:image:width', '1200');
     this.upsertMeta('property', 'og:image:height', '630');
     this.upsertMeta('property', 'og:image:alt', category.title);
@@ -602,7 +616,7 @@ export class SeoService {
     this.upsertMeta('name', 'twitter:creator', '@getquizsolver');
     this.upsertMeta('name', 'twitter:title', meta.title);
     this.upsertMeta('name', 'twitter:description', meta.description);
-    this.upsertMeta('name', 'twitter:image', categoryTwitterImage);
+    this.upsertMeta('name', 'twitter:image', categorySocialImage);
     this.upsertMeta('name', 'twitter:image:alt', category.title);
 
     this.upsertLink('canonical', canonical);
@@ -675,8 +689,7 @@ export class SeoService {
     const locOpt = localeOption(locale);
     const translationPosts = BLOG_POSTS.filter(p => p.translationKey === post.translationKey);
     const translationLocales = SUPPORTED_LOCALES.filter(opt => translationPosts.some(p => p.locale === opt.code));
-    const postOgImage = ogImageUrl(locale, `blog-${post.slug}`.replace(/[^a-z0-9-]/gi, '-').toLowerCase());
-    const postTwitterImage = twitterImageUrl();
+    const postSocialImage = socialImageUrl();
     const wordCount = post.content.replace(/<[^>]+>/g, ' ').split(/\s+/).filter(Boolean).length;
     const readMinutes = Math.max(1, Number.parseInt(post.readTime, 10) || 5);
 
@@ -703,8 +716,8 @@ export class SeoService {
     this.upsertMeta('property', 'og:url', canonical);
     this.upsertMeta('property', 'og:title', meta.title);
     this.upsertMeta('property', 'og:description', meta.description);
-    this.upsertMeta('property', 'og:image', postOgImage);
-    this.upsertMeta('property', 'og:image:type', 'image/svg+xml');
+    this.upsertMeta('property', 'og:image', postSocialImage);
+    this.upsertMeta('property', 'og:image:type', 'image/png');
     this.upsertMeta('property', 'og:image:width', '1200');
     this.upsertMeta('property', 'og:image:height', '630');
     this.upsertMeta('property', 'og:image:alt', post.title);
@@ -742,7 +755,7 @@ export class SeoService {
     this.upsertMeta('name', 'twitter:creator', '@getquizsolver');
     this.upsertMeta('name', 'twitter:title', meta.title);
     this.upsertMeta('name', 'twitter:description', meta.description);
-    this.upsertMeta('name', 'twitter:image', postTwitterImage);
+    this.upsertMeta('name', 'twitter:image', postSocialImage);
     this.upsertMeta('name', 'twitter:image:alt', post.title);
 
     /* ── Canonical + hreflang ── */
@@ -794,11 +807,11 @@ export class SeoService {
           },
           image: {
             '@type': 'ImageObject',
-            url: postOgImage,
+            url: postSocialImage,
             width: 1200,
             height: 630
           },
-          thumbnailUrl: postOgImage,
+          thumbnailUrl: postSocialImage,
           potentialAction: {
             '@type': 'ReadAction',
             target: canonical

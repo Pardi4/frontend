@@ -1228,10 +1228,10 @@ function enhancePlatformTutorials(copy: SiteCopy, locale: Locale): SiteCopy {
         'Save useful questions to History & quiz, add a short note, and later start a practice quiz from the saved set.'
       ],
       genericFeatures: [
-        'Detects visible questions, answer choices, typed inputs, checkboxes and dropdowns.',
-        'FocusScan helps when a question is inside an image, a custom layout or a page section the normal parser cannot read as text.',
-        'Hint mode can show a subtle clue while leaving the final click to you.',
-        'History, notes and practice quizzes turn solved questions into study material.'
+        'Wait until the prompt and choices are fully visible before solving.',
+        'Use FocusScan when the important context is an image, canvas, PDF preview or custom embed.',
+        'Use Hint mode when you want a subtle clue without an automatic click.',
+        'Save hard questions with notes so one solve becomes review material.'
       ],
       genericFaq: (name) => [
         { question: `How do I start QuizSolver on ${name}?`, answer: `Open the ${name} quiz, click the QS icon in Chrome, then choose Solve current page. The extension reads only the visible question you ask it to solve.` },
@@ -1267,10 +1267,10 @@ function enhancePlatformTutorials(copy: SiteCopy, locale: Locale): SiteCopy {
         'Zapisz ważne pytania do Historii i quizu, dodaj krótką notatkę, a później uruchom quiz powtórkowy z zapisanych pytań.'
       ],
       genericFeatures: [
-        'Wykrywa widoczne pytania, odpowiedzi, pola tekstowe, checkboxy i listy rozwijane.',
-        'FocusScan pomaga przy pytaniach w obrazkach, nietypowym układzie strony albo treści, której zwykły parser nie odczytuje jako tekstu.',
-        'Hint mode może pokazać subtelną wskazówkę, zostawiając finalne kliknięcie Tobie.',
-        'Historia, notatki i quizy powtórkowe zmieniają rozwiązane pytania w materiał do nauki.'
+        'Poczekaj, aż treść pytania i odpowiedzi będą w pełni widoczne.',
+        'Użyj FocusScan, gdy ważny kontekst jest obrazem, canvasem, PDF-em albo niestandardowym embedem.',
+        'Włącz Hint mode, jeśli chcesz subtelną wskazówkę bez automatycznego kliknięcia.',
+        'Zapisuj trudne pytania z notatką, żeby jedno rozwiązanie zamienić w materiał do powtórki.'
       ],
       genericFaq: (name) => [
         { question: `Jak uruchomić QuizSolver na ${name}?`, answer: `Otwórz quiz na ${name}, kliknij ikonę QS w Chrome i wybierz Rozwiąż bieżącą stronę. Rozszerzenie czyta tylko pytanie, które sam zlecisz do rozwiązania.` },
@@ -1588,7 +1588,6 @@ function ensurePlatformSeoDepth(copy: SiteCopy, locale: Locale): SiteCopy {
     }
   };
   const template = templates[locale] || templates.en;
-  const manuallyExpandedPages = new Set<keyof SiteCopy['platformPages']>(['quizSolverAi', 'testportal', 'moodle', 'canvas']);
   (Object.entries(copy.platformPages) as Array<[keyof SiteCopy['platformPages'], PlatformCopy]>).forEach(([pageKey, page]) => {
     if (pageKey === 'quizSolverAi') return;
     const name = page.shortName || page.platformName || 'the platform';
@@ -1604,12 +1603,7 @@ function ensurePlatformSeoDepth(copy: SiteCopy, locale: Locale): SiteCopy {
       ...extraFaq.filter(item => !existingQuestions.has(item.question))
     ];
 
-    const extraSections = manuallyExpandedPages.has(pageKey)
-      ? []
-      : [
-          { title: template.readTitle(name), text: template.readText(name) },
-          { title: template.historyTitle(name), text: template.historyText }
-        ];
+    const extraSections: Array<{ title: string; text: string }> = [];
     const existingSections = new Set((page.keywordSections || []).map(item => item.title));
     page.keywordSections = [
       ...(page.keywordSections || []),
