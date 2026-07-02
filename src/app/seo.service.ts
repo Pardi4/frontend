@@ -24,6 +24,7 @@ const BASE_ROBOTS = 'index, follow, max-image-preview:large, max-snippet:-1, max
 const ASSET_VERSION = '20260702';
 const assetUrl = (path: string) => `${abs(path)}?v=${ASSET_VERSION}`;
 const ogImageUrl = (locale: Locale, slug: string) => abs(`/og/${locale}/${slug}.svg?v=${ASSET_VERSION}`);
+const twitterImageUrl = () => assetUrl('/og-image.png');
 
 const PLATFORM_PAGE_KEYS = [
   'quizSolverAi', 'testportal', 'moodle', 'canvas', 'googleForms',
@@ -55,6 +56,7 @@ export class SeoService {
       ? 'home'
       : routeParts[routeParts.length - 1] || 'home';
     const ogImage = ogImageUrl(locale, routeSlug.replace(/[^a-z0-9-]/gi, '-').toLowerCase());
+    const twitterImage = twitterImageUrl();
 
     this.clearRouteSpecificMeta();
 
@@ -113,7 +115,7 @@ export class SeoService {
     this.upsertMeta('name', 'twitter:creator', '@getquizsolver');
     this.upsertMeta('name', 'twitter:title', meta.title);
     this.upsertMeta('name', 'twitter:description', meta.description);
-    this.upsertMeta('name', 'twitter:image', ogImage);
+    this.upsertMeta('name', 'twitter:image', twitterImage);
     this.upsertMeta('name', 'twitter:image:alt', 'QuizSolver AI quiz solver Chrome extension');
 
     /* ── Canonical + hreflang ── */
@@ -505,7 +507,9 @@ export class SeoService {
     if (pageKey === 'quiz') base.push('quiz history', 'practice test generator', 'saved quiz questions');
     if (pageKey === 'demo') base.push('interactive quiz solver demo', 'Chrome extension demo');
     if (pageKey === 'blog') base.push('AI study guides', 'quiz platform guides', 'Kahoot guides');
-    if (platformName) {
+    if (pageKey === 'quizSolverAi') {
+      base.unshift('universal AI quiz solver', 'AI quiz solver Chrome extension', 'online quiz solver');
+    } else if (platformName) {
       base.unshift(`${platformName} quiz solver`, `${platformName} AI answers`, `${platformName} Chrome extension`);
     }
     if (locale === 'pl') {
@@ -544,6 +548,7 @@ export class SeoService {
     const robots = options.robots || BASE_ROBOTS;
     const keywords = this.keywordsFor('blog', locale, { title: category.title });
     const categoryOgImage = ogImageUrl(locale, `category-${category.slug}`.replace(/[^a-z0-9-]/gi, '-').toLowerCase());
+    const categoryTwitterImage = twitterImageUrl();
     const localesWithCategoryPosts = SUPPORTED_LOCALES.filter(opt => {
       const localizedCategory = categoryFor(opt.code, category.slug);
       return !!localizedCategory && categoryHasPosts(opt.code, localizedCategory.slug);
@@ -597,7 +602,7 @@ export class SeoService {
     this.upsertMeta('name', 'twitter:creator', '@getquizsolver');
     this.upsertMeta('name', 'twitter:title', meta.title);
     this.upsertMeta('name', 'twitter:description', meta.description);
-    this.upsertMeta('name', 'twitter:image', categoryOgImage);
+    this.upsertMeta('name', 'twitter:image', categoryTwitterImage);
     this.upsertMeta('name', 'twitter:image:alt', category.title);
 
     this.upsertLink('canonical', canonical);
@@ -671,6 +676,7 @@ export class SeoService {
     const translationPosts = BLOG_POSTS.filter(p => p.translationKey === post.translationKey);
     const translationLocales = SUPPORTED_LOCALES.filter(opt => translationPosts.some(p => p.locale === opt.code));
     const postOgImage = ogImageUrl(locale, `blog-${post.slug}`.replace(/[^a-z0-9-]/gi, '-').toLowerCase());
+    const postTwitterImage = twitterImageUrl();
     const wordCount = post.content.replace(/<[^>]+>/g, ' ').split(/\s+/).filter(Boolean).length;
     const readMinutes = Math.max(1, Number.parseInt(post.readTime, 10) || 5);
 
@@ -736,7 +742,7 @@ export class SeoService {
     this.upsertMeta('name', 'twitter:creator', '@getquizsolver');
     this.upsertMeta('name', 'twitter:title', meta.title);
     this.upsertMeta('name', 'twitter:description', meta.description);
-    this.upsertMeta('name', 'twitter:image', postOgImage);
+    this.upsertMeta('name', 'twitter:image', postTwitterImage);
     this.upsertMeta('name', 'twitter:image:alt', post.title);
 
     /* ── Canonical + hreflang ── */

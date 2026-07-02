@@ -347,9 +347,9 @@ const en: SiteCopy = {
   platformPages: {
     quizSolverAi: {
       platformName: "AI quiz solver",
-      shortName: "AI Solver",
+      shortName: "AI quiz solver",
       badge: "AI solver",
-      title: "QuizSolver: The #1 AI Quiz Solver Chrome Extension",
+      title: "QuizSolver: AI Quiz Solver Chrome Extension",
       subtitle: "Get instant AI answer suggestions with a universal parser for visible quiz pages plus tuned workflows for Testportal, Moodle, Canvas, Kahoot and 10+ platforms.",
       meta: { title: "QuizSolver — Universal AI Quiz Solver Chrome Extension", description: "QuizSolver is a universal AI quiz solver Chrome extension. It reads visible quiz questions on many pages, with tuned workflows for Testportal, Moodle, Canvas, Google Forms, Kahoot, Quizizz and more." },
       stepsTitle: "How to get started",
@@ -695,9 +695,9 @@ const pl: SiteCopy = {
   platformPages: {
     quizSolverAi: {
       platformName: "AI quiz solver",
-      shortName: "AI Solver",
+      shortName: "AI quiz solver",
       badge: "Asystent AI",
-      title: "QuizSolver — Najlepszy AI Quiz Solver na Chrome",
+      title: "QuizSolver — Uniwersalny AI Quiz Solver na Chrome",
       subtitle: "Natychmiastowe podpowiedzi AI dzięki uniwersalnemu parserowi widocznych stron z quizami oraz dopracowanym workflow dla Testportal, Moodle, Canvas, Kahoot i 10+ platform.",
       meta: { title: "QuizSolver — Uniwersalny AI Quiz Solver Chrome", description: "QuizSolver to uniwersalne rozszerzenie AI do quizów na Chrome. Czyta widoczne pytania na wielu stronach i ma dopracowane workflow dla Testportal, Moodle, Canvas, Google Forms, Kahoot, Quizizz i więcej." },
       stepsTitle: "Jak zacząć?",
@@ -1149,6 +1149,15 @@ function applySharedCopy(copy: SiteCopy, locale: Locale): SiteCopy {
 
 function buildPlatformPages(bundle: LocalizedSiteBundle): SiteCopy['platformPages'] {
   return Object.fromEntries(Object.entries(en.platformPages).map(([key, base]) => {
+    if (key === 'quizSolverAi') {
+      return [key, {
+        ...base,
+        keywordSections: [...(base.keywordSections || [])],
+        faq: [...(base.faq || [])],
+        steps: [...(base.steps || [])],
+        features: [...(base.features || [])]
+      } as PlatformCopy];
+    }
     const name = base.shortName || base.platformName;
     const copy: PlatformCopy = {
       platformName: base.platformName,
@@ -1406,6 +1415,48 @@ function enhancePlatformTutorials(copy: SiteCopy, locale: Locale): SiteCopy {
 
   const template = templates[locale] || templates.en;
   (Object.entries(copy.platformPages) as Array<[keyof SiteCopy['platformPages'], PlatformCopy]>).forEach(([pageKey, page]) => {
+    if (pageKey === 'quizSolverAi') {
+      const isPl = locale === 'pl';
+      page.stepsTitle = isPl ? 'Jak zacząć' : 'How to get started';
+      page.steps = isPl
+        ? [
+            'Zainstaluj QuizSolver z Chrome Web Store, przypnij ikonę QS i zaloguj się na to samo konto, którego używasz na stronie.',
+            'Otwórz dowolną stronę z quizem i poczekaj, aż aktualne pytanie oraz widoczne odpowiedzi w pełni się załadują.',
+            'Kliknij ikonę QuizSolver i wybierz Rozwiąż bieżącą stronę. Jeśli layout jest nietypowy, użyj FocusScan i zaznacz sam obszar pytania.',
+            'Sprawdź sugestię odpowiedzi i wyjaśnienie przed wysłaniem. Tryb podpowiedzi może tylko zaznaczyć prawdopodobną odpowiedź, bez automatycznego klikania.',
+            'Zapisz przydatne pytania w Historii i quizie, dodaj notatkę i wróć do nich przy powtórce.'
+          ]
+        : [
+            'Install QuizSolver from the Chrome Web Store, pin the QS icon, and sign in to the same account you use on the website.',
+            'Open any quiz page and wait until the current question and all visible answer choices are fully loaded.',
+            'Click the QuizSolver extension icon and choose Solve current page. If the layout is unusual, use FocusScan and draw a box around the question area.',
+            'Review the suggested answer and explanation before you submit. Hint mode can show the likely answer without clicking automatically.',
+            'Save useful questions to History & quiz, add a note, and later start a practice quiz from the saved set.'
+          ];
+      page.features = isPl
+        ? [
+            'Universal Parser próbuje odczytać widoczne pytania także poza listą dopracowanych platform.',
+            'FocusScan pomaga przy obrazach, canvasach, PDF-ach i niestandardowych układach strony.',
+            'Tryb podpowiedzi zostawia finalną decyzję użytkownikowi zamiast automatycznie klikać odpowiedź.',
+            'Historia, notatki i quizy powtórkowe zmieniają rozwiązane pytania w materiał do nauki.'
+          ]
+        : [
+            'Universal Parser tries to read visible questions beyond the tuned platform list.',
+            'FocusScan helps with images, canvas content, PDF previews and custom page layouts.',
+            'Hint mode leaves the final decision to the user instead of clicking automatically.',
+            'History, notes and practice quizzes turn solved questions into reusable study material.'
+          ];
+      page.faq = appendUniqueByQuestion(page.faq, isPl ? [
+        { question: 'Jak uruchomić QuizSolver na dowolnej stronie z quizem?', answer: 'Otwórz stronę z pytaniem, kliknij ikonę QS w Chrome i wybierz Rozwiąż bieżącą stronę. Rozszerzenie próbuje odczytać tylko widoczne pytanie i odpowiedzi z aktualnego ekranu.' },
+        { question: 'Co zrobić, gdy Universal Parser nie wykryje pytania?', answer: 'Użyj FocusScan i zaznacz sam obszar pytania oraz odpowiedzi. Jeśli layout dalej sprawia problem, zgłoszenie strony pomaga nam dostroić parser w kolejnych aktualizacjach.' },
+        { question: 'Czy QuizSolver automatycznie wysyła quiz?', answer: 'Nie. QuizSolver pokazuje sugestię i wyjaśnienie, a finalne kliknięcie lub wysłanie zostaje po stronie użytkownika. Tryb podpowiedzi może działać jeszcze dyskretniej.' }
+      ] : [
+        { question: 'How do I start QuizSolver on any quiz page?', answer: 'Open the page with the question, click the QS icon in Chrome, and choose Solve current page. The extension tries to read only the visible question and answer choices from the current screen.' },
+        { question: 'What should I do when Universal Parser does not detect the question?', answer: 'Use FocusScan and select only the question and answer area. If the layout still fails, reporting the page helps us tune the parser in later updates.' },
+        { question: 'Does QuizSolver submit quizzes automatically?', answer: 'No. QuizSolver shows a suggestion and explanation while the final click or submission stays under user control. Hint mode can make this even more discreet.' }
+      ]);
+      return;
+    }
     if (pageKey === 'kahoot') {
       page.stepsTitle = template.stepsTitle;
       page.steps = template.kahootSteps;
@@ -1539,6 +1590,7 @@ function ensurePlatformSeoDepth(copy: SiteCopy, locale: Locale): SiteCopy {
   const template = templates[locale] || templates.en;
   const manuallyExpandedPages = new Set<keyof SiteCopy['platformPages']>(['quizSolverAi', 'testportal', 'moodle', 'canvas']);
   (Object.entries(copy.platformPages) as Array<[keyof SiteCopy['platformPages'], PlatformCopy]>).forEach(([pageKey, page]) => {
+    if (pageKey === 'quizSolverAi') return;
     const name = page.shortName || page.platformName || 'the platform';
     const isKahoot = pageKey === 'kahoot';
     const extraFaq = [
@@ -1741,7 +1793,13 @@ function applyCompactSeo(copy: SiteCopy, locale: Locale): void {
   const seo = templates[locale] || templates.en;
   copy.quizPage.metaDescription = seo.quiz;
   copy.privacyPage.metaDescription = seo.privacy;
-  (Object.values(copy.platformPages) as PlatformCopy[]).forEach((page) => {
+  (Object.entries(copy.platformPages) as Array<[keyof SiteCopy['platformPages'], PlatformCopy]>).forEach(([pageKey, page]) => {
+    if (pageKey === 'quizSolverAi') {
+      page.meta.description = locale === 'pl'
+        ? 'Uniwersalny AI quiz solver Chrome: Universal Parser, FocusScan, podpowiedzi odpowiedzi, wyjaśnienia, historia pytań i ręczne dostrajanie obsługi nowych layoutów.'
+        : 'Universal AI quiz solver Chrome extension with Universal Parser, FocusScan, answer suggestions, explanations, question history and continuous parser tuning.';
+      return;
+    }
     if (!page.meta?.description || page.meta.description.length > 168) {
       page.meta.description = seo.platform(page.platformName || page.shortName || 'online');
     }

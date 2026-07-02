@@ -116,8 +116,31 @@ const DEFAULT_TYPES_PL = [
   'Długie treści z wyjaśnieniami zapisywanymi w historii'
 ];
 
+function isUniversalSolverPage(pageKey: PageKey): boolean {
+  return pageKey === 'quizSolverAi';
+}
+
 function buildPlatformDetail(pageKey: PageKey, locale: Locale, platform: string): PlatformDetail {
   const isPl = locale === 'pl';
+  if (isUniversalSolverPage(pageKey)) {
+    return {
+      eyebrow: isPl ? 'Uniwersalny parser' : 'Universal parser',
+      title: isPl ? 'Jak QuizSolver czyta pytania z różnych stron' : 'How QuizSolver reads quiz questions across websites',
+      paragraphs: isPl
+        ? [
+            'QuizSolver zaczyna od widocznej strony: treści pytania, pobliskich odpowiedzi, kontrolek formularza, obrazów i aktywnego układu quizu. Dzięki temu działa nie tylko na wymienionych platformach, ale też próbuje obsłużyć inne strony z quizami, jeśli używają czytelnego układu webowego.',
+            'Popularne systemy, takie jak Testportal, Moodle i Canvas, mają dopracowane workflow, a Universal Parser nadal próbuje działać jako pierwszy na mniej typowych stronach. Gdy layout jest nietypowy, FocusScan pozwala zaznaczyć dokładnie obszar pytania.',
+            'Jeśli strona nie zostanie dobrze wykryta, użytkownik może zgłosić problem z rozszerzenia. Takie zgłoszenia pomagają nam sprawdzić layout, dostroić profil parsera i poprawić wsparcie w kolejnych aktualizacjach.'
+          ]
+        : [
+            'QuizSolver starts from the visible page: question text, nearby answer choices, form controls, images and the active quiz layout. That means it is built for listed platforms and can also try other quiz websites that expose a readable web structure.',
+            'Popular systems such as Testportal, Moodle and Canvas get tuned workflows, while the Universal Parser still tries first on less common pages. When a layout is unusual, FocusScan lets you select the exact question area.',
+            'If a page is not detected well, users can report it from the extension. Those reports help us review the layout, tune parser profiles and improve support in later updates.'
+          ],
+      typesTitle: isPl ? 'Obsługiwane typy pytań i sygnały' : 'Supported question types and signals',
+      types: isPl ? DEFAULT_TYPES_PL : DEFAULT_TYPES_EN
+    };
+  }
   const context = PLATFORM_CONTEXT[pageKey]?.[isPl ? 'pl' : 'en']
     || (isPl
       ? `QuizSolver analizuje widoczny kontekst na ${platform}, a nie tylko pierwszy nagłówek znaleziony na stronie. Dzięki temu łatwiej uniknąć sytuacji, w której do AI trafia sam licznik typu "Pytanie 5" zamiast właściwej treści.`
@@ -142,6 +165,41 @@ function buildPlatformDetail(pageKey: PageKey, locale: Locale, platform: string)
 
 function buildPlatformPlaybook(pageKey: PageKey, locale: Locale, platform: string): PlatformPlaybook {
   const isPl = locale === 'pl';
+  if (isUniversalSolverPage(pageKey)) {
+    return {
+      eyebrow: isPl ? 'Praktyczny workflow' : 'Practical workflow',
+      title: isPl ? 'Jak stabilnie używać Universal Parsera' : 'How to use the Universal Parser reliably',
+      intro: isPl
+        ? [
+            'Strona uniwersalnego solvera powinna jasno pokazywać, co dzieje się przed wysłaniem pytania do AI. QuizSolver najpierw porządkuje widoczne pytanie, odpowiedzi i typ pól, a dopiero potem przygotowuje krótkie zapytanie.',
+            'To workflow jest przygotowane pod prawdziwe quizy: radio, checkboxy, pola tekstowe, obrazy, długie polecenia i strony, które różnią się między szkołami, kursami albo nauczycielami.'
+          ]
+        : [
+            'A universal solver page should show what happens before a question is sent to AI. QuizSolver first organizes the visible prompt, answer choices and field type, then prepares a compact request.',
+            'This workflow is designed for real quiz pages: radio answers, checkboxes, text inputs, image prompts, long instructions and custom layouts that can change between schools, courses and teachers.'
+          ],
+      sections: [
+        {
+          title: isPl ? 'Poczekaj na pełne załadowanie pytania' : 'Wait for the full question to load',
+          paragraphs: isPl
+            ? ['Najlepszy wynik pojawia się wtedy, gdy na ekranie widać już treść pytania i wszystkie odpowiedzi. Jeśli strona renderuje quiz etapami, zbyt szybkie kliknięcie może złapać sam numer pytania, loader albo tekst nawigacji.']
+            : ['The best result appears when the full prompt and all answer choices are visible. If a quiz page renders in stages, clicking too early can capture only a question number, loader or navigation text.']
+        },
+        {
+          title: isPl ? 'Użyj FocusScan przy nietypowym układzie' : 'Use FocusScan for unusual layouts',
+          paragraphs: isPl
+            ? ['Gdy pytanie jest w obrazie, canvasie, podglądzie PDF albo niestandardowym embedzie, zaznacz tylko pytanie i odpowiedzi. Mniejszy, czystszy obszar zwykle daje lepszą odpowiedź niż pełny ekran z menu i timerem.']
+            : ['When the prompt is inside an image, canvas, PDF preview or custom embed, select only the prompt and answer choices. A smaller, cleaner area usually produces a better answer than a full-page capture with menus and timers.']
+        },
+        {
+          title: isPl ? 'Zgłoś layout, którego parser nie odczytał' : 'Report layouts the parser misses',
+          paragraphs: isPl
+            ? ['Jeśli Universal Parser nie wykryje pytania, zgłoszenie strony daje nam realny materiał do analizy. Na tej podstawie dopracowujemy profile parsera i dodajemy stabilniejsze wsparcie w kolejnych wersjach.']
+            : ['If Universal Parser cannot read a page, a report gives us real layout material to review. We use those reports to tune parser profiles and ship more reliable support in later versions.']
+        }
+      ]
+    };
+  }
   const generic: PlatformPlaybook = {
     eyebrow: isPl ? 'Praktyczny workflow' : 'Practical workflow',
     title: isPl ? `Jak przygotowac ${platform} do stabilnego rozwiazywania` : `How to use QuizSolver reliably on ${platform}`,
@@ -380,6 +438,19 @@ function buildPlatformVisual(pageKey: PageKey, locale: Locale, platform: string)
     moodle: '/platform-workflow-moodle.svg',
     canvas: '/platform-workflow-canvas.svg'
   };
+  if (isUniversalSolverPage(pageKey)) {
+    return {
+      eyebrow: isPl ? 'Podgląd workflow' : 'Visual workflow',
+      title: isPl ? 'Uniwersalny workflow rozwiązywania quizu' : 'See the universal solving flow',
+      text: isPl
+        ? 'Ten podgląd pokazuje trzy najważniejsze elementy: Universal Parser dla widocznej strony, FocusScan dla trudnych układów oraz zapis odpowiedzi z wyjaśnieniem do historii nauki.'
+        : 'This preview connects the three parts that matter most: Universal Parser for visible pages, FocusScan for difficult layouts, and saved explanations in study history.',
+      alt: isPl
+        ? 'Podgląd workflow QuizSolver: Universal Parser, FocusScan i zapisane wyjaśnienia'
+        : 'QuizSolver universal workflow preview: Universal Parser, FocusScan and saved explanations',
+      image: '/platform-workflow-preview.svg'
+    };
+  }
   return {
     eyebrow: isPl ? 'Podgląd workflow' : 'Visual workflow',
     title: isPl ? `Jak wygląda praca z QuizSolver na ${platform}` : `See the ${platform} solving flow`,
@@ -541,7 +612,7 @@ const PLATFORM_UI: Record<Locale, PlatformUi> = {
               <nav class="breadcrumbs" aria-label="Breadcrumb">
                 <a [href]="pathFor('home')" class="breadcrumb-link">QuizSolver</a>
                 <span class="divider">/</span>
-                <span class="active-crumb">{{ data?.shortName || data?.platformName }}</span>
+                <span class="active-crumb">{{ crumbLabel }}</span>
               </nav>
               <p class="eyebrow">{{ data?.badge || platformLabel }}</p>
               <h1>{{ data?.title }}</h1>
@@ -1131,6 +1202,7 @@ export class PlatformComponent implements OnInit {
   protected pageKey: PageKey = 'quizSolverAi';
   protected data = pageData('quizSolverAi', 'en');
   protected platformLabel = 'AI quiz solver';
+  protected crumbLabel = 'AI quiz solver';
   protected platformIntro = '';
   protected whatItDoesTitle = '';
   protected ui = PLATFORM_UI.en;
@@ -1144,9 +1216,18 @@ export class PlatformComponent implements OnInit {
     this.ui = PLATFORM_UI[this.locale] || PLATFORM_UI.en;
     this.pageKey = this.route.snapshot.data['pageKey'] as PageKey;
     this.data = pageData(this.pageKey, this.locale) || {};
-    this.platformLabel = this.data?.shortName || this.data?.platformName || 'AI quiz solver';
-    this.platformIntro = this.ui.intro(this.platformLabel);
-    this.whatItDoesTitle = this.ui.whatItDoes(this.platformLabel);
+    const universal = isUniversalSolverPage(this.pageKey);
+    const rawLabel = this.data?.shortName || this.data?.platformName || 'AI quiz solver';
+    this.platformLabel = universal ? 'AI quiz solver' : rawLabel;
+    this.crumbLabel = universal ? 'AI quiz solver' : rawLabel;
+    this.platformIntro = universal
+      ? (this.locale === 'pl'
+        ? 'QuizSolver najpierw próbuje odczytać widoczne pytanie na aktualnej stronie, a gdy układ jest trudny, pozwala użyć FocusScan i zgłosić layout do dalszego dopracowania.'
+        : 'QuizSolver first tries to read the visible question on the current page, then uses FocusScan and parser reports when a layout needs extra tuning.')
+      : this.ui.intro(this.platformLabel);
+    this.whatItDoesTitle = universal
+      ? (this.locale === 'pl' ? 'Dlaczego użytkownicy wybierają QuizSolver' : 'Why students use QuizSolver')
+      : this.ui.whatItDoes(this.platformLabel);
     this.detail = buildPlatformDetail(this.pageKey, this.locale, this.platformLabel);
     this.playbook = buildPlatformPlaybook(this.pageKey, this.locale, this.platformLabel);
     this.visual = buildPlatformVisual(this.pageKey, this.locale, this.platformLabel);
