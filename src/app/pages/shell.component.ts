@@ -948,7 +948,7 @@ export class ShellComponent implements OnInit, AfterViewInit, OnDestroy {
     const ref = params.get('ref');
     if (ref && !this.referralCode) this.referralCode = ref.trim();
 
-    this.openModalFromAuthQuery(params);
+    this.openModalFromAuthQuery(this.currentAuthParams());
   }
 
   ngAfterViewInit(): void {
@@ -958,7 +958,7 @@ export class ShellComponent implements OnInit, AfterViewInit, OnDestroy {
     this.queueRevealScan();
     this.routerEventsSub = this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
-        this.openModalFromAuthQuery(new URLSearchParams(window.location.search));
+        this.openModalFromAuthQuery(this.currentAuthParams());
         this.queueRevealScan();
       }
     });
@@ -1095,11 +1095,36 @@ export class ShellComponent implements OnInit, AfterViewInit, OnDestroy {
     this.stripAuthQueryParam();
   }
 
+  private currentAuthParams(): URLSearchParams {
+    const searchParams = new URLSearchParams(window.location.search);
+    if (searchParams.has('auth') || searchParams.has('error')) return searchParams;
+
+    const hashValue = window.location.hash.startsWith('#')
+      ? window.location.hash.slice(1)
+      : window.location.hash;
+    return new URLSearchParams(hashValue);
+  }
+
   private stripAuthQueryParam(): void {
     const url = new URL(window.location.href);
-    if (!url.searchParams.has('auth') && !url.searchParams.has('error')) return;
-    url.searchParams.delete('auth');
-    url.searchParams.delete('error');
+    let changed = false;
+
+    if (url.searchParams.has('auth') || url.searchParams.has('error')) {
+      url.searchParams.delete('auth');
+      url.searchParams.delete('error');
+      changed = true;
+    }
+
+    const hashValue = url.hash.startsWith('#') ? url.hash.slice(1) : url.hash;
+    const hashParams = new URLSearchParams(hashValue);
+    if (hashParams.has('auth') || hashParams.has('error')) {
+      hashParams.delete('auth');
+      hashParams.delete('error');
+      url.hash = hashParams.toString() ? `#${hashParams.toString()}` : '';
+      changed = true;
+    }
+
+    if (!changed) return;
     window.history.replaceState(window.history.state, '', `${url.pathname}${url.search}${url.hash}`);
   }
 

@@ -15,9 +15,21 @@ const browserDistFolder = join(import.meta.dirname, '../browser');
 
 const app = express();
 const angularApp = new AngularNodeAppEngine();
+app.set('trust proxy', 1);
 
 const privateNoindexPaths = ['/dashboard', '/success', '/404', '/admin', ADMIN_PANEL_URL];
-const publicQueryParamsToDrop = ['auth', 'error', 'q'];
+const publicQueryParamsToDrop = [
+  'auth',
+  'error',
+  'q',
+  'utm_source',
+  'utm_medium',
+  'utm_campaign',
+  'utm_term',
+  'utm_content',
+  'gclid',
+  'fbclid'
+];
 const legacyAdminPaths = ['/admin', '/admin/', '/admin.html', '/admin-app.js'];
 const ogSlugToPageKey = new Map<string, PageKey>(
   Object.entries(PAGE_SLUGS)
@@ -122,17 +134,54 @@ function cleanPublicPageUrl(req: express.Request): string {
   const queryPart = queryIndex === -1 ? '' : req.originalUrl.slice(queryIndex + 1);
   const cleanPath = pathPart.length > 1 ? pathPart.replace(/\/+$/, '') || '/' : pathPart;
   const params = new URLSearchParams(queryPart);
-  const preserveAuthError = params.has('auth') && params.has('error');
 
-  if (preserveAuthError && !params.has('q') && cleanPath === pathPart) {
-    return req.originalUrl;
-  }
-
-  (preserveAuthError ? ['q'] : publicQueryParamsToDrop).forEach(param => params.delete(param));
+  publicQueryParamsToDrop.forEach(param => params.delete(param));
   const cleanQuery = params.toString();
 
   return `${cleanPath}${cleanQuery ? `?${cleanQuery}` : ''}`;
 }
+
+function publicRequestScheme(req: express.Request): string {
+  const cfVisitorHeader = req.headers['cf-visitor'];
+  if (cfVisitorHeader) {
+    try {
+      const cfVisitor = JSON.parse(String(cfVisitorHeader));
+      if (cfVisitor?.scheme) return String(cfVisitor.scheme).toLowerCase();
+    } catch {}
+  }
+
+  const forwardedProto = String(req.headers['x-forwarded-proto'] || '')
+    .split(',')[0]
+    .trim()
+    .toLowerCase();
+  if (forwardedProto === 'https') return 'https';
+
+  if (req.headers['cf-ray'] || req.headers['cf-connecting-ip']) return 'https';
+  if (forwardedProto) return forwardedProto;
+  if (String(req.headers['x-forwarded-ssl'] || '').toLowerCase() === 'on') return 'https';
+  return String(req.protocol || '').toLowerCase();
+}
+
+app.use((req, res, next) => {
+  if (process.env['NODE_ENV'] !== 'production') return next();
+  if (process.env['DISABLE_HTTPS_REDIRECT'] === 'true') return next();
+  if (req.method !== 'GET' && req.method !== 'HEAD') return next();
+  if (req.path === '/api' || req.path.startsWith('/api/')) return next();
+
+  const apexHost = 'getquizsolver.com';
+  const hostname = String(req.hostname || '').toLowerCase();
+  const isLocalHost = ['localhost', '127.0.0.1', '0.0.0.0', '::1', '[::1]'].includes(hostname);
+  const isPublicHost = hostname === apexHost || hostname === `www.${apexHost}`;
+  if (isLocalHost || !isPublicHost) return next();
+
+  const cleanUrl = cleanPublicPageUrl(req);
+  const scheme = publicRequestScheme(req);
+  if (hostname === `www.${apexHost}` || (scheme && scheme !== 'https') || cleanUrl !== req.originalUrl) {
+    return res.redirect(301, `https://${apexHost}${cleanUrl}`);
+  }
+
+  return next();
+});
 
 app.get('/og/:locale/:slug', (req, res, next) => {
   if (!req.params.slug.endsWith('.svg')) return next();

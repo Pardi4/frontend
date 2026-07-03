@@ -354,8 +354,11 @@ export class BlogListComponent implements OnInit {
       .sort((a, b) => b.datePublished.localeCompare(a.datePublished));
 
     if (this.category) {
+      const hasLocalCategoryPosts = BLOG_POSTS.some(post =>
+        post.locale === this.locale && post.category === this.category?.slug
+      );
       this.seo.applyBlogCategory(this.category, this.locale, {
-        robots: this.posts.length > 0 ? undefined : 'noindex, follow'
+        robots: this.posts.length > 0 && hasLocalCategoryPosts ? undefined : 'noindex, follow'
       });
     } else {
       this.seo.applyPage('blog', this.locale, {
