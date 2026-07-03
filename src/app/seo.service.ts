@@ -19,9 +19,9 @@ import {
 
 /* ─── Noindex pages ──────────────────────────────────────────────────────────── */
 const NOINDEX_PAGES = new Set<PageKey>(['dashboard', 'success', 'notFound']);
-const SEO_DATE = '2026-07-02';
+const SEO_DATE = '2026-07-03';
 const BASE_ROBOTS = 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1';
-const ASSET_VERSION = '20260702';
+const ASSET_VERSION = '20260703';
 const assetUrl = (path: string) => `${abs(path)}?v=${ASSET_VERSION}`;
 const PLATFORM_SOCIAL_IMAGE_SLUGS = new Set([
   'quiz-solver-ai',
@@ -148,7 +148,7 @@ export class SeoService {
   private resolveMeta(pageKey: PageKey, locale: Locale, data: any): { title: string; description: string } {
     data = data || {};
     if (data?.meta?.title && data?.meta?.description) return data.meta;
-    if (['privacy', 'dashboard', 'credits', 'quiz', 'demo', 'success', 'notFound', 'blog'].includes(pageKey)) {
+    if (['privacy', 'terms', 'dashboard', 'credits', 'quiz', 'demo', 'success', 'notFound', 'blog'].includes(pageKey)) {
       return { title: data.metaTitle || data.title || 'QuizSolver', description: data.metaDescription || '' };
     }
     const copy = contentFor(locale);

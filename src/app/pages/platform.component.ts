@@ -1251,18 +1251,35 @@ export class PlatformComponent implements OnInit {
   }
 
   protected relatedPages(): Array<{ pageKey: PageKey; data: any }> {
-    return platformEntries(this.locale).filter((entry) => entry.pageKey !== this.pageKey);
+    return platformEntries(this.locale).filter((entry) =>
+      entry.pageKey !== this.pageKey &&
+      (this.pageKey === 'quizSolverAi' || entry.pageKey !== 'quizSolverAi')
+    );
   }
 
   protected relatedArticles(): BlogPost[] {
     const category = this.articleCategory();
-    return BLOG_POSTS
-      .filter(post => post.locale === this.locale && post.category === category)
+    const localPosts = BLOG_POSTS
+      .filter(post => post.locale === this.locale && post.category === category);
+    const localKeys = new Set(localPosts.map(post => post.translationKey));
+    const fallbackPosts = this.locale === 'en'
+      ? []
+      : BLOG_POSTS.filter(post =>
+          post.locale === 'en' &&
+          post.category === category &&
+          !localKeys.has(post.translationKey)
+        );
+
+    return [...localPosts, ...fallbackPosts]
+      .sort((a, b) =>
+        b.datePublished.localeCompare(a.datePublished) ||
+        b.dateModified.localeCompare(a.dateModified)
+      )
       .slice(0, 3);
   }
 
   protected postUrl(post: BlogPost): string {
-    return pathFor('blogPost', this.locale).replace(':slug', post.slug);
+    return pathFor('blogPost', post.locale).replace(':slug', post.slug);
   }
 
   private articleCategory(): string {

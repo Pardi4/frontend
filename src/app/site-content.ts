@@ -48,6 +48,7 @@ export interface SiteCopy {
     seoPages: string;
     legal: string;
     privacy: string;
+    terms: string;
     rights: string;
     description: string;
   };
@@ -69,6 +70,19 @@ export interface SiteCopy {
     effective: string;
     contactLabel: string;
     contactValue: string;
+    sections: Array<{
+      title: string;
+      text?: string;
+      items?: string[];
+    }>;
+  };
+  termsPage: {
+    metaTitle: string;
+    metaDescription: string;
+    title: string;
+    badge: string;
+    subtitle: string;
+    effective: string;
     sections: Array<{
       title: string;
       text?: string;
@@ -233,6 +247,7 @@ const en: SiteCopy = {
     seoPages: "Supported platforms",
     legal: "Legal",
     privacy: "Privacy Policy",
+    terms: "Terms of Service",
     rights: "© 2026 QuizSolver. All rights reserved.",
     description: "QuizSolver AI quiz solver Chrome extension."
   },
@@ -288,6 +303,45 @@ const en: SiteCopy = {
           "Access and Portability: Request a copy of your stored question history.",
           "Account Deletion: Delete your account and associated notes history directly from your settings or by contacting support."
         ]
+      }
+    ]
+  },
+  termsPage: {
+    metaTitle: "Terms of Service | QuizSolver",
+    metaDescription: "Read the QuizSolver terms for account use, credits, Chrome extension access, acceptable use, payments, refunds, and support.",
+    title: "Terms of Service",
+    badge: "Legal",
+    subtitle: "Rules for using the QuizSolver website, Chrome extension, credits, and study features.",
+    effective: "Effective date: July 3, 2026",
+    sections: [
+      {
+        title: "1. Acceptance",
+        text: "By using QuizSolver, you agree to these Terms of Service and to our Privacy Policy."
+      },
+      {
+        title: "2. Accounts and credits",
+        text: "You are responsible for your account and for keeping access credentials secure.",
+        items: [
+          "Credits are prepaid usage units for AI answers, explanations, cached answers when chargeable, and supported quiz tools.",
+          "Credit balances can change when questions are solved through the extension, dashboard, overlay, or supported cached-answer flows.",
+          "Do not share, resell, automate, or abuse account access."
+        ]
+      },
+      {
+        title: "3. Responsible use",
+        text: "QuizSolver is a study, review, and quiz assistance tool. You are responsible for following your school, course, employer, exam, and platform rules."
+      },
+      {
+        title: "4. Extension and third-party platforms",
+        text: "QuizSolver works with visible page content, user-selected text, and user-selected screen regions. We do not control third-party quiz platforms and cannot guarantee that every layout, iframe, or question type will be supported."
+      },
+      {
+        title: "5. Payments and refunds",
+        text: "Payments are processed by our payment provider. Refund requests are reviewed through support according to purchase status, usage, account history, and applicable law."
+      },
+      {
+        title: "6. Changes and support",
+        text: "We may update the service and these terms as QuizSolver changes. Contact support@getquizsolver.com for account, billing, or product questions."
       }
     ]
   },
@@ -585,6 +639,7 @@ const pl: SiteCopy = {
     seoPages: "Obsługiwane platformy",
     legal: "Informacje prawne",
     privacy: "Polityka prywatności",
+    terms: "Regulamin",
     rights: "© 2026 QuizSolver. Wszelkie prawa zastrzeżone.",
     description: "Inteligentne rozszerzenie do Chrome sugerujące odpowiedzi i pomagające w nauce."
   },
@@ -640,6 +695,45 @@ const pl: SiteCopy = {
           "Wgląd w dane: Masz stały dostęp do pełnej historii swoich pytań i możesz ją pobrać lub edytować.",
           "Usuwanie danych: Możesz w każdej chwili usunąć swoje konto wraz ze wszystkimi powiązanymi pytaniami bezpośrednio z poziomu ustawień lub kontaktując się z naszym wsparciem."
         ]
+      }
+    ]
+  },
+  termsPage: {
+    metaTitle: "Regulamin | QuizSolver",
+    metaDescription: "Przeczytaj zasady korzystania z QuizSolver: konto, kredyty, rozszerzenie Chrome, platnosci, zwroty, odpowiedzialne uzycie i support.",
+    title: "Regulamin",
+    badge: "Informacje prawne",
+    subtitle: "Zasady korzystania ze strony, rozszerzenia Chrome, kredytow i funkcji nauki QuizSolver.",
+    effective: "Data obowiazywania: 3 lipca 2026",
+    sections: [
+      {
+        title: "1. Akceptacja regulaminu",
+        text: "Korzystajac z QuizSolver, akceptujesz ten regulamin oraz Polityke prywatnosci."
+      },
+      {
+        title: "2. Konto i kredyty",
+        text: "Odpowiadasz za swoje konto oraz za bezpieczne przechowywanie danych dostepowych.",
+        items: [
+          "Kredyty sa jednostkami uzycia dla odpowiedzi AI, wyjasnien, odpowiedzi z cache gdy sa rozliczane, oraz obslugiwanych narzedzi quizowych.",
+          "Saldo kredytow moze zmieniac sie, gdy pytania sa rozwiazywane przez rozszerzenie, panel, overlay lub obslugiwane przeplywy odpowiedzi z cache.",
+          "Nie udostepniaj, nie odsprzedawaj, nie automatyzuj i nie naduzywaj dostepu do konta."
+        ]
+      },
+      {
+        title: "3. Odpowiedzialne uzycie",
+        text: "QuizSolver jest narzedziem do nauki, powtorek i pomocy przy quizach. To Ty odpowiadasz za przestrzeganie zasad szkoly, kursu, egzaminu, pracodawcy oraz platformy, z ktorej korzystasz."
+      },
+      {
+        title: "4. Rozszerzenie i platformy zewnetrzne",
+        text: "QuizSolver pracuje na widocznej tresci strony, zaznaczonym tekscie i zaznaczonych obszarach ekranu. Nie kontrolujemy zewnetrznych platform quizowych i nie gwarantujemy, ze kazdy layout, iframe albo typ pytania bedzie obslugiwany."
+      },
+      {
+        title: "5. Platnosci i zwroty",
+        text: "Platnosci obsluguje zewnetrzny operator platnosci. Prosby o zwrot sprawdzamy przez support, uwzgledniajac status zakupu, uzycie, historie konta i obowiazujace przepisy."
+      },
+      {
+        title: "6. Zmiany i kontakt",
+        text: "Mozemy aktualizowac usluge i regulamin wraz z rozwojem QuizSolver. W sprawach konta, platnosci albo produktu napisz na support@getquizsolver.com."
       }
     ]
   },
@@ -904,6 +998,7 @@ export type PageKey =
   | 'kahoot'
   | 'quizizz'
   | 'privacy'
+  | 'terms'
   | 'notFound'
   | 'success'
   | 'blog'
@@ -929,6 +1024,7 @@ interface LocalizedSiteBundle {
   auth: Record<string, string>;
   shell: Record<string, string>;
   privacyPage: SiteCopy['privacyPage'];
+  termsPage?: SiteCopy['termsPage'];
   dashboardPage: SiteCopy['dashboardPage'];
   creditsPage: SiteCopy['creditsPage'];
   quizPage: SiteCopy['quizPage'];
@@ -1197,6 +1293,7 @@ function buildLocalizedSiteCopy(locale: ExtraLocale): SiteCopy {
     footer: bundle.footer,
     auth: bundle.auth,
     privacyPage: bundle.privacyPage,
+    termsPage: bundle.termsPage || en.termsPage,
     dashboardPage: bundle.dashboardPage,
     creditsPage: bundle.creditsPage,
     quizPage: bundle.quizPage,
@@ -1712,6 +1809,15 @@ function enhancePriorityPlatformSeo(copy: SiteCopy, locale: Locale): SiteCopy {
     page.meta.description = addition.metaDescription;
     page.keywordSections = appendUniqueByTitle(page.keywordSections, addition.sections);
     page.faq = appendUniqueByQuestion(page.faq, addition.faq);
+    if (key === 'testportal') {
+      page.keywordSections = isPl ? [
+        { title: 'Workflow w panelu bocznym Testportal', text: 'QuizSolver pokazuje sugestie i wyjasnienie w panelu rozszerzenia, bez potrzeby kopiowania pytania do osobnej wyszukiwarki. Tresc pytania, odpowiedzi i historia nauki zostaja w jednym miejscu, a uzytkownik nadal sam decyduje, co kliknac w tescie.' },
+        { title: 'Zglaszanie nietypowych ukladow Testportal', text: 'Jezeli konkretny test ma niestandardowy szablon i Universal Parser nie wykryje pytania poprawnie, zgloszenie z rozszerzenia pomaga sprawdzic realny layout i dostroic profil parsera w kolejnej aktualizacji.' }
+      ] : [
+        { title: 'Testportal side panel workflow', text: 'QuizSolver shows the suggestion and explanation in the extension panel, without forcing the student to copy the question into a separate search tab. The prompt, answer choices and saved study history stay in one workflow, while the final click remains under user control.' },
+        { title: 'Reporting unusual Testportal layouts', text: 'If a specific test uses a custom template and Universal Parser cannot read the question reliably, reports from the extension help us review the real layout and tune the parser profile in a later update.' }
+      ];
+    }
   });
 
   return copy;
@@ -1850,6 +1956,7 @@ export const PAGE_SLUGS: Record<PageKey, string> = {
   kahoot: 'kahoot-ai-bot',
   quizizz: 'quizizz-solver',
   privacy: 'privacy',
+  terms: 'terms',
   notFound: '404',
   success: 'success',
   blog: 'blog',
@@ -1878,6 +1985,7 @@ export const INDEXED_PAGE_KEYS: PageKey[] = [
   'kahoot',
   'quizizz',
   'privacy',
+  'terms',
   'blog',
   'blogPost'
 ];
@@ -1898,6 +2006,7 @@ export function pageData(pageKey: PageKey, locale: Locale): any {
   const copy = contentFor(locale);
   if (pageKey === 'home') return copy['home'];
   if (pageKey === 'privacy') return copy['privacyPage'];
+  if (pageKey === 'terms') return copy['termsPage'];
   if (pageKey === 'dashboard') return copy['dashboardPage'];
   if (pageKey === 'credits') return copy['creditsPage'];
   if (pageKey === 'quiz') return copy['quizPage'];

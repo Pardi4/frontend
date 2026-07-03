@@ -206,6 +206,7 @@ type AuthModal = 'login' | 'register' | 'verify' | 'forgot' | 'reset';
             <h3>{{ copy.footer.legal }}</h3>
             <div class="footer-links">
               <a class="nav-link" [href]="pathFor('privacy')">{{ copy.footer.privacy }}</a>
+              <a class="nav-link" [href]="pathFor('terms')">{{ copy.footer.terms || 'Terms of Service' }}</a>
               <span class="nav-link">support&#64;getquizsolver.com</span>
             </div>
           </div>

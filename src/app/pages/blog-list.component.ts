@@ -344,16 +344,12 @@ export class BlogListComponent implements OnInit {
     this.data = pageData('blog', this.locale);
     this.labels = this.labelsFor(this.locale);
     const requestedCategorySlug = this.route.snapshot.paramMap.get('category');
-    const availableCategorySlugs = new Set(
-      BLOG_POSTS
-        .filter(post => post.locale === this.locale)
-        .map(post => post.category)
-    );
+    const visiblePosts = this.visiblePostsForLocale(this.locale);
+    const availableCategorySlugs = new Set(visiblePosts.map(post => post.category));
 
     this.categories = categoriesFor(this.locale).filter(item => availableCategorySlugs.has(item.slug));
     this.category = categoryFor(this.locale, requestedCategorySlug);
-    this.posts = BLOG_POSTS
-      .filter(post => post.locale === this.locale)
+    this.posts = visiblePosts
       .filter(post => !this.category || post.category === this.category.slug)
       .sort((a, b) => b.datePublished.localeCompare(a.datePublished));
 
@@ -373,7 +369,8 @@ export class BlogListComponent implements OnInit {
   }
 
   protected getPostUrl(slug: string): string {
-    return pathFor('blogPost', this.locale).replace(':slug', slug);
+    const post = this.posts.find(item => item.slug === slug);
+    return pathFor('blogPost', post?.locale || this.locale).replace(':slug', slug);
   }
 
   protected getCategoryUrl(category: string): string {
@@ -386,6 +383,18 @@ export class BlogListComponent implements OnInit {
 
   protected categoryName(category: string | undefined): string {
     return categoryLabel(this.locale, category);
+  }
+
+  private visiblePostsForLocale(locale: Locale): BlogPost[] {
+    const localPosts = BLOG_POSTS.filter(post => post.locale === locale);
+    if (locale === 'en') return localPosts;
+
+    const localKeys = new Set(localPosts.map(post => post.translationKey));
+    const englishFallback = BLOG_POSTS.filter(post =>
+      post.locale === 'en' && !localKeys.has(post.translationKey)
+    );
+
+    return [...localPosts, ...englishFallback];
   }
 
   private labelsFor(locale: Locale): { readArticle: string; noPosts: string; all: string; category: string } {

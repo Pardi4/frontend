@@ -5,7 +5,7 @@ import { fileURLToPath } from 'node:url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.join(__dirname, '..');
 const siteUrl = 'https://getquizsolver.com';
-const contentLastmod = process.env.SITEMAP_LASTMOD || '2026-07-02';
+const contentLastmod = process.env.SITEMAP_LASTMOD || '2026-07-03';
 const posts = JSON.parse(fs.readFileSync(path.join(root, 'src', 'app', 'blog-posts.json'), 'utf8'));
 const categories = [...new Set(posts.map(post => post.category).filter(Boolean))];
 
@@ -36,6 +36,7 @@ const slugs = {
   kahoot: 'kahoot-ai-bot',
   quizizz: 'quizizz-solver',
   privacy: 'privacy',
+  terms: 'terms',
   blog: 'blog'
 };
 
@@ -68,7 +69,7 @@ function priority(route) {
   if (route.includes('kahoot-ai-bot') || route.includes('quiz-solver-ai') || route.includes('testportal-quiz-solver') || route.includes('google-forms-quiz-solver')) return '0.9';
   if (route.includes('/blog/category/')) return '0.75';
   if (route.includes('/blog/')) return '0.7';
-  if (route.includes('privacy')) return '0.4';
+  if (route.includes('privacy') || route.includes('terms')) return '0.4';
   return '0.8';
 }
 
@@ -92,7 +93,7 @@ function pageUrl(pageKey, locale) {
     alternates,
     `    <xhtml:link rel="alternate" hreflang="x-default" href="${siteUrl}${routeFor(slugs[pageKey], locales[0]) === '/' ? '/' : routeFor(slugs[pageKey], locales[0])}"/>`,
     `    <lastmod>${contentLastmod}</lastmod>`,
-    `    <changefreq>${pageKey === 'privacy' ? 'yearly' : pageKey === 'blog' ? 'weekly' : 'monthly'}</changefreq>`,
+    `    <changefreq>${pageKey === 'privacy' || pageKey === 'terms' ? 'yearly' : pageKey === 'blog' ? 'weekly' : 'monthly'}</changefreq>`,
     `    <priority>${priority(route)}</priority>`,
     '  </url>'
   ].join('\n');
