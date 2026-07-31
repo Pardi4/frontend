@@ -972,6 +972,7 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
                       <button type="button" class="link-button primary-link" (click)="openUserHistory(linkedUser)" style="font-weight: bold; text-align: left;">{{ linkedUser.email }}</button>
                       <small>{{ linkedUser.role }} - {{ linkedUser.credits }} {{ tr('credits') }} - {{ linkedUser.stats?.totalQuestionsSolved || 0 }} {{ tr('questions') }}</small>
                     </div>
+                    <div>
                       <button type="button" (click)="openGrantModal(linkedUser, tr('supportAdjustment'))">{{ tr('grantCredits') }}</button>
                       <button type="button" (click)="linkedUser.isBanned ? unbanUser(linkedUser.id) : banUser(linkedUser.id)">
                         {{ linkedUser.isBanned ? tr('unban') : tr('ban') }}
