@@ -969,11 +969,9 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
                   <div class="support-linked-user" *ngIf="selectedSupportMessage()?.linkedUser as linkedUser; else noLinkedSupportUser">
                     <div>
                       <span>{{ tr('linkedAccount') }}</span>
-                      <strong>{{ linkedUser.email }}</strong>
+                      <button type="button" class="link-button primary-link" (click)="openUserHistory(linkedUser)" style="font-weight: bold; text-align: left;">{{ linkedUser.email }}</button>
                       <small>{{ linkedUser.role }} - {{ linkedUser.credits }} {{ tr('credits') }} - {{ linkedUser.stats?.totalQuestionsSolved || 0 }} {{ tr('questions') }}</small>
                     </div>
-                    <div class="row-actions">
-                      <button type="button" (click)="openUserHistory(linkedUser)">{{ tr('history') }}</button>
                       <button type="button" (click)="openGrantModal(linkedUser, tr('supportAdjustment'))">{{ tr('grantCredits') }}</button>
                       <button type="button" (click)="linkedUser.isBanned ? unbanUser(linkedUser.id) : banUser(linkedUser.id)">
                         {{ linkedUser.isBanned ? tr('unban') : tr('ban') }}
@@ -1333,10 +1331,10 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
                     <tbody>
                       <tr *ngFor="let group of billingSafety().duplicateGroups">
                         <td>
-                          <strong>{{ group.email || group.userId || tr('unknownUser') }}</strong>
-                          <button class="link-button primary-link" type="button" *ngIf="group.userId" (click)="openUserHistory({ id: group.userId, email: group.email || group.userId })">
-                            {{ tr('history') }}
+                          <button class="link-button primary-link" type="button" *ngIf="group.userId" (click)="openUserHistory({ id: group.userId, email: group.email || group.userId })" style="font-weight: bold; text-align: left;">
+                            {{ group.email || group.userId }}
                           </button>
+                          <strong *ngIf="!group.userId">{{ group.email || tr('unknownUser') }}</strong>
                         </td>
                         <td class="question-audit-cell">
                           <strong>{{ group.questionText || shortHash(group.questionHash) }}</strong>
@@ -1437,7 +1435,10 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
                             <span>{{ item.questionType || item.action }} - {{ shortHash(item.questionHash) }}</span>
                           </td>
                           <td>
-                            <strong>{{ item.email }}</strong>
+                            <button type="button" class="link-button primary-link" *ngIf="item.userId" (click)="openUserHistory({ id: item.userId, email: item.email })" style="font-weight: bold; text-align: left;">
+                              {{ item.email }}
+                            </button>
+                            <strong *ngIf="!item.userId">{{ item.email }}</strong>
                             <span *ngIf="item.displayName">{{ item.displayName }}</span>
                           </td>
                           <td>
@@ -1455,7 +1456,6 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
                           <td>
                             <div class="row-actions">
                               <button type="button" (click)="showQuestionDetails(item)">{{ tr('viewQuestion') }}</button>
-                              <button type="button" *ngIf="item.userId" (click)="openUserHistory({ id: item.userId, email: item.email })">{{ tr('history') }}</button>
                             </div>
                           </td>
                         </tr>
