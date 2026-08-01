@@ -1,0 +1,1640 @@
+mport { CommonModule, isPlatformBrowser } from '@angular/common';
+import { Component, Inject, OnDestroy, OnInit, PLATFORM_ID, signal } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { Meta, Title } from '@angular/platform-browser';
+import { ADMIN_PANEL_ROUTE_PATH, ADMIN_PANEL_URL } from '../admin-path';
+
+type AdminTab = 'users' | 'purchases' | 'bugs' | 'support' | 'cache' | 'parser' | 'system';
+type AdminLocale = 'en' | 'pl';
+type UserSortField = 'credits' | 'questions' | 'streak' | 'status';
+type UserSortDirection = 'asc' | 'desc';
+type UserSortOption = 'createdAt_desc' | 'createdAt_asc' | `${UserSortField}_${UserSortDirection}` | 'lastOnline_desc' | 'lastOnline_asc';
+
+const ADMIN_ACTIVE_TAB_KEY = 'qs_admin_active_tab';
+const ADMIN_USERS_STATE_KEY = 'qs_admin_users_state';
+const ADMIN_TAB_IDS: AdminTab[] = ['users', 'purchases', 'bugs', 'support', 'cache', 'parser', 'system'];
+const DEFAULT_USER_SORT: UserSortOption = 'createdAt_desc';
+const USER_SORT_VALUES: UserSortOption[] = [
+  'createdAt_desc',
+  'createdAt_asc',
+  'credits_desc',
+  'credits_asc',
+  'lastOnline_desc',
+  'lastOnline_asc',
+  'questions_desc',
+  'questions_asc',
+  'streak_desc',
+  'streak_asc',
+  'status_desc',
+  'status_asc'
+];
+const isAdminTab = (value: unknown): value is AdminTab => ADMIN_TAB_IDS.includes(value as AdminTab);
+const isUserSortOption = (value: unknown): value is UserSortOption => USER_SORT_VALUES.includes(value as UserSortOption);
+
+const ADMIN_COPY = {
+  en: {
+    adminConsole: 'Admin console',
+    loginIntro: 'Operational control for credits, users, cache and platform health.',
+    continueGoogle: 'Continue with Google',
+    or: 'or',
+    email: 'Email',
+    password: 'Password',
+    signingIn: 'Signing in...',
+    signIn: 'Sign in',
+    adminSections: 'Admin sections',
+    refresh: 'Refresh',
+    logout: 'Logout',
+    liveOperations: 'Live operations',
+    dashboard: 'Dashboard',
+    publicSite: 'Public site',
+    users: 'Users',
+    purchases: 'Purchases',
+    bugs: 'Bugs',
+    support: 'Support',
+    cache: 'Cache',
+    parser: 'Parser',
+    system: 'System',
+    usersHint: 'accounts',
+    purchasesHint: 'billing',
+    bugsHint: 'reports',
+    supportHint: 'mail',
+    cacheHint: 'answers',
+    parserHint: 'signals',
+    systemHint: 'health',
+    usersTitle: 'Users and credits',
+    purchasesTitle: 'Purchases and grants',
+    bugsTitle: 'Bug reports',
+    supportTitle: 'Support inbox',
+    cacheTitle: 'Answer cache',
+    parserTitle: 'Parser health',
+    systemTitle: 'System health',
+    usersDescription: 'Track accounts, live extension usage, bans, credits and question history.',
+    purchasesDescription: 'Review payment records, manual grants and pending credit application.',
+    bugsDescription: 'Read user-submitted bug reports with source URLs.',
+    supportDescription: 'Handle unread support mail, linked accounts and quick credit adjustments.',
+    cacheDescription: 'Inspect cached AI answers, weak question text and high-hit questions.',
+    parserDescription: 'Monitor parser success, platform failures, snapshots and extraction confidence.',
+    systemDescription: 'Monitor service health, database state and credit dedupe safety.',
+    accountsCredits: 'Accounts and credits',
+    searchEmailName: 'Search email or name',
+    search: 'Search',
+    sortUsers: 'Sort users',
+    sortNewestUsers: 'Newest users',
+    sortOldestUsers: 'Oldest users',
+    sortMostCredits: 'Most credits',
+    sortFewestCredits: 'Fewest credits',
+    sortLastOnline: 'Last online',
+    sortLongestOffline: 'Longest offline',
+    sortMostQuestions: 'Most questions',
+    sortFewestQuestions: 'Fewest questions',
+    sortHighestStreak: 'Highest streak',
+    sortLowestStreak: 'Lowest streak',
+    clearUsersFilters: 'Clear filters',
+    exportVisibleUsers: 'Export visible CSV',
+    loadingUsers: 'Refreshing users...',
+    emailCopied: 'Email copied.',
+    usersExported: 'Visible users exported.',
+    user: 'User',
+    role: 'Role',
+    credits: 'Credits',
+    questions: 'Questions',
+    streak: 'Streak',
+    status: 'Status',
+    actions: 'Actions',
+    noDisplayName: 'No display name',
+    unlimited: 'unlimited',
+    history: 'History',
+    grant: 'Grant',
+    unban: 'Unban',
+    ban: 'Ban',
+    delete: 'Delete',
+    noUsers: 'No users found.',
+    revenue: 'Revenue',
+    pack: 'Pack',
+    price: 'Price',
+    provider: 'Provider',
+    applied: 'Applied',
+    pending: 'Pending',
+    reason: 'Reason',
+    date: 'Date',
+    apply: 'Apply',
+    noPurchases: 'No purchases yet.',
+    reports: 'Reports',
+    unknownUser: 'Unknown user',
+    noBugReports: 'No bug reports.',
+    inbox: 'Inbox',
+    supportMail: 'Support mail',
+    searchSupport: 'Search sender, subject, text',
+    allMessages: 'All messages',
+    open: 'Open',
+    closed: 'Closed',
+    filter: 'Filter',
+    noSubject: '(No subject)',
+    account: 'Account',
+    noSupport: 'No support messages.',
+    from: 'From',
+    to: 'To',
+    received: 'Received',
+    copyEmail: 'Copy email',
+    close: 'Close',
+    linkedAccount: 'Linked account',
+    grantCredits: 'Grant credits',
+    noLinkedAccount: 'No linked account',
+    unknownEmail: 'Unknown email',
+    noLinkedAccountNote: 'This sender email does not match a QuizSolver account.',
+    replies: 'Replies',
+    reply: 'Reply',
+    replyPlaceholder: 'Write a helpful answer...',
+    sendReply: 'Send reply',
+    selectMessage: 'Select a message to read and reply.',
+    aiCache: 'AI cache',
+    parserHealth: 'Parser health',
+    parserAnalytics: 'Platform analytics',
+    parserEvents: 'Parser events',
+    parserRecentReports: 'Recent parser reports',
+    parserFailureRate: 'Failure rate',
+    parserConfidence: 'Confidence',
+    parserFailures: 'Failures',
+    parserReports: 'Reports',
+    parserPlatform: 'Platform',
+    parserOutcome: 'Outcome',
+    parserReason: 'Reason',
+    parserSnapshot: 'Snapshot',
+    parserWindow: 'Window',
+    parserQuestionsFound: 'Questions found',
+    parserOptionsFound: 'Options found',
+    parserPageSnapshot: 'Page snapshot',
+    parserPageText: 'Page text',
+    parserPageCode: 'Page code',
+    parserDownloadPageCode: 'Download page code',
+    parserAutoReport: 'Auto parser report',
+    parserNoEvents: 'No parser events yet.',
+    clearFilteredParserEvents: 'Clear filtered',
+    clearAllParserEvents: 'Clear all events',
+    clearFilteredParserEventsConfirm: 'Delete parser events matching the current filters? User bug reports will stay.',
+    clearAllParserEventsConfirm: 'Delete every parser event? User bug reports will stay, but parser analytics will reset.',
+    parserEventsCleared: 'Parser events cleared',
+    cachedAnswers: 'Cached answers',
+    searchCache: 'Search cached question text',
+    reset: 'Reset',
+    clearCache: 'Clear cache',
+    options: 'options',
+    hits: 'hits',
+    weakText: 'Weak text',
+    openDetails: 'Open details',
+    noCacheHits: 'No cache hits yet.',
+    healthCheck: 'Health check',
+    billingSafety: 'Billing safety',
+    creditDedupeMonitor: 'Credit dedupe monitor',
+    refreshBilling: 'Refresh billing',
+    creditUsageLog: 'Credit usage log',
+    creditUsageDescription: 'Search exactly what was billed, waived or rejected for each user and question.',
+    searchCreditUsage: 'Search email, question text or hash',
+    allStatuses: 'All statuses',
+    allActions: 'All actions',
+    charged: 'Charged',
+    claimed: 'Claimed',
+    waived: 'Waived',
+    aborted: 'Aborted',
+    declined: 'Declined',
+    billableCredits: 'Billable credits',
+    creditEvent: 'Credit event',
+    chargedCredits: 'Charged credits',
+    noCreditUsage: 'No credit usage records for this filter.',
+    viewQuestion: 'View question',
+    firstCharged: 'First charged',
+    timeSpan: 'Time span',
+    reviewInLog: 'Review in log',
+    possibleRefund: 'Possible refund',
+    duplicateReason: 'Same user, action and question charged inside the review window.',
+    duplicateWarning: 'Potential duplicate charged groups found. Review immediately.',
+    questionHash: 'Question hash',
+    charges: 'Charges',
+    lastCharged: 'Last charged',
+    noDuplicateGroups: 'No duplicate charged groups detected.',
+    questionDetails: 'Question details',
+    deleteCache: 'Delete cache',
+    type: 'Type',
+    cacheHits: 'Cache hits',
+    counts: 'Counts',
+    prompts: 'Prompts',
+    rows: 'Rows',
+    answerItems: 'Answer items',
+    questionText: 'Question text',
+    answerSummary: 'Answer summary',
+    explanation: 'Explanation',
+    solveHistory: 'Solve History',
+    noSolvedQuestions: 'No questions solved by this user yet.',
+    manualCredits: 'Manual credits',
+    cancel: 'Cancel',
+    active: 'Active',
+    offline: 'Offline',
+    banned: 'Banned',
+    suspendedAccount: 'Suspended account',
+    extensionNotSeen: 'Extension not seen',
+    now: 'Now',
+    lastSeen: 'Last seen',
+    unreadSupport: 'Unread support',
+    unreadBugs: 'New bug reports',
+    newEmailsWaiting: 'New emails waiting',
+    newBugReportsWaiting: 'New bug reports waiting',
+    markRead: 'Mark read',
+    markAllRead: 'Mark all read',
+    creditSafety: 'Credit safety',
+    duplicateGroupsNeedReview: 'Duplicate groups need review',
+    noDuplicateChargeGroups: 'No duplicate charge groups',
+    clickToReview: 'Click to review details',
+    usingExtensionNow: 'Using extension now',
+    activeHeartbeat: 'Active by recent heartbeat',
+    visibleUsers: 'Visible users',
+    totalInSearch: 'total in search',
+    activeNow: 'Active now',
+    blockedAccounts: 'Blocked accounts',
+    visibleCredits: 'Visible credits',
+    solvedQuestionsVisible: 'solved questions visible',
+    visibleEntries: 'Visible entries',
+    allStoredCacheRecords: 'All stored cache records',
+    matchingCurrentSearch: 'Matching current search',
+    currentCachePageTotal: 'Current cache page total',
+    hitsOnPage: 'Hits on page',
+    usageVisibleRows: 'Usage in visible rows',
+    needsParserReview: 'Needs parser/cache review',
+    loginRequired: 'Email and password are required.',
+    loginFailed: 'Login failed.',
+    adminRequired: 'Admin access required.',
+    creditsGreaterThanZero: 'Credits must be greater than 0.',
+    couldNotGrantCredits: 'Could not grant credits.',
+    banConfirm: 'Ban this user?',
+    couldNotBanUser: 'Could not ban user.',
+    couldNotUnbanUser: 'Could not unban user.',
+    deleteUserConfirmPrefix: 'Delete',
+    deleteUserConfirmSuffix: 'This cannot be undone.',
+    couldNotDeleteUser: 'Could not delete user.',
+    clearCacheConfirm: 'Clear all cached answers?',
+    couldNotClearCache: 'Could not clear cache.',
+    deleteCacheConfirm: 'Delete this cached answer?',
+    couldNotDeleteCache: 'Could not delete cache entry.',
+    couldNotApplyPurchase: 'Could not apply purchase credits.',
+    noMessagePreview: 'No message preview.',
+    noMessageBody: 'No message body.',
+    couldNotCopyEmail: 'Could not copy email address.',
+    couldNotSendReply: 'Could not send support reply.',
+    deleteSupportConfirmPrefix: 'Delete support message from',
+    unknownSender: 'unknown sender',
+    couldNotDeleteSupport: 'Could not delete support message.',
+    couldNotUpdateBugReport: 'Could not update bug report.',
+    couldNotClearParserEvents: 'Could not clear parser events.',
+    supportAdjustment: 'Support adjustment',
+    questionHistoryAdjustment: 'Question history adjustment',
+    adminManualGrant: 'Admin manual grant'
+  },
+  pl: {
+    adminConsole: 'Panel admina',
+    loginIntro: 'Kontrola kredytów, użytkowników, cache i stanu platformy.',
+    continueGoogle: 'Kontynuuj z Google',
+    or: 'albo',
+    email: 'Email',
+    password: 'Hasło',
+    signingIn: 'Logowanie...',
+    signIn: 'Zaloguj',
+    adminSections: 'Sekcje panelu admina',
+    refresh: 'Odśwież',
+    logout: 'Wyloguj',
+    liveOperations: 'Operacje na żywo',
+    dashboard: 'Dashboard',
+    publicSite: 'Strona publiczna',
+    users: 'Użytkownicy',
+    purchases: 'Płatności',
+    bugs: 'Błędy',
+    support: 'Support',
+    cache: 'Cache',
+    parser: 'Parser',
+    system: 'System',
+    usersHint: 'konta',
+    purchasesHint: 'billing',
+    bugsHint: 'zgłoszenia',
+    supportHint: 'maile',
+    cacheHint: 'odpowiedzi',
+    parserHint: 'sygnały',
+    systemHint: 'zdrowie',
+    usersTitle: 'Użytkownicy i kredyty',
+    purchasesTitle: 'Płatności i granty',
+    bugsTitle: 'Zgłoszenia błędów',
+    supportTitle: 'Skrzynka supportu',
+    cacheTitle: 'Cache odpowiedzi',
+    parserTitle: 'Zdrowie parsera',
+    systemTitle: 'Stan systemu',
+    usersDescription: 'Kontroluj konta, aktywność rozszerzenia, bany, kredyty i historię pytań.',
+    purchasesDescription: 'Przeglądaj płatności, ręczne granty i oczekujące dodania kredytów.',
+    bugsDescription: 'Czytaj zgłoszenia błędów od użytkowników razem z adresami stron.',
+    supportDescription: 'Obsługuj nowe maile, powiązane konta i szybkie korekty kredytów.',
+    cacheDescription: 'Sprawdzaj odpowiedzi AI w cache, słabą treść pytań i najczęstsze trafienia.',
+    parserDescription: 'Monitoruj skuteczność parsera, błędy platform, snapshoty i confidence ekstrakcji.',
+    systemDescription: 'Monitoruj stan usługi, bazę danych i zabezpieczenia przed podwójnym naliczaniem.',
+    accountsCredits: 'Konta i kredyty',
+    searchEmailName: 'Szukaj e-maila lub nazwy',
+    search: 'Szukaj',
+    sortUsers: 'Sortuj użytkowników',
+    sortNewestUsers: 'Najnowsi użytkownicy',
+    sortOldestUsers: 'Najstarsi użytkownicy',
+    sortMostCredits: 'Najwięcej kredytów',
+    sortFewestCredits: 'Najmniej kredytów',
+    sortLastOnline: 'Ostatnio online',
+    sortLongestOffline: 'Najdłużej offline',
+    sortMostQuestions: 'Najwięcej pytań',
+    sortFewestQuestions: 'Najmniej pytań',
+    sortHighestStreak: 'Najwyższa seria',
+    sortLowestStreak: 'Najniższa seria',
+    clearUsersFilters: 'Wyczyść filtry',
+    exportVisibleUsers: 'Eksport CSV',
+    loadingUsers: 'Odświeżam użytkowników...',
+    emailCopied: 'E-mail skopiowany.',
+    usersExported: 'Widoczni użytkownicy wyeksportowani.',
+    user: 'Użytkownik',
+    role: 'Rola',
+    credits: 'Kredyty',
+    questions: 'Pytania',
+    streak: 'Seria',
+    status: 'Status',
+    actions: 'Akcje',
+    noDisplayName: 'Brak nazwy',
+    unlimited: 'bez limitu',
+    history: 'Historia',
+    grant: 'Dodaj',
+    unban: 'Odbanuj',
+    ban: 'Zbanuj',
+    delete: 'Usuń',
+    noUsers: 'Nie znaleziono użytkowników.',
+    revenue: 'Przychód',
+    pack: 'Pakiet',
+    price: 'Cena',
+    provider: 'Dostawca',
+    applied: 'Dodane',
+    pending: 'Oczekuje',
+    reason: 'Powód',
+    date: 'Data',
+    apply: 'Dodaj',
+    noPurchases: 'Brak płatności.',
+    reports: 'Zgłoszenia',
+    unknownUser: 'Nieznany użytkownik',
+    noBugReports: 'Brak zgłoszeń błędów.',
+    inbox: 'Skrzynka',
+    supportMail: 'Maile supportu',
+    searchSupport: 'Szukaj nadawcy, tematu, treści',
+    allMessages: 'Wszystkie wiadomości',
+    open: 'Otwarte',
+    closed: 'Zamknięte',
+    filter: 'Filtruj',
+    noSubject: '(Brak tematu)',
+    account: 'Konto',
+    noSupport: 'Brak wiadomości supportu.',
+    from: 'Od',
+    to: 'Do',
+    received: 'Odebrano',
+    copyEmail: 'Kopiuj e-mail',
+    close: 'Zamknij',
+    linkedAccount: 'Powiązane konto',
+    grantCredits: 'Dodaj kredyty',
+    noLinkedAccount: 'Brak powiązanego konta',
+    unknownEmail: 'Nieznany e-mail',
+    noLinkedAccountNote: 'Ten e-mail nadawcy nie pasuje do konta QuizSolver.',
+    replies: 'Odpowiedzi',
+    reply: 'Odpowiedź',
+    replyPlaceholder: 'Napisz pomocną odpowiedź...',
+    sendReply: 'Wyślij odpowiedź',
+    selectMessage: 'Wybierz wiadomość, żeby ją przeczytać i odpisać.',
+    aiCache: 'Cache AI',
+    parserHealth: 'Zdrowie parsera',
+    parserAnalytics: 'Analityka platform',
+    parserEvents: 'Eventy parsera',
+    parserRecentReports: 'Ostatnie zgłoszenia parsera',
+    parserFailureRate: 'Failure rate',
+    parserConfidence: 'Confidence',
+    parserFailures: 'Błędy',
+    parserReports: 'Zgłoszenia',
+    parserPlatform: 'Platforma',
+    parserOutcome: 'Wynik',
+    parserReason: 'Powód',
+    parserSnapshot: 'Snapshot',
+    parserWindow: 'Okno',
+    parserQuestionsFound: 'Wykryte pytania',
+    parserOptionsFound: 'Wykryte opcje',
+    parserPageSnapshot: 'Snapshot strony',
+    parserPageText: 'Tekst strony',
+    parserPageCode: 'Kod strony',
+    parserDownloadPageCode: 'Pobierz kod strony',
+    parserAutoReport: 'Auto raport parsera',
+    parserNoEvents: 'Brak eventów parsera.',
+    clearFilteredParserEvents: 'Wyczyść filtrowane',
+    clearAllParserEvents: 'Wyczyść wszystko',
+    clearFilteredParserEventsConfirm: 'Usunąć eventy parsera pasujące do obecnych filtrów? Zgłoszenia użytkowników zostaną.',
+    clearAllParserEventsConfirm: 'Usunąć wszystkie eventy parsera? Zgłoszenia użytkowników zostaną, ale analityka parsera się zresetuje.',
+    parserEventsCleared: 'Eventy parsera wyczyszczone',
+    cachedAnswers: 'Odpowiedzi w cache',
+    searchCache: 'Szukaj treści pytania w cache',
+    reset: 'Reset',
+    clearCache: 'Wyczyść cache',
+    options: 'opcji',
+    hits: 'trafień',
+    weakText: 'Słaba treść',
+    openDetails: 'Otwórz szczegóły',
+    noCacheHits: 'Brak trafień cache.',
+    healthCheck: 'Stan usługi',
+    billingSafety: 'Bezpieczeństwo billingowe',
+    creditDedupeMonitor: 'Monitor deduplikacji kredytów',
+    refreshBilling: 'Odśwież billing',
+    duplicateWarning: 'Wykryto możliwe podwójnie naliczone grupy. Sprawdź od razu.',
+    creditUsageLog: 'Log kredytów',
+    creditUsageDescription: 'Sprawdź dokładnie co zostało naliczone, umorzone albo odrzucone dla użytkownika i pytania.',
+    searchCreditUsage: 'Szukaj e-maila, treści pytania lub hasha',
+    allStatuses: 'Wszystkie statusy',
+    allActions: 'Wszystkie akcje',
+    charged: 'Pobrano',
+    claimed: 'Claim',
+    waived: 'Umorzono',
+    aborted: 'Przerwano',
+    declined: 'Odrzucono',
+    billableCredits: 'Kredyty płatne',
+    creditEvent: 'Zdarzenie kredytowe',
+    chargedCredits: 'Pobrane kredyty',
+    noCreditUsage: 'Brak rekordów kredytów dla tego filtra.',
+    viewQuestion: 'Zobacz pytanie',
+    firstCharged: 'Pierwsze pobranie',
+    timeSpan: 'Odstęp czasu',
+    reviewInLog: 'Sprawdź w logu',
+    possibleRefund: 'Zwrot?',
+    duplicateReason: 'Ten sam użytkownik, akcja i pytanie naliczone w oknie kontroli.',
+    questionHash: 'Hash pytania',
+    charges: 'Naliczono',
+    lastCharged: 'Ostatnie naliczenie',
+    noDuplicateGroups: 'Brak wykrytych podwójnie naliczonych grup.',
+    questionDetails: 'Szczegóły pytania',
+    deleteCache: 'Usuń z cache',
+    type: 'Typ',
+    cacheHits: 'Trafienia cache',
+    counts: 'Liczniki',
+    prompts: 'Prompty',
+    rows: 'Wiersze',
+    answerItems: 'Elementy odpowiedzi',
+    questionText: 'Treść pytania',
+    answerSummary: 'Podsumowanie odpowiedzi',
+    explanation: 'Wyjaśnienie',
+    solveHistory: 'Historia pytań',
+    noSolvedQuestions: 'Ten użytkownik nie ma jeszcze rozwiązanych pytań.',
+    manualCredits: 'Ręczne kredyty',
+    cancel: 'Anuluj',
+    active: 'Aktywny',
+    offline: 'Offline',
+    banned: 'Zbanowany',
+    suspendedAccount: 'Konto zawieszone',
+    extensionNotSeen: 'Nie widziano rozszerzenia',
+    now: 'Teraz',
+    lastSeen: 'Ostatnio widziany',
+    unreadSupport: 'Nieprzeczytany support',
+    unreadBugs: 'Nowe bledy',
+    newEmailsWaiting: 'Nowe maile czekają',
+    newBugReportsWaiting: 'Nowe zgłoszenia błędów czekają',
+    markRead: 'Oznacz jako przeczytane',
+    markAllRead: 'Oznacz wszystkie',
+    creditSafety: 'Bezpieczeństwo kredytów',
+    duplicateGroupsNeedReview: 'Grupy duplikatów do sprawdzenia',
+    noDuplicateChargeGroups: 'Brak podwójnych naliczeń',
+    usingExtensionNow: 'Używa teraz rozszerzenia',
+    activeHeartbeat: 'Aktywny według ostatniego heartbeat',
+    visibleUsers: 'Widoczni użytkownicy',
+    totalInSearch: 'łącznie w wyszukiwaniu',
+    activeNow: 'Aktywni teraz',
+    blockedAccounts: 'Zablokowane konta',
+    visibleCredits: 'Widoczne kredyty',
+    solvedQuestionsVisible: 'rozwiązanych pytań w widoku',
+    visibleEntries: 'Widoczne wpisy',
+    allStoredCacheRecords: 'Wszystkie rekordy cache',
+    matchingCurrentSearch: 'Pasuje do obecnego wyszukiwania',
+    currentCachePageTotal: 'Łącznie dla obecnej strony cache',
+    hitsOnPage: 'Trafienia na stronie',
+    usageVisibleRows: 'Użycie w widocznych wierszach',
+    needsParserReview: 'Do sprawdzenia parser/cache',
+    loginRequired: 'Email i hasło są wymagane.',
+    loginFailed: 'Logowanie nie powiodło się.',
+    adminRequired: 'Wymagany dostęp admina.',
+    creditsGreaterThanZero: 'Liczba kredytów musi być większa od 0.',
+    couldNotGrantCredits: 'Nie udało się dodać kredytów.',
+    banConfirm: 'Zbanować tego użytkownika?',
+    couldNotBanUser: 'Nie udało się zbanować użytkownika.',
+    couldNotUnbanUser: 'Nie udało się odbanować użytkownika.',
+    deleteUserConfirmPrefix: 'Usunąć',
+    deleteUserConfirmSuffix: 'Tej operacji nie da się cofnąć.',
+    couldNotDeleteUser: 'Nie udało się usunąć użytkownika.',
+    clearCacheConfirm: 'Wyczyścić wszystkie odpowiedzi w cache?',
+    couldNotClearCache: 'Nie udało się wyczyścić cache.',
+    deleteCacheConfirm: 'Usunąć tę odpowiedź z cache?',
+    couldNotDeleteCache: 'Nie udało się usunąć wpisu cache.',
+    couldNotApplyPurchase: 'Nie udało się dodać kredytów z płatności.',
+    noMessagePreview: 'Brak podglądu wiadomości.',
+    noMessageBody: 'Brak treści wiadomości.',
+    couldNotCopyEmail: 'Nie udało się skopiować adresu e-mail.',
+    couldNotSendReply: 'Nie udało się wysłać odpowiedzi supportu.',
+    deleteSupportConfirmPrefix: 'Usunąć wiadomość supportu od',
+    unknownSender: 'nieznanego nadawcy',
+    couldNotDeleteSupport: 'Nie udało się usunąć wiadomości supportu.',
+    couldNotUpdateBugReport: 'Nie udało się zaktualizować zgłoszenia błędu.',
+    couldNotClearParserEvents: 'Nie udało się wyczyścić eventów parsera.',
+    supportAdjustment: 'Korekta supportu',
+    questionHistoryAdjustment: 'Korekta z historii pytań',
+    adminManualGrant: 'Ręczny grant admina'
+  }
+} as const;
+
+type AdminCopyKey = keyof typeof ADMIN_COPY.en;
+
+@Component({
+  standalone: true,
+  imports: [CommonModule, FormsModule],
+  template: `
+    <main class="admin-page">
+      <section class="admin-login" *ngIf="!isAuthed(); else adminPanel">
+        <div class="admin-login-card glass anim-glow">
+          <a class="admin-brand" href="/" aria-label="QuizSolver home">
+            <span>QS</span>
+            <strong>QuizSolver Admin</strong>
+          </a>
+          <h1>{{ tr('adminConsole') }}</h1>
+          <p class="text-secondary" style="margin-top: 0.5rem; margin-bottom: 2rem;">
+            {{ tr('loginIntro') }}
+          </p>
+          <button class="btn btn-outline btn-block google-auth-btn" type="button" (click)="startGoogleLogin()">
+            <span>G</span>
+            {{ tr('continueGoogle') }}
+          </button>
+          <div class="auth-divider"><span>{{ tr('or') }}</span></div>
+          <form (ngSubmit)="login()">
+            <label class="form-label">
+              <span>{{ tr('email') }}</span>
+              <input class="form-input" type="email" name="email" [(ngModel)]="email" autocomplete="email">
+            </label>
+            <label class="form-label" style="margin-top: 1.25rem; display: block;">
+              <span>{{ tr('password') }}</span>
+              <input class="form-input" type="password" name="password" [(ngModel)]="password" autocomplete="current-password">
+            </label>
+            <div class="form-error" *ngIf="error()" style="margin-top: 1.25rem;">{{ error() }}</div>
+            <button class="btn btn-primary btn-block" type="submit" [disabled]="loading()" style="margin-top: 2rem;">
+              {{ loading() ? tr('signingIn') : tr('signIn') }}
+            </button>
+          </form>
+        </div>
+      </section>
+
+      <ng-template #adminPanel>
+        <section class="admin-shell">
+          <aside class="admin-sidebar">
+            <div>
+              <a class="admin-brand" href="/">
+                <span>QS</span>
+                <strong>Admin</strong>
+              </a>
+              <div class="admin-sidebar-status" aria-label="Admin quick status">
+                <button type="button" [class.warn]="supportBadgeCount()" (click)="setActiveTab('support')">
+                  <span>{{ tr('support') }}</span>
+                  <strong>{{ supportBadgeCount() || 0 }}</strong>
+                </button>
+                <button type="button" [class.warn]="bugBadgeCount()" (click)="setActiveTab('bugs')">
+                  <span>{{ tr('bugs') }}</span>
+                  <strong>{{ bugBadgeCount() || 0 }}</strong>
+                </button>
+                <button type="button" [class.warn]="(parserHealth().summary?.failed || 0) > 0" (click)="setActiveTab('parser')">
+                  <span>{{ tr('parser') }}</span>
+                  <strong>{{ parserHealth().summary?.failed || 0 }}</strong>
+                </button>
+              </div>
+              <nav class="admin-tabs" [attr.aria-label]="tr('adminSections')">
+                <section class="tab-group" *ngFor="let group of tabGroups()">
+                  <header class="tab-group-head">
+                    <span>{{ group.label }}</span>
+                    <small>{{ group.note }}</small>
+                  </header>
+                  <button type="button" *ngFor="let tab of group.tabs" [class.active]="activeTab() === tab.id" [attr.aria-current]="activeTab() === tab.id ? 'page' : null" (click)="setActiveTab(tab.id)">
+                    <span class="tab-short">{{ tab.short }}</span>
+                    <span class="tab-copy">
+                      <span class="tab-label">{{ tabLabel(tab.id) }}</span>
+                      <small>{{ tabHint(tab.id) }}</small>
+                    </span>
+                    <span class="tab-badge" *ngIf="tab.id === 'bugs' && bugBadgeCount()">{{ bugBadgeCount() }}</span>
+                    <span class="tab-badge" *ngIf="tab.id === 'support' && supportBadgeCount()">{{ supportBadgeCount() }}</span>
+                  </button>
+                </section>
+              </nav>
+            </div>
+            <div class="admin-sidebar-foot">
+              <div class="admin-language-switch" aria-label="Admin language">
+                <a [class.active]="adminLocale() === 'en'" [href]="adminLocaleUrl('en')">EN</a>
+                <a [class.active]="adminLocale() === 'pl'" [href]="adminLocaleUrl('pl')">PL</a>
+              </div>
+              <button class="btn btn-outline btn-block" type="button" (click)="refresh()">{{ tr('refresh') }}</button>
+              <button class="btn btn-ghost btn-block" type="button" (click)="logout()">{{ tr('logout') }}</button>
+            </div>
+          </aside>
+
+          <section class="admin-main">
+            <header class="admin-header">
+              <div class="admin-title-block">
+                <p class="eyebrow">{{ tr('liveOperations') }}</p>
+                <h1>{{ activeTabTitle() }}</h1>
+                <p class="text-secondary" style="margin-top: 0.25rem;">{{ activeTabDescription() }}</p>
+              </div>
+              <div class="admin-header-actions">
+                <button class="btn btn-outline" type="button" (click)="refresh()" [disabled]="loading()">{{ tr('refresh') }}</button>
+                <a class="btn btn-outline" [href]="adminLocale() === 'pl' ? '/pl/dashboard' : '/dashboard'">{{ tr('dashboard') }}</a>
+                <a class="btn btn-primary" [href]="adminLocale() === 'pl' ? '/pl' : '/'">{{ tr('publicSite') }}</a>
+              </div>
+            </header>
+
+            <div class="admin-alert anim-slide-up" *ngIf="error()">{{ error() }}</div>
+            <div class="admin-alert success anim-slide-up" *ngIf="notice()">{{ notice() }}</div>
+
+            <section class="admin-command-center">
+              <article class="command-card priority-card">
+                <header class="command-card-head">
+                  <div>
+                    <span>{{ adminLocale() === 'pl' ? 'Priorytety' : 'Priority queue' }}</span>
+                    <small>{{ adminLocale() === 'pl' ? 'Najważniejsze rzeczy do sprawdzenia teraz.' : 'The things worth checking first.' }}</small>
+                  </div>
+                  <button class="mini-action" type="button" (click)="refresh()">{{ tr('refresh') }}</button>
+                </header>
+                <div class="operations-strip" *ngIf="adminNoticeCards().length; else noAdminNotices">
+                  <button class="operation-card" type="button" *ngFor="let notice of adminNoticeCards()" [class.warn]="notice.tone === 'warn'" [class.ok]="notice.tone === 'ok'" (click)="openAdminNotice(notice)">
+                    <span>{{ notice.label }}</span>
+                    <strong>{{ notice.value }}</strong>
+                    <small>{{ notice.note }}</small>
+                  </button>
+                </div>
+                <ng-template #noAdminNotices>
+                  <div class="empty-priority">
+                    <strong>{{ adminLocale() === 'pl' ? 'Brak pilnych spraw' : 'No urgent items' }}</strong>
+                    <span>{{ adminLocale() === 'pl' ? 'Support, błędy i billing wyglądają spokojnie.' : 'Support, bug reports and billing look quiet.' }}</span>
+                  </div>
+                </ng-template>
+              </article>
+
+              <article class="command-card metrics-card">
+                <header class="command-card-head">
+                  <div>
+                    <span>{{ adminLocale() === 'pl' ? 'Stan platformy' : 'Platform snapshot' }}</span>
+                    <small>{{ adminLocale() === 'pl' ? 'Szybki podgląd najważniejszych liczb.' : 'A quick read of the main counters.' }}</small>
+                  </div>
+                </header>
+                <section class="admin-stats">
+                  <article *ngFor="let card of statsCards()">
+                    <span>{{ card.label }}</span>
+                    <strong [class.revenue]="card.revenue">{{ card.value }}</strong>
+                  </article>
+                </section>
+              </article>
+            </section>
+
+            <section class="admin-panel glass" *ngIf="activeTab() === 'users'">
+              <div class="panel-head">
+                <div>
+                  <p class="eyebrow">{{ tr('users') }}</p>
+                  <h2>{{ tr('accountsCredits') }}</h2>
+                  <small class="panel-status" *ngIf="usersLoading()">{{ tr('loadingUsers') }}</small>
+                </div>
+                <form class="admin-search user-toolbar" (ngSubmit)="loadUsers(1)">
+                  <input class="form-input" type="search" name="search" [(ngModel)]="userSearch" [placeholder]="tr('searchEmailName')">
+                  <select class="form-select" name="userSort" [(ngModel)]="userSort" (ngModelChange)="loadUsers(1)" [attr.aria-label]="tr('sortUsers')">
+                    <option *ngFor="let option of userSortOptions()" [value]="option.value">{{ option.label }}</option>
+                  </select>
+                  <button class="btn btn-primary" type="submit">{{ tr('search') }}</button>
+                  <button class="btn btn-outline" type="button" *ngIf="hasUserFilters()" (click)="resetUserFilters()">{{ tr('clearUsersFilters') }}</button>
+                  <button class="btn btn-outline" type="button" [disabled]="!users().length" (click)="exportVisibleUsersCsv()">{{ tr('exportVisibleUsers') }}</button>
+                </form>
+              </div>
+
+              <div class="insight-grid">
+                <article *ngFor="let card of usersSummaryCards()">
+                  <span>{{ card.label }}</span>
+                  <strong [class.ok]="card.ok" [class.warn]="card.warn">{{ card.value }}</strong>
+                  <small>{{ card.note }}</small>
+                </article>
+              </div>
+
+              <div class="table-scroll">
+                <table class="admin-table">
+                  <thead>
+                    <tr>
+                      <th>{{ tr('user') }}</th>
+                      <th>{{ tr('role') }}</th>
+                      <th [attr.aria-sort]="userSortAria('credits')">
+                        <button type="button" class="sort-header" [class.active]="userSortDirection('credits')" (click)="cycleUserSort('credits')">
+                          <span>{{ tr('credits') }}</span>
+                          <span class="sort-indicator" aria-hidden="true">{{ userSortIndicator('credits') }}</span>
+                        </button>
+                      </th>
+                      <th [attr.aria-sort]="userSortAria('questions')">
+                        <button type="button" class="sort-header" [class.active]="userSortDirection('questions')" (click)="cycleUserSort('questions')">
+                          <span>{{ tr('questions') }}</span>
+                          <span class="sort-indicator" aria-hidden="true">{{ userSortIndicator('questions') }}</span>
+                        </button>
+                      </th>
+                      <th [attr.aria-sort]="userSortAria('streak')">
+                        <button type="button" class="sort-header" [class.active]="userSortDirection('streak')" (click)="cycleUserSort('streak')">
+                          <span>{{ tr('streak') }}</span>
+                          <span class="sort-indicator" aria-hidden="true">{{ userSortIndicator('streak') }}</span>
+                        </button>
+                      </th>
+                      <th [attr.aria-sort]="userSortAria('status')">
+                        <button type="button" class="sort-header" [class.active]="userSortDirection('status')" (click)="cycleUserSort('status')">
+                          <span>{{ tr('status') }}</span>
+                          <span class="sort-indicator" aria-hidden="true">{{ userSortIndicator('status') }}</span>
+                        </button>
+                      </th>
+                      <th>{{ tr('actions') }}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let user of users()" [class.user-active-row]="isUserExtensionActive(user)" [class.user-banned-row]="user.isBanned" [class.user-muted-row]="!user.isBanned && !isUserExtensionActive(user)">
+                      <td class="user-cell">
+                        <button type="button" class="link-button primary-link" (click)="openUserHistory(user)">{{ user.email }}</button>
+                        <span>{{ user.displayName || tr('noDisplayName') }}</span>
+                      </td>
+                      <td><span class="badge badge-outline role-badge">{{ user.role }}</span></td>
+                      <td><strong class="metric-value">{{ user.role === 'admin' ? tr('unlimited') : user.credits }}</strong></td>
+                      <td><strong class="metric-value">{{ user.stats?.totalQuestionsSolved || 0 }}</strong></td>
+                      <td><strong class="metric-value">{{ user.streak?.current || 0 }}</strong></td>
+                      <td>
+                        <span class="status-pill" [class.danger]="user.isBanned" [class.pending]="!user.isBanned && !user.isExtensionActive">
+                          {{ userStatusLabel(user) }}
+                        </span>
+                        <small class="muted-line">
+                          {{ userExtensionLastSeen(user) }}
+                        </small>
+                      </td>
+                      <td>
+                        <div class="row-actions">
+                          <button type="button" (click)="openUserHistory(user)" style="color: var(--accent-cyan);">{{ tr('history') }}</button>
+                          <button type="button" (click)="copyUserEmail(user)">{{ tr('copyEmail') }}</button>
+                          <button type="button" (click)="quickGrant(user.id, 50)">+50</button>
+                          <button type="button" (click)="quickGrant(user.id, 100)">+100</button>
+                          <button type="button" (click)="quickGrant(user.id, 200)">+200</button>
+                          <button type="button" (click)="openGrantModal(user)">{{ tr('grant') }}</button>
+                          <button type="button" (click)="user.isBanned ? unbanUser(user.id) : banUser(user.id)">
+                            {{ user.isBanned ? tr('unban') : tr('ban') }}
+                          </button>
+                          <button type="button" class="danger" *ngIf="user.role !== 'admin'" (click)="deleteUser(user.id, user.email)">
+                            {{ tr('delete') }}
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr *ngIf="!users().length">
+                      <td colspan="7" class="empty-cell" style="text-align: center; padding: 3rem;">{{ tr('noUsers') }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div class="pagination" *ngIf="pagination().pages > 1">
+                <button type="button" *ngFor="let page of pageNumbers()" [class.active]="page === pagination().page" (click)="loadUsers(page)">
+                  {{ page }}
+                </button>
+              </div>
+            </section>
+
+            <section class="admin-panel glass" *ngIf="activeTab() === 'purchases'">
+              <div class="panel-head">
+                <div>
+                  <p class="eyebrow">{{ tr('revenue') }}</p>
+                  <h2>{{ tr('purchasesTitle') }}</h2>
+                </div>
+              </div>
+              <div class="table-scroll">
+                <table class="admin-table">
+                  <thead>
+                    <tr>
+                      <th>{{ tr('user') }}</th>
+                      <th>{{ tr('pack') }}</th>
+                      <th>{{ tr('credits') }}</th>
+                      <th>{{ tr('price') }}</th>
+                      <th>{{ tr('provider') }}</th>
+                      <th>{{ tr('applied') }}</th>
+                      <th>{{ tr('reason') }}</th>
+                      <th>{{ tr('date') }}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let purchase of purchases()">
+                      <td><strong>{{ purchase.user || tr('unknownUser') }}</strong></td>
+                      <td>{{ purchase.pack }}</td>
+                      <td>{{ purchase.credits }}</td>
+                      <td><span style="font-weight: 600; color: var(--accent-cyan);">{{ purchase.priceUsd ? formatMoney(purchase.priceUsd) : '-' }}</span></td>
+                      <td style="text-transform: uppercase; font-size: 0.85rem;">{{ purchase.provider }}</td>
+                      <td>
+                        <span class="status-pill" [class.pending]="!purchase.creditsApplied">
+                          {{ purchase.creditsApplied ? tr('applied') : tr('pending') }}
+                        </span>
+                        <button type="button" *ngIf="!purchase.creditsApplied" (click)="applyPurchaseCredits(purchase.id)" style="display: block; margin-top: 0.4rem; color: var(--accent-cyan);">{{ tr('apply') }}</button>
+                      </td>
+                      <td>{{ purchase.reason || '-' }}</td>
+                      <td>{{ formatDate(purchase.date) }}</td>
+                    </tr>
+                    <tr *ngIf="!purchases().length">
+                      <td colspan="8" class="empty-cell" style="text-align: center; padding: 3rem;">{{ tr('noPurchases') }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </section>
+
+            <section class="admin-panel glass" *ngIf="activeTab() === 'bugs'">
+              <div class="panel-head">
+                <div>
+                  <p class="eyebrow">{{ tr('reports') }}</p>
+                  <h2>{{ tr('bugsTitle') }}</h2>
+                </div>
+                <div class="row-actions" *ngIf="bugBadgeCount()">
+                  <button type="button" (click)="markAllBugReportsRead()">{{ tr('markAllRead') }}</button>
+                </div>
+              </div>
+              <div class="bug-list">
+                <article class="glass" *ngFor="let bug of bugs()" [class.unread]="!bug.isRead">
+                  <div class="bug-meta">
+                    <div>
+                      <strong>{{ bug.user || tr('unknownUser') }}</strong>
+                      <span class="status-pill danger" *ngIf="!bug.isRead">{{ tr('unreadBugs') }}</span>
+                      <span class="status-pill pending" *ngIf="bug.source === 'parser-auto'">{{ tr('parserAutoReport') }}</span>
+                    </div>
+                    <div class="row-actions">
+                      <span class="text-secondary" style="font-size: 0.8rem;">{{ formatDate(bug.date) }}</span>
+                      <button type="button" *ngIf="!bug.isRead" (click)="markBugReportRead(bug)">{{ tr('markRead') }}</button>
+                    </div>
+                  </div>
+                  <a [href]="bug.url" target="_blank" rel="noopener" style="word-break: break-all;">{{ bug.url }}</a>
+                  <p class="text-secondary" *ngIf="bug.description" style="margin-top: 0.75rem; color: var(--text-primary);">
+                    {{ bug.description }}
+                  </p>
+                  <div class="meta-chips" *ngIf="bug.platform || bug.parserDiagnostics?.outcome || bug.hasPageCode">
+                    <span class="badge badge-outline" *ngIf="bug.platform">{{ bug.platform }}</span>
+                    <span class="badge badge-outline" *ngIf="bug.parserDiagnostics?.outcome">{{ bug.parserDiagnostics.outcome }}</span>
+                    <span class="badge badge-outline" *ngIf="bug.hasPageCode">{{ tr('parserPageCode') }}</span>
+                  </div>
+                  <details class="parser-snapshot-details" *ngIf="bug.parserSnapshot?.bodyText || bug.parserSnapshot?.htmlSnippet || bug.parserSnapshot?.fullHtmlFile?.id">
+                    <summary>{{ tr('parserPageSnapshot') }}</summary>
+                    <button class="parser-snapshot-download" type="button" *ngIf="bug.parserSnapshot?.fullHtmlFile?.id" (click)="downloadParserSnapshotFile(bug.parserSnapshot.fullHtmlFile)">
+                      {{ tr('parserDownloadPageCode') }}
+                      <span>{{ formatBytes(bug.parserSnapshot.fullHtmlFile.bytes) }}</span>
+                    </button>
+                    <div class="parser-snapshot-pane" *ngIf="bug.parserSnapshot?.bodyText">
+                      <strong>{{ tr('parserPageText') }}</strong>
+                      <pre class="parser-snapshot-code">{{ bug.parserSnapshot.bodyText }}</pre>
+                    </div>
+                    <div class="parser-snapshot-pane" *ngIf="bug.parserSnapshot?.htmlSnippet">
+                      <strong>{{ tr('parserPageCode') }}</strong>
+                      <pre class="parser-snapshot-code">{{ bug.parserSnapshot.htmlSnippet }}</pre>
+                    </div>
+                  </details>
+                </article>
+                <div class="empty-panel" style="text-align: center; padding: 2rem;" *ngIf="!bugs().length">
+                  <p class="text-secondary">{{ tr('noBugReports') }}</p>
+                </div>
+              </div>
+            </section>
+
+            <section class="admin-panel glass" *ngIf="activeTab() === 'support'">
+              <div class="panel-head">
+                <div>
+                  <p class="eyebrow">{{ tr('inbox') }}</p>
+                  <h2>{{ tr('supportMail') }}</h2>
+                </div>
+                <form class="admin-search" (ngSubmit)="loadSupportMessages()">
+                  <input class="form-input" type="search" name="supportSearch" [(ngModel)]="supportSearch" [placeholder]="tr('searchSupport')">
+                  <select class="form-select" name="supportStatusFilter" [(ngModel)]="supportStatusFilter">
+                    <option value="">{{ tr('allMessages') }}</option>
+                    <option value="open">{{ tr('open') }}</option>
+                    <option value="pending">{{ tr('pending') }}</option>
+                    <option value="closed">{{ tr('closed') }}</option>
+                  </select>
+                  <button class="btn btn-primary" type="submit">{{ tr('filter') }}</button>
+                </form>
+              </div>
+
+              <div class="support-summary">
+                <article *ngFor="let item of supportSummaryCards()" [class.warn]="item.tone === 'warn'" [class.ok]="item.tone === 'ok'">
+                  <span>{{ item.label }}</span>
+                  <strong>{{ item.value }}</strong>
+                </article>
+              </div>
+
+              <div class="support-layout">
+                <div class="support-list">
+                  <button class="support-item" type="button" *ngFor="let message of filteredSupportMessages()" [class.active]="selectedSupportMessage()?.id === message.id" [class.unread]="!message.isRead" (click)="selectSupportMessage(message)">
+                    <span class="support-avatar">{{ supportInitials(message) }}</span>
+                    <span class="support-item-main">
+                      <span class="support-item-row">
+                        <strong>{{ message.subject || tr('noSubject') }}</strong>
+                        <span class="status-pill" [class.danger]="message.status === 'open'" [class.pending]="message.status === 'pending'">{{ supportStatusLabel(message.status) }}</span>
+                      </span>
+                      <span class="support-sender">{{ supportSender(message) }}</span>
+                      <span class="badge badge-outline" *ngIf="message.linkedUser">{{ tr('account') }}: {{ message.linkedUser.credits }} {{ tr('credits') }}</span>
+                      <span class="support-preview">{{ supportPreview(message) }}</span>
+                      <small>{{ formatDate(message.receivedAt) }} - {{ supportSourceLabel(message.source) }}</small>
+                    </span>
+                  </button>
+                  <div class="empty-panel" *ngIf="!filteredSupportMessages().length">
+                    <p class="text-secondary">{{ tr('noSupport') }}</p>
+                  </div>
+                </div>
+
+                <article class="support-detail" *ngIf="selectedSupportMessage(); else supportEmpty">
+                  <header>
+                    <div>
+                      <p class="eyebrow">{{ supportSourceLabel(selectedSupportMessage()?.source) }}</p>
+                      <h3>{{ selectedSupportMessage()?.subject || tr('noSubject') }}</h3>
+                      <div class="support-meta-grid">
+                        <span><strong>{{ tr('from') }}</strong>{{ supportSender(selectedSupportMessage()) }} &lt;{{ selectedSupportMessage()?.fromEmail || '-' }}&gt;</span>
+                        <span><strong>{{ tr('to') }}</strong>{{ selectedSupportMessage()?.toEmail || 'support@getquizsolver.com' }}</span>
+                        <span><strong>{{ tr('received') }}</strong>{{ formatDate(selectedSupportMessage()?.receivedAt) }}</span>
+                        <span><strong>{{ tr('status') }}</strong>{{ supportStatusLabel(selectedSupportMessage()?.status) }}</span>
+                      </div>
+                    </div>
+                    <div class="row-actions">
+                      <a class="support-action-link" [href]="supportMailto(selectedSupportMessage())">{{ tr('email') }}</a>
+                      <button type="button" (click)="copySupportEmail(selectedSupportMessage())">{{ tr('copyEmail') }}</button>
+                      <button type="button" (click)="updateSupportStatus(selectedSupportMessage(), 'open')">{{ tr('open') }}</button>
+                      <button type="button" (click)="updateSupportStatus(selectedSupportMessage(), 'pending')">{{ tr('pending') }}</button>
+                      <button type="button" (click)="updateSupportStatus(selectedSupportMessage(), 'closed')">{{ tr('close') }}</button>
+                      <button type="button" class="danger" (click)="deleteSupportMessage(selectedSupportMessage())">{{ tr('delete') }}</button>
+                    </div>
+                  </header>
+
+                  <div class="support-linked-user" *ngIf="selectedSupportMessage()?.linkedUser as linkedUser; else noLinkedSupportUser">
+                    <div>
+                      <span>{{ tr('linkedAccount') }}</span>
+                      <button type="button" class="link-button primary-link" (click)="openUserHistory(linkedUser)" style="font-weight: bold; text-align: left;">{{ linkedUser.email }}</button>
+                      <small>{{ linkedUser.role }} - {{ linkedUser.credits }} {{ tr('credits') }} - {{ linkedUser.stats?.totalQuestionsSolved || 0 }} {{ tr('questions') }}</small>
+                    </div>
+                    <div>
+                      <button type="button" (click)="openGrantModal(linkedUser, tr('supportAdjustment'))">{{ tr('grantCredits') }}</button>
+                      <button type="button" (click)="linkedUser.isBanned ? unbanUser(linkedUser.id) : banUser(linkedUser.id)">
+                        {{ linkedUser.isBanned ? tr('unban') : tr('ban') }}
+                      </button>
+                    </div>
+                  </div>
+                  <ng-template #noLinkedSupportUser>
+                    <div class="support-linked-user muted">
+                      <div>
+                        <span>{{ tr('noLinkedAccount') }}</span>
+                        <strong>{{ selectedSupportMessage()?.fromEmail || tr('unknownEmail') }}</strong>
+                        <small>{{ tr('noLinkedAccountNote') }}</small>
+                      </div>
+                    </div>
+                  </ng-template>
+
+                  <div class="support-body">
+                    <p *ngFor="let paragraph of supportParagraphs(selectedSupportMessage()?.text)">{{ paragraph }}</p>
+                  </div>
+
+                  <div class="support-replies" *ngIf="(selectedSupportMessage()?.replies || []).length">
+                    <h4>{{ tr('replies') }}</h4>
+                    <article class="support-reply" *ngFor="let reply of selectedSupportMessage()?.replies">
+                      <strong>{{ reply.admin }}</strong>
+                      <small>{{ formatDate(reply.sentAt) }} - {{ reply.delivery }}</small>
+                      <p>{{ reply.text }}</p>
+                    </article>
+                  </div>
+
+                  <form class="support-reply-form" (ngSubmit)="replySupportMessage()">
+                    <label class="form-label">
+                      <span>{{ tr('reply') }}</span>
+                      <textarea name="supportReplyText" [(ngModel)]="supportReplyText" rows="7" [placeholder]="tr('replyPlaceholder')"></textarea>
+                    </label>
+                    <button class="btn btn-primary" type="submit" [disabled]="!supportReplyText.trim()">{{ tr('sendReply') }}</button>
+                  </form>
+                </article>
+
+                <ng-template #supportEmpty>
+                  <div class="support-detail support-empty">
+                    <p class="text-secondary">{{ tr('selectMessage') }}</p>
+                  </div>
+                </ng-template>
+              </div>
+            </section>
+
+            <section class="admin-panel glass" *ngIf="activeTab() === 'cache'">
+              <div class="panel-head">
+                <div>
+                  <p class="eyebrow">{{ tr('aiCache') }}</p>
+                  <h2>{{ tr('cachedAnswers') }}</h2>
+                </div>
+                <form class="admin-search" (ngSubmit)="loadCache(1)">
+                  <input class="form-input" type="search" name="cacheSearch" [(ngModel)]="cacheSearch" [placeholder]="tr('searchCache')">
+                  <button class="btn btn-primary" type="submit">{{ tr('search') }}</button>
+                  <button class="btn btn-outline" type="button" *ngIf="cacheSearch" (click)="cacheSearch = ''; loadCache(1)">{{ tr('reset') }}</button>
+                  <button class="btn btn-outline" type="button" (click)="clearCache()">{{ tr('clearCache') }}</button>
+                </form>
+              </div>
+              <div class="cache-summary">
+                <article *ngFor="let card of cacheSummaryCards()" [class.warn]="card.warn">
+                  <span>{{ card.label }}</span>
+                  <strong>{{ card.value }}</strong>
+                  <small>{{ card.note }}</small>
+                </article>
+              </div>
+              <div class="cache-list">
+                <article class="glass clickable-row" *ngFor="let hit of cache().topHits || []" (click)="showQuestionDetails(hit)">
+                  <div class="cache-question-main">
+                    <p>{{ hit.questionText }}</p>
+                    <div class="meta-chips">
+                      <span class="badge badge-outline role-badge">{{ hit.questionType }}</span>
+                      <span class="badge badge-outline">{{ hit.options?.length || 0 }} {{ tr('options') }}</span>
+                      <span class="badge badge-outline">{{ hit.hitCount }} {{ tr('hits') }}</span>
+                      <span class="badge badge-outline">{{ tr('lastSeen') }}: {{ formatDate(hit.lastUsedAt || hit.createdAt) }}</span>
+                      <span class="status-pill danger" *ngIf="isWeakQuestionText(hit.questionText)">{{ tr('weakText') }}</span>
+                    </div>
+                  </div>
+                  <span class="open-hint">{{ tr('openDetails') }}</span>
+                </article>
+                <div class="empty-panel" style="text-align: center; padding: 2rem;" *ngIf="!(cache().topHits || []).length">
+                  <p class="text-secondary">{{ tr('noCacheHits') }}</p>
+                </div>
+              </div>
+              <div class="pagination" *ngIf="cachePagination().pages > 1">
+                <button type="button" *ngFor="let page of cachePageNumbers()" [class.active]="page === cachePagination().page" (click)="loadCache(page)">
+                  {{ page }}
+                </button>
+              </div>
+            </section>
+
+            <section class="admin-panel glass" *ngIf="activeTab() === 'parser'">
+              <div class="panel-head parser-panel-head">
+                <div>
+                  <p class="eyebrow">{{ tr('parserHealth') }}</p>
+                  <h2>{{ tr('parserAnalytics') }}</h2>
+                </div>
+                <form class="admin-search parser-filters" (ngSubmit)="loadParserEvents(1)">
+                  <input class="form-input" type="search" name="parserSearch" [(ngModel)]="parserSearch" [placeholder]="adminLocale() === 'pl' ? 'Szukaj URL, platformy lub powodu' : 'Search URL, platform or reason'">
+                  <select class="form-select" name="parserOutcomeFilter" [(ngModel)]="parserOutcomeFilter" (ngModelChange)="loadParserEvents(1)" [attr.aria-label]="tr('parserOutcome')">
+                    <option value="">{{ adminLocale() === 'pl' ? 'Wszystkie wyniki' : 'All outcomes' }}</option>
+                    <option value="success">success</option>
+                    <option value="partial">partial</option>
+                    <option value="empty">empty</option>
+                    <option value="weak">weak</option>
+                    <option value="error">error</option>
+                    <option value="reported">reported</option>
+                  </select>
+                  <button class="btn btn-primary" type="submit">{{ tr('search') }}</button>
+                  <button class="btn btn-outline" type="button" (click)="loadParserHealth(); loadParserEvents(parserEventsPagination().page || 1)">{{ tr('refresh') }}</button>
+                  <button class="btn btn-outline danger-outline" type="button" *ngIf="hasParserEventFilters()" (click)="clearParserEvents(false)">{{ tr('clearFilteredParserEvents') }}</button>
+                  <button class="btn btn-outline danger-outline" type="button" (click)="clearParserEvents(true)">{{ tr('clearAllParserEvents') }}</button>
+                </form>
+              </div>
+
+              <div class="parser-health-grid">
+                <article *ngFor="let card of parserHealthCards()">
+                  <span class="text-secondary" style="font-size: 0.75rem; text-transform: uppercase;">{{ card.label }}</span>
+                  <strong [class.ok]="card.ok" [class.warn]="card.warn" style="font-size: 1.35rem; margin-top: 0.25rem;">{{ card.value }}</strong>
+                  <small class="text-secondary">{{ card.note }}</small>
+                </article>
+              </div>
+
+              <div class="parser-workspace">
+                <section class="parser-block parser-domain-block">
+                  <div class="parser-block-head">
+                    <div>
+                      <h3>{{ adminLocale() === 'pl' ? 'Strony z problemami' : 'Problem sites' }}</h3>
+                      <p>{{ adminLocale() === 'pl' ? 'Gdzie parser najczęściej nie znajduje pytań albo widzi tylko część strony.' : 'Where the parser most often misses questions or reads only part of the page.' }}</p>
+                    </div>
+                  </div>
+                  <div class="parser-platform-list" *ngIf="parserDomainRows().length; else noParserDomains">
+                    <article class="parser-platform-row parser-domain-row" *ngFor="let item of parserDomainRows()">
+                      <div class="parser-row-head">
+                        <div class="parser-row-main">
+                          <strong>{{ item.hostname || shortUrl(item.sampleUrl) || 'unknown site' }}</strong>
+                          <span>{{ formatNumber(item.count || 0) }} {{ tr('parserEvents') }} - {{ (item.platforms || []).join(', ') || 'universal' }}</span>
+                        </div>
+                        <span class="status-pill" [class.danger]="item.failed || item.reported">{{ formatNumber((item.failed || 0) + (item.reported || 0)) }} {{ tr('parserFailures') }}</span>
+                      </div>
+                      <div class="parser-row-metrics">
+                        <span>{{ tr('parserFailureRate') }}: <strong>{{ formatPercent(item.failureRate || 0) }}</strong></span>
+                        <span>{{ tr('parserConfidence') }}: <strong>{{ formatPercent(item.avgConfidence || 0) }}</strong></span>
+                        <span>{{ tr('parserReports') }}: <strong>{{ formatNumber(item.reported || 0) }}</strong></span>
+                        <span>{{ tr('lastSeen') }}: <strong>{{ formatDate(item.lastSeenAt) }}</strong></span>
+                      </div>
+                      <p class="parser-reason-line">{{ parserReasons(item) }}</p>
+                      <a class="primary-link parser-url" *ngIf="item.sampleUrl" [href]="item.sampleUrl" target="_blank" rel="noopener">{{ shortUrl(item.sampleUrl) }}</a>
+                    </article>
+                  </div>
+                  <ng-template #noParserDomains>
+                    <div class="empty-panel">{{ tr('parserNoEvents') }}</div>
+                  </ng-template>
+                </section>
+
+                <section class="parser-block parser-problem-block">
+                  <div class="parser-block-head">
+                    <div>
+                      <h3>{{ adminLocale() === 'pl' ? 'Napraw najpierw' : 'Fix first' }}</h3>
+                      <p>{{ adminLocale() === 'pl' ? 'Najbardziej powtarzalne błędy, z powodem i przykładem strony do sprawdzenia.' : 'The most repeated failures, with reason and a sample page to inspect.' }}</p>
+                    </div>
+                  </div>
+                  <div class="parser-event-list" *ngIf="parserProblemRows().length; else noParserProblems">
+                    <article class="parser-event-card parser-problem-card" *ngFor="let group of parserProblemRows()">
+                      <div class="parser-event-head">
+                        <div class="parser-row-main">
+                          <strong>{{ parserProblemSite(group) }}</strong>
+                          <span>{{ group.platform || 'universal' }} - {{ group.outcome || 'unknown' }}</span>
+                        </div>
+                        <span class="status-pill danger">{{ formatNumber(group.count || 0) }}</span>
+                      </div>
+                      <p class="parser-reason-line">{{ group.reason || (adminLocale() === 'pl' ? 'Brak powodu' : 'No reason recorded') }}</p>
+                      <p class="parser-next-step">{{ adminLocale() === 'pl' ? 'Kolejny krok: otwórz snapshot, sprawdź selektory i popraw regułę parsera dla tej domeny.' : 'Next step: open the snapshot, check selectors and patch the parser rule for this site.' }}</p>
+                      <p class="parser-snapshot" *ngIf="group.sampleText">{{ truncateUi(group.sampleText, 180) }}</p>
+                      <div class="parser-event-meta">
+                        <span>{{ tr('parserConfidence') }}: {{ formatPercent(group.avgConfidence || 0) }}</span>
+                        <span>{{ tr('parserQuestionsFound') }}: {{ formatNumber(group.avgQuestions || 0) }}</span>
+                        <span>{{ tr('lastSeen') }}: {{ formatDate(group.lastSeenAt) }}</span>
+                        <a class="primary-link parser-url" *ngIf="group.sampleUrl" [href]="group.sampleUrl" target="_blank" rel="noopener">{{ shortUrl(group.sampleUrl) }}</a>
+                      </div>
+                    </article>
+                  </div>
+                  <ng-template #noParserProblems>
+                    <div class="empty-panel">{{ adminLocale() === 'pl' ? 'Brak pogrupowanych problemow.' : 'No grouped parser issues.' }}</div>
+                  </ng-template>
+                </section>
+
+                <section class="parser-block parser-platform-block">
+                  <div class="parser-block-head">
+                    <div>
+                      <h3>{{ tr('parserPlatform') }}</h3>
+                      <p>{{ adminLocale() === 'pl' ? 'Kontekst pomocniczy: które platformy generują najwięcej zdarzeń.' : 'Supporting context: which platforms generate the most events.' }}</p>
+                    </div>
+                  </div>
+                  <div class="parser-platform-list" *ngIf="parserPlatformRows().length; else noParserPlatforms">
+                    <article class="parser-platform-row" *ngFor="let item of parserPlatformRows()">
+                      <div class="parser-row-head">
+                        <div class="parser-row-main">
+                          <strong>{{ item.platform || 'unknown' }}</strong>
+                          <span>{{ formatNumber(item.count || 0) }} {{ tr('parserEvents') }}</span>
+                        </div>
+                        <span class="status-pill" [class.danger]="item.failed">{{ formatNumber(item.failed || 0) }} {{ tr('parserFailures') }}</span>
+                      </div>
+                      <div class="parser-row-metrics">
+                        <span>{{ tr('parserFailureRate') }}: <strong>{{ formatPercent(item.failureRate || 0) }}</strong></span>
+                        <span>{{ tr('parserConfidence') }}: <strong>{{ formatPercent(item.avgConfidence || 0) }}</strong></span>
+                        <span>{{ tr('lastSeen') }}: <strong>{{ formatDate(item.lastSeenAt) }}</strong></span>
+                      </div>
+                      <p class="parser-reason-line">{{ parserReasons(item) }}</p>
+                    </article>
+                  </div>
+                  <ng-template #noParserPlatforms>
+                    <div class="empty-panel">{{ tr('parserNoEvents') }}</div>
+                  </ng-template>
+                </section>
+
+                <section class="parser-block parser-events-block">
+                  <div class="parser-block-head">
+                    <div>
+                      <h3>{{ tr('parserEvents') }}</h3>
+                      <p>{{ adminLocale() === 'pl' ? 'Świeże przykłady z krótkim opisem, linkiem i snapshotem HTML.' : 'Fresh examples with a short preview, source link and HTML snapshot.' }}</p>
+                    </div>
+                  </div>
+                  <div class="parser-event-list" *ngIf="parserEvents().length; else noParserEvents">
+                    <article class="parser-event-card" *ngFor="let event of parserEvents()">
+                      <div class="parser-event-head">
+                        <div class="parser-row-main">
+                          <strong>{{ event.platform || 'unknown' }}</strong>
+                          <span>{{ parserHost(event) }}</span>
+                        </div>
+                        <span class="status-pill" [class.ok]="parserOutcomeTone(event.outcome) === 'ok'" [class.pending]="parserOutcomeTone(event.outcome) === 'pending'" [class.danger]="parserOutcomeTone(event.outcome) === 'danger'">{{ event.outcome || '-' }}</span>
+                      </div>
+                      <p class="parser-reason-line">{{ event.reason || '-' }}</p>
+                      <p class="parser-snapshot">{{ parserEventPreview(event) }}</p>
+                      <div class="parser-event-meta">
+                        <span>{{ formatPercent(event.confidence || 0) }}</span>
+                        <span>{{ formatNumber(event.questionCount || 0) }} {{ tr('parserQuestionsFound') }}</span>
+                        <span>{{ formatNumber(event.optionCount || 0) }} {{ tr('parserOptionsFound') }}</span>
+                        <span *ngIf="event.hasPageCode">{{ tr('parserPageCode') }}</span>
+                        <span>{{ formatDate(event.createdAt) }}</span>
+                        <a class="primary-link parser-url" [href]="event.url" target="_blank" rel="noopener">{{ shortUrl(event.url) }}</a>
+                      </div>
+                      <details class="parser-snapshot-details" *ngIf="event.snapshot?.bodyText || event.snapshot?.htmlSnippet || event.snapshot?.fullHtmlFile?.id">
+                        <summary>{{ tr('parserPageSnapshot') }}</summary>
+                        <button class="parser-snapshot-download" type="button" *ngIf="event.snapshot?.fullHtmlFile?.id" (click)="downloadParserSnapshotFile(event.snapshot.fullHtmlFile)">
+                          {{ tr('parserDownloadPageCode') }}
+                          <span>{{ formatBytes(event.snapshot.fullHtmlFile.bytes) }}</span>
+                        </button>
+                        <div class="parser-snapshot-pane" *ngIf="event.snapshot?.bodyText">
+                          <strong>{{ tr('parserPageText') }}</strong>
+                          <pre class="parser-snapshot-code">{{ event.snapshot.bodyText }}</pre>
+                        </div>
+                        <div class="parser-snapshot-pane" *ngIf="event.snapshot?.htmlSnippet">
+                          <strong>{{ tr('parserPageCode') }}</strong>
+                          <pre class="parser-snapshot-code">{{ event.snapshot.htmlSnippet }}</pre>
+                        </div>
+                      </details>
+                    </article>
+                  </div>
+                  <ng-template #noParserEvents>
+                    <div class="empty-panel">{{ tr('parserNoEvents') }}</div>
+                  </ng-template>
+                </section>
+              </div>
+
+              <div class="pagination" *ngIf="parserEventsPagination().pages > 1">
+                <button type="button" *ngFor="let page of parserEventPageNumbers()" [class.active]="page === parserEventsPagination().page" (click)="loadParserEvents(page)">
+                  {{ page }}
+                </button>
+              </div>
+
+              <section class="parser-block parser-reports" *ngIf="(parserHealth().recentBugReports || []).length">
+                <div class="parser-block-head">
+                  <div>
+                    <h3>{{ tr('parserRecentReports') }}</h3>
+                    <p>{{ adminLocale() === 'pl' ? 'Zgłoszenia użytkowników powiązane z parserem.' : 'User reports linked with parser diagnostics.' }}</p>
+                  </div>
+                </div>
+                <div class="parser-report-list">
+                  <article class="parser-report-row" *ngFor="let report of parserHealth().recentBugReports">
+                    <div class="cache-question-main">
+                      <p>{{ report.parserSnapshot?.questionTexts?.[0] || report.parserDiagnostics?.reason || report.url }}</p>
+                      <div class="meta-chips">
+                        <span class="badge badge-outline role-badge">{{ report.platform || 'unknown' }}</span>
+                        <span class="badge badge-outline" *ngIf="report.source === 'parser-auto'">{{ tr('parserAutoReport') }}</span>
+                        <span class="badge badge-outline">{{ formatPercent(report.parserDiagnostics?.confidence || 0) }}</span>
+                        <span class="badge badge-outline" *ngIf="report.hasPageCode">{{ tr('parserPageCode') }}</span>
+                        <span class="badge badge-outline">{{ formatDate(report.date) }}</span>
+                      </div>
+                      <details class="parser-snapshot-details" *ngIf="report.parserSnapshot?.bodyText || report.parserSnapshot?.htmlSnippet || report.parserSnapshot?.fullHtmlFile?.id">
+                        <summary>{{ tr('parserPageSnapshot') }}</summary>
+                        <button class="parser-snapshot-download" type="button" *ngIf="report.parserSnapshot?.fullHtmlFile?.id" (click)="downloadParserSnapshotFile(report.parserSnapshot.fullHtmlFile)">
+                          {{ tr('parserDownloadPageCode') }}
+                          <span>{{ formatBytes(report.parserSnapshot.fullHtmlFile.bytes) }}</span>
+                        </button>
+                        <div class="parser-snapshot-pane" *ngIf="report.parserSnapshot?.bodyText">
+                          <strong>{{ tr('parserPageText') }}</strong>
+                          <pre class="parser-snapshot-code">{{ report.parserSnapshot.bodyText }}</pre>
+                        </div>
+                        <div class="parser-snapshot-pane" *ngIf="report.parserSnapshot?.htmlSnippet">
+                          <strong>{{ tr('parserPageCode') }}</strong>
+                          <pre class="parser-snapshot-code">{{ report.parserSnapshot.htmlSnippet }}</pre>
+                        </div>
+                      </details>
+                    </div>
+                    <a class="open-hint" [href]="report.url" target="_blank" rel="noopener">{{ shortUrl(report.url) }}</a>
+                  </article>
+                </div>
+              </section>
+            </section>
+
+            <section class="admin-panel glass" *ngIf="activeTab() === 'system'">
+              <div class="panel-head">
+                <div>
+                  <p class="eyebrow">{{ tr('system') }}</p>
+                  <h2>{{ tr('healthCheck') }}</h2>
+                </div>
+              </div>
+              <div class="health-grid">
+                <article class="glass" *ngFor="let item of healthCards()">
+                  <span class="text-secondary" style="font-size: 0.75rem; text-transform: uppercase;">{{ item.label }}</span>
+                  <strong [class.ok]="item.ok" style="font-size: 1.35rem; margin-top: 0.25rem;">{{ item.value }}</strong>
+                </article>
+              </div>
+
+              <div id="admin-billing-safety" style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border);">
+                <div class="panel-head" style="margin-bottom: 1rem;">
+                  <div>
+                    <p class="eyebrow">{{ tr('billingSafety') }}</p>
+                    <h3 style="margin: 0.25rem 0 0; font-family: var(--font-heading); font-size: 1.15rem;">{{ tr('creditDedupeMonitor') }}</h3>
+                  </div>
+                  <button class="btn btn-outline" type="button" (click)="loadBillingSafety()">{{ tr('refreshBilling') }}</button>
+                </div>
+                <div class="health-grid">
+                  <article class="glass" *ngFor="let item of billingSafetyCards()">
+                    <span class="text-secondary" style="font-size: 0.75rem; text-transform: uppercase;">{{ item.label }}</span>
+                    <strong [class.ok]="item.ok" style="font-size: 1.35rem; margin-top: 0.25rem;">{{ item.value }}</strong>
+                  </article>
+                </div>
+
+                <div class="admin-alert" *ngIf="(billingSafety().duplicateGroups || []).length" style="margin-top: 1rem;">
+                  {{ tr('duplicateWarning') }}
+                </div>
+
+                <div class="table-scroll" *ngIf="(billingSafety().duplicateGroups || []).length" style="margin-top: 1rem;">
+                  <table class="admin-table">
+                    <thead>
+                      <tr>
+                        <th>{{ tr('user') }}</th>
+                        <th>{{ tr('questionText') }}</th>
+                        <th>{{ tr('questionHash') }}</th>
+                        <th>{{ tr('charges') }}</th>
+                        <th>{{ tr('actions') }}</th>
+                        <th>{{ tr('lastCharged') }}</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let group of billingSafety().duplicateGroups">
+                        <td>
+                          <button class="link-button primary-link" type="button" *ngIf="group.userId" (click)="openUserHistory({ id: group.userId, email: group.email || group.userId })" style="font-weight: bold; text-align: left;">
+                            {{ group.email || group.userId }}
+                          </button>
+                          <strong *ngIf="!group.userId">{{ group.email || tr('unknownUser') }}</strong>
+                        </td>
+                        <td class="question-audit-cell">
+                          <strong>{{ group.questionText || shortHash(group.questionHash) }}</strong>
+                          <span *ngIf="group.answerText">{{ tr('answerSummary') }}: {{ group.answerText }}</span>
+                          <span>{{ tr('duplicateReason') }}</span>
+                        </td>
+                        <td>{{ shortHash(group.questionHash) }}</td>
+                        <td>
+                          <strong>{{ group.count }} / {{ group.credits }} credits</strong>
+                          <span>{{ tr('timeSpan') }}: {{ formatDurationMs(group.spanMs) }}</span>
+                        </td>
+                        <td>
+                          <strong>{{ group.action || (group.actions || []).join(', ') }}</strong>
+                          <span>{{ tr('firstCharged') }}: {{ formatDate(group.firstChargedAt) }}</span>
+                        </td>
+                        <td>
+                          <strong>{{ formatDate(group.lastChargedAt) }}</strong>
+                          <div class="row-actions" style="margin-top: 0.5rem;">
+                            <button type="button" (click)="reviewDuplicateGroup(group)">{{ tr('reviewInLog') }}</button>
+                            <button type="button" *ngIf="group.userId" (click)="openGrantModal({ id: group.userId, email: group.email || group.userId }, tr('possibleRefund'))">{{ tr('possibleRefund') }}</button>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <div class="empty-panel" *ngIf="!(billingSafety().duplicateGroups || []).length" style="text-align: center; padding: 1.25rem; margin-top: 1rem;">
+                  <p class="text-secondary">{{ tr('noDuplicateGroups') }}</p>
+                </div>
+
+                <div class="credit-usage-panel">
+                  <div class="panel-head" style="margin-bottom: 1rem;">
+                    <div>
+                      <p class="eyebrow">{{ tr('creditEvent') }}</p>
+                      <h3 style="margin: 0.25rem 0 0; font-family: var(--font-heading); font-size: 1.15rem;">{{ tr('creditUsageLog') }}</h3>
+                      <p class="text-secondary" style="margin: 0.4rem 0 0;">{{ tr('creditUsageDescription') }}</p>
+                    </div>
+                    <button class="btn btn-outline" type="button" (click)="loadBillingUsage(1)">{{ tr('refresh') }}</button>
+                  </div>
+
+                  <form class="admin-search credit-usage-filters" (ngSubmit)="loadBillingUsage(1)">
+                    <input type="text" [(ngModel)]="billingUsageSearch" name="billingUsageSearch" [placeholder]="tr('searchCreditUsage')">
+                    <select [(ngModel)]="billingUsageStatus" name="billingUsageStatus">
+                      <option value="">{{ tr('allStatuses') }}</option>
+                      <option value="charged">{{ tr('charged') }}</option>
+                      <option value="claimed">{{ tr('claimed') }}</option>
+                      <option value="waived">{{ tr('waived') }}</option>
+                      <option value="aborted">{{ tr('aborted') }}</option>
+                      <option value="declined">{{ tr('declined') }}</option>
+                    </select>
+                    <select [(ngModel)]="billingUsageAction" name="billingUsageAction">
+                      <option value="">{{ tr('allActions') }}</option>
+                      <option value="solve">solve</option>
+                      <option value="solve-snapshot">solve-snapshot</option>
+                      <option value="explain">explain</option>
+                      <option value="follow-up">follow-up</option>
+                    </select>
+                    <button class="btn btn-primary" type="submit">{{ tr('search') }}</button>
+                  </form>
+
+                  <div class="health-grid credit-usage-summary">
+                    <article class="glass">
+                      <span>{{ tr('visibleEntries') }}</span>
+                      <strong>{{ formatNumber(billingUsagePagination().total || 0) }}</strong>
+                    </article>
+                    <article class="glass">
+                      <span>{{ tr('charged') }}</span>
+                      <strong class="ok">{{ formatNumber(billingUsageSummary().chargedRecords || 0) }}</strong>
+                    </article>
+                    <article class="glass">
+                      <span>{{ tr('chargedCredits') }}</span>
+                      <strong class="ok">{{ formatNumber(billingUsageSummary().chargedCredits || 0) }}</strong>
+                    </article>
+                    <article class="glass">
+                      <span>{{ tr('status') }}</span>
+                      <strong>{{ billingUsageStatus ? creditUsageStatusLabel(billingUsageStatus) : tr('allStatuses') }}</strong>
+                    </article>
+                  </div>
+
+                  <div class="table-scroll" style="margin-top: 1rem;">
+                    <table class="admin-table credit-usage-table">
+                      <thead>
+                        <tr>
+                          <th>{{ tr('questionText') }}</th>
+                          <th>{{ tr('user') }}</th>
+                          <th>{{ tr('creditEvent') }}</th>
+                          <th>{{ tr('chargedCredits') }}</th>
+                          <th>{{ tr('date') }}</th>
+                          <th>{{ tr('actions') }}</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let item of billingUsageRows()">
+                          <td class="question-audit-cell">
+                            <strong>{{ item.questionText }}</strong>
+                            <span *ngIf="item.answerText">{{ tr('answerSummary') }}: {{ item.answerText }}</span>
+                            <span>{{ item.questionType || item.action }} - {{ shortHash(item.questionHash) }}</span>
+                          </td>
+                          <td>
+                            <button type="button" class="link-button primary-link" *ngIf="item.userId" (click)="openUserHistory({ id: item.userId, email: item.email })" style="font-weight: bold; text-align: left;">
+                              {{ item.email }}
+                            </button>
+                            <strong *ngIf="!item.userId">{{ item.email }}</strong>
+                            <span *ngIf="item.displayName">{{ item.displayName }}</span>
+                          </td>
+                          <td>
+                            <span class="status-pill" [class.ok]="creditUsageStatusClass(item.status) === 'ok'" [class.pending]="creditUsageStatusClass(item.status) === 'pending'" [class.danger]="creditUsageStatusClass(item.status) === 'danger'">
+                              {{ creditUsageStatusLabel(item.status) }}
+                            </span>
+                            <span>{{ item.action }}</span>
+                            <span *ngIf="item.waivedReason">{{ item.waivedReason }}</span>
+                          </td>
+                          <td>
+                            <strong class="metric-value">{{ item.creditsCharged || 0 }}</strong>
+                            <span>{{ tr('billableCredits') }}: {{ item.credits || 0 }}</span>
+                          </td>
+                          <td>{{ formatDate(item.time) }}</td>
+                          <td>
+                            <div class="row-actions">
+                              <button type="button" (click)="showQuestionDetails(item)">{{ tr('viewQuestion') }}</button>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr *ngIf="!billingUsageRows().length">
+                          <td colspan="6" class="empty-cell">{{ tr('noCreditUsage') }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <div class="pagination" *ngIf="billingUsagePagination().pages > 1">
+                    <button type="button" *ngFor="let page of billingUsagePageNumbers()" [class.active]="page === billingUsagePagination().page" (click)="loadBillingUsage(page)">
+                      {{ page }}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </section>
+        </section>
+      </ng-template>
+
+      <!-- Question Detail Modal -->
+      <div class="modal-overlay" *ngIf="selectedQuestion()" (click)="selectedQuestion.set(null)" style="z-index: 1100;">
+        <div class="modal-card glass anim-slide-up" (click)="$event.stopPropagation()">
+          <header class="modal-header">
+            <h3>{{ tr('questionDetails') }}</h3>
+            <div class="row-actions">
+              <button type="button" class="danger" *ngIf="selectedQuestion()?.cacheId" (click)="deleteCacheEntry(selectedQuestion())">{{ tr('deleteCache') }}</button>
+              <button class="btn-close" type="button" (click)="selectedQuestion.set(null)">x</button>
+            </div>
+          </header>
+          <div class="modal-body">
+            <div class="detail-group">
+              <label>{{ tr('type') }}</label>
+              <span class="badge badge-outline" style="text-transform: uppercase;">{{ selectedQuestion()?.questionType }}</span>
+            </div>
+            <div class="detail-group" *ngIf="selectedQuestion()?.hitCount != null" style="margin-top: 1rem;">
+              <label>{{ tr('cacheHits') }}</label>
+              <strong style="color: var(--text-primary);">{{ selectedQuestion()?.hitCount }}</strong>
+            </div>
+            <div class="detail-group" style="margin-top: 1rem;">
+              <label>{{ tr('counts') }}</label>
+              <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                <span class="badge badge-outline">{{ tr('options') }}: {{ selectedQuestion()?.options?.length || 0 }}</span>
+                <span class="badge badge-outline">{{ tr('prompts') }}: {{ selectedQuestion()?.prompts?.length || 0 }}</span>
+                <span class="badge badge-outline">{{ tr('rows') }}: {{ selectedQuestion()?.rows?.length || 0 }}</span>
+                <span class="badge badge-outline">{{ tr('answerItems') }}: {{ answerItems(selectedQuestion()).length }}</span>
+              </div>
+            </div>
+            <div class="detail-group" style="margin-top: 1.5rem;">
+              <label>{{ tr('questionText') }}</label>
+              <p class="question-text-full">{{ selectedQuestion()?.questionText }}</p>
+            </div>
+            
+            <div class="detail-group" *ngIf="selectedQuestion()?.options?.length" style="margin-top: 1.5rem;">
+              <label>{{ tr('options') }} ({{ selectedQuestion()?.options?.length || 0 }})</label>
+              <ul class="options-list">
+                <li *ngFor="let opt of selectedQuestion()?.options; let i = index">
+                  <span class="option-idx">{{ i + 1 }}.</span> {{ opt }}
+                </li>
+              </ul>
+            </div>
+
+            <div class="detail-group" *ngIf="selectedQuestion()?.prompts?.length" style="margin-top: 1.5rem;">
+              <label>{{ tr('prompts') }} ({{ selectedQuestion()?.prompts?.length || 0 }})</label>
+              <ul class="options-list">
+                <li *ngFor="let prompt of selectedQuestion()?.prompts; let i = index">
+                  <span class="option-idx">P{{ i + 1 }}:</span> {{ prompt }}
+                </li>
+              </ul>
+            </div>
+
+            <div class="detail-group" *ngIf="selectedQuestion()?.rows?.length" style="margin-top: 1.5rem;">
+              <label>{{ tr('rows') }} ({{ selectedQuestion()?.rows?.length || 0 }})</label>
+              <ul class="options-list">
+                <li *ngFor="let row of selectedQuestion()?.rows; let i = index">
+                  <span class="option-idx">R{{ i + 1 }}:</span> {{ row }}
+                </li>
+              </ul>
+            </div>
+
+            <div class="detail-group" *ngIf="answerItems(selectedQuestion()).length" style="margin-top: 1.5rem;">
+              <label>{{ tr('answerItems') }} ({{ answerItems(selectedQuestion()).length }})</label>
+              <ul class="options-list">
+                <li *ngFor="let item of answerItems(selectedQuestion())">
+                  <span class="option-idx">{{ item.label }}</span> {{ item.value }}
+                  <small *ngIf="item.raw !== null" style="display: block; margin-top: 0.35rem; color: var(--text-secondary);">raw: {{ item.raw }}</small>
+                </li>
+              </ul>
+            </div>
+
+            <div class="detail-group" style="margin-top: 1.5rem; padding: 1rem; background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.2); border-radius: var(--radius-md);">
+              <label style="color: var(--accent-emerald);">{{ tr('answerSummary') }}</label>
+              <strong style="color: #fff; font-size: 1.1rem; display: block; margin-top: 0.25rem;">{{ formatAnswer(selectedQuestion()) }}</strong>
+            </div>
+
+            <div class="detail-group" *ngIf="selectedQuestion()?.explanation" style="margin-top: 1.5rem;">
+              <label>{{ tr('explanation') }}</label>
+              <p class="explanation-text">{{ selectedQuestion()?.explanation }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- User Solve History Modal -->
+      <div class="modal-overlay" *ngIf="selectedUserHistory()" (click)="closeUserHistory()" style="z-index: 1000;">
+        <div class="modal-card glass anim-slide-up" style="max-width: 800px;" (click)="$event.stopPropagation()">
+          <header class="modal-header">
+            <div>
+              <p class="eyebrow" style="margin: 0;">{{ tr('solveHistory') }}</p>
+              <h3 style="margin-top: 0.25rem;">{{ selectedUserHistory()?.email }}</h3>
+            </div>
+            <div class="modal-actions">
+              <button class="btn btn-outline" type="button" (click)="openGrantModal(selectedUserHistory(), tr('questionHistoryAdjustment'))">{{ tr('grantCredits') }}</button>
+              <button class="btn-close" type="button" (click)="closeUserHistory()">x</button>
+            </div>
+          </header>
+          <div class="modal-body" style="padding-top: 1rem;">
+            <div class="table-scroll" style="margin: 0; border: 1px solid var(--border); border-radius: var(--radius-md);">
+              <table class="admin-table" style="min-width: 100%;">
+                <thead>
+                  <tr>
+                    <th>{{ tr('questionText') }}</th>
+                    <th>{{ tr('type') }}</th>
+                    <th>{{ tr('date') }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let q of userQuestions()" (click)="showQuestionDetails(q)" class="clickable-row">
+                    <td style="max-width: 400px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                      <strong>{{ q.questionText }}</strong>
+                    </td>
+                    <td style="text-transform: capitalize;">{{ q.questionType }}</td>
+                    <td>{{ formatDate(q.lastSeenAt) }}</td>
+                  </tr>
+                  <tr *ngIf="!userQuestions().length">
+                    <td colspan="3" class="empty-cell" style="text-align: center; padding: 3rem;">{{ tr('noSolvedQuestions') }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="pagination" *ngIf="userQuestionsPagination().pages > 1" style="margin-top: 1.5rem;">
+              <button type="button" *ngFor="let page of userQuestionsPageNumbers()" [class.active]="page === userQuestionsPagination().page" (click)="loadUserQuestions(selectedUserHistory().id, page)">
+                {{ page }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Credit Grant Modal -->
+      <div class="modal-overlay" *ngIf="selectedGrantUser()" (click)="closeGrantModal()" style="z-index: 1200;">
+        <div class="modal-card glass anim-slide-up" (click)="$event.stopPropagation()">
+          <header class="modal-header">
+            <div>
+              <p class="eyebrow" style="margin: 0;">{{ tr('manualCredits') }}</p>
+              <h3 style="margin-top: 0.25rem;">{{ selectedGrantUser()?.email }}</h3>
+            </div>
+            <button class="btn-close" type="button" (click)="closeGrantModal()">x</button>
+          </header>
+          <form class="modal-body" style="display: flex; flex-direction: column; gap: 1rem;" (ngSubmit)="grantCustomCredits()">
+            <label class="form-label">
+              <span>{{ tr('credits') }}</span>
+              <input class="form-input" type="number" name="grantAmount" min="1" max="10000" step="1" [(ngModel)]="grantAmount">
+            </label>
+            <label class="form-label">
+              <span>{{ tr('reason') }}</span>
+              <input class="form-input" type="text" name="grantReason" maxlength="200" [(ngModel)]="grantReason">
+            </label>
+            <div class="modal-actions end">
+              <button class="btn btn-outline" type="button" (click)="closeGrantModal()">{{ tr('cancel') }}</button>
+              <button class="btn btn-primary" type="submit">{{ tr('grantCredits') }}</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </main>
+  `,
+  
