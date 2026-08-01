@@ -552,1345 +552,3505 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
   standalone: true,
   imports: [CommonModule, FormsModule],
   template: `
-    <main class="admin-page-container" [class.is-auth]="isAuthed()">
-      <!-- LOGIN VIEW -->
-      <section class="admin-login-wrapper" *ngIf="!isAuthed(); else adminApp">
-        <div class="login-card glass-morphism anim-fade-in-up">
-          <a class="brand-logo" href="/" aria-label="QuizSolver home">
-            <div class="logo-box">QS</div>
-            <span class="logo-text">QuizSolver Admin</span>
+    <main class="admin-page">
+      <section class="admin-login" *ngIf="!isAuthed(); else adminPanel">
+        <div class="admin-login-card glass anim-glow">
+          <a class="admin-brand" href="/" aria-label="QuizSolver home">
+            <span>QS</span>
+            <strong>QuizSolver Admin</strong>
           </a>
-          <h1 class="login-title">{{ tr('adminConsole') }}</h1>
-          <p class="login-subtitle">{{ tr('loginIntro') }}</p>
-          
-          <button class="btn-oauth" type="button" (click)="startGoogleLogin()">
-            <svg class="google-icon" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.16v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.16C1.43 8.55 1 10.22 1 12s.43 3.45 1.16 4.93l3.68-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.16 7.07l3.68 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+          <h1>{{ tr('adminConsole') }}</h1>
+          <p class="text-secondary" style="margin-top: 0.5rem; margin-bottom: 2rem;">
+            {{ tr('loginIntro') }}
+          </p>
+          <button class="btn btn-outline btn-block google-auth-btn" type="button" (click)="startGoogleLogin()">
+            <span>G</span>
             {{ tr('continueGoogle') }}
           </button>
-          
-          <div class="divider"><span>{{ tr('or') }}</span></div>
-          
-          <form class="login-form" (ngSubmit)="login()">
-            <div class="form-group">
-              <label>{{ tr('email') }}</label>
-              <input type="email" name="email" [(ngModel)]="email" autocomplete="email" class="glass-input">
-            </div>
-            <div class="form-group">
-              <label>{{ tr('password') }}</label>
-              <input type="password" name="password" [(ngModel)]="password" autocomplete="current-password" class="glass-input">
-            </div>
-            <div class="error-msg" *ngIf="error()">{{ error() }}</div>
-            <button class="btn-primary-glow" type="submit" [disabled]="loading()">
+          <div class="auth-divider"><span>{{ tr('or') }}</span></div>
+          <form (ngSubmit)="login()">
+            <label class="form-label">
+              <span>{{ tr('email') }}</span>
+              <input class="form-input" type="email" name="email" [(ngModel)]="email" autocomplete="email">
+            </label>
+            <label class="form-label" style="margin-top: 1.25rem; display: block;">
+              <span>{{ tr('password') }}</span>
+              <input class="form-input" type="password" name="password" [(ngModel)]="password" autocomplete="current-password">
+            </label>
+            <div class="form-error" *ngIf="error()" style="margin-top: 1.25rem;">{{ error() }}</div>
+            <button class="btn btn-primary btn-block" type="submit" [disabled]="loading()" style="margin-top: 2rem;">
               {{ loading() ? tr('signingIn') : tr('signIn') }}
             </button>
           </form>
         </div>
       </section>
 
-      <!-- ADMIN APP VIEW -->
-      <ng-template #adminApp>
-        <div class="admin-shell">
-          
-          <!-- SIDEBAR -->
-          <aside class="sidebar glass-panel">
-            <div class="sidebar-top">
-              <a class="brand-logo compact" href="/">
-                <div class="logo-box">QS</div>
-                <span class="logo-text">Admin</span>
+      <ng-template #adminPanel>
+        <section class="admin-shell">
+          <aside class="admin-sidebar">
+            <div>
+              <a class="admin-brand" href="/">
+                <span>QS</span>
+                <strong>Admin</strong>
               </a>
-              
-              <div class="quick-status-grid">
-                <button type="button" class="status-btn" [class.alert]="supportBadgeCount()" (click)="setActiveTab('support')">
-                  <span class="icon">📫</span>
-                  <div class="info">
-                    <span class="label">{{ tr('support') }}</span>
-                    <strong class="value">{{ supportBadgeCount() || 0 }}</strong>
-                  </div>
+              <div class="admin-sidebar-status" aria-label="Admin quick status">
+                <button type="button" [class.warn]="supportBadgeCount()" (click)="setActiveTab('support')">
+                  <span>{{ tr('support') }}</span>
+                  <strong>{{ supportBadgeCount() || 0 }}</strong>
                 </button>
-                <button type="button" class="status-btn" [class.alert]="bugBadgeCount()" (click)="setActiveTab('bugs')">
-                  <span class="icon">🐞</span>
-                  <div class="info">
-                    <span class="label">{{ tr('bugs') }}</span>
-                    <strong class="value">{{ bugBadgeCount() || 0 }}</strong>
-                  </div>
+                <button type="button" [class.warn]="bugBadgeCount()" (click)="setActiveTab('bugs')">
+                  <span>{{ tr('bugs') }}</span>
+                  <strong>{{ bugBadgeCount() || 0 }}</strong>
                 </button>
-                <button type="button" class="status-btn" [class.alert]="(parserHealth().summary?.failed || 0) > 0" (click)="setActiveTab('parser')">
-                  <span class="icon">⚙️</span>
-                  <div class="info">
-                    <span class="label">{{ tr('parser') }}</span>
-                    <strong class="value">{{ parserHealth().summary?.failed || 0 }}</strong>
-                  </div>
+                <button type="button" [class.warn]="(parserHealth().summary?.failed || 0) > 0" (click)="setActiveTab('parser')">
+                  <span>{{ tr('parser') }}</span>
+                  <strong>{{ parserHealth().summary?.failed || 0 }}</strong>
                 </button>
               </div>
-
-              <nav class="nav-menu">
-                <div class="nav-group" *ngFor="let group of tabGroups()">
-                  <span class="group-title">{{ group.label }}</span>
-                  <button class="nav-item" *ngFor="let tab of group.tabs" [class.active]="activeTab() === tab.id" (click)="setActiveTab(tab.id)">
-                    <span class="nav-icon">{{ tab.short }}</span>
-                    <span class="nav-label">{{ tabLabel(tab.id) }}</span>
-                    <span class="nav-badge" *ngIf="tab.id === 'bugs' && bugBadgeCount()">{{ bugBadgeCount() }}</span>
-                    <span class="nav-badge" *ngIf="tab.id === 'support' && supportBadgeCount()">{{ supportBadgeCount() }}</span>
+              <nav class="admin-tabs" [attr.aria-label]="tr('adminSections')">
+                <section class="tab-group" *ngFor="let group of tabGroups()">
+                  <header class="tab-group-head">
+                    <span>{{ group.label }}</span>
+                    <small>{{ group.note }}</small>
+                  </header>
+                  <button type="button" *ngFor="let tab of group.tabs" [class.active]="activeTab() === tab.id" [attr.aria-current]="activeTab() === tab.id ? 'page' : null" (click)="setActiveTab(tab.id)">
+                    <span class="tab-short">{{ tab.short }}</span>
+                    <span class="tab-copy">
+                      <span class="tab-label">{{ tabLabel(tab.id) }}</span>
+                      <small>{{ tabHint(tab.id) }}</small>
+                    </span>
+                    <span class="tab-badge" *ngIf="tab.id === 'bugs' && bugBadgeCount()">{{ bugBadgeCount() }}</span>
+                    <span class="tab-badge" *ngIf="tab.id === 'support' && supportBadgeCount()">{{ supportBadgeCount() }}</span>
                   </button>
-                </div>
+                </section>
               </nav>
             </div>
-            
-            <div class="sidebar-bottom">
-              <div class="lang-switch">
+            <div class="admin-sidebar-foot">
+              <div class="admin-language-switch" aria-label="Admin language">
                 <a [class.active]="adminLocale() === 'en'" [href]="adminLocaleUrl('en')">EN</a>
                 <a [class.active]="adminLocale() === 'pl'" [href]="adminLocaleUrl('pl')">PL</a>
               </div>
-              <button class="btn-ghost" type="button" (click)="refresh()">
-                <span class="icon">🔄</span> {{ tr('refresh') }}
-              </button>
-              <button class="btn-ghost danger" type="button" (click)="logout()">
-                <span class="icon">🚪</span> {{ tr('logout') }}
-              </button>
+              <button class="btn btn-outline btn-block" type="button" (click)="refresh()">{{ tr('refresh') }}</button>
+              <button class="btn btn-ghost btn-block" type="button" (click)="logout()">{{ tr('logout') }}</button>
             </div>
           </aside>
 
-          <!-- MAIN CONTENT -->
-          <main class="content-area">
-            
-            <!-- HEADER -->
-            <header class="top-header glass-panel">
-              <div class="header-titles">
-                <span class="eyebrow">{{ tr('liveOperations') }}</span>
-                <h2>{{ activeTabTitle() }}</h2>
-                <p class="subtitle">{{ activeTabDescription() }}</p>
+          <section class="admin-main">
+            <header class="admin-header">
+              <div class="admin-title-block">
+                <p class="eyebrow">{{ tr('liveOperations') }}</p>
+                <h1>{{ activeTabTitle() }}</h1>
+                <p class="text-secondary" style="margin-top: 0.25rem;">{{ activeTabDescription() }}</p>
               </div>
-              <div class="header-actions">
-                <button class="btn-glass" type="button" (click)="refresh()" [disabled]="loading()">{{ tr('refresh') }}</button>
-                <a class="btn-glass" [href]="adminLocale() === 'pl' ? '/pl/dashboard' : '/dashboard'">{{ tr('dashboard') }}</a>
-                <a class="btn-primary-glow small" [href]="adminLocale() === 'pl' ? '/pl' : '/'">{{ tr('publicSite') }}</a>
+              <div class="admin-header-actions">
+                <button class="btn btn-outline" type="button" (click)="refresh()" [disabled]="loading()">{{ tr('refresh') }}</button>
+                <a class="btn btn-outline" [href]="adminLocale() === 'pl' ? '/pl/dashboard' : '/dashboard'">{{ tr('dashboard') }}</a>
+                <a class="btn btn-primary" [href]="adminLocale() === 'pl' ? '/pl' : '/'">{{ tr('publicSite') }}</a>
               </div>
             </header>
 
-            <!-- ALERTS -->
-            <div class="global-alerts">
-              <div class="alert-box error anim-fade-in-up" *ngIf="error()">{{ error() }}</div>
-              <div class="alert-box success anim-fade-in-up" *ngIf="notice()">{{ notice() }}</div>
-            </div>
+            <div class="admin-alert anim-slide-up" *ngIf="error()">{{ error() }}</div>
+            <div class="admin-alert success anim-slide-up" *ngIf="notice()">{{ notice() }}</div>
 
-            <!-- DASHBOARD WIDGETS -->
-            <div class="dashboard-widgets">
-              
-              <!-- Priority Notices -->
-              <section class="widget-card glass-panel priority-widget">
-                <header class="widget-header">
+            <section class="admin-command-center">
+              <article class="command-card priority-card">
+                <header class="command-card-head">
                   <div>
-                    <h3>{{ adminLocale() === 'pl' ? 'Kolejka Priorytetowa' : 'Priority Queue' }}</h3>
-                    <p>{{ adminLocale() === 'pl' ? 'Zadania wymagające uwagi.' : 'Tasks needing attention.' }}</p>
+                    <span>{{ adminLocale() === 'pl' ? 'Priorytety' : 'Priority queue' }}</span>
+                    <small>{{ adminLocale() === 'pl' ? 'Najważniejsze rzeczy do sprawdzenia teraz.' : 'The things worth checking first.' }}</small>
+                  </div>
+                  <button class="mini-action" type="button" (click)="refresh()">{{ tr('refresh') }}</button>
+                </header>
+                <div class="operations-strip" *ngIf="adminNoticeCards().length; else noAdminNotices">
+                  <button class="operation-card" type="button" *ngFor="let notice of adminNoticeCards()" [class.warn]="notice.tone === 'warn'" [class.ok]="notice.tone === 'ok'" (click)="openAdminNotice(notice)">
+                    <span>{{ notice.label }}</span>
+                    <strong>{{ notice.value }}</strong>
+                    <small>{{ notice.note }}</small>
+                  </button>
+                </div>
+                <ng-template #noAdminNotices>
+                  <div class="empty-priority">
+                    <strong>{{ adminLocale() === 'pl' ? 'Brak pilnych spraw' : 'No urgent items' }}</strong>
+                    <span>{{ adminLocale() === 'pl' ? 'Support, błędy i billing wyglądają spokojnie.' : 'Support, bug reports and billing look quiet.' }}</span>
+                  </div>
+                </ng-template>
+              </article>
+
+              <article class="command-card metrics-card">
+                <header class="command-card-head">
+                  <div>
+                    <span>{{ adminLocale() === 'pl' ? 'Stan platformy' : 'Platform snapshot' }}</span>
+                    <small>{{ adminLocale() === 'pl' ? 'Szybki podgląd najważniejszych liczb.' : 'A quick read of the main counters.' }}</small>
                   </div>
                 </header>
-                <div class="widget-content">
-                  <div class="notices-grid" *ngIf="adminNoticeCards().length; else noAdminNotices">
-                    <button class="notice-card anim-hover-lift" *ngFor="let notice of adminNoticeCards()" [class.tone-warn]="notice.tone === 'warn'" [class.tone-ok]="notice.tone === 'ok'" (click)="openAdminNotice(notice)">
-                      <div class="notice-value">{{ notice.value }}</div>
-                      <div class="notice-label">{{ notice.label }}</div>
-                      <div class="notice-note">{{ notice.note }}</div>
-                    </button>
-                  </div>
-                  <ng-template #noAdminNotices>
-                    <div class="empty-state">
-                      <span class="empty-icon">✅</span>
-                      <strong>{{ adminLocale() === 'pl' ? 'Wszystko w porządku' : 'All good' }}</strong>
-                      <p>{{ adminLocale() === 'pl' ? 'Brak pilnych zadań.' : 'No urgent tasks.' }}</p>
-                    </div>
-                  </ng-template>
-                </div>
-              </section>
-
-              <!-- Stats Grid -->
-              <section class="widget-card glass-panel stats-widget">
-                <header class="widget-header">
-                  <div>
-                    <h3>{{ adminLocale() === 'pl' ? 'Stan Platformy' : 'Platform Snapshot' }}</h3>
-                    <p>{{ adminLocale() === 'pl' ? 'Główne wskaźniki.' : 'Key metrics overview.' }}</p>
-                  </div>
-                </header>
-                <div class="widget-content">
-                  <div class="stats-grid">
-                    <div class="stat-card" *ngFor="let card of statsCards()">
-                      <span class="stat-label">{{ card.label }}</span>
-                      <strong class="stat-value" [class.text-revenue]="card.revenue">{{ card.value }}</strong>
-                    </div>
-                  </div>
-                </div>
-              </section>
-            </div>
-
-            <!-- TAB CONTENT: USERS -->
-            <section class="tab-content anim-fade-in" *ngIf="activeTab() === 'users'">
-              <div class="section-card glass-panel">
-                <div class="section-header">
-                  <div>
-                    <h3>{{ tr('accountsCredits') }}</h3>
-                    <span class="loading-spinner" *ngIf="usersLoading()"></span>
-                  </div>
-                  <form class="action-bar" (ngSubmit)="loadUsers(1)">
-                    <div class="search-box">
-                      <span class="search-icon">🔍</span>
-                      <input type="search" name="search" [(ngModel)]="userSearch" [placeholder]="tr('searchEmailName')" class="glass-input">
-                    </div>
-                    <select class="glass-select" name="userSort" [(ngModel)]="userSort" (ngModelChange)="loadUsers(1)">
-                      <option *ngFor="let option of userSortOptions()" [value]="option.value">{{ option.label }}</option>
-                    </select>
-                    <button class="btn-glass" type="submit">{{ tr('search') }}</button>
-                    <button class="btn-ghost" type="button" *ngIf="hasUserFilters()" (click)="resetUserFilters()">{{ tr('clearUsersFilters') }}</button>
-                    <button class="btn-primary-glow small" type="button" [disabled]="!users().length" (click)="exportVisibleUsersCsv()">CSV</button>
-                  </form>
-                </div>
-
-                <div class="mini-stats-row">
-                  <div class="mini-stat" *ngFor="let card of usersSummaryCards()">
-                    <span class="label">{{ card.label }}</span>
-                    <strong class="val" [class.text-ok]="card.ok" [class.text-warn]="card.warn">{{ card.value }}</strong>
-                  </div>
-                </div>
-
-                <div class="table-container">
-                  <table class="data-table">
-                    <thead>
-                      <tr>
-                        <th>{{ tr('user') }}</th>
-                        <th>{{ tr('role') }}</th>
-                        <th><button class="sort-btn" [class.active]="userSortDirection('credits')" (click)="cycleUserSort('credits')">{{ tr('credits') }} <span class="indicator">{{ userSortIndicator('credits') }}</span></button></th>
-                        <th><button class="sort-btn" [class.active]="userSortDirection('questions')" (click)="cycleUserSort('questions')">{{ tr('questions') }} <span class="indicator">{{ userSortIndicator('questions') }}</span></button></th>
-                        <th><button class="sort-btn" [class.active]="userSortDirection('streak')" (click)="cycleUserSort('streak')">{{ tr('streak') }} <span class="indicator">{{ userSortIndicator('streak') }}</span></button></th>
-                        <th><button class="sort-btn" [class.active]="userSortDirection('status')" (click)="cycleUserSort('status')">{{ tr('status') }} <span class="indicator">{{ userSortIndicator('status') }}</span></button></th>
-                        <th class="text-right">{{ tr('actions') }}</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr *ngFor="let user of users()" class="table-row anim-hover" [class.banned]="user.isBanned" [class.inactive]="!user.isBanned && !isUserExtensionActive(user)">
-                        <td>
-                          <div class="user-identity">
-                            <button class="link-btn primary" (click)="openUserHistory(user)">{{ user.email }}</button>
-                            <span class="user-name">{{ user.displayName || tr('noDisplayName') }}</span>
-                          </div>
-                        </td>
-                        <td><span class="pill role-pill">{{ user.role }}</span></td>
-                        <td><strong class="hl-text">{{ user.role === 'admin' ? tr('unlimited') : user.credits }}</strong></td>
-                        <td><strong class="hl-text">{{ user.stats?.totalQuestionsSolved || 0 }}</strong></td>
-                        <td><strong class="hl-text">{{ user.streak?.current || 0 }}</strong></td>
-                        <td>
-                          <div class="status-cell">
-                            <span class="pill status-pill" [class.danger]="user.isBanned" [class.pending]="!user.isBanned && !user.isExtensionActive">{{ userStatusLabel(user) }}</span>
-                            <small class="sub-text">{{ userExtensionLastSeen(user) }}</small>
-                          </div>
-                        </td>
-                        <td class="text-right">
-                          <div class="action-buttons">
-                            <button class="btn-icon" (click)="openUserHistory(user)" title="History">🕒</button>
-                            <button class="btn-icon" (click)="copyUserEmail(user)" title="Copy Email">📋</button>
-                            <button class="btn-tiny" (click)="quickGrant(user.id, 50)">+50</button>
-                            <button class="btn-tiny" (click)="quickGrant(user.id, 100)">+100</button>
-                            <button class="btn-icon text-accent" (click)="openGrantModal(user)" title="Grant">🎁</button>
-                            <button class="btn-icon" [class.text-danger]="!user.isBanned" [class.text-success]="user.isBanned" (click)="user.isBanned ? unbanUser(user.id) : banUser(user.id)" [title]="user.isBanned ? tr('unban') : tr('ban')">
-                              {{ user.isBanned ? '✅' : '🚫' }}
-                            </button>
-                            <button class="btn-icon text-danger" *ngIf="user.role !== 'admin'" (click)="deleteUser(user.id, user.email)" title="Delete">🗑️</button>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr *ngIf="!users().length">
-                        <td colspan="7">
-                          <div class="empty-state">{{ tr('noUsers') }}</div>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-                
-                <div class="pagination-bar" *ngIf="pagination().pages > 1">
-                  <button class="page-btn" *ngFor="let page of pageNumbers()" [class.active]="page === pagination().page" (click)="loadUsers(page)">{{ page }}</button>
-                </div>
-              </div>
-            </section>
-
-            <!-- TAB CONTENT: PURCHASES -->
-            <section class="tab-content anim-fade-in" *ngIf="activeTab() === 'purchases'">
-              <div class="section-card glass-panel">
-                <div class="section-header">
-                  <h3>{{ tr('purchasesTitle') }}</h3>
-                </div>
-                <div class="table-container">
-                  <table class="data-table">
-                    <thead>
-                      <tr>
-                        <th>{{ tr('user') }}</th>
-                        <th>{{ tr('pack') }}</th>
-                        <th>{{ tr('credits') }}</th>
-                        <th>{{ tr('price') }}</th>
-                        <th>{{ tr('provider') }}</th>
-                        <th>{{ tr('applied') }}</th>
-                        <th>{{ tr('reason') }}</th>
-                        <th>{{ tr('date') }}</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr *ngFor="let purchase of purchases()" class="table-row anim-hover">
-                        <td><strong>{{ purchase.user || tr('unknownUser') }}</strong></td>
-                        <td><span class="pill">{{ purchase.pack }}</span></td>
-                        <td><strong class="hl-text">+{{ purchase.credits }}</strong></td>
-                        <td><strong class="text-success">{{ purchase.priceUsd ? formatMoney(purchase.priceUsd) : '-' }}</strong></td>
-                        <td><span class="sub-text uppercase">{{ purchase.provider }}</span></td>
-                        <td>
-                          <div class="status-cell">
-                            <span class="pill status-pill" [class.pending]="!purchase.creditsApplied">{{ purchase.creditsApplied ? tr('applied') : tr('pending') }}</span>
-                            <button class="link-btn primary small" *ngIf="!purchase.creditsApplied" (click)="applyPurchaseCredits(purchase.id)">{{ tr('apply') }}</button>
-                          </div>
-                        </td>
-                        <td>{{ purchase.reason || '-' }}</td>
-                        <td><span class="sub-text">{{ formatDate(purchase.date) }}</span></td>
-                      </tr>
-                      <tr *ngIf="!purchases().length">
-                        <td colspan="8"><div class="empty-state">{{ tr('noPurchases') }}</div></td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </section>
-
-            <!-- TAB CONTENT: BUGS -->
-            <section class="tab-content anim-fade-in" *ngIf="activeTab() === 'bugs'">
-              <div class="section-card glass-panel">
-                <div class="section-header">
-                  <h3>{{ tr('bugsTitle') }}</h3>
-                  <button class="btn-glass" *ngIf="bugBadgeCount()" (click)="markAllBugReportsRead()">{{ tr('markAllRead') }}</button>
-                </div>
-                <div class="list-grid">
-                  <article class="report-card glass-card anim-hover-lift" *ngFor="let bug of bugs()" [class.unread]="!bug.isRead">
-                    <div class="card-head">
-                      <div class="card-title">
-                        <strong>{{ bug.user || tr('unknownUser') }}</strong>
-                        <span class="pill danger" *ngIf="!bug.isRead">{{ tr('unreadBugs') }}</span>
-                        <span class="pill pending" *ngIf="bug.source === 'parser-auto'">{{ tr('parserAutoReport') }}</span>
-                      </div>
-                      <div class="card-actions">
-                        <span class="sub-text">{{ formatDate(bug.date) }}</span>
-                        <button class="btn-tiny" *ngIf="!bug.isRead" (click)="markBugReportRead(bug)">{{ tr('markRead') }}</button>
-                      </div>
-                    </div>
-                    <a class="report-url primary-link" [href]="bug.url" target="_blank" rel="noopener">{{ bug.url }}</a>
-                    <p class="report-desc" *ngIf="bug.description">{{ bug.description }}</p>
-                    
-                    <div class="chips-row" *ngIf="bug.platform || bug.parserDiagnostics?.outcome || bug.hasPageCode">
-                      <span class="chip" *ngIf="bug.platform">{{ bug.platform }}</span>
-                      <span class="chip" *ngIf="bug.parserDiagnostics?.outcome">{{ bug.parserDiagnostics.outcome }}</span>
-                      <span class="chip success" *ngIf="bug.hasPageCode">{{ tr('parserPageCode') }}</span>
-                    </div>
-
-                    <details class="code-details" *ngIf="bug.parserSnapshot?.bodyText || bug.parserSnapshot?.htmlSnippet || bug.parserSnapshot?.fullHtmlFile?.id">
-                      <summary class="link-btn primary">{{ tr('parserPageSnapshot') }}</summary>
-                      <div class="code-blocks">
-                        <button class="btn-glass small download-btn" *ngIf="bug.parserSnapshot?.fullHtmlFile?.id" (click)="downloadParserSnapshotFile(bug.parserSnapshot.fullHtmlFile)">
-                          ⬇️ {{ tr('parserDownloadPageCode') }} ({{ formatBytes(bug.parserSnapshot.fullHtmlFile.bytes) }})
-                        </button>
-                        <div class="code-pane" *ngIf="bug.parserSnapshot?.bodyText">
-                          <strong>{{ tr('parserPageText') }}</strong>
-                          <pre>{{ bug.parserSnapshot.bodyText }}</pre>
-                        </div>
-                        <div class="code-pane" *ngIf="bug.parserSnapshot?.htmlSnippet">
-                          <strong>{{ tr('parserPageCode') }}</strong>
-                          <pre>{{ bug.parserSnapshot.htmlSnippet }}</pre>
-                        </div>
-                      </div>
-                    </details>
+                <section class="admin-stats">
+                  <article *ngFor="let card of statsCards()">
+                    <span>{{ card.label }}</span>
+                    <strong [class.revenue]="card.revenue">{{ card.value }}</strong>
                   </article>
-                  <div class="empty-state" *ngIf="!bugs().length">{{ tr('noBugReports') }}</div>
+                </section>
+              </article>
+            </section>
+
+            <section class="admin-panel glass" *ngIf="activeTab() === 'users'">
+              <div class="panel-head">
+                <div>
+                  <p class="eyebrow">{{ tr('users') }}</p>
+                  <h2>{{ tr('accountsCredits') }}</h2>
+                  <small class="panel-status" *ngIf="usersLoading()">{{ tr('loadingUsers') }}</small>
+                </div>
+                <form class="admin-search user-toolbar" (ngSubmit)="loadUsers(1)">
+                  <input class="form-input" type="search" name="search" [(ngModel)]="userSearch" [placeholder]="tr('searchEmailName')">
+                  <select class="form-select" name="userSort" [(ngModel)]="userSort" (ngModelChange)="loadUsers(1)" [attr.aria-label]="tr('sortUsers')">
+                    <option *ngFor="let option of userSortOptions()" [value]="option.value">{{ option.label }}</option>
+                  </select>
+                  <button class="btn btn-primary" type="submit">{{ tr('search') }}</button>
+                  <button class="btn btn-outline" type="button" *ngIf="hasUserFilters()" (click)="resetUserFilters()">{{ tr('clearUsersFilters') }}</button>
+                  <button class="btn btn-outline" type="button" [disabled]="!users().length" (click)="exportVisibleUsersCsv()">{{ tr('exportVisibleUsers') }}</button>
+                </form>
+              </div>
+
+              <div class="insight-grid">
+                <article *ngFor="let card of usersSummaryCards()">
+                  <span>{{ card.label }}</span>
+                  <strong [class.ok]="card.ok" [class.warn]="card.warn">{{ card.value }}</strong>
+                  <small>{{ card.note }}</small>
+                </article>
+              </div>
+
+              <div class="table-scroll">
+                <table class="admin-table">
+                  <thead>
+                    <tr>
+                      <th>{{ tr('user') }}</th>
+                      <th>{{ tr('role') }}</th>
+                      <th [attr.aria-sort]="userSortAria('credits')">
+                        <button type="button" class="sort-header" [class.active]="userSortDirection('credits')" (click)="cycleUserSort('credits')">
+                          <span>{{ tr('credits') }}</span>
+                          <span class="sort-indicator" aria-hidden="true">{{ userSortIndicator('credits') }}</span>
+                        </button>
+                      </th>
+                      <th [attr.aria-sort]="userSortAria('questions')">
+                        <button type="button" class="sort-header" [class.active]="userSortDirection('questions')" (click)="cycleUserSort('questions')">
+                          <span>{{ tr('questions') }}</span>
+                          <span class="sort-indicator" aria-hidden="true">{{ userSortIndicator('questions') }}</span>
+                        </button>
+                      </th>
+                      <th [attr.aria-sort]="userSortAria('streak')">
+                        <button type="button" class="sort-header" [class.active]="userSortDirection('streak')" (click)="cycleUserSort('streak')">
+                          <span>{{ tr('streak') }}</span>
+                          <span class="sort-indicator" aria-hidden="true">{{ userSortIndicator('streak') }}</span>
+                        </button>
+                      </th>
+                      <th [attr.aria-sort]="userSortAria('status')">
+                        <button type="button" class="sort-header" [class.active]="userSortDirection('status')" (click)="cycleUserSort('status')">
+                          <span>{{ tr('status') }}</span>
+                          <span class="sort-indicator" aria-hidden="true">{{ userSortIndicator('status') }}</span>
+                        </button>
+                      </th>
+                      <th>{{ tr('actions') }}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let user of users()" [class.user-active-row]="isUserExtensionActive(user)" [class.user-banned-row]="user.isBanned" [class.user-muted-row]="!user.isBanned && !isUserExtensionActive(user)">
+                      <td class="user-cell">
+                        <button type="button" class="link-button primary-link" (click)="openUserHistory(user)">{{ user.email }}</button>
+                        <span>{{ user.displayName || tr('noDisplayName') }}</span>
+                      </td>
+                      <td><span class="badge badge-outline role-badge">{{ user.role }}</span></td>
+                      <td><strong class="metric-value">{{ user.role === 'admin' ? tr('unlimited') : user.credits }}</strong></td>
+                      <td><strong class="metric-value">{{ user.stats?.totalQuestionsSolved || 0 }}</strong></td>
+                      <td><strong class="metric-value">{{ user.streak?.current || 0 }}</strong></td>
+                      <td>
+                        <span class="status-pill" [class.danger]="user.isBanned" [class.pending]="!user.isBanned && !user.isExtensionActive">
+                          {{ userStatusLabel(user) }}
+                        </span>
+                        <small class="muted-line">
+                          {{ userExtensionLastSeen(user) }}
+                        </small>
+                      </td>
+                      <td>
+                        <div class="row-actions">
+                          <button type="button" (click)="openUserHistory(user)" style="color: var(--accent-cyan);">{{ tr('history') }}</button>
+                          <button type="button" (click)="copyUserEmail(user)">{{ tr('copyEmail') }}</button>
+                          <button type="button" (click)="quickGrant(user.id, 50)">+50</button>
+                          <button type="button" (click)="quickGrant(user.id, 100)">+100</button>
+                          <button type="button" (click)="quickGrant(user.id, 200)">+200</button>
+                          <button type="button" (click)="openGrantModal(user)">{{ tr('grant') }}</button>
+                          <button type="button" (click)="user.isBanned ? unbanUser(user.id) : banUser(user.id)">
+                            {{ user.isBanned ? tr('unban') : tr('ban') }}
+                          </button>
+                          <button type="button" class="danger" *ngIf="user.role !== 'admin'" (click)="deleteUser(user.id, user.email)">
+                            {{ tr('delete') }}
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr *ngIf="!users().length">
+                      <td colspan="7" class="empty-cell" style="text-align: center; padding: 3rem;">{{ tr('noUsers') }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div class="pagination" *ngIf="pagination().pages > 1">
+                <button type="button" *ngFor="let page of pageNumbers()" [class.active]="page === pagination().page" (click)="loadUsers(page)">
+                  {{ page }}
+                </button>
+              </div>
+            </section>
+
+            <section class="admin-panel glass" *ngIf="activeTab() === 'purchases'">
+              <div class="panel-head">
+                <div>
+                  <p class="eyebrow">{{ tr('revenue') }}</p>
+                  <h2>{{ tr('purchasesTitle') }}</h2>
+                </div>
+              </div>
+              <div class="table-scroll">
+                <table class="admin-table">
+                  <thead>
+                    <tr>
+                      <th>{{ tr('user') }}</th>
+                      <th>{{ tr('pack') }}</th>
+                      <th>{{ tr('credits') }}</th>
+                      <th>{{ tr('price') }}</th>
+                      <th>{{ tr('provider') }}</th>
+                      <th>{{ tr('applied') }}</th>
+                      <th>{{ tr('reason') }}</th>
+                      <th>{{ tr('date') }}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let purchase of purchases()">
+                      <td><strong>{{ purchase.user || tr('unknownUser') }}</strong></td>
+                      <td>{{ purchase.pack }}</td>
+                      <td>{{ purchase.credits }}</td>
+                      <td><span style="font-weight: 600; color: var(--accent-cyan);">{{ purchase.priceUsd ? formatMoney(purchase.priceUsd) : '-' }}</span></td>
+                      <td style="text-transform: uppercase; font-size: 0.85rem;">{{ purchase.provider }}</td>
+                      <td>
+                        <span class="status-pill" [class.pending]="!purchase.creditsApplied">
+                          {{ purchase.creditsApplied ? tr('applied') : tr('pending') }}
+                        </span>
+                        <button type="button" *ngIf="!purchase.creditsApplied" (click)="applyPurchaseCredits(purchase.id)" style="display: block; margin-top: 0.4rem; color: var(--accent-cyan);">{{ tr('apply') }}</button>
+                      </td>
+                      <td>{{ purchase.reason || '-' }}</td>
+                      <td>{{ formatDate(purchase.date) }}</td>
+                    </tr>
+                    <tr *ngIf="!purchases().length">
+                      <td colspan="8" class="empty-cell" style="text-align: center; padding: 3rem;">{{ tr('noPurchases') }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </section>
+
+            <section class="admin-panel glass" *ngIf="activeTab() === 'bugs'">
+              <div class="panel-head">
+                <div>
+                  <p class="eyebrow">{{ tr('reports') }}</p>
+                  <h2>{{ tr('bugsTitle') }}</h2>
+                </div>
+                <div class="row-actions" *ngIf="bugBadgeCount()">
+                  <button type="button" (click)="markAllBugReportsRead()">{{ tr('markAllRead') }}</button>
+                </div>
+              </div>
+              <div class="bug-list">
+                <article class="glass" *ngFor="let bug of bugs()" [class.unread]="!bug.isRead">
+                  <div class="bug-meta">
+                    <div>
+                      <strong>{{ bug.user || tr('unknownUser') }}</strong>
+                      <span class="status-pill danger" *ngIf="!bug.isRead">{{ tr('unreadBugs') }}</span>
+                      <span class="status-pill pending" *ngIf="bug.source === 'parser-auto'">{{ tr('parserAutoReport') }}</span>
+                    </div>
+                    <div class="row-actions">
+                      <span class="text-secondary" style="font-size: 0.8rem;">{{ formatDate(bug.date) }}</span>
+                      <button type="button" *ngIf="!bug.isRead" (click)="markBugReportRead(bug)">{{ tr('markRead') }}</button>
+                    </div>
+                  </div>
+                  <a [href]="bug.url" target="_blank" rel="noopener" style="word-break: break-all;">{{ bug.url }}</a>
+                  <p class="text-secondary" *ngIf="bug.description" style="margin-top: 0.75rem; color: var(--text-primary);">
+                    {{ bug.description }}
+                  </p>
+                  <div class="meta-chips" *ngIf="bug.platform || bug.parserDiagnostics?.outcome || bug.hasPageCode">
+                    <span class="badge badge-outline" *ngIf="bug.platform">{{ bug.platform }}</span>
+                    <span class="badge badge-outline" *ngIf="bug.parserDiagnostics?.outcome">{{ bug.parserDiagnostics.outcome }}</span>
+                    <span class="badge badge-outline" *ngIf="bug.hasPageCode">{{ tr('parserPageCode') }}</span>
+                  </div>
+                  <details class="parser-snapshot-details" *ngIf="bug.parserSnapshot?.bodyText || bug.parserSnapshot?.htmlSnippet || bug.parserSnapshot?.fullHtmlFile?.id">
+                    <summary>{{ tr('parserPageSnapshot') }}</summary>
+                    <button class="parser-snapshot-download" type="button" *ngIf="bug.parserSnapshot?.fullHtmlFile?.id" (click)="downloadParserSnapshotFile(bug.parserSnapshot.fullHtmlFile)">
+                      {{ tr('parserDownloadPageCode') }}
+                      <span>{{ formatBytes(bug.parserSnapshot.fullHtmlFile.bytes) }}</span>
+                    </button>
+                    <div class="parser-snapshot-pane" *ngIf="bug.parserSnapshot?.bodyText">
+                      <strong>{{ tr('parserPageText') }}</strong>
+                      <pre class="parser-snapshot-code">{{ bug.parserSnapshot.bodyText }}</pre>
+                    </div>
+                    <div class="parser-snapshot-pane" *ngIf="bug.parserSnapshot?.htmlSnippet">
+                      <strong>{{ tr('parserPageCode') }}</strong>
+                      <pre class="parser-snapshot-code">{{ bug.parserSnapshot.htmlSnippet }}</pre>
+                    </div>
+                  </details>
+                </article>
+                <div class="empty-panel" style="text-align: center; padding: 2rem;" *ngIf="!bugs().length">
+                  <p class="text-secondary">{{ tr('noBugReports') }}</p>
                 </div>
               </div>
             </section>
 
-            <!-- TAB CONTENT: SUPPORT -->
-            <section class="tab-content anim-fade-in support-tab" *ngIf="activeTab() === 'support'">
-              
-              <div class="support-stats-row">
-                <div class="mini-stat glass-panel" *ngFor="let item of supportSummaryCards()" [class.tone-warn]="item.tone === 'warn'" [class.tone-ok]="item.tone === 'ok'">
-                  <span class="label">{{ item.label }}</span>
-                  <strong class="val">{{ item.value }}</strong>
+            <section class="admin-panel glass" *ngIf="activeTab() === 'support'">
+              <div class="panel-head">
+                <div>
+                  <p class="eyebrow">{{ tr('inbox') }}</p>
+                  <h2>{{ tr('supportMail') }}</h2>
                 </div>
+                <form class="admin-search" (ngSubmit)="loadSupportMessages()">
+                  <input class="form-input" type="search" name="supportSearch" [(ngModel)]="supportSearch" [placeholder]="tr('searchSupport')">
+                  <select class="form-select" name="supportStatusFilter" [(ngModel)]="supportStatusFilter">
+                    <option value="">{{ tr('allMessages') }}</option>
+                    <option value="open">{{ tr('open') }}</option>
+                    <option value="pending">{{ tr('pending') }}</option>
+                    <option value="closed">{{ tr('closed') }}</option>
+                  </select>
+                  <button class="btn btn-primary" type="submit">{{ tr('filter') }}</button>
+                </form>
+              </div>
+
+              <div class="support-summary">
+                <article *ngFor="let item of supportSummaryCards()" [class.warn]="item.tone === 'warn'" [class.ok]="item.tone === 'ok'">
+                  <span>{{ item.label }}</span>
+                  <strong>{{ item.value }}</strong>
+                </article>
               </div>
 
               <div class="support-layout">
-                <!-- Inbox List -->
-                <div class="inbox-list glass-panel">
-                  <form class="inbox-search" (ngSubmit)="loadSupportMessages()">
-                    <input type="search" name="supportSearch" [(ngModel)]="supportSearch" [placeholder]="tr('searchSupport')" class="glass-input">
-                    <select name="supportStatusFilter" [(ngModel)]="supportStatusFilter" class="glass-select">
-                      <option value="">{{ tr('allMessages') }}</option>
-                      <option value="open">{{ tr('open') }}</option>
-                      <option value="pending">{{ tr('pending') }}</option>
-                      <option value="closed">{{ tr('closed') }}</option>
-                    </select>
-                    <button class="btn-glass" type="submit">🔍</button>
-                  </form>
-                  <div class="messages-scroll">
-                    <button class="msg-item anim-hover" *ngFor="let message of filteredSupportMessages()" [class.active]="selectedSupportMessage()?.id === message.id" [class.unread]="!message.isRead" (click)="selectSupportMessage(message)">
-                      <div class="msg-avatar">{{ supportInitials(message) }}</div>
-                      <div class="msg-content">
-                        <div class="msg-row">
-                          <strong class="msg-subject">{{ message.subject || tr('noSubject') }}</strong>
-                          <span class="pill status-pill tiny" [class.danger]="message.status === 'open'" [class.pending]="message.status === 'pending'">{{ supportStatusLabel(message.status) }}</span>
-                        </div>
-                        <span class="msg-sender">{{ supportSender(message) }}</span>
-                        <span class="msg-preview">{{ supportPreview(message) }}</span>
-                        <div class="msg-meta">
-                          <span class="chip tiny" *ngIf="message.linkedUser">{{ message.linkedUser.credits }} cr</span>
-                          <small>{{ formatDate(message.receivedAt) }}</small>
-                        </div>
-                      </div>
-                    </button>
-                    <div class="empty-state" *ngIf="!filteredSupportMessages().length">{{ tr('noSupport') }}</div>
+                <div class="support-list">
+                  <button class="support-item" type="button" *ngFor="let message of filteredSupportMessages()" [class.active]="selectedSupportMessage()?.id === message.id" [class.unread]="!message.isRead" (click)="selectSupportMessage(message)">
+                    <span class="support-avatar">{{ supportInitials(message) }}</span>
+                    <span class="support-item-main">
+                      <span class="support-item-row">
+                        <strong>{{ message.subject || tr('noSubject') }}</strong>
+                        <span class="status-pill" [class.danger]="message.status === 'open'" [class.pending]="message.status === 'pending'">{{ supportStatusLabel(message.status) }}</span>
+                      </span>
+                      <span class="support-sender">{{ supportSender(message) }}</span>
+                      <span class="badge badge-outline" *ngIf="message.linkedUser">{{ tr('account') }}: {{ message.linkedUser.credits }} {{ tr('credits') }}</span>
+                      <span class="support-preview">{{ supportPreview(message) }}</span>
+                      <small>{{ formatDate(message.receivedAt) }} - {{ supportSourceLabel(message.source) }}</small>
+                    </span>
+                  </button>
+                  <div class="empty-panel" *ngIf="!filteredSupportMessages().length">
+                    <p class="text-secondary">{{ tr('noSupport') }}</p>
                   </div>
                 </div>
 
-                <!-- Inbox Detail -->
-                <div class="inbox-detail glass-panel" *ngIf="selectedSupportMessage(); else emptyInboxDetail">
-                  <header class="detail-header">
-                    <div class="header-main">
-                      <span class="pill source-pill">{{ supportSourceLabel(selectedSupportMessage()?.source) }}</span>
+                <article class="support-detail" *ngIf="selectedSupportMessage(); else supportEmpty">
+                  <header>
+                    <div>
+                      <p class="eyebrow">{{ supportSourceLabel(selectedSupportMessage()?.source) }}</p>
                       <h3>{{ selectedSupportMessage()?.subject || tr('noSubject') }}</h3>
-                      <div class="meta-grid">
-                        <div class="meta-item"><span>{{ tr('from') }}</span> <strong>{{ supportSender(selectedSupportMessage()) }} &lt;{{ selectedSupportMessage()?.fromEmail || '-' }}&gt;</strong></div>
-                        <div class="meta-item"><span>{{ tr('to') }}</span> <strong>{{ selectedSupportMessage()?.toEmail || 'support@getquizsolver.com' }}</strong></div>
-                        <div class="meta-item"><span>{{ tr('received') }}</span> <strong>{{ formatDate(selectedSupportMessage()?.receivedAt) }}</strong></div>
+                      <div class="support-meta-grid">
+                        <span><strong>{{ tr('from') }}</strong>{{ supportSender(selectedSupportMessage()) }} &lt;{{ selectedSupportMessage()?.fromEmail || '-' }}&gt;</span>
+                        <span><strong>{{ tr('to') }}</strong>{{ selectedSupportMessage()?.toEmail || 'support@getquizsolver.com' }}</span>
+                        <span><strong>{{ tr('received') }}</strong>{{ formatDate(selectedSupportMessage()?.receivedAt) }}</span>
+                        <span><strong>{{ tr('status') }}</strong>{{ supportStatusLabel(selectedSupportMessage()?.status) }}</span>
                       </div>
                     </div>
-                    <div class="header-actions">
-                      <a class="btn-icon" [href]="supportMailto(selectedSupportMessage())" title="Email">📧</a>
-                      <button class="btn-icon" (click)="copySupportEmail(selectedSupportMessage())" title="Copy">📋</button>
-                      <div class="btn-group">
-                        <button class="btn-glass small" (click)="updateSupportStatus(selectedSupportMessage(), 'open')">{{ tr('open') }}</button>
-                        <button class="btn-glass small" (click)="updateSupportStatus(selectedSupportMessage(), 'pending')">{{ tr('pending') }}</button>
-                        <button class="btn-glass small" (click)="updateSupportStatus(selectedSupportMessage(), 'closed')">{{ tr('close') }}</button>
-                      </div>
-                      <button class="btn-icon text-danger" (click)="deleteSupportMessage(selectedSupportMessage())" title="Delete">🗑️</button>
+                    <div class="row-actions">
+                      <a class="support-action-link" [href]="supportMailto(selectedSupportMessage())">{{ tr('email') }}</a>
+                      <button type="button" (click)="copySupportEmail(selectedSupportMessage())">{{ tr('copyEmail') }}</button>
+                      <button type="button" (click)="updateSupportStatus(selectedSupportMessage(), 'open')">{{ tr('open') }}</button>
+                      <button type="button" (click)="updateSupportStatus(selectedSupportMessage(), 'pending')">{{ tr('pending') }}</button>
+                      <button type="button" (click)="updateSupportStatus(selectedSupportMessage(), 'closed')">{{ tr('close') }}</button>
+                      <button type="button" class="danger" (click)="deleteSupportMessage(selectedSupportMessage())">{{ tr('delete') }}</button>
                     </div>
                   </header>
 
-                  <div class="linked-user-card" *ngIf="selectedSupportMessage()?.linkedUser as linkedUser; else noLinkedSupportUser">
-                    <div class="user-info">
-                      <span class="sub-text">{{ tr('linkedAccount') }}</span>
-                      <button class="link-btn primary large" (click)="openUserHistory(linkedUser)">{{ linkedUser.email }}</button>
-                      <div class="user-badges">
-                        <span class="pill">{{ linkedUser.role }}</span>
-                        <span class="pill success">{{ linkedUser.credits }} {{ tr('credits') }}</span>
-                        <span class="pill info">{{ linkedUser.stats?.totalQuestionsSolved || 0 }} {{ tr('questions') }}</span>
-                      </div>
+                  <div class="support-linked-user" *ngIf="selectedSupportMessage()?.linkedUser as linkedUser; else noLinkedSupportUser">
+                    <div>
+                      <span>{{ tr('linkedAccount') }}</span>
+                      <button type="button" class="link-button primary-link" (click)="openUserHistory(linkedUser)" style="font-weight: bold; text-align: left;">{{ linkedUser.email }}</button>
+                      <small>{{ linkedUser.role }} - {{ linkedUser.credits }} {{ tr('credits') }} - {{ linkedUser.stats?.totalQuestionsSolved || 0 }} {{ tr('questions') }}</small>
                     </div>
-                    <div class="user-actions">
-                      <button class="btn-primary-glow small" (click)="openGrantModal(linkedUser, tr('supportAdjustment'))">{{ tr('grantCredits') }}</button>
-                      <button class="btn-ghost small" [class.text-danger]="!linkedUser.isBanned" [class.text-success]="linkedUser.isBanned" (click)="linkedUser.isBanned ? unbanUser(linkedUser.id) : banUser(linkedUser.id)">
+                    <div class="row-actions">
+                      <button type="button" (click)="openGrantModal(linkedUser, tr('supportAdjustment'))">{{ tr('grantCredits') }}</button>
+                      <button type="button" (click)="linkedUser.isBanned ? unbanUser(linkedUser.id) : banUser(linkedUser.id)">
                         {{ linkedUser.isBanned ? tr('unban') : tr('ban') }}
                       </button>
                     </div>
                   </div>
                   <ng-template #noLinkedSupportUser>
-                    <div class="linked-user-card empty">
-                      <div class="user-info">
-                        <span class="sub-text">{{ tr('noLinkedAccount') }}</span>
-                        <strong class="text-danger">{{ selectedSupportMessage()?.fromEmail || tr('unknownEmail') }}</strong>
-                        <p class="sub-text">{{ tr('noLinkedAccountNote') }}</p>
+                    <div class="support-linked-user muted">
+                      <div>
+                        <span>{{ tr('noLinkedAccount') }}</span>
+                        <strong>{{ selectedSupportMessage()?.fromEmail || tr('unknownEmail') }}</strong>
+                        <small>{{ tr('noLinkedAccountNote') }}</small>
                       </div>
                     </div>
                   </ng-template>
 
-                  <div class="message-body">
+                  <div class="support-body">
                     <p *ngFor="let paragraph of supportParagraphs(selectedSupportMessage()?.text)">{{ paragraph }}</p>
                   </div>
 
-                  <div class="replies-section" *ngIf="(selectedSupportMessage()?.replies || []).length">
+                  <div class="support-replies" *ngIf="(selectedSupportMessage()?.replies || []).length">
                     <h4>{{ tr('replies') }}</h4>
-                    <div class="reply-card" *ngFor="let reply of selectedSupportMessage()?.replies">
-                      <div class="reply-head">
-                        <strong>{{ reply.admin }}</strong>
-                        <span class="sub-text">{{ formatDate(reply.sentAt) }} • {{ reply.delivery }}</span>
-                      </div>
-                      <div class="reply-body">
-                        <p *ngFor="let p of supportParagraphs(reply.text)">{{ p }}</p>
-                      </div>
-                    </div>
+                    <article class="support-reply" *ngFor="let reply of selectedSupportMessage()?.replies">
+                      <strong>{{ reply.admin }}</strong>
+                      <small>{{ formatDate(reply.sentAt) }} - {{ reply.delivery }}</small>
+                      <p>{{ reply.text }}</p>
+                    </article>
                   </div>
 
-                  <div class="reply-composer">
-                    <h4>{{ tr('reply') }}</h4>
-                    <textarea class="glass-input" rows="4" [placeholder]="tr('replyPlaceholder')" [(ngModel)]="supportReplyText"></textarea>
-                    <button class="btn-primary-glow" [disabled]="!supportReplyText.trim()" (click)="sendSupportReply(selectedSupportMessage())">{{ tr('sendReply') }}</button>
-                  </div>
-                </div>
-                <ng-template #emptyInboxDetail>
-                  <div class="inbox-detail glass-panel flex-center">
-                    <div class="empty-state">
-                      <span class="empty-icon">✉️</span>
-                      <p>{{ tr('selectMessage') }}</p>
-                    </div>
+                  <form class="support-reply-form" (ngSubmit)="replySupportMessage()">
+                    <label class="form-label">
+                      <span>{{ tr('reply') }}</span>
+                      <textarea name="supportReplyText" [(ngModel)]="supportReplyText" rows="7" [placeholder]="tr('replyPlaceholder')"></textarea>
+                    </label>
+                    <button class="btn btn-primary" type="submit" [disabled]="!supportReplyText.trim()">{{ tr('sendReply') }}</button>
+                  </form>
+                </article>
+
+                <ng-template #supportEmpty>
+                  <div class="support-detail support-empty">
+                    <p class="text-secondary">{{ tr('selectMessage') }}</p>
                   </div>
                 </ng-template>
               </div>
             </section>
 
-            <!-- TAB CONTENT: CACHE -->
-            <section class="tab-content anim-fade-in cache-tab" *ngIf="activeTab() === 'cache'">
-              <div class="section-card glass-panel">
-                <div class="section-header">
-                  <h3>{{ tr('cacheTitle') }}</h3>
+            <section class="admin-panel glass" *ngIf="activeTab() === 'cache'">
+              <div class="panel-head">
+                <div>
+                  <p class="eyebrow">{{ tr('aiCache') }}</p>
+                  <h2>{{ tr('cachedAnswers') }}</h2>
                 </div>
-                <div class="mini-stats-row">
-                  <div class="mini-stat">
-                    <span class="label">{{ tr('allStoredCacheRecords') }}</span>
-                    <strong class="val text-accent">{{ formatNumber(cachePagination().total || 0) }}</strong>
-                  </div>
-                  <div class="mini-stat">
-                    <span class="label">{{ tr('matchingCurrentSearch') }}</span>
-                    <strong class="val text-accent">{{ formatNumber(cachePagination().filteredTotal || 0) }}</strong>
-                  </div>
-                  <div class="mini-stat">
-                    <span class="label">{{ tr('currentCachePageTotal') }}</span>
-                    <strong class="val">{{ formatNumber(cacheEntries().length) }}</strong>
-                  </div>
-                  <div class="mini-stat">
-                    <span class="label">{{ tr('hitsOnPage') }}</span>
-                    <strong class="val">{{ formatNumber(cacheHitsOnPage()) }}</strong>
-                  </div>
-                </div>
-                
-                <form class="action-bar" (ngSubmit)="loadCache(1)">
-                  <div class="search-box stretch">
-                    <span class="search-icon">🔍</span>
-                    <input type="search" name="cacheSearch" [(ngModel)]="cacheSearch" [placeholder]="tr('searchCache')" class="glass-input">
-                  </div>
-                  <select name="cacheSort" [(ngModel)]="cacheSort" (ngModelChange)="loadCache(1)" class="glass-select">
-                    <option value="newest">Newest</option>
-                    <option value="oldest">Oldest</option>
-                    <option value="hits_desc">Most Hits</option>
-                    <option value="weak">Weak</option>
-                  </select>
-                  <button class="btn-primary-glow small" type="submit">{{ tr('search') }}</button>
-                  <button class="btn-ghost text-danger" type="button" (click)="clearCache()">{{ 'Clear' }}</button>
+                <form class="admin-search" (ngSubmit)="loadCache(1)">
+                  <input class="form-input" type="search" name="cacheSearch" [(ngModel)]="cacheSearch" [placeholder]="tr('searchCache')">
+                  <button class="btn btn-primary" type="submit">{{ tr('search') }}</button>
+                  <button class="btn btn-outline" type="button" *ngIf="cacheSearch" (click)="cacheSearch = ''; loadCache(1)">{{ tr('reset') }}</button>
+                  <button class="btn btn-outline" type="button" (click)="clearCache()">{{ tr('clearCache') }}</button>
                 </form>
-
-                <div class="grid-list">
-                  <article class="grid-card glass-card anim-hover-lift" *ngFor="let entry of cacheEntries()">
-                    <div class="card-head">
-                      <span class="pill type-pill uppercase">{{ entry.questionType }}</span>
-                      <div class="card-actions">
-                        <span class="chip success">🔥 {{ entry.hitCount || 0 }}</span>
-                        <button class="btn-icon text-danger" (click)="deleteCacheEntry(entry)" title="Delete">🗑️</button>
-                      </div>
+              </div>
+              <div class="cache-summary">
+                <article *ngFor="let card of cacheSummaryCards()" [class.warn]="card.warn">
+                  <span>{{ card.label }}</span>
+                  <strong>{{ card.value }}</strong>
+                  <small>{{ card.note }}</small>
+                </article>
+              </div>
+              <div class="cache-list">
+                <article class="glass clickable-row" *ngFor="let hit of cache().topHits || []" (click)="showQuestionDetails(hit)">
+                  <div class="cache-question-main">
+                    <p>{{ hit.questionText }}</p>
+                    <div class="meta-chips">
+                      <span class="badge badge-outline role-badge">{{ hit.questionType }}</span>
+                      <span class="badge badge-outline">{{ hit.options?.length || 0 }} {{ tr('options') }}</span>
+                      <span class="badge badge-outline">{{ hit.hitCount }} {{ tr('hits') }}</span>
+                      <span class="badge badge-outline">{{ tr('lastSeen') }}: {{ formatDate(hit.lastUsedAt || hit.createdAt) }}</span>
+                      <span class="status-pill danger" *ngIf="isWeakQuestionText(hit.questionText)">{{ tr('weakText') }}</span>
                     </div>
-                    <strong class="card-title">{{ entry.questionText }}</strong>
-                    <div class="meta-row">
-                      <span class="hash-text">{{ shortHash(entry.questionHash) }}</span>
-                      <span class="date-text">{{ formatDate(entry.createdAt) }}</span>
-                    </div>
-                    <div class="answer-box">
-                      <span class="answer-label">A:</span>
-                      <span class="answer-text">{{ entry.answerText }}</span>
-                    </div>
-                  </article>
-                  <div class="empty-state" *ngIf="!cacheEntries().length">No Cache Entries</div>
+                  </div>
+                  <span class="open-hint">{{ tr('openDetails') }}</span>
+                </article>
+                <div class="empty-panel" style="text-align: center; padding: 2rem;" *ngIf="!(cache().topHits || []).length">
+                  <p class="text-secondary">{{ tr('noCacheHits') }}</p>
                 </div>
-
-                <div class="pagination-bar" *ngIf="cachePagination().pages > 1">
-                  <button class="page-btn" *ngFor="let page of cachePageNumbers()" [class.active]="page === cachePagination().page" (click)="loadCache(page)">{{ page }}</button>
-                </div>
+              </div>
+              <div class="pagination" *ngIf="cachePagination().pages > 1">
+                <button type="button" *ngFor="let page of cachePageNumbers()" [class.active]="page === cachePagination().page" (click)="loadCache(page)">
+                  {{ page }}
+                </button>
               </div>
             </section>
 
-            <!-- TAB CONTENT: PARSER -->
-            <section class="tab-content anim-fade-in parser-tab" *ngIf="activeTab() === 'parser'">
-              
-              <div class="section-card glass-panel">
-                <div class="section-header">
-                  <h3>{{ 'Parser Health' }}</h3>
-                  <button class="btn-glass" (click)="clearParserEvents()">{{ 'Clear' }}</button>
+            <section class="admin-panel glass" *ngIf="activeTab() === 'parser'">
+              <div class="panel-head parser-panel-head">
+                <div>
+                  <p class="eyebrow">{{ tr('parserHealth') }}</p>
+                  <h2>{{ tr('parserAnalytics') }}</h2>
                 </div>
-                <div class="mini-stats-row">
-                  <div class="mini-stat" *ngFor="let s of parserHealthCards()">
-                    <span class="label">{{ s.label }}</span>
-                    <strong class="val" [class.text-ok]="s.ok" [class.text-warn]="s.warn" >{{ s.value }}</strong>
-                  </div>
-                </div>
-
-                <form class="action-bar" (ngSubmit)="loadParserEvents(1)">
-                  <select name="parserPlatform" [(ngModel)]="parserFilterPlatform" (ngModelChange)="loadParserEvents(1)" class="glass-select stretch">
-                    <option value="">{{ 'All Platforms' }}</option>
-                    <option *ngFor="let p of parserPlatformRows()" [value]="p">{{ p }}</option>
+                <form class="admin-search parser-filters" (ngSubmit)="loadParserEvents(1)">
+                  <input class="form-input" type="search" name="parserSearch" [(ngModel)]="parserSearch" [placeholder]="adminLocale() === 'pl' ? 'Szukaj URL, platformy lub powodu' : 'Search URL, platform or reason'">
+                  <select class="form-select" name="parserOutcomeFilter" [(ngModel)]="parserOutcomeFilter" (ngModelChange)="loadParserEvents(1)" [attr.aria-label]="tr('parserOutcome')">
+                    <option value="">{{ adminLocale() === 'pl' ? 'Wszystkie wyniki' : 'All outcomes' }}</option>
+                    <option value="success">success</option>
+                    <option value="partial">partial</option>
+                    <option value="empty">empty</option>
+                    <option value="weak">weak</option>
+                    <option value="error">error</option>
+                    <option value="reported">reported</option>
                   </select>
-                  <select name="parserOutcome"  (ngModelChange)="loadParserEvents(1)" class="glass-select stretch">
-                    <option value="">{{ 'All Outcomes' }}</option>
-                    <option value="ok">{{ 'OK' }}</option>
-                    <option value="weak">{{ 'Weak' }}</option>
-                    <option value="empty">{{ 'Empty' }}</option>
-                    <option value="error">{{ 'Error' }}</option>
-                  </select>
-                  <button class="btn-primary-glow small" type="submit">{{ tr('filter') }}</button>
+                  <button class="btn btn-primary" type="submit">{{ tr('search') }}</button>
+                  <button class="btn btn-outline" type="button" (click)="loadParserHealth(); loadParserEvents(parserEventsPagination().page || 1)">{{ tr('refresh') }}</button>
+                  <button class="btn btn-outline danger-outline" type="button" *ngIf="hasParserEventFilters()" (click)="clearParserEvents(false)">{{ tr('clearFilteredParserEvents') }}</button>
+                  <button class="btn btn-outline danger-outline" type="button" (click)="clearParserEvents(true)">{{ tr('clearAllParserEvents') }}</button>
                 </form>
+              </div>
 
-                <div class="list-grid single-col">
-                  <article class="report-card glass-card anim-hover" *ngFor="let event of parserEvents()">
-                    <div class="card-head">
-                      <div class="card-title">
-                        <strong class="uppercase text-accent">{{ event.platform || 'unknown' }}</strong>
-                        <span class="sub-text ml-2">{{ parserHost(event) }}</span>
+              <div class="parser-health-grid">
+                <article *ngFor="let card of parserHealthCards()">
+                  <span class="text-secondary" style="font-size: 0.75rem; text-transform: uppercase;">{{ card.label }}</span>
+                  <strong [class.ok]="card.ok" [class.warn]="card.warn" style="font-size: 1.35rem; margin-top: 0.25rem;">{{ card.value }}</strong>
+                  <small class="text-secondary">{{ card.note }}</small>
+                </article>
+              </div>
+
+              <div class="parser-workspace">
+                <section class="parser-block parser-domain-block">
+                  <div class="parser-block-head">
+                    <div>
+                      <h3>{{ adminLocale() === 'pl' ? 'Strony z problemami' : 'Problem sites' }}</h3>
+                      <p>{{ adminLocale() === 'pl' ? 'Gdzie parser najczęściej nie znajduje pytań albo widzi tylko część strony.' : 'Where the parser most often misses questions or reads only part of the page.' }}</p>
+                    </div>
+                  </div>
+                  <div class="parser-platform-list" *ngIf="parserDomainRows().length; else noParserDomains">
+                    <article class="parser-platform-row parser-domain-row" *ngFor="let item of parserDomainRows()">
+                      <div class="parser-row-head">
+                        <div class="parser-row-main">
+                          <strong>{{ item.hostname || shortUrl(item.sampleUrl) || 'unknown site' }}</strong>
+                          <span>{{ formatNumber(item.count || 0) }} {{ tr('parserEvents') }} - {{ (item.platforms || []).join(', ') || 'universal' }}</span>
+                        </div>
+                        <span class="status-pill" [class.danger]="item.failed || item.reported">{{ formatNumber((item.failed || 0) + (item.reported || 0)) }} {{ tr('parserFailures') }}</span>
                       </div>
-                      <span class="pill status-pill" [class.ok]="parserOutcomeTone(event.outcome) === 'ok'" [class.pending]="parserOutcomeTone(event.outcome) === 'pending'" [class.danger]="parserOutcomeTone(event.outcome) === 'danger'">{{ event.outcome || '-' }}</span>
-                    </div>
-                    <p class="report-desc text-warn" *ngIf="event.reason">{{ event.reason }}</p>
-                    <p class="report-desc">{{ parserEventPreview(event) }}</p>
-                    
-                    <div class="chips-row">
-                      <span class="chip">{{ formatPercent(event.confidence || 0) }} conf</span>
-                      <span class="chip">{{ formatNumber(event.questionCount || 0) }} q's</span>
-                      <span class="chip">{{ formatNumber(event.optionCount || 0) }} opts</span>
-                      <span class="chip success" *ngIf="event.hasPageCode">HTML</span>
-                      <span class="chip clickable" *ngIf="event.userEmail || event.email" (click)="openUserHistory({id: event.userId, email: event.userEmail || event.email})">👤 {{ event.userEmail || event.email }}</span>
-                      <span class="chip">{{ formatDate(event.createdAt) }}</span>
-                      <a class="primary-link parser-url" [href]="event.url" target="_blank" rel="noopener">{{ shortUrl(event.url) }}</a>
-                    </div>
+                      <div class="parser-row-metrics">
+                        <span>{{ tr('parserFailureRate') }}: <strong>{{ formatPercent(item.failureRate || 0) }}</strong></span>
+                        <span>{{ tr('parserConfidence') }}: <strong>{{ formatPercent(item.avgConfidence || 0) }}</strong></span>
+                        <span>{{ tr('parserReports') }}: <strong>{{ formatNumber(item.reported || 0) }}</strong></span>
+                        <span>{{ tr('lastSeen') }}: <strong>{{ formatDate(item.lastSeenAt) }}</strong></span>
+                      </div>
+                      <p class="parser-reason-line">{{ parserReasons(item) }}</p>
+                      <a class="primary-link parser-url" *ngIf="item.sampleUrl" [href]="item.sampleUrl" target="_blank" rel="noopener">{{ shortUrl(item.sampleUrl) }}</a>
+                    </article>
+                  </div>
+                  <ng-template #noParserDomains>
+                    <div class="empty-panel">{{ tr('parserNoEvents') }}</div>
+                  </ng-template>
+                </section>
 
-                    <details class="code-details mt-3" *ngIf="event.snapshot?.bodyText || event.snapshot?.htmlSnippet || event.snapshot?.fullHtmlFile?.id">
-                      <summary class="link-btn primary">{{ tr('parserPageSnapshot') }}</summary>
-                      <div class="code-blocks">
-                        <button class="btn-glass small download-btn" *ngIf="event.snapshot?.fullHtmlFile?.id" (click)="downloadParserSnapshotFile(event.snapshot.fullHtmlFile)">
-                          ⬇️ {{ tr('parserDownloadPageCode') }} ({{ formatBytes(event.snapshot.fullHtmlFile.bytes) }})
+                <section class="parser-block parser-problem-block">
+                  <div class="parser-block-head">
+                    <div>
+                      <h3>{{ adminLocale() === 'pl' ? 'Napraw najpierw' : 'Fix first' }}</h3>
+                      <p>{{ adminLocale() === 'pl' ? 'Najbardziej powtarzalne błędy, z powodem i przykładem strony do sprawdzenia.' : 'The most repeated failures, with reason and a sample page to inspect.' }}</p>
+                    </div>
+                  </div>
+                  <div class="parser-event-list" *ngIf="parserProblemRows().length; else noParserProblems">
+                    <article class="parser-event-card parser-problem-card" *ngFor="let group of parserProblemRows()">
+                      <div class="parser-event-head">
+                        <div class="parser-row-main">
+                          <strong>{{ parserProblemSite(group) }}</strong>
+                          <span>{{ group.platform || 'universal' }} - {{ group.outcome || 'unknown' }}</span>
+                        </div>
+                        <span class="status-pill danger">{{ formatNumber(group.count || 0) }}</span>
+                      </div>
+                      <p class="parser-reason-line">{{ group.reason || (adminLocale() === 'pl' ? 'Brak powodu' : 'No reason recorded') }}</p>
+                      <p class="parser-next-step">{{ adminLocale() === 'pl' ? 'Kolejny krok: otwórz snapshot, sprawdź selektory i popraw regułę parsera dla tej domeny.' : 'Next step: open the snapshot, check selectors and patch the parser rule for this site.' }}</p>
+                      <p class="parser-snapshot" *ngIf="group.sampleText">{{ truncateUi(group.sampleText, 180) }}</p>
+                      <div class="parser-event-meta">
+                        <span>{{ tr('parserConfidence') }}: {{ formatPercent(group.avgConfidence || 0) }}</span>
+                        <span>{{ tr('parserQuestionsFound') }}: {{ formatNumber(group.avgQuestions || 0) }}</span>
+                        <span>{{ tr('lastSeen') }}: {{ formatDate(group.lastSeenAt) }}</span>
+                        <a class="primary-link parser-url" *ngIf="group.sampleUrl" [href]="group.sampleUrl" target="_blank" rel="noopener">{{ shortUrl(group.sampleUrl) }}</a>
+                      </div>
+                    </article>
+                  </div>
+                  <ng-template #noParserProblems>
+                    <div class="empty-panel">{{ adminLocale() === 'pl' ? 'Brak pogrupowanych problemow.' : 'No grouped parser issues.' }}</div>
+                  </ng-template>
+                </section>
+
+                <section class="parser-block parser-platform-block">
+                  <div class="parser-block-head">
+                    <div>
+                      <h3>{{ tr('parserPlatform') }}</h3>
+                      <p>{{ adminLocale() === 'pl' ? 'Kontekst pomocniczy: które platformy generują najwięcej zdarzeń.' : 'Supporting context: which platforms generate the most events.' }}</p>
+                    </div>
+                  </div>
+                  <div class="parser-platform-list" *ngIf="parserPlatformRows().length; else noParserPlatforms">
+                    <article class="parser-platform-row" *ngFor="let item of parserPlatformRows()">
+                      <div class="parser-row-head">
+                        <div class="parser-row-main">
+                          <strong>{{ item.platform || 'unknown' }}</strong>
+                          <span>{{ formatNumber(item.count || 0) }} {{ tr('parserEvents') }}</span>
+                        </div>
+                        <span class="status-pill" [class.danger]="item.failed">{{ formatNumber(item.failed || 0) }} {{ tr('parserFailures') }}</span>
+                      </div>
+                      <div class="parser-row-metrics">
+                        <span>{{ tr('parserFailureRate') }}: <strong>{{ formatPercent(item.failureRate || 0) }}</strong></span>
+                        <span>{{ tr('parserConfidence') }}: <strong>{{ formatPercent(item.avgConfidence || 0) }}</strong></span>
+                        <span>{{ tr('lastSeen') }}: <strong>{{ formatDate(item.lastSeenAt) }}</strong></span>
+                      </div>
+                      <p class="parser-reason-line">{{ parserReasons(item) }}</p>
+                    </article>
+                  </div>
+                  <ng-template #noParserPlatforms>
+                    <div class="empty-panel">{{ tr('parserNoEvents') }}</div>
+                  </ng-template>
+                </section>
+
+                <section class="parser-block parser-events-block">
+                  <div class="parser-block-head">
+                    <div>
+                      <h3>{{ tr('parserEvents') }}</h3>
+                      <p>{{ adminLocale() === 'pl' ? 'Świeże przykłady z krótkim opisem, linkiem i snapshotem HTML.' : 'Fresh examples with a short preview, source link and HTML snapshot.' }}</p>
+                    </div>
+                  </div>
+                  <div class="parser-event-list" *ngIf="parserEvents().length; else noParserEvents">
+                    <article class="parser-event-card" *ngFor="let event of parserEvents()">
+                      <div class="parser-event-head">
+                        <div class="parser-row-main">
+                          <strong>{{ event.platform || 'unknown' }}</strong>
+                          <span>{{ parserHost(event) }}</span>
+                        </div>
+                        <span class="status-pill" [class.ok]="parserOutcomeTone(event.outcome) === 'ok'" [class.pending]="parserOutcomeTone(event.outcome) === 'pending'" [class.danger]="parserOutcomeTone(event.outcome) === 'danger'">{{ event.outcome || '-' }}</span>
+                      </div>
+                      <p class="parser-reason-line">{{ event.reason || '-' }}</p>
+                      <p class="parser-snapshot">{{ parserEventPreview(event) }}</p>
+                      <div class="parser-event-meta">
+                        <span>{{ formatPercent(event.confidence || 0) }}</span>
+                        <span>{{ formatNumber(event.questionCount || 0) }} {{ tr('parserQuestionsFound') }}</span>
+                        <span>{{ formatNumber(event.optionCount || 0) }} {{ tr('parserOptionsFound') }}</span>
+                        <span *ngIf="event.hasPageCode">{{ tr('parserPageCode') }}</span>
+                        <span>{{ formatDate(event.createdAt) }}</span>
+                        <a class="primary-link parser-url" [href]="event.url" target="_blank" rel="noopener">{{ shortUrl(event.url) }}</a>
+                      </div>
+                      <details class="parser-snapshot-details" *ngIf="event.snapshot?.bodyText || event.snapshot?.htmlSnippet || event.snapshot?.fullHtmlFile?.id">
+                        <summary>{{ tr('parserPageSnapshot') }}</summary>
+                        <button class="parser-snapshot-download" type="button" *ngIf="event.snapshot?.fullHtmlFile?.id" (click)="downloadParserSnapshotFile(event.snapshot.fullHtmlFile)">
+                          {{ tr('parserDownloadPageCode') }}
+                          <span>{{ formatBytes(event.snapshot.fullHtmlFile.bytes) }}</span>
                         </button>
-                        <div class="code-pane" *ngIf="event.snapshot?.bodyText">
+                        <div class="parser-snapshot-pane" *ngIf="event.snapshot?.bodyText">
                           <strong>{{ tr('parserPageText') }}</strong>
-                          <pre>{{ event.snapshot.bodyText }}</pre>
+                          <pre class="parser-snapshot-code">{{ event.snapshot.bodyText }}</pre>
                         </div>
-                        <div class="code-pane" *ngIf="event.snapshot?.htmlSnippet">
+                        <div class="parser-snapshot-pane" *ngIf="event.snapshot?.htmlSnippet">
                           <strong>{{ tr('parserPageCode') }}</strong>
-                          <pre>{{ event.snapshot.htmlSnippet }}</pre>
+                          <pre class="parser-snapshot-code">{{ event.snapshot.htmlSnippet }}</pre>
                         </div>
-                      </div>
-                    </details>
-                  </article>
-                  <div class="empty-state" *ngIf="!parserEvents().length">{{ tr('parserNoEvents') }}</div>
-                </div>
-                
-                <div class="pagination-bar" *ngIf="parserEventsPagination().pages > 1">
-                  <button class="page-btn" *ngFor="let page of parserEventPageNumbers()" [class.active]="page === parserEventsPagination().page" (click)="loadParserEvents(page)">{{ page }}</button>
-                </div>
+                      </details>
+                    </article>
+                  </div>
+                  <ng-template #noParserEvents>
+                    <div class="empty-panel">{{ tr('parserNoEvents') }}</div>
+                  </ng-template>
+                </section>
               </div>
 
-              <!-- Parser Reports (Bugs) -->
-              <div class="section-card glass-panel" *ngIf="(parserHealth().recentBugReports || []).length">
-                <div class="section-header">
-                  <h3>{{ tr('parserRecentReports') }}</h3>
+              <div class="pagination" *ngIf="parserEventsPagination().pages > 1">
+                <button type="button" *ngFor="let page of parserEventPageNumbers()" [class.active]="page === parserEventsPagination().page" (click)="loadParserEvents(page)">
+                  {{ page }}
+                </button>
+              </div>
+
+              <section class="parser-block parser-reports" *ngIf="(parserHealth().recentBugReports || []).length">
+                <div class="parser-block-head">
+                  <div>
+                    <h3>{{ tr('parserRecentReports') }}</h3>
+                    <p>{{ adminLocale() === 'pl' ? 'Zgłoszenia użytkowników powiązane z parserem.' : 'User reports linked with parser diagnostics.' }}</p>
+                  </div>
                 </div>
-                <div class="list-grid single-col">
-                  <article class="report-card glass-card anim-hover" *ngFor="let report of parserHealth().recentBugReports">
-                    <p class="report-desc bold">{{ report.parserSnapshot?.questionTexts?.[0] || report.parserDiagnostics?.reason || report.url }}</p>
-                    <div class="chips-row">
-                      <span class="chip uppercase">{{ report.platform || 'unknown' }}</span>
-                      <span class="chip pending" *ngIf="report.source === 'parser-auto'">{{ tr('parserAutoReport') }}</span>
-                      <span class="chip">{{ formatPercent(report.parserDiagnostics?.confidence || 0) }} conf</span>
-                      <span class="chip success" *ngIf="report.hasPageCode">HTML</span>
-                      <span class="chip">{{ formatDate(report.date) }}</span>
+                <div class="parser-report-list">
+                  <article class="parser-report-row" *ngFor="let report of parserHealth().recentBugReports">
+                    <div class="cache-question-main">
+                      <p>{{ report.parserSnapshot?.questionTexts?.[0] || report.parserDiagnostics?.reason || report.url }}</p>
+                      <div class="meta-chips">
+                        <span class="badge badge-outline role-badge">{{ report.platform || 'unknown' }}</span>
+                        <span class="badge badge-outline" *ngIf="report.source === 'parser-auto'">{{ tr('parserAutoReport') }}</span>
+                        <span class="badge badge-outline">{{ formatPercent(report.parserDiagnostics?.confidence || 0) }}</span>
+                        <span class="badge badge-outline" *ngIf="report.hasPageCode">{{ tr('parserPageCode') }}</span>
+                        <span class="badge badge-outline">{{ formatDate(report.date) }}</span>
+                      </div>
+                      <details class="parser-snapshot-details" *ngIf="report.parserSnapshot?.bodyText || report.parserSnapshot?.htmlSnippet || report.parserSnapshot?.fullHtmlFile?.id">
+                        <summary>{{ tr('parserPageSnapshot') }}</summary>
+                        <button class="parser-snapshot-download" type="button" *ngIf="report.parserSnapshot?.fullHtmlFile?.id" (click)="downloadParserSnapshotFile(report.parserSnapshot.fullHtmlFile)">
+                          {{ tr('parserDownloadPageCode') }}
+                          <span>{{ formatBytes(report.parserSnapshot.fullHtmlFile.bytes) }}</span>
+                        </button>
+                        <div class="parser-snapshot-pane" *ngIf="report.parserSnapshot?.bodyText">
+                          <strong>{{ tr('parserPageText') }}</strong>
+                          <pre class="parser-snapshot-code">{{ report.parserSnapshot.bodyText }}</pre>
+                        </div>
+                        <div class="parser-snapshot-pane" *ngIf="report.parserSnapshot?.htmlSnippet">
+                          <strong>{{ tr('parserPageCode') }}</strong>
+                          <pre class="parser-snapshot-code">{{ report.parserSnapshot.htmlSnippet }}</pre>
+                        </div>
+                      </details>
                     </div>
-                    <a class="primary-link parser-url" [href]="report.url" target="_blank" rel="noopener">{{ shortUrl(report.url) }}</a>
+                    <a class="open-hint" [href]="report.url" target="_blank" rel="noopener">{{ shortUrl(report.url) }}</a>
                   </article>
                 </div>
-              </div>
+              </section>
             </section>
 
-            <!-- TAB CONTENT: SYSTEM -->
-            <section class="tab-content anim-fade-in system-tab" *ngIf="activeTab() === 'system'">
-              
-              <div class="section-card glass-panel">
-                <div class="section-header">
-                  <h3>{{ tr('healthCheck') }}</h3>
-                </div>
-                <div class="stats-grid large">
-                  <div class="stat-card" *ngFor="let item of healthCards()">
-                    <span class="stat-label uppercase">{{ item.label }}</span>
-                    <strong class="stat-value text-accent" [class.text-ok]="item.ok">{{ item.value }}</strong>
-                  </div>
+            <section class="admin-panel glass" *ngIf="activeTab() === 'system'">
+              <div class="panel-head">
+                <div>
+                  <p class="eyebrow">{{ tr('system') }}</p>
+                  <h2>{{ tr('healthCheck') }}</h2>
                 </div>
               </div>
+              <div class="health-grid">
+                <article class="glass" *ngFor="let item of healthCards()">
+                  <span class="text-secondary" style="font-size: 0.75rem; text-transform: uppercase;">{{ item.label }}</span>
+                  <strong [class.ok]="item.ok" style="font-size: 1.35rem; margin-top: 0.25rem;">{{ item.value }}</strong>
+                </article>
+              </div>
 
-              <div class="section-card glass-panel mt-4">
-                <div class="section-header">
+              <div id="admin-billing-safety" style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border);">
+                <div class="panel-head" style="margin-bottom: 1rem;">
                   <div>
-                    <h3>{{ tr('creditDedupeMonitor') }}</h3>
-                    <p class="subtitle">{{ tr('billingSafety') }}</p>
+                    <p class="eyebrow">{{ tr('billingSafety') }}</p>
+                    <h3 style="margin: 0.25rem 0 0; font-family: var(--font-heading); font-size: 1.15rem;">{{ tr('creditDedupeMonitor') }}</h3>
                   </div>
-                  <button class="btn-glass" (click)="loadBillingSafety()">{{ tr('refreshBilling') }}</button>
+                  <button class="btn btn-outline" type="button" (click)="loadBillingSafety()">{{ tr('refreshBilling') }}</button>
+                </div>
+                <div class="health-grid">
+                  <article class="glass" *ngFor="let item of billingSafetyCards()">
+                    <span class="text-secondary" style="font-size: 0.75rem; text-transform: uppercase;">{{ item.label }}</span>
+                    <strong [class.ok]="item.ok" style="font-size: 1.35rem; margin-top: 0.25rem;">{{ item.value }}</strong>
+                  </article>
                 </div>
 
-                <div class="stats-grid">
-                  <div class="stat-card" *ngFor="let item of billingSafetyCards()">
-                    <span class="stat-label uppercase">{{ item.label }}</span>
-                    <strong class="stat-value" [class.text-ok]="item.ok">{{ item.value }}</strong>
-                  </div>
-                </div>
-
-                <div class="alert-box error mt-4" *ngIf="(billingSafety().duplicateGroups || []).length">
+                <div class="admin-alert" *ngIf="(billingSafety().duplicateGroups || []).length" style="margin-top: 1rem;">
                   {{ tr('duplicateWarning') }}
                 </div>
 
-                <div class="table-container mt-4" *ngIf="(billingSafety().duplicateGroups || []).length">
-                  <table class="data-table">
+                <div class="table-scroll" *ngIf="(billingSafety().duplicateGroups || []).length" style="margin-top: 1rem;">
+                  <table class="admin-table">
                     <thead>
                       <tr>
                         <th>{{ tr('user') }}</th>
                         <th>{{ tr('questionText') }}</th>
+                        <th>{{ tr('questionHash') }}</th>
                         <th>{{ tr('charges') }}</th>
                         <th>{{ tr('actions') }}</th>
                         <th>{{ tr('lastCharged') }}</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr *ngFor="let group of billingSafety().duplicateGroups" class="table-row">
+                      <tr *ngFor="let group of billingSafety().duplicateGroups">
                         <td>
-                          <button class="link-btn primary" *ngIf="group.userId" (click)="openUserHistory({ id: group.userId, email: group.email || group.userId })">{{ group.email || group.userId }}</button>
+                          <button class="link-button primary-link" type="button" *ngIf="group.userId" (click)="openUserHistory({ id: group.userId, email: group.email || group.userId })" style="font-weight: bold; text-align: left;">
+                            {{ group.email || group.userId }}
+                          </button>
                           <strong *ngIf="!group.userId">{{ group.email || tr('unknownUser') }}</strong>
                         </td>
-                        <td>
+                        <td class="question-audit-cell">
                           <strong>{{ group.questionText || shortHash(group.questionHash) }}</strong>
-                          <span class="sub-text block" *ngIf="group.answerText">A: {{ group.answerText }}</span>
-                          <span class="sub-text block text-warn">Hash: {{ shortHash(group.questionHash) }}</span>
+                          <span *ngIf="group.answerText">{{ tr('answerSummary') }}: {{ group.answerText }}</span>
+                          <span>{{ tr('duplicateReason') }}</span>
                         </td>
+                        <td>{{ shortHash(group.questionHash) }}</td>
                         <td>
-                          <strong class="hl-text text-danger">{{ group.count }} / {{ group.credits }} cr</strong>
-                          <span class="sub-text block">{{ tr('timeSpan') }}: {{ formatDurationMs(group.spanMs) }}</span>
+                          <strong>{{ group.count }} / {{ group.credits }} credits</strong>
+                          <span>{{ tr('timeSpan') }}: {{ formatDurationMs(group.spanMs) }}</span>
                         </td>
                         <td>
                           <strong>{{ group.action || (group.actions || []).join(', ') }}</strong>
+                          <span>{{ tr('firstCharged') }}: {{ formatDate(group.firstChargedAt) }}</span>
                         </td>
                         <td>
                           <strong>{{ formatDate(group.lastChargedAt) }}</strong>
-                          <div class="action-buttons mt-2">
-                            <button class="btn-glass small" (click)="reviewDuplicateGroup(group)">{{ tr('reviewInLog') }}</button>
-                            <button class="btn-primary-glow small" *ngIf="group.userId" (click)="openGrantModal({ id: group.userId, email: group.email || group.userId }, tr('possibleRefund'))">Refund</button>
+                          <div class="row-actions" style="margin-top: 0.5rem;">
+                            <button type="button" (click)="reviewDuplicateGroup(group)">{{ tr('reviewInLog') }}</button>
+                            <button type="button" *ngIf="group.userId" (click)="openGrantModal({ id: group.userId, email: group.email || group.userId }, tr('possibleRefund'))">{{ tr('possibleRefund') }}</button>
                           </div>
                         </td>
                       </tr>
                     </tbody>
                   </table>
                 </div>
-              </div>
 
-              <!-- Credit Usage Log -->
-              <div class="section-card glass-panel mt-4">
-                <div class="section-header">
-                  <div>
-                    <h3>{{ tr('creditUsageLog') }}</h3>
-                    <p class="subtitle">{{ tr('creditEvent') }}</p>
+                <div class="empty-panel" *ngIf="!(billingSafety().duplicateGroups || []).length" style="text-align: center; padding: 1.25rem; margin-top: 1rem;">
+                  <p class="text-secondary">{{ tr('noDuplicateGroups') }}</p>
+                </div>
+
+                <div class="credit-usage-panel">
+                  <div class="panel-head" style="margin-bottom: 1rem;">
+                    <div>
+                      <p class="eyebrow">{{ tr('creditEvent') }}</p>
+                      <h3 style="margin: 0.25rem 0 0; font-family: var(--font-heading); font-size: 1.15rem;">{{ tr('creditUsageLog') }}</h3>
+                      <p class="text-secondary" style="margin: 0.4rem 0 0;">{{ tr('creditUsageDescription') }}</p>
+                    </div>
+                    <button class="btn btn-outline" type="button" (click)="loadBillingUsage(1)">{{ tr('refresh') }}</button>
                   </div>
-                  <button class="btn-glass" (click)="loadBillingUsage(1)">{{ tr('refresh') }}</button>
-                </div>
-                
-                <form class="action-bar" (ngSubmit)="loadBillingUsage(1)">
-                  <div class="search-box stretch">
-                    <span class="search-icon">🔍</span>
-                    <input type="search" [(ngModel)]="billingUsageSearch" name="billingUsageSearch" [placeholder]="tr('searchCreditUsage')" class="glass-input">
+
+                  <form class="admin-search credit-usage-filters" (ngSubmit)="loadBillingUsage(1)">
+                    <input type="text" [(ngModel)]="billingUsageSearch" name="billingUsageSearch" [placeholder]="tr('searchCreditUsage')">
+                    <select [(ngModel)]="billingUsageStatus" name="billingUsageStatus">
+                      <option value="">{{ tr('allStatuses') }}</option>
+                      <option value="charged">{{ tr('charged') }}</option>
+                      <option value="claimed">{{ tr('claimed') }}</option>
+                      <option value="waived">{{ tr('waived') }}</option>
+                      <option value="aborted">{{ tr('aborted') }}</option>
+                      <option value="declined">{{ tr('declined') }}</option>
+                    </select>
+                    <select [(ngModel)]="billingUsageAction" name="billingUsageAction">
+                      <option value="">{{ tr('allActions') }}</option>
+                      <option value="solve">solve</option>
+                      <option value="solve-snapshot">solve-snapshot</option>
+                      <option value="explain">explain</option>
+                      <option value="follow-up">follow-up</option>
+                    </select>
+                    <button class="btn btn-primary" type="submit">{{ tr('search') }}</button>
+                  </form>
+
+                  <div class="health-grid credit-usage-summary">
+                    <article class="glass">
+                      <span>{{ tr('visibleEntries') }}</span>
+                      <strong>{{ formatNumber(billingUsagePagination().total || 0) }}</strong>
+                    </article>
+                    <article class="glass">
+                      <span>{{ tr('charged') }}</span>
+                      <strong class="ok">{{ formatNumber(billingUsageSummary().chargedRecords || 0) }}</strong>
+                    </article>
+                    <article class="glass">
+                      <span>{{ tr('chargedCredits') }}</span>
+                      <strong class="ok">{{ formatNumber(billingUsageSummary().chargedCredits || 0) }}</strong>
+                    </article>
+                    <article class="glass">
+                      <span>{{ tr('status') }}</span>
+                      <strong>{{ billingUsageStatus ? creditUsageStatusLabel(billingUsageStatus) : tr('allStatuses') }}</strong>
+                    </article>
                   </div>
-                  <select [(ngModel)]="billingUsageStatus" name="billingUsageStatus" class="glass-select stretch">
-                    <option value="">{{ tr('allStatuses') }}</option>
-                    <option value="charged">{{ tr('charged') }}</option>
-                    <option value="claimed">{{ tr('claimed') }}</option>
-                    <option value="waived">{{ tr('waived') }}</option>
-                    <option value="aborted">{{ tr('aborted') }}</option>
-                    <option value="declined">{{ tr('declined') }}</option>
-                  </select>
-                  <select [(ngModel)]="billingUsageAction" name="billingUsageAction" class="glass-select stretch">
-                    <option value="">{{ tr('allActions') }}</option>
-                    <option value="solve">solve</option>
-                    <option value="solve-snapshot">solve-snapshot</option>
-                    <option value="explain">explain</option>
-                    <option value="follow-up">follow-up</option>
-                  </select>
-                  <button class="btn-primary-glow small" type="submit">{{ tr('search') }}</button>
-                </form>
 
-                <div class="mini-stats-row">
-                  <div class="mini-stat"><span class="label">{{ tr('visibleEntries') }}</span><strong class="val">{{ formatNumber(billingUsagePagination().total || 0) }}</strong></div>
-                  <div class="mini-stat"><span class="label">{{ tr('charged') }}</span><strong class="val text-ok">{{ formatNumber(billingUsageSummary().chargedRecords || 0) }}</strong></div>
-                  <div class="mini-stat"><span class="label">{{ tr('chargedCredits') }}</span><strong class="val text-ok">{{ formatNumber(billingUsageSummary().chargedCredits || 0) }}</strong></div>
-                </div>
+                  <div class="table-scroll" style="margin-top: 1rem;">
+                    <table class="admin-table credit-usage-table">
+                      <thead>
+                        <tr>
+                          <th>{{ tr('questionText') }}</th>
+                          <th>{{ tr('user') }}</th>
+                          <th>{{ tr('creditEvent') }}</th>
+                          <th>{{ tr('chargedCredits') }}</th>
+                          <th>{{ tr('date') }}</th>
+                          <th>{{ tr('actions') }}</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let item of billingUsageRows()">
+                          <td class="question-audit-cell">
+                            <strong>{{ item.questionText }}</strong>
+                            <span *ngIf="item.answerText">{{ tr('answerSummary') }}: {{ item.answerText }}</span>
+                            <span>{{ item.questionType || item.action }} - {{ shortHash(item.questionHash) }}</span>
+                          </td>
+                          <td>
+                            <button type="button" class="link-button primary-link" *ngIf="item.userId" (click)="openUserHistory({ id: item.userId, email: item.email })" style="font-weight: bold; text-align: left;">
+                              {{ item.email }}
+                            </button>
+                            <strong *ngIf="!item.userId">{{ item.email }}</strong>
+                            <span *ngIf="item.displayName">{{ item.displayName }}</span>
+                          </td>
+                          <td>
+                            <span class="status-pill" [class.ok]="creditUsageStatusClass(item.status) === 'ok'" [class.pending]="creditUsageStatusClass(item.status) === 'pending'" [class.danger]="creditUsageStatusClass(item.status) === 'danger'">
+                              {{ creditUsageStatusLabel(item.status) }}
+                            </span>
+                            <span>{{ item.action }}</span>
+                            <span *ngIf="item.waivedReason">{{ item.waivedReason }}</span>
+                          </td>
+                          <td>
+                            <strong class="metric-value">{{ item.creditsCharged || 0 }}</strong>
+                            <span>{{ tr('billableCredits') }}: {{ item.credits || 0 }}</span>
+                          </td>
+                          <td>{{ formatDate(item.time) }}</td>
+                          <td>
+                            <div class="row-actions">
+                              <button type="button" (click)="showQuestionDetails(item)">{{ tr('viewQuestion') }}</button>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr *ngIf="!billingUsageRows().length">
+                          <td colspan="6" class="empty-cell">{{ tr('noCreditUsage') }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
 
-                <div class="table-container mt-4">
-                  <table class="data-table">
-                    <thead>
-                      <tr>
-                        <th>{{ tr('questionText') }}</th>
-                        <th>{{ tr('user') }}</th>
-                        <th>{{ tr('creditEvent') }}</th>
-                        <th>{{ tr('chargedCredits') }}</th>
-                        <th>{{ tr('date') }}</th>
-                        <th>{{ tr('actions') }}</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr *ngFor="let item of billingUsageRows()" class="table-row">
-                        <td>
-                          <strong>{{ item.questionText }}</strong>
-                          <span class="sub-text block" *ngIf="item.answerText">A: {{ item.answerText }}</span>
-                          <span class="sub-text block text-warn">{{ item.questionType || item.action }} - {{ shortHash(item.questionHash) }}</span>
-                        </td>
-                        <td>
-                          <button class="link-btn primary block text-left" *ngIf="item.userId" (click)="openUserHistory({ id: item.userId, email: item.email })">{{ item.email }}</button>
-                          <strong *ngIf="!item.userId">{{ item.email }}</strong>
-                          <span class="sub-text block" *ngIf="item.displayName">{{ item.displayName }}</span>
-                        </td>
-                        <td>
-                          <span class="pill status-pill" [class.ok]="creditUsageStatusClass(item.status) === 'ok'" [class.pending]="creditUsageStatusClass(item.status) === 'pending'" [class.danger]="creditUsageStatusClass(item.status) === 'danger'">{{ creditUsageStatusLabel(item.status) }}</span>
-                          <span class="block mt-1">{{ item.action }}</span>
-                          <span class="sub-text block text-danger" *ngIf="item.waivedReason">{{ item.waivedReason }}</span>
-                        </td>
-                        <td>
-                          <strong class="hl-text text-accent">{{ item.creditsCharged || 0 }}</strong>
-                          <span class="sub-text block">{{ tr('billableCredits') }}: {{ item.credits || 0 }}</span>
-                        </td>
-                        <td>{{ formatDate(item.time) }}</td>
-                        <td>
-                          <button class="btn-glass small" (click)="showQuestionDetails(item)">{{ tr('viewQuestion') }}</button>
-                        </td>
-                      </tr>
-                      <tr *ngIf="!billingUsageRows().length">
-                        <td colspan="6"><div class="empty-state">{{ tr('noCreditUsage') }}</div></td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-
-                <div class="pagination-bar" *ngIf="billingUsagePagination().pages > 1">
-                  <button class="page-btn" *ngFor="let page of billingUsagePageNumbers()" [class.active]="page === billingUsagePagination().page" (click)="loadBillingUsage(page)">{{ page }}</button>
+                  <div class="pagination" *ngIf="billingUsagePagination().pages > 1">
+                    <button type="button" *ngFor="let page of billingUsagePageNumbers()" [class.active]="page === billingUsagePagination().page" (click)="loadBillingUsage(page)">
+                      {{ page }}
+                    </button>
+                  </div>
                 </div>
               </div>
             </section>
-
-          </main>
-        </div>
+          </section>
+        </section>
       </ng-template>
 
-      <!-- OVERLAYS & MODALS -->
       <!-- Question Detail Modal -->
-      <div class="modal-backdrop" *ngIf="selectedQuestion()" (click)="selectedQuestion.set(null)">
-        <div class="modal-card glass-panel anim-zoom-in" (click)="$event.stopPropagation()">
+      <div class="modal-overlay" *ngIf="selectedQuestion()" (click)="selectedQuestion.set(null)" style="z-index: 1100;">
+        <div class="modal-card glass anim-slide-up" (click)="$event.stopPropagation()">
           <header class="modal-header">
             <h3>{{ tr('questionDetails') }}</h3>
-            <div class="action-buttons">
-              <button class="btn-icon text-danger" *ngIf="selectedQuestion()?.cacheId" (click)="deleteCacheEntry(selectedQuestion())" title="Delete from Cache">🗑️</button>
-              <button class="btn-icon" (click)="selectedQuestion.set(null)">❌</button>
+            <div class="row-actions">
+              <button type="button" class="danger" *ngIf="selectedQuestion()?.cacheId" (click)="deleteCacheEntry(selectedQuestion())">{{ tr('deleteCache') }}</button>
+              <button class="btn-close" type="button" (click)="selectedQuestion.set(null)">x</button>
             </div>
           </header>
           <div class="modal-body">
-            <div class="detail-row">
-              <span class="label">{{ tr('type') }}</span>
-              <span class="pill uppercase">{{ selectedQuestion()?.questionType }}</span>
+            <div class="detail-group">
+              <label>{{ tr('type') }}</label>
+              <span class="badge badge-outline" style="text-transform: uppercase;">{{ selectedQuestion()?.questionType }}</span>
             </div>
-            <div class="detail-row" *ngIf="selectedQuestion()?.hitCount != null">
-              <span class="label">{{ tr('cacheHits') }}</span>
-              <strong class="val text-accent">{{ selectedQuestion()?.hitCount }}</strong>
+            <div class="detail-group" *ngIf="selectedQuestion()?.hitCount != null" style="margin-top: 1rem;">
+              <label>{{ tr('cacheHits') }}</label>
+              <strong style="color: var(--text-primary);">{{ selectedQuestion()?.hitCount }}</strong>
             </div>
-            <div class="detail-row">
-              <span class="label">{{ tr('questionText') }}</span>
-              <div class="detail-box">{{ selectedQuestion()?.questionText }}</div>
+            <div class="detail-group" style="margin-top: 1rem;">
+              <label>{{ tr('counts') }}</label>
+              <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                <span class="badge badge-outline">{{ tr('options') }}: {{ selectedQuestion()?.options?.length || 0 }}</span>
+                <span class="badge badge-outline">{{ tr('prompts') }}: {{ selectedQuestion()?.prompts?.length || 0 }}</span>
+                <span class="badge badge-outline">{{ tr('rows') }}: {{ selectedQuestion()?.rows?.length || 0 }}</span>
+                <span class="badge badge-outline">{{ tr('answerItems') }}: {{ answerItems(selectedQuestion()).length }}</span>
+              </div>
             </div>
-            <div class="detail-row" *ngIf="selectedQuestion()?.answerText">
-              <span class="label">{{ 'Answer' }}</span>
-              <div class="detail-box highlight">{{ selectedQuestion()?.answerText }}</div>
+            <div class="detail-group" style="margin-top: 1.5rem;">
+              <label>{{ tr('questionText') }}</label>
+              <p class="question-text-full">{{ selectedQuestion()?.questionText }}</p>
             </div>
-            <div class="detail-row" *ngIf="(selectedQuestion()?.options || []).length">
-              <span class="label">{{ tr('options') }}</span>
+            
+            <div class="detail-group" *ngIf="selectedQuestion()?.options?.length" style="margin-top: 1.5rem;">
+              <label>{{ tr('options') }} ({{ selectedQuestion()?.options?.length || 0 }})</label>
               <ul class="options-list">
-                <li *ngFor="let opt of selectedQuestion()?.options">{{ opt }}</li>
+                <li *ngFor="let opt of selectedQuestion()?.options; let i = index">
+                  <span class="option-idx">{{ i + 1 }}.</span> {{ opt }}
+                </li>
               </ul>
             </div>
+
+            <div class="detail-group" *ngIf="selectedQuestion()?.prompts?.length" style="margin-top: 1.5rem;">
+              <label>{{ tr('prompts') }} ({{ selectedQuestion()?.prompts?.length || 0 }})</label>
+              <ul class="options-list">
+                <li *ngFor="let prompt of selectedQuestion()?.prompts; let i = index">
+                  <span class="option-idx">P{{ i + 1 }}:</span> {{ prompt }}
+                </li>
+              </ul>
+            </div>
+
+            <div class="detail-group" *ngIf="selectedQuestion()?.rows?.length" style="margin-top: 1.5rem;">
+              <label>{{ tr('rows') }} ({{ selectedQuestion()?.rows?.length || 0 }})</label>
+              <ul class="options-list">
+                <li *ngFor="let row of selectedQuestion()?.rows; let i = index">
+                  <span class="option-idx">R{{ i + 1 }}:</span> {{ row }}
+                </li>
+              </ul>
+            </div>
+
+            <div class="detail-group" *ngIf="answerItems(selectedQuestion()).length" style="margin-top: 1.5rem;">
+              <label>{{ tr('answerItems') }} ({{ answerItems(selectedQuestion()).length }})</label>
+              <ul class="options-list">
+                <li *ngFor="let item of answerItems(selectedQuestion())">
+                  <span class="option-idx">{{ item.label }}</span> {{ item.value }}
+                  <small *ngIf="item.raw !== null" style="display: block; margin-top: 0.35rem; color: var(--text-secondary);">raw: {{ item.raw }}</small>
+                </li>
+              </ul>
+            </div>
+
+            <div class="detail-group" style="margin-top: 1.5rem; padding: 1rem; background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.2); border-radius: var(--radius-md);">
+              <label style="color: var(--accent-emerald);">{{ tr('answerSummary') }}</label>
+              <strong style="color: #fff; font-size: 1.1rem; display: block; margin-top: 0.25rem;">{{ formatAnswer(selectedQuestion()) }}</strong>
+            </div>
+
+            <div class="detail-group" *ngIf="selectedQuestion()?.explanation" style="margin-top: 1.5rem;">
+              <label>{{ tr('explanation') }}</label>
+              <p class="explanation-text">{{ selectedQuestion()?.explanation }}</p>
+            </div>
           </div>
         </div>
       </div>
 
-      <!-- User History Modal -->
-      <div class="modal-backdrop" *ngIf="selectedUserHistory()" (click)="selectedUserHistory.set(null)">
-        <div class="modal-card large glass-panel anim-zoom-in" (click)="$event.stopPropagation()">
+      <!-- User Solve History Modal -->
+      <div class="modal-overlay" *ngIf="selectedUserHistory()" (click)="closeUserHistory()" style="z-index: 1000;">
+        <div class="modal-card glass anim-slide-up" style="max-width: 800px;" (click)="$event.stopPropagation()">
           <header class="modal-header">
-            <h3>{{ 'History for' }} <span class="text-accent">{{ selectedUserHistory()?.email }}</span></h3>
-            <button class="btn-icon" (click)="selectedUserHistory.set(null)">❌</button>
+            <div>
+              <p class="eyebrow" style="margin: 0;">{{ tr('solveHistory') }}</p>
+              <h3 style="margin-top: 0.25rem;">{{ selectedUserHistory()?.email }}</h3>
+            </div>
+            <div class="modal-actions">
+              <button class="btn btn-outline" type="button" (click)="openGrantModal(selectedUserHistory(), tr('questionHistoryAdjustment'))">{{ tr('grantCredits') }}</button>
+              <button class="btn-close" type="button" (click)="closeUserHistory()">x</button>
+            </div>
           </header>
-          <div class="modal-body">
-            <div class="loading-spinner center" *ngIf="false"></div>
-            
-            <ng-container *ngIf="true">
-              <h4 class="mt-0">{{ 'Questions' }}</h4>
-              <div class="table-container" style="max-height: 300px;">
-                <table class="data-table">
-                  <thead>
-                    <tr>
-                      <th>{{ tr('date') }}</th>
-                      <th>{{ tr('questionText') }}</th>
-                      <th>{{ tr('type') }}</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr *ngFor="let q of userQuestions()">
-                      <td style="white-space:nowrap">{{ formatDate(q.createdAt) }}</td>
-                      <td>{{ q.questionText }}</td>
-                      <td><span class="pill tiny">{{ q.questionType }}</span></td>
-                    </tr>
-                    <tr *ngIf="!(userQuestions() || []).length">
-                      <td colspan="3"><div class="empty-state tiny">{{ tr('noSolvedQuestions') }}</div></td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
+          <div class="modal-body" style="padding-top: 1rem;">
+            <div class="table-scroll" style="margin: 0; border: 1px solid var(--border); border-radius: var(--radius-md);">
+              <table class="admin-table" style="min-width: 100%;">
+                <thead>
+                  <tr>
+                    <th>{{ tr('questionText') }}</th>
+                    <th>{{ tr('type') }}</th>
+                    <th>{{ tr('date') }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let q of userQuestions()" (click)="showQuestionDetails(q)" class="clickable-row">
+                    <td style="max-width: 400px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                      <strong>{{ q.questionText }}</strong>
+                    </td>
+                    <td style="text-transform: capitalize;">{{ q.questionType }}</td>
+                    <td>{{ formatDate(q.lastSeenAt) }}</td>
+                  </tr>
+                  <tr *ngIf="!userQuestions().length">
+                    <td colspan="3" class="empty-cell" style="text-align: center; padding: 3rem;">{{ tr('noSolvedQuestions') }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
 
-              
-            </ng-container>
-          </div>
-        </div>
-      </div>
-
-      <!-- Grant Credits Modal -->
-      <div class="modal-backdrop" *ngIf="selectedGrantUser()" (click)="closeGrantModal()">
-        <div class="modal-card small glass-panel anim-zoom-in" (click)="$event.stopPropagation()">
-          <header class="modal-header">
-            <h3>{{ tr('grantCredits') }}</h3>
-            <button class="btn-icon" (click)="closeGrantModal()">❌</button>
-          </header>
-          <div class="modal-body">
-            <p class="sub-text text-center">{{ selectedGrantUser()?.email }}</p>
-            <form class="grant-form mt-4" (ngSubmit)="grantCustomCredits()">
-              <div class="form-group">
-                <label>{{ 'Amount' }}</label>
-                <input type="number" name="amount" [(ngModel)]="grantAmount" class="glass-input" required min="1">
-              </div>
-              <div class="form-group">
-                <label>{{ tr('reason') }}</label>
-                <input type="text" name="reason" [(ngModel)]="grantReason" class="glass-input" required>
-              </div>
-              <button class="btn-primary-glow full-width mt-4" type="submit" [disabled]="loading()">
-                {{ loading() ? '...' : tr('grantCredits') }}
+            <div class="pagination" *ngIf="userQuestionsPagination().pages > 1" style="margin-top: 1.5rem;">
+              <button type="button" *ngFor="let page of userQuestionsPageNumbers()" [class.active]="page === userQuestionsPagination().page" (click)="loadUserQuestions(selectedUserHistory().id, page)">
+                {{ page }}
               </button>
-            </form>
+            </div>
           </div>
         </div>
       </div>
 
-      <!-- Admin Notice Modal -->
-      <div class="modal-backdrop" *ngIf="selectedNotice()" (click)="selectedNotice.set(null)">
-        <div class="modal-card small glass-panel anim-zoom-in" (click)="$event.stopPropagation()">
+      <!-- Credit Grant Modal -->
+      <div class="modal-overlay" *ngIf="selectedGrantUser()" (click)="closeGrantModal()" style="z-index: 1200;">
+        <div class="modal-card glass anim-slide-up" (click)="$event.stopPropagation()">
           <header class="modal-header">
-            <h3>{{ selectedNotice()?.label }}</h3>
-            <button class="btn-icon" (click)="selectedNotice.set(null)">❌</button>
+            <div>
+              <p class="eyebrow" style="margin: 0;">{{ tr('manualCredits') }}</p>
+              <h3 style="margin-top: 0.25rem;">{{ selectedGrantUser()?.email }}</h3>
+            </div>
+            <button class="btn-close" type="button" (click)="closeGrantModal()">x</button>
           </header>
-          <div class="modal-body flex-center col">
-            <strong class="mega-val" [class.text-warn]="selectedNotice()?.tone === 'warn'" [class.text-ok]="selectedNotice()?.tone === 'ok'">{{ selectedNotice()?.value }}</strong>
-            <p class="text-center mt-3">{{ selectedNotice()?.note }}</p>
-            <button class="btn-glass mt-4" (click)="handleNoticeAction(selectedNotice()!); selectedNotice.set(null)">
-              {{ '' }}
-            </button>
-          </div>
+          <form class="modal-body" style="display: flex; flex-direction: column; gap: 1rem;" (ngSubmit)="grantCustomCredits()">
+            <label class="form-label">
+              <span>{{ tr('credits') }}</span>
+              <input class="form-input" type="number" name="grantAmount" min="1" max="10000" step="1" [(ngModel)]="grantAmount">
+            </label>
+            <label class="form-label">
+              <span>{{ tr('reason') }}</span>
+              <input class="form-input" type="text" name="grantReason" maxlength="200" [(ngModel)]="grantReason">
+            </label>
+            <div class="modal-actions end">
+              <button class="btn btn-outline" type="button" (click)="closeGrantModal()">{{ tr('cancel') }}</button>
+              <button class="btn btn-primary" type="submit">{{ tr('grantCredits') }}</button>
+            </div>
+          </form>
         </div>
       </div>
-
     </main>
-  `,  styles: [`
-    /* 
-      QuizSolver Admin Redesign
-      Theme: Dark Glassmorphism
-    */
+  `,
+  styles: [`
+
     :host {
-      --bg-color: #0b0f19;
-      --bg-glass: rgba(18, 25, 43, 0.6);
-      --bg-glass-hover: rgba(28, 38, 63, 0.8);
-      --border-glass: rgba(255, 255, 255, 0.08);
-      --text-main: #f8fafc;
-      --text-muted: #94a3b8;
-      --accent: #38bdf8;
-      --accent-glow: rgba(56, 189, 248, 0.4);
-      --success: #10b981;
-      --danger: #ef4444;
-      --warning: #f59e0b;
+      --bg-primary: #f8fafc;
+      --bg-secondary: #ffffff;
+      --border-glass: #e2e8f0;
+      --text-primary: #0f172a;
+      --text-secondary: #475569;
+      --text-muted: #64748b;
+      --accent-cyan: #2563eb;
+      --accent-hover: #1d4ed8;
+      --success: #16a34a;
+      --warning: #ca8a04;
+      --danger: #dc2626;
+      --pending: #ea580c;
+      
+      --font-main: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      --font-heading: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      --font-mono: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
       
       display: block;
-      min-height: 100vh;
-      background-color: var(--bg-color);
-      background-image: 
-        radial-gradient(circle at 15% 50%, rgba(56, 189, 248, 0.05) 0%, transparent 50%),
-        radial-gradient(circle at 85% 30%, rgba(139, 92, 246, 0.05) 0%, transparent 50%);
-      background-attachment: fixed;
-      color: var(--text-main);
-      font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      font-family: var(--font-main);
+      font-size: 14px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
     }
 
     * { box-sizing: border-box; }
-    
-    a { color: var(--accent); text-decoration: none; transition: 0.2s; }
-    a:hover { filter: brightness(1.2); }
-    
-    button { cursor: pointer; border: none; background: none; color: inherit; font: inherit; transition: 0.2s; }
-    button:disabled { opacity: 0.5; cursor: not-allowed; }
 
-    /* UTILITIES */
-    .mt-0 { margin-top: 0; }
-    .mt-1 { margin-top: 0.25rem; }
-    .mt-2 { margin-top: 0.5rem; }
-    .mt-3 { margin-top: 1rem; }
-    .mt-4 { margin-top: 1.5rem; }
-    .ml-2 { margin-left: 0.5rem; }
-    .text-center { text-align: center; }
-    .text-right { text-align: right; }
-    .text-left { text-align: left; }
-    .uppercase { text-transform: uppercase; letter-spacing: 0.05em; }
-    .flex-center { display: flex; align-items: center; justify-content: center; }
-    .col { flex-direction: column; }
-    .full-width { width: 100%; }
-    .block { display: block; }
-    
-    .text-accent { color: var(--accent); }
-    .text-success { color: var(--success); }
-    .text-danger { color: var(--danger); }
-    .text-warn { color: var(--warning); }
-    .text-ok { color: var(--success); }
-    
-    .hl-text { font-weight: 700; letter-spacing: -0.02em; }
-    .sub-text { color: var(--text-muted); font-size: 0.85rem; }
+    /* Fix row actions overflowing */
+    .row-actions {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
 
-    /* ANIMATIONS */
-    @keyframes fadeInUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-    @keyframes zoomIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
-    
-    .anim-fade-in-up { animation: fadeInUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-    .anim-fade-in { animation: fadeIn 0.3s ease forwards; }
-    .anim-zoom-in { animation: zoomIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-    .anim-hover { transition: all 0.2s ease; }
-    .anim-hover:hover { background-color: var(--bg-glass-hover); }
-    .anim-hover-lift { transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
-    .anim-hover-lift:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(0,0,0,0.3); background-color: var(--bg-glass-hover); border-color: rgba(255,255,255,0.15); }
+    .bug-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
 
-    /* GLASS COMPONENTS */
-    .glass-panel, .glass-card {
-      background: var(--bg-glass);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border: 1px solid var(--border-glass);
-      border-radius: 16px;
+    .admin-brand {
+      font-family: var(--font-heading) !important;
+      font-weight: 700;
+    }
+
+    button {
+      font-family: var(--font-main);
+      font-size: 13px;
+      font-weight: 500;
+      border-radius: 4px;
     }
     
-    .glass-input, .glass-select {
-      background: rgba(0,0,0,0.2);
-      border: 1px solid var(--border-glass);
-      border-radius: 8px;
-      color: var(--text-main);
-      padding: 0.6rem 1rem;
-      font-size: 0.9rem;
-      transition: 0.2s;
+    .panel-head h2 {
+      font-family: var(--font-heading);
+    }
+    
+    /* Remove childish text-shadows or gradients if any */
+    .glass-card, .admin-panel.glass, .mini-stat, .stat-card, article.glass {
+      background: #ffffff !important;
+      border: 1px solid var(--border-glass) !important;
+      box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
+      border-radius: 8px !important;
+      backdrop-filter: none !important;
+    }
+    
+    .data-table th {
+      background-color: #f1f5f9;
+      color: #334155;
+      font-weight: 600;
+      text-transform: none !important;
+      letter-spacing: normal !important;
+    }
+
+    .status-pill {
+      border-radius: 9999px;
+      font-weight: 600;
+      text-transform: none;
+      padding: 0.125rem 0.625rem;
+      font-size: 12px;
+    }
+
+
+
+    .admin-page {
+      min-height: 100vh;
+      color: var(--text-primary);
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Login section */
+    .admin-login {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 1.5rem;
+    }
+    .admin-login-card {
+      width: 100%;
+      max-width: 440px;
+      padding: 3rem 2.5rem;
+      text-align: center;
+    }
+    .admin-brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-family: var(--font-heading);
+      margin-bottom: 2rem;
+    }
+    .admin-brand span {
+      width: 2.35rem;
+      height: 2.35rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: #101318 image-set(
+        url('/logo-96.webp?v=20260628') type('image/webp'),
+        url('/logo-96.png?v=20260628') type('image/png')
+      ) center / cover no-repeat;
+      color: transparent;
+      font-size: 0;
+      font-weight: 800;
+      padding: 0;
+      border-radius: var(--radius-sm);
+      box-shadow: 0 10px 24px rgba(14, 165, 233, 0.22);
+    }
+    .admin-brand strong {
+      font-size: 1.25rem;
+      color: var(--text-primary);
+    }
+    .admin-login-card h1 {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+    .admin-login-card label span {
+      display: block;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      text-align: left;
+    }
+
+    /* Shell & Sidebar */
+    .admin-shell {
+      display: grid;
+      grid-template-columns: 292px minmax(0, 1fr);
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at top left, rgba(6, 182, 212, 0.1), transparent 28rem),
+        linear-gradient(180deg, rgba(15, 23, 42, 0.2), rgba(2, 6, 23, 0.18));
+    }
+    .admin-sidebar {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      background: rgba(8, 11, 20, 0.82);
+      border-right: 1px solid var(--border);
+      padding: 1.4rem 1rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      backdrop-filter: blur(20px);
+    }
+    .admin-tabs {
+      display: flex;
+      flex-direction: column;
+      gap: 1.15rem;
+      margin: 1.75rem 0;
+    }
+    .tab-group {
+      display: grid;
+      gap: 0.4rem;
+    }
+    .tab-group-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 0.75rem;
+      padding: 0 0.45rem;
+    }
+    .tab-group-head span {
+      color: var(--text-primary);
+      font-size: 0.72rem;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .tab-group-head small {
+      color: var(--text-secondary);
+      font-size: 0.68rem;
+      white-space: nowrap;
+    }
+    .admin-tabs button {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      min-height: 3.1rem;
+      padding: 0.7rem 0.75rem;
+      border-radius: var(--radius-sm);
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      font-weight: 500;
+      transition: all 0.2s var(--ease-out);
+      width: 100%;
+      text-align: left;
+      border: 1px solid transparent;
+      background: rgba(255, 255, 255, 0.018);
+    }
+    .admin-tabs button .tab-short {
+      background: rgba(255, 255, 255, 0.05);
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.15rem 0.4rem;
+      border-radius: var(--radius-sm);
+      color: var(--text-secondary);
+    }
+    .admin-tabs button .tab-label {
+      flex: 1;
+      min-width: 0;
+    }
+    .admin-tabs button .tab-copy {
+      display: grid;
+      gap: 0.08rem;
+      flex: 1;
+      min-width: 0;
+    }
+    .admin-tabs button .tab-copy small {
+      color: var(--text-secondary);
+      font-size: 0.7rem;
+      line-height: 1.15;
+    }
+    .admin-tabs button .tab-badge {
+      min-width: 1.35rem;
+      height: 1.35rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 0.35rem;
+      border-radius: 999px;
+      background: var(--accent-rose);
+      color: #fff;
+      font-size: 0.72rem;
+      font-weight: 800;
+      margin-left: auto;
+    }
+    .admin-tabs button:hover {
+      background: rgba(255, 255, 255, 0.055);
+      color: var(--text-primary);
+    }
+    .admin-tabs button.active {
+      background: linear-gradient(135deg, rgba(6, 182, 212, 0.15), rgba(16, 185, 129, 0.07));
+      color: var(--accent-cyan);
+      border: 1px solid rgba(6, 182, 212, 0.32);
+      box-shadow: 0 12px 28px rgba(8, 145, 178, 0.12);
+    }
+    .admin-tabs button.active .tab-short {
+      background: var(--accent-cyan);
+      color: var(--bg-deep);
+    }
+
+    .admin-sidebar-foot {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .admin-language-switch {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.35rem;
+      padding: 0.3rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      background: rgba(255, 255, 255, 0.025);
+    }
+    .admin-language-switch a {
+      border-radius: var(--radius-sm);
+      color: var(--text-secondary);
+      font-size: 0.78rem;
+      font-weight: 800;
+      padding: 0.45rem 0.6rem;
+      text-align: center;
+      text-decoration: none;
+    }
+    .admin-language-switch a.active {
+      background: var(--accent-cyan);
+      color: var(--bg-deep);
+    }
+
+    /* Main content */
+    .admin-main {
+      padding: 1.5rem clamp(1rem, 2.4vw, 2.25rem) 3rem;
+      overflow-y: auto;
+      max-height: 100vh;
+    }
+    .admin-header {
+      position: sticky;
+      top: 0;
+      z-index: 35;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 2rem;
+      margin: -1.5rem calc(clamp(1rem, 2.4vw, 2.25rem) * -1) 1.25rem;
+      padding: 1.35rem clamp(1rem, 2.4vw, 2.25rem);
+      border-bottom: 1px solid rgba(148, 163, 184, 0.12);
+      background: rgba(8, 11, 20, 0.82);
+      backdrop-filter: blur(20px);
+    }
+    .admin-header h1 {
+      font-size: clamp(1.55rem, 2.3vw, 2.15rem);
+      letter-spacing: 0;
+    }
+    .admin-header-actions {
+      display: flex;
+      gap: 0.75rem;
+    }
+
+    /* Stats */
+    .admin-command-center {
+      display: grid;
+      grid-template-columns: minmax(360px, 1.12fr) minmax(360px, 0.88fr);
+      gap: 1rem;
+      margin-bottom: 1.25rem;
+    }
+    .command-card {
+      border: 1px solid rgba(148, 163, 184, 0.15);
+      border-radius: var(--radius-md);
+      background: rgba(15, 23, 42, 0.58);
+      padding: 1.1rem;
+      box-shadow: 0 22px 70px rgba(0, 0, 0, 0.16);
+    }
+    .command-card-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 0.85rem;
+    }
+    .command-card-head div {
+      display: grid;
+      gap: 0.18rem;
+    }
+    .command-card-head span {
+      color: var(--text-primary);
+      font-size: 0.82rem;
+      font-weight: 900;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    .command-card-head small,
+    .empty-priority span {
+      color: var(--text-secondary);
+      font-size: 0.78rem;
+      line-height: 1.35;
+    }
+    .mini-action {
+      border: 1px solid rgba(148, 163, 184, 0.18);
+      border-radius: var(--radius-sm);
+      padding: 0.45rem 0.7rem;
+      background: rgba(255, 255, 255, 0.035);
+      color: var(--text-primary);
+      font-size: 0.78rem;
+      font-weight: 800;
+    }
+    .mini-action:hover {
+      border-color: rgba(6, 182, 212, 0.36);
+      color: var(--accent-cyan);
+    }
+    .empty-priority {
+      min-height: 7.2rem;
+      display: grid;
+      place-content: center;
+      gap: 0.25rem;
+      border: 1px dashed rgba(148, 163, 184, 0.24);
+      border-radius: var(--radius-sm);
+      text-align: center;
+      background: rgba(255, 255, 255, 0.02);
+    }
+    .empty-priority strong {
+      color: var(--accent-emerald);
+      font-family: var(--font-heading);
+      font-size: 1.05rem;
+    }
+    .admin-stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.7rem;
+      margin-bottom: 0;
+    }
+    .metrics-card .admin-stats {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .admin-stats article {
+      padding: 0.85rem 0.9rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      border: 1px solid rgba(148, 163, 184, 0.14);
+      border-radius: var(--radius-sm);
+      background: rgba(255, 255, 255, 0.024);
+    }
+    .admin-stats article span {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-weight: 600;
+    }
+    .admin-stats article strong {
+      font-size: 1.35rem;
+      font-weight: 800;
+      font-family: var(--font-heading);
+      color: var(--text-primary);
+    }
+    .admin-stats article strong.revenue {
+      color: var(--accent-emerald);
+    }
+
+    .attention-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 0.75rem;
+    }
+    .attention-head div {
+      display: grid;
+      gap: 0.15rem;
+    }
+    .attention-head span {
+      color: var(--text-primary);
+      font-size: 0.82rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    .attention-head small {
+      color: var(--text-secondary);
+      font-size: 0.78rem;
+    }
+
+    .operations-strip {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.7rem;
+      margin-bottom: 0;
+    }
+    .operations-strip .operation-card,
+    .insight-grid article,
+    .cache-summary article {
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      background: rgba(255, 255, 255, 0.025);
+      padding: 0.85rem 0.9rem;
+      display: grid;
+      gap: 0.25rem;
+      min-width: 0;
+      color: inherit;
+      font: inherit;
+      text-align: left;
+      cursor: pointer;
+      transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+    }
+    .operations-strip .operation-card:hover {
+      border-color: rgba(6, 182, 212, 0.42);
+      background: rgba(6, 182, 212, 0.06);
+      transform: translateY(-1px);
+    }
+    .operations-strip .operation-card.warn,
+    .cache-summary article.warn {
+      border-color: rgba(244, 63, 94, 0.35);
+      background: rgba(244, 63, 94, 0.08);
+    }
+    .operations-strip .operation-card.ok {
+      border-color: rgba(16, 185, 129, 0.28);
+      background: rgba(16, 185, 129, 0.07);
+    }
+    .operations-strip span,
+    .insight-grid span,
+    .cache-summary span {
+      color: var(--text-secondary);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .operations-strip strong,
+    .insight-grid strong,
+    .cache-summary strong {
+      color: var(--text-primary);
+      font-family: var(--font-heading);
+      font-size: 1.25rem;
+      line-height: 1.1;
+      overflow-wrap: anywhere;
+    }
+    .operations-strip small,
+    .insight-grid small,
+    .cache-summary small {
+      color: var(--text-secondary);
+      font-size: 0.78rem;
+      line-height: 1.35;
+    }
+    .insight-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .insight-grid strong.ok {
+      color: var(--accent-emerald);
+    }
+    .insight-grid strong.warn {
+      color: var(--accent-rose);
+    }
+
+    /* Admin panels */
+    .admin-panel {
+      padding: clamp(1rem, 2vw, 1.5rem);
+      margin-bottom: 1.25rem;
+      border: 1px solid rgba(148, 163, 184, 0.16);
+      background: rgba(15, 23, 42, 0.52);
+      box-shadow: 0 18px 60px rgba(0, 0, 0, 0.12);
+    }
+    .panel-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+    }
+    .panel-head h2 {
+      font-size: clamp(1.25rem, 1.7vw, 1.55rem);
+    }
+    .admin-search {
+      display: flex;
+      gap: 0.5rem;
+      width: 100%;
+      max-width: 760px;
+    }
+    .user-toolbar {
+      max-width: 980px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+    .user-toolbar .form-input {
+      min-width: 220px;
+      flex: 1 1 260px;
+    }
+    .user-toolbar .form-select {
+      flex: 0 1 220px;
+    }
+    .panel-status {
+      display: block;
+      margin-top: 0.35rem;
+      color: var(--accent-cyan);
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+
+    /* Data Tables */
+    .table-scroll {
+      overflow-x: auto;
+      margin: 1rem 0 0;
+      border: 1px solid rgba(148, 163, 184, 0.16);
+      border-radius: var(--radius-sm);
+      background: rgba(2, 6, 23, 0.22);
+    }
+    .admin-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.95rem;
+    }
+    .admin-table th {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      padding: 0.9rem 1rem;
+      font-family: var(--font-heading);
+      font-weight: 600;
+      color: var(--text-secondary);
+      border-bottom: 1px solid var(--border);
+      background: rgba(11, 18, 32, 0.95);
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .sort-header {
+      appearance: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      border: 0;
+      background: transparent;
+      padding: 0;
+      color: inherit;
+      font: inherit;
+      text-transform: inherit;
+      letter-spacing: inherit;
+      cursor: pointer;
+    }
+    .sort-header:hover,
+    .sort-header.active {
+      color: var(--text-primary);
+    }
+    .sort-indicator {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 1rem;
+      color: var(--text-secondary);
+      font-size: 0.8rem;
+      line-height: 1;
+    }
+    .sort-header.active .sort-indicator {
+      color: var(--accent-cyan);
+    }
+    .admin-table td {
+      padding: 1rem;
+      border-bottom: 1px solid var(--border);
+      vertical-align: middle;
+    }
+    .admin-table tr.user-active-row td:first-child {
+      box-shadow: inset 3px 0 0 rgba(16, 185, 129, 0.85);
+    }
+    .admin-table tr.user-banned-row td:first-child {
+      box-shadow: inset 3px 0 0 rgba(244, 63, 94, 0.9);
+    }
+    .admin-table tr.user-muted-row td:first-child {
+      box-shadow: inset 3px 0 0 rgba(148, 163, 184, 0.22);
+    }
+    .admin-table tr:last-child td {
+      border-bottom: none;
+    }
+    .admin-table td strong {
+      display: block;
+      color: var(--text-primary);
+    }
+    .admin-table td span {
+      display: block;
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+    }
+    /* Row Actions */
+    .row-actions {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+    .row-actions button,
+    .row-actions a {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border);
+      padding: 0.35rem 0.75rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      transition: all 0.2s;
+      text-decoration: none;
+    }
+    .row-actions button:hover,
+    .row-actions a:hover {
+      background: rgba(6, 182, 212, 0.1);
+      border-color: var(--accent-cyan);
+      color: var(--accent-cyan);
+    }
+    .row-actions button:disabled,
+    .row-actions a[aria-disabled="true"],
+    .user-toolbar .btn:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+    .row-actions button.danger {
+      color: var(--accent-rose);
+    }
+    .row-actions button.danger:hover {
+      background: rgba(244, 63, 94, 0.1);
+      border-color: var(--accent-rose);
+      color: var(--accent-rose);
+    }
+    .btn.danger-outline {
+      border-color: rgba(244, 63, 94, 0.34);
+      color: var(--accent-rose);
+    }
+    .btn.danger-outline:hover {
+      background: rgba(244, 63, 94, 0.1);
+      border-color: var(--accent-rose);
+      color: #fecdd3;
+    }
+    .user-cell {
+      min-width: 240px;
+    }
+    .link-button {
+      appearance: none;
+      border: 0;
+      background: transparent;
+      padding: 0;
+      color: inherit;
+      font: inherit;
+      cursor: pointer;
+      text-align: left;
+    }
+    .primary-link {
+      display: block;
+      width: fit-content;
+      color: var(--accent-cyan);
+      font-weight: 800;
+      text-decoration: none;
+    }
+    .primary-link:hover {
+      color: #67e8f9;
+    }
+    .muted-line {
+      display: block;
+      margin-top: 0.35rem;
+      color: var(--text-secondary);
+      font-size: 0.78rem;
+    }
+    .metric-value {
+      color: var(--text-primary);
+      font-family: var(--font-heading);
+      font-size: 1.02rem;
+    }
+    .role-badge {
+      text-transform: capitalize;
+    }
+    .admin-table .badge,
+    .admin-table .status-pill {
+      display: inline-flex;
+      width: fit-content;
+    }
+    .meta-chips {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+    }
+    .credit-usage-panel {
+      margin-top: 1.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+    }
+    .credit-usage-filters {
+      display: grid;
+      grid-template-columns: minmax(220px, 1fr) minmax(140px, 180px) minmax(140px, 180px) auto;
+      max-width: none;
+    }
+    .credit-usage-filters select {
+      width: 100%;
+      padding: 0.8rem 1rem;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-primary);
       outline: none;
     }
-    .glass-input:focus, .glass-select:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
-    .glass-select option { background: var(--bg-color); }
+    .credit-usage-summary {
+      margin-top: 1rem;
+    }
+    .question-audit-cell {
+      min-width: 320px;
+      max-width: 560px;
+    }
+    .question-audit-cell strong {
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      line-height: 1.35;
+    }
+    .question-audit-cell span {
+      margin-top: 0.35rem;
+      overflow-wrap: anywhere;
+    }
+    .credit-usage-table td {
+      vertical-align: top;
+    }
 
-    /* BUTTONS */
-    .btn-primary-glow {
-      background: var(--accent);
-      color: #000;
+    /* Pagination */
+    .pagination {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-top: 2.5rem;
+    }
+    .pagination button {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border);
+      width: 2.25rem;
+      height: 2.25rem;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
       font-weight: 600;
-      border-radius: 8px;
-      padding: 0.6rem 1.25rem;
-      box-shadow: 0 0 15px var(--accent-glow);
+      color: var(--text-secondary);
+      transition: all 0.2s;
     }
-    .btn-primary-glow:hover { box-shadow: 0 0 25px var(--accent-glow); transform: scale(1.02); }
-    .btn-primary-glow.small { padding: 0.4rem 0.8rem; font-size: 0.85rem; }
-    
-    .btn-glass {
-      background: rgba(255,255,255,0.05);
-      border: 1px solid var(--border-glass);
-      border-radius: 8px;
-      padding: 0.6rem 1.2rem;
+    .pagination button:hover,
+    .pagination button.active {
+      background: var(--grad-primary);
+      border-color: transparent;
+      color: #fff;
+    }
+
+    /* Bug reports */
+    .bug-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    .bug-list article {
+      border: 1px solid var(--border);
+      padding: 1.5rem;
+      border-radius: var(--radius-lg);
+      background: rgba(255, 255, 255, 0.01);
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .bug-list article.unread {
+      border-color: rgba(244, 63, 94, 0.38);
+      background: rgba(244, 63, 94, 0.07);
+      box-shadow: 0 18px 42px rgba(244, 63, 94, 0.08);
+    }
+    .bug-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+    }
+    .bug-meta > div {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.65rem;
+    }
+    .bug-list article a {
+      color: var(--accent-cyan);
+      font-size: 0.85rem;
+    }
+
+    /* Support */
+    .support-summary {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .support-summary article {
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      background: rgba(255, 255, 255, 0.025);
+      padding: 1rem;
+      display: grid;
+      gap: 0.2rem;
+    }
+    .support-summary article.warn {
+      border-color: rgba(244, 63, 94, 0.35);
+      background: rgba(244, 63, 94, 0.08);
+    }
+    .support-summary article.ok {
+      border-color: rgba(16, 185, 129, 0.28);
+      background: rgba(16, 185, 129, 0.06);
+    }
+    .support-summary span {
+      color: var(--text-secondary);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .support-summary strong {
+      color: var(--text-primary);
+      font-family: var(--font-heading);
+      font-size: 1.55rem;
+    }
+    .support-layout {
+      display: grid;
+      grid-template-columns: minmax(280px, 0.9fr) minmax(0, 1.6fr);
+      gap: 1.25rem;
+      align-items: start;
+    }
+    .support-list {
+      display: grid;
+      gap: 0.65rem;
+      max-height: 720px;
+      overflow-y: auto;
+      padding-right: 0.35rem;
+    }
+    .support-item {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      background: rgba(255, 255, 255, 0.02);
+      color: var(--text-primary);
+      display: grid;
+      grid-template-columns: 2.4rem minmax(0, 1fr);
+      gap: 0.85rem;
+      padding: 0.95rem;
+      text-align: left;
+      transition: border-color 0.2s, background 0.2s, transform 0.2s;
+    }
+    .support-item:hover,
+    .support-item.active {
+      border-color: rgba(6, 182, 212, 0.42);
+      background: rgba(6, 182, 212, 0.07);
+    }
+    .support-item.unread {
+      border-color: rgba(244, 63, 94, 0.38);
+      background: rgba(244, 63, 94, 0.07);
+    }
+    .support-avatar {
+      width: 2.4rem;
+      height: 2.4rem;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(6, 182, 212, 0.14);
+      color: var(--accent-cyan);
+      font-size: 0.78rem;
+      font-weight: 800;
+    }
+    .support-item-main,
+    .support-item-row {
+      display: grid;
+      min-width: 0;
+      gap: 0.35rem;
+    }
+    .support-item-row {
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: start;
+    }
+    .support-item-row strong,
+    .support-sender,
+    .support-preview {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .support-sender {
+      color: var(--accent-cyan);
+      font-size: 0.82rem;
+      font-weight: 700;
+    }
+    .support-preview {
+      color: var(--text-secondary);
+      font-size: 0.83rem;
+      line-height: 1.35;
+    }
+    .support-item small {
+      color: var(--text-secondary);
+      font-size: 0.74rem;
+    }
+    .support-detail {
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      background: rgba(255, 255, 255, 0.018);
+      padding: 1.25rem;
+      min-height: 520px;
+    }
+    .support-detail header {
+      display: flex;
+      justify-content: space-between;
+      gap: 1.25rem;
+      align-items: flex-start;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .support-detail h3 {
+      margin: 0.25rem 0 0;
+      font-size: 1.25rem;
+      line-height: 1.25;
+    }
+    .support-meta-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.65rem;
+      margin-top: 1rem;
+    }
+    .support-meta-grid span {
+      display: grid;
+      gap: 0.15rem;
+      color: var(--text-secondary);
+      font-size: 0.82rem;
+      overflow-wrap: anywhere;
+    }
+    .support-meta-grid strong {
+      color: var(--text-primary);
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .support-linked-user {
+      margin-top: 1rem;
+      padding: 1rem;
+      border: 1px solid rgba(6, 182, 212, 0.2);
+      border-radius: var(--radius-md);
+      background: rgba(6, 182, 212, 0.05);
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      align-items: center;
+    }
+    .support-linked-user.muted {
+      border-color: var(--border);
+      background: rgba(255, 255, 255, 0.02);
+    }
+    .support-linked-user span,
+    .support-linked-user small {
+      display: block;
+      color: var(--text-secondary);
+      font-size: 0.8rem;
+    }
+    .support-linked-user strong {
+      display: block;
+      color: var(--text-primary);
+      margin: 0.15rem 0;
+    }
+    .support-body {
+      margin-top: 1rem;
+      padding: 1rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      background: rgba(10, 12, 22, 0.32);
+      color: var(--text-primary);
+      line-height: 1.62;
+      white-space: pre-wrap;
+    }
+    .support-body p {
+      margin: 0 0 0.85rem;
+    }
+    .support-body p:last-child {
+      margin-bottom: 0;
+    }
+    .support-replies {
+      margin-top: 1rem;
+      display: grid;
+      gap: 0.75rem;
+    }
+    .support-replies h4 {
+      margin: 0;
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .support-reply {
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 0.9rem 1rem;
+      background: rgba(255, 255, 255, 0.025);
+    }
+    .support-reply small {
+      display: block;
+      color: var(--text-secondary);
+      margin-top: 0.2rem;
+      font-size: 0.78rem;
+    }
+    .support-reply p {
+      margin: 0.65rem 0 0;
+      color: var(--text-primary);
+      line-height: 1.5;
+    }
+    .support-reply-form {
+      display: grid;
+      gap: 0.85rem;
+      margin-top: 1rem;
+    }
+    .support-reply-form textarea {
+      width: 100%;
+      min-height: 150px;
+      resize: vertical;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      background: rgba(255, 255, 255, 0.035);
+      color: var(--text-primary);
+      padding: 0.85rem 1rem;
+      font: inherit;
+      line-height: 1.5;
+    }
+    .support-empty {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    /* Cache panel */
+    .cache-summary {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .cache-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .cache-list article {
+      padding: 1.25rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+    }
+    .cache-question-main {
+      display: grid;
+      gap: 0.65rem;
+      min-width: 0;
+    }
+    .cache-question-main p {
+      margin: 0;
+      color: var(--text-primary);
+      font-weight: 650;
+      line-height: 1.45;
+      overflow-wrap: anywhere;
+    }
+    .open-hint {
+      color: var(--accent-cyan);
+      font-size: 0.78rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      white-space: nowrap;
+    }
+
+    /* Parser panel */
+    .parser-panel-head {
+      align-items: flex-start;
+    }
+    .parser-filters {
+      max-width: 900px;
+      flex-wrap: wrap;
+    }
+    .parser-filters .form-input {
+      min-width: 260px;
+      flex: 1 1 260px;
+    }
+    .parser-filters .form-select {
+      min-width: 150px;
+      flex: 0 0 170px;
+    }
+    .parser-health-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 0.85rem;
+      margin-bottom: 1.5rem;
+    }
+    .parser-health-grid article,
+    .parser-block,
+    .parser-platform-row,
+    .parser-event-card,
+    .parser-report-row {
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.035);
+      border-radius: var(--radius-md);
+    }
+    .parser-health-grid article {
+      display: grid;
+      gap: 0.25rem;
+      padding: 1rem;
+    }
+    .parser-workspace {
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+      gap: 1.25rem;
+      align-items: start;
+    }
+    .parser-problem-block {
+      order: 1;
+    }
+    .parser-domain-block {
+      order: 2;
+    }
+    .parser-events-block {
+      order: 3;
+      grid-column: 1 / -1;
+    }
+    .parser-platform-block {
+      order: 4;
+      grid-column: 1 / -1;
+    }
+    .parser-events-block .parser-event-list {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .parser-domain-row {
+      border-color: rgba(14, 165, 233, 0.24);
+      background: rgba(14, 165, 233, 0.045);
+    }
+    .parser-problem-card {
+      border-color: rgba(244, 63, 94, 0.24);
+      background: rgba(244, 63, 94, 0.055);
+    }
+    .parser-block {
+      padding: 1.25rem;
+    }
+    .parser-reports {
+      margin-top: 1.25rem;
+    }
+    .parser-block-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    .parser-block-head h3 {
+      margin: 0;
+      color: var(--text-primary);
+      font-family: var(--font-heading);
+      font-size: 1rem;
+    }
+    .parser-block-head p {
+      margin: 0.25rem 0 0;
+      color: var(--text-secondary);
+      font-size: 0.86rem;
+      line-height: 1.4;
+    }
+    .parser-platform-list,
+    .parser-event-list,
+    .parser-report-list {
+      display: grid;
+      gap: 0.75rem;
+    }
+    .parser-platform-row,
+    .parser-event-card,
+    .parser-report-row {
+      padding: 1rem;
+    }
+    .parser-row-head,
+    .parser-event-head,
+    .parser-report-row {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    .parser-row-main {
+      min-width: 0;
+    }
+    .parser-row-main strong {
+      display: block;
+      color: var(--text-primary);
+      overflow-wrap: anywhere;
+    }
+    .parser-row-main span {
+      display: block;
+      margin-top: 0.2rem;
+      color: var(--text-secondary);
+      font-size: 0.82rem;
+      overflow-wrap: anywhere;
+    }
+    .parser-row-metrics,
+    .parser-event-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+      margin-top: 0.75rem;
+    }
+    .parser-row-metrics span,
+    .parser-event-meta span {
+      padding: 0.28rem 0.48rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: var(--text-secondary);
+      font-size: 0.78rem;
+    }
+    .parser-row-metrics strong {
+      color: var(--text-primary);
+    }
+    .parser-reason-line,
+    .parser-snapshot,
+    .parser-next-step {
+      margin: 0.75rem 0 0;
+      color: var(--text-secondary);
+      font-size: 0.86rem;
+      line-height: 1.45;
+      overflow-wrap: anywhere;
+    }
+    .parser-next-step {
+      padding: 0.65rem 0.75rem;
+      border: 1px solid rgba(6, 182, 212, 0.22);
+      border-radius: var(--radius-sm);
+      background: rgba(6, 182, 212, 0.055);
+      color: var(--accent-cyan);
+      font-weight: 750;
+    }
+    .parser-snapshot {
+      color: var(--text-primary);
+    }
+    .parser-snapshot-details {
+      margin-top: 0.8rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      background: rgba(2, 6, 23, 0.26);
+      overflow: hidden;
+    }
+    .parser-snapshot-details summary {
+      cursor: pointer;
+      padding: 0.65rem 0.75rem;
+      color: var(--text-primary);
+      font-size: 0.8rem;
+      font-weight: 800;
+      list-style-position: inside;
+    }
+    .parser-snapshot-pane {
+      display: grid;
+      gap: 0.45rem;
+      padding: 0.75rem;
+      border-top: 1px solid var(--border);
+    }
+    .parser-snapshot-pane strong {
+      color: var(--text-secondary);
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .parser-snapshot-code {
+      max-height: 280px;
+      margin: 0;
+      overflow: auto;
+      white-space: pre-wrap;
+      word-break: break-word;
+      border: 1px solid rgba(148, 163, 184, 0.18);
+      border-radius: var(--radius-sm);
+      padding: 0.75rem;
+      background: rgba(15, 23, 42, 0.78);
+      color: #dbeafe;
+      font: 11px/1.45 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    }
+    .parser-snapshot-download {
+      width: calc(100% - 1.5rem);
+      margin: 0 0.75rem 0.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      border: 1px solid rgba(34, 211, 238, 0.32);
+      border-radius: var(--radius-sm);
+      padding: 0.62rem 0.75rem;
+      background: rgba(14, 165, 233, 0.09);
+      color: var(--accent-cyan);
+      font-size: 0.8rem;
+      font-weight: 800;
+      text-align: left;
+    }
+    .parser-snapshot-download span {
+      color: var(--text-secondary);
+      font-weight: 700;
+    }
+    .parser-url {
+      max-width: 100%;
+      overflow-wrap: anywhere;
+      font-size: 0.8rem;
+    }
+
+    /* Health System */
+    .health-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+    .health-grid article {
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+    .health-grid article span {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .health-grid article strong {
+      color: var(--text-primary);
+    }
+    .health-grid article strong.ok {
+      color: var(--accent-emerald);
+    }
+
+    .admin-alert {
+      padding: 1rem 1.5rem;
+      background: rgba(244, 63, 94, 0.08);
+      border: 1px solid rgba(244, 63, 94, 0.2);
+      color: var(--accent-rose);
+      border-radius: var(--radius-md);
+      margin-bottom: 2rem;
+    }
+    .admin-alert.success {
+      background: rgba(16, 185, 129, 0.1);
+      border-color: rgba(16, 185, 129, 0.26);
+      color: var(--accent-emerald);
+    }
+
+    /* Modal styles */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(10, 12, 22, 0.8);
+      backdrop-filter: blur(8px);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+    .modal-card {
+      width: 100%;
+      max-width: 600px;
+      background: rgba(16, 19, 31, 0.95);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+      display: flex;
+      flex-direction: column;
+      max-height: 85vh;
+    }
+    .modal-header {
+      padding: 1.5rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .modal-header h3 {
+      font-size: 1.25rem;
+      margin: 0;
+      color: var(--text-primary);
+    }
+    .modal-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+    .modal-actions.end {
+      justify-content: flex-end;
+      margin-top: 0.5rem;
+    }
+    .btn-close {
+      background: none;
+      border: none;
+      color: var(--text-secondary);
+      font-size: 1.75rem;
+      cursor: pointer;
+      line-height: 1;
+      padding: 0;
+      font-family: inherit;
+    }
+    .btn-close:hover {
+      color: var(--text-primary);
+    }
+    .modal-body {
+      padding: 1.5rem;
+      overflow-y: auto;
+    }
+    .detail-group label {
+      display: block;
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+    .question-text-full {
+      font-size: 1.05rem;
       font-weight: 500;
+      color: #fff;
+      line-height: 1.5;
+      margin: 0;
+      white-space: pre-wrap;
     }
-    .btn-glass:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); }
-    .btn-glass.small { padding: 0.4rem 0.8rem; font-size: 0.85rem; }
-    
-    .btn-ghost { padding: 0.6rem 1rem; border-radius: 8px; font-weight: 500; color: var(--text-muted); }
-    .btn-ghost:hover { background: rgba(255,255,255,0.05); color: var(--text-main); }
-    .btn-ghost.danger:hover { background: rgba(239, 68, 68, 0.1); color: var(--danger); }
-    .btn-ghost.small { padding: 0.4rem 0.8rem; font-size: 0.85rem; }
-    
-    .btn-icon { width: 32px; height: 32px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.03); border: 1px solid transparent; }
-    .btn-icon:hover { background: rgba(255,255,255,0.1); border-color: var(--border-glass); transform: scale(1.1); }
-    .btn-tiny { font-size: 0.75rem; padding: 0.2rem 0.4rem; background: rgba(255,255,255,0.1); border-radius: 4px; font-weight: 600; }
-    .btn-tiny:hover { background: rgba(255,255,255,0.2); }
-    
-    .link-btn { color: var(--accent); font-weight: 500; }
-    .link-btn:hover { text-decoration: underline; }
-    .link-btn.large { font-size: 1.1rem; }
-
-    /* PILLS & CHIPS */
-    .pill {
-      display: inline-flex; align-items: center; padding: 0.25rem 0.6rem; 
-      border-radius: 999px; font-size: 0.75rem; font-weight: 600;
-      background: rgba(255,255,255,0.1); border: 1px solid var(--border-glass);
+    .options-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
     }
-    .pill.tiny { padding: 0.15rem 0.4rem; font-size: 0.7rem; }
-    .pill.success { background: rgba(16, 185, 129, 0.15); color: #34d399; border-color: rgba(16,185,129,0.3); }
-    .pill.danger { background: rgba(239, 68, 68, 0.15); color: #f87171; border-color: rgba(239,68,68,0.3); }
-    .pill.pending { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border-color: rgba(245,158,11,0.3); }
-    .pill.info { background: rgba(56, 189, 248, 0.15); color: #7dd3fc; border-color: rgba(56,189,248,0.3); }
-    
-    .chip {
-      display: inline-flex; align-items: center; padding: 0.2rem 0.5rem;
-      border-radius: 6px; font-size: 0.75rem; background: rgba(0,0,0,0.3); border: 1px solid var(--border-glass);
-      color: var(--text-muted);
+    .options-list li {
+      padding: 0.65rem 1rem;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      font-size: 0.95rem;
     }
-    .chip.success { color: #34d399; border-color: rgba(16,185,129,0.3); }
+    .option-idx {
+      font-weight: 700;
+      color: var(--accent-cyan);
+      margin-right: 0.5rem;
+    }
+    .explanation-text {
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin: 0;
+      white-space: pre-wrap;
+    }
+    .clickable-row {
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .clickable-row:hover {
+      background: rgba(6, 182, 212, 0.06);
+    }
 
-    /* LAYOUT: SHELL */
-    .admin-page-container { min-height: 100vh; display: flex; }
-    .admin-shell { display: flex; width: 100%; height: 100vh; overflow: hidden; }
-    
-    /* LOGIN */
-    .admin-login-wrapper { width: 100%; height: 100vh; display: flex; align-items: center; justify-content: center; padding: 1rem; }
-    .login-card { width: 100%; max-width: 400px; padding: 2.5rem 2rem; display: flex; flex-direction: column; align-items: center; }
-    .brand-logo { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.5rem; }
-    .logo-box { width: 40px; height: 40px; background: var(--accent); color: #000; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.2rem; }
-    .logo-text { font-size: 1.25rem; font-weight: 700; color: #fff; letter-spacing: -0.02em; }
-    .login-title { font-size: 1.5rem; margin: 0 0 0.5rem; }
-    .login-subtitle { color: var(--text-muted); margin: 0 0 2rem; text-align: center; }
-    .btn-oauth { display: flex; align-items: center; justify-content: center; gap: 0.75rem; width: 100%; padding: 0.75rem; border-radius: 8px; background: rgba(255,255,255,0.05); border: 1px solid var(--border-glass); font-weight: 500; }
-    .btn-oauth:hover { background: rgba(255,255,255,0.1); }
-    .google-icon { width: 20px; height: 20px; }
-    .divider { display: flex; align-items: center; width: 100%; margin: 1.5rem 0; color: var(--text-muted); font-size: 0.85rem; }
-    .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--border-glass); }
-    .divider span { padding: 0 1rem; }
-    .login-form { width: 100%; display: flex; flex-direction: column; gap: 1rem; }
-    .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
-    .form-group label { font-size: 0.85rem; font-weight: 500; color: var(--text-muted); }
-    
-    /* SIDEBAR */
-    .sidebar { width: 260px; height: 100vh; flex-shrink: 0; display: flex; flex-direction: column; justify-content: space-between; border-right: 1px solid var(--border-glass); border-radius: 0; }
-    .sidebar-top { padding: 1.5rem 1rem; display: flex; flex-direction: column; gap: 1.5rem; overflow-y: auto; }
-    .sidebar-bottom { padding: 1rem; border-top: 1px solid var(--border-glass); display: flex; flex-direction: column; gap: 0.5rem; }
-    
-    .brand-logo.compact .logo-box { width: 32px; height: 32px; font-size: 1rem; }
-    
-    .quick-status-grid { display: grid; grid-template-columns: 1fr; gap: 0.5rem; }
-    .status-btn { display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem; border-radius: 10px; background: rgba(0,0,0,0.2); border: 1px solid var(--border-glass); text-align: left; }
-    .status-btn:hover { background: rgba(255,255,255,0.05); }
-    .status-btn.alert { border-color: rgba(245, 158, 11, 0.4); background: rgba(245, 158, 11, 0.05); }
-    .status-btn .icon { font-size: 1.25rem; }
-    .status-btn .info { display: flex; flex-direction: column; }
-    .status-btn .label { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
-    .status-btn .value { font-size: 1.1rem; font-weight: 700; color: var(--text-main); }
-    .status-btn.alert .value { color: var(--warning); }
-    
-    .nav-group { margin-top: 1.5rem; display: flex; flex-direction: column; gap: 0.25rem; }
-    .group-title { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); padding: 0 0.75rem 0.5rem; font-weight: 600; }
-    .nav-item { display: flex; align-items: center; gap: 0.75rem; padding: 0.6rem 0.75rem; border-radius: 8px; color: var(--text-muted); position: relative; }
-    .nav-item:hover { background: rgba(255,255,255,0.05); color: var(--text-main); }
-    .nav-item.active { background: rgba(56, 189, 248, 0.1); color: var(--accent); font-weight: 600; }
-    .nav-item.active::before { content: ''; position: absolute; left: -1rem; top: 20%; bottom: 20%; width: 4px; background: var(--accent); border-radius: 0 4px 4px 0; }
-    .nav-icon { width: 20px; font-weight: bold; text-align: center; opacity: 0.7; }
-    .nav-badge { margin-left: auto; background: var(--danger); color: #fff; font-size: 0.7rem; font-weight: 700; padding: 0.1rem 0.4rem; border-radius: 99px; }
-    
-    .lang-switch { display: flex; gap: 0.5rem; justify-content: center; margin-bottom: 0.5rem; }
-    .lang-switch a { padding: 0.25rem 0.5rem; font-size: 0.75rem; font-weight: 600; color: var(--text-muted); border-radius: 4px; }
-    .lang-switch a.active { background: var(--accent); color: #000; }
+    /* Admin redesign pass */
+    .admin-page {
+      --admin-surface: rgba(13, 18, 30, 0.82);
+      --admin-surface-strong: rgba(17, 24, 39, 0.9);
+      --admin-surface-soft: rgba(30, 41, 59, 0.42);
+      --admin-border: rgba(148, 163, 184, 0.17);
+      --admin-border-strong: rgba(148, 163, 184, 0.28);
+      --admin-muted: #94a3b8;
+      --admin-card-shadow: 0 22px 70px rgba(0, 0, 0, 0.22);
+      background:
+        radial-gradient(circle at 8% -8%, rgba(34, 211, 238, 0.13), transparent 28rem),
+        radial-gradient(circle at 92% 0%, rgba(16, 185, 129, 0.09), transparent 26rem),
+        linear-gradient(180deg, #060a12 0%, #08111f 48%, #05070d 100%);
+    }
+    .admin-page .btn,
+    .admin-page button,
+    .admin-page a,
+    .admin-page input,
+    .admin-page select,
+    .admin-page textarea {
+      outline-offset: 3px;
+    }
+    .admin-page .btn:focus-visible,
+    .admin-page button:focus-visible,
+    .admin-page a:focus-visible,
+    .admin-page input:focus-visible,
+    .admin-page select:focus-visible,
+    .admin-page textarea:focus-visible {
+      outline: 2px solid rgba(34, 211, 238, 0.72);
+      box-shadow: 0 0 0 4px rgba(34, 211, 238, 0.13);
+    }
+    .admin-shell {
+      grid-template-columns: 284px minmax(0, 1fr);
+      background: transparent;
+    }
+    .admin-sidebar {
+      background:
+        linear-gradient(180deg, rgba(9, 14, 25, 0.97), rgba(5, 8, 15, 0.94)),
+        radial-gradient(circle at 20% 0%, rgba(34, 211, 238, 0.12), transparent 16rem);
+      border-right: 1px solid var(--admin-border);
+      box-shadow: inset -1px 0 0 rgba(255, 255, 255, 0.025);
+      scrollbar-width: thin;
+      scrollbar-color: rgba(148, 163, 184, 0.35) transparent;
+    }
+    .admin-brand {
+      width: 100%;
+      margin-bottom: 1rem;
+      padding: 0.15rem 0.2rem;
+      text-decoration: none;
+    }
+    .admin-brand span {
+      width: 2.75rem;
+      height: 2.75rem;
+      border-radius: 0.9rem;
+      box-shadow:
+        0 14px 32px rgba(14, 165, 233, 0.22),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+    }
+    .admin-brand strong {
+      letter-spacing: 0;
+    }
+    .admin-sidebar-status {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.45rem;
+      margin: 0 0 1.1rem;
+    }
+    .admin-sidebar-status button {
+      display: grid;
+      gap: 0.18rem;
+      min-width: 0;
+      padding: 0.6rem 0.45rem;
+      border: 1px solid rgba(148, 163, 184, 0.16);
+      border-radius: 0.85rem;
+      background: rgba(255, 255, 255, 0.028);
+      color: var(--text-primary);
+      text-align: center;
+      transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+    }
+    .admin-sidebar-status button:hover {
+      transform: translateY(-1px);
+      border-color: rgba(34, 211, 238, 0.35);
+      background: rgba(34, 211, 238, 0.065);
+    }
+    .admin-sidebar-status button.warn {
+      border-color: rgba(244, 63, 94, 0.34);
+      background: rgba(244, 63, 94, 0.075);
+    }
+    .admin-sidebar-status span {
+      overflow: hidden;
+      color: var(--text-secondary);
+      font-size: 0.62rem;
+      font-weight: 850;
+      letter-spacing: 0.06em;
+      text-overflow: ellipsis;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+    .admin-sidebar-status strong {
+      color: #f8fafc;
+      font-family: var(--font-heading);
+      font-size: 1.08rem;
+      line-height: 1;
+    }
+    .admin-tabs {
+      gap: 0.85rem;
+      margin: 0.8rem 0 1.35rem;
+    }
+    .tab-group {
+      gap: 0.42rem;
+      padding: 0.55rem;
+      border: 1px solid rgba(148, 163, 184, 0.11);
+      border-radius: 1rem;
+      background: rgba(255, 255, 255, 0.02);
+    }
+    .tab-group-head {
+      padding: 0 0.22rem 0.16rem;
+    }
+    .tab-group-head span {
+      color: #dbeafe;
+      font-size: 0.67rem;
+    }
+    .tab-group-head small {
+      max-width: 7.5rem;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .admin-tabs button {
+      min-height: 3.45rem;
+      padding: 0.72rem;
+      border-radius: 0.9rem;
+      background: transparent;
+      border-color: transparent;
+    }
+    .admin-tabs button .tab-short {
+      width: 2.05rem;
+      height: 2.05rem;
+      display: inline-grid;
+      place-items: center;
+      flex: 0 0 auto;
+      padding: 0;
+      border-radius: 0.72rem;
+      background: rgba(148, 163, 184, 0.12);
+      color: #cbd5e1;
+      font-size: 0.68rem;
+      letter-spacing: 0.03em;
+    }
+    .admin-tabs button .tab-label {
+      color: #e5edf8;
+      font-weight: 800;
+    }
+    .admin-tabs button .tab-copy small {
+      color: #8fa2ba;
+    }
+    .admin-tabs button:hover {
+      background: rgba(255, 255, 255, 0.052);
+      border-color: rgba(148, 163, 184, 0.14);
+      transform: translateX(2px);
+    }
+    .admin-tabs button.active {
+      background:
+        linear-gradient(135deg, rgba(14, 165, 233, 0.16), rgba(16, 185, 129, 0.08)),
+        rgba(255, 255, 255, 0.035);
+      color: #e0f2fe;
+      border-color: rgba(34, 211, 238, 0.34);
+      box-shadow: 0 16px 34px rgba(8, 145, 178, 0.12);
+    }
+    .admin-tabs button.active .tab-short {
+      background: linear-gradient(135deg, #22d3ee, #10b981);
+      color: #04111d;
+      box-shadow: 0 10px 24px rgba(34, 211, 238, 0.18);
+    }
+    .admin-sidebar-foot {
+      padding-top: 0.85rem;
+      border-top: 1px solid rgba(148, 163, 184, 0.12);
+    }
+    .admin-language-switch {
+      border-radius: 999px;
+      background: rgba(2, 6, 23, 0.42);
+    }
+    .admin-language-switch a {
+      border-radius: 999px;
+    }
+    .admin-main {
+      max-height: none;
+      overflow: visible;
+      padding: 1.15rem clamp(1rem, 2vw, 2rem) 3rem;
+    }
+    .admin-header {
+      top: 0;
+      margin: -1.15rem calc(clamp(1rem, 2vw, 2rem) * -1) 1rem;
+      padding: 1.1rem clamp(1rem, 2vw, 2rem);
+      border-bottom: 1px solid var(--admin-border);
+      background: rgba(6, 10, 18, 0.86);
+      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.18);
+    }
+    .admin-title-block {
+      min-width: 0;
+      display: grid;
+      gap: 0.16rem;
+    }
+    .admin-title-block .eyebrow {
+      margin: 0;
+      color: #67e8f9;
+    }
+    .admin-header h1 {
+      margin: 0;
+      color: #f8fafc;
+      font-size: clamp(1.45rem, 2.1vw, 2rem);
+      line-height: 1.08;
+    }
+    .admin-title-block .text-secondary {
+      max-width: 62rem;
+      line-height: 1.45;
+    }
+    .admin-header-actions {
+      align-items: center;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+    .admin-header-actions .btn {
+      min-height: 2.45rem;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+    .admin-command-center {
+      grid-template-columns: minmax(0, 1.25fr) minmax(340px, 0.75fr);
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    .command-card,
+    .admin-panel,
+    .support-detail,
+    .modal-card {
+      border-radius: 1.1rem;
+      background:
+        linear-gradient(180deg, rgba(17, 24, 39, 0.86), rgba(10, 16, 28, 0.76)),
+        rgba(15, 23, 42, 0.5);
+      border: 1px solid var(--admin-border);
+      box-shadow: var(--admin-card-shadow);
+    }
+    .command-card {
+      padding: 1rem;
+    }
+    .command-card-head {
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid rgba(148, 163, 184, 0.12);
+    }
+    .command-card-head span {
+      color: #e2e8f0;
+      font-size: 0.76rem;
+    }
+    .mini-action,
+    .row-actions button,
+    .row-actions a,
+    .pagination button {
+      border-radius: 999px;
+    }
+    .operations-strip {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.65rem;
+    }
+    .operations-strip .operation-card,
+    .insight-grid article,
+    .cache-summary article,
+    .support-summary article,
+    .parser-health-grid article,
+    .admin-stats article,
+    .health-grid article {
+      border-radius: 0.95rem;
+      border-color: rgba(148, 163, 184, 0.15);
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.02)),
+        rgba(2, 6, 23, 0.18);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.035);
+    }
+    .operations-strip .operation-card.warn,
+    .support-summary article.warn,
+    .cache-summary article.warn {
+      border-color: rgba(251, 113, 133, 0.34);
+      background:
+        linear-gradient(180deg, rgba(244, 63, 94, 0.12), rgba(244, 63, 94, 0.045)),
+        rgba(2, 6, 23, 0.18);
+    }
+    .operations-strip .operation-card.ok,
+    .support-summary article.ok {
+      border-color: rgba(52, 211, 153, 0.28);
+      background:
+        linear-gradient(180deg, rgba(16, 185, 129, 0.11), rgba(16, 185, 129, 0.035)),
+        rgba(2, 6, 23, 0.18);
+    }
+    .operations-strip strong,
+    .insight-grid strong,
+    .cache-summary strong,
+    .support-summary strong,
+    .admin-stats article strong {
+      color: #f8fafc;
+      letter-spacing: 0;
+    }
+    .empty-priority {
+      min-height: 7.4rem;
+      border-radius: 0.95rem;
+      border-color: rgba(52, 211, 153, 0.24);
+      background: rgba(16, 185, 129, 0.045);
+    }
+    .admin-panel {
+      padding: clamp(1rem, 1.7vw, 1.45rem);
+      margin-bottom: 1rem;
+    }
+    .panel-head {
+      margin-bottom: 1rem;
+      padding-bottom: 0.95rem;
+      border-bottom: 1px solid rgba(148, 163, 184, 0.13);
+    }
+    .panel-head h2 {
+      margin: 0;
+      color: #f8fafc;
+      font-size: clamp(1.22rem, 1.55vw, 1.48rem);
+      line-height: 1.18;
+    }
+    .panel-head p {
+      max-width: 60rem;
+      line-height: 1.45;
+    }
+    .admin-search {
+      padding: 0.35rem;
+      border: 1px solid rgba(148, 163, 184, 0.13);
+      border-radius: 1rem;
+      background: rgba(2, 6, 23, 0.25);
+    }
+    .admin-search .form-input,
+    .admin-search .form-select,
+    .credit-usage-filters select,
+    .support-reply-form textarea,
+    .parser-filters .form-input,
+    .parser-filters .form-select {
+      min-height: 2.65rem;
+      border-color: rgba(148, 163, 184, 0.18);
+      background: rgba(15, 23, 42, 0.78);
+      color: #e5edf8;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.028);
+    }
+    .admin-search .form-input::placeholder,
+    .support-reply-form textarea::placeholder {
+      color: #718096;
+    }
+    .insight-grid,
+    .cache-summary,
+    .support-summary,
+    .parser-health-grid {
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+    .table-scroll {
+      border-radius: 1rem;
+      border-color: rgba(148, 163, 184, 0.15);
+      background: rgba(2, 6, 23, 0.26);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.025);
+    }
+    .admin-table {
+      font-size: 0.9rem;
+    }
+    .admin-table th {
+      padding: 0.82rem 0.95rem;
+      background: rgba(8, 13, 24, 0.96);
+      color: #9fb1c7;
+      font-size: 0.72rem;
+      font-weight: 850;
+    }
+    .admin-table td {
+      padding: 0.86rem 0.95rem;
+      border-bottom-color: rgba(148, 163, 184, 0.105);
+    }
+    .admin-table tbody tr {
+      transition: background 0.18s ease;
+    }
+    .admin-table tbody tr:hover td {
+      background: rgba(34, 211, 238, 0.045);
+    }
+    .sort-header {
+      min-height: 1.5rem;
+    }
+    .sort-header:hover,
+    .sort-header.active {
+      color: #e2e8f0;
+    }
+    .sort-indicator {
+      width: 1.2rem;
+      height: 1.2rem;
+      border-radius: 999px;
+      background: rgba(148, 163, 184, 0.09);
+    }
+    .sort-header.active .sort-indicator {
+      background: rgba(34, 211, 238, 0.12);
+    }
+    .row-actions {
+      gap: 0.36rem;
+    }
+    .row-actions button,
+    .row-actions a {
+      min-height: 2rem;
+      padding: 0.38rem 0.68rem;
+      border-color: rgba(148, 163, 184, 0.16);
+      background: rgba(255, 255, 255, 0.035);
+    }
+    .badge,
+    .status-pill,
+    .meta-chips span,
+    .parser-row-metrics span,
+    .parser-event-meta span {
+      border-radius: 999px;
+    }
+    .bug-list {
+      gap: 0.85rem;
+    }
+    .bug-list article,
+    .support-item,
+    .cache-list article,
+    .parser-block,
+    .parser-platform-row,
+    .parser-event-card,
+    .parser-report-row {
+      border-radius: 1rem;
+      border-color: rgba(148, 163, 184, 0.15);
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.018)),
+        rgba(2, 6, 23, 0.16);
+    }
+    .bug-list article.unread,
+    .support-item.unread {
+      border-color: rgba(251, 113, 133, 0.36);
+      background:
+        linear-gradient(180deg, rgba(244, 63, 94, 0.12), rgba(244, 63, 94, 0.04)),
+        rgba(2, 6, 23, 0.18);
+    }
+    .support-layout {
+      grid-template-columns: minmax(315px, 0.82fr) minmax(0, 1.55fr);
+      gap: 1rem;
+    }
+    .support-list {
+      max-height: calc(100vh - 22rem);
+      min-height: 24rem;
+      padding-right: 0.3rem;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(148, 163, 184, 0.35) transparent;
+    }
+    .support-item {
+      grid-template-columns: 2.25rem minmax(0, 1fr);
+      padding: 0.82rem;
+    }
+    .support-item:hover,
+    .support-item.active {
+      border-color: rgba(34, 211, 238, 0.38);
+      background: rgba(34, 211, 238, 0.065);
+      transform: translateY(-1px);
+    }
+    .support-avatar {
+      width: 2.25rem;
+      height: 2.25rem;
+      background: linear-gradient(135deg, rgba(34, 211, 238, 0.18), rgba(16, 185, 129, 0.12));
+    }
+    .support-detail {
+      min-height: calc(100vh - 20rem);
+      padding: 1.05rem;
+    }
+    .support-body,
+    .support-reply,
+    .support-linked-user {
+      border-radius: 0.95rem;
+      border-color: rgba(148, 163, 184, 0.14);
+      background: rgba(2, 6, 23, 0.24);
+    }
+    .cache-list article {
+      align-items: stretch;
+    }
+    .cache-question-main p {
+      color: #e2e8f0;
+    }
+    .open-hint {
+      align-self: center;
+      padding: 0.35rem 0.62rem;
+      border: 1px solid rgba(34, 211, 238, 0.22);
+      border-radius: 999px;
+      background: rgba(34, 211, 238, 0.07);
+    }
+    .parser-panel-head {
+      align-items: flex-start;
+    }
+    .parser-filters {
+      padding: 0.35rem;
+      border: 1px solid rgba(148, 163, 184, 0.13);
+      border-radius: 1rem;
+      background: rgba(2, 6, 23, 0.25);
+    }
+    .parser-workspace {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap: 1rem;
+    }
+    .parser-problem-block {
+      grid-column: span 6;
+      order: 1;
+    }
+    .parser-domain-block {
+      grid-column: span 6;
+      order: 2;
+    }
+    .parser-events-block {
+      grid-column: 1 / -1;
+      order: 3;
+    }
+    .parser-platform-block {
+      grid-column: 1 / -1;
+      order: 4;
+    }
+    .parser-reports {
+      grid-column: 1 / -1;
+      order: 5;
+    }
+    .parser-block {
+      padding: 1.05rem;
+    }
+    .parser-block-head {
+      align-items: flex-start;
+      padding-bottom: 0.8rem;
+      border-bottom: 1px solid rgba(148, 163, 184, 0.11);
+    }
+    .parser-block-head h3 {
+      color: #f8fafc;
+      font-size: 1.03rem;
+    }
+    .parser-domain-row {
+      border-color: rgba(14, 165, 233, 0.24);
+      box-shadow: inset 3px 0 0 rgba(14, 165, 233, 0.72);
+    }
+    .parser-problem-card {
+      border-color: rgba(244, 63, 94, 0.26);
+      box-shadow: inset 3px 0 0 rgba(244, 63, 94, 0.72);
+    }
+    .parser-platform-row {
+      display: grid;
+      gap: 0.75rem;
+    }
+    .parser-events-block .parser-event-list {
+      grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
+    }
+    .parser-event-card {
+      display: grid;
+      gap: 0.72rem;
+    }
+    .parser-event-head {
+      align-items: center;
+    }
+    .parser-row-metrics span,
+    .parser-event-meta span {
+      background: rgba(15, 23, 42, 0.62);
+      border-color: rgba(148, 163, 184, 0.14);
+    }
+    .parser-next-step {
+      border-radius: 0.85rem;
+    }
+    .parser-snapshot-details {
+      border-radius: 0.95rem;
+      background: rgba(2, 6, 23, 0.34);
+    }
+    .parser-snapshot-code {
+      max-height: 360px;
+      background: #050b16;
+      color: #dbeafe;
+    }
+    .parser-snapshot-download {
+      border-radius: 0.85rem;
+    }
+    .health-grid {
+      gap: 1rem;
+    }
+    .admin-alert {
+      margin-bottom: 1rem;
+      border-radius: 1rem;
+    }
+    .pagination {
+      margin-top: 1.2rem;
+    }
+    .modal-overlay {
+      background: rgba(2, 6, 23, 0.78);
+    }
+    .modal-card {
+      overflow: hidden;
+    }
+    .modal-header,
+    .modal-body {
+      background: transparent;
+    }
 
-    /* CONTENT AREA */
-    .content-area { flex: 1; display: flex; flex-direction: column; height: 100vh; overflow-y: auto; padding: 0 2rem 2rem; }
-    
-    .top-header { position: sticky; top: 0; z-index: 10; margin: 0 -2rem 1.5rem; padding: 1.5rem 2rem; border-radius: 0; border-left: none; border-right: none; border-top: none; display: flex; justify-content: space-between; align-items: center; }
-    .header-titles .eyebrow { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--accent); font-weight: 600; }
-    .header-titles h2 { margin: 0.25rem 0 0; font-size: 1.75rem; font-weight: 700; letter-spacing: -0.02em; }
-    .header-titles .subtitle { margin: 0.25rem 0 0; color: var(--text-muted); }
-    .header-actions { display: flex; gap: 0.75rem; align-items: center; }
-    
-    .global-alerts { margin-bottom: 1.5rem; }
-    .alert-box { padding: 1rem 1.25rem; border-radius: 8px; font-weight: 500; }
-    .alert-box.error { background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239,68,68,0.3); color: #fca5a5; }
-    .alert-box.success { background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16,185,129,0.3); color: #6ee7b7; }
+    @media (max-width: 1200px) {
+      .admin-command-center {
+        grid-template-columns: 1fr;
+      }
+      .admin-stats {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .parser-health-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .insight-grid,
+      .cache-summary {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+    @media (max-width: 992px) {
+      .admin-shell {
+        grid-template-columns: 1fr;
+      }
+      .admin-sidebar {
+        position: sticky;
+        top: 0;
+        z-index: 40;
+        height: auto;
+        overflow: visible;
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+        padding: 1.5rem;
+      }
+      .admin-tabs {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        overflow: visible;
+        margin: 1.5rem 0;
+      }
+      .tab-group {
+        min-width: 0;
+      }
+      .tab-group-head {
+        display: none;
+      }
+      .admin-tabs button {
+        width: 100%;
+        white-space: normal;
+      }
+      .admin-sidebar-foot {
+        flex-direction: row;
+      }
+      .admin-main {
+        padding: 1.5rem;
+      }
+      .admin-header {
+        margin: -1.5rem -1.5rem 1rem;
+      }
+      .health-grid {
+        grid-template-columns: 1fr;
+      }
+      .parser-workspace {
+        grid-template-columns: 1fr;
+      }
+      .parser-events-block .parser-event-list {
+        grid-template-columns: 1fr;
+      }
+      .operations-strip {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .support-layout {
+        grid-template-columns: 1fr;
+      }
+      .support-summary {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+    @media (max-width: 768px) {
+      .admin-login {
+        padding: 1rem;
+        align-items: flex-start;
+      }
+      .admin-login-card {
+        padding: 1.5rem;
+        margin-top: 1rem;
+      }
+      .admin-login-card h1 {
+        font-size: 1.6rem;
+      }
+      .admin-sidebar {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        padding: 0.85rem;
+        background: rgba(5, 9, 16, 0.94);
+        backdrop-filter: blur(18px);
+      }
+      .admin-sidebar .admin-brand {
+        margin-bottom: 0.75rem;
+      }
+      .admin-sidebar .admin-brand strong {
+        font-size: 1rem;
+      }
+      .admin-tabs {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 0.4rem;
+        margin: 0 0 0.75rem;
+        overflow: visible;
+      }
+      .tab-group {
+        gap: 0.35rem;
+      }
+      .admin-tabs button {
+        justify-content: center;
+        gap: 0.3rem;
+        min-width: 0;
+        padding: 0.55rem 0.35rem;
+        border-radius: 10px;
+        font-size: 0.68rem;
+        line-height: 1.1;
+        text-align: center;
+        white-space: normal;
+        flex-direction: column;
+      }
+      .admin-tabs button .tab-short,
+      .admin-tabs button .tab-badge {
+        font-size: 0.62rem;
+        padding: 0.12rem 0.3rem;
+      }
+      .admin-tabs button .tab-label {
+        flex: none;
+      }
+      .admin-tabs button .tab-copy {
+        flex: none;
+      }
+      .admin-tabs button .tab-copy small {
+        display: none;
+      }
+      .admin-tabs button .tab-badge {
+        margin-left: 0;
+      }
+      .admin-sidebar-foot {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.5rem;
+      }
+      .admin-main {
+        max-height: none;
+        overflow: visible;
+        padding: 1rem;
+      }
+      .admin-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1rem;
+        margin: -1rem -1rem 1rem;
+        padding: 1rem;
+      }
+      .admin-header h1 {
+        font-size: 1.55rem;
+      }
+      .admin-header-actions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+      }
+      .admin-stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.75rem;
+        margin-bottom: 1rem;
+      }
+      .operations-strip,
+      .insight-grid,
+      .cache-summary {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+        margin-bottom: 1rem;
+      }
+      .admin-command-center .operations-strip {
+        margin-bottom: 0;
+      }
+      .admin-stats article {
+        padding: 1rem;
+      }
+      .admin-stats article span {
+        font-size: 0.66rem;
+      }
+      .admin-stats article strong {
+        font-size: 1.35rem;
+        overflow-wrap: anywhere;
+      }
+      .admin-panel {
+        padding: 1rem;
+        margin-bottom: 1rem;
+      }
+      .panel-head {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1rem;
+        margin-bottom: 1rem;
+      }
+      .panel-head h2 {
+        font-size: 1.25rem;
+      }
+      .admin-search {
+        max-width: 100%;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(120px, 0.6fr) auto;
+      }
+      .parser-filters {
+        grid-template-columns: 1fr;
+      }
+      .parser-filters .form-input,
+      .parser-filters .form-select {
+        min-width: 0;
+        width: 100%;
+      }
+      .parser-row-head,
+      .parser-event-head,
+      .parser-report-row {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .credit-usage-filters {
+        grid-template-columns: 1fr;
+      }
+      .table-scroll {
+        margin: 1rem 0 0;
+        -webkit-overflow-scrolling: touch;
+      }
+      .admin-table {
+        min-width: 760px;
+        font-size: 0.85rem;
+      }
+      .admin-table th,
+      .admin-table td {
+        padding: 0.9rem 1rem;
+      }
+      .row-actions button {
+        padding: 0.45rem 0.65rem;
+      }
+      .support-layout {
+        gap: 1rem;
+      }
+      .support-list {
+        max-height: 280px;
+        padding-right: 0;
+      }
+      .support-detail {
+        min-height: auto;
+        padding: 1rem;
+      }
+      .support-detail header,
+      .support-linked-user,
+      .bug-meta,
+      .cache-list article {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .support-meta-grid {
+        grid-template-columns: 1fr;
+      }
+      .support-reply-form .btn {
+        justify-self: stretch;
+      }
+      .cache-summary,
+      .bug-list article,
+      .cache-list article,
+      .health-grid article {
+        padding: 1rem;
+      }
+      .open-hint {
+        white-space: normal;
+      }
+    }
 
-    /* DASHBOARD WIDGETS */
-    .dashboard-widgets { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 2rem; }
-    .widget-card { display: flex; flex-direction: column; }
-    .widget-header { padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--border-glass); }
-    .widget-header h3 { margin: 0; font-size: 1.1rem; }
-    .widget-header p { margin: 0.25rem 0 0; font-size: 0.85rem; color: var(--text-muted); }
-    .widget-content { padding: 1.5rem; flex: 1; display: flex; flex-direction: column; }
-    
-    .notices-grid { display: grid; gap: 0.75rem; }
-    .notice-card { display: flex; flex-direction: column; align-items: flex-start; padding: 1rem; border-radius: 12px; background: rgba(0,0,0,0.2); border: 1px solid var(--border-glass); text-align: left; }
-    .notice-card.tone-warn { border-left: 4px solid var(--warning); }
-    .notice-card.tone-ok { border-left: 4px solid var(--success); }
-    .notice-value { font-size: 1.5rem; font-weight: 800; line-height: 1; margin-bottom: 0.25rem; }
-    .notice-label { font-weight: 600; font-size: 0.9rem; }
-    .notice-note { font-size: 0.8rem; color: var(--text-muted); margin-top: 0.25rem; }
-    
-    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 1rem; }
-    .stats-grid.large { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
-    .stat-card { display: flex; flex-direction: column; gap: 0.25rem; }
-    .stat-label { font-size: 0.8rem; color: var(--text-muted); }
-    .stat-value { font-size: 1.5rem; font-weight: 700; }
-    .stat-value.text-revenue { color: var(--success); }
+    @media (max-width: 430px) {
+      .admin-tabs {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .admin-search,
+      .admin-header-actions,
+      .admin-sidebar-foot {
+        grid-template-columns: 1fr;
+      }
+      .support-summary {
+        grid-template-columns: 1fr;
+      }
+      .admin-stats {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
 
-    /* SECTIONS & TABLES */
-    .section-card { display: flex; flex-direction: column; margin-bottom: 1.5rem; }
-    .section-header { padding: 1.5rem; border-bottom: 1px solid var(--border-glass); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
-    .section-header h3 { margin: 0; font-size: 1.25rem; display: flex; align-items: center; gap: 0.75rem; }
-    
-    .action-bar { display: flex; gap: 0.75rem; padding: 1rem 1.5rem; border-bottom: 1px solid var(--border-glass); align-items: center; flex-wrap: wrap; background: rgba(0,0,0,0.1); }
-    .search-box { position: relative; display: flex; align-items: center; }
-    .search-box.stretch { flex: 1; }
-    .search-box .search-icon { position: absolute; left: 0.75rem; opacity: 0.5; font-size: 0.9rem; }
-    .search-box input { padding-left: 2.25rem; width: 100%; }
-    
-    .mini-stats-row { display: flex; gap: 2rem; padding: 1rem 1.5rem; border-bottom: 1px solid var(--border-glass); flex-wrap: wrap; }
-    .mini-stat { display: flex; flex-direction: column; gap: 0.15rem; }
-    .mini-stat .label { font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted); letter-spacing: 0.05em; font-weight: 600; }
-    .mini-stat .val { font-size: 1.1rem; }
 
-    .table-container { overflow-x: auto; }
-    .data-table { width: 100%; border-collapse: collapse; text-align: left; }
-    .data-table th { padding: 1rem 1.5rem; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); font-weight: 600; border-bottom: 1px solid var(--border-glass); white-space: nowrap; }
-    .data-table td { padding: 1rem 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.05); vertical-align: middle; }
-    .table-row.banned { background: rgba(239, 68, 68, 0.05); }
-    .table-row.inactive { opacity: 0.7; }
-    .table-row:last-child td { border-bottom: none; }
-    
-    .sort-btn { display: inline-flex; align-items: center; gap: 0.25rem; font-weight: inherit; text-transform: inherit; color: inherit; letter-spacing: inherit; }
-    .sort-btn:hover { color: var(--text-main); }
-    .sort-btn.active { color: var(--accent); }
-    
-    .user-identity { display: flex; flex-direction: column; gap: 0.15rem; }
-    .user-name { font-size: 0.8rem; color: var(--text-muted); }
-    .status-cell { display: flex; flex-direction: column; gap: 0.25rem; align-items: flex-start; }
-    .action-buttons { display: flex; gap: 0.5rem; align-items: center; justify-content: flex-end; }
-    
-    .pagination-bar { padding: 1rem 1.5rem; border-top: 1px solid var(--border-glass); display: flex; justify-content: center; gap: 0.5rem; }
-    .page-btn { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 8px; font-weight: 600; border: 1px solid var(--border-glass); background: rgba(0,0,0,0.2); }
-    .page-btn:hover { background: rgba(255,255,255,0.1); }
-    .page-btn.active { background: var(--accent); color: #000; border-color: var(--accent); }
-    
-    .empty-state { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 3rem 1rem; color: var(--text-muted); text-align: center; gap: 0.5rem; }
-    .empty-state .empty-icon { font-size: 2rem; opacity: 0.5; margin-bottom: 0.5rem; }
-    .empty-state.tiny { padding: 1.5rem 1rem; }
-    
-    /* LISTS & GRIDS (Bugs, Parser, Cache) */
-    .list-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1rem; padding: 1.5rem; }
-    .list-grid.single-col { grid-template-columns: 1fr; }
-    .report-card, .grid-card { display: flex; flex-direction: column; padding: 1.25rem; gap: 0.75rem; }
-    .card-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; }
-    .card-title { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; font-size: 1.1rem; }
-    .card-actions { display: flex; gap: 0.5rem; align-items: center; }
-    .report-url { font-size: 0.85rem; word-break: break-all; }
-    .report-desc { color: var(--text-main); line-height: 1.5; margin: 0; font-size: 0.95rem; }
-    .report-desc.bold { font-weight: 600; font-size: 1rem; }
-    .chips-row { display: flex; flex-wrap: wrap; gap: 0.4rem; }
-    
-    .code-details { background: rgba(0,0,0,0.2); border-radius: 8px; border: 1px solid var(--border-glass); overflow: hidden; }
-    .code-details summary { padding: 0.75rem 1rem; cursor: pointer; user-select: none; font-size: 0.85rem; font-weight: 600; background: rgba(255,255,255,0.02); }
-    .code-details summary:hover { background: rgba(255,255,255,0.05); }
-    .code-blocks { padding: 1rem; display: flex; flex-direction: column; gap: 1rem; border-top: 1px solid var(--border-glass); }
-    .code-pane strong { display: block; margin-bottom: 0.5rem; font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted); }
-    .code-pane pre { margin: 0; padding: 1rem; background: #000; border-radius: 6px; font-family: monospace; font-size: 0.8rem; overflow-x: auto; color: #a5b4fc; }
-    
-    .hash-text { font-family: monospace; color: var(--accent); background: rgba(56,189,248,0.1); padding: 0.2rem 0.4rem; border-radius: 4px; font-size: 0.8rem; }
-    .date-text { font-size: 0.8rem; color: var(--text-muted); }
-    .meta-row { display: flex; justify-content: space-between; align-items: center; }
-    .answer-box { background: rgba(16,185,129,0.1); border-left: 3px solid var(--success); padding: 0.75rem; border-radius: 0 6px 6px 0; display: flex; gap: 0.5rem; }
-    .answer-label { font-weight: 800; color: var(--success); }
-    .answer-text { color: #f8fafc; font-weight: 500; word-break: break-word; }
-
-    /* SUPPORT INBOX */
-    .support-tab { display: flex; flex-direction: column; height: calc(100vh - 180px); }
-    .support-stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 1rem; }
-    .support-stats-row .mini-stat { padding: 1rem; display: flex; flex-direction: column; gap: 0.25rem; border-radius: 12px; }
-    .support-stats-row .mini-stat.tone-warn { border-bottom: 3px solid var(--warning); }
-    .support-stats-row .mini-stat.tone-ok { border-bottom: 3px solid var(--success); }
-    
-    .support-layout { display: flex; gap: 1rem; flex: 1; min-height: 0; }
-    .inbox-list { width: 350px; display: flex; flex-direction: column; flex-shrink: 0; }
-    .inbox-search { display: flex; padding: 1rem; gap: 0.5rem; border-bottom: 1px solid var(--border-glass); background: rgba(0,0,0,0.1); }
-    .inbox-search input { flex: 1; min-width: 0; }
-    .messages-scroll { flex: 1; overflow-y: auto; display: flex; flex-direction: column; }
-    .msg-item { display: flex; gap: 1rem; padding: 1rem; border-bottom: 1px solid var(--border-glass); text-align: left; }
-    .msg-item.active { background: rgba(56,189,248,0.1); border-left: 3px solid var(--accent); }
-    .msg-item.unread .msg-subject { font-weight: 800; color: #fff; }
-    .msg-avatar { width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; font-weight: 700; flex-shrink: 0; }
-    .msg-content { display: flex; flex-direction: column; gap: 0.25rem; min-width: 0; flex: 1; }
-    .msg-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 0.5rem; }
-    .msg-subject { font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .msg-sender { font-size: 0.8rem; color: var(--text-muted); }
-    .msg-preview { font-size: 0.85rem; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .msg-meta { display: flex; justify-content: space-between; align-items: center; margin-top: 0.25rem; }
-    
-    .inbox-detail { flex: 1; display: flex; flex-direction: column; overflow-y: auto; }
-    .detail-header { padding: 1.5rem; border-bottom: 1px solid var(--border-glass); display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; }
-    .header-main { display: flex; flex-direction: column; gap: 0.5rem; }
-    .header-main h3 { margin: 0; font-size: 1.5rem; }
-    .source-pill { align-self: flex-start; background: var(--accent-glow); color: var(--accent); }
-    .meta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-top: 0.5rem; }
-    .meta-item { display: flex; flex-direction: column; font-size: 0.85rem; }
-    .meta-item span { color: var(--text-muted); text-transform: uppercase; font-size: 0.7rem; }
-    
-    .linked-user-card { margin: 1.5rem; padding: 1.25rem; background: rgba(56,189,248,0.05); border: 1px solid rgba(56,189,248,0.2); border-radius: 12px; display: flex; justify-content: space-between; align-items: center; }
-    .linked-user-card.empty { background: rgba(239,68,68,0.05); border-color: rgba(239,68,68,0.2); justify-content: flex-start; }
-    .user-info { display: flex; flex-direction: column; gap: 0.25rem; }
-    .user-badges { display: flex; gap: 0.5rem; margin-top: 0.25rem; }
-    .user-actions { display: flex; flex-direction: column; gap: 0.5rem; }
-    
-    .message-body { padding: 0 1.5rem 1.5rem; font-size: 0.95rem; line-height: 1.6; }
-    .message-body p { margin: 0 0 1rem; }
-    
-    .replies-section { padding: 1.5rem; border-top: 1px solid var(--border-glass); }
-    .replies-section h4 { margin: 0 0 1rem; font-size: 0.9rem; text-transform: uppercase; color: var(--text-muted); }
-    .reply-card { background: rgba(255,255,255,0.03); border-radius: 8px; padding: 1rem; margin-bottom: 1rem; border-left: 3px solid var(--accent); }
-    .reply-head { display: flex; justify-content: space-between; margin-bottom: 0.5rem; }
-    .reply-body p { margin: 0 0 0.5rem; font-size: 0.9rem; line-height: 1.5; }
-    
-    .reply-composer { padding: 1.5rem; border-top: 1px solid var(--border-glass); background: rgba(0,0,0,0.1); }
-    .reply-composer h4 { margin: 0 0 0.75rem; font-size: 0.9rem; }
-    .reply-composer textarea { width: 100%; resize: vertical; margin-bottom: 1rem; }
-
-    /* MODALS */
-    .modal-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); z-index: 1000; display: flex; align-items: center; justify-content: center; padding: 1rem; }
-    .modal-card { width: 100%; max-width: 600px; display: flex; flex-direction: column; max-height: 90vh; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); }
-    .modal-card.small { max-width: 400px; }
-    .modal-card.large { max-width: 800px; }
-    .modal-header { padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--border-glass); display: flex; justify-content: space-between; align-items: center; }
-    .modal-header h3 { margin: 0; font-size: 1.25rem; }
-    .modal-body { padding: 1.5rem; overflow-y: auto; }
-    
-    .detail-row { display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1.25rem; }
-    .detail-row .label { font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted); font-weight: 600; }
-    .detail-box { background: rgba(0,0,0,0.3); padding: 1rem; border-radius: 8px; border: 1px solid var(--border-glass); line-height: 1.5; font-family: monospace; white-space: pre-wrap; word-break: break-all; }
-    .detail-box.highlight { border-color: var(--success); color: var(--success); background: rgba(16,185,129,0.05); }
-    .options-list { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
-    .options-list li { background: rgba(255,255,255,0.05); padding: 0.75rem 1rem; border-radius: 6px; border: 1px solid var(--border-glass); }
-    
-    .mega-val { font-size: 3rem; line-height: 1; }
-    
-    /* SPINNERS */
-    .loading-spinner { width: 20px; height: 20px; border: 3px solid rgba(255,255,255,0.1); border-top-color: var(--accent); border-radius: 50%; animation: spin 1s linear infinite; }
-    .loading-spinner.center { margin: 2rem auto; width: 40px; height: 40px; }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    
-    /* SCROLLBARS */
-    ::-webkit-scrollbar { width: 8px; height: 8px; }
-    ::-webkit-scrollbar-track { background: rgba(0,0,0,0.1); }
-    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 4px; }
-    ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
   `]
 })
 export class AdminComponent implements OnInit, OnDestroy {
-  protected cacheSort = 'newest';
-  protected parserFilterPlatform = '';
-  protected cacheHitsOnPage(): number { return 0; }
-  protected async sendSupportReply(msg: any): Promise<void> {}
-  protected cacheEntries() { return this.cache().topHits || []; }
-  protected selectedNotice = signal<any>(null);
-  protected handleNoticeAction(n: any) {}
   protected readonly tabs: Array<{ id: AdminTab; label: string; short: string }> = [
     { id: 'users', label: 'Users', short: 'US' },
     { id: 'purchases', label: 'Purchases', short: 'PY' },
