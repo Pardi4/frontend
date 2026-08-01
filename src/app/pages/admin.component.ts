@@ -1149,6 +1149,7 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
                       <span class="chip">{{ formatNumber(event.questionCount || 0) }} q's</span>
                       <span class="chip">{{ formatNumber(event.optionCount || 0) }} opts</span>
                       <span class="chip success" *ngIf="event.hasPageCode">HTML</span>
+                      <span class="chip clickable" *ngIf="event.userEmail || event.email" (click)="openUserHistory({id: event.userId, email: event.userEmail || event.email})">👤 {{ event.userEmail || event.email }}</span>
                       <span class="chip">{{ formatDate(event.createdAt) }}</span>
                       <a class="primary-link parser-url" [href]="event.url" target="_blank" rel="noopener">{{ shortUrl(event.url) }}</a>
                     </div>
