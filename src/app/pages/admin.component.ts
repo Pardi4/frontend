@@ -1640,18 +1640,18 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
   styles: [`
 
     :host {
-      --bg-primary: #f8fafc;
-      --bg-secondary: #ffffff;
-      --border-glass: #e2e8f0;
-      --text-primary: #0f172a;
-      --text-secondary: #475569;
-      --text-muted: #64748b;
-      --accent-cyan: #2563eb;
-      --accent-hover: #1d4ed8;
-      --success: #16a34a;
-      --warning: #ca8a04;
-      --danger: #dc2626;
-      --pending: #ea580c;
+      --bg-primary: #09090b;
+      --bg-secondary: #18181b;
+      --border-glass: #27272a;
+      --text-primary: #f8fafc;
+      --text-secondary: #a1a1aa;
+      --text-muted: #71717a;
+      --accent-cyan: #3b82f6;
+      --accent-hover: #2563eb;
+      --success: #22c55e;
+      --warning: #eab308;
+      --danger: #ef4444;
+      --pending: #f97316;
       
       --font-main: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       --font-heading: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -1702,7 +1702,7 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
     
     /* Remove childish text-shadows or gradients if any */
     .glass-card, .admin-panel.glass, .mini-stat, .stat-card, article.glass {
-      background: #ffffff !important;
+      background: #18181b !important;
       border: 1px solid var(--border-glass) !important;
       box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
       border-radius: 8px !important;
@@ -1710,8 +1710,8 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
     }
     
     .data-table th {
-      background-color: #f1f5f9;
-      color: #334155;
+      background-color: #27272a;
+      color: #e2e8f0;
       font-weight: 600;
       text-transform: none !important;
       letter-spacing: normal !important;
