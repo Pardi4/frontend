@@ -1,11 +1,14 @@
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { Component, Inject, OnDestroy, OnInit, PLATFORM_ID, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { AdminErrorsComponent } from './admin-errors.component';
+import { AdminUsersComponent } from './admin-users.component';
+import { AdminStatsComponent } from './admin-stats.component';
 import { ActivatedRoute } from '@angular/router';
 import { Meta, Title } from '@angular/platform-browser';
 import { ADMIN_PANEL_ROUTE_PATH, ADMIN_PANEL_URL } from '../admin-path';
 
-type AdminTab = 'users' | 'purchases' | 'bugs' | 'support' | 'cache' | 'parser' | 'system';
+type AdminTab = 'users' | 'purchases' | 'bugs' | 'support' | 'cache' | 'parser' | 'system' | 'errors';
 type AdminLocale = 'en' | 'pl';
 type UserSortField = 'credits' | 'questions' | 'streak' | 'status';
 type UserSortDirection = 'asc' | 'desc';
@@ -13,7 +16,7 @@ type UserSortOption = 'createdAt_desc' | 'createdAt_asc' | `${UserSortField}_${U
 
 const ADMIN_ACTIVE_TAB_KEY = 'qs_admin_active_tab';
 const ADMIN_USERS_STATE_KEY = 'qs_admin_users_state';
-const ADMIN_TAB_IDS: AdminTab[] = ['users', 'purchases', 'bugs', 'support', 'cache', 'parser', 'system'];
+const ADMIN_TAB_IDS: AdminTab[] = ['users', 'purchases', 'bugs', 'support', 'cache', 'parser', 'system', 'errors'];
 const DEFAULT_USER_SORT: UserSortOption = 'createdAt_desc';
 const USER_SORT_VALUES: UserSortOption[] = [
   'createdAt_desc',
@@ -62,6 +65,8 @@ const ADMIN_COPY = {
     cacheHint: 'answers',
     parserHint: 'signals',
     systemHint: 'health',
+    errors: 'Client errors',
+    errorsHint: 'frontend',
     usersTitle: 'Users and credits',
     purchasesTitle: 'Purchases and grants',
     bugsTitle: 'Bug reports',
@@ -318,6 +323,8 @@ const ADMIN_COPY = {
     cacheHint: 'odpowiedzi',
     parserHint: 'sygnały',
     systemHint: 'zdrowie',
+    errors: 'Błędy klienta',
+    errorsHint: 'frontend',
     usersTitle: 'Użytkownicy i kredyty',
     purchasesTitle: 'Płatności i granty',
     bugsTitle: 'Zgłoszenia błędów',
@@ -550,7 +557,7 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
 
 @Component({
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, AdminErrorsComponent, AdminUsersComponent, AdminStatsComponent],
   template: `
     <main class="admin-page">
       <section class="admin-login" *ngIf="!isAuthed(); else adminPanel">
@@ -692,113 +699,7 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
               </article>
             </section>
 
-            <section class="admin-panel glass" *ngIf="activeTab() === 'users'">
-              <div class="panel-head">
-                <div>
-                  <p class="eyebrow">{{ tr('users') }}</p>
-                  <h2>{{ tr('accountsCredits') }}</h2>
-                  <small class="panel-status" *ngIf="usersLoading()">{{ tr('loadingUsers') }}</small>
-                </div>
-                <form class="admin-search user-toolbar" (ngSubmit)="loadUsers(1)">
-                  <input class="form-input" type="search" name="search" [(ngModel)]="userSearch" [placeholder]="tr('searchEmailName')">
-                  <select class="form-select" name="userSort" [(ngModel)]="userSort" (ngModelChange)="loadUsers(1)" [attr.aria-label]="tr('sortUsers')">
-                    <option *ngFor="let option of userSortOptions()" [value]="option.value">{{ option.label }}</option>
-                  </select>
-                  <button class="btn btn-primary" type="submit">{{ tr('search') }}</button>
-                  <button class="btn btn-outline" type="button" *ngIf="hasUserFilters()" (click)="resetUserFilters()">{{ tr('clearUsersFilters') }}</button>
-                  <button class="btn btn-outline" type="button" [disabled]="!users().length" (click)="exportVisibleUsersCsv()">{{ tr('exportVisibleUsers') }}</button>
-                </form>
-              </div>
-
-              <div class="insight-grid">
-                <article *ngFor="let card of usersSummaryCards()">
-                  <span>{{ card.label }}</span>
-                  <strong [class.ok]="card.ok" [class.warn]="card.warn">{{ card.value }}</strong>
-                  <small>{{ card.note }}</small>
-                </article>
-              </div>
-
-              <div class="table-scroll">
-                <table class="admin-table">
-                  <thead>
-                    <tr>
-                      <th>{{ tr('user') }}</th>
-                      <th>{{ tr('role') }}</th>
-                      <th [attr.aria-sort]="userSortAria('credits')">
-                        <button type="button" class="sort-header" [class.active]="userSortDirection('credits')" (click)="cycleUserSort('credits')">
-                          <span>{{ tr('credits') }}</span>
-                          <span class="sort-indicator" aria-hidden="true">{{ userSortIndicator('credits') }}</span>
-                        </button>
-                      </th>
-                      <th [attr.aria-sort]="userSortAria('questions')">
-                        <button type="button" class="sort-header" [class.active]="userSortDirection('questions')" (click)="cycleUserSort('questions')">
-                          <span>{{ tr('questions') }}</span>
-                          <span class="sort-indicator" aria-hidden="true">{{ userSortIndicator('questions') }}</span>
-                        </button>
-                      </th>
-                      <th [attr.aria-sort]="userSortAria('streak')">
-                        <button type="button" class="sort-header" [class.active]="userSortDirection('streak')" (click)="cycleUserSort('streak')">
-                          <span>{{ tr('streak') }}</span>
-                          <span class="sort-indicator" aria-hidden="true">{{ userSortIndicator('streak') }}</span>
-                        </button>
-                      </th>
-                      <th [attr.aria-sort]="userSortAria('status')">
-                        <button type="button" class="sort-header" [class.active]="userSortDirection('status')" (click)="cycleUserSort('status')">
-                          <span>{{ tr('status') }}</span>
-                          <span class="sort-indicator" aria-hidden="true">{{ userSortIndicator('status') }}</span>
-                        </button>
-                      </th>
-                      <th>{{ tr('actions') }}</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr *ngFor="let user of users()" [class.user-active-row]="isUserExtensionActive(user)" [class.user-banned-row]="user.isBanned" [class.user-muted-row]="!user.isBanned && !isUserExtensionActive(user)">
-                      <td class="user-cell">
-                        <button type="button" class="link-button primary-link" (click)="openUserHistory(user)">{{ user.email }}</button>
-                        <span>{{ user.displayName || tr('noDisplayName') }}</span>
-                      </td>
-                      <td><span class="badge badge-outline role-badge">{{ user.role }}</span></td>
-                      <td><strong class="metric-value">{{ user.role === 'admin' ? tr('unlimited') : user.credits }}</strong></td>
-                      <td><strong class="metric-value">{{ user.stats?.totalQuestionsSolved || 0 }}</strong></td>
-                      <td><strong class="metric-value">{{ user.streak?.current || 0 }}</strong></td>
-                      <td>
-                        <span class="status-pill" [class.danger]="user.isBanned" [class.pending]="!user.isBanned && !user.isExtensionActive">
-                          {{ userStatusLabel(user) }}
-                        </span>
-                        <small class="muted-line">
-                          {{ userExtensionLastSeen(user) }}
-                        </small>
-                      </td>
-                      <td>
-                        <div class="row-actions">
-                          <button type="button" (click)="openUserHistory(user)" style="color: var(--accent-cyan);">{{ tr('history') }}</button>
-                          <button type="button" (click)="copyUserEmail(user)">{{ tr('copyEmail') }}</button>
-                          <button type="button" (click)="quickGrant(user.id, 50)">+50</button>
-                          <button type="button" (click)="quickGrant(user.id, 100)">+100</button>
-                          <button type="button" (click)="quickGrant(user.id, 200)">+200</button>
-                          <button type="button" (click)="openGrantModal(user)">{{ tr('grant') }}</button>
-                          <button type="button" (click)="user.isBanned ? unbanUser(user.id) : banUser(user.id)">
-                            {{ user.isBanned ? tr('unban') : tr('ban') }}
-                          </button>
-                          <button type="button" class="danger" *ngIf="user.role !== 'admin'" (click)="deleteUser(user.id, user.email)">
-                            {{ tr('delete') }}
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr *ngIf="!users().length">
-                      <td colspan="7" class="empty-cell" style="text-align: center; padding: 3rem;">{{ tr('noUsers') }}</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-
-              <div class="pagination" *ngIf="pagination().pages > 1">
-                <button type="button" *ngFor="let page of pageNumbers()" [class.active]="page === pagination().page" (click)="loadUsers(page)">
-                  {{ page }}
-                </button>
-              </div>
-            </section>
+            <app-admin-users *ngIf="activeTab() === 'users'" [p]="this"></app-admin-users>
 
             <section class="admin-panel glass" *ngIf="activeTab() === 'purchases'">
               <div class="panel-head">
@@ -1284,197 +1185,9 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
               </section>
             </section>
 
-            <section class="admin-panel glass" *ngIf="activeTab() === 'system'">
-              <div class="panel-head">
-                <div>
-                  <p class="eyebrow">{{ tr('system') }}</p>
-                  <h2>{{ tr('healthCheck') }}</h2>
-                </div>
-              </div>
-              <div class="health-grid">
-                <article class="glass" *ngFor="let item of healthCards()">
-                  <span class="text-secondary" style="font-size: 0.75rem; text-transform: uppercase;">{{ item.label }}</span>
-                  <strong [class.ok]="item.ok" style="font-size: 1.35rem; margin-top: 0.25rem;">{{ item.value }}</strong>
-                </article>
-              </div>
+            <app-admin-stats *ngIf="activeTab() === 'system'" [p]="this"></app-admin-stats>
 
-              <div id="admin-billing-safety" style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border);">
-                <div class="panel-head" style="margin-bottom: 1rem;">
-                  <div>
-                    <p class="eyebrow">{{ tr('billingSafety') }}</p>
-                    <h3 style="margin: 0.25rem 0 0; font-family: var(--font-heading); font-size: 1.15rem;">{{ tr('creditDedupeMonitor') }}</h3>
-                  </div>
-                  <button class="btn btn-outline" type="button" (click)="loadBillingSafety()">{{ tr('refreshBilling') }}</button>
-                </div>
-                <div class="health-grid">
-                  <article class="glass" *ngFor="let item of billingSafetyCards()">
-                    <span class="text-secondary" style="font-size: 0.75rem; text-transform: uppercase;">{{ item.label }}</span>
-                    <strong [class.ok]="item.ok" style="font-size: 1.35rem; margin-top: 0.25rem;">{{ item.value }}</strong>
-                  </article>
-                </div>
-
-                <div class="admin-alert" *ngIf="(billingSafety().duplicateGroups || []).length" style="margin-top: 1rem;">
-                  {{ tr('duplicateWarning') }}
-                </div>
-
-                <div class="table-scroll" *ngIf="(billingSafety().duplicateGroups || []).length" style="margin-top: 1rem;">
-                  <table class="admin-table">
-                    <thead>
-                      <tr>
-                        <th>{{ tr('user') }}</th>
-                        <th>{{ tr('questionText') }}</th>
-                        <th>{{ tr('questionHash') }}</th>
-                        <th>{{ tr('charges') }}</th>
-                        <th>{{ tr('actions') }}</th>
-                        <th>{{ tr('lastCharged') }}</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr *ngFor="let group of billingSafety().duplicateGroups">
-                        <td>
-                          <button class="link-button primary-link" type="button" *ngIf="group.userId" (click)="openUserHistory({ id: group.userId, email: group.email || group.userId })" style="font-weight: bold; text-align: left;">
-                            {{ group.email || group.userId }}
-                          </button>
-                          <strong *ngIf="!group.userId">{{ group.email || tr('unknownUser') }}</strong>
-                        </td>
-                        <td class="question-audit-cell">
-                          <strong>{{ group.questionText || shortHash(group.questionHash) }}</strong>
-                          <span *ngIf="group.answerText">{{ tr('answerSummary') }}: {{ group.answerText }}</span>
-                          <span>{{ tr('duplicateReason') }}</span>
-                        </td>
-                        <td>{{ shortHash(group.questionHash) }}</td>
-                        <td>
-                          <strong>{{ group.count }} / {{ group.credits }} credits</strong>
-                          <span>{{ tr('timeSpan') }}: {{ formatDurationMs(group.spanMs) }}</span>
-                        </td>
-                        <td>
-                          <strong>{{ group.action || (group.actions || []).join(', ') }}</strong>
-                          <span>{{ tr('firstCharged') }}: {{ formatDate(group.firstChargedAt) }}</span>
-                        </td>
-                        <td>
-                          <strong>{{ formatDate(group.lastChargedAt) }}</strong>
-                          <div class="row-actions" style="margin-top: 0.5rem;">
-                            <button type="button" (click)="reviewDuplicateGroup(group)">{{ tr('reviewInLog') }}</button>
-                            <button type="button" *ngIf="group.userId" (click)="openGrantModal({ id: group.userId, email: group.email || group.userId }, tr('possibleRefund'))">{{ tr('possibleRefund') }}</button>
-                          </div>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-
-                <div class="empty-panel" *ngIf="!(billingSafety().duplicateGroups || []).length" style="text-align: center; padding: 1.25rem; margin-top: 1rem;">
-                  <p class="text-secondary">{{ tr('noDuplicateGroups') }}</p>
-                </div>
-
-                <div class="credit-usage-panel">
-                  <div class="panel-head" style="margin-bottom: 1rem;">
-                    <div>
-                      <p class="eyebrow">{{ tr('creditEvent') }}</p>
-                      <h3 style="margin: 0.25rem 0 0; font-family: var(--font-heading); font-size: 1.15rem;">{{ tr('creditUsageLog') }}</h3>
-                      <p class="text-secondary" style="margin: 0.4rem 0 0;">{{ tr('creditUsageDescription') }}</p>
-                    </div>
-                    <button class="btn btn-outline" type="button" (click)="loadBillingUsage(1)">{{ tr('refresh') }}</button>
-                  </div>
-
-                  <form class="admin-search credit-usage-filters" (ngSubmit)="loadBillingUsage(1)">
-                    <input type="text" [(ngModel)]="billingUsageSearch" name="billingUsageSearch" [placeholder]="tr('searchCreditUsage')">
-                    <select [(ngModel)]="billingUsageStatus" name="billingUsageStatus">
-                      <option value="">{{ tr('allStatuses') }}</option>
-                      <option value="charged">{{ tr('charged') }}</option>
-                      <option value="claimed">{{ tr('claimed') }}</option>
-                      <option value="waived">{{ tr('waived') }}</option>
-                      <option value="aborted">{{ tr('aborted') }}</option>
-                      <option value="declined">{{ tr('declined') }}</option>
-                    </select>
-                    <select [(ngModel)]="billingUsageAction" name="billingUsageAction">
-                      <option value="">{{ tr('allActions') }}</option>
-                      <option value="solve">solve</option>
-                      <option value="solve-snapshot">solve-snapshot</option>
-                      <option value="explain">explain</option>
-                      <option value="follow-up">follow-up</option>
-                    </select>
-                    <button class="btn btn-primary" type="submit">{{ tr('search') }}</button>
-                  </form>
-
-                  <div class="health-grid credit-usage-summary">
-                    <article class="glass">
-                      <span>{{ tr('visibleEntries') }}</span>
-                      <strong>{{ formatNumber(billingUsagePagination().total || 0) }}</strong>
-                    </article>
-                    <article class="glass">
-                      <span>{{ tr('charged') }}</span>
-                      <strong class="ok">{{ formatNumber(billingUsageSummary().chargedRecords || 0) }}</strong>
-                    </article>
-                    <article class="glass">
-                      <span>{{ tr('chargedCredits') }}</span>
-                      <strong class="ok">{{ formatNumber(billingUsageSummary().chargedCredits || 0) }}</strong>
-                    </article>
-                    <article class="glass">
-                      <span>{{ tr('status') }}</span>
-                      <strong>{{ billingUsageStatus ? creditUsageStatusLabel(billingUsageStatus) : tr('allStatuses') }}</strong>
-                    </article>
-                  </div>
-
-                  <div class="table-scroll" style="margin-top: 1rem;">
-                    <table class="admin-table credit-usage-table">
-                      <thead>
-                        <tr>
-                          <th>{{ tr('questionText') }}</th>
-                          <th>{{ tr('user') }}</th>
-                          <th>{{ tr('creditEvent') }}</th>
-                          <th>{{ tr('chargedCredits') }}</th>
-                          <th>{{ tr('date') }}</th>
-                          <th>{{ tr('actions') }}</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr *ngFor="let item of billingUsageRows()">
-                          <td class="question-audit-cell">
-                            <strong>{{ item.questionText }}</strong>
-                            <span *ngIf="item.answerText">{{ tr('answerSummary') }}: {{ item.answerText }}</span>
-                            <span>{{ item.questionType || item.action }} - {{ shortHash(item.questionHash) }}</span>
-                          </td>
-                          <td>
-                            <button type="button" class="link-button primary-link" *ngIf="item.userId" (click)="openUserHistory({ id: item.userId, email: item.email })" style="font-weight: bold; text-align: left;">
-                              {{ item.email }}
-                            </button>
-                            <strong *ngIf="!item.userId">{{ item.email }}</strong>
-                            <span *ngIf="item.displayName">{{ item.displayName }}</span>
-                          </td>
-                          <td>
-                            <span class="status-pill" [class.ok]="creditUsageStatusClass(item.status) === 'ok'" [class.pending]="creditUsageStatusClass(item.status) === 'pending'" [class.danger]="creditUsageStatusClass(item.status) === 'danger'">
-                              {{ creditUsageStatusLabel(item.status) }}
-                            </span>
-                            <span>{{ item.action }}</span>
-                            <span *ngIf="item.waivedReason">{{ item.waivedReason }}</span>
-                          </td>
-                          <td>
-                            <strong class="metric-value">{{ item.creditsCharged || 0 }}</strong>
-                            <span>{{ tr('billableCredits') }}: {{ item.credits || 0 }}</span>
-                          </td>
-                          <td>{{ formatDate(item.time) }}</td>
-                          <td>
-                            <div class="row-actions">
-                              <button type="button" (click)="showQuestionDetails(item)">{{ tr('viewQuestion') }}</button>
-                            </div>
-                          </td>
-                        </tr>
-                        <tr *ngIf="!billingUsageRows().length">
-                          <td colspan="6" class="empty-cell">{{ tr('noCreditUsage') }}</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-
-                  <div class="pagination" *ngIf="billingUsagePagination().pages > 1">
-                    <button type="button" *ngFor="let page of billingUsagePageNumbers()" [class.active]="page === billingUsagePagination().page" (click)="loadBillingUsage(page)">
-                      {{ page }}
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </section>
+            <app-admin-errors *ngIf="activeTab() === 'errors'" [api]="api.bind(this)"></app-admin-errors>
           </section>
         </section>
       </ng-template>
@@ -4058,7 +3771,8 @@ export class AdminComponent implements OnInit, OnDestroy {
     { id: 'support', label: 'Support', short: 'SP' },
     { id: 'cache', label: 'Cache', short: 'CA' },
     { id: 'parser', label: 'Parser', short: 'PR' },
-    { id: 'system', label: 'System', short: 'SY' }
+    { id: 'system', label: 'System', short: 'SY' },
+        { id: 'errors', label: 'Errors', short: 'ER' }
   ];
 
   protected readonly activeTab = signal<AdminTab>('users');
@@ -4401,7 +4115,8 @@ export class AdminComponent implements OnInit, OnDestroy {
       support: 'support',
       cache: 'cache',
       parser: 'parser',
-      system: 'system'
+      system: 'system',
+      errors: 'errors'
     };
     return this.tr(labels[tab]);
   }
@@ -4414,7 +4129,8 @@ export class AdminComponent implements OnInit, OnDestroy {
       support: 'supportHint',
       cache: 'cacheHint',
       parser: 'parserHint',
-      system: 'systemHint'
+      system: 'systemHint',
+      errors: 'errorsHint'
     };
     return this.tr(hints[tab]);
   }
@@ -4453,7 +4169,8 @@ export class AdminComponent implements OnInit, OnDestroy {
       support: 'supportTitle',
       cache: 'cacheTitle',
       parser: 'parserTitle',
-      system: 'systemTitle'
+      system: 'systemTitle',
+      errors: 'errors'
     };
     return this.tr(titles[this.activeTab()]);
   }
@@ -4466,7 +4183,8 @@ export class AdminComponent implements OnInit, OnDestroy {
       support: 'supportDescription',
       cache: 'cacheDescription',
       parser: 'parserDescription',
-      system: 'systemDescription'
+      system: 'systemDescription',
+      errors: 'errorsHint'
     };
     return this.tr(descriptions[this.activeTab()]);
   }
@@ -5439,7 +5157,7 @@ export class AdminComponent implements OnInit, OnDestroy {
     return window.confirm(message);
   }
 
-  private async api(endpoint: string, options: RequestInit = {}, withToken = true): Promise<any> {
+  public async api(endpoint: string, options: RequestInit = {}, withToken = true): Promise<any> {
     if (!this.isBrowser) return { success: false, error: 'Browser unavailable.' };
     const headers: Record<string, string> = {
       'Content-Type': 'application/json',

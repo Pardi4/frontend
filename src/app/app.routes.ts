@@ -36,6 +36,7 @@ export const routes: Routes = [
   ...localizedRoutes('blogPost', () => import('./pages/blog-post.component').then(m => m.BlogPostComponent)),
   ...localizedRoutes('success', () => import('./pages/status-pages.component').then(m => m.StatusPageComponent), { pageKey: 'success' }),
   ...localizedRoutes('notFound', () => import('./pages/status-pages.component').then(m => m.StatusPageComponent), { pageKey: 'notFound' }),
+  ...localizedRoutes('mobileInstall', () => import('./pages/mobile-install.component').then(m => m.MobileInstallComponent)),
   ...PLATFORM_PAGE_KEYS.flatMap((pageKey) =>
     localizedRoutes(pageKey, () => import('./pages/platform.component').then(m => m.PlatformComponent), { pageKey })
   ),

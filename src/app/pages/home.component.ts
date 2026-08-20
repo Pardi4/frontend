@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { SeoService } from '../seo.service';
 import { CHROME_WEB_STORE_URL, Locale, PageKey, pathFor } from '../site-content';
@@ -8,6 +8,7 @@ import { ShellComponent } from './shell.component';
 @Component({
   standalone: true,
   imports: [CommonModule, ShellComponent],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <qs-shell [locale]="locale" pageKey="home">
         <!-- Hero Section -->

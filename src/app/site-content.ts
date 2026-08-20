@@ -144,6 +144,11 @@ export interface SiteCopy {
     kahoot: PlatformCopy;
     quizizz: PlatformCopy;
   };
+  mobileInstall: {
+    title: string;
+    subtitle: string;
+    meta: { title: string; description: string };
+  };
   home: {
     title: string;
     subtitle: string;
@@ -207,6 +212,14 @@ function routeRecord(slug: string): Record<Locale, string> {
 const en: SiteCopy = {
   htmlLang: "en",
   ogLocale: "en_US",
+  mobileInstall: {
+    title: "How to install on phone",
+    subtitle: "Follow these steps to use QuizSolver on mobile",
+    meta: {
+      title: "Mobile Installation | QuizSolver",
+      description: "Learn how to easily install QuizSolver on your smartphone or tablet."
+    }
+  },
   home: {
     title: "AI Quiz Solver Chrome Extension",
     subtitle: "Solve and review quiz questions on Testportal, Moodle, Canvas, Google Forms, Kahoot and more",
@@ -600,6 +613,14 @@ const en: SiteCopy = {
 const pl: SiteCopy = {
   htmlLang: "pl",
   ogLocale: "pl_PL",
+  mobileInstall: {
+    title: "Jak zainstalować na telefonie",
+    subtitle: "Obejrzyj poradnik wideo poniżej, aby zacząć korzystać z QuizSolver na urządzeniu mobilnym.",
+    meta: {
+      title: "Instalacja na telefonie | QuizSolver",
+      description: "Poradnik jak w kilka minut zainstalować rozszerzenie QuizSolver na smartfonie."
+    }
+  },
   home: {
     title: "Rozszerzenie AI do rozwiązywania quizów",
     subtitle: "Rozwiązuj i powtarzaj pytania z Testportal, Moodle, Canvas, Google Forms, Kahoot i innych platform",
@@ -1005,7 +1026,8 @@ export type PageKey =
   | 'success'
   | 'blog'
   | 'blogCategory'
-  | 'blogPost';
+  | 'blogPost'
+  | 'mobileInstall';
 
 
 
@@ -1963,7 +1985,8 @@ export const PAGE_SLUGS: Record<PageKey, string> = {
   success: 'success',
   blog: 'blog',
   blogCategory: 'blog/category/:category',
-  blogPost: 'blog/:slug'
+  blogPost: 'blog/:slug',
+  mobileInstall: 'mobile-install'
 };
 
 export const PAGE_ROUTES: Record<PageKey, Record<Locale, string>> = Object.fromEntries(
@@ -1989,7 +2012,8 @@ export const INDEXED_PAGE_KEYS: PageKey[] = [
   'privacy',
   'terms',
   'blog',
-  'blogPost'
+  'blogPost',
+  'mobileInstall'
 ];
 
 export function contentFor(locale: Locale): SiteCopy {
