@@ -1,5 +1,5 @@
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { Component, Inject, OnDestroy, OnInit, PLATFORM_ID, signal } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit, PLATFORM_ID, signal, ViewEncapsulation } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AdminErrorsComponent } from './admin-errors.component';
 import { AdminUsersComponent } from './admin-users.component';
@@ -556,6 +556,7 @@ const ADMIN_COPY = {
 type AdminCopyKey = keyof typeof ADMIN_COPY.en;
 
 @Component({
+  encapsulation: ViewEncapsulation.None,
   standalone: true,
   imports: [CommonModule, FormsModule, AdminErrorsComponent, AdminUsersComponent, AdminStatsComponent],
   template: `
