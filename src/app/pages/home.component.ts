@@ -385,7 +385,7 @@ export class AnimatedNumberComponent implements OnInit {
     }
     .hero-proof-grid {
       display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 0.85rem;
       width: min(880px, 100%);
       margin-bottom: 3.25rem;
@@ -916,8 +916,7 @@ const HOME_COPY: Partial<Record<Locale, any>> & { en: any; pl: any } = {
       secondary: 'See how it works',
       proof: [
         { prefix: '', target: 30, suffix: '+ supported LMS & quiz platforms' },
-        { prefix: '', target: -1, suffix: ' other sites with Universal Parser™*' },
-        'Saved explanations, notes and practice quizzes'
+        { prefix: '', target: -1, suffix: ' other sites with Universal Parser™*' }
       ],
       asterisk: 'Universal Parser™ reads most standard web quiz layouts. Highly custom, interactive or locked visual interfaces may require manual FocusScan.',
       socialProof: 'Built for real quiz pages: Universal Parser, FocusScan and saved study history in one Chrome extension.'
@@ -999,8 +998,7 @@ const HOME_COPY: Partial<Record<Locale, any>> & { en: any; pl: any } = {
       secondary: 'Zobacz jak to działa',
       proof: [
         { prefix: 'Wsparcie dla ', target: 30, suffix: '+ platform LMS i quizowych' },
-        { prefix: '', target: -1, suffix: ' innych stron z Universal Parser™*' },
-        'Wyjaśnienia, notatki i historia nauki'
+        { prefix: '', target: -1, suffix: ' innych stron z Universal Parser™*' }
       ],
       asterisk: 'Universal Parser™ odczytuje większość standardowych układów quizów. Bardzo nietypowe, zablokowane lub graficzne interfejsy mogą wymagać użycia opcji FocusScan.',
       socialProof: 'Stworzone pod prawdziwe quizy: Universal Parser, FocusScan i historia nauki w jednym rozszerzeniu Chrome.'
@@ -1082,7 +1080,7 @@ const HOME_LOCALE_TEXT: Record<Exclude<Locale, 'en' | 'pl'>, any> = {
     lead: 'Löse Quizze auf 30+ Plattformen wie Testportal, Moodle, Kahoot, Canvas, Google Forms... und praktisch unendlich vielen anderen dank Universal Parser™*. Erhalte KI-Antwortvorschläge mit Erklärungen.',
     primary: 'Aus dem Chrome Web Store installieren',
     secondary: 'So funktioniert es',
-    proof: [{ prefix: 'Unterstützung für ', target: 30, suffix: '+ LMS- & Quiz-Plattformen' }, { prefix: 'Unendlich viele ', target: -1, suffix: ' weitere Seiten mit Universal Parser™*' }, 'Erklärungen, Notizen und Lernhistorie'],
+    proof: [{ prefix: 'Unterstützung für ', target: 30, suffix: '+ LMS- & Quiz-Plattformen' }, { prefix: 'Unendlich viele ', target: -1, suffix: ' weitere Seiten mit Universal Parser™*' }],
     asterisk: 'Universal Parser™ liest die meisten Standard-Quiz-Layouts. Sehr ungewöhnliche visuelle Schnittstellen erfordern FocusScan.',
     socialProof: 'Gemacht für echte Quizseiten: Universal Parser, FocusScan und gespeicherte Lernhistorie in einer Chrome-Erweiterung.',
     how: ['So funktioniert QuizSolver', '3 Schritte, um jedes Quiz mit KI zu lösen', 'Einmal installieren, auf unterstützten Plattformen lösen und automatisch eine persönliche Lernbibliothek aufbauen.'],
@@ -1098,7 +1096,7 @@ const HOME_LOCALE_TEXT: Record<Exclude<Locale, 'en' | 'pl'>, any> = {
     lead: 'Resuelve quizzes en más de 30 plataformas como Testportal, Moodle, Kahoot, Canvas, Google Forms... y en infinidad de otras gracias a Universal Parser™*. Obtén sugerencias de respuestas con explicaciones.',
     primary: 'Instalar desde Chrome Web Store',
     secondary: 'Ver cómo funciona',
-    proof: [{ prefix: 'Soporte para ', target: 30, suffix: '+ plataformas LMS y quizzes' }, { prefix: 'Infinidad de ', target: -1, suffix: ' otros sitios con Universal Parser™*' }, 'Explicaciones, notas e historial'],
+    proof: [{ prefix: 'Soporte para ', target: 30, suffix: '+ plataformas LMS y quizzes' }, { prefix: 'Infinidad de ', target: -1, suffix: ' otros sitios con Universal Parser™*' }],
     asterisk: 'Universal Parser™ lee la mayoría de los diseños estándar de quizzes web. Las interfaces altamente personalizadas pueden requerir FocusScan.',
     socialProof: 'Creado para quizzes reales: Universal Parser, FocusScan e historial de estudio guardado en una extensión Chrome.',
     how: ['Cómo funciona QuizSolver', '3 pasos para resolver cualquier quiz con IA', 'Instala una vez, resuelve en plataformas compatibles y crea automáticamente tu biblioteca de estudio.'],
