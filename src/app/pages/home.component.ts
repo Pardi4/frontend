@@ -4,7 +4,8 @@ import { ActivatedRoute } from '@angular/router';
 import { SeoService } from '../seo.service';
 import { CHROME_WEB_STORE_URL, Locale, PageKey, pathFor } from '../site-content';
 import { ShellComponent } from './shell.component';
-import { Input, ChangeDetectorRef, ElementRef } from '@angular/core';
+import { Input, ChangeDetectorRef, ElementRef, Inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 @Component({
   standalone: true,
   selector: 'qs-animated-number',
@@ -14,7 +15,7 @@ export class AnimatedNumberComponent implements OnInit {
   @Input() target: number | null = null;
   displayValue: string = '0';
 
-  constructor(private cdr: ChangeDetectorRef, private el: ElementRef) {}
+  constructor(private cdr: ChangeDetectorRef, private el: ElementRef, @Inject(PLATFORM_ID) private platformId: Object) {}
 
   ngOnInit() {
     if (this.target === null) return;
@@ -117,9 +118,7 @@ export class AnimatedNumberComponent implements OnInit {
                 </div>
               </div>
             </div>
-          </div>
-        </section>
-            <p class="hero-asterisk delay-4" style="font-size: 0.75rem; opacity: 0.6; margin-top: 1.5rem; text-align: center;">
+          <p class="hero-asterisk delay-4" style="font-size: 0.75rem; opacity: 0.6; margin-top: 1.5rem; text-align: center;">
               * {{ text.hero.asterisk || 'Universal Parser™ reads most standard web quiz layouts. Highly custom, interactive or locked visual interfaces may require manual FocusScan.' }}
             </p>
           </div>
