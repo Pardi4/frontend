@@ -168,7 +168,7 @@ export class AnimatedNumberComponent implements OnInit {
                   
                   <div class="bento-icon-wrapper">
                     <div class="icon-glow"></div>
-                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+                    <span class="bento-emoji">🌐</span>
                   </div>
                   <h3 class="bento-title">{{ text.features.items[0].title }}</h3>
                   <p class="bento-text">{{ text.features.items[0].text }}</p>
@@ -196,7 +196,7 @@ export class AnimatedNumberComponent implements OnInit {
                   
                   <div class="bento-icon-wrapper">
                     <div class="icon-glow"></div>
-                    <svg viewBox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.9 1.2 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>
+                    <span class="bento-emoji">💡</span>
                   </div>
                   <h3 class="bento-title">{{ text.features.items[1].title }}</h3>
                   <p class="bento-text">{{ text.features.items[1].text }}</p>
@@ -210,7 +210,7 @@ export class AnimatedNumberComponent implements OnInit {
                   
                   <div class="bento-icon-wrapper">
                     <div class="icon-glow"></div>
-                    <svg viewBox="0 0 24 24"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><circle cx="12" cy="12" r="3"/></svg>
+                    <span class="bento-emoji">🔍</span>
                   </div>
                   <h3 class="bento-title">{{ text.features.items[2].title }}</h3>
                   <p class="bento-text">{{ text.features.items[2].text }}</p>
@@ -224,7 +224,7 @@ export class AnimatedNumberComponent implements OnInit {
                   
                   <div class="bento-icon-wrapper">
                     <div class="icon-glow"></div>
-                    <svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                    <span class="bento-emoji">⚡</span>
                   </div>
                   <h3 class="bento-title">{{ text.features.items[3].title }}</h3>
                   <p class="bento-text">{{ text.features.items[3].text }}</p>
@@ -238,7 +238,7 @@ export class AnimatedNumberComponent implements OnInit {
                   
                   <div class="bento-icon-wrapper">
                     <div class="icon-glow"></div>
-                    <svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+                    <span class="bento-emoji">📚</span>
                   </div>
                   <h3 class="bento-title">{{ text.features.items[4].title }}</h3>
                   <p class="bento-text">{{ text.features.items[4].text }}</p>
@@ -252,7 +252,7 @@ export class AnimatedNumberComponent implements OnInit {
                   
                   <div class="bento-icon-wrapper">
                     <div class="icon-glow"></div>
-                    <svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                    <span class="bento-emoji">✅</span>
                   </div>
                   <h3 class="bento-title">{{ text.features.items[5].title }}</h3>
                   <p class="bento-text">{{ text.features.items[5].text }}</p>
@@ -266,7 +266,7 @@ export class AnimatedNumberComponent implements OnInit {
                   
                   <div class="bento-icon-wrapper">
                     <div class="icon-glow"></div>
-                    <svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+                    <span class="bento-emoji">🔗</span>
                   </div>
                   <h3 class="bento-title">{{ text.features.items[6].title }}</h3>
                   <p class="bento-text">{{ text.features.items[6].text }}</p>
@@ -280,7 +280,7 @@ export class AnimatedNumberComponent implements OnInit {
                   
                   <div class="bento-icon-wrapper">
                     <div class="icon-glow"></div>
-                    <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                    <span class="bento-emoji">🔑</span>
                   </div>
                   <h3 class="bento-title">{{ text.features.items[7].title }}</h3>
                   <p class="bento-text">{{ text.features.items[7].text }}</p>
@@ -641,15 +641,10 @@ export class AnimatedNumberComponent implements OnInit {
       opacity: 0.2;
       border-radius: 50%;
     }
-    .bento-icon-wrapper svg {
-      width: 24px;
-      height: 24px;
-      stroke: var(--primary-color);
-      fill: none;
-      stroke-width: 2;
-      stroke-linecap: round;
-      stroke-linejoin: round;
+    .bento-emoji {
+      font-size: 24px;
       z-index: 2;
+      line-height: 1;
     }
 
     .bento-title {
@@ -1005,7 +1000,7 @@ const HOME_COPY: Partial<Record<Locale, any>> & { en: any; pl: any } = {
       secondary: 'See how it works',
       proof: [
         { prefix: '', target: 30, suffix: '+ directly supported quiz platforms' },
-        { prefix: '', target: -1, suffix: ' quizzes analyzed in real-time across the entire web via Universal Parser™*', href: '/blog/universal-parser-infinite-quiz-platforms' }
+        { prefix: '', target: -1, suffix: ' other sites — works anywhere thanks to Universal Parser™*', href: '/blog/universal-parser-infinite-quiz-platforms' }
       ],
       asterisk: '*Universal Parser™ automatically adapts to almost any quiz on the internet. For heavily-locked or graphical interfaces, simply use our foolproof FocusScan.',
       socialProof: 'Built for real quiz pages: Universal Parser, FocusScan and saved study history in one Chrome extension.'
@@ -1087,7 +1082,7 @@ const HOME_COPY: Partial<Record<Locale, any>> & { en: any; pl: any } = {
       secondary: 'Zobacz jak to działa',
       proof: [
         { prefix: '', target: 30, suffix: '+ platform quizowych ze wsparciem bezpośrednim' },
-        { prefix: '', target: -1, suffix: ' quizów analizowanych w czasie rzeczywistym w całej sieci przez Universal Parser™*', href: '/pl/blog/universal-parser-nieskonczonosc-platform-quizowych' }
+        { prefix: '', target: -1, suffix: ' innych stron — działa wszędzie dzięki Universal Parser™*', href: '/pl/blog/universal-parser-nieskonczonosc-platform-quizowych' }
       ],
       asterisk: '*Universal Parser™ automatycznie dopasowuje się do niemal każdego quizu w internecie. Przy bardzo restrykcyjnych interfejsach z pomocą przychodzi niezawodny FocusScan.',
       socialProof: 'Stworzone pod prawdziwe quizy: Universal Parser, FocusScan i historia nauki w jednym rozszerzeniu Chrome.'
@@ -1169,7 +1164,7 @@ const HOME_LOCALE_TEXT: Record<Exclude<Locale, 'en' | 'pl'>, any> = {
     lead: 'Löse Quizze auf 30+ Plattformen wie Testportal, Moodle, Kahoot, Canvas, Google Forms... und praktisch unendlich vielen anderen dank Universal Parser™*. Erhalte KI-Antwortvorschläge mit Erklärungen.',
     primary: 'Aus dem Chrome Web Store installieren',
     secondary: 'So funktioniert es',
-    proof: [{ prefix: '', target: 30, suffix: '+ direkt unterstützte Quiz-Plattformen' }, { prefix: '', target: -1, suffix: ' Quizze in Echtzeit im gesamten Web analysiert dank Universal Parser™*', href: '/de/blog/universal-parser-unendlich-viele-quiz-plattformen' }],
+    proof: [{ prefix: '', target: 30, suffix: '+ direkt unterstützte Quiz-Plattformen' }, { prefix: '', target: -1, suffix: ' andere Seiten — funktioniert überall dank Universal Parser™*', href: '/de/blog/universal-parser-unendlich-viele-quiz-plattformen' }],
     asterisk: '*Universal Parser™ passt sich automatisch an fast jedes Quiz im Internet an. Für stark gesperrte oder grafische Oberflächen nutze einfach unseren FocusScan.',
     socialProof: 'Gemacht für echte Quizseiten: Universal Parser, FocusScan und gespeicherte Lernhistorie in einer Chrome-Erweiterung.',
     how: ['So funktioniert QuizSolver', '3 Schritte, um jedes Quiz mit KI zu lösen', 'Einmal installieren, auf unterstützten Plattformen lösen und automatisch eine persönliche Lernbibliothek aufbauen.'],
@@ -1185,7 +1180,7 @@ const HOME_LOCALE_TEXT: Record<Exclude<Locale, 'en' | 'pl'>, any> = {
     lead: 'Resuelve quizzes en más de 30 plataformas como Testportal, Moodle, Kahoot, Canvas, Google Forms... y en infinidad de otras gracias a Universal Parser™*. Obtén sugerencias de respuestas con explicaciones.',
     primary: 'Instalar desde Chrome Web Store',
     secondary: 'Ver cómo funciona',
-    proof: [{ prefix: '', target: 30, suffix: '+ plataformas de quizzes con soporte directo' }, { prefix: '', target: -1, suffix: ' quizzes analizados en tiempo real en toda la red mediante Universal Parser™*', href: '/es/blog/universal-parser-infinitas-plataformas-quizzes' }],
+    proof: [{ prefix: '', target: 30, suffix: '+ plataformas de quizzes con soporte directo' }, { prefix: '', target: -1, suffix: ' otros sitios — funciona en cualquier lugar gracias a Universal Parser™*', href: '/es/blog/universal-parser-infinitas-plataformas-quizzes' }],
     asterisk: '*Universal Parser™ se adapta automáticamente a casi cualquier quiz en internet. Para interfaces fuertemente bloqueadas, utiliza nuestro infalible FocusScan.',
     socialProof: 'Creado para quizzes reales: Universal Parser, FocusScan e historial de estudio guardado en una extensión Chrome.',
     how: ['Cómo funciona QuizSolver', '3 pasos para resolver cualquier quiz con IA', 'Instala una vez, resuelve en plataformas compatibles y crea automáticamente tu biblioteca de estudio.'],
@@ -1201,7 +1196,7 @@ const HOME_LOCALE_TEXT: Record<Exclude<Locale, 'en' | 'pl'>, any> = {
     lead: 'Résolvez des quiz sur plus de 30 plateformes telles que Testportal, Moodle, Kahoot, Canvas, Google Forms... et une infinité d\'autres grâce à Universal Parser™*. Obtenez des réponses IA.',
     primary: 'Installer depuis Chrome Web Store',
     secondary: 'Voir le fonctionnement',
-    proof: [{ prefix: '', target: 30, suffix: '+ plateformes de quiz avec support direct' }, { prefix: '', target: -1, suffix: ' quiz analysés en temps réel sur tout le web via Universal Parser™*', href: '/fr/blog/universal-parser-infinite-plateformes-quiz' }],
+    proof: [{ prefix: '', target: 30, suffix: '+ plateformes de quiz avec support direct' }, { prefix: '', target: -1, suffix: ' autres sites — fonctionne partout grâce à Universal Parser™*', href: '/fr/blog/universal-parser-infinite-plateformes-quiz' }],
     asterisk: '*Universal Parser™ s\'adapte automatiquement à presque n\'importe quel quiz sur internet. Pour les interfaces fortement bloquées, utilisez notre FocusScan infaillible.',
     socialProof: 'Conçu pour de vrais quiz: Universal Parser, FocusScan et historique d’étude dans une extension Chrome.',
     how: ['Comment fonctionne QuizSolver', '3 étapes pour résoudre un quiz avec l’IA', 'Installez une fois, résolvez sur les plateformes compatibles et créez automatiquement une bibliothèque d’étude.'],
@@ -1217,7 +1212,7 @@ const HOME_LOCALE_TEXT: Record<Exclude<Locale, 'en' | 'pl'>, any> = {
     lead: 'Risolvi quiz su oltre 30 piattaforme come Testportal, Moodle, Kahoot, Canvas, Google Forms... e un\'infinità di altre grazie a Universal Parser™*. Ottieni suggerimenti IA.',
     primary: 'Installa da Chrome Web Store',
     secondary: 'Vedi come funziona',
-    proof: [{ prefix: '', target: 30, suffix: '+ piattaforme di quiz con supporto diretto' }, { prefix: '', target: -1, suffix: ' quiz analizzati in tempo reale su tutto il web tramite Universal Parser™*', href: '/it/blog/universal-parser-infinite-piattaforme-quiz' }],
+    proof: [{ prefix: '', target: 30, suffix: '+ piattaforme di quiz con supporto diretto' }, { prefix: '', target: -1, suffix: ' altri siti — funziona ovunque grazie a Universal Parser™*', href: '/it/blog/universal-parser-infinite-piattaforme-quiz' }],
     asterisk: '*Universal Parser™ si adatta automaticamente a quasi tutti i quiz su internet. Per interfacce fortemente bloccate, usa il nostro infallibile FocusScan.',
     socialProof: 'Creato per quiz reali: Universal Parser, FocusScan e cronologia di studio salvata in un’estensione Chrome.',
     how: ['Come funziona QuizSolver', '3 passaggi per risolvere qualsiasi quiz con AI', 'Installa una volta, risolvi sulle piattaforme supportate e crea automaticamente una libreria di studio.'],
@@ -1233,7 +1228,7 @@ const HOME_LOCALE_TEXT: Record<Exclude<Locale, 'en' | 'pl'>, any> = {
     lead: 'Розв’язуй квізи на Testportal, Moodle, Kahoot, Canvas, Google Forms та 7 інших платформах. Отримуй AI-підказки з короткими покроковими поясненнями.',
     primary: 'Встановити з Chrome Web Store',
     secondary: 'Як це працює',
-    proof: [{ prefix: '', target: 30, suffix: '+ квіз-платформ із прямою підтримкою' }, { prefix: '', target: -1, suffix: ' квізів, проаналізованих у реальному часі у всій мережі через Universal Parser™*', href: '/uk/blog/universal-parser-bezlich-quiz-platform' }],
+    proof: [{ prefix: '', target: 30, suffix: '+ квіз-платформ із прямою підтримкою' }, { prefix: '', target: -1, suffix: ' інших сайтів — працює будь-де завдяки Universal Parser™*', href: '/uk/blog/universal-parser-bezlich-quiz-platform' }],
     asterisk: '*Universal Parser™ автоматично адаптується до майже будь-якого квізу в інтернеті. Для сильно заблокованих інтерфейсів використовуйте наш надійний FocusScan.',
     socialProof: 'Створено для реальних квізів: Universal Parser, FocusScan і збережена історія навчання в одному Chrome-розширенні.',
     how: ['Як працює QuizSolver', '3 кроки, щоб розв’язати квіз з AI', 'Встанови один раз, розв’язуй на підтримуваних платформах і автоматично збирай власну бібліотеку для навчання.'],
