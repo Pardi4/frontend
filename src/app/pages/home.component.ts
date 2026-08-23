@@ -165,6 +165,11 @@ export class AnimatedNumberComponent implements OnInit {
                 <div class="bento-card-bg-gradient"></div>
                 <div class="bento-content">
                   
+                  
+                  <div class="bento-icon-wrapper">
+                    <div class="icon-glow"></div>
+                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+                  </div>
                   <h3 class="bento-title">{{ text.features.items[0].title }}</h3>
                   <p class="bento-text">{{ text.features.items[0].text }}</p>
                   
@@ -188,6 +193,11 @@ export class AnimatedNumberComponent implements OnInit {
               <article class="bento-card glass glass-hover reveal delay-100">
                 <div class="bento-content">
                   
+                  
+                  <div class="bento-icon-wrapper">
+                    <div class="icon-glow"></div>
+                    <svg viewBox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.9 1.2 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>
+                  </div>
                   <h3 class="bento-title">{{ text.features.items[1].title }}</h3>
                   <p class="bento-text">{{ text.features.items[1].text }}</p>
                 </div>
@@ -197,6 +207,11 @@ export class AnimatedNumberComponent implements OnInit {
               <article class="bento-card glass glass-hover reveal delay-200">
                 <div class="bento-content">
                   
+                  
+                  <div class="bento-icon-wrapper">
+                    <div class="icon-glow"></div>
+                    <svg viewBox="0 0 24 24"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><circle cx="12" cy="12" r="3"/></svg>
+                  </div>
                   <h3 class="bento-title">{{ text.features.items[2].title }}</h3>
                   <p class="bento-text">{{ text.features.items[2].text }}</p>
                 </div>
@@ -206,6 +221,11 @@ export class AnimatedNumberComponent implements OnInit {
               <article class="bento-card glass glass-hover reveal">
                 <div class="bento-content">
                   
+                  
+                  <div class="bento-icon-wrapper">
+                    <div class="icon-glow"></div>
+                    <svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                  </div>
                   <h3 class="bento-title">{{ text.features.items[3].title }}</h3>
                   <p class="bento-text">{{ text.features.items[3].text }}</p>
                 </div>
@@ -215,6 +235,11 @@ export class AnimatedNumberComponent implements OnInit {
               <article class="bento-card card-md glass glass-hover reveal delay-100">
                 <div class="bento-content">
                   
+                  
+                  <div class="bento-icon-wrapper">
+                    <div class="icon-glow"></div>
+                    <svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+                  </div>
                   <h3 class="bento-title">{{ text.features.items[4].title }}</h3>
                   <p class="bento-text">{{ text.features.items[4].text }}</p>
                 </div>
@@ -224,6 +249,11 @@ export class AnimatedNumberComponent implements OnInit {
               <article class="bento-card glass glass-hover reveal delay-200">
                 <div class="bento-content">
                   
+                  
+                  <div class="bento-icon-wrapper">
+                    <div class="icon-glow"></div>
+                    <svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                  </div>
                   <h3 class="bento-title">{{ text.features.items[5].title }}</h3>
                   <p class="bento-text">{{ text.features.items[5].text }}</p>
                 </div>
@@ -233,6 +263,11 @@ export class AnimatedNumberComponent implements OnInit {
               <article class="bento-card glass glass-hover reveal">
                 <div class="bento-content">
                   
+                  
+                  <div class="bento-icon-wrapper">
+                    <div class="icon-glow"></div>
+                    <svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+                  </div>
                   <h3 class="bento-title">{{ text.features.items[6].title }}</h3>
                   <p class="bento-text">{{ text.features.items[6].text }}</p>
                 </div>
@@ -242,6 +277,11 @@ export class AnimatedNumberComponent implements OnInit {
               <article class="bento-card glass glass-hover reveal delay-100">
                 <div class="bento-content">
                   
+                  
+                  <div class="bento-icon-wrapper">
+                    <div class="icon-glow"></div>
+                    <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                  </div>
                   <h3 class="bento-title">{{ text.features.items[7].title }}</h3>
                   <p class="bento-text">{{ text.features.items[7].text }}</p>
                 </div>
@@ -576,6 +616,42 @@ export class AnimatedNumberComponent implements OnInit {
       align-self: flex-start;
       margin-bottom: 1.5rem;
     }
+    
+    .bento-icon-wrapper {
+      position: relative;
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 0.5rem;
+    }
+    .icon-glow {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 100%;
+      height: 100%;
+      background: var(--primary-color);
+      filter: blur(12px);
+      opacity: 0.2;
+      border-radius: 50%;
+    }
+    .bento-icon-wrapper svg {
+      width: 24px;
+      height: 24px;
+      stroke: var(--primary-color);
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      z-index: 2;
+    }
+
     .bento-title {
       font-size: 1.35rem;
       margin-bottom: 0.5rem;
@@ -946,7 +1022,7 @@ const HOME_COPY: Partial<Record<Locale, any>> & { en: any; pl: any } = {
     },
     features: {
       eyebrow: 'QuizSolver features',
-      title: 'Everything you need to solve quizzes faster',
+      title: 'A complete AI toolkit for solving quizzes and studying smarter',
       subtitle: 'Built for real quiz situations: visible questions, image-based questions, hint-only mode, quick overlay, and a full study review system.',
       items: [
         { icon: 'UP', title: 'Universal quiz parser', text: 'QuizSolver first tries to read the visible question on any quiz page, then uses tuned workflows for platforms like Testportal, Moodle, Canvas and Forms.' },
@@ -1028,7 +1104,7 @@ const HOME_COPY: Partial<Record<Locale, any>> & { en: any; pl: any } = {
     },
     features: {
       eyebrow: 'Funkcje QuizSolver',
-      title: 'Wszystko, czego potrzebujesz do szybszego rozwiązywania quizów',
+      title: 'Kompletny zestaw narzędzi AI do rozwiązywania quizów i nauki',
       subtitle: 'Stworzone pod realne sytuacje: widoczne pytania, pytania w obrazkach, tryb samej podpowiedzi, szybki overlay oraz pełny system powtórek.',
       items: [
         { icon: 'UP', title: 'Uniwersalny parser quizów', text: 'QuizSolver najpierw próbuje odczytać widoczne pytanie na dowolnej stronie z quizem, a dla Testportal, Moodle, Canvas i Forms używa dodatkowo dopracowanych workflow.' },
@@ -1098,7 +1174,7 @@ const HOME_LOCALE_TEXT: Record<Exclude<Locale, 'en' | 'pl'>, any> = {
     socialProof: 'Gemacht für echte Quizseiten: Universal Parser, FocusScan und gespeicherte Lernhistorie in einer Chrome-Erweiterung.',
     how: ['So funktioniert QuizSolver', '3 Schritte, um jedes Quiz mit KI zu lösen', 'Einmal installieren, auf unterstützten Plattformen lösen und automatisch eine persönliche Lernbibliothek aufbauen.'],
     steps: [['Installieren und anmelden', 'Installiere QuizSolver kostenlos in Chrome. Dein Konto synchronisiert gelöste Fragen, Notizen und Übungsquizze zwischen Erweiterung und Website.'], ['Lösen oder scannen', 'Klicke Aktuelle Seite lösen. Bei Bildern, Canvas, PDF oder ungewöhnlichem Layout markierst du nur den Fragebereich mit FocusScan.'], ['Wiederholen und teilen', 'Jede gelöste Frage landet in der Historie. Daraus entstehen Karteikarten, Übungsquizze und teilbare Fragensets.']],
-    features: ['QuizSolver-Funktionen', 'Alles, was du brauchst, um Quizze schneller zu lösen', 'Für sichtbare Fragen, bildbasierte Fragen, Hinweis-Modus, Quick Overlay und ein vollständiges Wiederholungssystem.', ['Universal-Quiz-Parser', 'QuizSolver versucht zuerst, sichtbare Fragen auf jeder Quizseite zu lesen, und nutzt zusätzlich optimierte Workflows für Testportal, Moodle, Canvas und Forms.'], ['Hinweis-Modus', 'Nutze ihn, wenn nichts automatisch geklickt werden soll. QuizSolver markiert nur die wahrscheinlich richtige Antwort.'], ['FocusScan', 'Markiere einen Bereich, wenn die Frage in einem Bild, Canvas, PDF oder ungewöhnlichen Layout steckt.'], ['Quick Overlay', 'Öffne ein kleines verschiebbares Fenster auf der Seite für schnelle Aktionen.'], ['Historie und Notizen', 'Speichere gelöste Fragen mit Antwort, Erklärung, Quelle, Bildern und eigenen Notizen.'], ['Übungsquiz aus Historie', 'Verwandle gespeicherte Fragen in ein Übungsquiz und prüfe danach die richtigen Antworten.'], ['Fragen teilen', 'Wähle aktuelle Fragen aus und erstelle einen öffentlichen Quizlink für andere.'], ['Kahoot Quiz ID', 'Wenn der Host Fragen ausblendet, öffnet die Quiz ID einen Suchbereich mit Antworten ohne AI-Credits.']],
+    features: ['QuizSolver-Funktionen', 'Ein komplettes KI-Toolkit zum Lösen von Quizzen und intelligentem Lernen', 'Für sichtbare Fragen, bildbasierte Fragen, Hinweis-Modus, Quick Overlay und ein vollständiges Wiederholungssystem.', ['Universal-Quiz-Parser', 'QuizSolver versucht zuerst, sichtbare Fragen auf jeder Quizseite zu lesen, und nutzt zusätzlich optimierte Workflows für Testportal, Moodle, Canvas und Forms.'], ['Hinweis-Modus', 'Nutze ihn, wenn nichts automatisch geklickt werden soll. QuizSolver markiert nur die wahrscheinlich richtige Antwort.'], ['FocusScan', 'Markiere einen Bereich, wenn die Frage in einem Bild, Canvas, PDF oder ungewöhnlichen Layout steckt.'], ['Quick Overlay', 'Öffne ein kleines verschiebbares Fenster auf der Seite für schnelle Aktionen.'], ['Historie und Notizen', 'Speichere gelöste Fragen mit Antwort, Erklärung, Quelle, Bildern und eigenen Notizen.'], ['Übungsquiz aus Historie', 'Verwandle gespeicherte Fragen in ein Übungsquiz und prüfe danach die richtigen Antworten.'], ['Fragen teilen', 'Wähle aktuelle Fragen aus und erstelle einen öffentlichen Quizlink für andere.'], ['Kahoot Quiz ID', 'Wenn der Host Fragen ausblendet, öffnet die Quiz ID einen Suchbereich mit Antworten ohne AI-Credits.']],
     pricing: ['Einfache Credit-Preise', 'Lade nur auf, wenn du es brauchst', 'Keine Abos. Antworten und Erklärungen nutzen Credits, deine Historie bleibt verfügbar.', 'Beliebt'],
     faqTitle: 'Häufige Fragen'
   },
@@ -1114,7 +1190,7 @@ const HOME_LOCALE_TEXT: Record<Exclude<Locale, 'en' | 'pl'>, any> = {
     socialProof: 'Creado para quizzes reales: Universal Parser, FocusScan e historial de estudio guardado en una extensión Chrome.',
     how: ['Cómo funciona QuizSolver', '3 pasos para resolver cualquier quiz con IA', 'Instala una vez, resuelve en plataformas compatibles y crea automáticamente tu biblioteca de estudio.'],
     steps: [['Instala e inicia sesión', 'Añade QuizSolver a Chrome gratis. Tu cuenta sincroniza preguntas resueltas, notas y quizzes de práctica entre la extensión y la web.'], ['Resuelve o escanea', 'Haz clic en Resolver página actual. Para imágenes, canvas, PDF o diseños raros, usa FocusScan solo sobre el área de la pregunta.'], ['Repasa y comparte', 'Cada pregunta resuelta se guarda en Historial. Úsala para tarjetas, quizzes de práctica o enlaces compartidos.']],
-    features: ['Funciones de QuizSolver', 'Todo lo que necesitas para resolver quizzes más rápido', 'Para preguntas visibles, preguntas en imágenes, modo pista, overlay rápido y un sistema completo de repaso.', ['Parser universal de quizzes', 'QuizSolver primero intenta leer la pregunta visible en cualquier página de quiz y luego usa flujos optimizados para Testportal, Moodle, Canvas y Forms.'], ['Modo pista', 'Úsalo cuando no quieres clics automáticos. QuizSolver solo marca la respuesta probable.'], ['FocusScan', 'Selecciona un área cuando la pregunta está en una imagen, canvas, PDF o diseño extraño.'], ['Overlay rápido', 'Abre una ventana pequeña y movible en la página con acciones rápidas.'], ['Historial y notas', 'Guarda preguntas resueltas con respuesta, explicación, fuente, imágenes y tus notas.'], ['Quiz de práctica', 'Convierte preguntas guardadas en un quiz y revisa las respuestas correctas al final.'], ['Compartir preguntas', 'Elige preguntas recientes y crea un enlace público para compartirlas.'], ['Kahoot Quiz ID', 'Si el host oculta preguntas, Quiz ID abre un banco buscable de respuestas sin gastar créditos AI.']],
+    features: ['Funciones de QuizSolver', 'Un kit de herramientas de IA completo para resolver quizzes y estudiar mejor', 'Para preguntas visibles, preguntas en imágenes, modo pista, overlay rápido y un sistema completo de repaso.', ['Parser universal de quizzes', 'QuizSolver primero intenta leer la pregunta visible en cualquier página de quiz y luego usa flujos optimizados para Testportal, Moodle, Canvas y Forms.'], ['Modo pista', 'Úsalo cuando no quieres clics automáticos. QuizSolver solo marca la respuesta probable.'], ['FocusScan', 'Selecciona un área cuando la pregunta está en una imagen, canvas, PDF o diseño extraño.'], ['Overlay rápido', 'Abre una ventana pequeña y movible en la página con acciones rápidas.'], ['Historial y notas', 'Guarda preguntas resueltas con respuesta, explicación, fuente, imágenes y tus notas.'], ['Quiz de práctica', 'Convierte preguntas guardadas en un quiz y revisa las respuestas correctas al final.'], ['Compartir preguntas', 'Elige preguntas recientes y crea un enlace público para compartirlas.'], ['Kahoot Quiz ID', 'Si el host oculta preguntas, Quiz ID abre un banco buscable de respuestas sin gastar créditos AI.']],
     pricing: ['Precios simples por créditos', 'Recarga solo cuando lo necesites', 'Sin suscripciones. Las respuestas y explicaciones usan créditos; el historial queda disponible.', 'Popular'],
     faqTitle: 'Preguntas frecuentes'
   },
@@ -1130,7 +1206,7 @@ const HOME_LOCALE_TEXT: Record<Exclude<Locale, 'en' | 'pl'>, any> = {
     socialProof: 'Conçu pour de vrais quiz: Universal Parser, FocusScan et historique d’étude dans une extension Chrome.',
     how: ['Comment fonctionne QuizSolver', '3 étapes pour résoudre un quiz avec l’IA', 'Installez une fois, résolvez sur les plateformes compatibles et créez automatiquement une bibliothèque d’étude.'],
     steps: [['Installer et se connecter', 'Ajoutez QuizSolver à Chrome gratuitement. Votre compte synchronise questions résolues, notes et quiz d’entraînement entre l’extension et le site.'], ['Résoudre ou scanner', 'Cliquez Résoudre la page. Pour images, canvas, PDF ou layouts inhabituels, utilisez FocusScan uniquement sur la zone de question.'], ['Réviser et partager', 'Chaque question résolue est sauvegardée dans l’historique pour créer des cartes, des quiz ou des liens partagés.']],
-    features: ['Fonctions QuizSolver', 'Tout pour résoudre les quiz plus vite', 'Pour questions visibles, questions en image, mode indice, overlay rapide et système complet de révision.', ['Parser universel de quiz', 'QuizSolver essaie d’abord de lire la question visible sur toute page de quiz, puis utilise des workflows optimisés pour Testportal, Moodle, Canvas et Forms.'], ['Mode indice', 'À utiliser quand vous ne voulez aucun clic automatique. QuizSolver marque seulement la réponse probable.'], ['FocusScan', 'Sélectionnez une zone si la question est dans une image, un canvas, un PDF ou un layout inhabituel.'], ['Overlay rapide', 'Ouvrez une petite fenêtre déplaçable avec les actions rapides sur la page.'], ['Historique et notes', 'Enregistrez les questions avec réponse, explication, source, images et notes personnelles.'], ['Quiz d’entraînement', 'Transformez les questions enregistrées en quiz et vérifiez les bonnes réponses à la fin.'], ['Partage de questions', 'Choisissez des questions récentes et créez un lien public.'], ['Kahoot Quiz ID', 'Si l’hôte masque les questions, Quiz ID ouvre une banque de réponses sans crédits IA.']],
+    features: ['Fonctions QuizSolver', 'Une boîte à outils IA complète pour résoudre des quiz et étudier plus intelligemment', 'Pour questions visibles, questions en image, mode indice, overlay rapide et système complet de révision.', ['Parser universel de quiz', 'QuizSolver essaie d’abord de lire la question visible sur toute page de quiz, puis utilise des workflows optimisés pour Testportal, Moodle, Canvas et Forms.'], ['Mode indice', 'À utiliser quand vous ne voulez aucun clic automatique. QuizSolver marque seulement la réponse probable.'], ['FocusScan', 'Sélectionnez une zone si la question est dans une image, un canvas, un PDF ou un layout inhabituel.'], ['Overlay rapide', 'Ouvrez une petite fenêtre déplaçable avec les actions rapides sur la page.'], ['Historique et notes', 'Enregistrez les questions avec réponse, explication, source, images et notes personnelles.'], ['Quiz d’entraînement', 'Transformez les questions enregistrées en quiz et vérifiez les bonnes réponses à la fin.'], ['Partage de questions', 'Choisissez des questions récentes et créez un lien public.'], ['Kahoot Quiz ID', 'Si l’hôte masque les questions, Quiz ID ouvre une banque de réponses sans crédits IA.']],
     pricing: ['Tarifs crédits simples', 'Rechargez seulement si nécessaire', 'Pas d’abonnement. Réponses et explications utilisent des crédits, l’historique reste disponible.', 'Populaire'],
     faqTitle: 'Questions fréquentes'
   },
