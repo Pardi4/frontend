@@ -550,7 +550,7 @@ export class AnimatedNumberComponent implements OnInit {
       padding: 2.25rem;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
+      justify-content: flex-start;
       overflow: hidden;
       text-align: left;
     }
@@ -566,7 +566,7 @@ export class AnimatedNumberComponent implements OnInit {
       display: flex;
       flex-direction: column;
       height: 100%;
-      justify-content: space-between;
+      justify-content: flex-start;
     }
     .bento-badge {
       align-self: flex-start;
