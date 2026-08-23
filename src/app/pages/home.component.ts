@@ -64,6 +64,11 @@ import { ShellComponent } from './shell.component';
             </div>
           </div>
         </section>
+            <p class="hero-asterisk delay-4" style="font-size: 0.75rem; opacity: 0.6; margin-top: 1.5rem; text-align: center;">
+              * {{ text.hero.asterisk || 'Universal Parser™ reads most standard web quiz layouts. Highly custom, interactive or locked visual interfaces may require manual FocusScan.' }}
+            </p>
+          </div>
+        </section>
 
         <!-- How It Works Section -->
         <section class="section" id="how-it-works">
@@ -852,10 +857,11 @@ const HOME_COPY: Partial<Record<Locale, any>> & { en: any; pl: any } = {
       eyebrow: 'AI quiz solver Chrome extension',
       headingStart: 'AI Quiz Solver Chrome Extension —',
       headingAccent: 'Solve Any Quiz Instantly',
-      lead: 'Instantly solve quizzes on Testportal, Moodle, Kahoot, Canvas, Google Forms and 7 more platforms. Get AI answer suggestions with step-by-step explanations — free to install.',
+      lead: 'Instantly solve quizzes on 30+ platforms including Testportal, Moodle, Kahoot, Canvas, Google Forms... and practically infinity others thanks to Universal Parser™*. Get AI answer suggestions with step-by-step explanations.',
       primary: 'Install from Chrome Web Store',
       secondary: 'See how it works',
-      proof: ['Universal parser + 10+ tuned platforms', '7 interface languages and localized guides', 'Saved explanations, notes and practice quizzes'],
+      proof: ['30+ supported LMS & quiz platforms', 'Infinite other sites with Universal Parser™*', 'Saved explanations, notes and practice quizzes'],
+      asterisk: 'Universal Parser™ reads most standard web quiz layouts. Highly custom, interactive or locked visual interfaces may require manual FocusScan.',
       socialProof: 'Built for real quiz pages: Universal Parser, FocusScan and saved study history in one Chrome extension.'
     },
     how: {
@@ -930,10 +936,11 @@ const HOME_COPY: Partial<Record<Locale, any>> & { en: any; pl: any } = {
       eyebrow: 'Rozszerzenie Chrome AI quiz solver',
       headingStart: 'Rozwiązuj quizy z',
       headingAccent: 'mocą AI',
-      lead: 'Rozwiązuj quizy na Testportal, Moodle, Kahoot, Canvas, Google Forms i 7 kolejnych platformach. Dostajesz sugestie odpowiedzi AI z krótkim wyjaśnieniem krok po kroku — instalacja jest darmowa.',
+      lead: 'Rozwiązuj quizy na ponad 30 platformach takich jak Testportal, Moodle, Kahoot, Canvas, Google Forms i... nieskończoności innych dzięki Universal Parser™*. Dostajesz sugestie odpowiedzi AI z wyjaśnieniem.',
       primary: 'Zainstaluj z Chrome Web Store',
       secondary: 'Zobacz jak to działa',
-      proof: ['Uniwersalny parser + 10+ dopracowanych platform', '7 języków interfejsu i poradników', 'Wyjaśnienia, notatki i quizy z historii'],
+      proof: ['Wsparcie dla 30+ platform LMS i quizowych', 'Nieskończoność innych stron z Universal Parser™*', 'Wyjaśnienia, notatki i historia nauki'],
+      asterisk: 'Universal Parser™ odczytuje większość standardowych układów quizów. Bardzo nietypowe, zablokowane lub graficzne interfejsy mogą wymagać użycia opcji FocusScan.',
       socialProof: 'Stworzone pod prawdziwe quizy: Universal Parser, FocusScan i historia nauki w jednym rozszerzeniu Chrome.'
     },
     how: {
