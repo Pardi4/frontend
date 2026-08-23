@@ -4,10 +4,62 @@ import { ActivatedRoute } from '@angular/router';
 import { SeoService } from '../seo.service';
 import { CHROME_WEB_STORE_URL, Locale, PageKey, pathFor } from '../site-content';
 import { ShellComponent } from './shell.component';
+import { Input, ChangeDetectorRef, ElementRef } from '@angular/core';
+@Component({
+  standalone: true,
+  selector: 'qs-animated-number',
+  template: '{{ displayValue }}'
+})
+export class AnimatedNumberComponent implements OnInit {
+  @Input() target: number | null = null;
+  displayValue: string = '0';
+
+  constructor(private cdr: ChangeDetectorRef, private el: ElementRef) {}
+
+  ngOnInit() {
+    if (this.target === null) return;
+    
+    const observer = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting) {
+        this.animate();
+        observer.disconnect();
+      }
+    });
+    observer.observe(this.el.nativeElement);
+  }
+
+  animate() {
+    const duration = 2000;
+    const start = performance.now();
+    
+    if (this.target === Infinity || this.target === -1) {
+      const step = (timestamp: number) => {
+        const progress = Math.min((timestamp - start) / duration, 1);
+        const easeOut = 1 - Math.pow(1 - progress, 3);
+        const current = Math.floor(easeOut * 999);
+        this.displayValue = progress >= 1 ? '∞' : current.toString();
+        this.cdr.detectChanges();
+        if (progress < 1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    } else {
+      const step = (timestamp: number) => {
+        const progress = Math.min((timestamp - start) / duration, 1);
+        const easeOut = 1 - Math.pow(1 - progress, 3);
+        const current = Math.floor(easeOut * this.target!);
+        this.displayValue = current.toString();
+        this.cdr.detectChanges();
+        if (progress < 1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    }
+  }
+}
+
 
 @Component({
   standalone: true,
-  imports: [CommonModule, ShellComponent],
+  imports: [CommonModule, ShellComponent, AnimatedNumberComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <qs-shell [locale]="locale" pageKey="home">
@@ -44,7 +96,10 @@ import { ShellComponent } from './shell.component';
             <div class="hero-proof-grid delay-4" aria-label="QuizSolver proof points">
               <div class="hero-proof-card glass" *ngFor="let item of text.hero.proof">
                 <span class="proof-icon" aria-hidden="true">✓</span>
-                <span>{{ item }}</span>
+                <span *ngIf="!item.target">{{ item }}</span>
+                <span *ngIf="item.target">
+                  {{ item.prefix }}<qs-animated-number [target]="item.target"></qs-animated-number>{{ item.suffix }}
+                </span>
               </div>
             </div>
 
@@ -860,7 +915,11 @@ const HOME_COPY: Partial<Record<Locale, any>> & { en: any; pl: any } = {
       lead: 'Instantly solve quizzes on 30+ platforms including Testportal, Moodle, Kahoot, Canvas, Google Forms... and practically infinity others thanks to Universal Parser™*. Get AI answer suggestions with step-by-step explanations.',
       primary: 'Install from Chrome Web Store',
       secondary: 'See how it works',
-      proof: ['30+ supported LMS & quiz platforms', 'Infinite other sites with Universal Parser™*', 'Saved explanations, notes and practice quizzes'],
+      proof: [
+        { prefix: '', target: 30, suffix: '+ supported LMS & quiz platforms' },
+        { prefix: '', target: -1, suffix: ' other sites with Universal Parser™*' },
+        'Saved explanations, notes and practice quizzes'
+      ],
       asterisk: 'Universal Parser™ reads most standard web quiz layouts. Highly custom, interactive or locked visual interfaces may require manual FocusScan.',
       socialProof: 'Built for real quiz pages: Universal Parser, FocusScan and saved study history in one Chrome extension.'
     },
@@ -939,7 +998,11 @@ const HOME_COPY: Partial<Record<Locale, any>> & { en: any; pl: any } = {
       lead: 'Rozwiązuj quizy na ponad 30 platformach takich jak Testportal, Moodle, Kahoot, Canvas, Google Forms i... nieskończoności innych dzięki Universal Parser™*. Dostajesz sugestie odpowiedzi AI z wyjaśnieniem.',
       primary: 'Zainstaluj z Chrome Web Store',
       secondary: 'Zobacz jak to działa',
-      proof: ['Wsparcie dla 30+ platform LMS i quizowych', 'Nieskończoność innych stron z Universal Parser™*', 'Wyjaśnienia, notatki i historia nauki'],
+      proof: [
+        { prefix: 'Wsparcie dla ', target: 30, suffix: '+ platform LMS i quizowych' },
+        { prefix: '', target: -1, suffix: ' innych stron z Universal Parser™*' },
+        'Wyjaśnienia, notatki i historia nauki'
+      ],
       asterisk: 'Universal Parser™ odczytuje większość standardowych układów quizów. Bardzo nietypowe, zablokowane lub graficzne interfejsy mogą wymagać użycia opcji FocusScan.',
       socialProof: 'Stworzone pod prawdziwe quizy: Universal Parser, FocusScan i historia nauki w jednym rozszerzeniu Chrome.'
     },
