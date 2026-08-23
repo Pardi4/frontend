@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { SeoService } from '../seo.service';
 import { CHROME_WEB_STORE_URL, Locale, PageKey, pathFor } from '../site-content';
 import { ShellComponent } from './shell.component';
@@ -99,11 +99,11 @@ export class AnimatedNumberComponent implements OnInit {
             </div>
 
             <div class="hero-proof-grid delay-4" aria-label="QuizSolver proof points">
-              <div class="hero-proof-card glass" *ngFor="let item of text.hero.proof">
-                <span class="proof-icon" aria-hidden="true">✓</span>
-                <span *ngIf="!item.target">{{ item }}</span>
-                <span *ngIf="item.target">
-                  {{ item.prefix }}<qs-animated-number [target]="item.target"></qs-animated-number>{{ item.suffix }}
+              <div class="hero-proof-card glass" *ngFor="let item of text.hero.proof" [class.clickable-card]="item.href" (click)="item.href ? navigateTo(item.href) : null">
+                <span class="proof-content">
+                  <span class="proof-text-muted">{{ item.prefix }}</span>
+                  <strong class="text-gradient-strong"><qs-animated-number [target]="item.target"></qs-animated-number></strong>
+                  <span class="proof-text-muted">{{ item.suffix }}</span>
                 </span>
               </div>
             </div>
@@ -399,27 +399,24 @@ export class AnimatedNumberComponent implements OnInit {
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 0.65rem;
       padding: 0.9rem 1rem;
       border-radius: 12px;
       color: var(--text-primary);
       font-family: var(--font-heading);
-      font-weight: 750;
+      font-weight: 700;
+      font-size: 1.05rem;
       line-height: 1.35;
-      text-align: left;
+      text-align: center;
+      transition: transform 0.2s, background 0.2s;
     }
-    .proof-icon {
-      flex: 0 0 auto;
-      display: grid;
-      place-items: center;
-      width: 1.5rem;
-      height: 1.5rem;
-      border-radius: 999px;
-      background: rgba(6, 182, 212, 0.14);
-      color: var(--accent-cyan);
-      font-weight: 900;
-      border: 1px solid rgba(6, 182, 212, 0.26);
+    .hero-proof-card.clickable-card {
+      cursor: pointer;
     }
+    .hero-proof-card.clickable-card:hover {
+      transform: translateY(-2px);
+      background: rgba(255, 255, 255, 0.08);
+    }
+    
 
     /* Floating background orbs */
     .hero-bg-glow {
@@ -888,6 +885,7 @@ export class HomeComponent implements OnInit {
   protected pathFor = pathFor;
 
   private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
   private readonly seo = inject(SeoService);
 
   get packs() {
@@ -900,6 +898,10 @@ export class HomeComponent implements OnInit {
 
   protected homeHash(hash: string): string {
     return `${pathFor('home', this.locale)}#${hash}`;
+  }
+
+  navigateTo(url: string) {
+    this.router.navigateByUrl(url);
   }
 
   ngOnInit(): void {
@@ -920,7 +922,7 @@ const HOME_COPY: Partial<Record<Locale, any>> & { en: any; pl: any } = {
       secondary: 'See how it works',
       proof: [
         { prefix: '', target: 30, suffix: '+ supported LMS & quiz platforms' },
-        { prefix: '', target: -1, suffix: ' other sites with Universal Parser™*' }
+        { prefix: '', target: -1, suffix: ' other sites with Universal Parser™*', href: '/blog/universal-parser-infinite-quiz-platforms' }
       ],
       asterisk: 'Universal Parser™ reads most standard web quiz layouts. Highly custom, interactive or locked visual interfaces may require manual FocusScan.',
       socialProof: 'Built for real quiz pages: Universal Parser, FocusScan and saved study history in one Chrome extension.'
@@ -1002,7 +1004,7 @@ const HOME_COPY: Partial<Record<Locale, any>> & { en: any; pl: any } = {
       secondary: 'Zobacz jak to działa',
       proof: [
         { prefix: 'Wsparcie dla ', target: 30, suffix: '+ platform LMS i quizowych' },
-        { prefix: '', target: -1, suffix: ' innych stron z Universal Parser™*' }
+        { prefix: '', target: -1, suffix: ' innych stron z Universal Parser™*', href: '/pl/blog/universal-parser-nieskonczonosc-platform-quizowych' }
       ],
       asterisk: 'Universal Parser™ odczytuje większość standardowych układów quizów. Bardzo nietypowe, zablokowane lub graficzne interfejsy mogą wymagać użycia opcji FocusScan.',
       socialProof: 'Stworzone pod prawdziwe quizy: Universal Parser, FocusScan i historia nauki w jednym rozszerzeniu Chrome.'
@@ -1084,7 +1086,7 @@ const HOME_LOCALE_TEXT: Record<Exclude<Locale, 'en' | 'pl'>, any> = {
     lead: 'Löse Quizze auf 30+ Plattformen wie Testportal, Moodle, Kahoot, Canvas, Google Forms... und praktisch unendlich vielen anderen dank Universal Parser™*. Erhalte KI-Antwortvorschläge mit Erklärungen.',
     primary: 'Aus dem Chrome Web Store installieren',
     secondary: 'So funktioniert es',
-    proof: [{ prefix: 'Unterstützung für ', target: 30, suffix: '+ LMS- & Quiz-Plattformen' }, { prefix: 'Unendlich viele ', target: -1, suffix: ' weitere Seiten mit Universal Parser™*' }],
+    proof: [{ prefix: 'Unterstützung für ', target: 30, suffix: '+ LMS- & Quiz-Plattformen' }, { prefix: 'Unendlich viele ', target: -1, suffix: ' weitere Seiten mit Universal Parser™*', href: '/de/blog/universal-parser-unendlich-viele-quiz-plattformen' }],
     asterisk: 'Universal Parser™ liest die meisten Standard-Quiz-Layouts. Sehr ungewöhnliche visuelle Schnittstellen erfordern FocusScan.',
     socialProof: 'Gemacht für echte Quizseiten: Universal Parser, FocusScan und gespeicherte Lernhistorie in einer Chrome-Erweiterung.',
     how: ['So funktioniert QuizSolver', '3 Schritte, um jedes Quiz mit KI zu lösen', 'Einmal installieren, auf unterstützten Plattformen lösen und automatisch eine persönliche Lernbibliothek aufbauen.'],
@@ -1100,7 +1102,7 @@ const HOME_LOCALE_TEXT: Record<Exclude<Locale, 'en' | 'pl'>, any> = {
     lead: 'Resuelve quizzes en más de 30 plataformas como Testportal, Moodle, Kahoot, Canvas, Google Forms... y en infinidad de otras gracias a Universal Parser™*. Obtén sugerencias de respuestas con explicaciones.',
     primary: 'Instalar desde Chrome Web Store',
     secondary: 'Ver cómo funciona',
-    proof: [{ prefix: 'Soporte para ', target: 30, suffix: '+ plataformas LMS y quizzes' }, { prefix: 'Infinidad de ', target: -1, suffix: ' otros sitios con Universal Parser™*' }],
+    proof: [{ prefix: 'Soporte para ', target: 30, suffix: '+ plataformas LMS y quizzes' }, { prefix: 'Infinidad de ', target: -1, suffix: ' otros sitios con Universal Parser™*', href: '/es/blog/universal-parser-infinitas-plataformas-quizzes' }],
     asterisk: 'Universal Parser™ lee la mayoría de los diseños estándar de quizzes web. Las interfaces altamente personalizadas pueden requerir FocusScan.',
     socialProof: 'Creado para quizzes reales: Universal Parser, FocusScan e historial de estudio guardado en una extensión Chrome.',
     how: ['Cómo funciona QuizSolver', '3 pasos para resolver cualquier quiz con IA', 'Instala una vez, resuelve en plataformas compatibles y crea automáticamente tu biblioteca de estudio.'],
