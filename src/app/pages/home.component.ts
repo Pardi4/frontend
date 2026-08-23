@@ -157,7 +157,7 @@ export class AnimatedNumberComponent implements OnInit {
               <article class="bento-card card-lg glass glass-hover reveal">
                 <div class="bento-card-bg-gradient"></div>
                 <div class="bento-content">
-                  <span class="badge badge-outline bento-badge">{{ text.features.items[0].icon }}</span>
+                  
                   <h3 class="bento-title">{{ text.features.items[0].title }}</h3>
                   <p class="bento-text">{{ text.features.items[0].text }}</p>
                   
@@ -180,7 +180,7 @@ export class AnimatedNumberComponent implements OnInit {
               <!-- Bento Card 2 (Standard Feature) -->
               <article class="bento-card glass glass-hover reveal delay-100">
                 <div class="bento-content">
-                  <span class="badge badge-outline bento-badge">{{ text.features.items[1].icon }}</span>
+                  
                   <h3 class="bento-title">{{ text.features.items[1].title }}</h3>
                   <p class="bento-text">{{ text.features.items[1].text }}</p>
                 </div>
@@ -189,7 +189,7 @@ export class AnimatedNumberComponent implements OnInit {
               <!-- Bento Card 3 (Standard Feature) -->
               <article class="bento-card glass glass-hover reveal delay-200">
                 <div class="bento-content">
-                  <span class="badge badge-outline bento-badge">{{ text.features.items[2].icon }}</span>
+                  
                   <h3 class="bento-title">{{ text.features.items[2].title }}</h3>
                   <p class="bento-text">{{ text.features.items[2].text }}</p>
                 </div>
@@ -198,7 +198,7 @@ export class AnimatedNumberComponent implements OnInit {
               <!-- Bento Card 4 (Standard Feature) -->
               <article class="bento-card glass glass-hover reveal">
                 <div class="bento-content">
-                  <span class="badge badge-outline bento-badge">{{ text.features.items[3].icon }}</span>
+                  
                   <h3 class="bento-title">{{ text.features.items[3].title }}</h3>
                   <p class="bento-text">{{ text.features.items[3].text }}</p>
                 </div>
@@ -207,7 +207,7 @@ export class AnimatedNumberComponent implements OnInit {
               <!-- Bento Card 5 (Large Feature) -->
               <article class="bento-card card-md glass glass-hover reveal delay-100">
                 <div class="bento-content">
-                  <span class="badge badge-outline bento-badge">{{ text.features.items[4].icon }}</span>
+                  
                   <h3 class="bento-title">{{ text.features.items[4].title }}</h3>
                   <p class="bento-text">{{ text.features.items[4].text }}</p>
                 </div>
@@ -216,7 +216,7 @@ export class AnimatedNumberComponent implements OnInit {
               <!-- Bento Card 6 (Standard Feature) -->
               <article class="bento-card glass glass-hover reveal delay-200">
                 <div class="bento-content">
-                  <span class="badge badge-outline bento-badge">{{ text.features.items[5].icon }}</span>
+                  
                   <h3 class="bento-title">{{ text.features.items[5].title }}</h3>
                   <p class="bento-text">{{ text.features.items[5].text }}</p>
                 </div>
@@ -225,7 +225,7 @@ export class AnimatedNumberComponent implements OnInit {
               <!-- Bento Card 7 (Standard Feature) -->
               <article class="bento-card glass glass-hover reveal">
                 <div class="bento-content">
-                  <span class="badge badge-outline bento-badge">{{ text.features.items[6].icon }}</span>
+                  
                   <h3 class="bento-title">{{ text.features.items[6].title }}</h3>
                   <p class="bento-text">{{ text.features.items[6].text }}</p>
                 </div>
@@ -234,7 +234,7 @@ export class AnimatedNumberComponent implements OnInit {
               <!-- Bento Card 8 (Standard Feature) -->
               <article class="bento-card glass glass-hover reveal delay-100">
                 <div class="bento-content">
-                  <span class="badge badge-outline bento-badge">{{ text.features.items[7].icon }}</span>
+                  
                   <h3 class="bento-title">{{ text.features.items[7].title }}</h3>
                   <p class="bento-text">{{ text.features.items[7].text }}</p>
                 </div>
