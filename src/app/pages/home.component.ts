@@ -971,7 +971,7 @@ const HOME_COPY: Partial<Record<Locale, any>> & { en: any; pl: any } = {
       secondary: 'See how it works',
       proof: [
         { prefix: '', target: 30, suffix: '+ supported LMS & quiz platforms' },
-        { prefix: '', target: -1, suffix: ' limitless websites unlocked by Universal Parser™*', href: '/blog/universal-parser-infinite-quiz-platforms' }
+        { prefix: '', target: -1, suffix: ' quizzes on any website powered by Universal Parser™*', href: '/blog/universal-parser-infinite-quiz-platforms' }
       ],
       asterisk: '*Universal Parser™ automatically adapts to almost any quiz on the internet. For heavily-locked or graphical interfaces, simply use our foolproof FocusScan.',
       socialProof: 'Built for real quiz pages: Universal Parser, FocusScan and saved study history in one Chrome extension.'
@@ -1053,7 +1053,7 @@ const HOME_COPY: Partial<Record<Locale, any>> & { en: any; pl: any } = {
       secondary: 'Zobacz jak to działa',
       proof: [
         { prefix: 'Wsparcie dla ', target: 30, suffix: '+ platform LMS i quizowych' },
-        { prefix: '', target: -1, suffix: ' niezliczonych stron odblokowanych przez Universal Parser™*', href: '/pl/blog/universal-parser-nieskonczonosc-platform-quizowych' }
+        { prefix: '', target: -1, suffix: ' quizów na dowolnej stronie dzięki Universal Parser™*', href: '/pl/blog/universal-parser-nieskonczonosc-platform-quizowych' }
       ],
       asterisk: '*Universal Parser™ automatycznie dopasowuje się do niemal każdego quizu w internecie. Przy bardzo restrykcyjnych interfejsach z pomocą przychodzi niezawodny FocusScan.',
       socialProof: 'Stworzone pod prawdziwe quizy: Universal Parser, FocusScan i historia nauki w jednym rozszerzeniu Chrome.'
@@ -1135,7 +1135,7 @@ const HOME_LOCALE_TEXT: Record<Exclude<Locale, 'en' | 'pl'>, any> = {
     lead: 'Löse Quizze auf 30+ Plattformen wie Testportal, Moodle, Kahoot, Canvas, Google Forms... und praktisch unendlich vielen anderen dank Universal Parser™*. Erhalte KI-Antwortvorschläge mit Erklärungen.',
     primary: 'Aus dem Chrome Web Store installieren',
     secondary: 'So funktioniert es',
-    proof: [{ prefix: 'Unterstützung für ', target: 30, suffix: '+ LMS- & Quiz-Plattformen' }, { prefix: 'Unendlich viele ', target: -1, suffix: ' grenzenlose Websites, entsperrt durch Universal Parser™*', href: '/de/blog/universal-parser-unendlich-viele-quiz-plattformen' }],
+    proof: [{ prefix: 'Unterstützung für ', target: 30, suffix: '+ LMS- & Quiz-Plattformen' }, { prefix: 'Unendlich viele ', target: -1, suffix: ' Quizze auf jeder Website dank Universal Parser™*', href: '/de/blog/universal-parser-unendlich-viele-quiz-plattformen' }],
     asterisk: '*Universal Parser™ passt sich automatisch an fast jedes Quiz im Internet an. Für stark gesperrte oder grafische Oberflächen nutze einfach unseren FocusScan.',
     socialProof: 'Gemacht für echte Quizseiten: Universal Parser, FocusScan und gespeicherte Lernhistorie in einer Chrome-Erweiterung.',
     how: ['So funktioniert QuizSolver', '3 Schritte, um jedes Quiz mit KI zu lösen', 'Einmal installieren, auf unterstützten Plattformen lösen und automatisch eine persönliche Lernbibliothek aufbauen.'],
@@ -1151,7 +1151,7 @@ const HOME_LOCALE_TEXT: Record<Exclude<Locale, 'en' | 'pl'>, any> = {
     lead: 'Resuelve quizzes en más de 30 plataformas como Testportal, Moodle, Kahoot, Canvas, Google Forms... y en infinidad de otras gracias a Universal Parser™*. Obtén sugerencias de respuestas con explicaciones.',
     primary: 'Instalar desde Chrome Web Store',
     secondary: 'Ver cómo funciona',
-    proof: [{ prefix: 'Soporte para ', target: 30, suffix: '+ plataformas LMS y quizzes' }, { prefix: 'Infinidad de ', target: -1, suffix: ' sitios ilimitados desbloqueados por Universal Parser™*', href: '/es/blog/universal-parser-infinitas-plataformas-quizzes' }],
+    proof: [{ prefix: 'Soporte para ', target: 30, suffix: '+ plataformas LMS y quizzes' }, { prefix: 'Infinidad de ', target: -1, suffix: ' quizzes en cualquier sitio gracias a Universal Parser™*', href: '/es/blog/universal-parser-infinitas-plataformas-quizzes' }],
     asterisk: '*Universal Parser™ se adapta automáticamente a casi cualquier quiz en internet. Para interfaces fuertemente bloqueadas, utiliza nuestro infalible FocusScan.',
     socialProof: 'Creado para quizzes reales: Universal Parser, FocusScan e historial de estudio guardado en una extensión Chrome.',
     how: ['Cómo funciona QuizSolver', '3 pasos para resolver cualquier quiz con IA', 'Instala una vez, resuelve en plataformas compatibles y crea automáticamente tu biblioteca de estudio.'],
@@ -1167,7 +1167,7 @@ const HOME_LOCALE_TEXT: Record<Exclude<Locale, 'en' | 'pl'>, any> = {
     lead: 'Résolvez des quiz sur plus de 30 plateformes telles que Testportal, Moodle, Kahoot, Canvas, Google Forms... et une infinité d\'autres grâce à Universal Parser™*. Obtenez des réponses IA.',
     primary: 'Installer depuis Chrome Web Store',
     secondary: 'Voir le fonctionnement',
-    proof: [{ prefix: 'Support pour ', target: 30, suffix: '+ plateformes LMS et quiz' }, { prefix: '', target: -1, suffix: ' sites illimités débloqués par Universal Parser™*', href: '/fr/blog/universal-parser-infinite-plateformes-quiz' }],
+    proof: [{ prefix: 'Support pour ', target: 30, suffix: '+ plateformes LMS et quiz' }, { prefix: '', target: -1, suffix: ' quiz sur n\'importe quel site grâce à Universal Parser™*', href: '/fr/blog/universal-parser-infinite-plateformes-quiz' }],
     asterisk: '*Universal Parser™ s\'adapte automatiquement à presque n\'importe quel quiz sur internet. Pour les interfaces fortement bloquées, utilisez notre FocusScan infaillible.',
     socialProof: 'Conçu pour de vrais quiz: Universal Parser, FocusScan et historique d’étude dans une extension Chrome.',
     how: ['Comment fonctionne QuizSolver', '3 étapes pour résoudre un quiz avec l’IA', 'Installez une fois, résolvez sur les plateformes compatibles et créez automatiquement une bibliothèque d’étude.'],
@@ -1183,7 +1183,7 @@ const HOME_LOCALE_TEXT: Record<Exclude<Locale, 'en' | 'pl'>, any> = {
     lead: 'Risolvi quiz su oltre 30 piattaforme come Testportal, Moodle, Kahoot, Canvas, Google Forms... e un\'infinità di altre grazie a Universal Parser™*. Ottieni suggerimenti IA.',
     primary: 'Installa da Chrome Web Store',
     secondary: 'Vedi come funziona',
-    proof: [{ prefix: 'Supporto per ', target: 30, suffix: '+ piattaforme LMS e quiz' }, { prefix: '', target: -1, suffix: ' siti illimitati sbloccati da Universal Parser™*', href: '/it/blog/universal-parser-infinite-piattaforme-quiz' }],
+    proof: [{ prefix: 'Supporto per ', target: 30, suffix: '+ piattaforme LMS e quiz' }, { prefix: '', target: -1, suffix: ' quiz su qualsiasi sito grazie a Universal Parser™*', href: '/it/blog/universal-parser-infinite-piattaforme-quiz' }],
     asterisk: '*Universal Parser™ si adatta automaticamente a quasi tutti i quiz su internet. Per interfacce fortemente bloccate, usa il nostro infallibile FocusScan.',
     socialProof: 'Creato per quiz reali: Universal Parser, FocusScan e cronologia di studio salvata in un’estensione Chrome.',
     how: ['Come funziona QuizSolver', '3 passaggi per risolvere qualsiasi quiz con AI', 'Installa una volta, risolvi sulle piattaforme supportate e crea automaticamente una libreria di studio.'],
@@ -1199,7 +1199,7 @@ const HOME_LOCALE_TEXT: Record<Exclude<Locale, 'en' | 'pl'>, any> = {
     lead: 'Розв’язуй квізи на Testportal, Moodle, Kahoot, Canvas, Google Forms та 7 інших платформах. Отримуй AI-підказки з короткими покроковими поясненнями.',
     primary: 'Встановити з Chrome Web Store',
     secondary: 'Як це працює',
-    proof: [{ prefix: 'Підтримка ', target: 30, suffix: '+ LMS і квіз-платформ' }, { prefix: '', target: -1, suffix: ' безлічі сайтів, розблокованих за допомогою Universal Parser™*', href: '/uk/blog/universal-parser-bezlich-quiz-platform' }],
+    proof: [{ prefix: 'Підтримка ', target: 30, suffix: '+ LMS і квіз-платформ' }, { prefix: '', target: -1, suffix: ' квізів на будь-якому сайті завдяки Universal Parser™*', href: '/uk/blog/universal-parser-bezlich-quiz-platform' }],
     asterisk: '*Universal Parser™ автоматично адаптується до майже будь-якого квізу в інтернеті. Для сильно заблокованих інтерфейсів використовуйте наш надійний FocusScan.',
     socialProof: 'Створено для реальних квізів: Universal Parser, FocusScan і збережена історія навчання в одному Chrome-розширенні.',
     how: ['Як працює QuizSolver', '3 кроки, щоб розв’язати квіз з AI', 'Встанови один раз, розв’язуй на підтримуваних платформах і автоматично збирай власну бібліотеку для навчання.'],
