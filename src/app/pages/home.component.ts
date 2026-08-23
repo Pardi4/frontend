@@ -98,7 +98,14 @@ export class AnimatedNumberComponent implements OnInit {
               <span class="rating-text">{{ text.hero.socialProof }}</span>
             </div>
 
-            <div class="hero-proof-grid delay-4" aria-label="QuizSolver proof points">
+            
+            <!-- Hero Mockup -->
+            <div class="hero-mockup-wrapper reveal delay-4">
+              <div class="hero-mockup-glow"></div>
+              <img src="/hero-mockup.png" alt="QuizSolver Extension Panel" class="hero-mockup-img glass" />
+            </div>
+
+            <div class="hero-proof-grid delay-5" aria-label="QuizSolver proof points">
               <div class="hero-proof-card glass" *ngFor="let item of text.hero.proof" [class.clickable-card]="item.href" (click)="item.href ? navigateTo(item.href) : null">
                 <span class="proof-content">
                   <span class="proof-text-muted">{{ item.prefix }}</span>
@@ -109,7 +116,7 @@ export class AnimatedNumberComponent implements OnInit {
             </div>
 
             <!-- Platform Trust Bar -->
-            <div class="trust-bar delay-4">
+            <div class="trust-bar delay-5">
               <div class="trust-marquee-wrapper">
                 <div class="trust-marquee">
                   <span class="trust-item" *ngFor="let platform of ['Testportal', 'Moodle', 'Google Forms', 'Canvas', 'MS Forms', 'Blackboard', 'Quizlet', 'Kahoot', 'Quizizz', 'Socrative']">
@@ -417,6 +424,48 @@ export class AnimatedNumberComponent implements OnInit {
       background: rgba(255, 255, 255, 0.08);
     }
     
+
+    
+    .hero-mockup-wrapper {
+      position: relative;
+      margin: 3.5rem auto 4.5rem;
+      width: 100%;
+      max-width: 380px; /* Chrome extension popup width is usually around 350-400px */
+      z-index: 20;
+      perspective: 1000px;
+    }
+    .hero-mockup-glow {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 120%;
+      height: 120%;
+      background: radial-gradient(circle at center, rgba(6,182,212,0.3) 0%, rgba(139,92,246,0.15) 40%, transparent 70%);
+      filter: blur(40px);
+      z-index: -1;
+      opacity: 0.8;
+      animation: pulse-glow 6s ease-in-out infinite alternate;
+    }
+    .hero-mockup-img {
+      display: block;
+      width: 100%;
+      height: auto;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.15);
+      box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5), 0 0 20px rgba(6,182,212,0.1);
+      transform: rotateX(2deg) rotateY(-2deg);
+      transition: transform 0.4s ease;
+    }
+    .hero-mockup-wrapper:hover .hero-mockup-img {
+      transform: rotateX(0deg) rotateY(0deg) translateY(-5px);
+    }
+    
+    @keyframes pulse-glow {
+      0% { opacity: 0.6; transform: translate(-50%, -50%) scale(0.95); }
+      100% { opacity: 1; transform: translate(-50%, -50%) scale(1.05); }
+    }
+
 
     /* Floating background orbs */
     .hero-bg-glow {
