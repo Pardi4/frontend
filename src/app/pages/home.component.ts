@@ -19,6 +19,10 @@ export class AnimatedNumberComponent implements OnInit {
 
   ngOnInit() {
     if (this.target === null) return;
+    if (!isPlatformBrowser(this.platformId)) {
+      this.displayValue = this.target === Infinity || this.target === -1 ? '∞' : this.target.toString();
+      return;
+    }
     
     const observer = new IntersectionObserver(entries => {
       if (entries[0].isIntersecting) {
