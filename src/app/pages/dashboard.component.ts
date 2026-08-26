@@ -297,6 +297,13 @@ const DASHBOARD_UI: Record<Locale, DashboardUi> = {
             </div>
           </header>
 
+          <!-- Pending Deletion Banner -->
+          <div *ngIf="api.currentUser()?.accountDeletionScheduledAt" style="background:rgba(239,68,68,0.1); border:1px solid rgba(239,68,68,0.3); border-radius:12px; padding:1.5rem; margin-bottom:2rem; text-align:center;">
+            <h3 style="color:#f87171; margin-bottom:0.5rem;">Account Scheduled for Deletion</h3>
+            <p style="color:#e2e8f0; font-size:0.95rem; margin-bottom:1rem;">Your account will be permanently deleted on {{ api.currentUser()?.accountDeletionScheduledAt | date }}.</p>
+            <button class="btn btn-primary" (click)="cancelDeletion()">Cancel Deletion</button>
+          </div>
+
           <!-- Stats Grid -->
           <section class="stats-grid">
             <article class="stat-card glass glass-hover">
@@ -409,7 +416,11 @@ const DASHBOARD_UI: Record<Locale, DashboardUi> = {
         <div style="display:flex; gap:0.5rem; flex-direction:column;">
           <div style="display:flex; gap:0.5rem;">
             <input type="email" class="input" [(ngModel)]="editEmail" placeholder="New email address" style="flex:1; padding:0.5rem; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:8px; color:white;" />
-            <button class="btn btn-primary" style="padding:0.5rem 1rem; font-size:0.85rem;" (click)="saveEmail()">Update</button>
+            <input *ngIf="!emailCodeSent" type="password" class="input" [(ngModel)]="emailChangePassword" placeholder="Current Password" style="width:130px; padding:0.5rem; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:8px; color:white;" />
+            <input *ngIf="emailCodeSent" type="text" class="input" [(ngModel)]="emailCode" placeholder="6-digit code" style="width:100px; padding:0.5rem; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:8px; color:white;" />
+            
+            <button *ngIf="!emailCodeSent" class="btn btn-primary" style="padding:0.5rem 1rem; font-size:0.85rem;" (click)="requestEmailChange()">Send Code</button>
+            <button *ngIf="emailCodeSent" class="btn btn-primary" style="padding:0.5rem 1rem; font-size:0.85rem;" (click)="confirmEmailChange()">Verify</button>
           </div>
           <p *ngIf="emailSavedMsg" style="font-size:0.75rem; color:#22c55e; margin:0;">{{ emailSavedMsg }}</p>
           <p *ngIf="emailErrorMsg" style="font-size:0.75rem; color:#ef4444; margin:0;">{{ emailErrorMsg }}</p>
@@ -443,11 +454,17 @@ const DASHBOARD_UI: Record<Locale, DashboardUi> = {
       <!-- Delete Account -->
       <div style="padding:1rem; background:rgba(239,68,68,0.08); border:1px solid rgba(239,68,68,0.2); border-radius:8px;">
         <p style="font-size:0.85rem; color:#f87171; margin-bottom:0.5rem; font-weight:600;">Delete Account</p>
-        <p style="font-size:0.8rem; color:#94a3b8; margin-bottom:1rem;">To permanently delete your account, enter your password below and confirm.</p>
+        <p style="font-size:0.8rem; color:#94a3b8; margin-bottom:1rem;">To permanently delete your account, you need a verification code. Deletion happens after 14 days.</p>
         <div style="display:flex; gap:0.5rem; flex-direction:column;">
-          <input type="password" class="input" [(ngModel)]="deletePassword" placeholder="Current password" style="width:100%; padding:0.5rem; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:8px; color:white;" />
-          <button class="btn" style="background:#ef4444; color:white; padding:0.5rem 1rem; font-size:0.85rem; align-self:flex-start; border:none; cursor:pointer; border-radius:8px;" (click)="deleteAccount()">Delete My Account</button>
+          <div style="display:flex; gap:0.5rem;">
+            <input *ngIf="!deleteCodeSent" type="password" class="input" [(ngModel)]="deletePassword" placeholder="Current password" style="flex:1; padding:0.5rem; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:8px; color:white;" />
+            <input *ngIf="deleteCodeSent" type="text" class="input" [(ngModel)]="deleteCode" placeholder="6-digit code from email" style="flex:1; padding:0.5rem; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:8px; color:white;" />
+            
+            <button *ngIf="!deleteCodeSent" class="btn" style="background:#ef4444; color:white; padding:0.5rem 1rem; font-size:0.85rem; align-self:flex-start; border:none; cursor:pointer; border-radius:8px;" (click)="requestDeleteAccount()">Send Code</button>
+            <button *ngIf="deleteCodeSent" class="btn" style="background:#ef4444; color:white; padding:0.5rem 1rem; font-size:0.85rem; align-self:flex-start; border:none; cursor:pointer; border-radius:8px;" (click)="confirmDeleteAccount()">Delete My Account</button>
+          </div>
           <p *ngIf="deleteErrorMsg" style="font-size:0.75rem; color:#ef4444; margin:0;">{{ deleteErrorMsg }}</p>
+          <p *ngIf="deleteSavedMsg" style="font-size:0.75rem; color:#22c55e; margin:0;">{{ deleteSavedMsg }}</p>
         </div>
       </div>
     </div>
@@ -783,6 +800,9 @@ export class DashboardComponent implements OnInit {
   protected marketingEnabled = true;
 
   protected editEmail = '';
+  protected emailChangePassword = '';
+  protected emailCode = '';
+  protected emailCodeSent = false;
   protected emailSavedMsg = '';
   protected emailErrorMsg = '';
 
@@ -792,7 +812,10 @@ export class DashboardComponent implements OnInit {
   protected passwordErrorMsg = '';
 
   protected deletePassword = '';
+  protected deleteCode = '';
+  protected deleteCodeSent = false;
   protected deleteErrorMsg = '';
+  protected deleteSavedMsg = '';
 
 
   async ngOnInit(): Promise<void> {
@@ -836,18 +859,42 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  async saveEmail() {
+  async requestEmailChange() {
     this.emailErrorMsg = '';
     this.emailSavedMsg = '';
-    if (this.api.currentUser() && this.editEmail.trim()) {
-      const res = await this.api.request('/api/auth/me', { method: 'PATCH', body: JSON.stringify({ email: this.editEmail.trim() }) });
-      if (res.success) {
-        this.api.currentUser().email = this.editEmail.trim();
-        this.emailSavedMsg = 'Email updated.';
-        setTimeout(() => this.emailSavedMsg = '', 2000);
-      } else {
-        this.emailErrorMsg = res.error || 'Failed to update email.';
-      }
+    if (!this.editEmail || !this.emailChangePassword) {
+      this.emailErrorMsg = 'Email and password required.';
+      return;
+    }
+    const res = await this.api.request('/api/auth/me', { 
+      method: 'PATCH', 
+      body: JSON.stringify({ requestEmailChange: this.editEmail, password: this.emailChangePassword }) 
+    });
+    if (res.success) {
+      this.emailCodeSent = true;
+      this.emailSavedMsg = 'Code sent to ' + this.editEmail;
+    } else {
+      this.emailErrorMsg = res.error || 'Failed to send code.';
+    }
+  }
+
+  async confirmEmailChange() {
+    this.emailErrorMsg = '';
+    this.emailSavedMsg = '';
+    if (!this.emailCode) return;
+    const res = await this.api.request('/api/auth/me', { 
+      method: 'PATCH', 
+      body: JSON.stringify({ confirmEmailChangeCode: this.emailCode }) 
+    });
+    if (res.success) {
+      this.emailCodeSent = false;
+      this.emailCode = '';
+      this.emailChangePassword = '';
+      this.api.currentUser().email = this.editEmail.trim();
+      this.emailSavedMsg = 'Email successfully updated.';
+      setTimeout(() => this.emailSavedMsg = '', 3000);
+    } else {
+      this.emailErrorMsg = res.error || 'Invalid code.';
     }
   }
 
@@ -869,19 +916,57 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  async deleteAccount() {
+  async requestDeleteAccount() {
     this.deleteErrorMsg = '';
+    this.deleteSavedMsg = '';
     if (!this.deletePassword) {
-      this.deleteErrorMsg = 'Password required to delete account.';
+      this.deleteErrorMsg = 'Password required.';
       return;
     }
-    if (!confirm('Are you absolutely sure you want to delete your account? This action cannot be undone.')) return;
-    const res = await this.api.request('/api/auth/me', { method: 'DELETE', body: JSON.stringify({ password: this.deletePassword }) });
+    const res = await this.api.request('/api/auth/me/request-deletion', { 
+      method: 'POST', 
+      body: JSON.stringify({ password: this.deletePassword }) 
+    });
     if (res.success) {
-      this.api.clearSession();
-      window.location.href = '/';
+      this.deleteCodeSent = true;
+      this.deleteSavedMsg = 'Verification code sent to your email.';
     } else {
-      this.deleteErrorMsg = res.error || 'Failed to delete account.';
+      this.deleteErrorMsg = res.error || 'Failed to request deletion.';
+    }
+  }
+
+  async confirmDeleteAccount() {
+    this.deleteErrorMsg = '';
+    if (!this.deleteCode) {
+      this.deleteErrorMsg = 'Code required.';
+      return;
+    }
+    const res = await this.api.request('/api/auth/me', { 
+      method: 'DELETE', 
+      body: JSON.stringify({ code: this.deleteCode }) 
+    });
+    if (res.success) {
+      this.deleteCodeSent = false;
+      this.deleteCode = '';
+      this.deletePassword = '';
+      this.settingsOpen = false;
+      if (this.api.currentUser()) {
+        this.api.currentUser().accountDeletionScheduledAt = new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString();
+      }
+      alert('Your account has been scheduled for deletion. It will be permanently removed in 14 days.');
+    } else {
+      this.deleteErrorMsg = res.error || 'Failed to schedule deletion.';
+    }
+  }
+
+  async cancelDeletion() {
+    const res = await this.api.request('/api/auth/me', { 
+      method: 'PATCH', 
+      body: JSON.stringify({ cancelDeletion: true }) 
+    });
+    if (res.success && this.api.currentUser()) {
+      this.api.currentUser().accountDeletionScheduledAt = null;
+      alert('Account deletion has been cancelled.');
     }
   }
 
