@@ -366,11 +366,11 @@ export class AnimatedNumberComponent implements OnInit {
     /* Hero layout */
     .hero-section {
       position: relative;
-      min-height: 90vh;
+      min-height: 100svh; padding-bottom: max(4rem, env(safe-area-inset-bottom));
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 7rem 0 4rem;
+      padding: 7rem 0 max(4rem, env(safe-area-inset-bottom));
       overflow: hidden;
       text-align: center;
     }
@@ -935,9 +935,7 @@ export class AnimatedNumberComponent implements OnInit {
       }
     }
     @media (max-width: 480px) {
-      .hero-section {
-        padding: 5rem 0 3rem;
-      }
+      .hero-section { padding: 6rem 0 6rem; min-height: auto; }
       .hero-actions .btn {
         width: 100%;
       }

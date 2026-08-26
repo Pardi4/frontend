@@ -284,10 +284,10 @@ const en: SiteCopy = {
     contactValue: "support@getquizsolver.com",
     sections: [
       {
-        title: "1. Data Collection & Control",
-        text: "We collect minimal information to deliver our quiz solver services. All data is stored securely and processed in accordance with privacy regulations.",
+        title: "1. Data Collection & Security",
+        text: "We collect minimal information to deliver our quiz solver services. We employ industry-leading 200% security standards. All data is stored securely and processed in accordance with strict privacy regulations.",
         items: [
-          "Account Details: Username, email address, and encrypted password.",
+          "Account Details: Username, email address, and irreversibly hashed password (bcrypt 12-rounds). We cannot see your password or decrypt it.",
           "Usage Statistics: Total number of resolved questions and purchased credits.",
           "Referral Data: Signups and purchase counts connected to your referral code."
         ]
@@ -315,6 +315,14 @@ const en: SiteCopy = {
         items: [
           "Access and Portability: Request a copy of your stored question history.",
           "Account Deletion: Delete your account and associated notes history directly from your settings or by contacting support."
+        ]
+      },
+      {
+        title: "6. Marketing Communications",
+        text: "We may occasionally send you emails about new features, tips, or special offers (if you opt in).",
+        items: [
+          "Opt-in/Opt-out: You can toggle your marketing preferences at any time directly in your Dashboard Settings.",
+          "Essential Emails: Even if you opt-out of marketing, you will still receive critical account emails (e.g., password resets, purchase receipts)."
         ]
       }
     ]
@@ -688,7 +696,7 @@ const pl: SiteCopy = {
         title: "1. Gromadzenie i ochrona danych",
         text: "Gromadzimy jedynie minimalny zakres danych niezbędny do świadczenia usług analizy pytań i obsługi Twojego konta. Wszystkie dane są szyfrowane i bezpiecznie przechowywane.",
         items: [
-          "Dane konta: Adres e-mail, wyświetlana nazwa użytkownika oraz zaszyfrowane hasło.",
+          "Dane konta: Adres e-mail, wyświetlana nazwa użytkownika oraz zaszyfrowane hasło. Hasła są bezpiecznie solone i hashowane algorytmem bcrypt (12 rund) – utrzymujemy 200% standardów bezpieczeństwa, więc nawet my ich nie znamy ani nie jesteśmy w stanie odczytać.",
           "Statystyki użytkowania: Łączna liczba rozwiązanych pytań oraz aktualne saldo zakupionych kredytów.",
           "Program poleceń: Statystyki rejestracji i zakupów powiązanych z Twoim kodem polecającym."
         ]
@@ -716,6 +724,14 @@ const pl: SiteCopy = {
         items: [
           "Wgląd w dane: Masz stały dostęp do pełnej historii swoich pytań i możesz ją pobrać lub edytować.",
           "Usuwanie danych: Możesz w każdej chwili usunąć swoje konto wraz ze wszystkimi powiązanymi pytaniami bezpośrednio z poziomu ustawień lub kontaktując się z naszym wsparciem."
+        ]
+      },
+      {
+        title: "6. Komunikacja Marketingowa i Powiadomienia",
+        text: "Czasem możemy wysyłać wiadomości e-mail z nowymi funkcjami, zniżkami lub poradami (jeśli wyrazisz na to zgodę).",
+        items: [
+          "Zgody: W każdej chwili możesz zrezygnować z otrzymywania marketingu w Ustawieniach na swoim Dashboardzie.",
+          "Maile transakcyjne: Zawsze będziesz otrzymywać kluczowe maile systemowe (np. reset hasła, potwierdzenie zakupu) niezależnie od ustawień marketingu."
         ]
       }
     ]
@@ -1082,7 +1098,7 @@ const LOCALIZED_SITE: Record<ExtraLocale, LocalizedSiteBundle> = {
     footer: { product: 'Produkt', seoPages: 'Unterstützte Plattformen', legal: 'Rechtliches', privacy: 'Datenschutz', rights: '© 2026 QuizSolver. Alle Rechte vorbehalten.', description: 'QuizSolver KI-Quiz-Solver Chrome-Erweiterung.' },
     auth: { loginTitle: 'Willkommen zurück', loginSubtitle: 'Melde dich bei deinem QuizSolver-Konto an.', showRegister: 'Noch kein Konto?', showRegisterLink: 'Registrieren', registerTitle: 'Konto erstellen', showLogin: 'Schon registriert?', showLoginLink: 'Einloggen' },
     shell: { readyEyebrow: 'Bereit zur Installation?', readyTitle: 'Füge QuizSolver zu Chrome hinzu und starte mit deinem ersten Quiz.', readyDesc: 'Erweiterung, Fragenhistorie, Notizen und Übungen laufen über ein Konto.', openStore: 'Chrome Web Store öffnen', footerDesc: 'Chrome-Erweiterung für Antwortvorschläge, Erklärungen, Notizen und Wiederholungen.', continueGoogle: 'Mit Google fortfahren', signupGoogle: 'Mit Google registrieren', or: 'oder', forgotPassword: 'Passwort vergessen?', referralInfo: 'Der Empfehlungscode ist optional. Empfehlende erhalten 5% der von dir gekauften Credits als Bonus.', verifyEmail: 'E-Mail bestätigen', verifyEmailText: 'Gib den 6-stelligen Code ein, den wir gesendet haben an:', verifyAndLogin: 'Bestätigen und anmelden', noCode: 'Kein Code erhalten?', resendCode: 'Erneut senden', resetPassword: 'Passwort zurücksetzen', resetPasswordText: 'Gib deine E-Mail ein, dann senden wir dir einen Code.', sendCode: 'Code senden', backToLogin: 'Zurück zum Login', setNewPassword: 'Neues Passwort setzen', setNewPasswordText: 'Gib den E-Mail-Code und dein neues Passwort ein.', changePassword: 'Passwort ändern', mailDisabled: 'E-Mail-Versand ist auf dem Server noch nicht konfiguriert.', testCode: 'Testcode', verificationSent: 'Wir haben einen Bestätigungscode per E-Mail gesendet.', loginFailed: 'Login fehlgeschlagen.', passwordsMismatch: 'Die Passwörter stimmen nicht überein.', registerFailed: 'Registrierung fehlgeschlagen.', invalidCode: 'Der Code ist ungültig oder abgelaufen.', alreadyVerified: 'Diese E-Mail ist bereits bestätigt.', newCodeSent: 'Wir haben einen neuen Code gesendet.', codeSendFailed: 'Der Code konnte nicht gesendet werden.', resetSent: 'Falls das Konto existiert, haben wir einen Reset-Code gesendet.', resetStartFailed: 'Passwort-Reset konnte nicht gestartet werden.', passwordChanged: 'Passwort geändert. Du kannst dich anmelden.', passwordChangeFailed: 'Passwort konnte nicht geändert werden.' },
-    privacyPage: { metaTitle: 'Datenschutz | QuizSolver', metaDescription: 'Erfahre, welche Konto-, Credit-, Quiz- und FocusScan-Daten QuizSolver verarbeitet und wie du Auskunft, Export oder Loeschung anfordern kannst.', title: 'Datenschutz', badge: 'Datenschutz & Sicherheit', subtitle: 'Wir schützen deine Daten und respektieren deine Privatsphäre.', effective: 'Gültig ab: 21. Mai 2026', contactLabel: 'Support kontaktieren', contactValue: 'support@getquizsolver.com', sections: [{ title: '1. Datenerfassung und Kontrolle', text: 'Wir erfassen nur Daten, die für Konto, Credits und den QuizSolver-Dienst nötig sind.', items: ['Kontodaten: E-Mail, Anzeigename und verschlüsseltes Passwort.', 'Nutzungsdaten: gelöste Fragen, Credits und Käufe.', 'Empfehlungen: Registrierungen und Käufe über deinen Code.'] }, { title: '2. Chrome-Erweiterung und FocusScan', text: 'Die Erweiterung analysiert nur Inhalte, wenn du sie aktiv auslöst.', items: ['Aktives Scannen: sichtbare Fragen und Antwortoptionen.', 'FocusScan: der von dir markierte Bildschirmausschnitt.', 'Kein Tracking anderer Tabs oder des Browserverlaufs.'] }, { title: '3. Zahlungen', text: 'Zahlungen werden sicher über Lemon Squeezy verarbeitet. Wir speichern keine Kartennummern.' }, { title: '4. Weitergabe', text: 'Wir verkaufen oder vermieten keine persönlichen Daten.' }, { title: '5. Deine Rechte', text: 'Du kannst deine Daten einsehen, ändern oder löschen lassen.', items: ['Export deiner gespeicherten Fragen.', 'Kontolöschung über Einstellungen oder Support.'] }] },
+    privacyPage: { metaTitle: 'Datenschutz | QuizSolver', metaDescription: 'Erfahre, welche Konto-, Credit-, Quiz- und FocusScan-Daten QuizSolver verarbeitet und wie du Auskunft, Export oder Loeschung anfordern kannst.', title: 'Datenschutz', badge: 'Datenschutz & Sicherheit', subtitle: 'Wir schützen deine Daten und respektieren deine Privatsphäre.', effective: 'Gültig ab: 21. Mai 2026', contactLabel: 'Support kontaktieren', contactValue: 'support@getquizsolver.com', sections: [{ title: '1. Datenerfassung und Kontrolle', text: 'Wir erfassen nur Daten, die für Konto, Credits und den QuizSolver-Dienst nötig sind.', items: ['Kontodaten: E-Mail, Anzeigename und verschlüsseltes Passwort. Wir nutzen 200%ige Sicherheitsstandards (bcrypt 12 Runden). Ihre Passwörter sind sicher und unlesbar.', 'Nutzungsdaten: gelöste Fragen, Credits und Käufe.', 'Empfehlungen: Registrierungen und Käufe über deinen Code.'] }, { title: '2. Chrome-Erweiterung und FocusScan', text: 'Die Erweiterung analysiert nur Inhalte, wenn du sie aktiv auslöst.', items: ['Aktives Scannen: sichtbare Fragen und Antwortoptionen.', 'FocusScan: der von dir markierte Bildschirmausschnitt.', 'Kein Tracking anderer Tabs oder des Browserverlaufs.'] }, { title: '3. Zahlungen', text: 'Zahlungen werden sicher über Lemon Squeezy verarbeitet. Wir speichern keine Kartennummern.' }, { title: '4. Weitergabe', text: 'Wir verkaufen oder vermieten keine persönlichen Daten.' }, { title: '5. Deine Rechte', text: 'Du kannst deine Daten einsehen, ändern oder löschen lassen.', items: ['Export deiner gespeicherten Fragen.', 'Kontolöschung über Einstellungen oder Support.'] }] },
     dashboardPage: { metaTitle: 'Dashboard | QuizSolver', metaDescription: 'Verwalte Credits, Käufe, Empfehlungslink und Kontostatistiken.', title: 'Dashboard', loginTitle: 'Dashboard öffnen', loginText: 'Melde dich an oder erstelle ein Konto, um Credits und Käufe zu verwalten.', loginButton: 'Einloggen / Registrieren' },
     creditsPage: { metaTitle: 'Credits kaufen | QuizSolver', metaDescription: 'Lade QuizSolver-Credits als Einmalpaket auf. Ein Credit entspricht einer KI-Antwort auf eine Quizfrage, ohne Abo oder versteckte Gebühren.', title: 'Credits kaufen' },
     quizPage: { metaTitle: 'Historie & Übungsquiz | QuizSolver', metaDescription: 'Überprüfe gespeicherte Fragen, Notizen, Karteikarten und geteilte Quizze.', title: 'Historie und Quiz' },

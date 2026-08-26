@@ -93,12 +93,11 @@ type AuthModal = 'login' | 'register' | 'verify' | 'forgot' | 'reset';
             <a class="nav-link" [href]="pathFor('quiz')" (click)="mobileMenuOpen.set(false)">{{ copy.common.historyQuiz }}</a>
             <a class="nav-link" [href]="pathFor('blog')" [class.active]="pageKey === 'blog' || pageKey === 'blogPost'" (click)="mobileMenuOpen.set(false)">Blog</a>
             <div class="mobile-utility">
-              <div class="mobile-lang-row" aria-label="Language">
-                <a class="lang-option" *ngFor="let option of localeOptions" [class.active]="locale === option.code" [href]="alternatePath(option.code)" (click)="switchLocale($event, option.code)">
-                  <span>{{ option.shortLabel }}</span>
-                  <strong>{{ option.nativeLabel }}</strong>
-                </a>
-              </div>
+              <div class="mobile-lang-row" style="display:block;"><select class="mobile-lang-select" style="width:100%; padding:0.5rem; background:rgba(255,255,255,0.05); color:white; border:1px solid rgba(255,255,255,0.1); border-radius:8px; outline:none;" (change)="switchLocaleSelect($event)">
+<option *ngFor="let option of localeOptions" [value]="option.code" [selected]="locale === option.code" style="background:#101318; color:white;">
+{{ option.nativeLabel }} ({{ option.shortLabel }})
+</option>
+</select></div>
 
               <ng-container *ngIf="api.currentUser(); else mobileGuestActions">
                 <div class="mobile-user-card">
@@ -1035,7 +1034,14 @@ export class ShellComponent implements OnInit, AfterViewInit, OnDestroy {
     return pathFor(this.pageKey, targetLocale);
   }
 
-  protected switchLocale(event: MouseEvent, targetLocale: Locale): void {
+  protected switchLocaleSelect(event: any): void {
+const target = event.target;
+this.mobileMenuOpen.set(false);
+if (target.value === this.locale) return;
+this.router.navigateByUrl(this.alternatePath(target.value));
+}
+
+protected switchLocale(event: MouseEvent, targetLocale: any): void {
     event.preventDefault();
     this.languageMenuOpen.set(false);
     this.mobileMenuOpen.set(false);

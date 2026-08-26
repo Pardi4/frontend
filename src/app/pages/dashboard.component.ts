@@ -1,6 +1,8 @@
 import { CommonModule } from '@angular/common';
+import jsQR from 'jsqr';
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 import { ApiService } from '../api.service';
 import { SeoService } from '../seo.service';
 import { Locale, pageData, pathFor } from '../site-content';
@@ -220,7 +222,7 @@ const DASHBOARD_UI: Record<Locale, DashboardUi> = {
 
 @Component({
   standalone: true,
-  imports: [CommonModule, ShellComponent],
+  imports: [CommonModule, ShellComponent, FormsModule],
   template: `
     <qs-shell #shell [locale]="locale" pageKey="dashboard">
       <div class="container dashboard-main">
@@ -388,7 +390,11 @@ const DASHBOARD_UI: Record<Locale, DashboardUi> = {
               <div class="no-purchases glass">
                 <p class="text-secondary">{{ ui.noPurchases }}</p>
               </div>
-            </ng-template>
+            
+<!-- Modals -->
+<div *ngIf="settingsOpen" class="scanner-overlay" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:9999; display:flex; justify-content:center; align-items:center;"><div class="scanner-modal glass" style="max-width:400px; padding:2rem; border-radius:16px; background:#0f172a; width:90%; position:relative;"><button style="position:absolute; top:1rem; right:1rem; background:transparent; border:none; color:white; cursor:pointer; font-size:1.5rem;" (click)="settingsOpen = false">&times;</button><h2>Settings</h2><div style="margin-top:1.5rem; text-align:left;"><label style="display:block; margin-bottom:0.5rem;">Email Address</label><input type="email" class="input" [value]="api.currentUser()?.email" disabled style="width:100%; opacity:0.6; padding:0.5rem;" /><p style="font-size:0.8rem; color:#94a3b8; margin:0.5rem 0 1.5rem 0;">Contact support to change your email address.</p><label style="display:flex; align-items:flex-start; gap:0.5rem; cursor:pointer;"><input type="checkbox" [(ngModel)]="marketingEnabled" (change)="saveSettings()" style="margin-top:0.25rem;" /><span>Receive marketing emails, tips and special offers</span></label></div></div></div>
+<div *ngIf="scannerOpen" class="scanner-overlay" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:9999; display:flex; justify-content:center; align-items:center;"><div class="scanner-modal glass" style="max-width:400px; padding:2rem; border-radius:16px; text-align:center; background:#0f172a; width:90%; position:relative;"><button style="position:absolute; top:1rem; right:1rem; background:transparent; border:none; color:white; cursor:pointer; font-size:1.5rem;" (click)="stopQrScanner()">&times;</button><h2>Scan QR Code</h2><p style="margin:1rem 0;">Point your camera at the QR code displayed in the QuizSolver extension.</p><div *ngIf="!videoSupported" style="padding:1rem; background:rgba(255,0,0,0.1); border-radius:8px; margin-bottom:1rem;">Native QR scanning is not supported in this browser. Please use your phone's native camera app to scan the code instead.</div><div *ngIf="videoSupported" class="video-wrapper" style="position:relative; width:100%; aspect-ratio:1; background:#000; border-radius:12px; overflow:hidden;"><video id="qrVideo" autoplay playsinline style="width:100%; height:100%; object-fit:cover;"></video><div class="scanner-frame" style="position:absolute; top:10%; left:10%; right:10%; bottom:10%; border:2px dashed rgba(255,255,255,0.5); border-radius:16px;"></div></div></div></div>
+</ng-template>
           </section>
         </ng-template>
       </div>
@@ -713,8 +719,15 @@ export class DashboardComponent implements OnInit {
   protected copied = false;
   protected ui = DASHBOARD_UI.en;
   protected copy = { dashboard: DASHBOARD_UI.en.dashboard, credits: DASHBOARD_UI.en.credits };
+  protected settingsOpen = false;
+  protected scannerOpen = false;
+  protected videoSupported = true;
+  protected marketingEnabled = true;
+
 
   async ngOnInit(): Promise<void> {
+    this.marketingEnabled = this.api.currentUser()?.marketingConsent !== false;
+
     this.locale = (this.route.snapshot.data['locale'] || 'en') as Locale;
     this.ui = DASHBOARD_UI[this.locale] || DASHBOARD_UI.en;
     this.copy = { dashboard: this.ui.dashboard, credits: this.ui.credits };
@@ -743,6 +756,49 @@ export class DashboardComponent implements OnInit {
 
   protected creditsPath(): string {
     return pathFor('credits', this.locale);
+  }
+
+    async saveSettings() {
+    if (this.api.currentUser()) {
+      this.api.currentUser().marketingConsent = this.marketingEnabled;
+      await this.api.request('/api/auth/me', { method: 'PATCH', body: JSON.stringify({ marketingConsent: this.marketingEnabled }) });
+    }
+  }
+
+  async startQrScanner() {
+    this.scannerOpen = true;
+    this.videoSupported = true;
+    setTimeout(async () => {
+      try {
+        const video = document.getElementById('qrVideo') as HTMLVideoElement;
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+        video.srcObject = stream;
+        const scanLoop = () => {
+          if(!this.scannerOpen) { stream.getTracks().forEach(t=>t.stop()); return; }
+          if(video.readyState === video.HAVE_ENOUGH_DATA) {
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            if (ctx) {
+              ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+              const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+              const code = jsQR(imageData.data, imageData.width, imageData.height);
+              if (code && code.data.includes('/qr-login/')) {
+                stream.getTracks().forEach(t=>t.stop());
+                window.location.href = code.data;
+                return;
+              }
+            }
+          }
+          requestAnimationFrame(scanLoop);
+        };
+        scanLoop();
+      } catch(err) { this.videoSupported = false; }
+    }, 100);
+  }
+  stopQrScanner() {
+ this.scannerOpen = false;
   }
 
   protected async copyReferral(): Promise<void> {
