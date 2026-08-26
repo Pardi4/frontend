@@ -286,12 +286,16 @@ const DASHBOARD_UI: Record<Locale, DashboardUi> = {
         </section>
 
         <ng-template #dashboardContent>
-          <header class="dashboard-header">
-            <p class="eyebrow">{{ copy.dashboard }}</p>
-            <h1>{{ ui.greeting }} {{ api.currentUser()?.displayName || 'User' }}</h1>
-            <p class="desc text-secondary">
-              {{ ui.dashboardIntro }}
-            </p>
+          <header class="dashboard-header" style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:1rem;">
+            <div>
+              <p class="eyebrow">{{ copy.dashboard }}</p>
+              <h1>{{ ui.greeting }} {{ api.currentUser()?.displayName || 'User' }}</h1>
+              <p class="desc text-secondary">{{ ui.dashboardIntro }}</p>
+            </div>
+            <div style="display:flex; gap:0.5rem; align-items:center; flex-wrap:wrap;">
+              <button class="btn btn-outline" (click)="settingsOpen = true">Settings</button>
+              <button class="btn btn-primary" (click)="startQrScanner()">Scan QR</button>
+            </div>
           </header>
 
           <!-- Stats Grid -->
