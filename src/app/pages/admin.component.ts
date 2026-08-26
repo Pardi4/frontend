@@ -1319,6 +1319,35 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
                 {{ page }}
               </button>
             </div>
+          
+            <div *ngIf="selectedUserHistory()?.securityLogs?.length" style="margin-top: 2rem;">
+              <h4 style="margin-bottom: 1rem;">Security & Account Events</h4>
+              <div class="table-scroll" style="margin: 0; border: 1px solid var(--border); border-radius: var(--radius-md);">
+                <table class="admin-table" style="min-width: 100%;">
+                  <thead>
+                    <tr>
+                      <th>Event</th>
+                      <th>IP / Agent</th>
+                      <th>Details</th>
+                      <th>Date</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let log of selectedUserHistory().securityLogs">
+                      <td><span class="badge badge-outline">{{ log.event }}</span></td>
+                      <td style="max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" [title]="log.userAgent">
+                        <strong>{{ log.ip }}</strong><br>
+                        <small class="muted-line">{{ log.userAgent }}</small>
+                      </td>
+                      <td style="max-width: 250px; word-wrap: break-word;">
+                        <pre style="margin:0; font-size:0.75rem; background:transparent; padding:0; white-space:pre-wrap;">{{ log.details | json }}</pre>
+                      </td>
+                      <td>{{ formatDate(log.createdAt) }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
           </div>
         </div>
       </div>
