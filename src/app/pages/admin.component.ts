@@ -4583,10 +4583,10 @@ export class AdminComponent implements OnInit, OnDestroy {
   protected exportVisibleUsersCsv(): void {
     if (!this.isBrowser || !this.users().length) return;
     const rows = [
-      ['email', 'displayName', 'role', 'credits', 'questionsSolved', 'streak', 'status', 'lastSeenAt', 'createdAt'],
+      ['email', 'role', 'credits', 'questionsSolved', 'streak', 'status', 'lastSeenAt', 'createdAt'],
       ...this.users().map(user => [
         user.email || '',
-        user.displayName || '',
+        
         user.role || '',
         user.role === 'admin' ? 'unlimited' : String(user.credits ?? ''),
         String(user.stats?.totalQuestionsSolved || 0),

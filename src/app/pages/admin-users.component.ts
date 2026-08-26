@@ -70,7 +70,7 @@ import { FormsModule } from '@angular/forms';
                     <tr *ngFor="let user of p.users()" [class.user-active-row]="p.isUserExtensionActive(user)" [class.user-banned-row]="user.isBanned" [class.user-muted-row]="!user.isBanned && !p.isUserExtensionActive(user)">
                       <td class="user-cell">
                         <button type="button" class="link-button primary-link" (click)="p.openUserHistory(user)">{{ user.email }}</button>
-                        <span>{{ user.displayName || p.tr('noDisplayName') }}</span>
+                        <span>{{ user.email }}</span>
                       </td>
                       <td><span class="badge badge-outline role-badge">{{ user.role }}</span></td>
                       <td><strong class="metric-value">{{ user.role === 'admin' ? p.tr('unlimited') : user.credits }}</strong></td>

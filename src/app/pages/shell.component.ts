@@ -62,8 +62,7 @@ type AuthModal = 'login' | 'register' | 'verify' | 'forgot' | 'reset';
                 </button>
                 <div class="dropdown-menu" *ngIf="dropdownOpen()">
                   <div class="dropdown-user">
-                    <strong>{{ api.currentUser()?.displayName || 'User' }}</strong>
-                    <span>{{ api.currentUser()?.email }}</span>
+                    <strong style="word-break: break-all;">{{ api.currentUser()?.email }}</strong>
                   </div>
                   <button class="btn btn-ghost btn-block" type="button" (click)="goToDashboard()">
                     {{ copy.common.dashboard }}
@@ -104,8 +103,7 @@ type AuthModal = 'login' | 'register' | 'verify' | 'forgot' | 'reset';
                 <div class="mobile-user-card">
                   <span class="avatar-btn">{{ userInitial(api.currentUser()) }}</span>
                   <div>
-                    <strong>{{ api.currentUser()?.displayName || 'User' }}</strong>
-                    <span>{{ api.currentUser()?.email }}</span>
+                    <strong style="word-break: break-all;">{{ api.currentUser()?.email }}</strong>
                   </div>
                 </div>
                 <div class="mobile-actions">
@@ -274,9 +272,6 @@ type AuthModal = 'login' | 'register' | 'verify' | 'forgot' | 'reset';
             </button>
             <div class="auth-divider"><span>{{ copy.shell.or }}</span></div>
             <form (ngSubmit)="register()">
-              <div class="form-group">
-                <input class="form-input" type="text" name="name" [(ngModel)]="registerName" [placeholder]="copy.common.displayName" autocomplete="name" required>
-              </div>
               <div class="form-group">
                 <input class="form-input" type="email" name="email" [(ngModel)]="registerEmail" [placeholder]="copy.common.email" autocomplete="email" required>
               </div>
@@ -1253,7 +1248,7 @@ protected switchLocale(event: MouseEvent, targetLocale: any): void {
       body: JSON.stringify({
         email: this.registerEmail,
         password: this.registerPassword,
-        displayName: this.registerName,
+        
         referralCode: this.referralCode || undefined
       })
     });

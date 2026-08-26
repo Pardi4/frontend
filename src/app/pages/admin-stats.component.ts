@@ -179,7 +179,7 @@ import { Chart } from 'chart.js/auto';
                               {{ item.email }}
                             </button>
                             <strong *ngIf="!item.userId">{{ item.email }}</strong>
-                            <span *ngIf="item.displayName">{{ item.displayName }}</span>
+                            <span></span>
                           </td>
                           <td>
                             <span class="status-pill" [class.ok]="p.creditUsageStatusClass(item.status) === 'ok'" [class.pending]="p.creditUsageStatusClass(item.status) === 'pending'" [class.danger]="p.creditUsageStatusClass(item.status) === 'danger'">

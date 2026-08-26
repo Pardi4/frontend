@@ -289,7 +289,7 @@ const DASHBOARD_UI: Record<Locale, DashboardUi> = {
           <header class="dashboard-header" style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:1rem;">
             <div>
               <p class="eyebrow">{{ copy.dashboard }}</p>
-              <h1>{{ ui.greeting }} {{ api.currentUser()?.displayName || 'User' }}</h1>
+              <h1>{{ ui.greeting }}!</h1>
               <p class="desc text-secondary">{{ ui.dashboardIntro }}</p>
             </div>
             <div>
@@ -406,18 +406,28 @@ const DASHBOARD_UI: Record<Locale, DashboardUi> = {
       <!-- Email -->
       <div>
         <label style="display:block; margin-bottom:0.25rem; font-size:0.85rem; color:#94a3b8;">Email Address</label>
-        <input type="email" class="input" [value]="api.currentUser()?.email" disabled style="width:100%; opacity:0.6; padding:0.5rem; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:8px; color:white;" />
-        <p style="font-size:0.75rem; color:#64748b; margin-top:0.25rem;">Contact support to change your email.</p>
+        <div style="display:flex; gap:0.5rem; flex-direction:column;">
+          <div style="display:flex; gap:0.5rem;">
+            <input type="email" class="input" [(ngModel)]="editEmail" placeholder="New email address" style="flex:1; padding:0.5rem; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:8px; color:white;" />
+            <button class="btn btn-primary" style="padding:0.5rem 1rem; font-size:0.85rem;" (click)="saveEmail()">Update</button>
+          </div>
+          <p *ngIf="emailSavedMsg" style="font-size:0.75rem; color:#22c55e; margin:0;">{{ emailSavedMsg }}</p>
+          <p *ngIf="emailErrorMsg" style="font-size:0.75rem; color:#ef4444; margin:0;">{{ emailErrorMsg }}</p>
+        </div>
       </div>
 
-      <!-- Display Name -->
+      <hr style="border:none; border-top:1px solid rgba(255,255,255,0.08); margin:0.25rem 0;" />
+
+      <!-- Password -->
       <div>
-        <label style="display:block; margin-bottom:0.25rem; font-size:0.85rem; color:#94a3b8;">Display Name</label>
-        <div style="display:flex; gap:0.5rem;">
-          <input type="text" class="input" [(ngModel)]="editDisplayName" placeholder="Enter display name" style="flex:1; padding:0.5rem; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:8px; color:white;" />
-          <button class="btn btn-primary" style="padding:0.5rem 1rem; font-size:0.85rem;" (click)="saveDisplayName()">Save</button>
+        <label style="display:block; margin-bottom:0.25rem; font-size:0.85rem; color:#94a3b8;">Change Password</label>
+        <div style="display:flex; gap:0.5rem; flex-direction:column;">
+          <input type="password" class="input" [(ngModel)]="currentPassword" placeholder="Current password" style="width:100%; padding:0.5rem; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:8px; color:white;" />
+          <input type="password" class="input" [(ngModel)]="newPassword" placeholder="New password" style="width:100%; padding:0.5rem; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:8px; color:white;" />
+          <button class="btn btn-primary" style="padding:0.5rem 1rem; font-size:0.85rem; align-self:flex-start;" (click)="savePassword()">Update Password</button>
+          <p *ngIf="passwordSavedMsg" style="font-size:0.75rem; color:#22c55e; margin:0;">{{ passwordSavedMsg }}</p>
+          <p *ngIf="passwordErrorMsg" style="font-size:0.75rem; color:#ef4444; margin:0;">{{ passwordErrorMsg }}</p>
         </div>
-        <p *ngIf="settingsSaved" style="font-size:0.75rem; color:#22c55e; margin-top:0.25rem;">Saved!</p>
       </div>
 
       <hr style="border:none; border-top:1px solid rgba(255,255,255,0.08); margin:0.25rem 0;" />
@@ -430,16 +440,15 @@ const DASHBOARD_UI: Record<Locale, DashboardUi> = {
 
       <hr style="border:none; border-top:1px solid rgba(255,255,255,0.08); margin:0.25rem 0;" />
 
-      <!-- Password -->
-      <div>
-        <label style="display:block; margin-bottom:0.25rem; font-size:0.85rem; color:#94a3b8;">Password</label>
-        <p style="font-size:0.85rem; color:#cbd5e1;">Your password is securely hashed. Use the "Forgot Password" link on the login page to change it.</p>
-      </div>
-
       <!-- Delete Account -->
       <div style="padding:1rem; background:rgba(239,68,68,0.08); border:1px solid rgba(239,68,68,0.2); border-radius:8px;">
         <p style="font-size:0.85rem; color:#f87171; margin-bottom:0.5rem; font-weight:600;">Delete Account</p>
-        <p style="font-size:0.8rem; color:#94a3b8;">To permanently delete your account and all associated data, contact us at support&#64;getquizsolver.com.</p>
+        <p style="font-size:0.8rem; color:#94a3b8; margin-bottom:1rem;">To permanently delete your account, enter your password below and confirm.</p>
+        <div style="display:flex; gap:0.5rem; flex-direction:column;">
+          <input type="password" class="input" [(ngModel)]="deletePassword" placeholder="Current password" style="width:100%; padding:0.5rem; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:8px; color:white;" />
+          <button class="btn" style="background:#ef4444; color:white; padding:0.5rem 1rem; font-size:0.85rem; align-self:flex-start; border:none; cursor:pointer; border-radius:8px;" (click)="deleteAccount()">Delete My Account</button>
+          <p *ngIf="deleteErrorMsg" style="font-size:0.75rem; color:#ef4444; margin:0;">{{ deleteErrorMsg }}</p>
+        </div>
       </div>
     </div>
   </div>
@@ -772,13 +781,23 @@ export class DashboardComponent implements OnInit {
   protected scannerOpen = false;
   protected videoSupported = true;
   protected marketingEnabled = true;
-  protected editDisplayName = '';
-  protected settingsSaved = false;
+
+  protected editEmail = '';
+  protected emailSavedMsg = '';
+  protected emailErrorMsg = '';
+
+  protected currentPassword = '';
+  protected newPassword = '';
+  protected passwordSavedMsg = '';
+  protected passwordErrorMsg = '';
+
+  protected deletePassword = '';
+  protected deleteErrorMsg = '';
 
 
   async ngOnInit(): Promise<void> {
     this.marketingEnabled = this.api.currentUser()?.marketingConsent !== false;
-    this.editDisplayName = this.api.currentUser()?.displayName || '';
+    this.editEmail = this.api.currentUser()?.email || '';
 
     this.locale = (this.route.snapshot.data['locale'] || 'en') as Locale;
     this.ui = DASHBOARD_UI[this.locale] || DASHBOARD_UI.en;
@@ -817,12 +836,52 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  async saveDisplayName() {
-    if (this.api.currentUser() && this.editDisplayName.trim()) {
-      this.api.currentUser().displayName = this.editDisplayName.trim();
-      await this.api.request('/api/auth/me', { method: 'PATCH', body: JSON.stringify({ displayName: this.editDisplayName.trim() }) });
-      this.settingsSaved = true;
-      setTimeout(() => this.settingsSaved = false, 2000);
+  async saveEmail() {
+    this.emailErrorMsg = '';
+    this.emailSavedMsg = '';
+    if (this.api.currentUser() && this.editEmail.trim()) {
+      const res = await this.api.request('/api/auth/me', { method: 'PATCH', body: JSON.stringify({ email: this.editEmail.trim() }) });
+      if (res.success) {
+        this.api.currentUser().email = this.editEmail.trim();
+        this.emailSavedMsg = 'Email updated.';
+        setTimeout(() => this.emailSavedMsg = '', 2000);
+      } else {
+        this.emailErrorMsg = res.error || 'Failed to update email.';
+      }
+    }
+  }
+
+  async savePassword() {
+    this.passwordErrorMsg = '';
+    this.passwordSavedMsg = '';
+    if (!this.currentPassword || !this.newPassword) {
+      this.passwordErrorMsg = 'Both fields required.';
+      return;
+    }
+    const res = await this.api.request('/api/auth/me', { method: 'PATCH', body: JSON.stringify({ currentPassword: this.currentPassword, newPassword: this.newPassword }) });
+    if (res.success) {
+      this.currentPassword = '';
+      this.newPassword = '';
+      this.passwordSavedMsg = 'Password changed.';
+      setTimeout(() => this.passwordSavedMsg = '', 2000);
+    } else {
+      this.passwordErrorMsg = res.error || 'Failed to change password.';
+    }
+  }
+
+  async deleteAccount() {
+    this.deleteErrorMsg = '';
+    if (!this.deletePassword) {
+      this.deleteErrorMsg = 'Password required to delete account.';
+      return;
+    }
+    if (!confirm('Are you absolutely sure you want to delete your account? This action cannot be undone.')) return;
+    const res = await this.api.request('/api/auth/me', { method: 'DELETE', body: JSON.stringify({ password: this.deletePassword }) });
+    if (res.success) {
+      this.api.clearSession();
+      window.location.href = '/';
+    } else {
+      this.deleteErrorMsg = res.error || 'Failed to delete account.';
     }
   }
 
