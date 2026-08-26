@@ -921,6 +921,10 @@ export class AnimatedNumberComponent implements OnInit {
       }
     }
     @media (max-width: 720px) {
+      .bento-grid { grid-template-columns: 1fr; gap: 1rem; }
+      .platforms-links-grid { grid-template-columns: 1fr; gap: 0.5rem; }
+      .bento-card { min-height: auto; }
+      .bento-text { -webkit-line-clamp: 5; }
       .hero-proof-grid {
         grid-template-columns: 1fr;
         margin-bottom: 2.25rem;
