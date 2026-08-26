@@ -3816,7 +3816,8 @@ export class AdminComponent implements OnInit, OnDestroy {
     { id: 'cache', label: 'Cache', short: 'CA' },
     { id: 'parser', label: 'Parser', short: 'PR' },
     { id: 'system', label: 'System', short: 'SY' },
-        { id: 'errors', label: 'Errors', short: 'ER' }
+        { id: 'errors', label: 'Errors', short: 'ER' },
+    { id: 'marketing', label: 'Marketing', short: 'MK' }
   ];
 
   protected readonly activeTab = signal<AdminTab>('users');
