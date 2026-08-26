@@ -4,11 +4,12 @@ import { FormsModule } from '@angular/forms';
 import { AdminErrorsComponent } from './admin-errors.component';
 import { AdminUsersComponent } from './admin-users.component';
 import { AdminStatsComponent } from './admin-stats.component';
+import { AdminMarketingComponent } from './admin-marketing.component';
 import { ActivatedRoute } from '@angular/router';
 import { Meta, Title } from '@angular/platform-browser';
 import { ADMIN_PANEL_ROUTE_PATH, ADMIN_PANEL_URL } from '../admin-path';
 
-type AdminTab = 'users' | 'purchases' | 'bugs' | 'support' | 'cache' | 'parser' | 'system' | 'errors';
+type AdminTab = 'users' | 'purchases' | 'bugs' | 'support' | 'cache' | 'parser' | 'system' | 'errors' | 'marketing';
 type AdminLocale = 'en' | 'pl';
 type UserSortField = 'credits' | 'questions' | 'streak' | 'status';
 type UserSortDirection = 'asc' | 'desc';
@@ -16,7 +17,7 @@ type UserSortOption = 'createdAt_desc' | 'createdAt_asc' | `${UserSortField}_${U
 
 const ADMIN_ACTIVE_TAB_KEY = 'qs_admin_active_tab';
 const ADMIN_USERS_STATE_KEY = 'qs_admin_users_state';
-const ADMIN_TAB_IDS: AdminTab[] = ['users', 'purchases', 'bugs', 'support', 'cache', 'parser', 'system', 'errors'];
+const ADMIN_TAB_IDS: AdminTab[] = ['users', 'purchases', 'bugs', 'support', 'cache', 'parser', 'system', 'errors', 'marketing'];
 const DEFAULT_USER_SORT: UserSortOption = 'createdAt_desc';
 const USER_SORT_VALUES: UserSortOption[] = [
   'createdAt_desc',
@@ -292,7 +293,11 @@ const ADMIN_COPY = {
     couldNotClearParserEvents: 'Could not clear parser events.',
     supportAdjustment: 'Support adjustment',
     questionHistoryAdjustment: 'Question history adjustment',
-    adminManualGrant: 'Admin manual grant'
+    adminManualGrant: 'Admin manual grant',
+    adminTabMarketing: 'Marketing',
+    adminTabMarketingHint: 'Email marketing',
+    marketingTitle: 'Marketing Campaigns',
+    marketingDescription: 'Manage promotional email campaigns.'
   },
   pl: {
     adminConsole: 'Panel admina',
@@ -549,7 +554,11 @@ const ADMIN_COPY = {
     couldNotClearParserEvents: 'Nie udało się wyczyścić eventów parsera.',
     supportAdjustment: 'Korekta supportu',
     questionHistoryAdjustment: 'Korekta z historii pytań',
-    adminManualGrant: 'Ręczny grant admina'
+    adminManualGrant: 'Ręczny grant admina',
+    adminTabMarketing: 'Marketing',
+    adminTabMarketingHint: 'E-mail marketing',
+    marketingTitle: 'Kampanie Marketingowe',
+    marketingDescription: 'Zarządzaj mailingiem promocyjnym.'
   }
 } as const;
 
@@ -558,7 +567,7 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
 @Component({
   encapsulation: ViewEncapsulation.None,
   standalone: true,
-  imports: [CommonModule, FormsModule, AdminErrorsComponent, AdminUsersComponent, AdminStatsComponent],
+  imports: [CommonModule, FormsModule, AdminErrorsComponent, AdminUsersComponent, AdminStatsComponent, AdminMarketingComponent],
   template: `
     <main class="admin-page">
       <section class="admin-login" *ngIf="!isAuthed(); else adminPanel">
@@ -1189,6 +1198,7 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
             <app-admin-stats *ngIf="activeTab() === 'system'" [p]="this"></app-admin-stats>
 
             <app-admin-errors *ngIf="activeTab() === 'errors'" [api]="api.bind(this)"></app-admin-errors>
+            <app-admin-marketing *ngIf="activeTab() === 'marketing'"></app-admin-marketing>
           </section>
         </section>
       </ng-template>
@@ -4146,7 +4156,8 @@ export class AdminComponent implements OnInit, OnDestroy {
       cache: 'cache',
       parser: 'parser',
       system: 'system',
-      errors: 'errors'
+      errors: 'errors',
+      marketing: 'marketingTitle'
     };
     return this.tr(labels[tab]);
   }
@@ -4160,7 +4171,8 @@ export class AdminComponent implements OnInit, OnDestroy {
       cache: 'cacheHint',
       parser: 'parserHint',
       system: 'systemHint',
-      errors: 'errorsHint'
+      errors: 'errorsHint',
+      marketing: 'marketingDescription'
     };
     return this.tr(hints[tab]);
   }
@@ -4171,7 +4183,7 @@ export class AdminComponent implements OnInit, OnDestroy {
       {
         label: pl ? 'Operacje' : 'Operations',
         note: pl ? 'użytkownicy i kontakt' : 'users and contact',
-        ids: ['users', 'support', 'bugs']
+        ids: ['users', 'support', 'bugs', 'marketing']
       },
       {
         label: pl ? 'Wiedza' : 'Knowledge',
@@ -4200,7 +4212,8 @@ export class AdminComponent implements OnInit, OnDestroy {
       cache: 'cacheTitle',
       parser: 'parserTitle',
       system: 'systemTitle',
-      errors: 'errors'
+      errors: 'errors',
+      marketing: 'marketingTitle'
     };
     return this.tr(titles[this.activeTab()]);
   }
@@ -4214,7 +4227,8 @@ export class AdminComponent implements OnInit, OnDestroy {
       cache: 'cacheDescription',
       parser: 'parserDescription',
       system: 'systemDescription',
-      errors: 'errorsHint'
+      errors: 'errorsHint',
+      marketing: 'marketingDescription'
     };
     return this.tr(descriptions[this.activeTab()]);
   }
