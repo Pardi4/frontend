@@ -6,6 +6,7 @@ import { Subscription } from 'rxjs';
 import { ApiService } from '../api.service';
 import { BLOG_POSTS } from '../blog-content';
 import { CHROME_WEB_STORE_URL, Locale, PageKey, SUPPORTED_LOCALES, contentFor, localeOption, pathFor } from '../site-content';
+import jsQR from 'jsqr';
 
 type AuthModal = 'login' | 'register' | 'verify' | 'forgot' | 'reset';
 
@@ -111,6 +112,9 @@ type AuthModal = 'login' | 'register' | 'verify' | 'forgot' | 'reset';
                   <button class="btn btn-outline" type="button" (click)="goToDashboard()">{{ copy.common.dashboard }}</button>
                   <button class="btn btn-outline" type="button" (click)="goToCredits()">
                     {{ api.currentUser()?.role === 'admin' ? 'Unlimited' : (api.currentUser()?.credits || 0) + ' ' + copy.common.credits }}
+                  </button>
+                  <button class="btn btn-primary" type="button" (click)="mobileMenuOpen.set(false); startQrScanner()" style="display:flex; align-items:center; gap:0.4rem; justify-content:center;">
+                    &#128247; Quick Login (QR)
                   </button>
                   <button class="btn btn-ghost" type="button" (click)="logout()">{{ copy.common.logout }}</button>
                 </div>
@@ -362,6 +366,24 @@ type AuthModal = 'login' | 'register' | 'verify' | 'forgot' | 'reset';
           </ng-container>
         </section>
       </div>
+
+      <!-- QR Scanner Modal -->
+      <div *ngIf="qrScannerOpen" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:99999; display:flex; justify-content:center; align-items:center; padding:1rem;">
+        <div style="max-width:400px; padding:2rem; border-radius:16px; text-align:center; background:#0f172a; width:100%; position:relative; border:1px solid rgba(255,255,255,0.1);">
+          <button style="position:absolute; top:1rem; right:1rem; background:transparent; border:none; color:white; cursor:pointer; font-size:1.5rem;" (click)="stopQrScanner()">&times;</button>
+          <h2 style="margin-bottom:0.5rem;">Quick Login</h2>
+          <p style="margin:0.5rem 0 0.25rem; font-size:0.95rem; color:#e2e8f0;">Log into QuizSolver on this phone instantly.</p>
+          <p style="margin:0 0 1rem; font-size:0.8rem; color:#94a3b8;">Open the QuizSolver extension on your computer, go to <strong style="color:#e2e8f0;">Quick Login</strong> and point this camera at the QR code shown there. You will be logged in automatically.</p>
+          <div *ngIf="!qrVideoSupported" style="padding:1rem; background:rgba(255,100,100,0.1); border-radius:8px; margin-bottom:1rem; font-size:0.85rem; color:#fca5a5;">
+            Camera access is not available. Open your native Camera app and point it at the QR code instead.
+          </div>
+          <div *ngIf="qrVideoSupported" style="position:relative; width:100%; aspect-ratio:1; background:#000; border-radius:12px; overflow:hidden;">
+            <video id="qrVideo" autoplay playsinline style="width:100%; height:100%; object-fit:cover;"></video>
+            <div style="position:absolute; top:10%; left:10%; right:10%; bottom:10%; border:2px dashed rgba(255,255,255,0.4); border-radius:16px;"></div>
+          </div>
+        </div>
+      </div>
+
     </div>
   `,
   styles: [`
@@ -927,6 +949,8 @@ export class ShellComponent implements OnInit, AfterViewInit, OnDestroy {
   protected resetCode = '';
   protected resetPasswordValue = '';
 
+  protected qrScannerOpen = false;
+  protected qrVideoSupported = true;
   protected readonly localeOptions = SUPPORTED_LOCALES;
 
   protected get currentLocale() {
@@ -1341,5 +1365,42 @@ protected switchLocale(event: MouseEvent, targetLocale: any): void {
     }
 
     this.authError.set(result.error || this.copy.shell.passwordChangeFailed);
+  }
+
+  async startQrScanner() {
+    this.qrScannerOpen = true;
+    this.qrVideoSupported = true;
+    setTimeout(async () => {
+      try {
+        const video = document.getElementById('qrVideo') as HTMLVideoElement;
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+        video.srcObject = stream;
+        const scanLoop = () => {
+          if(!this.qrScannerOpen) { stream.getTracks().forEach(t=>t.stop()); return; }
+          if(video.readyState === video.HAVE_ENOUGH_DATA) {
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            if (ctx) {
+              ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+              const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+              const code = jsQR(imageData.data, imageData.width, imageData.height);
+              if (code && code.data.includes('/qr-login/')) {
+                stream.getTracks().forEach(t=>t.stop());
+                window.location.href = code.data;
+                return;
+              }
+            }
+          }
+          requestAnimationFrame(scanLoop);
+        };
+        scanLoop();
+      } catch(err) { this.qrVideoSupported = false; }
+    }, 100);
+  }
+
+  stopQrScanner() {
+    this.qrScannerOpen = false;
   }
 }

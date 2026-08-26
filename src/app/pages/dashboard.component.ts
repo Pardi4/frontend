@@ -292,9 +292,8 @@ const DASHBOARD_UI: Record<Locale, DashboardUi> = {
               <h1>{{ ui.greeting }} {{ api.currentUser()?.displayName || 'User' }}</h1>
               <p class="desc text-secondary">{{ ui.dashboardIntro }}</p>
             </div>
-            <div style="display:flex; gap:0.5rem; align-items:center; flex-wrap:wrap;">
+            <div>
               <button class="btn btn-outline" (click)="settingsOpen = true">Settings</button>
-              <button class="btn btn-primary" (click)="startQrScanner()">Scan QR</button>
             </div>
           </header>
 
@@ -397,9 +396,54 @@ const DASHBOARD_UI: Record<Locale, DashboardUi> = {
             </ng-template>
           </section>
 
-<!-- Modals -->
-<div *ngIf="settingsOpen" class="scanner-overlay" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:9999; display:flex; justify-content:center; align-items:center;"><div class="scanner-modal glass" style="max-width:400px; padding:2rem; border-radius:16px; background:#0f172a; width:90%; position:relative;"><button style="position:absolute; top:1rem; right:1rem; background:transparent; border:none; color:white; cursor:pointer; font-size:1.5rem;" (click)="settingsOpen = false">&times;</button><h2>Settings</h2><div style="margin-top:1.5rem; text-align:left;"><label style="display:block; margin-bottom:0.5rem;">Email Address</label><input type="email" class="input" [value]="api.currentUser()?.email" disabled style="width:100%; opacity:0.6; padding:0.5rem;" /><p style="font-size:0.8rem; color:#94a3b8; margin:0.5rem 0 1.5rem 0;">Contact support to change your email address.</p><label style="display:flex; align-items:flex-start; gap:0.5rem; cursor:pointer;"><input type="checkbox" [(ngModel)]="marketingEnabled" (change)="saveSettings()" style="margin-top:0.25rem;" /><span>Receive marketing emails, tips and special offers</span></label></div></div></div>
-<div *ngIf="scannerOpen" class="scanner-overlay" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:9999; display:flex; justify-content:center; align-items:center;"><div class="scanner-modal glass" style="max-width:400px; padding:2rem; border-radius:16px; text-align:center; background:#0f172a; width:90%; position:relative;"><button style="position:absolute; top:1rem; right:1rem; background:transparent; border:none; color:white; cursor:pointer; font-size:1.5rem;" (click)="stopQrScanner()">&times;</button><h2>Scan QR Code</h2><p style="margin:1rem 0;">Point your camera at the QR code displayed in the QuizSolver extension.</p><div *ngIf="!videoSupported" style="padding:1rem; background:rgba(255,0,0,0.1); border-radius:8px; margin-bottom:1rem;">Native QR scanning is not supported in this browser. Please use your phone's native camera app to scan the code instead.</div><div *ngIf="videoSupported" class="video-wrapper" style="position:relative; width:100%; aspect-ratio:1; background:#000; border-radius:12px; overflow:hidden;"><video id="qrVideo" autoplay playsinline style="width:100%; height:100%; object-fit:cover;"></video><div class="scanner-frame" style="position:absolute; top:10%; left:10%; right:10%; bottom:10%; border:2px dashed rgba(255,255,255,0.5); border-radius:16px;"></div></div></div></div>
+<!-- Settings Modal -->
+<div *ngIf="settingsOpen" class="scanner-overlay" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:9999; display:flex; justify-content:center; align-items:center; padding:1rem;">
+  <div class="scanner-modal glass" style="max-width:460px; padding:2rem; border-radius:16px; background:#0f172a; width:100%; position:relative; max-height:90vh; overflow-y:auto;">
+    <button style="position:absolute; top:1rem; right:1rem; background:transparent; border:none; color:white; cursor:pointer; font-size:1.5rem;" (click)="settingsOpen = false">&times;</button>
+    <h2 style="margin-bottom:1.5rem;">Account Settings</h2>
+
+    <div style="display:flex; flex-direction:column; gap:1.25rem; text-align:left;">
+      <!-- Email -->
+      <div>
+        <label style="display:block; margin-bottom:0.25rem; font-size:0.85rem; color:#94a3b8;">Email Address</label>
+        <input type="email" class="input" [value]="api.currentUser()?.email" disabled style="width:100%; opacity:0.6; padding:0.5rem; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:8px; color:white;" />
+        <p style="font-size:0.75rem; color:#64748b; margin-top:0.25rem;">Contact support to change your email.</p>
+      </div>
+
+      <!-- Display Name -->
+      <div>
+        <label style="display:block; margin-bottom:0.25rem; font-size:0.85rem; color:#94a3b8;">Display Name</label>
+        <div style="display:flex; gap:0.5rem;">
+          <input type="text" class="input" [(ngModel)]="editDisplayName" placeholder="Enter display name" style="flex:1; padding:0.5rem; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:8px; color:white;" />
+          <button class="btn btn-primary" style="padding:0.5rem 1rem; font-size:0.85rem;" (click)="saveDisplayName()">Save</button>
+        </div>
+        <p *ngIf="settingsSaved" style="font-size:0.75rem; color:#22c55e; margin-top:0.25rem;">Saved!</p>
+      </div>
+
+      <hr style="border:none; border-top:1px solid rgba(255,255,255,0.08); margin:0.25rem 0;" />
+
+      <!-- Marketing -->
+      <label style="display:flex; align-items:flex-start; gap:0.5rem; cursor:pointer;">
+        <input type="checkbox" [(ngModel)]="marketingEnabled" (change)="saveSettings()" style="margin-top:0.25rem;" />
+        <span style="font-size:0.9rem;">Receive marketing emails, tips and special offers</span>
+      </label>
+
+      <hr style="border:none; border-top:1px solid rgba(255,255,255,0.08); margin:0.25rem 0;" />
+
+      <!-- Password -->
+      <div>
+        <label style="display:block; margin-bottom:0.25rem; font-size:0.85rem; color:#94a3b8;">Password</label>
+        <p style="font-size:0.85rem; color:#cbd5e1;">Your password is securely hashed. Use the "Forgot Password" link on the login page to change it.</p>
+      </div>
+
+      <!-- Delete Account -->
+      <div style="padding:1rem; background:rgba(239,68,68,0.08); border:1px solid rgba(239,68,68,0.2); border-radius:8px;">
+        <p style="font-size:0.85rem; color:#f87171; margin-bottom:0.5rem; font-weight:600;">Delete Account</p>
+        <p style="font-size:0.8rem; color:#94a3b8;">To permanently delete your account and all associated data, contact us at support&#64;getquizsolver.com.</p>
+      </div>
+    </div>
+  </div>
+</div>
 
         </ng-template>
       </div>
@@ -728,10 +772,13 @@ export class DashboardComponent implements OnInit {
   protected scannerOpen = false;
   protected videoSupported = true;
   protected marketingEnabled = true;
+  protected editDisplayName = '';
+  protected settingsSaved = false;
 
 
   async ngOnInit(): Promise<void> {
     this.marketingEnabled = this.api.currentUser()?.marketingConsent !== false;
+    this.editDisplayName = this.api.currentUser()?.displayName || '';
 
     this.locale = (this.route.snapshot.data['locale'] || 'en') as Locale;
     this.ui = DASHBOARD_UI[this.locale] || DASHBOARD_UI.en;
@@ -767,6 +814,15 @@ export class DashboardComponent implements OnInit {
     if (this.api.currentUser()) {
       this.api.currentUser().marketingConsent = this.marketingEnabled;
       await this.api.request('/api/auth/me', { method: 'PATCH', body: JSON.stringify({ marketingConsent: this.marketingEnabled }) });
+    }
+  }
+
+  async saveDisplayName() {
+    if (this.api.currentUser() && this.editDisplayName.trim()) {
+      this.api.currentUser().displayName = this.editDisplayName.trim();
+      await this.api.request('/api/auth/me', { method: 'PATCH', body: JSON.stringify({ displayName: this.editDisplayName.trim() }) });
+      this.settingsSaved = true;
+      setTimeout(() => this.settingsSaved = false, 2000);
     }
   }
 
