@@ -918,6 +918,10 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
                       <span>{{ tr('reply') }}</span>
                       <textarea name="supportReplyText" [(ngModel)]="supportReplyText" rows="7" [placeholder]="tr('replyPlaceholder')"></textarea>
                     </label>
+                    <label style="display:flex; align-items:center; gap:0.5rem; margin-bottom: 1rem; margin-top: 0.5rem; cursor: pointer;">
+                      <input type="checkbox" [(ngModel)]="supportReplyIncludeDiscount" name="supportReplyIncludeDiscount">
+                      <span style="font-size: 0.85rem;">Dołącz unikalny kod rabatowy (-10%, 7 dni) na koniec wiadomości</span>
+                    </label>
                     <button class="btn btn-primary" type="submit" [disabled]="!supportReplyText.trim()">{{ tr('sendReply') }}</button>
                   </form>
                 </article>
@@ -3858,6 +3862,7 @@ export class AdminComponent implements OnInit, OnDestroy {
   protected supportSearch = '';
   protected supportStatusFilter = '';
   protected supportReplyText = '';
+  protected supportReplyIncludeDiscount = false;
   protected grantAmount = 100;
   protected grantReason: string = ADMIN_COPY.en.supportAdjustment;
 
@@ -4831,6 +4836,7 @@ export class AdminComponent implements OnInit, OnDestroy {
   protected async selectSupportMessage(message: any): Promise<void> {
     this.selectedSupportMessage.set(message);
     this.supportReplyText = '';
+      this.supportReplyIncludeDiscount = false;
     if (!message?.isRead) {
       await this.updateSupportStatus(message, message.status || 'open', true);
     }
@@ -4852,7 +4858,7 @@ export class AdminComponent implements OnInit, OnDestroy {
     if (!message?.id || !text) return;
     const result = await this.api(`/api/admin/support/messages/${message.id}/reply`, {
       method: 'POST',
-      body: JSON.stringify({ text })
+      body: JSON.stringify({ text, generateDiscount: this.supportReplyIncludeDiscount })
     });
     if (result.success) {
       this.supportReplyText = '';
