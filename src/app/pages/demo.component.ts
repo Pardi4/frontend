@@ -569,7 +569,7 @@ const DEMO_QUESTIONS: Record<Exclude<Locale, 'en' | 'pl'>, DemoQuestion[]> = {
                 <span *ngFor="let item of proofItems()">{{ item }}</span>
               </div>
 
-              <!-- Warning Card -->
+              
               <div class="demo-extension-warning glass">
                 <div class="warning-icon">⚠️</div>
                 <div class="warning-content">

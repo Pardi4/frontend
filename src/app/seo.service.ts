@@ -17,7 +17,6 @@ import {
   platformEntries
 } from './site-content';
 
-/* ─── Noindex pages ──────────────────────────────────────────────────────────── */
 const NOINDEX_PAGES = new Set<PageKey>(['dashboard', 'success', 'notFound']);
 const SEO_DATE = '2026-07-03';
 const BASE_ROBOTS = 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1';
@@ -75,11 +74,9 @@ export class SeoService {
 
     this.clearRouteSpecificMeta();
 
-    /* ── HTML lang ── */
-    this.document.documentElement.lang = copy['htmlLang'] || locale;
+        this.document.documentElement.lang = copy['htmlLang'] || locale;
 
-    /* ── Core ── */
-    this.title.setTitle(meta.title);
+        this.title.setTitle(meta.title);
     this.upsertMeta('name', 'description', meta.description);
     this.upsertMeta('name', 'robots', robots);
     this.upsertMeta('name', 'googlebot', robots);
@@ -90,8 +87,7 @@ export class SeoService {
     this.upsertMeta('name', 'application-name', 'QuizSolver');
     this.upsertMeta('name', 'rating', 'general');
 
-    /* ── Open Graph ── */
-    const isPlatform = PLATFORM_PAGE_KEYS.includes(pageKey as any);
+        const isPlatform = PLATFORM_PAGE_KEYS.includes(pageKey as any);
     this.upsertMeta('property', 'og:type', pageKey === 'credits' ? 'product' : isPlatform ? 'article' : 'website');
     this.upsertMeta('property', 'og:site_name', 'QuizSolver');
     this.upsertMeta('property', 'og:url', canonical);
@@ -104,8 +100,7 @@ export class SeoService {
     this.upsertMeta('property', 'og:image:alt', 'QuizSolver AI quiz solver Chrome extension — answer any quiz instantly');
     this.upsertMeta('property', 'og:locale', locOpt.ogLocale);
 
-    /* All OG locale alternates — use data attribute for unique selection */
-    SUPPORTED_LOCALES
+        SUPPORTED_LOCALES
       .filter(opt => opt.code !== locale)
       .forEach(opt => {
         const selector = `[property="og:locale:alternate"][data-loc="${opt.code}"]`;
@@ -121,8 +116,7 @@ export class SeoService {
         }
       });
 
-    /* ── Twitter / X ── */
-    this.upsertMeta('property', 'og:updated_time', SEO_DATE);
+        this.upsertMeta('property', 'og:updated_time', SEO_DATE);
     this.setOgLocaleAlternates(SUPPORTED_LOCALES, locale);
 
     this.upsertMeta('name', 'twitter:card', 'summary_large_image');
@@ -133,19 +127,16 @@ export class SeoService {
     this.upsertMeta('name', 'twitter:image', socialImage);
     this.upsertMeta('name', 'twitter:image:alt', 'QuizSolver AI quiz solver Chrome extension');
 
-    /* ── Canonical + hreflang ── */
-    this.upsertLink('canonical', canonical);
+        this.upsertLink('canonical', canonical);
     this.setHreflangAlternates(
       SUPPORTED_LOCALES.map(opt => ({ hreflang: opt.htmlLang, href: abs(pathFor(pageKey, opt.code)) })),
       abs(pathFor(pageKey, 'en'))
     );
 
-    /* ── JSON-LD ── */
-    this.upsertJsonLd(this.buildJsonLd(pageKey, locale, data, meta, canonical));
+        this.upsertJsonLd(this.buildJsonLd(pageKey, locale, data, meta, canonical));
   }
 
-  /* ──────────────────────────────────────────────────────────────────────────── */
-  private resolveMeta(pageKey: PageKey, locale: Locale, data: any): { title: string; description: string } {
+    private resolveMeta(pageKey: PageKey, locale: Locale, data: any): { title: string; description: string } {
     data = data || {};
     if (data?.meta?.title && data?.meta?.description) return data.meta;
     if (['privacy', 'terms', 'dashboard', 'credits', 'quiz', 'demo', 'success', 'notFound', 'blog'].includes(pageKey)) {
@@ -158,8 +149,7 @@ export class SeoService {
     };
   }
 
-  /* ──────────────────────────────────────────────────────────────────────────── */
-  private buildJsonLd(pageKey: PageKey, locale: Locale, data: any, meta: { title: string; description: string }, canonical: string): unknown {
+    private buildJsonLd(pageKey: PageKey, locale: Locale, data: any, meta: { title: string; description: string }, canonical: string): unknown {
     const homeUrl = `${SITE_URL}/`;
     const locOpt = localeOption(locale);
 
@@ -172,8 +162,7 @@ export class SeoService {
           : 'WebPage';
 
     const graph: any[] = [
-      /* Organization */
-      {
+            {
         '@type': 'Organization',
         '@id': `${homeUrl}#organization`,
         name: 'QuizSolver',
@@ -203,8 +192,7 @@ export class SeoService {
           availableLanguage: SUPPORTED_LOCALES.map(opt => opt.label)
         }
       },
-      /* SoftwareApplication */
-      {
+            {
         '@type': 'SoftwareApplication',
         '@id': `${homeUrl}#software`,
         name: 'QuizSolver',
@@ -258,8 +246,7 @@ export class SeoService {
           worstRating: '1'
         }
       },
-      /* WebSite */
-      {
+            {
         '@type': 'WebSite',
         '@id': `${homeUrl}#website`,
         name: 'QuizSolver',
@@ -285,8 +272,7 @@ export class SeoService {
           abs(pathFor('googleForms', locale))
         ]
       },
-      /* WebPage */
-      {
+            {
         '@type': webpageType,
         '@id': `${canonical}#webpage`,
         url: canonical,
@@ -309,8 +295,7 @@ export class SeoService {
       }
     ];
 
-    /* BreadcrumbList — all non-home pages */
-    if (pageKey !== 'home') {
+        if (pageKey !== 'home') {
       graph.push({
         '@type': 'BreadcrumbList',
         '@id': `${canonical}#breadcrumb`,
@@ -321,8 +306,7 @@ export class SeoService {
       });
     }
 
-    /* HowTo — pages with steps */
-    if (Array.isArray(data?.steps) && data.steps.length) {
+        if (Array.isArray(data?.steps) && data.steps.length) {
       const stepNames: string[] = [
         'Open the quiz page', 'Activate QuizSolver', 'Review AI suggestion'
       ];
@@ -341,8 +325,7 @@ export class SeoService {
       });
     }
 
-    /* FAQPage — pages with faq */
-    if (Array.isArray(data?.faq) && data.faq.length) {
+        if (Array.isArray(data?.faq) && data.faq.length) {
       graph.push({
         '@type': 'FAQPage',
         '@id': `${canonical}#faq`,
@@ -357,8 +340,7 @@ export class SeoService {
       });
     }
 
-    /* ItemList + home FAQ — home page only */
-    if (PLATFORM_PAGE_KEYS.includes(pageKey as any)) {
+        if (PLATFORM_PAGE_KEYS.includes(pageKey as any)) {
       const articleKeywords = this.keywordsFor(pageKey, locale, data);
       const articleBody = [
         data?.subtitle,
@@ -411,8 +393,7 @@ export class SeoService {
           url: abs(pathFor(entry.pageKey as PageKey, locale))
         }))
       });
-      /* Home-level FAQ for AI Overviews */
-      graph.push({
+            graph.push({
         '@type': 'FAQPage',
         '@id': `${canonical}#homefaq`,
         mainEntity: [
@@ -426,8 +407,7 @@ export class SeoService {
       });
     }
 
-    /* Product — credits page */
-    if (pageKey === 'credits') {
+        if (pageKey === 'credits') {
       graph.push({
         '@type': 'Product',
         '@id': `${canonical}#product`,
@@ -454,8 +434,7 @@ export class SeoService {
     return { '@context': 'https://schema.org', '@graph': graph };
   }
 
-  /* ──────────────────────────────────────────────────────────────────────────── */
-  private upsertMeta(attr: 'name' | 'property', key: string, content: string): void {
+    private upsertMeta(attr: 'name' | 'property', key: string, content: string): void {
     this.meta.updateTag({ [attr]: key, content });
   }
 
@@ -695,11 +674,9 @@ export class SeoService {
 
     this.clearRouteSpecificMeta();
 
-    /* ── HTML lang ── */
-    this.document.documentElement.lang = copy['htmlLang'] || locale;
+        this.document.documentElement.lang = copy['htmlLang'] || locale;
 
-    /* ── Core ── */
-    this.title.setTitle(meta.title);
+        this.title.setTitle(meta.title);
     this.upsertMeta('name', 'description', meta.description);
     this.upsertMeta('name', 'robots', robots);
     this.upsertMeta('name', 'googlebot', robots);
@@ -710,8 +687,7 @@ export class SeoService {
     this.upsertMeta('name', 'application-name', 'QuizSolver');
     this.upsertMeta('name', 'rating', 'general');
 
-    /* ── Open Graph ── */
-    this.upsertMeta('property', 'og:type', 'article');
+        this.upsertMeta('property', 'og:type', 'article');
     this.upsertMeta('property', 'og:site_name', 'QuizSolver');
     this.upsertMeta('property', 'og:url', canonical);
     this.upsertMeta('property', 'og:title', meta.title);
@@ -728,8 +704,7 @@ export class SeoService {
     (post.tags || []).slice(0, 8).forEach(tag => this.appendMeta('property', 'article:tag', tag));
     this.upsertMeta('property', 'og:updated_time', post.dateModified);
 
-    /* All OG locale alternates */
-    SUPPORTED_LOCALES
+        SUPPORTED_LOCALES
       .filter(opt => opt.code !== locale)
       .forEach(opt => {
         const selector = `[property="og:locale:alternate"][data-loc="${opt.code}"]`;
@@ -749,8 +724,7 @@ export class SeoService {
       locale
     );
 
-    /* ── Twitter / X ── */
-    this.upsertMeta('name', 'twitter:card', 'summary_large_image');
+        this.upsertMeta('name', 'twitter:card', 'summary_large_image');
     this.upsertMeta('name', 'twitter:site', '@getquizsolver');
     this.upsertMeta('name', 'twitter:creator', '@getquizsolver');
     this.upsertMeta('name', 'twitter:title', meta.title);
@@ -758,8 +732,7 @@ export class SeoService {
     this.upsertMeta('name', 'twitter:image', postSocialImage);
     this.upsertMeta('name', 'twitter:image:alt', post.title);
 
-    /* ── Canonical + hreflang ── */
-    this.upsertLink('canonical', canonical);
+        this.upsertLink('canonical', canonical);
 
     const defaultPost = BLOG_POSTS.find(p => p.translationKey === post.translationKey && p.locale === 'en') || post;
     this.setHreflangAlternates(

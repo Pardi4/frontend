@@ -1193,7 +1193,7 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
         </section>
       </ng-template>
 
-      <!-- Question Detail Modal -->
+      
       <div class="modal-overlay" *ngIf="selectedQuestion()" (click)="selectedQuestion.set(null)" style="z-index: 1100;">
         <div class="modal-card glass anim-slide-up" (click)="$event.stopPropagation()">
           <header class="modal-header">
@@ -1276,7 +1276,7 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
         </div>
       </div>
 
-      <!-- User Solve History Modal -->
+      
       <div class="modal-overlay" *ngIf="selectedUserHistory()" (click)="closeUserHistory()" style="z-index: 1000;">
         <div class="modal-card glass anim-slide-up" style="max-width: 800px;" (click)="$event.stopPropagation()">
           <header class="modal-header">
@@ -1323,7 +1323,7 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
         </div>
       </div>
 
-      <!-- Credit Grant Modal -->
+      
       <div class="modal-overlay" *ngIf="selectedGrantUser()" (click)="closeGrantModal()" style="z-index: 1200;">
         <div class="modal-card glass anim-slide-up" (click)="$event.stopPropagation()">
           <header class="modal-header">
