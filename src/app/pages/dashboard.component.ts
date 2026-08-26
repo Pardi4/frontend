@@ -225,7 +225,7 @@ const DASHBOARD_UI: Record<Locale, DashboardUi> = {
     <qs-shell #shell [locale]="locale" pageKey="dashboard">
       <div class="container dashboard-main">
         <section *ngIf="!api.currentUser(); else dashboardContent" class="section unauthorized-section-wrapper">
-          
+          <!-- Inactive dashboard mockup (blurred) -->
           <div class="unauthorized-blur-bg" aria-hidden="true">
             <header class="dashboard-header" style="padding-top: 1rem;">
               <p class="eyebrow">DASHBOARD</p>
@@ -265,7 +265,7 @@ const DASHBOARD_UI: Record<Locale, DashboardUi> = {
             </div>
           </div>
 
-          
+          <!-- Floating Glass Card Login Panel -->
           <div class="login-panel glass floating-panel">
             <div class="padlock-wrapper">
               <svg class="padlock-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -292,7 +292,7 @@ const DASHBOARD_UI: Record<Locale, DashboardUi> = {
             </p>
           </header>
 
-          
+          <!-- Stats Grid -->
           <section class="stats-grid">
             <article class="stat-card glass glass-hover">
               <div class="stat-num text-gradient-strong">
@@ -315,31 +315,6 @@ const DASHBOARD_UI: Record<Locale, DashboardUi> = {
             </article>
           </section>
 
-          
-          
-          <section class="qr-scanner-section glass" style="margin-top:2rem; padding:1.5rem; border-radius:24px; display:flex; align-items:center; gap:1.5rem; flex-wrap:wrap; background: rgba(14, 165, 233, 0.05); border: 1px solid rgba(14, 165, 233, 0.2);">
-            <div style="flex:1; min-width:280px;">
-              <h2 style="margin:0 0 0.5rem 0; font-size:1.2rem; display:flex; align-items:center; gap:0.5rem;">
-                📱 QR Quick Login
-              </h2>
-              <p class="text-secondary" style="margin:0;">Log into the browser extension instantly by scanning the QR code with your webcam or phone camera.</p>
-            </div>
-            
-            <div style="display:flex; flex-direction:column; align-items:center; gap:1rem;">
-              <button class="btn btn-outline" (click)="toggleQrScanner()" style="white-space:nowrap; border-color: rgba(14, 165, 233, 0.4); color: #0ea5e9;">
-                {{ scanningQr ? 'Close Scanner' : 'Scan QR Code' }}
-              </button>
-            </div>
-          </section>
-
-          
-          <div *ngIf="scanningQr" class="glass" style="margin-top:1rem; padding:1rem; border-radius:24px; text-align:center;">
-            <p *ngIf="qrError" style="color:var(--red);">{{ qrError }}</p>
-            <p *ngIf="!qrError && !videoStream" class="text-secondary">Requesting camera access...</p>
-            <video #qrVideo autoplay playsinline style="width:100%; max-width:400px; border-radius:12px; background:#000; margin-bottom:0.5rem;"></video>
-            <p class="text-secondary" style="font-size:0.85rem; margin:0;">Point your camera at the QR code in the extension.</p>
-          </div>
-
           <section class="credit-warning glass" *ngIf="lowCredits()">
             <div>
               <p class="eyebrow">{{ copy.credits }}</p>
@@ -353,7 +328,7 @@ const DASHBOARD_UI: Record<Locale, DashboardUi> = {
             </a>
           </section>
 
-          
+          <!-- Referral Widget -->
           <section class="referral-section">
             <div class="referral-card glass">
               <div class="referral-grid">
@@ -392,7 +367,7 @@ const DASHBOARD_UI: Record<Locale, DashboardUi> = {
             </div>
           </section>
 
-          
+          <!-- Purchase History -->
           <section class="history-section">
             <div class="history-header">
               <p class="eyebrow">{{ ui.history }}</p>
@@ -777,85 +752,4 @@ export class DashboardComponent implements OnInit {
     this.copied = true;
     setTimeout(() => this.copied = false, 1800);
   }
-
-  
-  scanningQr = false;
-  qrError = '';
-  private scanInterval: any;
-  public videoStream: MediaStream | null = null;
-  private barcodeDetector: any = null;
-
-  async toggleQrScanner() {
-    this.scanningQr = !this.scanningQr;
-    if (this.scanningQr) {
-      this.qrError = '';
-      await this.startScanner();
-    } else {
-      this.stopScanner();
-    }
-  }
-
-  async startScanner() {
-    // Check for BarcodeDetector API (Chrome 83+)
-    if (!('BarcodeDetector' in window)) {
-      this.qrError = 'Your browser does not support the native barcode scanner. Please use Chrome on Android or Desktop, or manually visit the link.';
-      return;
-    }
-
-    try {
-      this.barcodeDetector = new (window as any).BarcodeDetector({ formats: ['qr_code'] });
-      
-      
-      setTimeout(async () => {
-        const video = document.querySelector('video') as HTMLVideoElement;
-        if (!video) return;
-
-        try {
-          this.videoStream = await navigator.mediaDevices.getUserMedia({ 
-            video: { facingMode: 'environment' } 
-          });
-          video.srcObject = this.videoStream;
-          
-          this.scanInterval = setInterval(async () => {
-            if (video.readyState >= 2) {
-              try {
-                const barcodes = await this.barcodeDetector.detect(video);
-                if (barcodes.length > 0) {
-                  const url = barcodes[0].rawValue;
-                  if (url.includes('/qr-login/')) {
-                    this.stopScanner();
-                    this.scanningQr = false;
-                    
-                    window.location.href = url;
-                  }
-                }
-              } catch (e) {
-                
-              }
-            }
-          }, 300); 
-        } catch (err) {
-          this.qrError = 'Camera access denied or unavailable.';
-        }
-      }, 100);
-    } catch (e) {
-      this.qrError = 'Failed to initialize scanner.';
-    }
-  }
-
-  stopScanner() {
-    if (this.scanInterval) {
-      clearInterval(this.scanInterval);
-      this.scanInterval = null;
-    }
-    if (this.videoStream) {
-      this.videoStream.getTracks().forEach(track => track.stop());
-      this.videoStream = null;
-    }
-  }
-
-  ngOnDestroy() {
-    this.stopScanner();
-  }
-
 }

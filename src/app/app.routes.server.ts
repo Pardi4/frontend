@@ -43,10 +43,6 @@ export const serverRoutes: ServerRoute[] = [
   ...blogCategoryRoutes,
   ...blogPostRoutes,
   {
-    path: 'qr-login/:sessionId',
-    renderMode: RenderMode.Server
-  },
-  {
     path: '**',
     renderMode: RenderMode.Prerender
   }

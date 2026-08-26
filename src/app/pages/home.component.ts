@@ -68,7 +68,7 @@ export class AnimatedNumberComponent implements OnInit {
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <qs-shell [locale]="locale" pageKey="home">
-        
+        <!-- Hero Section -->
         <section class="hero-section">
           <div class="hero-bg-glow"></div>
           <div class="hero-bg-orb orb-cyan"></div>
@@ -90,7 +90,7 @@ export class AnimatedNumberComponent implements OnInit {
               </a>
             </div>
             
-            
+            <!-- Social Proof Statistics -->
             <div class="hero-proof-stats delay-3">
               <div class="rating-stars community-mark" aria-hidden="true">
                 <span class="star">✓</span>
@@ -111,14 +111,14 @@ export class AnimatedNumberComponent implements OnInit {
               </div>
             </div>
 
-            
+            <!-- Platform Trust Bar -->
             <div class="trust-bar delay-5">
               <div class="trust-marquee-wrapper">
                 <div class="trust-marquee">
                   <span class="trust-item" *ngFor="let platform of ['Testportal', 'Moodle', 'Google Forms', 'Canvas', 'MS Forms', 'Blackboard', 'Quizlet', 'Kahoot', 'Quizizz', 'Socrative', 'Blooket', 'Gimkit', 'Edpuzzle', 'Mentimeter']">
                     <span class="bullet">✦</span> {{ platform }}
                   </span>
-                  
+                  <!-- Duplicate for infinite loop -->
                   <span class="trust-item" *ngFor="let platform of ['Testportal', 'Moodle', 'Google Forms', 'Canvas', 'MS Forms', 'Blackboard', 'Quizlet', 'Kahoot', 'Quizizz', 'Socrative']">
                     <span class="bullet">✦</span> {{ platform }}
                   </span>
@@ -131,7 +131,7 @@ export class AnimatedNumberComponent implements OnInit {
           </div>
         </section>
 
-        
+        <!-- How It Works Section -->
         <section class="section" id="how-it-works">
           <div class="container">
             <div class="section-header">
@@ -150,7 +150,7 @@ export class AnimatedNumberComponent implements OnInit {
           </div>
         </section>
 
-        
+        <!-- Features Bento Grid Section -->
         <section class="section" id="features">
           <div class="container">
             <div class="section-header">
@@ -160,7 +160,7 @@ export class AnimatedNumberComponent implements OnInit {
             </div>
 
             <div class="bento-grid">
-              
+              <!-- Bento Card 1 (Large Hero Feature) -->
               <article class="bento-card card-lg glass glass-hover reveal">
                 <div class="bento-card-bg-gradient"></div>
                 <div class="bento-content">
@@ -189,7 +189,7 @@ export class AnimatedNumberComponent implements OnInit {
                 </div>
               </article>
 
-              
+              <!-- Bento Card 2 (Standard Feature) -->
               <article class="bento-card glass glass-hover reveal delay-100">
                 <div class="bento-content">
                   
@@ -203,7 +203,7 @@ export class AnimatedNumberComponent implements OnInit {
                 </div>
               </article>
 
-              
+              <!-- Bento Card 3 (Standard Feature) -->
               <article class="bento-card glass glass-hover reveal delay-200">
                 <div class="bento-content">
                   
@@ -217,7 +217,7 @@ export class AnimatedNumberComponent implements OnInit {
                 </div>
               </article>
 
-              
+              <!-- Bento Card 4 (Standard Feature) -->
               <article class="bento-card glass glass-hover reveal">
                 <div class="bento-content">
                   
@@ -231,7 +231,7 @@ export class AnimatedNumberComponent implements OnInit {
                 </div>
               </article>
 
-              
+              <!-- Bento Card 5 (Large Feature) -->
               <article class="bento-card card-md glass glass-hover reveal delay-100">
                 <div class="bento-content">
                   
@@ -245,7 +245,7 @@ export class AnimatedNumberComponent implements OnInit {
                 </div>
               </article>
 
-              
+              <!-- Bento Card 6 (Standard Feature) -->
               <article class="bento-card glass glass-hover reveal delay-200">
                 <div class="bento-content">
                   
@@ -259,7 +259,7 @@ export class AnimatedNumberComponent implements OnInit {
                 </div>
               </article>
 
-              
+              <!-- Bento Card 7 (Standard Feature) -->
               <article class="bento-card glass glass-hover reveal">
                 <div class="bento-content">
                   
@@ -273,7 +273,7 @@ export class AnimatedNumberComponent implements OnInit {
                 </div>
               </article>
 
-              
+              <!-- Bento Card 8 (Standard Feature) -->
               <article class="bento-card glass glass-hover reveal delay-100">
                 <div class="bento-content">
                   
@@ -290,7 +290,7 @@ export class AnimatedNumberComponent implements OnInit {
           </div>
         </section>
 
-        
+        <!-- Supported Platforms Section -->
         <section class="section platforms-section">
           <div class="container">
             <div class="section-header">
@@ -308,7 +308,7 @@ export class AnimatedNumberComponent implements OnInit {
           </div>
         </section>
 
-        
+        <!-- Pricing Section -->
         <section class="section" id="credits">
           <div class="container">
             <div class="section-header">
@@ -339,7 +339,7 @@ export class AnimatedNumberComponent implements OnInit {
           </div>
         </section>
 
-        
+        <!-- FAQ Section -->
         <section class="section faq-section">
           <div class="container">
             <div class="section-header">
@@ -921,10 +921,6 @@ export class AnimatedNumberComponent implements OnInit {
       }
     }
     @media (max-width: 720px) {
-      .bento-grid { grid-template-columns: 1fr; gap: 1rem; }
-      .platforms-links-grid { grid-template-columns: 1fr; gap: 0.5rem; }
-      .bento-card { min-height: auto; }
-      .bento-text { -webkit-line-clamp: 5; }
       .hero-proof-grid {
         grid-template-columns: 1fr;
         margin-bottom: 2.25rem;

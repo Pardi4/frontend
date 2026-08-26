@@ -22,7 +22,7 @@ import { Chart } from 'chart.js/auto';
                 </article>
               </div>
 
-              
+              <!-- CHART START -->
               <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border);">
                 <div class="panel-head" style="margin-bottom: 1rem;">
                   <div>
@@ -34,7 +34,7 @@ import { Chart } from 'chart.js/auto';
                   <canvas #chartCanvas></canvas>
                 </div>
               </div>
-              
+              <!-- CHART END -->
 
 
               <div id="admin-billing-safety" style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border);">
@@ -222,7 +222,7 @@ export class AdminStatsComponent implements AfterViewInit, OnDestroy {
   chart: Chart | null = null;
 
   ngAfterViewInit() {
-    
+    // Delay load chart slightly to allow view to settle
     setTimeout(() => this.loadChart(), 500);
   }
 
@@ -252,7 +252,7 @@ export class AdminStatsComponent implements AfterViewInit, OnDestroy {
     const ctx = this.chartCanvas.nativeElement.getContext('2d');
     if (!ctx) return;
 
-    
+    // Create a 30-day map
     const dates = [];
     const today = new Date();
     for (let i = 29; i >= 0; i--) {
@@ -270,7 +270,7 @@ export class AdminStatsComponent implements AfterViewInit, OnDestroy {
     this.chart = new Chart(ctx, {
       type: 'line',
       data: {
-        labels: dates.map(d => d.slice(5)), 
+        labels: dates.map(d => d.slice(5)), // MM-DD
         datasets: [
           {
             label: 'Revenue ($)',

@@ -40,6 +40,5 @@ export const routes: Routes = [
   ...PLATFORM_PAGE_KEYS.flatMap((pageKey) =>
     localizedRoutes(pageKey, () => import('./pages/platform.component').then(m => m.PlatformComponent), { pageKey })
   ),
-  { path: 'qr-login/:sessionId', loadComponent: () => import('./pages/qr-login.component').then(m => m.QrLoginComponent), data: { locale: 'en' } },
   { path: '**', loadComponent: () => import('./pages/status-pages.component').then(m => m.StatusPageComponent), data: { locale: 'en', pageKey: 'notFound' } }
 ];

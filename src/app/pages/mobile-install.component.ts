@@ -24,14 +24,14 @@ import { ShellComponent } from './shell.component';
 
         <section class="tutorial-content">
           <div class="video-container glass glass-hover" *ngIf="os === 'android'">
-            
+            <!-- PASTE YOUR ANDROID VIDEO HERE -->
             <div class="video-placeholder">
               <p>Android Video Tutorial goes here</p>
             </div>
           </div>
           
           <div class="video-container glass glass-hover" *ngIf="os === 'ios'">
-            
+            <!-- PASTE YOUR IOS VIDEO HERE -->
             <div class="video-placeholder">
               <p>iOS Video Tutorial goes here</p>
             </div>
@@ -92,7 +92,7 @@ export class MobileInstallComponent implements OnInit {
   locale: Locale = 'en';
   c = contentFor(this.locale);
   data: any;
-  os: 'android' | 'ios' = 'android'; 
+  os: 'android' | 'ios' = 'android'; // default
 
   private route = inject(ActivatedRoute);
   private seo = inject(SeoService);
