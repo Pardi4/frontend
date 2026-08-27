@@ -72,7 +72,7 @@ import { FormsModule } from '@angular/forms';
                         <button type="button" class="link-button primary-link" (click)="p.openUserHistory(user)">{{ user.email }}</button>
                         <span>{{ user.email }}</span>
                       </td>
-                      <td><span class="badge badge-outline role-badge">{{ user.role }}</span></td>
+                      <td><span class="badge badge-outline role-badge">{{ user.role }}</span><span class="badge badge-outline" *ngIf="user.marketingConsent" style="margin-left:0.5rem; color:var(--accent-cyan); border-color:var(--accent-cyan);" title="Marketing Opt-in">Email</span></td>
                       <td><strong class="metric-value">{{ user.role === 'admin' ? p.tr('unlimited') : user.credits }}</strong></td>
                       <td><strong class="metric-value">{{ user.stats?.totalQuestionsSolved || 0 }}</strong></td>
                       <td><strong class="metric-value">{{ user.streak?.current || 0 }}</strong></td>
