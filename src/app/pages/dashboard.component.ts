@@ -416,7 +416,7 @@ const DASHBOARD_UI: Record<Locale, DashboardUi> = {
         <div style="display:flex; gap:0.5rem; flex-direction:column;">
           <div style="display:flex; gap:0.5rem;">
             <input type="email" class="input" [(ngModel)]="editEmail" placeholder="New email address" style="flex:1; padding:0.5rem; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:8px; color:white;" />
-            <input *ngIf="!emailCodeSent" type="password" class="input" [(ngModel)]="emailChangePassword" placeholder="Current Password" style="width:130px; padding:0.5rem; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:8px; color:white;" />
+            <input *ngIf="hasPassword && !emailCodeSent" type="password" class="input" [(ngModel)]="emailChangePassword" placeholder="Current Password" style="width:130px; padding:0.5rem; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:8px; color:white;" />
             <input *ngIf="emailCodeSent" type="text" class="input" [(ngModel)]="emailCode" placeholder="6-digit code" style="width:100px; padding:0.5rem; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:8px; color:white;" />
             
             <button *ngIf="!emailCodeSent" class="btn btn-primary" style="padding:0.5rem 1rem; font-size:0.85rem;" (click)="requestEmailChange()">Send Code</button>
@@ -430,7 +430,7 @@ const DASHBOARD_UI: Record<Locale, DashboardUi> = {
       <hr style="border:none; border-top:1px solid rgba(255,255,255,0.08); margin:0.25rem 0;" />
 
       <!-- Password -->
-      <div>
+      <div *ngIf="hasPassword">
         <label style="display:block; margin-bottom:0.25rem; font-size:0.85rem; color:#94a3b8;">Change Password</label>
         <div style="display:flex; gap:0.5rem; flex-direction:column;">
           <input type="password" class="input" [(ngModel)]="currentPassword" placeholder="Current password" style="width:100%; padding:0.5rem; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:8px; color:white;" />
@@ -439,6 +439,9 @@ const DASHBOARD_UI: Record<Locale, DashboardUi> = {
           <p *ngIf="passwordSavedMsg" style="font-size:0.75rem; color:#22c55e; margin:0;">{{ passwordSavedMsg }}</p>
           <p *ngIf="passwordErrorMsg" style="font-size:0.75rem; color:#ef4444; margin:0;">{{ passwordErrorMsg }}</p>
         </div>
+      </div>
+      <div *ngIf="!hasPassword">
+        <p style="font-size:0.85rem; color:#94a3b8; margin:0;">You are logged in via an external provider (e.g. Google). Set a password via the "Forgot Password" flow if you want to use a password.</p>
       </div>
 
       <hr style="border:none; border-top:1px solid rgba(255,255,255,0.08); margin:0.25rem 0;" />
@@ -457,7 +460,7 @@ const DASHBOARD_UI: Record<Locale, DashboardUi> = {
         <p style="font-size:0.8rem; color:#94a3b8; margin-bottom:1rem;">To permanently delete your account, you need a verification code. Deletion happens after 14 days.</p>
         <div style="display:flex; gap:0.5rem; flex-direction:column;">
           <div style="display:flex; gap:0.5rem;">
-            <input *ngIf="!deleteCodeSent" type="password" class="input" [(ngModel)]="deletePassword" placeholder="Current password" style="flex:1; padding:0.5rem; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:8px; color:white;" />
+            <input *ngIf="hasPassword && !deleteCodeSent" type="password" class="input" [(ngModel)]="deletePassword" placeholder="Current password" style="flex:1; padding:0.5rem; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:8px; color:white;" />
             <input *ngIf="deleteCodeSent" type="text" class="input" [(ngModel)]="deleteCode" placeholder="6-digit code from email" style="flex:1; padding:0.5rem; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:8px; color:white;" />
             
             <button *ngIf="!deleteCodeSent" class="btn" style="background:#ef4444; color:white; padding:0.5rem 1rem; font-size:0.85rem; align-self:flex-start; border:none; cursor:pointer; border-radius:8px;" (click)="requestDeleteAccount()">Send Code</button>
@@ -817,6 +820,11 @@ export class DashboardComponent implements OnInit {
   protected deleteErrorMsg = '';
   protected deleteSavedMsg = '';
 
+  get hasPassword(): boolean {
+    return this.api.currentUser()?.authProviders?.includes('password') ?? false;
+  }
+
+
 
   async ngOnInit(): Promise<void> {
     this.marketingEnabled = this.api.currentUser()?.marketingConsent !== false;
@@ -862,8 +870,12 @@ export class DashboardComponent implements OnInit {
   async requestEmailChange() {
     this.emailErrorMsg = '';
     this.emailSavedMsg = '';
-    if (!this.editEmail || !this.emailChangePassword) {
-      this.emailErrorMsg = 'Email and password required.';
+    if (!this.editEmail) {
+      this.emailErrorMsg = 'Email is required.';
+      return;
+    }
+    if (this.hasPassword && !this.emailChangePassword) {
+      this.emailErrorMsg = 'Current password is required to change email.';
       return;
     }
     const res = await this.api.request('/api/auth/me', { 
@@ -919,8 +931,8 @@ export class DashboardComponent implements OnInit {
   async requestDeleteAccount() {
     this.deleteErrorMsg = '';
     this.deleteSavedMsg = '';
-    if (!this.deletePassword) {
-      this.deleteErrorMsg = 'Password required.';
+    if (this.hasPassword && !this.deletePassword) {
+      this.deleteErrorMsg = 'Current password is required.';
       return;
     }
     const res = await this.api.request('/api/auth/me/request-deletion', { 
