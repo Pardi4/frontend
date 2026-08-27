@@ -82,9 +82,11 @@ import { ApiService } from '../api.service';
         <div style="display: flex; flex-direction: column; gap: 0.5rem;">
           <div style="display: flex; justify-content: space-between; align-items: flex-end;">
             <span>Treść Maila (HTML)</span>
-            <div style="display: flex; gap: 0.5rem;">
+            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: flex-end;">
               <button type="button" class="btn btn-outline" style="padding: 0.25rem 0.75rem; font-size: 0.8rem;" (click)="insertTag('{{DISCOUNT_CODE}}')">Wstaw Kod Zniżkowy</button>
-              <button type="button" class="btn btn-outline" style="padding: 0.25rem 0.75rem; font-size: 0.8rem;" (click)="insertTag('{{EMAIL}}')">Wstaw Email Usługobiorcy</button>
+              <button type="button" class="btn btn-outline" style="padding: 0.25rem 0.75rem; font-size: 0.8rem;" (click)="insertTag('{{DISCOUNT_PERCENT}}')">Wstaw % Zniżki</button>
+              <button type="button" class="btn btn-outline" style="padding: 0.25rem 0.75rem; font-size: 0.8rem;" (click)="insertTag('{{DISCOUNT_EXPIRES}}')">Wstaw Dni Ważności</button>
+              <button type="button" class="btn btn-outline" style="padding: 0.25rem 0.75rem; font-size: 0.8rem;" (click)="insertTag('{{EMAIL}}')">Wstaw Email</button>
             </div>
           </div>
           <textarea #htmlEditor class="input" [(ngModel)]="html" name="html" required rows="10" placeholder="<h1>Cześć!</h1><p>Twój kod to: {{'{{'}}DISCOUNT_CODE{{'}}'}}</p>" style="padding: 0.75rem; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 8px; color: white; resize: vertical;"></textarea>

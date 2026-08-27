@@ -1299,6 +1299,7 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
               <h3 style="margin-top: 0.25rem;">{{ selectedUserHistory()?.email }}</h3>
             </div>
             <div class="modal-actions">
+              <button class="btn btn-outline" type="button" (click)="sendDiscountToUser(selectedUserHistory()?.email)">Wyślij Zniżkę (-10%)</button>
               <button class="btn btn-outline" type="button" (click)="openGrantModal(selectedUserHistory(), tr('questionHistoryAdjustment'))">{{ tr('grantCredits') }}</button>
               <button class="btn-close" type="button" (click)="closeUserHistory()">x</button>
             </div>
@@ -4089,6 +4090,34 @@ export class AdminComponent implements OnInit, OnDestroy {
       return;
     }
     this.error.set(result.error || this.tr('couldNotGrantCredits'));
+  }
+
+  protected async sendDiscountToUser(email?: string): Promise<void> {
+    if (!email) return;
+    if (!this.confirm('Czy na pewno chcesz wygenerować i wysłać jednorazowy kod zniżkowy -10% do tego użytkownika?')) return;
+    
+    this.loading.set(true);
+    const body = {
+      subject: 'Oto Twój kod zniżkowy od Quizonator!',
+      html: '<h1>Cześć!</h1><p>Dziękujemy za korzystanie z naszego serwisu. Przygotowaliśmy dla Ciebie specjalny jednorazowy kod rabatowy <strong>-10%</strong> na kolejne zakupy!</p><br><p>Twój kod: <strong style="font-size:24px; color:#06b6d4;">{{DISCOUNT_CODE}}</strong></p><p>Kod jest ważny przez najbliższe 7 dni.</p>',
+      targetEmail: email,
+      discountType: 'unique',
+      discountPrefix: 'GIFT',
+      discountPercent: 10,
+      discountExpiresDays: 7
+    };
+
+    const res = await this.api('/api/admin/marketing/send', {
+      method: 'POST',
+      body: JSON.stringify(body)
+    });
+
+    if (res.success) {
+      alert('Wysłano pomyślnie!');
+    } else {
+      this.error.set(res.error || 'Błąd podczas wysyłania');
+    }
+    this.loading.set(false);
   }
 
   protected async banUser(userId: string): Promise<void> {
