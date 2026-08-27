@@ -39,6 +39,8 @@ const blogCategoryRoutes: ServerRoute[] = SUPPORTED_LOCALES.map(({ code }) => ({
 }));
 
 export const serverRoutes: ServerRoute[] = [
+  { path: 'qr-login/:sessionId', renderMode: RenderMode.Server },
+  { path: 'pl/qr-login/:sessionId', renderMode: RenderMode.Server },
   ...sharedQuizRoutes,
   ...blogCategoryRoutes,
   ...blogPostRoutes,

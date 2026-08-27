@@ -21,6 +21,8 @@ const sharedQuizRoutes = (): Routes =>
   }));
 
 export const routes: Routes = [
+  { path: 'qr-login/:sessionId', loadComponent: () => import('./pages/qr-login.component').then(m => m.QrLoginComponent), data: { locale: 'en' } },
+  { path: 'pl/qr-login/:sessionId', loadComponent: () => import('./pages/qr-login.component').then(m => m.QrLoginComponent), data: { locale: 'pl' } },
   ...localizedRoutes('home', () => import('./pages/home.component').then(m => m.HomeComponent)),
   ...localizedRoutes('dashboard', () => import('./pages/dashboard.component').then(m => m.DashboardComponent)),
   { path: ADMIN_PANEL_ROUTE_PATH, loadComponent: () => import('./pages/admin.component').then(m => m.AdminComponent), data: { locale: 'en' } },
