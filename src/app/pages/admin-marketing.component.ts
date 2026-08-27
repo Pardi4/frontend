@@ -128,9 +128,19 @@ export class AdminMarketingComponent {
 
   constructor(private api: ApiService) {}
 
+  allEmails = signal<string[]>([]);
+
   ngOnInit() {
     this.loadStats();
     this.loadUsers();
+    this.loadAllEmails();
+  }
+
+  async loadAllEmails() {
+    const res = await this.api.request('/api/admin/marketing/all-emails');
+    if (res.success) {
+      this.allEmails.set(res.emails);
+    }
   }
 
   async loadStats() {
