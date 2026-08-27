@@ -142,12 +142,16 @@ export class QrLoginComponent implements OnInit {
 
     if (!this.sessionId || !this.secret) {
       this.state = 'expired';
+      this.cdr.detectChanges();
       return;
     }
 
-    const token = typeof localStorage !== 'undefined' ? localStorage.getItem('qs_token') : null;
+    let token = null;
+    try { token = typeof localStorage !== 'undefined' ? localStorage.getItem('qs_token') : null; } catch(e) {}
+    
     if (!token) {
       this.state = 'needLogin';
+      this.cdr.detectChanges();
       return;
     }
 
@@ -168,12 +172,15 @@ export class QrLoginComponent implements OnInit {
     } catch {
       this.state = 'confirm';
     }
+    this.cdr.detectChanges();
   }
 
   async confirm() {
     this.confirming = true;
+    this.cdr.detectChanges();
     try {
-      const token = localStorage.getItem('qs_token') || '';
+      let token = '';
+      try { token = localStorage.getItem('qs_token') || ''; } catch(e) {}
       const res = await fetch(`${this.apiBase}/auth/qr/confirm`, {
         method: 'POST',
         headers: {
@@ -199,6 +206,7 @@ export class QrLoginComponent implements OnInit {
       this.state = 'error';
     }
     this.confirming = false;
+    this.cdr.detectChanges();
   }
 
   goToLogin() {
