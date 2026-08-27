@@ -937,6 +937,8 @@ export class ShellComponent implements OnInit, AfterViewInit, OnDestroy {
   protected registerEmail = '';
   protected registerPassword = '';
   protected registerPasswordConfirm = '';
+  protected consentTos = false;
+  protected consentMarketing = true;
   protected referralCode = '';
   protected verificationEmail = '';
   protected verificationCode = '';
