@@ -1,6 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'qs-qr-login',
@@ -123,6 +124,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class QrLoginComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
+  private cdr = inject(ChangeDetectorRef);
 
   state: 'loading' | 'confirm' | 'needLogin' | 'success' | 'error' | 'expired' = 'loading';
   confirming = false;
