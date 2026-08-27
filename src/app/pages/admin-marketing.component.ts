@@ -42,7 +42,10 @@ import { ApiService } from '../api.service';
           </label>
           <label style="flex:1; min-width: 250px; display: flex; flex-direction: column; gap: 0.5rem;">
             <span>Wyślij do jednej osoby (wpisz Email)</span>
-            <input type="email" class="input" [(ngModel)]="targetEmail" name="targetEmail" placeholder="user@example.com (nadpisuje resztę opcji)" style="padding: 0.75rem; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 8px; color: white;" />
+            <input type="email" class="input" [(ngModel)]="targetEmail" name="targetEmail" placeholder="user@example.com (nadpisuje resztę opcji)" list="emailSuggestions" autocomplete="off" style="padding: 0.75rem; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 8px; color: white;" />
+            <datalist id="emailSuggestions">
+              <option *ngFor="let u of allEmails()" [value]="u"></option>
+            </datalist>
           </label>
         </div>
         
