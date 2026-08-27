@@ -40,12 +40,14 @@ import { ApiService } from '../api.service';
             <span>Losowa pula (zostaw puste by wysłać do wszystkich)</span>
             <input type="number" class="input" [(ngModel)]="targetCount" name="targetCount" placeholder="np. 100" style="padding: 0.75rem; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 8px; color: white;" />
           </label>
-          <label style="flex:1; min-width: 250px; display: flex; flex-direction: column; gap: 0.5rem;">
+          <label style="flex:1; min-width: 250px; display: flex; flex-direction: column; gap: 0.5rem; position: relative;">
             <span>Wyślij do jednej osoby (wpisz Email)</span>
-            <input type="email" class="input" [(ngModel)]="targetEmail" name="targetEmail" placeholder="user@example.com (nadpisuje resztę opcji)" list="emailSuggestions" autocomplete="off" style="padding: 0.75rem; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 8px; color: white;" />
-            <datalist id="emailSuggestions">
-              <option *ngFor="let u of allEmails()" [value]="u"></option>
-            </datalist>
+            <input type="email" class="input" [(ngModel)]="targetEmail" name="targetEmail" placeholder="user@example.com (nadpisuje resztę opcji)" autocomplete="off" (focus)="showEmailSuggestions = true" (blur)="hideSuggestions()" style="padding: 0.75rem; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 8px; color: white;" />
+            <div *ngIf="showEmailSuggestions && filteredEmails.length > 0" style="position: absolute; top: 100%; left: 0; right: 0; background: #1e293b; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; margin-top: 0.25rem; z-index: 50; max-height: 200px; overflow-y: auto; box-shadow: 0 10px 25px rgba(0,0,0,0.5);">
+              <div *ngFor="let u of filteredEmails" (mousedown)="selectEmail(u)" style="padding: 0.75rem 1rem; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.05); color: #cbd5e1; font-size: 0.9rem;" onmouseover="this.style.background='rgba(6,182,212,0.1)'; this.style.color='white'" onmouseout="this.style.background='transparent'; this.style.color='#cbd5e1'">
+                {{ u }}
+              </div>
+            </div>
           </label>
         </div>
         
@@ -116,7 +118,23 @@ export class AdminMarketingComponent {
   subject = '';
   html = '';
   targetCount: number | null = null;
-  targetEmail = '';
+      targetEmail = '';
+  showEmailSuggestions = false;
+
+  get filteredEmails() {
+    if (!this.targetEmail) return [];
+    const search = this.targetEmail.toLowerCase();
+    return this.allEmails().filter(e => e.toLowerCase().includes(search)).slice(0, 8);
+  }
+
+  selectEmail(email: string) {
+    this.targetEmail = email;
+    this.showEmailSuggestions = false;
+  }
+
+  hideSuggestions() {
+    setTimeout(() => this.showEmailSuggestions = false, 150);
+  }
   
   // Discount Fields
   discountType: 'none' | 'global' | 'unique' = 'none';
@@ -218,3 +236,4 @@ export class AdminMarketingComponent {
     this.loading.set(false);
   }
 }
+
