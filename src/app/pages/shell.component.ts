@@ -247,6 +247,17 @@ type AuthModal = 'login' | 'register' | 'verify' | 'forgot' | 'reset';
               <button class="inline-auth-link" type="button" (click)="openModal('forgot')">
                 {{ copy.shell.forgotPassword }}
               </button>
+              <div class="consent-group" style="margin: 16px 0; display: flex; flex-direction: column; gap: 12px; font-size: 13px; color: #a1a1aa; text-align: left;">
+                <label style="display: flex; gap: 8px; align-items: flex-start; cursor: pointer;">
+                  <input type="checkbox" name="consentTos" [(ngModel)]="consentTos" required style="margin-top: 3px; min-width: 16px; min-height: 16px; accent-color: #06b6d4;">
+                  <span>Akceptuję <a href="/terms" target="_blank" style="color: #06b6d4; text-decoration: underline;">Regulamin</a> oraz <a href="/privacy" target="_blank" style="color: #06b6d4; text-decoration: underline;">Politykę Prywatności</a> *</span>
+                </label>
+                <label style="display: flex; gap: 8px; align-items: flex-start; cursor: pointer;">
+                  <input type="checkbox" name="consentMarketing" [(ngModel)]="consentMarketing" style="margin-top: 3px; min-width: 16px; min-height: 16px; accent-color: #06b6d4;">
+                  <span>Chcę otrzymywać na email specjalne zniżki, nowości i kody rabatowe.</span>
+                </label>
+              </div>
+
               <div class="form-error" *ngIf="authError()">{{ authError() }}</div>
               <div class="form-success" *ngIf="authInfo()">{{ authInfo() }}</div>
               <button class="btn btn-primary btn-block" type="submit" [disabled]="authLoading()">
@@ -1244,6 +1255,10 @@ protected switchLocale(event: MouseEvent, targetLocale: any): void {
       this.authError.set(this.copy.shell.passwordsMismatch);
       return;
     }
+    if (!this.consentTos) {
+      this.authError.set('Musisz zaakceptować Regulamin i Politykę Prywatności.');
+      return;
+    }
     this.authLoading.set(true);
     const result = await this.api.request('/api/auth/register', {
       method: 'POST',
@@ -1251,7 +1266,8 @@ protected switchLocale(event: MouseEvent, targetLocale: any): void {
         email: this.registerEmail,
         password: this.registerPassword,
         
-        referralCode: this.referralCode || undefined
+        referralCode: this.referralCode || undefined,
+        marketingOptIn: this.consentMarketing
       })
     });
     this.authLoading.set(false);
