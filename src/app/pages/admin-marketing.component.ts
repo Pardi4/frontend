@@ -40,6 +40,10 @@ import { ApiService } from '../api.service';
             <span>Losowa pula (zostaw puste by wysłać do wszystkich)</span>
             <input type="number" class="input" [(ngModel)]="targetCount" name="targetCount" placeholder="np. 100" style="padding: 0.75rem; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 8px; color: white;" />
           </label>
+          <label style="display: flex; align-items: center; gap: 0.5rem; min-width: 200px; color: #ef4444; background: rgba(239, 68, 68, 0.1); padding: 0.75rem; border-radius: 8px; cursor: pointer;">
+            <input type="checkbox" [(ngModel)]="ignoreConsent" name="ignoreConsent" style="width: 18px; height: 18px;" />
+            <span>Ignoruj zgody (Wyślij WSZYSTKIM)</span>
+          </label>
           <label style="flex:1; min-width: 250px; display: flex; flex-direction: column; gap: 0.5rem; position: relative;">
             <span>Wyślij do jednej osoby (wpisz Email)</span>
             <input type="email" class="input" [(ngModel)]="targetEmail" name="targetEmail" placeholder="user@example.com (nadpisuje resztę opcji)" autocomplete="off" (focus)="showEmailSuggestions = true" (blur)="hideSuggestions()" style="padding: 0.75rem; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 8px; color: white;" />
@@ -92,6 +96,7 @@ import { ApiService } from '../api.service';
               <button type="button" class="btn btn-outline" style="padding: 0.25rem 0.75rem; font-size: 0.8rem;" (click)="insertTag('{{DISCOUNT_PERCENT}}')">Wstaw % Zniżki</button>
               <button type="button" class="btn btn-outline" style="padding: 0.25rem 0.75rem; font-size: 0.8rem;" (click)="insertTag('{{DISCOUNT_EXPIRES}}')">Wstaw Dni Ważności</button>
               <button type="button" class="btn btn-outline" style="padding: 0.25rem 0.75rem; font-size: 0.8rem;" (click)="insertTag('{{EMAIL}}')">Wstaw Email</button>
+              <button type="button" class="btn btn-primary" style="padding: 0.25rem 0.75rem; font-size: 0.8rem;" (click)="loadBackToSchoolTemplate()">Szablon: Back to School</button>
             </div>
           </div>
           <textarea #htmlEditor class="input" [(ngModel)]="html" name="html" required rows="10" placeholder="<h1>Cześć!</h1><p>Twój kod to: {{'{{'}}DISCOUNT_CODE{{'}}'}}</p>" style="padding: 0.75rem; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 8px; color: white; resize: vertical;"></textarea>
@@ -142,6 +147,7 @@ export class AdminMarketingComponent {
   discountPercent = 10;
   discountExpiresDays = 7;
   discountMaxUses = 100;
+  ignoreConsent = false;
 
   loading = signal(false);
   error = signal('');
@@ -178,6 +184,29 @@ export class AdminMarketingComponent {
       this.users.set(res.users);
     }
     this.usersLoading.set(false);
+  }
+
+  loadBackToSchoolTemplate() {
+    this.subject = 'Witaj szkoło! Zniżka -50% na QuizSolver 🎒';
+    this.discountType = 'global';
+    this.discountPrefix = 'SZKOLA';
+    this.discountPercent = 50;
+    this.discountExpiresDays = 7;
+    this.html = `
+<div style="font-family: Arial, sans-serif; color: #333; max-width: 600px; margin: 0 auto; background-color: #f9f9f9; padding: 20px; border-radius: 10px;">
+  <div style="text-align: center; margin-bottom: 20px;">
+    <h1 style="color: #0ea5e9;">Witaj Szkoło! 🎒</h1>
+  </div>
+  <div style="background-color: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+    <p style="font-size: 16px; line-height: 1.5;">Cześć!</p>
+    <p style="font-size: 16px; line-height: 1.5;">Rozpoczęcie roku szkolnego bywa ciężkie, dlatego przygotowaliśmy dla Ciebie specjalną zniżkę na <strong>QuizSolver</strong>, która ułatwi Ci start w nowym semestrze!</p>
+    <div style="text-align: center; margin: 30px 0;">
+      <span style="background-color: #0ea5e9; color: white; font-size: 24px; font-weight: bold; padding: 10px 20px; border-radius: 8px; letter-spacing: 2px;">{{DISCOUNT_CODE}}</span>
+    </div>
+    <p style="font-size: 16px; line-height: 1.5; text-align: center;">Kod upoważnia do zniżki <strong>{{DISCOUNT_PERCENT}}%</strong> na zakup kredytów!</p>
+    <p style="font-size: 14px; color: #666; text-align: center;"><em>Śpiesz się, kod wygasa za {{DISCOUNT_EXPIRES}} dni!</em></p>
+  </div>
+</div>`;
   }
 
   insertTag(tag: string) {
@@ -218,6 +247,7 @@ export class AdminMarketingComponent {
     
     if (this.targetCount) body.targetCount = this.targetCount;
     if (this.targetEmail) body.targetEmail = this.targetEmail;
+    if (this.ignoreConsent) body.ignoreConsent = this.ignoreConsent;
     
     const res = await this.api.request('/api/admin/marketing/send', {
       method: 'POST',
