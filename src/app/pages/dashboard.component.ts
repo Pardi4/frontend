@@ -289,7 +289,7 @@ const DASHBOARD_UI: Record<Locale, DashboardUi> = {
           <header class="dashboard-header" style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:1rem;">
             <div>
               <p class="eyebrow">{{ copy.dashboard }}</p>
-              <h1>{{ ui.greeting }}!</h1>
+              <h1>{{ ui.greeting }} {{ api.currentUser()?.displayName || (api.currentUser()?.email?.split('@')?.[0]) || '' }}!</h1>
               <p class="desc text-secondary">{{ ui.dashboardIntro }}</p>
             </div>
             <div>
