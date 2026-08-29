@@ -352,9 +352,23 @@ const DASHBOARD_UI: Record<Locale, DashboardUi> = {
                   </p>
                   <div class="copy-box">
                     <code class="ref-link">{{ referral().referralLink || 'Loading...' }}</code>
-                    <button class="btn btn-primary btn-sm" type="button" (click)="copyReferral()">
-                      {{ copied ? ui.copied : ui.copy }}
-                    </button>
+                    <div style="display: flex; gap: 8px;">
+                      <button class="btn btn-primary btn-sm" type="button" (click)="copyReferral()">
+                        {{ copied ? ui.copied : ui.copy }}
+                      </button>
+                      <button class="btn btn-outline btn-sm" type="button" (click)="editReferralOpen = !editReferralOpen; editReferralInput = api.currentUser()?.referralCode || ''">
+                        {{ locale === 'pl' ? 'Zmień' : 'Edit' }}
+                      </button>
+                    </div>
+                  </div>
+                  <div *ngIf="editReferralOpen" style="margin-top: 1rem; display: flex; flex-direction: column; gap: 0.5rem; background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05);">
+                    <div style="display: flex; gap: 0.5rem; align-items: center;">
+                      <input type="text" [(ngModel)]="editReferralInput" placeholder="Nowy kod / New code" class="input" style="flex: 1;" />
+                      <button class="btn btn-primary" [disabled]="editReferralLoading" (click)="saveReferralCode()">
+                        {{ editReferralLoading ? '...' : (locale === 'pl' ? 'Zapisz' : 'Save') }}
+                      </button>
+                    </div>
+                    <div *ngIf="editReferralError" class="text-error" style="color: #ef4444; font-size: 0.875rem;">{{ editReferralError }}</div>
                   </div>
                 </div>
                 <div class="referral-stats">
@@ -795,6 +809,10 @@ export class DashboardComponent implements OnInit {
   protected locale: Locale = 'en';
   protected data = pageData('dashboard', 'en');
   protected copied = false;
+  protected editReferralOpen = false;
+  protected editReferralInput = '';
+  protected editReferralError = '';
+  protected editReferralLoading = false;
   protected ui = DASHBOARD_UI.en;
   protected copy = { dashboard: DASHBOARD_UI.en.dashboard, credits: DASHBOARD_UI.en.credits };
   protected settingsOpen = false;
@@ -1016,6 +1034,28 @@ export class DashboardComponent implements OnInit {
   }
   stopQrScanner() {
  this.scannerOpen = false;
+  }
+
+  protected async saveReferralCode(): Promise<void> {
+    this.editReferralError = '';
+    const newRef = this.editReferralInput.trim();
+    if (!newRef) {
+      this.editReferralOpen = false;
+      return;
+    }
+    this.editReferralLoading = true;
+    const res = await this.api.request('/api/auth/me', {
+      method: 'PATCH',
+      body: JSON.stringify({ referralCode: newRef })
+    });
+    this.editReferralLoading = false;
+    if (res.success) {
+      this.editReferralOpen = false;
+      await this.api.restoreSession();
+      await this.loadReferral();
+    } else {
+      this.editReferralError = res.error || 'Wystąpił błąd.';
+    }
   }
 
   protected async copyReferral(): Promise<void> {
