@@ -187,24 +187,37 @@ export class AdminMarketingComponent {
   }
 
   loadBackToSchoolTemplate() {
-    this.subject = 'Witaj szkoło! Zniżka -50% na QuizSolver 🎒';
+    this.subject = 'Crush this semester! 🎒 50% OFF QuizSolver';
     this.discountType = 'global';
-    this.discountPrefix = 'SZKOLA';
+    this.discountPrefix = 'SCHOOL';
     this.discountPercent = 50;
     this.discountExpiresDays = 7;
     this.html = `
-<div style="font-family: Arial, sans-serif; color: #333; max-width: 600px; margin: 0 auto; background-color: #f9f9f9; padding: 20px; border-radius: 10px;">
-  <div style="text-align: center; margin-bottom: 20px;">
-    <h1 style="color: #0ea5e9;">Witaj Szkoło! 🎒</h1>
-  </div>
-  <div style="background-color: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
-    <p style="font-size: 16px; line-height: 1.5;">Cześć!</p>
-    <p style="font-size: 16px; line-height: 1.5;">Rozpoczęcie roku szkolnego bywa ciężkie, dlatego przygotowaliśmy dla Ciebie specjalną zniżkę na <strong>QuizSolver</strong>, która ułatwi Ci start w nowym semestrze!</p>
-    <div style="text-align: center; margin: 30px 0;">
-      <span style="background-color: #0ea5e9; color: white; font-size: 24px; font-weight: bold; padding: 10px 20px; border-radius: 8px; letter-spacing: 2px;">{{DISCOUNT_CODE}}</span>
+<div style="font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; max-width: 600px; margin: 0 auto; background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); padding: 40px 20px; border-radius: 16px; overflow: hidden; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); color: #f8fafc; border: 1px solid rgba(255, 255, 255, 0.1);">
+  <div style="text-align: center; margin-bottom: 30px;">
+    <div style="display: inline-block; background: rgba(6, 182, 212, 0.2); padding: 10px 20px; border-radius: 50px; border: 1px solid rgba(6, 182, 212, 0.4); margin-bottom: 20px;">
+      <span style="color: #22d3ee; font-weight: 700; letter-spacing: 1px; font-size: 13px; text-transform: uppercase;">BACK TO SCHOOL SALE 🎒</span>
     </div>
-    <p style="font-size: 16px; line-height: 1.5; text-align: center;">Kod upoważnia do zniżki <strong>{{DISCOUNT_PERCENT}}%</strong> na zakup kredytów!</p>
-    <p style="font-size: 14px; color: #666; text-align: center;"><em>Śpiesz się, kod wygasa za {{DISCOUNT_EXPIRES}} dni!</em></p>
+    <h1 style="color: #ffffff; font-size: 32px; font-weight: 800; margin: 0; line-height: 1.2;">Crush this semester<br>with <span style="color: #22d3ee;">QuizSolver</span>.</h1>
+  </div>
+  
+  <div style="background: rgba(255, 255, 255, 0.05); padding: 30px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.05);">
+    <p style="font-size: 16px; line-height: 1.6; margin-top: 0; color: #cbd5e1;">Hey {{EMAIL}},</p>
+    <p style="font-size: 16px; line-height: 1.6; color: #cbd5e1;">Starting a new school year can be tough. We want to give you an unfair advantage. Grab your credits for half the price and never get stuck on a question again.</p>
+    
+    <div style="background: linear-gradient(to right, rgba(6, 182, 212, 0.1), rgba(59, 130, 246, 0.1)); border: 1px dashed #22d3ee; border-radius: 8px; padding: 25px; text-align: center; margin: 30px 0;">
+      <p style="margin: 0 0 10px 0; font-size: 14px; color: #94a3b8; text-transform: uppercase; font-weight: 600;">Use promo code at checkout</p>
+      <div style="display: inline-block; background: #0ea5e9; color: white; font-size: 28px; font-weight: 900; padding: 12px 30px; border-radius: 8px; letter-spacing: 3px; box-shadow: 0 10px 15px -3px rgba(14, 165, 233, 0.4);">
+        {{DISCOUNT_CODE}}
+      </div>
+      <p style="margin: 15px 0 0 0; font-size: 18px; color: #f8fafc;">for <strong style="color: #22d3ee;">{{DISCOUNT_PERCENT}}% OFF</strong></p>
+    </div>
+    
+    <p style="font-size: 14px; color: #64748b; text-align: center; margin-bottom: 0;"><em>Hurry up, this code expires in {{DISCOUNT_EXPIRES}} days!</em></p>
+  </div>
+  
+  <div style="text-align: center; margin-top: 30px;">
+    <a href="https://quizsolver.com/dashboard" style="display: inline-block; background: #0ea5e9; color: white; text-decoration: none; font-weight: 600; padding: 14px 32px; border-radius: 8px; font-size: 16px; box-shadow: 0 4px 6px -1px rgba(14, 165, 233, 0.3);">Go to Dashboard</a>
   </div>
 </div>`;
   }
