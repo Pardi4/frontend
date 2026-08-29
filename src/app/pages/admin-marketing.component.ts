@@ -70,8 +70,14 @@ import { ApiService } from '../api.service';
 
           <div *ngIf="discountType !== 'none'" style="display:flex; gap:1rem; flex-wrap: wrap;">
             <label style="display: flex; flex-direction: column; gap: 0.5rem;">
-              <span>Prefix (np. LATO, BTS)</span>
+              <span>Prefix (lub dokładny kod)</span>
               <input type="text" class="input" [(ngModel)]="discountPrefix" name="discountPrefix" placeholder="PROMO" style="padding: 0.5rem; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 8px; color: white; width: 150px;" />
+            </label>
+            <label *ngIf="discountType === 'global'" style="display: flex; flex-direction: column; gap: 0.5rem; justify-content: flex-end; padding-bottom: 0.5rem;">
+              <div style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                <input type="checkbox" [(ngModel)]="discountExactCode" name="discountExactCode" style="width: 16px; height: 16px;" />
+                <span style="font-size: 0.85rem; color: #cbd5e1;">Dokładny kod (bez losowych znaków)</span>
+              </div>
             </label>
             <label style="display: flex; flex-direction: column; gap: 0.5rem;">
               <span>Zniżka %</span>
@@ -148,6 +154,7 @@ export class AdminMarketingComponent {
   discountExpiresDays = 7;
   discountMaxUses = 100;
   ignoreConsent = false;
+  discountExactCode = false;
 
   loading = signal(false);
   error = signal('');
@@ -190,6 +197,7 @@ export class AdminMarketingComponent {
     this.subject = 'Crush this semester! 🎒 50% OFF QuizSolver';
     this.discountType = 'global';
     this.discountPrefix = 'SCHOOL';
+    this.discountExactCode = true;
     this.discountPercent = 50;
     this.discountExpiresDays = 7;
     this.html = `
@@ -254,6 +262,7 @@ export class AdminMarketingComponent {
       discountType: this.discountType,
       discountPrefix: this.discountPrefix,
       discountPercent: this.discountPercent,
+      discountExactCode: this.discountExactCode,
       discountExpiresDays: this.discountExpiresDays,
       discountMaxUses: this.discountMaxUses
     };
