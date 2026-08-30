@@ -194,9 +194,9 @@ export class AdminMarketingComponent {
   }
 
   loadBackToSchoolTemplate() {
-    this.subject = 'Crush this semester! 🎒 50% OFF QuizSolver';
+    this.subject = 'Tomorrow it starts again... 🎒 Get 50% OFF QuizSolver';
     this.discountType = 'global';
-    this.discountPrefix = 'SCHOOL';
+    this.discountPrefix = 'BACK2SCHOOL';
     this.discountExactCode = true;
     this.discountPercent = 50;
     this.discountExpiresDays = 7;
@@ -206,12 +206,13 @@ export class AdminMarketingComponent {
     <div style="display: inline-block; background: rgba(6, 182, 212, 0.2); padding: 10px 20px; border-radius: 50px; border: 1px solid rgba(6, 182, 212, 0.4); margin-bottom: 20px;">
       <span style="color: #22d3ee; font-weight: 700; letter-spacing: 1px; font-size: 13px; text-transform: uppercase;">BACK TO SCHOOL SALE 🎒</span>
     </div>
-    <h1 style="color: #ffffff; font-size: 32px; font-weight: 800; margin: 0; line-height: 1.2;">Crush this semester<br>with <span style="color: #22d3ee;">QuizSolver</span>.</h1>
+    <h1 style="color: #ffffff; font-size: 32px; font-weight: 800; margin: 0; line-height: 1.2;">Tomorrow is<br><span style="color: #22d3ee;">September 1st.</span></h1>
   </div>
   
   <div style="background: rgba(255, 255, 255, 0.05); padding: 30px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.05);">
     <p style="font-size: 16px; line-height: 1.6; margin-top: 0; color: #cbd5e1;">Hey {{EMAIL}},</p>
-    <p style="font-size: 16px; line-height: 1.6; color: #cbd5e1;">Starting a new school year can be tough. We want to give you an unfair advantage. Grab your credits for half the price and never get stuck on a question again.</p>
+    <p style="font-size: 16px; line-height: 1.6; color: #cbd5e1;">Summer is officially over. Tomorrow the chaos starts again — assignments, quizzes, and unexpected tests.</p>
+    <p style="font-size: 16px; line-height: 1.6; color: #cbd5e1;">But this semester, you're coming prepared. We are giving you a massive head start to crush every quiz without the stress.</p>
     
     <div style="background: linear-gradient(to right, rgba(6, 182, 212, 0.1), rgba(59, 130, 246, 0.1)); border: 1px dashed #22d3ee; border-radius: 8px; padding: 25px; text-align: center; margin: 30px 0;">
       <p style="margin: 0 0 10px 0; font-size: 14px; color: #94a3b8; text-transform: uppercase; font-weight: 600;">Use promo code at checkout</p>
@@ -225,7 +226,7 @@ export class AdminMarketingComponent {
   </div>
   
   <div style="text-align: center; margin-top: 30px;">
-    <a href="https://quizsolver.com/dashboard" style="display: inline-block; background: #0ea5e9; color: white; text-decoration: none; font-weight: 600; padding: 14px 32px; border-radius: 8px; font-size: 16px; box-shadow: 0 4px 6px -1px rgba(14, 165, 233, 0.3);">Go to Dashboard</a>
+    <a href="https://getquizsolver.com/#pricing" style="display: inline-block; background: #0ea5e9; color: white; text-decoration: none; font-weight: 600; padding: 14px 32px; border-radius: 8px; font-size: 16px; box-shadow: 0 4px 6px -1px rgba(14, 165, 233, 0.3);">Get My Credits Now</a>
   </div>
 </div>`;
   }
