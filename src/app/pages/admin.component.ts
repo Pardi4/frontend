@@ -9,7 +9,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Meta, Title } from '@angular/platform-browser';
 import { ADMIN_PANEL_ROUTE_PATH, ADMIN_PANEL_URL } from '../admin-path';
 
-type AdminTab = 'users' | 'purchases' | 'bugs' | 'support' | 'cache' | 'parser' | 'system' | 'errors' | 'marketing';
+type AdminTab = 'users' | 'purchases' | 'bugs' | 'support' | 'cache' | 'parser' | 'system' | 'errors' | 'marketing' | 'dataset';
 type AdminLocale = 'en' | 'pl';
 type UserSortField = 'credits' | 'questions' | 'streak' | 'status';
 type UserSortDirection = 'asc' | 'desc';
@@ -17,7 +17,7 @@ type UserSortOption = 'createdAt_desc' | 'createdAt_asc' | `${UserSortField}_${U
 
 const ADMIN_ACTIVE_TAB_KEY = 'qs_admin_active_tab';
 const ADMIN_USERS_STATE_KEY = 'qs_admin_users_state';
-const ADMIN_TAB_IDS: AdminTab[] = ['users', 'purchases', 'bugs', 'support', 'cache', 'parser', 'system', 'errors', 'marketing'];
+const ADMIN_TAB_IDS: AdminTab[] = ['users', 'purchases', 'bugs', 'support', 'cache', 'parser', 'system', 'errors', 'marketing', 'dataset'];
 const DEFAULT_USER_SORT: UserSortOption = 'createdAt_desc';
 const USER_SORT_VALUES: UserSortOption[] = [
   'createdAt_desc',
@@ -1203,6 +1203,20 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
 
             <app-admin-errors *ngIf="activeTab() === 'errors'" [api]="api.bind(this)"></app-admin-errors>
             <app-admin-marketing *ngIf="activeTab() === 'marketing'"></app-admin-marketing>
+
+<section class="admin-panel" *ngIf="activeTab() === 'dataset'">
+  <header class="panel-header">
+    <h2>Parser Dataset Analysis</h2>
+    <p>Raw JSONL dataset gathered from extension telemetry.</p>
+    <div class="panel-actions">
+      <button class="btn btn-primary" type="button" onclick="window.location.href='/dataset.html'">Open Full Viewer</button>
+    </div>
+  </header>
+  <div class="table-wrap">
+    <iframe src="/dataset.html" style="width:100%; height:800px; border:none; border-radius: 8px;"></iframe>
+  </div>
+</section>
+
           </section>
         </section>
       </ng-template>
@@ -3816,7 +3830,7 @@ export class AdminComponent implements OnInit, OnDestroy {
     { id: 'support', label: 'Support', short: 'SP' },
     { id: 'cache', label: 'Cache', short: 'CA' },
     { id: 'parser', label: 'Parser', short: 'PR' },
-    { id: 'system', label: 'System', short: 'SY' },
+    { id: 'system', label: 'System', short: 'SY' }, { id: 'dataset', label: 'Analiza', short: 'AN' },
         { id: 'errors', label: 'Errors', short: 'ER' },
     { id: 'marketing', label: 'Marketing', short: 'MK' }
   ];
@@ -4192,7 +4206,8 @@ export class AdminComponent implements OnInit, OnDestroy {
       parser: 'parser',
       system: 'system',
       errors: 'errors',
-      marketing: 'marketingTitle'
+      marketing: 'marketingTitle',
+      dataset: 'search' as any
     };
     return this.tr(labels[tab]);
   }
@@ -4207,7 +4222,8 @@ export class AdminComponent implements OnInit, OnDestroy {
       parser: 'parserHint',
       system: 'systemHint',
       errors: 'errorsHint',
-      marketing: 'marketingDescription'
+      marketing: 'marketingDescription',
+      dataset: 'search' as any
     };
     return this.tr(hints[tab]);
   }
@@ -4248,7 +4264,8 @@ export class AdminComponent implements OnInit, OnDestroy {
       parser: 'parserTitle',
       system: 'systemTitle',
       errors: 'errors',
-      marketing: 'marketingTitle'
+      marketing: 'marketingTitle',
+      dataset: 'search' as any
     };
     return this.tr(titles[this.activeTab()]);
   }
@@ -4263,7 +4280,8 @@ export class AdminComponent implements OnInit, OnDestroy {
       parser: 'parserDescription',
       system: 'systemDescription',
       errors: 'errorsHint',
-      marketing: 'marketingDescription'
+      marketing: 'marketingDescription',
+      dataset: 'search' as any
     };
     return this.tr(descriptions[this.activeTab()]);
   }
