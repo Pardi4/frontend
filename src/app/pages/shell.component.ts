@@ -292,11 +292,21 @@ type AuthModal = 'login' | 'register' | 'verify' | 'forgot' | 'reset';
               <div class="form-group">
                 <input class="form-input" type="password" name="passwordConfirm" [(ngModel)]="registerPasswordConfirm" [placeholder]="copy.common.confirmPassword" autocomplete="new-password" required>
               </div>
-              <div class="form-group">
-                <input class="form-input" type="text" name="referralCode" [(ngModel)]="referralCode" [placeholder]="copy.common.referralCode">
-              </div>
-              <div class="form-error" *ngIf="authError()">{{ authError() }}</div>
-              <div class="form-success" *ngIf="authInfo()">{{ authInfo() }}</div>
+                <div class="form-group">
+                  <input class="form-input" type="text" name="referralCode" [(ngModel)]="referralCode" [placeholder]="copy.common.referralCode">
+                </div>
+                <div class="form-group consent-group" style="text-align: left; font-size: 0.85rem; display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.5rem; margin-bottom: 0.5rem;">
+                  <label style="display: flex; gap: 0.5rem; align-items: flex-start; cursor: pointer; color: var(--text-secondary);">
+                    <input type="checkbox" name="consentTos" [(ngModel)]="consentTos" required style="margin-top: 0.2rem;">
+                    <span>Akceptuję <a href="/terms" target="_blank" style="color: var(--accent-cyan); text-decoration: underline;">Regulamin</a> i <a href="/privacy" target="_blank" style="color: var(--accent-cyan); text-decoration: underline;">Politykę Prywatności</a> (wymagane)</span>
+                  </label>
+                  <label style="display: flex; gap: 0.5rem; align-items: flex-start; cursor: pointer; color: var(--text-secondary);">
+                    <input type="checkbox" name="consentMarketing" [(ngModel)]="consentMarketing" style="margin-top: 0.2rem;">
+                    <span>Zgadzam się na otrzymywanie informacji marketingowych (opcjonalne)</span>
+                  </label>
+                </div>
+                <div class="form-error" *ngIf="authError()">{{ authError() }}</div>
+                <div class="form-success" *ngIf="authInfo()">{{ authInfo() }}</div>
               <button class="btn btn-primary btn-block" type="submit" [disabled]="authLoading()">
                 {{ authLoading() ? copy.common.loading : copy.common.createAccount }}
               </button>
