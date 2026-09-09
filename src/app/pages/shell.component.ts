@@ -210,6 +210,7 @@ type AuthModal = 'login' | 'register' | 'verify' | 'forgot' | 'reset';
             <div class="footer-links">
               <a class="nav-link" [href]="pathFor('privacy')">{{ copy.footer.privacy }}</a>
               <a class="nav-link" [href]="pathFor('terms')">{{ copy.footer.terms || 'Terms of Service' }}</a>
+              <a class="nav-link" [href]="pathFor('cookies')">Cookie Policy</a>
               <span class="nav-link">support&#64;getquizsolver.com</span>
             </div>
           </div>
@@ -218,6 +219,17 @@ type AuthModal = 'login' | 'register' | 'verify' | 'forgot' | 'reset';
           {{ copy.footer.rights }}
         </div>
       </footer>
+
+      <div class="cookie-banner glass" *ngIf="showCookieBanner()" style="position: fixed; bottom: 0; left: 0; right: 0; z-index: 9999; padding: 1rem; display: flex; flex-direction: row; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.1); flex-wrap: wrap; gap: 1rem; background: rgba(10, 15, 25, 0.95); backdrop-filter: blur(10px);">
+        <div style="flex: 1; min-width: 250px; font-size: 0.9rem; color: #a1a1aa;">
+          We use cookies to ensure you get the best experience. By continuing to use our site, you agree to our 
+          <a [href]="pathFor('cookies')" style="color: #06b6d4; text-decoration: underline;">Cookie Policy</a>.
+        </div>
+        <div style="display: flex; gap: 1rem;">
+          <button class="btn btn-outline" (click)="acceptCookies(false)" style="padding: 0.5rem 1rem; font-size: 0.85rem;">Decline</button>
+          <button class="btn btn-primary" (click)="acceptCookies(true)" style="padding: 0.5rem 1rem; font-size: 0.85rem;">Accept</button>
+        </div>
+      </div>
 
       <div class="modal-overlay" *ngIf="activeModal()" (click)="closeModal()">
         <section class="modal-content" (click)="$event.stopPropagation()">
@@ -935,6 +947,15 @@ type AuthModal = 'login' | 'register' | 'verify' | 'forgot' | 'reset';
   `]
 })
 export class ShellComponent implements OnInit, AfterViewInit, OnDestroy {
+  showCookieBanner = signal(false);
+
+  acceptCookies(accepted: boolean) {
+    if (typeof localStorage !== 'undefined') {
+      localStorage.setItem('quizsolver_cookie_consent', accepted ? 'true' : 'false');
+    }
+    this.showCookieBanner.set(false);
+  }
+
   @Input() locale: Locale = 'en';
   @Input() pageKey: PageKey = 'home';
 
@@ -983,6 +1004,9 @@ export class ShellComponent implements OnInit, AfterViewInit, OnDestroy {
   private routerEventsSub?: Subscription;
 
   ngOnInit(): void {
+    if (typeof localStorage !== 'undefined' && !localStorage.getItem('quizsolver_cookie_consent')) {
+      this.showCookieBanner.set(true);
+    }
     void this.api.restoreSession();
 
     if (!isPlatformBrowser(this.platformId)) return;

@@ -1020,6 +1020,7 @@ const pl: SiteCopy = {
 };
 
 export type PageKey =
+  | 'cookies'
   | 'home'
   | 'dashboard'
   | 'credits'
@@ -1996,6 +1997,7 @@ export const PAGE_SLUGS: Record<PageKey, string> = {
   kahoot: 'kahoot-ai-bot',
   quizizz: 'quizizz-solver',
   privacy: 'privacy',
+  cookies: 'cookies',
   terms: 'terms',
   notFound: '404',
   success: 'success',
