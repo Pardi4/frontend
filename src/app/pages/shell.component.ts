@@ -259,16 +259,6 @@ type AuthModal = 'login' | 'register' | 'verify' | 'forgot' | 'reset';
               <button class="inline-auth-link" type="button" (click)="openModal('forgot')">
                 {{ copy.shell.forgotPassword }}
               </button>
-              <div class="consent-group" style="margin: 16px 0; display: flex; flex-direction: column; gap: 12px; font-size: 13px; color: #a1a1aa; text-align: left;">
-                <label style="display: flex; gap: 8px; align-items: flex-start; cursor: pointer;">
-                  <input type="checkbox" name="consentTos" [(ngModel)]="consentTos" required style="margin-top: 3px; min-width: 16px; min-height: 16px; accent-color: #06b6d4;">
-                  <span>Akceptuję <a href="/terms" target="_blank" style="color: #06b6d4; text-decoration: underline;">Regulamin</a> oraz <a href="/privacy" target="_blank" style="color: #06b6d4; text-decoration: underline;">Politykę Prywatności</a> *</span>
-                </label>
-                <label style="display: flex; gap: 8px; align-items: flex-start; cursor: pointer;">
-                  <input type="checkbox" name="consentMarketing" [(ngModel)]="consentMarketing" style="margin-top: 3px; min-width: 16px; min-height: 16px; accent-color: #06b6d4;">
-                  <span>Chcę otrzymywać na email specjalne zniżki, nowości i kody rabatowe.</span>
-                </label>
-              </div>
 
               <div class="form-error" *ngIf="authError()">{{ authError() }}</div>
               <div class="form-success" *ngIf="authInfo()">{{ authInfo() }}</div>
@@ -310,11 +300,12 @@ type AuthModal = 'login' | 'register' | 'verify' | 'forgot' | 'reset';
                 <div class="form-group consent-group" style="text-align: left; font-size: 0.85rem; display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.5rem; margin-bottom: 0.5rem;">
                   <label style="display: flex; gap: 0.5rem; align-items: flex-start; cursor: pointer; color: var(--text-secondary);">
                     <input type="checkbox" name="consentTos" [(ngModel)]="consentTos" required style="margin-top: 0.2rem;">
-                    <span>Akceptuję <a href="/terms" target="_blank" style="color: var(--accent-cyan); text-decoration: underline;">Regulamin</a> i <a href="/privacy" target="_blank" style="color: var(--accent-cyan); text-decoration: underline;">Politykę Prywatności</a> (wymagane)</span>
+                    <span *ngIf="locale === 'pl'">Akceptuję <a href="/terms" target="_blank" style="color: var(--accent-cyan); text-decoration: underline;">Regulamin</a> i <a href="/privacy" target="_blank" style="color: var(--accent-cyan); text-decoration: underline;">Politykę Prywatności</a> (wymagane)</span>
+                    <span *ngIf="locale !== 'pl'">I accept the <a href="/terms" target="_blank" style="color: var(--accent-cyan); text-decoration: underline;">Terms</a> and <a href="/privacy" target="_blank" style="color: var(--accent-cyan); text-decoration: underline;">Privacy Policy</a> (required)</span>
                   </label>
                   <label style="display: flex; gap: 0.5rem; align-items: flex-start; cursor: pointer; color: var(--text-secondary);">
                     <input type="checkbox" name="consentMarketing" [(ngModel)]="consentMarketing" style="margin-top: 0.2rem;">
-                    <span>Zgadzam się na otrzymywanie informacji marketingowych (opcjonalne)</span>
+                    <span>{{ locale === 'pl' ? 'Zgadzam się na otrzymywanie informacji marketingowych (opcjonalne)' : 'I agree to receive marketing updates (optional)' }}</span>
                   </label>
                 </div>
                 <div class="form-error" *ngIf="authError()">{{ authError() }}</div>
@@ -1300,7 +1291,7 @@ protected switchLocale(event: MouseEvent, targetLocale: any): void {
       return;
     }
     if (!this.consentTos) {
-      this.authError.set('Musisz zaakceptować Regulamin i Politykę Prywatności.');
+      this.authError.set(this.locale === 'pl' ? 'Musisz zaakceptować Regulamin i Politykę Prywatności.' : 'You must accept the Terms and Privacy Policy.');
       return;
     }
     this.authLoading.set(true);

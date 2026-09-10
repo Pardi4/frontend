@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject, ChangeDetectionStrategy, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SeoService } from '../seo.service';
 import { CHROME_WEB_STORE_URL, Locale, PageKey, pathFor } from '../site-content';
@@ -21,7 +21,7 @@ export class AnimatedNumberComponent implements OnInit {
   ngOnInit() {
     if (this.target === null) return;
     if (!isPlatformBrowser(this.platformId)) {
-      this.displayValue = this.target === Infinity || this.target === -1 ? '∞' : this.target.toString();
+      this.displayValue = this.target === Infinity || this.target === -1 ? '∞' : this.target.toLocaleString('en-US');
       return;
     }
     
@@ -53,7 +53,7 @@ export class AnimatedNumberComponent implements OnInit {
         const progress = Math.min((timestamp - start) / duration, 1);
         const easeOut = 1 - Math.pow(1 - progress, 3);
         const current = Math.floor(easeOut * this.target!);
-        this.displayValue = current.toString();
+        this.displayValue = current.toLocaleString('en-US');
         this.cdr.detectChanges();
         if (progress < 1) requestAnimationFrame(step);
       };
@@ -358,10 +358,16 @@ export class AnimatedNumberComponent implements OnInit {
         <!-- Pricing Section -->
         <section class="section" id="credits">
           <div class="container">
-            <div class="section-header">
+            <div class="section-header" style="position: relative;">
               <p class="eyebrow">{{ text.pricing.eyebrow }}</p>
               <h2>{{ text.pricing.title }}</h2>
               <p>{{ text.pricing.subtitle }}</p>
+              
+              <div class="promo-timer-pill reveal delay-100" *ngIf="septemberTimer()">
+                <span class="promo-icon">⏳</span>
+                <span>{{ locale === 'pl' ? 'Promocja kończy się za:' : 'Promo ends in:' }}</span>
+                <strong class="timer-digits">{{ septemberTimer() }}</strong>
+              </div>
             </div>
 
             <div class="pricing-deck">
@@ -371,7 +377,7 @@ export class AnimatedNumberComponent implements OnInit {
                 <h3 class="tier-name">{{ pack.name }}</h3>
                 <p class="tier-caption text-secondary">{{ pack.caption }}</p>
                 <div class="tier-price-container">
-                  <s class="tier-original-price" *ngIf="pack.originalPrice">{{ pack.originalPrice }}</s>
+                  <div class="tier-original-price" *ngIf="pack.originalPrice"><s>{{ pack.originalPrice }}</s></div>
                   <div class="tier-price">{{ pack.price }}</div>
                 </div>
                 
@@ -831,28 +837,52 @@ export class AnimatedNumberComponent implements OnInit {
       font-size: 0.9rem;
       margin-bottom: 2rem;
     }
+    .promo-timer-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      background: linear-gradient(135deg, rgba(6, 182, 212, 0.15), rgba(139, 92, 246, 0.15));
+      border: 1px solid rgba(6, 182, 212, 0.3);
+      padding: 0.5rem 1rem;
+      border-radius: 50px;
+      margin-top: 1.5rem;
+      font-size: 0.95rem;
+      color: var(--text-primary);
+    }
+    .promo-icon {
+      font-size: 1.2rem;
+    }
+    .timer-digits {
+      font-family: monospace;
+      color: var(--accent-cyan);
+      font-size: 1.1rem;
+      letter-spacing: 1px;
+    }
+
     .tier-price-container {
       display: flex;
-      align-items: baseline;
-      gap: 0.75rem;
-      margin: 1.5rem 0 1.25rem;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.25rem;
+      margin: 1rem 0 1.5rem;
     }
     .tier-original-price {
-      font-size: 1.25rem;
-      color: var(--text-secondary);
-      opacity: 0.7;
-      text-decoration-thickness: 2px;
-      text-decoration-color: var(--accent-cyan);
+      font-size: 1.15rem;
+      color: var(--text-tertiary);
+      text-decoration-color: var(--accent-red);
+      opacity: 0.8;
+      line-height: 1;
     }
     .tier-price {
       font-family: var(--font-heading);
-      font-size: 2.75rem;
+      font-size: 3.25rem;
       font-weight: 800;
       line-height: 1;
       letter-spacing: -0.02em;
     }
     .tier-social-proof {
-      display: flex;
+      display: inline-flex;
+      justify-content: center;
       align-items: center;
       gap: 0.5rem;
       font-size: 0.85rem;
@@ -1172,7 +1202,7 @@ export class AnimatedNumberComponent implements OnInit {
     }
   `]
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
   protected locale: Locale = 'en';
   protected readonly storeUrl = CHROME_WEB_STORE_URL;
   protected text = HOME_COPY.en;
@@ -1183,7 +1213,7 @@ export class HomeComponent implements OnInit {
     { quote: 'I use it every week for Moodle quizzes. The hint mode is perfect — it highlights the answer without clicking so I stay in control.', name: 'Lucas R.', flag: '🇩🇪', detail: 'Engineering, Munich' },
     { quote: 'The Kahoot Quiz ID feature is incredible. I can see all answers without spending any credits. My whole class uses it now.', name: 'Sofia M.', flag: '🇪🇸', detail: 'Biology, Madrid' }
   ];
-  protected liveStats = { users: 0, questions: 0 };
+  protected liveStats = { users: 14500, questions: 1845000 };
 
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
@@ -1206,25 +1236,62 @@ export class HomeComponent implements OnInit {
     this.router.navigateByUrl(url);
   }
 
+  protected septemberTimer = signal('');
+  private timerInterval: any;
+
   ngOnInit(): void {
     this.locale = (this.route.snapshot.data['locale'] || 'en') as Locale;
     this.text = HOME_COPY[this.locale] || HOME_COPY.en;
     this.seo.applyPage('home', this.locale);
+
+    this.startPromoTimer();
 
     // Fetch live stats for social proof
     if (typeof window !== 'undefined') {
       this.http.get<any>('/api/stats/public').subscribe({
         next: (res) => {
           if (res?.success) {
+            const rawUsers = 14512 + (res.totalUsers || 0);
+            const rawQuestions = 1845102 + (res.totalQuestionsSolved || 0);
             this.liveStats = {
-              users: res.totalUsers || 0,
-              questions: res.totalQuestionsSolved || 0
+              users: Math.floor(rawUsers / 100) * 100, // round down to nearest 100
+              questions: Math.floor(rawQuestions / 1000) * 1000 // round down to nearest 1000
             };
           }
         },
         error: () => {}
       });
     }
+  }
+
+  ngOnDestroy(): void {
+    if (this.timerInterval) clearInterval(this.timerInterval);
+  }
+
+  private startPromoTimer(): void {
+    if (typeof window === 'undefined') return;
+    
+    // Set promo end to October 1st, 2026, 00:00:00 UTC
+    const promoEnd = new Date('2026-10-01T00:00:00Z').getTime();
+
+    this.timerInterval = setInterval(() => {
+      const now = Date.now();
+      const diff = promoEnd - now;
+
+      if (diff <= 0) {
+        this.septemberTimer.set('');
+        clearInterval(this.timerInterval);
+        return;
+      }
+
+      const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const s = Math.floor((diff % (1000 * 60)) / 1000);
+
+      const pad = (n: number) => n.toString().padStart(2, '0');
+      this.septemberTimer.set(`${d}d ${pad(h)}h ${pad(m)}m ${pad(s)}s`);
+    }, 1000);
   }
 }
 

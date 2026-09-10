@@ -78,10 +78,16 @@ import { ShellComponent } from './shell.component';
           </section>
 
           <section class="packages-section">
-            <div class="section-header">
+            <div class="section-header" style="position: relative;">
               <p class="eyebrow">{{ copy.packagesBadge }}</p>
               <h2>{{ copy.packagesTitle }}</h2>
               <p class="text-secondary">{{ copy.packagesText }}</p>
+              
+              <div class="promo-timer-pill reveal delay-100" *ngIf="septemberTimer()">
+                <span class="promo-icon">⏳</span>
+                <span>{{ locale === 'pl' ? 'Promocja kończy się za:' : 'Promo ends in:' }}</span>
+                <strong class="timer-digits">{{ septemberTimer() }}</strong>
+              </div>
             </div>
 
             <div class="packages-deck">
@@ -90,7 +96,7 @@ import { ShellComponent } from './shell.component';
                 <h3>{{ pack.name[locale] }}</h3>
                 <p class="text-secondary">{{ pack.caption[locale] }}</p>
                 <div class="pack-price-container">
-                  <s class="pack-original-price" *ngIf="pack.originalPrice">{{ pack.originalPrice }}</s>
+                  <div class="pack-original-price" *ngIf="pack.originalPrice"><s>{{ pack.originalPrice }}</s></div>
                   <div class="pack-price">{{ pack.price }}</div>
                 </div>
                 <div class="pack-social-proof" *ngIf="pack.socialText">
@@ -326,27 +332,52 @@ import { ShellComponent } from './shell.component';
     .package-card h3 {
       font-size: 1.35rem;
     }
+    .promo-timer-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      background: linear-gradient(135deg, rgba(6, 182, 212, 0.15), rgba(139, 92, 246, 0.15));
+      border: 1px solid rgba(6, 182, 212, 0.3);
+      padding: 0.5rem 1rem;
+      border-radius: 50px;
+      margin-top: 1.5rem;
+      font-size: 0.95rem;
+      color: var(--text-primary);
+    }
+    .promo-icon {
+      font-size: 1.2rem;
+    }
+    .timer-digits {
+      font-family: monospace;
+      color: var(--accent-cyan);
+      font-size: 1.1rem;
+      letter-spacing: 1px;
+    }
+
     .pack-price-container {
       display: flex;
-      align-items: baseline;
-      gap: 0.75rem;
-      margin-bottom: 1.25rem;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.25rem;
+      margin: 1rem 0 1.25rem;
     }
     .pack-original-price {
-      font-size: 1.25rem;
-      color: var(--text-secondary);
-      opacity: 0.7;
-      text-decoration-thickness: 2px;
-      text-decoration-color: var(--accent-cyan);
+      font-size: 1.15rem;
+      color: var(--text-tertiary);
+      text-decoration-color: var(--accent-red);
+      opacity: 0.8;
+      line-height: 1;
     }
     .pack-price {
       font-family: var(--font-heading);
-      font-size: 2.75rem;
+      font-size: 3rem;
       font-weight: 800;
       color: var(--text-primary);
+      line-height: 1;
     }
     .pack-social-proof {
-      display: flex;
+      display: inline-flex;
+      justify-content: center;
       align-items: center;
       gap: 0.5rem;
       font-size: 0.85rem;
@@ -355,7 +386,7 @@ import { ShellComponent } from './shell.component';
       border: 1px solid rgba(139, 92, 246, 0.2);
       padding: 0.4rem 0.75rem;
       border-radius: 999px;
-      margin-bottom: 1.25rem;
+      margin: 0 auto 1.25rem;
       font-weight: 500;
       width: fit-content;
     }
@@ -560,6 +591,9 @@ export class CreditsComponent implements OnInit, OnDestroy {
     }
   ];
 
+  protected readonly septemberTimer = signal('');
+  private promoTimerInterval: any;
+
   async ngOnInit(): Promise<void> {
     this.locale = (this.route.snapshot.data['locale'] || 'en') as Locale;
     this.data = pageData('credits', this.locale);
@@ -567,8 +601,9 @@ export class CreditsComponent implements OnInit, OnDestroy {
     this.seo.applyPage('credits', this.locale);
     await this.api.restoreSession();
 
-    // Start FOMO timer
+    // Start FOMO timers
     this.startFomoTimer();
+    this.startPromoTimer();
 
     // Deep link package auto-selection
     const packParam = this.route.snapshot.queryParamMap.get('pack');
@@ -578,9 +613,34 @@ export class CreditsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this.timerInterval) {
-      clearInterval(this.timerInterval);
-    }
+    if (this.timerInterval) clearInterval(this.timerInterval);
+    if (this.promoTimerInterval) clearInterval(this.promoTimerInterval);
+  }
+
+  private startPromoTimer(): void {
+    if (typeof window === 'undefined') return;
+    
+    // Set promo end to October 1st, 2026, 00:00:00 UTC
+    const promoEnd = new Date('2026-10-01T00:00:00Z').getTime();
+
+    this.promoTimerInterval = setInterval(() => {
+      const now = Date.now();
+      const diff = promoEnd - now;
+
+      if (diff <= 0) {
+        this.septemberTimer.set('');
+        clearInterval(this.promoTimerInterval);
+        return;
+      }
+
+      const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const s = Math.floor((diff % (1000 * 60)) / 1000);
+
+      const pad = (n: number) => n.toString().padStart(2, '0');
+      this.septemberTimer.set(`${d}d ${pad(h)}h ${pad(m)}m ${pad(s)}s`);
+    }, 1000);
   }
 
   private startFomoTimer(): void {
