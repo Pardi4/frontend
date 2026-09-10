@@ -545,7 +545,7 @@ export class CreditsComponent implements OnInit, OnDestroy {
       id: 'popular',
       price: '$4.99',
       originalPrice: '$7.99',
-      socialText: { en: 'Chosen by 84% of students', pl: 'Wybierane przez 84% studentów', de: 'Von 84% der Studenten gewählt' },
+      socialText: { en: 'Chosen by 84% of students', pl: 'Wybierane przez 84% studentów', de: 'Von 84% der Studenten gewählt', es: 'Elegido por el 84% de los estudiantes', fr: 'Choisi par 84% des étudiants', it: 'Scelto dall\'84% degli studenti', uk: 'Обрано 84% студентів' },
       name: { en: '500 credits', pl: '500 kredytów', de: '500 Credits', es: '500 créditos', fr: '500 crédits', it: '500 crediti', uk: '500 кредитів' },
       caption: { en: 'Best for regular use', pl: 'Najlepsze do regularnego użycia', de: 'Am besten für regelmäßige Nutzung', es: 'Ideal para uso regular', fr: 'Idéal pour usage régulier', it: 'Ideale per uso regolare', uk: 'Найкраще для регулярного використання' },
       button: { en: 'Buy 500 credits', pl: 'Kup 500 kredytów', de: '500 Credits kaufen', es: 'Comprar 500 créditos', fr: 'Acheter 500 crédits', it: 'Compra 500 crediti', uk: 'Купити 500 кредитів' }
