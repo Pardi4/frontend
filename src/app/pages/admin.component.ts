@@ -4230,23 +4230,7 @@ export class AdminComponent implements OnInit, OnDestroy {
 
   protected tabGroups(): Array<{ label: string; note: string; tabs: Array<{ id: AdminTab; label: string; short: string }> }> {
     const pl = this.adminLocale() === 'pl';
-    const groups: Array<{ label: string; note: string; ids: AdminTab[] }> = [
-      {
-        label: pl ? 'Operacje' : 'Operations',
-        note: pl ? 'użytkownicy i kontakt' : 'users and contact',
-        ids: ['users', 'support', 'bugs', 'marketing']
-      },
-      {
-        label: pl ? 'Wiedza' : 'Knowledge',
-        note: pl ? 'parser i odpowiedzi' : 'parser and answers',
-        ids: ['parser', 'cache']
-      },
-      {
-        label: pl ? 'Finanse' : 'Revenue',
-        note: pl ? 'płatności i billing' : 'payments and billing',
-        ids: ['purchases', 'system']
-      },
-    ];
+    const groups: Array<{ label: string; note: string; ids: AdminTab[] }> = [{label: pl ? 'Operacje' : 'Operations',note: pl ? 'użytkownicy i kontakt' : 'users and contact',ids: ['users', 'support', 'bugs', 'marketing']},{label: pl ? 'Wiedza' : 'Knowledge',note: pl ? 'parser i odpowiedzi' : 'parser and answers',ids: ['parser', 'dataset', 'cache']},{label: pl ? 'Finanse' : 'Revenue',note: pl ? 'płatności i billing' : 'payments and billing',ids: ['purchases', 'system']}];
     return groups.map(group => ({
       label: group.label,
       note: group.note,
