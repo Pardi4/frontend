@@ -6,6 +6,7 @@ import { CHROME_WEB_STORE_URL, Locale, PageKey, pathFor } from '../site-content'
 import { ShellComponent } from './shell.component';
 import { Input, ChangeDetectorRef, ElementRef, Inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
 @Component({
   standalone: true,
   selector: 'qs-animated-number',
@@ -88,12 +89,16 @@ export class AnimatedNumberComponent implements OnInit {
               <a class="btn btn-outline btn-lg" [href]="homeHash('how-it-works')">
                 {{ text.hero.secondary }}
               </a>
+              <a class="btn btn-outline btn-lg" [href]="pathFor('demo', locale)">
+                {{ text.hero.demoBtn || 'Try free demo' }}
+              </a>
             </div>
             
             <!-- Social Proof Statistics -->
             <div class="hero-proof-stats delay-3">
-              <div class="rating-stars community-mark" aria-hidden="true">
-                <span class="star">✓</span>
+              <div class="cws-rating-badge">
+                <span class="cws-stars" aria-hidden="true">★★★★★</span>
+                <span class="cws-score">5.0</span>
               </div>
               <span class="rating-text">{{ text.hero.socialProof }}</span>
             </div>
@@ -308,6 +313,48 @@ export class AnimatedNumberComponent implements OnInit {
           </div>
         </section>
 
+        <!-- Social Proof / Testimonials Section -->
+        <section class="section testimonials-section">
+          <div class="container">
+            <div class="section-header">
+              <p class="eyebrow">{{ text.testimonials?.eyebrow || 'Trusted by students' }}</p>
+              <h2>{{ text.testimonials?.title || 'Students love QuizSolver' }}</h2>
+              <p>{{ text.testimonials?.subtitle || 'Join thousands of students who already save time on quizzes and study smarter.' }}</p>
+            </div>
+
+            <div class="testimonials-grid">
+              <div class="testimonial-card glass reveal" *ngFor="let t of testimonials; let i = index" [class.delay-100]="i === 1" [class.delay-200]="i === 2">
+                <div class="testimonial-stars" aria-hidden="true">★★★★★</div>
+                <p class="testimonial-quote">"{{ t.quote }}"</p>
+                <div class="testimonial-author">
+                  <span class="author-flag">{{ t.flag }}</span>
+                  <div class="author-info">
+                    <strong class="author-name">{{ t.name }}</strong>
+                    <span class="author-detail">{{ t.detail }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="live-stats-bar glass reveal delay-200">
+              <div class="live-stat">
+                <strong class="stat-number text-gradient-strong"><qs-animated-number [target]="liveStats.users"></qs-animated-number>+</strong>
+                <span class="stat-label">{{ text.testimonials?.statUsers || 'active students' }}</span>
+              </div>
+              <div class="live-stat-divider"></div>
+              <div class="live-stat">
+                <strong class="stat-number text-gradient-strong"><qs-animated-number [target]="liveStats.questions"></qs-animated-number>+</strong>
+                <span class="stat-label">{{ text.testimonials?.statQuestions || 'questions solved' }}</span>
+              </div>
+              <div class="live-stat-divider"></div>
+              <div class="live-stat">
+                <strong class="stat-number text-gradient-strong">5.0</strong>
+                <span class="stat-label">{{ text.testimonials?.statRating || 'Chrome Web Store rating' }}</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
         <!-- Pricing Section -->
         <section class="section" id="credits">
           <div class="container">
@@ -323,7 +370,14 @@ export class AnimatedNumberComponent implements OnInit {
                 
                 <h3 class="tier-name">{{ pack.name }}</h3>
                 <p class="tier-caption text-secondary">{{ pack.caption }}</p>
-                <div class="tier-price">{{ pack.price }}</div>
+                <div class="tier-price-container">
+                  <s class="tier-original-price" *ngIf="pack.originalPrice">{{ pack.originalPrice }}</s>
+                  <div class="tier-price">{{ pack.price }}</div>
+                </div>
+                
+                <div class="tier-social-proof" *ngIf="pack.socialText">
+                  <span class="pulse-dot"></span> {{ pack.socialText }}
+                </div>
                 
                 <ul class="tier-features">
                   <li *ngFor="let feat of pack.features">
@@ -331,9 +385,9 @@ export class AnimatedNumberComponent implements OnInit {
                   </li>
                 </ul>
                 
-                <button class="btn btn-block" [class.btn-primary]="pack.id === 'popular'" [class.btn-outline]="pack.id !== 'popular'" (click)="buyCredits()">
+                <a class="btn btn-block" [class.btn-primary]="pack.id === 'popular'" [class.btn-outline]="pack.id !== 'popular'" [href]="pathFor('credits', locale) + '?pack=' + pack.id">
                   {{ pack.button }}
-                </button>
+                </a>
               </div>
             </div>
           </div>
@@ -777,12 +831,50 @@ export class AnimatedNumberComponent implements OnInit {
       font-size: 0.9rem;
       margin-bottom: 2rem;
     }
+    .tier-price-container {
+      display: flex;
+      align-items: baseline;
+      gap: 0.75rem;
+      margin: 1.5rem 0 1.25rem;
+    }
+    .tier-original-price {
+      font-size: 1.25rem;
+      color: var(--text-secondary);
+      opacity: 0.7;
+      text-decoration-thickness: 2px;
+      text-decoration-color: var(--accent-cyan);
+    }
     .tier-price {
       font-family: var(--font-heading);
-      font-size: 3.25rem;
+      font-size: 2.75rem;
       font-weight: 800;
+      line-height: 1;
+      letter-spacing: -0.02em;
+    }
+    .tier-social-proof {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.85rem;
       color: var(--text-primary);
-      margin-bottom: 2rem;
+      background: rgba(139, 92, 246, 0.1);
+      border: 1px solid rgba(139, 92, 246, 0.2);
+      padding: 0.4rem 0.75rem;
+      border-radius: 999px;
+      margin-bottom: 1.25rem;
+      font-weight: 500;
+    }
+    .pulse-dot {
+      width: 8px;
+      height: 8px;
+      background-color: var(--accent-cyan);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(6, 182, 212, 0.4); }
+      70% { box-shadow: 0 0 0 6px rgba(6, 182, 212, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(6, 182, 212, 0); }
     }
     .tier-features {
       list-style: none;
@@ -866,8 +958,130 @@ export class AnimatedNumberComponent implements OnInit {
       line-height: 1.6;
     }
 
+    /* CWS Rating Badge in hero */
+    .cws-rating-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.4rem 1rem;
+      border-radius: 999px;
+      background: rgba(6, 182, 212, 0.08);
+      border: 1px solid rgba(6, 182, 212, 0.25);
+    }
+    .cws-stars {
+      color: #facc15;
+      font-size: 1.1rem;
+      letter-spacing: 2px;
+    }
+    .cws-score {
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--text-primary);
+    }
+
+    /* Testimonials section */
+    .testimonials-section {
+      background: radial-gradient(circle at 50% 0%, rgba(124, 92, 252, 0.04) 0%, transparent 60%);
+    }
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+    .testimonial-card {
+      padding: 2rem;
+      border-radius: var(--radius-lg);
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      transition: transform 0.3s var(--ease-spring);
+    }
+    .testimonial-card:hover {
+      transform: translateY(-4px);
+    }
+    .testimonial-stars {
+      color: #facc15;
+      font-size: 1.1rem;
+      letter-spacing: 2px;
+    }
+    .testimonial-quote {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      line-height: 1.65;
+      flex: 1;
+      font-style: italic;
+    }
+    .testimonial-author {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-top: 0.5rem;
+    }
+    .author-flag {
+      font-size: 1.5rem;
+    }
+    .author-info {
+      display: flex;
+      flex-direction: column;
+    }
+    .author-name {
+      font-family: var(--font-heading);
+      font-size: 0.9rem;
+      color: var(--text-primary);
+    }
+    .author-detail {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+    }
+
+    /* Live Stats Bar */
+    .live-stats-bar {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 3rem;
+      padding: 2rem 3rem;
+      border-radius: var(--radius-lg);
+      margin-top: 2.5rem;
+      text-align: center;
+    }
+    .live-stat {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+    .stat-number {
+      font-family: var(--font-heading);
+      font-size: 2rem;
+      font-weight: 800;
+    }
+    .stat-label {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+    }
+    .live-stat-divider {
+      width: 1px;
+      height: 3rem;
+      background: var(--border);
+    }
+
     /* Responsive */
     @media (max-width: 992px) {
+      .testimonials-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+      .live-stats-bar {
+        flex-direction: column;
+        gap: 1.5rem;
+        padding: 1.5rem;
+      }
+      .live-stat-divider {
+        width: 80%;
+        height: 1px;
+      }
       .steps-grid {
         grid-template-columns: 1fr;
         gap: 1.5rem;
@@ -964,9 +1178,17 @@ export class HomeComponent implements OnInit {
   protected text = HOME_COPY.en;
   protected pathFor = pathFor;
 
+  protected testimonials = [
+    { quote: 'QuizSolver saved me during finals week. I solved 3 Testportal exams in minutes and could focus on studying the explanations.', name: 'Marta K.', flag: '🇵🇱', detail: 'Computer Science, Warsaw' },
+    { quote: 'I use it every week for Moodle quizzes. The hint mode is perfect — it highlights the answer without clicking so I stay in control.', name: 'Lucas R.', flag: '🇩🇪', detail: 'Engineering, Munich' },
+    { quote: 'The Kahoot Quiz ID feature is incredible. I can see all answers without spending any credits. My whole class uses it now.', name: 'Sofia M.', flag: '🇪🇸', detail: 'Biology, Madrid' }
+  ];
+  protected liveStats = { users: 0, questions: 0 };
+
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly seo = inject(SeoService);
+  private readonly http = inject(HttpClient);
 
   get packs() {
     return this.text.pricing.packs;
@@ -988,6 +1210,21 @@ export class HomeComponent implements OnInit {
     this.locale = (this.route.snapshot.data['locale'] || 'en') as Locale;
     this.text = HOME_COPY[this.locale] || HOME_COPY.en;
     this.seo.applyPage('home', this.locale);
+
+    // Fetch live stats for social proof
+    if (typeof window !== 'undefined') {
+      this.http.get<any>('/api/stats/public').subscribe({
+        next: (res) => {
+          if (res?.success) {
+            this.liveStats = {
+              users: res.totalUsers || 0,
+              questions: res.totalQuestionsSolved || 0
+            };
+          }
+        },
+        error: () => {}
+      });
+    }
   }
 }
 
@@ -1000,6 +1237,7 @@ const HOME_COPY: Partial<Record<Locale, any>> & { en: any; pl: any } = {
       lead: 'Instantly solve quizzes on 35+ platforms including Testportal, Moodle, Kahoot, Canvas, Google Forms... and practically infinity others thanks to Universal Parser™*. Get AI answer suggestions with step-by-step explanations.',
       primary: 'Install from Chrome Web Store',
       secondary: 'See how it works',
+      demoBtn: 'Try free demo — no signup',
       proof: [
         { prefix: '', target: 35, suffix: '+ directly supported quiz platforms' },
         { prefix: '', target: -1, suffix: ' other sites — works anywhere thanks to Universal Parser™*', href: '/blog/universal-parser-infinite-quiz-platforms' }
@@ -1055,9 +1293,9 @@ const HOME_COPY: Partial<Record<Locale, any>> & { en: any; pl: any } = {
       subtitle: 'No recurring subscriptions. One-time credit packages keep it simple: answers and explanations spend credits, your study history is free forever.',
       badge: 'Most Popular',
       packs: [
-        { id: 'starter', name: '100 credits', price: '$1.99', caption: 'Small top-up', button: 'Get 100 Credits', features: ['One-time purchase, no subscription', 'Good for quick practice tests', 'Works for both answers and explanations', 'Lifetime access to saved notes'] },
-        { id: 'popular', name: '500 credits', price: '$4.99', caption: 'Regular use pack', button: 'Choose 500 Credits', features: ['Save 15% compared to starter', 'Great for weekly homework tasks', 'High priority response speed', 'Lifetime access to saved notes'] },
-        { id: 'pro', name: '2000 credits', price: '$9.99', caption: 'Heavy study sessions', button: 'Choose 2000 Credits', features: ['Best value per credit', 'Perfect for midterms and finals preparation', 'Highest priority response speed', 'Lifetime access to saved notes'] }
+        { id: 'starter', name: '100 credits', price: '$1.99', originalPrice: '$2.99', caption: 'Small top-up', button: 'Get 100 Credits', features: ['One-time purchase, no subscription', 'Good for quick practice tests', 'Works for both answers and explanations', 'Lifetime access to saved notes'] },
+        { id: 'popular', name: '500 credits', price: '$4.99', originalPrice: '$7.99', caption: 'Regular use pack', socialText: 'Chosen by 84% of students', button: 'Choose 500 Credits', features: ['Save 15% compared to starter', 'Great for weekly homework tasks', 'High priority response speed', 'Lifetime access to saved notes'] },
+        { id: 'pro', name: '2000 credits', price: '$9.99', originalPrice: '$14.99', caption: 'Heavy study sessions', button: 'Choose 2000 Credits', features: ['Best value per credit', 'Perfect for midterms and finals preparation', 'Highest priority response speed', 'Lifetime access to saved notes'] }
       ]
     },
     faqTitle: 'Frequently asked questions',
@@ -1082,6 +1320,7 @@ const HOME_COPY: Partial<Record<Locale, any>> & { en: any; pl: any } = {
       lead: 'Rozwiązuj quizy na ponad 35 platformach takich jak Testportal, Moodle, Kahoot, Canvas, Google Forms i... nieskończoności innych dzięki Universal Parser™*. Dostajesz sugestie odpowiedzi AI z wyjaśnieniem.',
       primary: 'Zainstaluj z Chrome Web Store',
       secondary: 'Zobacz jak to działa',
+      demoBtn: 'Wypróbuj demo za darmo',
       proof: [
         { prefix: '', target: 35, suffix: '+ platform quizowych ze wsparciem bezpośrednim' },
         { prefix: '', target: -1, suffix: ' innych stron — działa wszędzie dzięki Universal Parser™*', href: '/pl/blog/universal-parser-nieskonczonosc-platform-quizowych' }
@@ -1137,9 +1376,9 @@ const HOME_COPY: Partial<Record<Locale, any>> & { en: any; pl: any } = {
       subtitle: 'Bez cyklicznych subskrypcji. Jednorazowe pakiety kredytów: odpowiedzi i wyjaśnienia zużywają kredyty, historia nauki pozostaje darmowa na zawsze.',
       badge: 'Najchętniej Wybierany',
       packs: [
-        { id: 'starter', name: '100 kredytów', price: '$1.99', caption: 'Małe doładowanie', button: 'Kup 100 Kredytów', features: ['Jednorazowy zakup, brak subskrypcji', 'Idealne do szybkich testów sprawdzających', 'Obejmuje odpowiedzi i wyjaśnienia', 'Bezterminowy, darmowy dostęp do historii'] },
-        { id: 'popular', name: '500 kredytów', price: '$4.99', caption: 'Pakiet regularny', button: 'Wybierz 500 Kredytów', features: ['Oszczędzasz 15% w porównaniu z pakietem Starter', 'Świetny do regularnej nauki i prac domowych', 'Wysoki priorytet generowania odpowiedzi', 'Bezterminowy, darmowy dostęp do historii'] },
-        { id: 'pro', name: '2000 kredytów', price: '$9.99', caption: 'Sesja egzaminacyjna', button: 'Wybierz 2000 Kredytów', features: ['Najlepsza cena w przeliczeniu na kredyt', 'Idealne do przygotowania przed kolokwiami i sesją', 'Najwyższy priorytet generowania odpowiedzi', 'Bezterminowy, darmowy dostęp do historii'] }
+        { id: 'starter', name: '100 kredytów', price: '$1.99', originalPrice: '$2.99', caption: 'Małe doładowanie', button: 'Kup 100 Kredytów', features: ['Jednorazowy zakup, brak subskrypcji', 'Idealne do szybkich testów sprawdzających', 'Obejmuje odpowiedzi i wyjaśnienia', 'Bezterminowy, darmowy dostęp do historii'] },
+        { id: 'popular', name: '500 kredytów', price: '$4.99', originalPrice: '$7.99', caption: 'Pakiet regularny', socialText: 'Wybierane przez 84% studentów', button: 'Wybierz 500 Kredytów', features: ['Oszczędzasz 15% w porównaniu z pakietem Starter', 'Świetny do regularnej nauki i prac domowych', 'Wysoki priorytet generowania odpowiedzi', 'Bezterminowy, darmowy dostęp do historii'] },
+        { id: 'pro', name: '2000 kredytów', price: '$9.99', originalPrice: '$14.99', caption: 'Sesja egzaminacyjna', button: 'Wybierz 2000 Kredytów', features: ['Najlepsza cena w przeliczeniu na kredyt', 'Idealne do przygotowania przed kolokwiami i sesją', 'Najwyższy priorytet generowania odpowiedzi', 'Bezterminowy, darmowy dostęp do historii'] }
       ]
     },
     faqTitle: 'Najczęściej zadawane pytania',

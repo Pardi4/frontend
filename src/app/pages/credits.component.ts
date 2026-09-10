@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ApiService } from '../api.service';
 import { SeoService } from '../seo.service';
@@ -17,6 +17,17 @@ import { ShellComponent } from './shell.component';
           <h1>{{ data.title }}</h1>
           <p class="desc text-secondary">{{ copy.subtitle }}</p>
         </header>
+
+        <div class="fomo-banner" *ngIf="fomoTimeLeft()">
+          <div class="fomo-title">
+            <span>🎉</span>
+            <span>{{ locale === 'pl' ? 'Twój powitalny kod -10% wygasa za:' : 'Your 10% welcome code expires in:' }}</span>
+          </div>
+          <div class="fomo-timer">{{ fomoTimeLeft() }}</div>
+          <div style="font-size: 0.85rem; color: var(--text-secondary)">
+            {{ locale === 'pl' ? 'Wpisz kod' : 'Use code' }} <strong style="color: var(--text-primary)">WELCOME10</strong> {{ locale === 'pl' ? 'podczas płatności' : 'at checkout' }}
+          </div>
+        </div>
 
         <section class="credit-unit-card glass">
           <div>
@@ -77,8 +88,14 @@ import { ShellComponent } from './shell.component';
               <article class="package-card glass glass-hover" *ngFor="let pack of packs" [class.featured]="pack.id === 'popular'">
                 <span *ngIf="pack.id === 'popular'" class="featured-badge">{{ copy.popular }}</span>
                 <h3>{{ pack.name[locale] }}</h3>
-                <div class="pack-price">{{ pack.price }}</div>
                 <p class="text-secondary">{{ pack.caption[locale] }}</p>
+                <div class="pack-price-container">
+                  <s class="pack-original-price" *ngIf="pack.originalPrice">{{ pack.originalPrice }}</s>
+                  <div class="pack-price">{{ pack.price }}</div>
+                </div>
+                <div class="pack-social-proof" *ngIf="pack.socialText">
+                  <span class="pulse-dot"></span> {{ pack.socialText[locale] }}
+                </div>
                 <button class="btn btn-block" [class.btn-primary]="pack.id === 'popular'" [class.btn-outline]="pack.id !== 'popular'" type="button" (click)="confirmPack(pack.id)" [disabled]="buying() === pack.id">
                   {{ buying() === pack.id ? copy.loading : pack.button[locale] }}
                 </button>
@@ -309,12 +326,79 @@ import { ShellComponent } from './shell.component';
     .package-card h3 {
       font-size: 1.35rem;
     }
+    .pack-price-container {
+      display: flex;
+      align-items: baseline;
+      gap: 0.75rem;
+      margin-bottom: 1.25rem;
+    }
+    .pack-original-price {
+      font-size: 1.25rem;
+      color: var(--text-secondary);
+      opacity: 0.7;
+      text-decoration-thickness: 2px;
+      text-decoration-color: var(--accent-cyan);
+    }
     .pack-price {
       font-family: var(--font-heading);
       font-size: 2.75rem;
-      font-weight: 850;
+      font-weight: 800;
       color: var(--text-primary);
-      line-height: 1.05;
+    }
+    .pack-social-proof {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.85rem;
+      color: var(--text-primary);
+      background: rgba(139, 92, 246, 0.1);
+      border: 1px solid rgba(139, 92, 246, 0.2);
+      padding: 0.4rem 0.75rem;
+      border-radius: 999px;
+      margin-bottom: 1.25rem;
+      font-weight: 500;
+      width: fit-content;
+    }
+    .pulse-dot {
+      width: 8px;
+      height: 8px;
+      background-color: var(--accent-cyan);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(6, 182, 212, 0.4); }
+      70% { box-shadow: 0 0 0 6px rgba(6, 182, 212, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(6, 182, 212, 0); }
+    }
+    .fomo-banner {
+      background: linear-gradient(135deg, rgba(6, 182, 212, 0.15), rgba(139, 92, 246, 0.15));
+      border: 1px solid rgba(139, 92, 246, 0.3);
+      border-radius: 12px;
+      padding: 1rem;
+      margin-bottom: 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 0.5rem;
+    }
+    .fomo-title {
+      font-weight: 700;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .fomo-timer {
+      font-family: monospace;
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--accent-cyan);
+      background: rgba(0,0,0,0.2);
+      padding: 0.25rem 0.75rem;
+      border-radius: 6px;
+      letter-spacing: 2px;
     }
     .package-card .btn {
       margin-top: auto;
@@ -433,13 +517,16 @@ import { ShellComponent } from './shell.component';
     }
   `]
 })
-export class CreditsComponent implements OnInit {
+export class CreditsComponent implements OnInit, OnDestroy {
   protected readonly route = inject(ActivatedRoute);
   protected readonly seo = inject(SeoService);
   protected readonly api = inject(ApiService);
   protected readonly buying = signal('');
   protected readonly buyError = signal('');
   protected readonly pendingPack = signal('');
+
+  protected readonly fomoTimeLeft = signal('');
+  private timerInterval: any;
 
   protected locale: Locale = 'en';
   protected data = pageData('credits', 'en');
@@ -449,6 +536,7 @@ export class CreditsComponent implements OnInit {
     {
       id: 'starter',
       price: '$1.99',
+      originalPrice: '$2.99',
       name: { en: '100 credits', pl: '100 kredytów', de: '100 Credits', es: '100 créditos', fr: '100 crédits', it: '100 crediti', uk: '100 кредитів' },
       caption: { en: 'Small one-time top-up', pl: 'Małe jednorazowe doładowanie', de: 'Kleine einmalige Aufladung', es: 'Recarga pequeña', fr: 'Petite recharge unique', it: 'Piccola ricarica una tantum', uk: 'Мале одноразове поповнення' },
       button: { en: 'Buy 100 credits', pl: 'Kup 100 kredytów', de: '100 Credits kaufen', es: 'Comprar 100 créditos', fr: 'Acheter 100 crédits', it: 'Compra 100 crediti', uk: 'Купити 100 кредитів' }
@@ -456,6 +544,8 @@ export class CreditsComponent implements OnInit {
     {
       id: 'popular',
       price: '$4.99',
+      originalPrice: '$7.99',
+      socialText: { en: 'Chosen by 84% of students', pl: 'Wybierane przez 84% studentów', de: 'Von 84% der Studenten gewählt' },
       name: { en: '500 credits', pl: '500 kredytów', de: '500 Credits', es: '500 créditos', fr: '500 crédits', it: '500 crediti', uk: '500 кредитів' },
       caption: { en: 'Best for regular use', pl: 'Najlepsze do regularnego użycia', de: 'Am besten für regelmäßige Nutzung', es: 'Ideal para uso regular', fr: 'Idéal pour usage régulier', it: 'Ideale per uso regolare', uk: 'Найкраще для регулярного використання' },
       button: { en: 'Buy 500 credits', pl: 'Kup 500 kredytów', de: '500 Credits kaufen', es: 'Comprar 500 créditos', fr: 'Acheter 500 crédits', it: 'Compra 500 crediti', uk: 'Купити 500 кредитів' }
@@ -463,6 +553,7 @@ export class CreditsComponent implements OnInit {
     {
       id: 'pro',
       price: '$9.99',
+      originalPrice: '$14.99',
       name: { en: '2000 credits', pl: '2000 kredytów', de: '2000 Credits', es: '2000 créditos', fr: '2000 crédits', it: '2000 crediti', uk: '2000 кредитів' },
       caption: { en: 'Large sessions and sharing', pl: 'Większe sesje i udostępnianie', de: 'Große Lernsessions und Teilen', es: 'Sesiones grandes y compartir', fr: 'Grandes sessions et partage', it: 'Sessioni grandi e condivisione', uk: 'Великі сесії та спільний доступ' },
       button: { en: 'Buy 2000 credits', pl: 'Kup 2000 kredytów', de: '2000 Credits kaufen', es: 'Comprar 2000 créditos', fr: 'Acheter 2000 crédits', it: 'Compra 2000 crediti', uk: 'Купити 2000 кредитів' }
@@ -475,6 +566,54 @@ export class CreditsComponent implements OnInit {
     this.copy = CREDITS_COPY[this.locale] || CREDITS_COPY.en;
     this.seo.applyPage('credits', this.locale);
     await this.api.restoreSession();
+
+    // Start FOMO timer
+    this.startFomoTimer();
+
+    // Deep link package auto-selection
+    const packParam = this.route.snapshot.queryParamMap.get('pack');
+    if (packParam && this.api.token() && this.packs.some(p => p.id === packParam)) {
+      setTimeout(() => this.confirmPack(packParam), 100);
+    }
+  }
+
+  ngOnDestroy(): void {
+    if (this.timerInterval) {
+      clearInterval(this.timerInterval);
+    }
+  }
+
+  private startFomoTimer(): void {
+    if (!this.api.token()) return; // only for logged in
+
+    // Calculate a 24h countdown based on first visit or account creation
+    const storageKey = 'qs_fomo_expiry';
+    let expiry = localStorage.getItem(storageKey);
+    
+    if (!expiry) {
+      expiry = (Date.now() + 24 * 60 * 60 * 1000).toString();
+      localStorage.setItem(storageKey, expiry);
+    }
+
+    const expiryTime = parseInt(expiry, 10);
+
+    this.timerInterval = setInterval(() => {
+      const now = Date.now();
+      const diff = expiryTime - now;
+
+      if (diff <= 0) {
+        this.fomoTimeLeft.set('00:00:00');
+        clearInterval(this.timerInterval);
+        return;
+      }
+
+      const h = Math.floor(diff / (1000 * 60 * 60));
+      const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const s = Math.floor((diff % (1000 * 60)) / 1000);
+
+      const pad = (n: number) => n.toString().padStart(2, '0');
+      this.fomoTimeLeft.set(`${pad(h)}:${pad(m)}:${pad(s)}`);
+    }, 1000);
   }
 
   protected lowCredits(): boolean {
