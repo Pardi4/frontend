@@ -179,11 +179,49 @@
 
   <!-- Performance: preload the small nav logo used in the first viewport -->
   
-  <!-- Google Analytics 4 -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-W8LBV8SNJ5"></script>
+  <!-- Google Consent Mode v2 + Analytics 4 -->
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
+
+    // Consent Mode v2 — default: GRANTED globally (non-EEA countries)
+    gtag('consent', 'default', {
+      'ad_storage': 'granted',
+      'ad_user_data': 'granted',
+      'ad_personalization': 'granted',
+      'analytics_storage': 'granted'
+    });
+
+    // Override: DENIED for EEA + UK regions (GDPR requirement)
+    gtag('consent', 'default', {
+      'ad_storage': 'denied',
+      'ad_user_data': 'denied',
+      'ad_personalization': 'denied',
+      'analytics_storage': 'denied',
+      'wait_for_update': 500,
+      'region': [
+        'AT','BE','BG','HR','CY','CZ','DK','EE','FI','FR',
+        'DE','GR','HU','IE','IT','LV','LT','LU','MT','NL',
+        'PL','PT','RO','SK','SI','ES','SE',
+        'IS','LI','NO',
+        'GB'
+      ]
+    });
+
+    // If user already accepted cookies on a previous visit, restore consent
+    try {
+      if (localStorage.getItem('quizsolver_cookie_consent') === 'true') {
+        gtag('consent', 'update', {
+          'ad_storage': 'granted',
+          'ad_user_data': 'granted',
+          'ad_personalization': 'granted',
+          'analytics_storage': 'granted'
+        });
+      }
+    } catch(e) {}
+  </script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-W8LBV8SNJ5"></script>
+  <script>
     gtag('js', new Date());
     gtag('config', 'G-W8LBV8SNJ5');
   </script>

@@ -953,6 +953,16 @@ export class ShellComponent implements OnInit, AfterViewInit, OnDestroy {
     if (typeof localStorage !== 'undefined') {
       localStorage.setItem('quizsolver_cookie_consent', accepted ? 'true' : 'false');
     }
+    // Google Consent Mode v2 — update consent based on user choice
+    if (typeof window !== 'undefined' && typeof (window as any).gtag === 'function') {
+      const state = accepted ? 'granted' : 'denied';
+      (window as any).gtag('consent', 'update', {
+        'ad_storage': state,
+        'ad_user_data': state,
+        'ad_personalization': state,
+        'analytics_storage': state
+      });
+    }
     this.showCookieBanner.set(false);
   }
 
