@@ -1319,6 +1319,28 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
             </div>
           </header>
           <div class="modal-body" style="padding-top: 1rem;">
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; padding: 1rem; background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: var(--radius-md);">
+                <div>
+                  <p class="muted-line" style="margin: 0 0 0.25rem; font-size: 0.8rem;">Account Created</p>
+                  <strong>{{ formatDate(selectedUserHistory()?.createdAt) }}</strong>
+                </div>
+                <div>
+                  <p class="muted-line" style="margin: 0 0 0.25rem; font-size: 0.8rem;">Auth Providers</p>
+                  <strong style="text-transform: capitalize;">{{ selectedUserHistory()?.authProviders?.join(", ") || "password" }}</strong>
+                </div>
+                <div>
+                  <p class="muted-line" style="margin: 0 0 0.25rem; font-size: 0.8rem;">Email Verified</p>
+                  <strong>{{ selectedUserHistory()?.emailVerified ? "Yes" : "No" }}</strong>
+                </div>
+                <div *ngIf="selectedUserHistory()?.pendingNewEmail">
+                  <p class="muted-line" style="margin: 0 0 0.25rem; font-size: 0.8rem; color: var(--accent-amber);">Pending Email Change</p>
+                  <strong>{{ selectedUserHistory()?.pendingNewEmail }}</strong>
+                </div>
+                <div *ngIf="selectedUserHistory()?.accountDeletionScheduledAt">
+                  <p class="muted-line" style="margin: 0 0 0.25rem; font-size: 0.8rem; color: var(--accent-red);">Deletion Scheduled</p>
+                  <strong style="color: var(--accent-red);">{{ formatDate(selectedUserHistory()?.accountDeletionScheduledAt) }}</strong>
+                </div>
+              </div>
             <div class="table-scroll" style="margin: 0; border: 1px solid var(--border); border-radius: var(--radius-md);">
               <table class="admin-table" style="min-width: 100%;">
                 <thead>
@@ -4614,9 +4636,12 @@ export class AdminComponent implements OnInit, OnDestroy {
   }
 
   protected supportParagraphs(value: unknown): string[] {
-    const text = String(value || '').replace(/\r\n/g, '\n').trim();
+    const text = String(value || '').replace(/\r
+/g, '
+').trim();
     if (!text) return [this.tr('noMessageBody')];
-    return text.split(/\n{2,}/).map(part => part.trim()).filter(Boolean);
+    return text.split(/
+{2,}/).map(part => part.trim()).filter(Boolean);
   }
 
   protected supportSourceLabel(value: unknown): string {
@@ -4676,7 +4701,8 @@ export class AdminComponent implements OnInit, OnDestroy {
         user.createdAt ? this.formatDate(user.createdAt) : ''
       ])
     ];
-    const csv = rows.map(row => row.map(cell => this.csvCell(cell)).join(',')).join('\r\n');
+    const csv = rows.map(row => row.map(cell => this.csvCell(cell)).join(',')).join('\r
+');
     const blob = new Blob([`\uFEFF${csv}`], { type: 'text/csv;charset=utf-8' });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
