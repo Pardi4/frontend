@@ -4112,8 +4112,8 @@ export class AdminComponent implements OnInit, OnDestroy {
     
     this.loading.set(true);
     const body = {
-      subject: 'Oto Twój kod zniżkowy od Quizonator!',
-      html: '<h1>Cześć!</h1><p>Dziękujemy za korzystanie z naszego serwisu. Przygotowaliśmy dla Ciebie specjalny jednorazowy kod rabatowy <strong>-10%</strong> na kolejne zakupy!</p><br><p>Twój kod: <strong style="font-size:24px; color:#06b6d4;">{{DISCOUNT_CODE}}</strong></p><p>Kod jest ważny przez najbliższe 7 dni.</p>',
+      subject: 'Here is your discount code from QuizSolver!',
+      html: '<h1>Hi there!</h1><p>Thank you for using our service. We have prepared a special one-time <strong>10% off</strong> discount code for your next purchase!</p><br><p>Your code: <strong style="font-size:24px; color:#06b6d4;">{{DISCOUNT_CODE}}</strong></p><p>This code is valid for the next 7 days.</p>',
       targetEmail: email,
       discountType: 'unique',
       discountPrefix: 'GIFT',

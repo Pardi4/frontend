@@ -229,6 +229,9 @@ import { ShellComponent } from './shell.component';
                   <div class="note-meta">
                     <span class="badge badge-outline">{{ note.platform || 'quiz' }}</span>
                     <span class="badge badge-outline" style="text-transform: capitalize;">{{ note.status || 'new' }}</span>
+                    <a *ngIf="note.sourceUrl" [href]="note.sourceUrl" target="_blank" class="badge badge-outline" style="color: var(--accent-cyan); text-decoration: none; border-color: var(--accent-cyan); max-width: 250px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="{{ note.sourceUrl }}">
+                      &#128279; Źródło
+                    </a>
                   </div>
                   
                   <div class="answer-panel-box">
