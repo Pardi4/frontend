@@ -1225,7 +1225,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     { quote: 'I use it every week for Moodle quizzes. The hint mode is perfect — it highlights the answer without clicking so I stay in control.', name: 'Lucas R.', flag: '🇩🇪', detail: 'Engineering, Munich' },
     { quote: 'The Kahoot Quiz ID feature is incredible. I can see all answers without spending any credits. My whole class uses it now.', name: 'Sofia M.', flag: '🇪🇸', detail: 'Biology, Madrid' }
   ];
-  protected liveStats = { users: 14500, questions: 1845000 };
+  protected liveStats = { users: 0, questions: 0 };
 
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
@@ -1263,11 +1263,11 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.http.get<any>('/api/stats/public').subscribe({
         next: (res) => {
           if (res?.success) {
-            const rawUsers = 14512 + (res.totalUsers || 0);
-            const rawQuestions = 1845102 + (res.totalQuestionsSolved || 0);
+            const rawUsers = res.totalUsers || 0;
+            const rawQuestions = res.totalQuestionsSolved || 0;
             this.liveStats = {
-              users: Math.floor(rawUsers / 100) * 100, // round down to nearest 100
-              questions: Math.floor(rawQuestions / 1000) * 1000 // round down to nearest 1000
+              users: Math.ceil(rawUsers / 100) * 100, // round up to nearest 100
+              questions: Math.ceil(rawQuestions / 1000) * 1000 // round up to nearest 1000
             };
           }
         },
