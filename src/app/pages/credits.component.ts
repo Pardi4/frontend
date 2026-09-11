@@ -18,16 +18,6 @@ import { ShellComponent } from './shell.component';
           <p class="desc text-secondary">{{ copy.subtitle }}</p>
         </header>
 
-        <div class="fomo-banner" *ngIf="fomoTimeLeft()">
-          <div class="fomo-title">
-            <span>🎉</span>
-            <span>{{ locale === 'pl' ? 'Twój powitalny kod -10% wygasa za:' : 'Your 10% welcome code expires in:' }}</span>
-          </div>
-          <div class="fomo-timer">{{ fomoTimeLeft() }}</div>
-          <div style="font-size: 0.85rem; color: var(--text-secondary)">
-            {{ locale === 'pl' ? 'Wpisz kod' : 'Use code' }} <strong style="color: var(--text-primary)">WELCOME10</strong> {{ locale === 'pl' ? 'podczas płatności' : 'at checkout' }}
-          </div>
-        </div>
 
         <section class="credit-unit-card glass">
           <div>
@@ -82,12 +72,6 @@ import { ShellComponent } from './shell.component';
               <p class="eyebrow">{{ copy.packagesBadge }}</p>
               <h2>{{ copy.packagesTitle }}</h2>
               <p class="text-secondary">{{ copy.packagesText }}</p>
-              
-              <div class="promo-timer-pill reveal delay-100" *ngIf="septemberTimer()">
-                <span class="promo-icon">⏳</span>
-                <span>{{ locale === 'pl' ? 'Promocja kończy się za:' : 'Promo ends in:' }}</span>
-                <strong class="timer-digits">{{ septemberTimer() }}</strong>
-              </div>
             </div>
 
             <div class="packages-deck">
@@ -96,12 +80,21 @@ import { ShellComponent } from './shell.component';
                 <h3>{{ pack.name[locale] }}</h3>
                 <p class="text-secondary">{{ pack.caption[locale] }}</p>
                 <div class="pack-price-container">
-                  <div class="pack-original-price" *ngIf="pack.originalPrice"><s>{{ pack.originalPrice }}</s></div>
+                  <div class="pack-original-price" *ngIf="pack.originalPrice">
+                    <s>{{ pack.originalPrice }}</s>
+                    <span class="discount-badge" *ngIf="pack.originalPrice">-{{ getDiscount(pack.price, pack.originalPrice) }}%</span>
+                  </div>
                   <div class="pack-price">{{ pack.price }}</div>
                 </div>
                 <div class="pack-social-proof" *ngIf="pack.socialText">
                   <span class="pulse-dot"></span> {{ pack.socialText[locale] }}
                 </div>
+                
+                <div class="pack-promo-timer" *ngIf="pack.originalPrice && septemberTimer()">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                  <span [innerHTML]="locale === 'pl' ? 'Koniec promocji za: <strong>' + septemberTimer() + '</strong>' : 'Promo ends in: <strong>' + septemberTimer() + '</strong>'"></span>
+                </div>
+
                 <button class="btn btn-block" [class.btn-primary]="pack.id === 'popular'" [class.btn-outline]="pack.id !== 'popular'" type="button" (click)="confirmPack(pack.id)" [disabled]="buying() === pack.id">
                   {{ buying() === pack.id ? copy.loading : pack.button[locale] }}
                 </button>
@@ -332,27 +325,7 @@ import { ShellComponent } from './shell.component';
     .package-card h3 {
       font-size: 1.35rem;
     }
-    .promo-timer-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.6rem;
-      background: linear-gradient(135deg, rgba(6, 182, 212, 0.15), rgba(139, 92, 246, 0.15));
-      border: 1px solid rgba(6, 182, 212, 0.3);
-      padding: 0.5rem 1rem;
-      border-radius: 50px;
-      margin-top: 1.5rem;
-      font-size: 0.95rem;
-      color: var(--text-primary);
-    }
-    .promo-icon {
-      font-size: 1.2rem;
-    }
-    .timer-digits {
-      font-family: monospace;
-      color: var(--accent-cyan);
-      font-size: 1.1rem;
-      letter-spacing: 1px;
-    }
+
 
     .pack-price-container {
       display: flex;
@@ -364,9 +337,24 @@ import { ShellComponent } from './shell.component';
     .pack-original-price {
       font-size: 1.15rem;
       color: var(--text-tertiary);
-      text-decoration-color: var(--accent-red);
       opacity: 0.8;
       line-height: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+    .pack-original-price s {
+      text-decoration-color: var(--accent-red);
+    }
+    .discount-badge {
+      background: rgba(239, 68, 68, 0.15);
+      color: #f87171;
+      font-size: 0.75rem;
+      font-weight: 800;
+      padding: 0.15rem 0.4rem;
+      border-radius: 4px;
+      border: 1px solid rgba(239, 68, 68, 0.3);
     }
     .pack-price {
       font-family: var(--font-heading);
@@ -374,6 +362,22 @@ import { ShellComponent } from './shell.component';
       font-weight: 800;
       color: var(--text-primary);
       line-height: 1;
+    }
+    .pack-promo-timer {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 0.4rem;
+      margin-bottom: 1.25rem;
+      font-size: 0.8rem;
+      color: var(--accent-amber);
+      background: rgba(245, 158, 11, 0.1);
+      border: 1px solid rgba(245, 158, 11, 0.2);
+      padding: 0.4rem 0.5rem;
+      border-radius: 6px;
+    }
+    .pack-promo-timer svg {
+      flex-shrink: 0;
     }
     .pack-social-proof {
       display: inline-flex;
@@ -401,35 +405,6 @@ import { ShellComponent } from './shell.component';
       0% { box-shadow: 0 0 0 0 rgba(6, 182, 212, 0.4); }
       70% { box-shadow: 0 0 0 6px rgba(6, 182, 212, 0); }
       100% { box-shadow: 0 0 0 0 rgba(6, 182, 212, 0); }
-    }
-    .fomo-banner {
-      background: linear-gradient(135deg, rgba(6, 182, 212, 0.15), rgba(139, 92, 246, 0.15));
-      border: 1px solid rgba(139, 92, 246, 0.3);
-      border-radius: 12px;
-      padding: 1rem;
-      margin-bottom: 2rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      gap: 0.5rem;
-    }
-    .fomo-title {
-      font-weight: 700;
-      color: var(--text-primary);
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-    .fomo-timer {
-      font-family: monospace;
-      font-size: 1.25rem;
-      font-weight: 800;
-      color: var(--accent-cyan);
-      background: rgba(0,0,0,0.2);
-      padding: 0.25rem 0.75rem;
-      border-radius: 6px;
-      letter-spacing: 2px;
     }
     .package-card .btn {
       margin-top: auto;
@@ -556,9 +531,6 @@ export class CreditsComponent implements OnInit, OnDestroy {
   protected readonly buyError = signal('');
   protected readonly pendingPack = signal('');
 
-  protected readonly fomoTimeLeft = signal('');
-  private timerInterval: any;
-
   protected locale: Locale = 'en';
   protected data = pageData('credits', 'en');
   protected copy = CREDITS_COPY.en;
@@ -602,7 +574,6 @@ export class CreditsComponent implements OnInit, OnDestroy {
     await this.api.restoreSession();
 
     // Start FOMO timers
-    this.startFomoTimer();
     this.startPromoTimer();
 
     // Deep link package auto-selection
@@ -613,9 +584,9 @@ export class CreditsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this.timerInterval) clearInterval(this.timerInterval);
     if (this.promoTimerInterval) clearInterval(this.promoTimerInterval);
   }
+
 
   private startPromoTimer(): void {
     if (typeof window === 'undefined') return;
@@ -643,37 +614,11 @@ export class CreditsComponent implements OnInit, OnDestroy {
     }, 1000);
   }
 
-  private startFomoTimer(): void {
-    if (!this.api.token()) return; // only for logged in
-
-    // Calculate a 24h countdown based on first visit or account creation
-    const storageKey = 'qs_fomo_expiry';
-    let expiry = localStorage.getItem(storageKey);
-    
-    if (!expiry) {
-      expiry = (Date.now() + 24 * 60 * 60 * 1000).toString();
-      localStorage.setItem(storageKey, expiry);
-    }
-
-    const expiryTime = parseInt(expiry, 10);
-
-    this.timerInterval = setInterval(() => {
-      const now = Date.now();
-      const diff = expiryTime - now;
-
-      if (diff <= 0) {
-        this.fomoTimeLeft.set('00:00:00');
-        clearInterval(this.timerInterval);
-        return;
-      }
-
-      const h = Math.floor(diff / (1000 * 60 * 60));
-      const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-      const s = Math.floor((diff % (1000 * 60)) / 1000);
-
-      const pad = (n: number) => n.toString().padStart(2, '0');
-      this.fomoTimeLeft.set(`${pad(h)}:${pad(m)}:${pad(s)}`);
-    }, 1000);
+  protected getDiscount(price: string, originalPrice: string): number {
+    const p = parseFloat(price.replace(/[^0-9.]/g, ''));
+    const op = parseFloat(originalPrice.replace(/[^0-9.]/g, ''));
+    if (!p || !op) return 0;
+    return Math.round((1 - p / op) * 100);
   }
 
   protected lowCredits(): boolean {
