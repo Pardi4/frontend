@@ -4636,12 +4636,9 @@ export class AdminComponent implements OnInit, OnDestroy {
   }
 
   protected supportParagraphs(value: unknown): string[] {
-    const text = String(value || '').replace(/\r
-/g, '
-').trim();
+    const text = String(value || '').replace(/\\r\\n/g, '\\n').trim();
     if (!text) return [this.tr('noMessageBody')];
-    return text.split(/
-{2,}/).map(part => part.trim()).filter(Boolean);
+    return text.split(/\\n{2,}/).map(part => part.trim()).filter(Boolean);
   }
 
   protected supportSourceLabel(value: unknown): string {
@@ -4701,8 +4698,7 @@ export class AdminComponent implements OnInit, OnDestroy {
         user.createdAt ? this.formatDate(user.createdAt) : ''
       ])
     ];
-    const csv = rows.map(row => row.map(cell => this.csvCell(cell)).join(',')).join('\r
-');
+    const csv = rows.map(row => row.map(cell => this.csvCell(cell)).join(',')).join('\\r\\n');
     const blob = new Blob([`\uFEFF${csv}`], { type: 'text/csv;charset=utf-8' });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
