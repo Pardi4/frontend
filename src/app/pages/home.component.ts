@@ -3,7 +3,7 @@ import { Component, OnInit, OnDestroy, inject, ChangeDetectionStrategy, signal }
 import { ActivatedRoute, Router } from '@angular/router';
 import { SeoService } from '../seo.service';
 import { CHROME_WEB_STORE_URL, Locale, PageKey, pathFor } from '../site-content';
-import { ShellComponent } from './shell.component';
+import { ShellComponent, trackGa4Event } from './shell.component';
 import { Input, ChangeDetectorRef, ElementRef, Inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
@@ -83,13 +83,13 @@ export class AnimatedNumberComponent implements OnInit {
             </h1>
             <p class="hero-lead delay-2">{{ text.hero.lead }}</p>
             <div class="hero-actions delay-3">
-              <a class="btn btn-primary btn-lg" [href]="storeUrl" target="_blank" rel="noopener">
+              <a class="btn btn-primary btn-lg" [href]="storeUrl" target="_blank" rel="noopener" (click)="trackCta('extension_install_click')">
                 {{ text.hero.primary }}
               </a>
-              <a class="btn btn-outline btn-lg" [href]="homeHash('how-it-works')">
+              <a class="btn btn-outline btn-lg" [href]="homeHash('how-it-works')" (click)="trackCta('how_it_works_click')">
                 {{ text.hero.secondary }}
               </a>
-              <a class="btn btn-outline btn-lg" [href]="pathFor('demo', locale)">
+              <a class="btn btn-outline btn-lg" [href]="pathFor('demo', locale)" (click)="trackCta('demo_click')">
                 {{ text.hero.demoBtn || 'Try free demo' }}
               </a>
             </div>
@@ -1238,6 +1238,10 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   buyCredits() {
     window.location.href = pathFor('credits', this.locale);
+  }
+
+  protected trackCta(action: string): void {
+    trackGa4Event(action, { page: 'home', locale: this.locale });
   }
 
   protected homeHash(hash: string): string {

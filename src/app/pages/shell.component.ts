@@ -10,12 +10,19 @@ import jsQR from 'jsqr';
 
 type AuthModal = 'login' | 'register' | 'verify' | 'forgot' | 'reset';
 
+export function trackGa4Event(eventName: string, params?: Record<string, string | number>): void {
+  if (typeof window !== 'undefined' && typeof (window as any).gtag === 'function') {
+    (window as any).gtag('event', eventName, params);
+  }
+}
+
 @Component({
   selector: 'qs-shell',
   standalone: true,
   imports: [CommonModule, FormsModule],
   template: `
     <div class="site-shell" [attr.data-locale]="locale">
+      <a class="skip-link" href="#main-content">Skip to main content</a>
       <header class="site-header" role="banner">
         <div class="container nav-container">
           <a class="nav-brand" [href]="pathFor('home')" aria-label="QuizSolver home">
@@ -403,6 +410,29 @@ type AuthModal = 'login' | 'register' | 'verify' | 'forgot' | 'reset';
         </div>
       </div>
 
+      <!-- Scroll CTA Bar -->
+      <div class="scroll-cta-bar" *ngIf="showScrollCta() && !scrollCtaDismissed()" role="complementary" aria-label="Install prompt">
+        <div class="scroll-cta-inner">
+          <span class="scroll-cta-text">{{ copy.scrollCta?.text || '🎓 Install QuizSolver — 10 free AI credits included' }}</span>
+          <a class="btn btn-primary btn-sm" [href]="storeUrl" target="_blank" rel="noopener">{{ copy.scrollCta?.button || 'Install free' }}</a>
+          <button class="scroll-cta-close" type="button" (click)="dismissScrollCta()" aria-label="Dismiss">✕</button>
+        </div>
+      </div>
+
+      <!-- Exit Intent Popup -->
+      <div class="exit-popup-backdrop" *ngIf="showExitPopup()" (click)="closeExitPopup()">
+        <div class="exit-popup glass" (click)="$event.stopPropagation()">
+          <button class="exit-popup-close" type="button" (click)="closeExitPopup()" aria-label="Close">✕</button>
+          <p class="eyebrow" style="color: var(--accent-cyan);">{{ copy.exitPopup?.eyebrow || 'Before you go' }}</p>
+          <h2 style="font-size: clamp(1.5rem, 3vw, 2rem); margin: 0.5rem 0;">{{ copy.exitPopup?.title || 'Try QuizSolver for free' }}</h2>
+          <p class="text-secondary" style="margin-bottom: 1.5rem;">{{ copy.exitPopup?.text || 'Every new account gets 10 free AI credits. No card needed.' }}</p>
+          <div style="display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap;">
+            <a class="btn btn-primary" [href]="storeUrl" target="_blank" rel="noopener">{{ copy.exitPopup?.primary || 'Install free extension' }}</a>
+            <a class="btn btn-outline" [href]="pathFor('demo')" (click)="closeExitPopup()">{{ copy.exitPopup?.secondary || 'Try demo first' }}</a>
+          </div>
+        </div>
+      </div>
+
     </div>
   `,
   styles: [`
@@ -410,6 +440,26 @@ type AuthModal = 'login' | 'register' | 'verify' | 'forgot' | 'reset';
       min-height: 100vh;
       display: flex;
       flex-direction: column;
+    }
+
+    .skip-link {
+      position: absolute;
+      top: -100%;
+      left: 1rem;
+      z-index: 999;
+      padding: 0.75rem 1.5rem;
+      background: var(--accent-cyan);
+      color: #030712;
+      font-weight: 800;
+      font-size: 0.9rem;
+      border-radius: var(--radius-sm);
+      text-decoration: none;
+      transition: top 0.2s;
+    }
+    .skip-link:focus {
+      top: 0.75rem;
+      outline: 2px solid #ffffff;
+      outline-offset: 2px;
     }
 
     .site-header {
@@ -935,6 +985,82 @@ type AuthModal = 'login' | 'register' | 'verify' | 'forgot' | 'reset';
         padding: 3rem 1.5rem;
       }
     }
+
+    .scroll-cta-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 90;
+      padding: 0.65rem 1rem;
+      background: rgba(16, 19, 24, 0.92);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-top: 1px solid var(--border);
+      animation: slideUp 0.35s var(--ease-out);
+    }
+    .scroll-cta-inner {
+      max-width: var(--container-max);
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .scroll-cta-text {
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--text-primary);
+    }
+    .scroll-cta-close {
+      color: var(--text-tertiary);
+      font-size: 1.1rem;
+      padding: 0.25rem;
+      line-height: 1;
+      transition: color 0.2s;
+    }
+    .scroll-cta-close:hover {
+      color: var(--text-primary);
+    }
+    @keyframes slideUp {
+      from { transform: translateY(100%); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .exit-popup-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      display: grid;
+      place-items: center;
+      padding: 1rem;
+      background: rgba(3, 7, 18, 0.75);
+      backdrop-filter: blur(8px);
+      animation: fadeIn 0.3s ease;
+    }
+    .exit-popup {
+      position: relative;
+      width: min(480px, 100%);
+      padding: 2.5rem;
+      text-align: center;
+    }
+    .exit-popup-close {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      color: var(--text-tertiary);
+      font-size: 1.25rem;
+      padding: 0.25rem;
+      transition: color 0.2s;
+    }
+    .exit-popup-close:hover {
+      color: var(--text-primary);
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
   `]
 })
 export class ShellComponent implements OnInit, AfterViewInit, OnDestroy {
@@ -993,6 +1119,11 @@ export class ShellComponent implements OnInit, AfterViewInit, OnDestroy {
   protected qrVideoSupported = true;
   protected readonly localeOptions = SUPPORTED_LOCALES;
 
+  protected showScrollCta = signal(false);
+  protected scrollCtaDismissed = signal(false);
+  protected showExitPopup = signal(false);
+  protected exitPopupShown = signal(false);
+
   protected get currentLocale() {
     return localeOption(this.locale);
   }
@@ -1030,11 +1161,47 @@ export class ShellComponent implements OnInit, AfterViewInit, OnDestroy {
         this.queueRevealScan();
       }
     });
+
+    const publicPages: PageKey[] = ['home', 'testportal', 'moodle', 'canvas', 'googleForms', 'microsoftForms', 'blackboard', 'quizlet', 'socrative', 'kahoot', 'quizizz', 'quizSolverAi', 'demo', 'credits'];
+    if (publicPages.includes(this.pageKey as PageKey)) {
+      window.addEventListener('scroll', this.onScroll, { passive: true });
+    }
+    if (window.innerWidth > 768) {
+      document.addEventListener('mouseout', this.onMouseOut);
+    }
   }
 
   ngOnDestroy(): void {
     this.revealObserver?.disconnect();
     this.routerEventsSub?.unsubscribe();
+    if (isPlatformBrowser(this.platformId)) {
+      window.removeEventListener('scroll', this.onScroll);
+      document.removeEventListener('mouseout', this.onMouseOut);
+    }
+  }
+
+  private onScroll = () => {
+    if (this.scrollCtaDismissed()) return;
+    const scrollPct = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight);
+    this.showScrollCta.set(scrollPct > 0.4);
+  };
+
+  protected dismissScrollCta(): void {
+    this.scrollCtaDismissed.set(true);
+    this.showScrollCta.set(false);
+  }
+
+  private onMouseOut = (e: MouseEvent) => {
+    if (this.exitPopupShown() || this.scrollCtaDismissed()) return;
+    if (!e.relatedTarget && e.clientY < 5) {
+      this.showExitPopup.set(true);
+      this.exitPopupShown.set(true);
+      document.removeEventListener('mouseout', this.onMouseOut);
+    }
+  };
+
+  protected closeExitPopup(): void {
+    this.showExitPopup.set(false);
   }
 
   private initScrollReveal(): void {

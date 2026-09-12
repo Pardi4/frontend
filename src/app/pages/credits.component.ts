@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ApiService } from '../api.service';
 import { SeoService } from '../seo.service';
 import { Locale, pageData, pathFor } from '../site-content';
-import { ShellComponent } from './shell.component';
+import { ShellComponent, trackGa4Event } from './shell.component';
 
 @Component({
   standalone: true,
@@ -28,6 +28,38 @@ import { ShellComponent } from './shell.component';
           <ul>
             <li *ngFor="let item of copy.unitItems">{{ item }}</li>
           </ul>
+        </section>
+
+        <section class="value-comparison glass">
+          <p class="eyebrow">{{ valueComp.badge }}</p>
+          <h2>{{ valueComp.title }}</h2>
+          <div class="value-grid">
+            <div class="value-item">
+              <span class="value-icon">🎓</span>
+              <div class="value-details">
+                <strong>{{ valueComp.tutor }}</strong>
+                <span class="text-secondary">{{ valueComp.tutorPrice }}</span>
+              </div>
+            </div>
+            <div class="value-item value-vs">
+              <span class="vs-badge">vs</span>
+            </div>
+            <div class="value-item value-highlight">
+              <span class="value-icon">⚡</span>
+              <div class="value-details">
+                <strong>{{ valueComp.qs }}</strong>
+                <span class="text-gradient-strong">{{ valueComp.qsPrice }}</span>
+              </div>
+            </div>
+          </div>
+          <p class="value-note text-secondary">{{ valueComp.note }}</p>
+        </section>
+
+        <section class="trust-badges">
+          <div class="trust-badge-item" *ngFor="let badge of trustBadges">
+            <span class="trust-badge-icon">{{ badge.icon }}</span>
+            <span>{{ badge.text }}</span>
+          </div>
         </section>
 
         <section *ngIf="!api.currentUser(); else creditsContent" class="login-card glass">
@@ -521,6 +553,86 @@ import { ShellComponent } from './shell.component';
         grid-template-columns: 1fr;
       }
     }
+    .value-comparison {
+      padding: 2rem;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+    .value-comparison h2 {
+      font-size: clamp(1.35rem, 3vw, 1.8rem);
+      margin: 0.5rem 0 1.5rem;
+    }
+    .value-grid {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.25rem;
+    }
+    .value-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .value-icon {
+      font-size: 2rem;
+    }
+    .value-details {
+      display: grid;
+      gap: 0.15rem;
+      text-align: left;
+    }
+    .value-details strong {
+      font-size: 1.05rem;
+    }
+    .value-highlight {
+      background: rgba(14, 165, 233, 0.08);
+      border: 1px solid rgba(14, 165, 233, 0.25);
+      padding: 0.75rem 1.25rem;
+      border-radius: var(--radius-md);
+    }
+    .vs-badge {
+      font-weight: 900;
+      font-size: 0.85rem;
+      color: var(--text-tertiary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .value-note {
+      margin: 0;
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+    .trust-badges {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      padding: 1rem 0;
+      margin-bottom: 1rem;
+    }
+    .trust-badge-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text-secondary);
+    }
+    .trust-badge-icon {
+      font-size: 1.15rem;
+    }
+    @media (max-width: 640px) {
+      .value-grid {
+        flex-direction: column;
+      }
+      .trust-badges {
+        flex-direction: column;
+        align-items: center;
+        gap: 0.75rem;
+      }
+    }
   `]
 })
 export class CreditsComponent implements OnInit, OnDestroy {
@@ -563,6 +675,26 @@ export class CreditsComponent implements OnInit, OnDestroy {
     }
   ];
 
+  protected get valueComp() {
+    const data: Record<string, any> = {
+      en: { badge: 'Smart investment', title: 'How QuizSolver compares', tutor: 'Private tutoring', tutorPrice: '$30–50 / hour', qs: 'QuizSolver 500 credits', qsPrice: '$4.99 for ~500 answers', note: 'Credits never expire. No subscription. Pay once, use whenever you need.' },
+      pl: { badge: 'Mądra inwestycja', title: 'Jak QuizSolver wypada na tle alternatyw', tutor: 'Korepetycje', tutorPrice: '80–150 zł / godzina', qs: 'QuizSolver 500 kredytów', qsPrice: '$4.99 za ~500 odpowiedzi', note: 'Kredyty nigdy nie wygasają. Bez abonamentu. Płacisz raz, używasz kiedy potrzebujesz.' },
+      de: { badge: 'Kluge Investition', title: 'QuizSolver im Vergleich', tutor: 'Nachhilfe', tutorPrice: '25–40 € / Stunde', qs: 'QuizSolver 500 Credits', qsPrice: '$4.99 für ~500 Antworten', note: 'Credits verfallen nie. Kein Abo. Einmal bezahlen, jederzeit nutzen.' },
+      es: { badge: 'Inversión inteligente', title: 'Cómo se compara QuizSolver', tutor: 'Tutorías privadas', tutorPrice: '$20–40 / hora', qs: 'QuizSolver 500 créditos', qsPrice: '$4.99 por ~500 respuestas', note: 'Los créditos nunca caducan. Sin suscripción. Paga una vez, usa cuando quieras.' },
+      fr: { badge: 'Investissement malin', title: 'QuizSolver en comparaison', tutor: 'Cours particuliers', tutorPrice: '25–45 € / heure', qs: 'QuizSolver 500 crédits', qsPrice: '$4.99 pour ~500 réponses', note: 'Les crédits n\'expirent jamais. Sans abonnement. Payez une fois, utilisez quand vous voulez.' },
+      it: { badge: 'Investimento intelligente', title: 'Come si confronta QuizSolver', tutor: 'Ripetizioni private', tutorPrice: '20–35 € / ora', qs: 'QuizSolver 500 crediti', qsPrice: '$4.99 per ~500 risposte', note: 'I crediti non scadono mai. Nessun abbonamento. Paga una volta, usa quando vuoi.' },
+      uk: { badge: 'Розумна інвестиція', title: 'Як QuizSolver порівняно з альтернативами', tutor: 'Репетитор', tutorPrice: '300–600 грн / година', qs: 'QuizSolver 500 кредитів', qsPrice: '$4.99 за ~500 відповідей', note: 'Кредити ніколи не закінчуються. Без підписки. Плати раз, використовуй коли потрібно.' }
+    };
+    return data[this.locale] || data['en'];
+  }
+
+  protected readonly trustBadges = [
+    { icon: '🔒', text: 'Secure payments via Lemon Squeezy' },
+    { icon: '♾️', text: 'Credits never expire' },
+    { icon: '🚫', text: 'No subscription required' },
+    { icon: '⚡', text: 'Instant delivery after purchase' }
+  ];
+
   protected readonly septemberTimer = signal('');
   private promoTimerInterval: any;
 
@@ -581,6 +713,7 @@ export class CreditsComponent implements OnInit, OnDestroy {
     if (packParam && this.api.token() && this.packs.some(p => p.id === packParam)) {
       setTimeout(() => this.confirmPack(packParam), 100);
     }
+    trackGa4Event('credits_page_view', { locale: this.locale });
   }
 
   ngOnDestroy(): void {
@@ -641,6 +774,7 @@ export class CreditsComponent implements OnInit, OnDestroy {
   protected confirmPack(pack: string): void {
     this.buyError.set('');
     this.pendingPack.set(pack);
+    trackGa4Event('checkout_initiated', { pack, locale: this.locale });
   }
 
   protected cancelCheckout(): void {
@@ -649,6 +783,7 @@ export class CreditsComponent implements OnInit, OnDestroy {
   }
 
   protected async continueCheckout(): Promise<void> {
+    trackGa4Event('checkout_confirmed', { pack: this.pendingPack(), locale: this.locale });
     const pack = this.pendingPack();
     if (!pack) return;
     await this.buyPack(pack);
