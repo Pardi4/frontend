@@ -147,6 +147,20 @@ import { ShellComponent, trackGa4Event } from './shell.component';
             </div>
           </section>
 
+          <!-- Referral Banner -->
+          <section class="referral-banner glass" *ngIf="api.currentUser()">
+            <div class="referral-banner-content">
+              <div class="referral-banner-icon">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              </div>
+              <div class="referral-banner-text">
+                <h3>{{ referralCopy.title }}</h3>
+                <p class="text-secondary">{{ referralCopy.text }}</p>
+              </div>
+              <a class="btn btn-outline btn-sm" [href]="pathFor('dashboard', locale)">{{ referralCopy.button }}</a>
+            </div>
+          </section>
+
           <div class="checkout-confirm-backdrop" *ngIf="pendingPack()" (click)="cancelCheckout()">
             <section class="checkout-confirm glass" (click)="$event.stopPropagation()">
               <p class="eyebrow">{{ label('confirmBadge') }}</p>
@@ -638,6 +652,45 @@ import { ShellComponent, trackGa4Event } from './shell.component';
         gap: 0.75rem;
       }
     }
+    .referral-banner {
+      padding: 1.5rem 2rem;
+      margin-top: 1rem;
+    }
+    .referral-banner-content {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      flex-wrap: wrap;
+    }
+    .referral-banner-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 48px;
+      height: 48px;
+      border-radius: var(--radius-md);
+      background: rgba(14, 165, 233, 0.1);
+      color: var(--accent-cyan);
+      flex-shrink: 0;
+    }
+    .referral-banner-text {
+      flex: 1;
+      min-width: 200px;
+    }
+    .referral-banner-text h3 {
+      font-size: 1.1rem;
+      margin: 0 0 0.25rem;
+    }
+    .referral-banner-text p {
+      margin: 0;
+      font-size: 0.9rem;
+    }
+    @media (max-width: 640px) {
+      .referral-banner-content {
+        flex-direction: column;
+        text-align: center;
+      }
+    }
   `]
 })
 export class CreditsComponent implements OnInit, OnDestroy {
@@ -647,10 +700,24 @@ export class CreditsComponent implements OnInit, OnDestroy {
   protected readonly buying = signal('');
   protected readonly buyError = signal('');
   protected readonly pendingPack = signal('');
+  protected readonly pathFor = pathFor;
 
   protected locale: Locale = 'en';
   protected data = pageData('credits', 'en');
   protected copy = CREDITS_COPY.en;
+
+  protected get referralCopy() {
+    const data: Record<string, any> = {
+      en: { title: 'Share & earn 10%', text: 'Invite friends with your referral link. When they buy credits, you get 10% bonus credits.', button: 'Get your link' },
+      pl: { title: 'Poleć i zyskaj 10%', text: 'Zaproś znajomych swoim linkiem polecającym. Gdy kupią kredyty, dostajesz 10% bonusu.', button: 'Pobierz swój link' },
+      de: { title: 'Teilen & 10% verdienen', text: 'Lade Freunde mit deinem Empfehlungslink ein. Bei ihrem Kauf erhältst du 10% Bonuscredits.', button: 'Link holen' },
+      es: { title: 'Comparte y gana 10%', text: 'Invita amigos con tu enlace de referido. Cuando compren créditos, recibes un 10% de bonificación.', button: 'Obtener enlace' },
+      fr: { title: 'Partagez et gagnez 10%', text: 'Invitez vos amis avec votre lien de parrainage. Quand ils achètent, vous recevez 10% de bonus.', button: 'Obtenir le lien' },
+      it: { title: 'Condividi e guadagna 10%', text: 'Invita amici con il tuo link referral. Quando acquistano crediti, ricevi il 10% di bonus.', button: 'Ottieni il link' },
+      uk: { title: 'Поділись і отримай 10%', text: 'Запроси друзів через реферальне посилання. Коли вони куплять кредити, ти отримаєш 10% бонусу.', button: 'Отримати посилання' }
+    };
+    return data[this.locale] || data['en'];
+  }
 
   protected readonly packs = [
     {

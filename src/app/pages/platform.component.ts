@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { Component, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { SeoService } from '../seo.service';
@@ -610,7 +610,7 @@ const PLATFORM_UI: Record<Locale, PlatformUi> = {
 
 @Component({
   standalone: true,
-  imports: [CommonModule, ShellComponent],
+  imports: [CommonModule, NgOptimizedImage, ShellComponent],
   template: `
     <qs-shell [locale]="locale" [pageKey]="pageKey">
       <div class="seo-page">
@@ -703,7 +703,7 @@ const PLATFORM_UI: Record<Locale, PlatformUi> = {
               <p class="text-secondary">{{ visual.text }}</p>
             </article>
             <figure class="platform-preview-frame glass reveal delay-100">
-              <img [src]="visual.image" [alt]="visual.alt" width="1200" height="630" loading="lazy">
+              <img [ngSrc]="visual.image" [alt]="visual.alt" width="1200" height="630" loading="lazy" [placeholder]="'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwMCIgaGVpZ2h0PSI2MzAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0iIzE3MWMyNCIvPjwvc3ZnPg=='">
               <figcaption class="text-secondary">{{ visual.alt }}</figcaption>
             </figure>
           </div>

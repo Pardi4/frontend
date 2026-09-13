@@ -1774,7 +1774,7 @@
     <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/blog/category/study-workflows"/>
     <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/blog/category/study-workflows"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/blog/category/study-workflows"/>
-    <lastmod>2026-06-01</lastmod>
+    <lastmod>2026-09-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.75</priority>
   </url>
@@ -1908,7 +1908,7 @@
     <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/blog/category/platform-guides"/>
     <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/blog/category/platform-guides"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/blog/category/platform-guides"/>
-    <lastmod>2026-07-02</lastmod>
+    <lastmod>2026-09-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.75</priority>
   </url>
@@ -3127,6 +3127,46 @@
     <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/blog/chy-dozvoleno-vykorystovuvaty-universal-parser"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/blog/is-it-legal-to-use-universal-parser"/>
     <lastmod>2026-08-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://getquizsolver.com/blog/how-to-solve-testportal-quiz</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/blog/how-to-solve-testportal-quiz"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/blog/how-to-solve-testportal-quiz"/>
+    <lastmod>2026-09-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://getquizsolver.com/blog/moodle-quiz-answers-ai</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/blog/moodle-quiz-answers-ai"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/blog/moodle-quiz-answers-ai"/>
+    <lastmod>2026-09-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://getquizsolver.com/blog/ai-quiz-solver-extension-how-it-works</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/blog/ai-quiz-solver-extension-how-it-works"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/blog/ai-quiz-solver-extension-how-it-works"/>
+    <lastmod>2026-09-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://getquizsolver.com/blog/google-forms-quiz-hack-2026</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/blog/google-forms-quiz-hack-2026"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/blog/google-forms-quiz-hack-2026"/>
+    <lastmod>2026-09-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://getquizsolver.com/blog/universal-parser-any-quiz-website</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/blog/universal-parser-any-quiz-website"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/blog/universal-parser-any-quiz-website"/>
+    <lastmod>2026-09-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>

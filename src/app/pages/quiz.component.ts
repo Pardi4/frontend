@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { Title, Meta } from '@angular/platform-browser';
 import { ApiService } from '../api.service';
 import { SeoService } from '../seo.service';
 import { Locale, pageData } from '../site-content';
@@ -954,6 +955,8 @@ import { ShellComponent } from './shell.component';
 export class QuizComponent implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private readonly seo = inject(SeoService);
+  private readonly titleService = inject(Title);
+  private readonly metaService = inject(Meta);
   protected readonly api = inject(ApiService);
 
   protected locale: Locale = 'en';
@@ -1181,6 +1184,25 @@ export class QuizComponent implements OnInit {
       }
       this.sharedQuiz.set(data.quiz);
       this.sharedQuestions.set(data.questions || []);
+
+      const quiz = data.quiz;
+      const title = `${quiz.title || 'Shared Quiz'} | QuizSolver`;
+      const desc = `Take this quiz with ${data.questions?.length || 0} questions on QuizSolver`;
+      
+      this.titleService.setTitle(title);
+      this.metaService.updateTag({ property: 'og:title', content: title });
+      this.metaService.updateTag({ property: 'og:description', content: desc });
+      this.metaService.updateTag({ property: 'og:type', content: 'website' });
+      
+      // Use full URL if in browser, otherwise rely on server request URL (handled by SSR typically but we'll try to provide a fallback or use empty)
+      const currentUrl = typeof window !== 'undefined' ? window.location.href : `https://getquizsolver.com/quiz/shared/${this.sharedToken}`;
+      this.metaService.updateTag({ property: 'og:url', content: currentUrl });
+      
+      this.metaService.updateTag({ property: 'og:image', content: 'https://getquizsolver.com/og-image.png' });
+      this.metaService.updateTag({ name: 'twitter:card', content: 'summary_large_image' });
+      this.metaService.updateTag({ name: 'twitter:title', content: title });
+      this.metaService.updateTag({ name: 'twitter:description', content: desc });
+      this.metaService.updateTag({ name: 'description', content: desc });
     } catch {
       this.sharedError.set(this.text.sharedError);
     }

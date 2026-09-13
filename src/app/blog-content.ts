@@ -1177,6 +1177,126 @@ const ARTICLE_DRAFTS: Record<string, ArticleDraft> = {
         paragraphs: ['The safest way to use AI is before and after assessed attempts: save practice questions, read explanations, create notes and turn weak areas into review quizzes. QuizSolver history is built for that study loop.']
       }
     ]
+  },
+  'how-to-solve-testportal-quiz': {
+    intro: [
+      'Testportal is widely used by schools and universities to conduct timed assessments. When time is tight, reading the interface efficiently is half the battle.',
+      'In this step-by-step guide for 2026, we explore how Testportal structures its questions and how to use tools like QuizSolver to practice and review safely, rather than just clicking answers.'
+    ],
+    sections: [
+      {
+        heading: 'Understanding the Testportal interface and timer',
+        paragraphs: ['Testportal often displays one question at a time and tracks the time you spend on each page. The strict timer can cause panic, but understanding that it is simply a Javascript counter can help you relax.', 'When you are under pressure, the most important thing is to read the visible text correctly. Do not rush to click—take a few seconds to process the question type (single choice, multiple choice, or short answer).']
+      },
+      {
+        heading: 'How QuizSolver reads Testportal questions',
+        paragraphs: ['When you activate QuizSolver on a Testportal page, it reads the visible DOM. It looks for the active question block and the currently visible answer choices. It does not hack the database; it simply acts like a smart study buddy reading over your shoulder.']
+      },
+      {
+        heading: 'Using Hint Mode for safety',
+        paragraphs: ['Instead of using an auto-solve feature that might trigger unusual browser events or rapid clicks, Hint Mode is the safer alternative. Hint Mode gives you the explanation and suggests the correct option, letting you make the final choice naturally.']
+      },
+      {
+        heading: 'Handling image questions with FocusScan',
+        paragraphs: ['Sometimes Testportal questions or answer choices are images or blocked text. In these cases, the standard DOM reader might miss the context.', 'This is where FocusScan comes in. You can manually draw a box over the question area, and the built-in OCR will extract the text for the AI to analyze, giving you the help you need even on locked-down visual content.']
+      }
+    ]
+  },
+  'moodle-quiz-answers-ai': {
+    intro: [
+      'Moodle is the backbone of many university online courses. Because it is highly customizable, quizzes can look entirely different from one class to the next.',
+      'This walkthrough covers how to navigate Moodle quizzes—with their timed pages and shuffled options—and how to get answers with AI assistance to actually learn the material.'
+    ],
+    sections: [
+      {
+        heading: 'How Moodle quizzes actually work',
+        paragraphs: ['Moodle can present quizzes with all questions on one page or one-at-a-time. Instructors often enable shuffled answers and question banks, meaning your question 5 is different from your classmate\'s question 5.', 'The timer is enforced by the server, meaning refreshing the page will not stop the clock.']
+      },
+      {
+        heading: 'How QuizSolver handles Moodle structures',
+        paragraphs: ['QuizSolver is designed to handle Moodle\'s dynamic layouts. It reads the active question block and the shuffled options currently visible to you, ensuring the AI gets the exact context of your unique attempt.']
+      },
+      {
+        heading: 'Auto-solve vs. Hint Mode on Moodle',
+        paragraphs: ['While auto-solve might seem tempting for a long quiz, Hint Mode is vastly superior for learning. Hint Mode forces you to read the AI\'s reasoning before you select the answer, transforming a stressful test into a guided practice session.']
+      },
+      {
+        heading: 'Saving Moodle answers to your study history',
+        paragraphs: ['Moodle often hides the correct answers after you submit the quiz. By using QuizSolver, you save every question, your selected answer, and the AI\'s explanation to your private history.', 'You can later review this history to create custom study notes or practice quizzes for the final exam.']
+      }
+    ]
+  },
+  'ai-quiz-solver-extension-how-it-works': {
+    intro: [
+      'There are many AI extensions out there, and sometimes they seem like magic. But understanding how an AI quiz solver actually works can help you use it more effectively.',
+      'In this post, we demystify the technology behind the QuizSolver Chrome extension. No magic, just smart web parsing and AI integration designed to enhance your study workflow.'
+    ],
+    sections: [
+      {
+        heading: 'Reading the visible DOM',
+        paragraphs: ['When you click the QuizSolver button, it doesn\'t hack into the school\'s server. Instead, it runs a script that reads the Document Object Model (DOM) of the current webpage. It looks for common structures: big text blocks for questions and radio buttons or checkboxes for answers.']
+      },
+      {
+        heading: 'Sending context to the AI',
+        paragraphs: ['Once the extension extracts the clean text of the question and the possible choices, it packages this data and sends it securely to an advanced AI model. The prompt instructs the AI to evaluate the options and provide a clear explanation.']
+      },
+      {
+        heading: 'Receiving the answer and explanation',
+        paragraphs: ['The AI returns its best guess along with a short, educational explanation. The extension then highlights the suggested answer on your screen and displays the reasoning in the side panel.']
+      },
+      {
+        heading: 'A study tool, not just an answer key',
+        paragraphs: ['The core philosophy of QuizSolver is that an answer without an explanation is useless for long-term learning.', 'By saving every interaction to your local history, the extension acts as an automated note-taker, ensuring you have the material you need to review before major exams.']
+      }
+    ]
+  },
+  'google-forms-quiz-hack-2026': {
+    intro: [
+      'Google Forms is incredibly popular for quick quizzes and assignments. While it looks simple, instructors can enable various settings like response validation and locked mode.',
+      'This guide explores how Google Forms quizzes work and how you can use AI assistance responsibly to study better, without crossing the line into academic dishonesty.'
+    ],
+    sections: [
+      {
+        heading: 'Understanding Google Forms quiz settings',
+        paragraphs: ['Google Forms can be configured as a standard survey or a graded quiz. Instructors can use response validation to require specific formats (like a number or email) and can shuffle the question order.', 'If your school uses managed Chromebooks, they might also enable Locked Mode, which prevents opening other tabs. (Note: standard Chrome extensions cannot bypass hardware-level Locked Mode).']
+      },
+      {
+        heading: 'How QuizSolver reads Google Forms',
+        paragraphs: ['On a standard Google Form, QuizSolver easily identifies the question titles and the corresponding radio buttons, checkboxes, or dropdown menus. It parses the visible text and handles multi-section forms seamlessly.']
+      },
+      {
+        heading: 'Using AI responsibly for practice',
+        paragraphs: ['The goal of using AI on a Google Form should not be to blindly copy answers. Instead, use it as a practice tool. Attempt the question yourself, then use QuizSolver to check your reasoning and read the explanation.']
+      },
+      {
+        heading: 'Saving questions for review',
+        paragraphs: ['Google Forms usually only lets you view your score once. With QuizSolver, you can save the questions and the AI\'s explanations to your study history. This allows you to revisit the concepts you struggled with long after the form is closed.']
+      }
+    ]
+  },
+  'universal-parser-any-quiz-website': {
+    intro: [
+      'While many study guides focus on the big platforms like Canvas or Moodle, the reality is that students encounter hundreds of different quiz engines, from HR assessments to obscure corporate training portals.',
+      'Our Universal Parser™ technology is designed to bridge this gap, allowing you to use AI assistance on virtually any website with a quiz layout.'
+    ],
+    sections: [
+      {
+        heading: 'How the Universal Parser technology works',
+        paragraphs: ['Instead of hardcoding rules for specific websites, the Universal Parser uses heuristic algorithms to identify quiz structures. It looks for visual and structural cues in the HTML, such as a prominent paragraph of text followed by a list of selectable options.']
+      },
+      {
+        heading: 'Reading visible text on any page',
+        paragraphs: ['Because the parser focuses on visible text rather than hidden metadata, it works on custom-built websites just as well as on popular learning management systems. It extracts the raw text and feeds it to the AI for accurate analysis.']
+      },
+      {
+        heading: 'The fallback: FocusScan for images and PDFs',
+        paragraphs: ['No parser is perfect. Sometimes a website uses a canvas element, embedded PDF, or an image to display the question. When the Universal Parser cannot find the text in the DOM, you can seamlessly fall back to FocusScan.', 'FocusScan lets you capture a specific region of the screen, running local OCR to read the text and keep your study session moving.']
+      },
+      {
+        heading: 'Reporting unsupported layouts',
+        paragraphs: ['If you find a website where neither the Universal Parser nor FocusScan works smoothly, you can report the layout to the QuizSolver team. We constantly update our algorithms based on user feedback, continuously expanding the tool\'s capabilities.']
+      }
+    ]
   }
 };
 
