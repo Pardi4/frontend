@@ -35,7 +35,7 @@ import { ShellComponent, trackGa4Event } from './shell.component';
           <h2>{{ valueComp.title }}</h2>
           <div class="value-grid">
             <div class="value-item">
-              <span class="value-icon">🎓</span>
+              <span class="value-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c0 1.66 2.69 3 6 3s6-1.34 6-3v-5"/></svg></span>
               <div class="value-details">
                 <strong>{{ valueComp.tutor }}</strong>
                 <span class="text-secondary">{{ valueComp.tutorPrice }}</span>
@@ -45,7 +45,7 @@ import { ShellComponent, trackGa4Event } from './shell.component';
               <span class="vs-badge">vs</span>
             </div>
             <div class="value-item value-highlight">
-              <span class="value-icon">⚡</span>
+              <span class="value-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></span>
               <div class="value-details">
                 <strong>{{ valueComp.qs }}</strong>
                 <span class="text-gradient-strong">{{ valueComp.qsPrice }}</span>
@@ -57,7 +57,7 @@ import { ShellComponent, trackGa4Event } from './shell.component';
 
         <section class="trust-badges">
           <div class="trust-badge-item" *ngFor="let badge of trustBadges">
-            <span class="trust-badge-icon">{{ badge.icon }}</span>
+            <span class="trust-badge-icon" [innerHTML]="badge.icon"></span>
             <span>{{ badge.text }}</span>
           </div>
         </section>
@@ -576,7 +576,10 @@ import { ShellComponent, trackGa4Event } from './shell.component';
       gap: 0.75rem;
     }
     .value-icon {
-      font-size: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent-cyan);
     }
     .value-details {
       display: grid;
@@ -621,7 +624,9 @@ import { ShellComponent, trackGa4Event } from './shell.component';
       color: var(--text-secondary);
     }
     .trust-badge-icon {
-      font-size: 1.15rem;
+      display: flex;
+      align-items: center;
+      color: var(--accent-cyan);
     }
     @media (max-width: 640px) {
       .value-grid {
@@ -689,10 +694,10 @@ export class CreditsComponent implements OnInit, OnDestroy {
   }
 
   protected readonly trustBadges = [
-    { icon: '🔒', text: 'Secure payments via Lemon Squeezy' },
-    { icon: '♾️', text: 'Credits never expire' },
-    { icon: '🚫', text: 'No subscription required' },
-    { icon: '⚡', text: 'Instant delivery after purchase' }
+    { icon: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>', text: 'Secure payments via Lemon Squeezy' },
+    { icon: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18.178 8c5.096 0 5.096 8 0 8-5.095 0-7.133-8-12.739-8-4.585 0-4.585 8 0 8 5.606 0 7.644-8 12.74-8z"/></svg>', text: 'Credits never expire' },
+    { icon: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M4.93 4.93l14.14 14.14"/></svg>', text: 'No subscription required' },
+    { icon: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>', text: 'Instant delivery after purchase' }
   ];
 
   protected readonly septemberTimer = signal('');

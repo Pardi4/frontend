@@ -173,7 +173,7 @@ export class AnimatedNumberComponent implements OnInit {
                   
                   <div class="bento-icon-wrapper">
                     <div class="icon-glow"></div>
-                    <span class="bento-emoji">🌐</span>
+                    <span class="bento-emoji"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></span>
                   </div>
                   <h3 class="bento-title">{{ text.features.items[0].title }}</h3>
                   <p class="bento-text">{{ text.features.items[0].text }}</p>
@@ -201,7 +201,7 @@ export class AnimatedNumberComponent implements OnInit {
                   
                   <div class="bento-icon-wrapper">
                     <div class="icon-glow"></div>
-                    <span class="bento-emoji">💡</span>
+                    <span class="bento-emoji"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7V17h8v-2.3A7 7 0 0 0 12 2z"/></svg></span>
                   </div>
                   <h3 class="bento-title">{{ text.features.items[1].title }}</h3>
                   <p class="bento-text">{{ text.features.items[1].text }}</p>
@@ -215,7 +215,7 @@ export class AnimatedNumberComponent implements OnInit {
                   
                   <div class="bento-icon-wrapper">
                     <div class="icon-glow"></div>
-                    <span class="bento-emoji">🔍</span>
+                    <span class="bento-emoji"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="7"/><path d="M12 1v4"/><path d="M12 19v4"/><path d="M1 12h4"/><path d="M19 12h4"/></svg></span>
                   </div>
                   <h3 class="bento-title">{{ text.features.items[2].title }}</h3>
                   <p class="bento-text">{{ text.features.items[2].text }}</p>
@@ -229,7 +229,7 @@ export class AnimatedNumberComponent implements OnInit {
                   
                   <div class="bento-icon-wrapper">
                     <div class="icon-glow"></div>
-                    <span class="bento-emoji">⚡</span>
+                    <span class="bento-emoji"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></span>
                   </div>
                   <h3 class="bento-title">{{ text.features.items[3].title }}</h3>
                   <p class="bento-text">{{ text.features.items[3].text }}</p>
@@ -243,7 +243,7 @@ export class AnimatedNumberComponent implements OnInit {
                   
                   <div class="bento-icon-wrapper">
                     <div class="icon-glow"></div>
-                    <span class="bento-emoji">📚</span>
+                    <span class="bento-emoji"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><path d="M8 7h8"/><path d="M8 11h6"/></svg></span>
                   </div>
                   <h3 class="bento-title">{{ text.features.items[4].title }}</h3>
                   <p class="bento-text">{{ text.features.items[4].text }}</p>
@@ -257,7 +257,7 @@ export class AnimatedNumberComponent implements OnInit {
                   
                   <div class="bento-icon-wrapper">
                     <div class="icon-glow"></div>
-                    <span class="bento-emoji">✅</span>
+                    <span class="bento-emoji"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></span>
                   </div>
                   <h3 class="bento-title">{{ text.features.items[5].title }}</h3>
                   <p class="bento-text">{{ text.features.items[5].text }}</p>
@@ -271,7 +271,7 @@ export class AnimatedNumberComponent implements OnInit {
                   
                   <div class="bento-icon-wrapper">
                     <div class="icon-glow"></div>
-                    <span class="bento-emoji">🔗</span>
+                    <span class="bento-emoji"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg></span>
                   </div>
                   <h3 class="bento-title">{{ text.features.items[6].title }}</h3>
                   <p class="bento-text">{{ text.features.items[6].text }}</p>
@@ -285,7 +285,7 @@ export class AnimatedNumberComponent implements OnInit {
                   
                   <div class="bento-icon-wrapper">
                     <div class="icon-glow"></div>
-                    <span class="bento-emoji">🔑</span>
+                    <span class="bento-emoji"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg></span>
                   </div>
                   <h3 class="bento-title">{{ text.features.items[7].title }}</h3>
                   <p class="bento-text">{{ text.features.items[7].text }}</p>
@@ -704,9 +704,15 @@ export class AnimatedNumberComponent implements OnInit {
       border-radius: 50%;
     }
     .bento-emoji {
-      font-size: 24px;
-      z-index: 2;
-      line-height: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent-cyan);
+    }
+    .bento-emoji svg {
+      width: 24px;
+      height: 24px;
+      flex-shrink: 0;
     }
 
     .bento-title {

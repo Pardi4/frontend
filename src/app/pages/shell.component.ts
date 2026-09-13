@@ -413,7 +413,7 @@ export function trackGa4Event(eventName: string, params?: Record<string, string 
       <!-- Scroll CTA Bar -->
       <div class="scroll-cta-bar" *ngIf="showScrollCta() && !scrollCtaDismissed()" role="complementary" aria-label="Install prompt">
         <div class="scroll-cta-inner">
-          <span class="scroll-cta-text">{{ copy.scrollCta?.text || '🎓 Install QuizSolver — 10 free AI credits included' }}</span>
+          <span class="scroll-cta-text">{{ copy.scrollCta?.text || 'Install QuizSolver — 10 free AI credits included' }}</span>
           <a class="btn btn-primary btn-sm" [href]="storeUrl" target="_blank" rel="noopener">{{ copy.scrollCta?.button || 'Install free' }}</a>
           <button class="scroll-cta-close" type="button" (click)="dismissScrollCta()" aria-label="Dismiss">✕</button>
         </div>
