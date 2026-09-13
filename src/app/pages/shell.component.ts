@@ -413,7 +413,7 @@ export function trackGa4Event(eventName: string, params?: Record<string, string 
       <!-- Scroll CTA Bar -->
       <div class="scroll-cta-bar" *ngIf="showScrollCta() && !scrollCtaDismissed()" role="complementary" aria-label="Install prompt">
         <div class="scroll-cta-inner">
-          <span class="scroll-cta-text">{{ copy.scrollCta?.text || 'Install QuizSolver — 10 free AI credits included' }}</span>
+          <span class="scroll-cta-text">{{ copy.scrollCta?.text || 'Install QuizSolver — 20 free AI credits included' }}</span>
           <a class="btn btn-primary btn-sm" [href]="storeUrl" target="_blank" rel="noopener">{{ copy.scrollCta?.button || 'Install free' }}</a>
           <button class="scroll-cta-close" type="button" (click)="dismissScrollCta()" aria-label="Dismiss">✕</button>
         </div>
@@ -425,7 +425,7 @@ export function trackGa4Event(eventName: string, params?: Record<string, string 
           <button class="exit-popup-close" type="button" (click)="closeExitPopup()" aria-label="Close">✕</button>
           <p class="eyebrow" style="color: var(--accent-cyan);">{{ copy.exitPopup?.eyebrow || 'Before you go' }}</p>
           <h2 style="font-size: clamp(1.5rem, 3vw, 2rem); margin: 0.5rem 0;">{{ copy.exitPopup?.title || 'Try QuizSolver for free' }}</h2>
-          <p class="text-secondary" style="margin-bottom: 1.5rem;">{{ copy.exitPopup?.text || 'Every new account gets 10 free AI credits. No card needed.' }}</p>
+          <p class="text-secondary" style="margin-bottom: 1.5rem;">{{ copy.exitPopup?.text || 'Every new account gets 20 free AI credits. No card needed.' }}</p>
           <div style="display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap;">
             <a class="btn btn-primary" [href]="storeUrl" target="_blank" rel="noopener">{{ copy.exitPopup?.primary || 'Install free extension' }}</a>
             <a class="btn btn-outline" [href]="pathFor('demo')" (click)="closeExitPopup()">{{ copy.exitPopup?.secondary || 'Try demo first' }}</a>
