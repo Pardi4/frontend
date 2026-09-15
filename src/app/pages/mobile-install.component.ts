@@ -13,10 +13,10 @@ import { ShellComponent } from './shell.component';
       <div class="container mobile-install-page">
         <!-- HERO -->
         <section class="utility-hero text-center">
-          <span class="eyebrow">{{ isPl ? 'Aplikacja Mobilna' : 'Mobile Extension' }}</span>
-          <h1 class="hero-title">{{ isPl ? 'QuizSolver na Twoim Telefonie' : 'QuizSolver on Your Phone' }}</h1>
+          <span class="eyebrow">{{ t.eyebrow }}</span>
+          <h1 class="hero-title">{{ t.title }}</h1>
           <p class="hero-subtitle text-secondary mx-auto">
-            {{ isPl ? 'Rozwiązuj testy, kolokwia i quizy bezpośrednio ze smartfona. Wybierz swój system, aby zobaczyć instrukcję instalacji krok po kroku.' : 'Solve quizzes and tests directly from your smartphone. Choose your operating system below for step-by-step instructions.' }}
+            {{ t.subtitle }}
           </p>
           
           <div class="os-selector">
@@ -45,43 +45,41 @@ import { ShellComponent } from './shell.component';
           <div class="trust-bar">
             <div class="trust-pill">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
-              <span>{{ isPl ? '100% za darmo' : '100% free' }}</span>
+              <span>{{ t.trustFree }}</span>
             </div>
             <div class="trust-pill">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>
-              <span>{{ isPl ? '~3 minuty' : '~3 minutes' }}</span>
+              <span>{{ t.trustTime }}</span>
             </div>
             <div class="trust-pill">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6l7-3z"/></svg>
-              <span>{{ isPl ? 'Bez roota' : 'No root needed' }}</span>
+              <span>{{ t.trustRoot }}</span>
             </div>
           </div>
 
           <!-- Quick summary banner -->
           <div class="summary-card glass">
             <div class="summary-top">
-              <div class="summary-icon">QS</div>
+              <img src="/logo.svg" alt="QS Logo" class="summary-icon">
               <div class="summary-main">
                 <div class="summary-badge">
                   <span class="pulse-dot"></span>
-                  <span>{{ isPl ? 'Wymaga Kiwi Browser' : 'Requires Kiwi Browser' }}</span>
+                  <span>{{ t.reqKiwi }}</span>
                 </div>
-                <h2>{{ isPl ? 'Instalacja na Androidzie w 4 krokach' : 'Android Installation in 4 Steps' }}</h2>
+                <h2>{{ t.step4TitleSummary }}</h2>
                 <p class="text-secondary">
-                  {{ isPl
-                    ? 'Standardowy mobilny Chrome nie pozwala instalować rozszerzeń. Rozwiązanie? Kiwi Browser — lekka przeglądarka na tym samym silniku Chromium, która obsługuje wtyczki z Chrome Web Store.'
-                    : 'Standard Chrome on Android blocks extensions. The fix? Kiwi Browser — a fast browser built on Chromium that supports full Chrome Web Store extensions.' }}
+                  {{ t.kiwiDesc }}
                 </p>
               </div>
             </div>
             <div class="summary-actions">
               <a [href]="kiwiPlayStoreUrl" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M3.609 1.814L13.792 12 3.61 22.186a1.597 1.597 0 0 1-.22-.843V2.657c0-.317.078-.612.219-.843zm11.235 11.238l2.569-2.57-11.83-6.83 9.261 9.4zm0 1.896l-9.26 9.4 11.829-6.83-2.569-2.57zm1.053-1.053l2.844 1.642a1.6 1.6 0 0 0 1.604 0l-4.448-2.57 4.448-2.57a1.6 1.6 0 0 0-1.604 0l-2.844 1.642z"/></svg>
-                <span>{{ isPl ? 'Pobierz Kiwi Browser' : 'Get Kiwi Browser' }}</span>
+                <span>{{ t.getKiwi }}</span>
               </a>
               <button class="btn btn-outline" type="button" (click)="copyLink($event)">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-                <span>{{ copied() ? (isPl ? 'Skopiowano link!' : 'Copied Link!') : (isPl ? 'Skopiuj link wtyczki' : 'Copy Extension URL') }}</span>
+                <span>{{ copied() ? t.copied : t.copyLink }}</span>
               </button>
             </div>
           </div>
@@ -91,19 +89,19 @@ import { ShellComponent } from './shell.component';
             <div class="compare-col compare-bad">
               <div class="compare-head">
                 <span class="compare-dot"></span>
-                <span>{{ isPl ? 'Chrome na Androidzie' : 'Android Chrome' }}</span>
+                <span>{{ t.chromeAndroid }}</span>
               </div>
-              <div class="compare-row"><span class="mark bad">✕</span>{{ isPl ? 'Nie obsługuje rozszerzeń' : 'No extension support' }}</div>
-              <div class="compare-row"><span class="mark bad">✕</span>{{ isPl ? 'Brak dostępu do Web Store' : 'No Web Store access' }}</div>
+              <div class="compare-row"><span class="mark bad">✕</span>{{ t.noExt }}</div>
+              <div class="compare-row"><span class="mark bad">✕</span>{{ t.noStore }}</div>
             </div>
-            <div class="compare-vs"><span>{{ isPl ? 'KONTRA' : 'VS' }}</span></div>
+            <div class="compare-vs"><span>{{ t.vs }}</span></div>
             <div class="compare-col compare-good">
               <div class="compare-head">
                 <span class="compare-dot good"></span>
                 <span>Kiwi Browser</span>
               </div>
-              <div class="compare-row"><span class="mark good">✓</span>{{ isPl ? 'Pełne wsparcie Chrome Web Store' : 'Full Chrome Web Store support' }}</div>
-              <div class="compare-row"><span class="mark good">✓</span>{{ isPl ? 'Ten sam silnik co Chrome — szybka i stabilna' : 'Same engine as Chrome — fast & stable' }}</div>
+              <div class="compare-row"><span class="mark good">✓</span>{{ t.fullStore }}</div>
+              <div class="compare-row"><span class="mark good">✓</span>{{ t.sameEngine }}</div>
             </div>
           </div>
 
@@ -117,13 +115,11 @@ import { ShellComponent } from './shell.component';
               </div>
               <div class="flow-body">
                 <div class="flow-header">
-                  <h3>{{ isPl ? 'Pobierz Kiwi Browser z Google Play' : 'Install Kiwi Browser from Google Play' }}</h3>
-                  <span class="flow-tag">{{ isPl ? 'Krok 1' : 'Step 1' }}</span>
+                  <h3>{{ t.step1Title }}</h3>
+                  <span class="flow-tag">{{ t.step1 }}</span>
                 </div>
                 <p class="text-secondary">
-                  {{ isPl
-                    ? 'Wejdź do sklepu Google Play na swoim telefonie i zainstaluj darmową przeglądarkę Kiwi Browser.'
-                    : 'Open Google Play on your phone and install the free Kiwi Browser application.' }}
+                  {{ t.step1Desc }}
                 </p>
                 <div class="flow-box">
                   <div class="app-row">
@@ -135,7 +131,7 @@ import { ShellComponent } from './shell.component';
                       <span>Geometry Mobile · 4.4★</span>
                     </div>
                     <a [href]="kiwiPlayStoreUrl" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-primary">
-                      {{ isPl ? 'Zainstaluj' : 'Install' }}
+                      {{ t.install }}
                     </a>
                   </div>
                 </div>
@@ -150,13 +146,11 @@ import { ShellComponent } from './shell.component';
               </div>
               <div class="flow-body">
                 <div class="flow-header">
-                  <h3>{{ isPl ? 'Otwórz Chrome Web Store wewnątrz Kiwi' : 'Open Chrome Web Store in Kiwi' }}</h3>
-                  <span class="flow-tag">{{ isPl ? 'Krok 2' : 'Step 2' }}</span>
+                  <h3>{{ t.step2Title }}</h3>
+                  <span class="flow-tag">{{ t.step2 }}</span>
                 </div>
                 <p class="text-secondary">
-                  {{ isPl
-                    ? 'Uruchom Kiwi Browser na telefonie, wklej link do paska adresu i kliknij niebieski przycisk „Dodaj do Chrome".'
-                    : 'Launch Kiwi Browser on your device, paste the extension URL into the address bar and tap "Add to Chrome".' }}
+                  {{ t.step2Desc }}
                 </p>
                 <div class="flow-box mini-browser">
                   <div class="mini-browser-bar">
@@ -172,16 +166,16 @@ import { ShellComponent } from './shell.component';
                         <strong>QuizSolver — AI Quiz Solver</strong>
                         <span>chrome.google.com/webstore</span>
                       </div>
-                      <span class="mb-add-btn">{{ isPl ? 'Dodaj do Chrome' : 'Add to Chrome' }}</span>
+                      <span class="mb-add-btn">{{ t.addToChrome }}</span>
                     </div>
                   </div>
                 </div>
                 <div class="url-buttons">
                   <button class="btn btn-sm btn-outline" type="button" (click)="copyLink($event)">
-                    {{ copied() ? (isPl ? '✓ Skopiowano' : '✓ Copied') : (isPl ? 'Kopiuj link' : 'Copy link') }}
+                    {{ copied() ? t.copiedShort : t.copyLinkShort }}
                   </button>
                   <a [href]="storeUrl" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-primary">
-                    {{ isPl ? 'Otwórz stronę wtyczki' : 'Open Web Store' }}
+                    {{ t.openStore }}
                   </a>
                 </div>
               </div>
@@ -195,13 +189,11 @@ import { ShellComponent } from './shell.component';
               </div>
               <div class="flow-body">
                 <div class="flow-header">
-                  <h3>{{ isPl ? 'Włącz wtyczkę z menu Kiwi (3 kropki)' : 'Open Extension from the 3-Dots Menu' }}</h3>
-                  <span class="flow-tag">{{ isPl ? 'Krok 3' : 'Step 3' }}</span>
+                  <h3>{{ t.step3Title }}</h3>
+                  <span class="flow-tag">{{ t.step3 }}</span>
                 </div>
                 <p class="text-secondary">
-                  {{ isPl
-                    ? 'Kliknij menu w prawym górnym rogu Kiwi (trzy kropki ⋮), zjedź na sam dół listy i stuknij QuizSolver. Zaloguj się tym samym adresem e-mail, aby mieć dostęp do swoich kredytów.'
-                    : 'Tap the three dots (⋮) in the top-right corner of Kiwi and scroll to the bottom. Tap QuizSolver and log in with your email to access your credits.' }}
+                  {{ t.step3Desc }}
                 </p>
                 <div class="flow-box mini-browser">
                   <div class="mini-browser-bar">
@@ -213,16 +205,16 @@ import { ShellComponent } from './shell.component';
                   </div>
                   <div class="menu-snippet">
                     <div class="menu-row muted">
-                      <span>{{ mockMenuCopy.newTab }}</span>
+                      <span>{{ t.newTab }}</span>
                     </div>
                     <div class="menu-row muted">
-                      <span>{{ mockMenuCopy.settings }}</span>
+                      <span>{{ t.settings }}</span>
                     </div>
                     <div class="menu-divider"></div>
                     <div class="menu-row highlight">
                       <img src="/logo.svg" alt="QS Logo" class="qs-badge-icon">
-                      <strong>{{ mockMenuCopy.title }}</strong>
-                      <span class="badge-ready">{{ mockMenuCopy.active }}</span>
+                      <strong>{{ t.qsTitle }}</strong>
+                      <span class="badge-ready">{{ t.active }}</span>
                     </div>
                   </div>
                 </div>
@@ -236,13 +228,11 @@ import { ShellComponent } from './shell.component';
               </div>
               <div class="flow-body">
                 <div class="flow-header">
-                  <h3>{{ isPl ? 'Rozwiązuj testy bezpośrednio na telefonie' : 'Solve Quizzes Directly on Mobile' }}</h3>
-                  <span class="flow-tag">{{ isPl ? 'Gotowe' : 'Ready' }}</span>
+                  <h3>{{ t.step4Title }}</h3>
+                  <span class="flow-tag">{{ t.step4 }}</span>
                 </div>
                 <p class="text-secondary">
-                  {{ isPl
-                    ? 'Otwórz dowolny test w Kiwi. Otwórz menu Kiwi -> QuizSolver -> kliknij „Rozwiąż obecną stronę" lub użyj FocusScan.'
-                    : 'Open any quiz in Kiwi. Open Kiwi menu -> QuizSolver -> tap "Solve current page" or use FocusScan.' }}
+                  {{ t.step4Desc }}
                 </p>
                 <div class="platform-chips">
                   <span class="chip">Testportal</span>
@@ -256,13 +246,13 @@ import { ShellComponent } from './shell.component';
                   <div class="quiz-tip">
                     <span class="quiz-check">✓</span>
                     <div>
-                      <strong>{{ isPl ? 'Wszystko działa dokładnie tak jak na komputerze' : 'Works exactly like the desktop version' }}</strong>
-                      <span class="text-secondary">{{ isPl ? 'Wykrywanie pytań, tryb podpowiedzi, FocusScan i historia pytań są w 100% dostępne.' : 'Automatic detection, hint mode, FocusScan and study history are fully supported.' }}</span>
+                      <strong>{{ t.worksSame }}</strong>
+                      <span class="text-secondary">{{ t.worksSameDesc }}</span>
                     </div>
                   </div>
                   <div class="quiz-cta">
                     <a [href]="pathFor('demo', locale)" class="btn btn-sm btn-outline">
-                      {{ isPl ? 'Przetestuj na darmowym Demo' : 'Try Free Demo' }}
+                      {{ t.tryDemo }}
                     </a>
                   </div>
                 </div>
@@ -276,29 +266,29 @@ import { ShellComponent } from './shell.component';
               <div class="feature-icon">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="0.5" fill="currentColor"/></svg>
               </div>
-              <strong>{{ isPl ? 'Auto-wykrywanie pytań' : 'Auto question detection' }}</strong>
-              <span>{{ isPl ? 'Wtyczka sama znajduje pytania na stronie' : 'Finds quiz questions on the page automatically' }}</span>
+              <strong>{{ t.feat1Title }}</strong>
+              <span>{{ t.feat1Desc }}</span>
             </div>
             <div class="feature-item">
               <div class="feature-icon">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8"/></svg>
               </div>
-              <strong>{{ isPl ? 'FocusScan' : 'FocusScan' }}</strong>
-              <span>{{ isPl ? 'Skanuj i rozwiązuj wybrany fragment ekranu' : 'Scan and solve a selected part of the screen' }}</span>
+              <strong>{{ t.feat2Title }}</strong>
+              <span>{{ t.feat2Desc }}</span>
             </div>
             <div class="feature-item">
               <div class="feature-icon">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a6 6 0 00-4 10.5c.6.5 1 1.3 1 2.1V16h6v-1.4c0-.8.4-1.6 1-2.1A6 6 0 0012 2z"/></svg>
               </div>
-              <strong>{{ isPl ? 'Tryb podpowiedzi' : 'Hint mode' }}</strong>
-              <span>{{ isPl ? 'Wskazówki zamiast gotowych odpowiedzi' : 'Gentle nudges instead of full answers' }}</span>
+              <strong>{{ t.feat3Title }}</strong>
+              <span>{{ t.feat3Desc }}</span>
             </div>
             <div class="feature-item">
               <div class="feature-icon">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v5h5M3.05 13a9 9 0 106.16-8.44"/><path d="M12 7v5l3 2"/></svg>
               </div>
-              <strong>{{ isPl ? 'Historia pytań' : 'Question history' }}</strong>
-              <span>{{ isPl ? 'Wszystko zapisane do nauki przed egzaminem' : 'Everything saved for exam revision' }}</span>
+              <strong>{{ t.feat4Title }}</strong>
+              <span>{{ t.feat4Desc }}</span>
             </div>
           </div>
         </section>
@@ -307,9 +297,9 @@ import { ShellComponent } from './shell.component';
         <section class="install-flow" *ngIf="os === 'ios'">
           <div class="ios-wrapper">
             <div class="ios-header text-center">
-              <h2>{{ isPl ? 'Wideo Poradnik dla iOS (iPhone / iPad)' : 'Video Tutorial for iOS (iPhone / iPad)' }}</h2>
+              <h2>{{ t.iosTitle }}</h2>
               <p class="text-secondary">
-                {{ isPl ? 'Zobacz 40-sekundowe nagranie pokazujące instalację rozszerzenia na urządzeniach Apple.' : 'Watch this 40-second video demonstrating the setup process on Apple devices.' }}
+                {{ t.iosDesc }}
               </p>
             </div>
 
@@ -331,7 +321,7 @@ import { ShellComponent } from './shell.component';
             <div class="ios-actions text-center">
               <a href="https://youtube.com/shorts/2YHPMk_xHAs" target="_blank" rel="noopener noreferrer" class="btn btn-outline btn-sm">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
-                <span>{{ isPl ? 'Otwórz na YouTube' : 'Open in YouTube app' }}</span>
+                <span>{{ t.iosBtn }}</span>
               </a>
             </div>
           </div>
@@ -465,13 +455,7 @@ import { ShellComponent } from './shell.component';
       width: 52px;
       height: 52px;
       border-radius: 14px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 900;
-      font-size: 1.05rem;
-      color: #030712;
-      background: linear-gradient(135deg, var(--accent-cyan), #7c5cfc);
+      object-fit: contain;
       box-shadow: 0 6px 22px rgba(14, 165, 233, 0.35);
     }
     .summary-badge {
@@ -1073,17 +1057,395 @@ export class MobileInstallComponent implements OnInit {
     return this.locale === 'pl';
   }
 
-  get mockMenuCopy() {
-    const t: Record<string, any> = {
-      en: { newTab: 'New tab', settings: 'Settings', active: 'ACTIVE', title: 'QuizSolver — AI Quiz Solver' },
-      pl: { newTab: 'Nowa karta', settings: 'Ustawienia', active: 'AKTYWNY', title: 'QuizSolver — AI Quiz Solver' },
-      de: { newTab: 'Neuer Tab', settings: 'Einstellungen', active: 'AKTIV', title: 'QuizSolver — AI Quiz Solver' },
-      es: { newTab: 'Nueva pestaña', settings: 'Configuración', active: 'ACTIVO', title: 'QuizSolver — AI Quiz Solver' },
-      fr: { newTab: 'Nouvel onglet', settings: 'Paramètres', active: 'ACTIF', title: 'QuizSolver — AI Quiz Solver' },
-      it: { newTab: 'Nuova scheda', settings: 'Impostazioni', active: 'ATTIVO', title: 'QuizSolver — AI Quiz Solver' },
-      uk: { newTab: 'Нова вкладка', settings: 'Налаштування', active: 'АКТИВНИЙ', title: 'QuizSolver — AI Quiz Solver' }
+  get t() {
+    const texts: Record<string, any> = {
+      en: {
+        eyebrow: 'Mobile Extension',
+        title: 'QuizSolver on Your Phone',
+        subtitle: 'Solve quizzes and tests directly from your smartphone. Choose your operating system below for step-by-step instructions.',
+        trustFree: '100% free',
+        trustTime: '~3 minutes',
+        trustRoot: 'No root needed',
+        reqKiwi: 'Requires Kiwi Browser',
+        step4TitleSummary: 'Android Installation in 4 Steps',
+        kiwiDesc: 'Standard Chrome on Android blocks extensions. The fix? Kiwi Browser — a fast browser built on Chromium that supports full Chrome Web Store extensions.',
+        getKiwi: 'Get Kiwi Browser',
+        copied: 'Copied Link!',
+        copyLink: 'Copy Extension URL',
+        copyLinkShort: 'Copy link',
+        copiedShort: '✓ Copied',
+        chromeAndroid: 'Android Chrome',
+        noExt: 'No extension support',
+        noStore: 'No Web Store access',
+        vs: 'VS',
+        fullStore: 'Full Chrome Web Store support',
+        sameEngine: 'Same engine as Chrome — fast & stable',
+        step1: 'Step 1',
+        step1Title: 'Install Kiwi Browser from Google Play',
+        step1Desc: 'Open Google Play on your phone and install the free Kiwi Browser application.',
+        install: 'Install',
+        step2: 'Step 2',
+        step2Title: 'Open Chrome Web Store in Kiwi',
+        step2Desc: 'Launch Kiwi Browser on your device, paste the extension URL into the address bar and tap "Add to Chrome".',
+        addToChrome: 'Add to Chrome',
+        openStore: 'Open Web Store',
+        step3: 'Step 3',
+        step3Title: 'Open Extension from the 3-Dots Menu',
+        step3Desc: 'Tap the three dots (⋮) in the top-right corner of Kiwi and scroll to the bottom. Tap QuizSolver and log in with your email to access your credits.',
+        step4: 'Ready',
+        step4Title: 'Solve Quizzes Directly on Mobile',
+        step4Desc: 'Open any quiz in Kiwi. Open Kiwi menu -> QuizSolver -> tap "Solve current page" or use FocusScan.',
+        worksSame: 'Works exactly like the desktop version',
+        worksSameDesc: 'Automatic detection, hint mode, FocusScan and study history are fully supported.',
+        tryDemo: 'Try Free Demo',
+        feat1Title: 'Auto question detection',
+        feat1Desc: 'Finds quiz questions on the page automatically',
+        feat2Title: 'FocusScan',
+        feat2Desc: 'Scan and solve a selected part of the screen',
+        feat3Title: 'Hint mode',
+        feat3Desc: 'Gentle nudges instead of full answers',
+        feat4Title: 'Question history',
+        feat4Desc: 'Everything saved for exam revision',
+        iosTitle: 'Video Tutorial for iOS (iPhone / iPad)',
+        iosDesc: 'Watch this 40-second video demonstrating the setup process on Apple devices.',
+        iosBtn: 'Open in YouTube app',
+        newTab: 'New tab',
+        settings: 'Settings',
+        active: 'ACTIVE',
+        qsTitle: 'QuizSolver — AI Quiz Solver'
+      },
+      pl: {
+        eyebrow: 'Aplikacja Mobilna',
+        title: 'QuizSolver na Twoim Telefonie',
+        subtitle: 'Rozwiązuj testy, kolokwia i quizy bezpośrednio ze smartfona. Wybierz swój system, aby zobaczyć instrukcję instalacji krok po kroku.',
+        trustFree: '100% za darmo',
+        trustTime: '~3 minuty',
+        trustRoot: 'Bez roota',
+        reqKiwi: 'Wymaga Kiwi Browser',
+        step4TitleSummary: 'Instalacja na Androidzie w 4 krokach',
+        kiwiDesc: 'Standardowy mobilny Chrome nie pozwala instalować rozszerzeń. Rozwiązanie? Kiwi Browser — lekka przeglądarka na tym samym silniku Chromium, która obsługuje wtyczki z Chrome Web Store.',
+        getKiwi: 'Pobierz Kiwi Browser',
+        copied: 'Skopiowano link!',
+        copyLink: 'Skopiuj link wtyczki',
+        copyLinkShort: 'Kopiuj link',
+        copiedShort: '✓ Skopiowano',
+        chromeAndroid: 'Chrome na Androidzie',
+        noExt: 'Nie obsługuje rozszerzeń',
+        noStore: 'Brak dostępu do Web Store',
+        vs: 'KONTRA',
+        fullStore: 'Pełne wsparcie Chrome Web Store',
+        sameEngine: 'Ten sam silnik co Chrome — szybka i stabilna',
+        step1: 'Krok 1',
+        step1Title: 'Pobierz Kiwi Browser z Google Play',
+        step1Desc: 'Wejdź do sklepu Google Play na swoim telefonie i zainstaluj darmową przeglądarkę Kiwi Browser.',
+        install: 'Zainstaluj',
+        step2: 'Krok 2',
+        step2Title: 'Otwórz Chrome Web Store wewnątrz Kiwi',
+        step2Desc: 'Uruchom Kiwi Browser na telefonie, wklej link do paska adresu i kliknij niebieski przycisk „Dodaj do Chrome".',
+        addToChrome: 'Dodaj do Chrome',
+        openStore: 'Otwórz stronę wtyczki',
+        step3: 'Krok 3',
+        step3Title: 'Włącz wtyczkę z menu Kiwi (3 kropki)',
+        step3Desc: 'Kliknij menu w prawym górnym rogu Kiwi (trzy kropki ⋮), zjedź na sam dół listy i stuknij QuizSolver. Zaloguj się tym samym adresem e-mail, aby mieć dostęp do swoich kredytów.',
+        step4: 'Gotowe',
+        step4Title: 'Rozwiązuj testy bezpośrednio na telefonie',
+        step4Desc: 'Otwórz dowolny test w Kiwi. Otwórz menu Kiwi -> QuizSolver -> kliknij „Rozwiąż obecną stronę" lub użyj FocusScan.',
+        worksSame: 'Wszystko działa dokładnie tak jak na komputerze',
+        worksSameDesc: 'Wykrywanie pytań, tryb podpowiedzi, FocusScan i historia pytań są w 100% dostępne.',
+        tryDemo: 'Przetestuj na darmowym Demo',
+        feat1Title: 'Auto-wykrywanie pytań',
+        feat1Desc: 'Wtyczka sama znajduje pytania na stronie',
+        feat2Title: 'FocusScan',
+        feat2Desc: 'Skanuj i rozwiązuj wybrany fragment ekranu',
+        feat3Title: 'Tryb podpowiedzi',
+        feat3Desc: 'Wskazówki zamiast gotowych odpowiedzi',
+        feat4Title: 'Historia pytań',
+        feat4Desc: 'Wszystko zapisane do nauki przed egzaminem',
+        iosTitle: 'Wideo Poradnik dla iOS (iPhone / iPad)',
+        iosDesc: 'Zobacz 40-sekundowe nagranie pokazujące instalację rozszerzenia na urządzeniach Apple.',
+        iosBtn: 'Otwórz na YouTube',
+        newTab: 'Nowa karta',
+        settings: 'Ustawienia',
+        active: 'AKTYWNY',
+        qsTitle: 'QuizSolver — AI Quiz Solver'
+      },
+      de: {
+        eyebrow: 'Mobile Erweiterung',
+        title: 'QuizSolver auf Ihrem Handy',
+        subtitle: 'Lösen Sie Tests und Quizze direkt von Ihrem Smartphone aus. Wählen Sie unten Ihr Betriebssystem für eine Schritt-für-Schritt-Anleitung.',
+        trustFree: '100% kostenlos',
+        trustTime: '~3 Minuten',
+        trustRoot: 'Kein Root nötig',
+        reqKiwi: 'Benötigt Kiwi Browser',
+        step4TitleSummary: 'Android-Installation in 4 Schritten',
+        kiwiDesc: 'Standard Chrome auf Android blockiert Erweiterungen. Die Lösung? Kiwi Browser — ein schneller Browser basierend auf Chromium, der alle Chrome Web Store-Erweiterungen unterstützt.',
+        getKiwi: 'Kiwi Browser herunterladen',
+        copied: 'Link kopiert!',
+        copyLink: 'Erweiterungs-Link kopieren',
+        copyLinkShort: 'Link kopieren',
+        copiedShort: '✓ Kopiert',
+        chromeAndroid: 'Android Chrome',
+        noExt: 'Keine Erweiterungen unterstützt',
+        noStore: 'Kein Web Store-Zugriff',
+        vs: 'VS',
+        fullStore: 'Volle Chrome Web Store-Unterstützung',
+        sameEngine: 'Gleiche Engine wie Chrome — schnell & stabil',
+        step1: 'Schritt 1',
+        step1Title: 'Kiwi Browser bei Google Play installieren',
+        step1Desc: 'Öffnen Sie Google Play auf Ihrem Telefon und installieren Sie die kostenlose Kiwi Browser App.',
+        install: 'Installieren',
+        step2: 'Schritt 2',
+        step2Title: 'Chrome Web Store im Kiwi öffnen',
+        step2Desc: 'Starten Sie den Kiwi Browser, fügen Sie die Erweiterungs-URL in die Adressleiste ein und tippen Sie auf "Hinzufügen".',
+        addToChrome: 'Hinzufügen',
+        openStore: 'Web Store öffnen',
+        step3: 'Schritt 3',
+        step3Title: 'Erweiterung über das 3-Punkte-Menü öffnen',
+        step3Desc: 'Tippen Sie auf die drei Punkte (⋮) oben rechts im Kiwi und scrollen Sie nach unten. Tippen Sie auf QuizSolver und melden Sie sich an.',
+        step4: 'Fertig',
+        step4Title: 'Quizze direkt auf dem Handy lösen',
+        step4Desc: 'Öffnen Sie ein beliebiges Quiz in Kiwi. Öffnen Sie das Kiwi-Menü -> QuizSolver -> tippen Sie auf "Aktuelle Seite lösen".',
+        worksSame: 'Funktioniert genau wie die Desktop-Version',
+        worksSameDesc: 'Automatische Erkennung, Hinweismodus, FocusScan und Lernhistorie werden voll unterstützt.',
+        tryDemo: 'Kostenlose Demo testen',
+        feat1Title: 'Automatische Fragenerkennung',
+        feat1Desc: 'Findet Quizfragen automatisch auf der Seite',
+        feat2Title: 'FocusScan',
+        feat2Desc: 'Scannen und lösen Sie einen Teil des Bildschirms',
+        feat3Title: 'Hinweis-Modus',
+        feat3Desc: 'Sanfte Hinweise statt voller Antworten',
+        feat4Title: 'Fragenverlauf',
+        feat4Desc: 'Alles für die Prüfungswiederholung gespeichert',
+        iosTitle: 'Video-Tutorial für iOS (iPhone / iPad)',
+        iosDesc: 'Sehen Sie sich dieses 40-sekündige Video an, das die Einrichtung auf Apple-Geräten zeigt.',
+        iosBtn: 'In YouTube-App öffnen',
+        newTab: 'Neuer Tab',
+        settings: 'Einstellungen',
+        active: 'AKTIV',
+        qsTitle: 'QuizSolver — AI Quiz Solver'
+      },
+      es: {
+        eyebrow: 'Extensión móvil',
+        title: 'QuizSolver en tu teléfono',
+        subtitle: 'Resuelve cuestionarios y pruebas directamente desde tu teléfono inteligente. Elige tu sistema operativo para las instrucciones.',
+        trustFree: '100% gratis',
+        trustTime: '~3 minutos',
+        trustRoot: 'Sin root',
+        reqKiwi: 'Requiere Kiwi Browser',
+        step4TitleSummary: 'Instalación en Android en 4 pasos',
+        kiwiDesc: 'Chrome en Android bloquea las extensiones. ¿La solución? Kiwi Browser — un navegador basado en Chromium que admite extensiones del Chrome Web Store.',
+        getKiwi: 'Obtener Kiwi Browser',
+        copied: '¡Enlace copiado!',
+        copyLink: 'Copiar enlace',
+        copyLinkShort: 'Copiar enlace',
+        copiedShort: '✓ Copiado',
+        chromeAndroid: 'Chrome en Android',
+        noExt: 'Sin soporte de extensiones',
+        noStore: 'Sin acceso a Web Store',
+        vs: 'VS',
+        fullStore: 'Soporte completo de Web Store',
+        sameEngine: 'Mismo motor que Chrome — rápido y estable',
+        step1: 'Paso 1',
+        step1Title: 'Instalar Kiwi Browser desde Google Play',
+        step1Desc: 'Abre Google Play en tu teléfono e instala la aplicación gratuita Kiwi Browser.',
+        install: 'Instalar',
+        step2: 'Paso 2',
+        step2Title: 'Abrir Chrome Web Store en Kiwi',
+        step2Desc: 'Inicia Kiwi Browser, pega la URL de la extensión en la barra de direcciones y toca "Añadir a Chrome".',
+        addToChrome: 'Añadir',
+        openStore: 'Abrir Web Store',
+        step3: 'Paso 3',
+        step3Title: 'Abrir extensión desde el menú (3 puntos)',
+        step3Desc: 'Toca los tres puntos (⋮) en la esquina superior derecha de Kiwi y desplázate hasta abajo. Toca QuizSolver e inicia sesión.',
+        step4: 'Listo',
+        step4Title: 'Resuelve cuestionarios en el móvil',
+        step4Desc: 'Abre cualquier cuestionario en Kiwi. Menú Kiwi -> QuizSolver -> "Resolver página actual".',
+        worksSame: 'Funciona exactamente como en PC',
+        worksSameDesc: 'Detección automática, modo pistas, FocusScan e historial de estudio.',
+        tryDemo: 'Probar demostración',
+        feat1Title: 'Detección automática',
+        feat1Desc: 'Encuentra las preguntas de la página',
+        feat2Title: 'FocusScan',
+        feat2Desc: 'Escanea y resuelve una parte de la pantalla',
+        feat3Title: 'Modo pistas',
+        feat3Desc: 'Sutiles pistas en lugar de respuestas',
+        feat4Title: 'Historial de preguntas',
+        feat4Desc: 'Todo guardado para el examen',
+        iosTitle: 'Tutorial en video para iOS (iPhone / iPad)',
+        iosDesc: 'Mira este video de 40 segundos que demuestra el proceso en dispositivos Apple.',
+        iosBtn: 'Abrir en YouTube',
+        newTab: 'Nueva pestaña',
+        settings: 'Configuración',
+        active: 'ACTIVO',
+        qsTitle: 'QuizSolver — AI Quiz Solver'
+      },
+      fr: {
+        eyebrow: 'Extension Mobile',
+        title: 'QuizSolver sur votre téléphone',
+        subtitle: 'Résolvez des quiz et des tests depuis votre smartphone. Choisissez votre système d\'exploitation ci-dessous.',
+        trustFree: '100% gratuit',
+        trustTime: '~3 minutes',
+        trustRoot: 'Pas de root',
+        reqKiwi: 'Kiwi Browser requis',
+        step4TitleSummary: 'Installation Android en 4 étapes',
+        kiwiDesc: 'Chrome sur Android bloque les extensions. La solution ? Kiwi Browser — un navigateur basé sur Chromium qui supporte le Chrome Web Store.',
+        getKiwi: 'Télécharger Kiwi Browser',
+        copied: 'Lien copié !',
+        copyLink: 'Copier le lien',
+        copyLinkShort: 'Copier le lien',
+        copiedShort: '✓ Copié',
+        chromeAndroid: 'Chrome Android',
+        noExt: 'Pas d\'extensions',
+        noStore: 'Pas de Web Store',
+        vs: 'VS',
+        fullStore: 'Support complet du Web Store',
+        sameEngine: 'Même moteur que Chrome — rapide & stable',
+        step1: 'Étape 1',
+        step1Title: 'Installer Kiwi Browser (Google Play)',
+        step1Desc: 'Ouvrez Google Play sur votre téléphone et installez l\'application gratuite Kiwi Browser.',
+        install: 'Installer',
+        step2: 'Étape 2',
+        step2Title: 'Ouvrir le Web Store dans Kiwi',
+        step2Desc: 'Lancez Kiwi Browser, collez l\'URL de l\'extension dans la barre d\'adresse et appuyez sur "Ajouter à Chrome".',
+        addToChrome: 'Ajouter',
+        openStore: 'Ouvrir le Web Store',
+        step3: 'Étape 3',
+        step3Title: 'Ouvrir l\'extension (Menu ⋮)',
+        step3Desc: 'Appuyez sur les trois points (⋮) en haut à droite de Kiwi, descendez tout en bas. Appuyez sur QuizSolver et connectez-vous.',
+        step4: 'Prêt',
+        step4Title: 'Résolvez des quiz sur mobile',
+        step4Desc: 'Ouvrez un quiz dans Kiwi. Menu Kiwi -> QuizSolver -> "Résoudre la page".',
+        worksSame: 'Fonctionne comme sur ordinateur',
+        worksSameDesc: 'Détection automatique, mode indice, FocusScan et historique de révision.',
+        tryDemo: 'Essayer la démo',
+        feat1Title: 'Détection automatique',
+        feat1Desc: 'Trouve les questions automatiquement',
+        feat2Title: 'FocusScan',
+        feat2Desc: 'Analysez et résolvez une partie de l\'écran',
+        feat3Title: 'Mode indice',
+        feat3Desc: 'Des indices au lieu des réponses complètes',
+        feat4Title: 'Historique des questions',
+        feat4Desc: 'Tout est sauvegardé pour vos révisions',
+        iosTitle: 'Tutoriel vidéo pour iOS (iPhone / iPad)',
+        iosDesc: 'Regardez cette vidéo de 40 secondes expliquant la configuration sur les appareils Apple.',
+        iosBtn: 'Ouvrir dans YouTube',
+        newTab: 'Nouvel onglet',
+        settings: 'Paramètres',
+        active: 'ACTIF',
+        qsTitle: 'QuizSolver — AI Quiz Solver'
+      },
+      it: {
+        eyebrow: 'Estensione Mobile',
+        title: 'QuizSolver sul tuo telefono',
+        subtitle: 'Risolvi quiz e test direttamente dallo smartphone. Scegli il tuo sistema operativo per le istruzioni.',
+        trustFree: '100% gratis',
+        trustTime: '~3 minuti',
+        trustRoot: 'Nessun root',
+        reqKiwi: 'Richiede Kiwi Browser',
+        step4TitleSummary: 'Installazione Android in 4 passi',
+        kiwiDesc: 'Chrome su Android blocca le estensioni. La soluzione? Kiwi Browser — un browser basato su Chromium che supporta il Chrome Web Store.',
+        getKiwi: 'Scarica Kiwi Browser',
+        copied: 'Link copiato!',
+        copyLink: 'Copia link',
+        copyLinkShort: 'Copia link',
+        copiedShort: '✓ Copiato',
+        chromeAndroid: 'Android Chrome',
+        noExt: 'Nessuna estensione',
+        noStore: 'Nessun Web Store',
+        vs: 'VS',
+        fullStore: 'Supporto completo Web Store',
+        sameEngine: 'Stesso motore di Chrome — veloce',
+        step1: 'Passo 1',
+        step1Title: 'Installa Kiwi Browser da Google Play',
+        step1Desc: 'Apri Google Play sul telefono e installa l\'app gratuita Kiwi Browser.',
+        install: 'Installa',
+        step2: 'Passo 2',
+        step2Title: 'Apri Chrome Web Store in Kiwi',
+        step2Desc: 'Avvia Kiwi Browser, incolla l\'URL dell\'estensione e tocca "Aggiungi a Chrome".',
+        addToChrome: 'Aggiungi',
+        openStore: 'Apri Web Store',
+        step3: 'Passo 3',
+        step3Title: 'Apri l\'estensione dal menu (⋮)',
+        step3Desc: 'Tocca i tre puntini (⋮) in alto a destra su Kiwi e scorri in basso. Tocca QuizSolver e accedi.',
+        step4: 'Pronto',
+        step4Title: 'Risolvi i quiz sul cellulare',
+        step4Desc: 'Apri qualsiasi quiz in Kiwi. Menu Kiwi -> QuizSolver -> tocca "Risolvi pagina".',
+        worksSame: 'Funziona esattamente come su PC',
+        worksSameDesc: 'Rilevamento automatico, modalità suggerimento, FocusScan e cronologia studio.',
+        tryDemo: 'Prova la Demo',
+        feat1Title: 'Rilevamento automatico',
+        feat1Desc: 'Trova le domande automaticamente',
+        feat2Title: 'FocusScan',
+        feat2Desc: 'Scansiona e risolvi una parte dello schermo',
+        feat3Title: 'Modalità Suggerimento',
+        feat3Desc: 'Piccoli aiuti al posto delle risposte',
+        feat4Title: 'Cronologia domande',
+        feat4Desc: 'Tutto salvato per il ripasso',
+        iosTitle: 'Video Tutorial per iOS (iPhone / iPad)',
+        iosDesc: 'Guarda questo video di 40 secondi che mostra l\'installazione sui dispositivi Apple.',
+        iosBtn: 'Apri in YouTube',
+        newTab: 'Nuova scheda',
+        settings: 'Impostazioni',
+        active: 'ATTIVO',
+        qsTitle: 'QuizSolver — AI Quiz Solver'
+      },
+      uk: {
+        eyebrow: 'Мобільне розширення',
+        title: 'QuizSolver на вашому телефоні',
+        subtitle: 'Вирішуйте тести та вікторини прямо зі смартфона. Виберіть операційну систему нижче.',
+        trustFree: '100% безкоштовно',
+        trustTime: '~3 хвилини',
+        trustRoot: 'Root не потрібен',
+        reqKiwi: 'Потрібен Kiwi Browser',
+        step4TitleSummary: 'Встановлення на Android за 4 кроки',
+        kiwiDesc: 'Стандартний Chrome на Android блокує розширення. Рішення? Kiwi Browser — швидкий браузер, який підтримує Chrome Web Store.',
+        getKiwi: 'Завантажити Kiwi Browser',
+        copied: 'Посилання скопійовано!',
+        copyLink: 'Копіювати посилання',
+        copyLinkShort: 'Копіювати',
+        copiedShort: '✓ Скопійовано',
+        chromeAndroid: 'Android Chrome',
+        noExt: 'Немає розширень',
+        noStore: 'Немає доступу до Web Store',
+        vs: 'ПРОТИ',
+        fullStore: 'Повна підтримка Chrome Web Store',
+        sameEngine: 'Той самий рушій, що й у Chrome',
+        step1: 'Крок 1',
+        step1Title: 'Встановіть Kiwi Browser з Google Play',
+        step1Desc: 'Відкрийте Google Play на своєму телефоні та встановіть безкоштовний Kiwi Browser.',
+        install: 'Встановити',
+        step2: 'Крок 2',
+        step2Title: 'Відкрийте Chrome Web Store в Kiwi',
+        step2Desc: 'Запустіть Kiwi Browser, вставте URL-адресу розширення та натисніть "Додати".',
+        addToChrome: 'Додати',
+        openStore: 'Відкрити Web Store',
+        step3: 'Крок 3',
+        step3Title: 'Відкрийте розширення з меню (⋮)',
+        step3Desc: 'Натисніть на три крапки (⋮) у верхньому правому куті Kiwi. Натисніть QuizSolver та увійдіть.',
+        step4: 'Готово',
+        step4Title: 'Вирішуйте тести на мобільному',
+        step4Desc: 'Відкрийте будь-який тест у Kiwi. Меню Kiwi -> QuizSolver -> натисніть "Вирішити сторінку".',
+        worksSame: 'Працює так само, як і на ПК',
+        worksSameDesc: 'Автоматичне виявлення, режим підказок, FocusScan та історія навчання.',
+        tryDemo: 'Спробувати демо',
+        feat1Title: 'Авто-виявлення питань',
+        feat1Desc: 'Знаходить питання на сторінці',
+        feat2Title: 'FocusScan',
+        feat2Desc: 'Сканує та вирішує частину екрана',
+        feat3Title: 'Режим підказок',
+        feat3Desc: 'Підказки замість повних відповідей',
+        feat4Title: 'Історія питань',
+        feat4Desc: 'Все збережено для повторення',
+        iosTitle: 'Відео-інструкція для iOS (iPhone / iPad)',
+        iosDesc: 'Перегляньте це 40-секундне відео, що демонструє налаштування на пристроях Apple.',
+        iosBtn: 'Відкрити в YouTube',
+        newTab: 'Нова вкладка',
+        settings: 'Налаштування',
+        active: 'АКТИВНИЙ',
+        qsTitle: 'QuizSolver — AI Quiz Solver'
+      }
     };
-    return t[this.locale] || t['en'];
+    return texts[this.locale] || texts['en'];
   }
 
   copyLink(e?: Event) {
