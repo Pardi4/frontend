@@ -179,12 +179,11 @@
 
   <!-- Performance: preload the small nav logo used in the first viewport -->
   
-  <!-- Google Consent Mode v2 + Analytics 4 -->
+  <!-- Google Analytics & Clarity Lazy Loading -->
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
 
-    // Consent Mode v2 — default: GRANTED globally (non-EEA countries)
     gtag('consent', 'default', {
       'ad_storage': 'granted',
       'ad_user_data': 'granted',
@@ -192,23 +191,15 @@
       'analytics_storage': 'granted'
     });
 
-    // Override: DENIED for EEA + UK regions (GDPR requirement)
     gtag('consent', 'default', {
       'ad_storage': 'denied',
       'ad_user_data': 'denied',
       'ad_personalization': 'denied',
       'analytics_storage': 'denied',
       'wait_for_update': 500,
-      'region': [
-        'AT','BE','BG','HR','CY','CZ','DK','EE','FI','FR',
-        'DE','GR','HU','IE','IT','LV','LT','LU','MT','NL',
-        'PL','PT','RO','SK','SI','ES','SE',
-        'IS','LI','NO',
-        'GB'
-      ]
+      'region': ['AT','BE','BG','HR','CY','CZ','DK','EE','FI','FR','DE','GR','HU','IE','IT','LV','LT','LU','MT','NL','PL','PT','RO','SK','SI','ES','SE','IS','LI','NO','GB']
     });
 
-    // If user already accepted cookies on a previous visit, restore consent
     try {
       if (localStorage.getItem('quizsolver_cookie_consent') === 'true') {
         gtag('consent', 'update', {
@@ -219,20 +210,44 @@
         });
       }
     } catch(e) {}
-  </script>
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-W8LBV8SNJ5"></script>
-  <script>
+
     gtag('js', new Date());
     gtag('config', 'G-W8LBV8SNJ5');
-  </script>
 
-  <!-- Microsoft Clarity (Free Heatmaps & Session Recordings) -->
-  <script type="text/javascript">
-    (function(c,l,a,r,i,t,y){
-        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-    })(window, document, "clarity", "script", "yhd7cfgtpm");
+    // Lazy load non-critical third party scripts on first interaction
+    (function() {
+      var scriptsLoaded = false;
+      function loadScripts() {
+        if (scriptsLoaded) return;
+        scriptsLoaded = true;
+
+        // Load GA
+        var gtagScript = document.createElement('script');
+        gtagScript.src = 'https://www.googletagmanager.com/gtag/js?id=G-W8LBV8SNJ5';
+        gtagScript.async = true;
+        document.head.appendChild(gtagScript);
+
+        // Load Clarity
+        (function(c,l,a,r,i,t,y){
+            c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+            t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+            y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+        })(window, document, "clarity", "script", "yhd7cfgtpm");
+
+        // Remove listeners
+        events.forEach(function(e) {
+          window.removeEventListener(e, loadScripts);
+        });
+      }
+
+      var events = ['scroll', 'mousemove', 'mousedown', 'touchstart', 'keydown'];
+      events.forEach(function(e) {
+        window.addEventListener(e, loadScripts, { passive: true, once: true });
+      });
+
+      // Fallback timeout in case there's no interaction
+      setTimeout(loadScripts, 3500);
+    })();
   </script>
 </head>
 <body>

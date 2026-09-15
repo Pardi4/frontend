@@ -307,13 +307,21 @@ import { ShellComponent } from './shell.component';
             <div class="phone-mockup">
               <div class="phone-bezel">
                 <div class="phone-notch"></div>
-                <div class="phone-screen">
-                  <iframe
-                    src="https://www.youtube-nocookie.com/embed/2YHPMk_xHAs"
-                    title="QuizSolver iOS Setup"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    allowfullscreen>
-                  </iframe>
+                <div class="phone-screen" (click)="playIosVideo.set(true)">
+                  <ng-container *ngIf="!playIosVideo(); else ytIframe">
+                    <img src="https://img.youtube.com/vi/2YHPMk_xHAs/hqdefault.jpg" alt="iOS Setup Tutorial" class="yt-thumbnail" loading="lazy">
+                    <div class="yt-play-btn">
+                      <svg viewBox="0 0 68 48"><path class="ytp-large-play-button-bg" d="M66.52 7.74c-.78-2.93-2.49-5.41-5.42-6.19C55.79.13 34 0 34 0S12.21.13 6.9 1.55c-2.93.78-4.64 3.26-5.42 6.19C.06 13.05 0 24 0 24s.06 10.95 1.48 16.26c.78 2.93 2.49 5.41 5.42 6.19C12.21 47.87 34 48 34 48s21.79-.13 27.1-1.55c2.93-.78 4.64-3.26 5.42-6.19C67.94 34.95 68 24 68 24s-.06-10.95-1.48-16.26z" fill="#212121" fill-opacity="0.8"></path><path d="M45 24 27 14v20z" fill="#fff"></path></svg>
+                    </div>
+                  </ng-container>
+                  <ng-template #ytIframe>
+                    <iframe
+                      src="https://www.youtube-nocookie.com/embed/2YHPMk_xHAs?autoplay=1"
+                      title="QuizSolver iOS Setup"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      allowfullscreen>
+                    </iframe>
+                  </ng-template>
                 </div>
               </div>
             </div>
@@ -981,6 +989,31 @@ import { ShellComponent } from './shell.component';
       height: 100%;
       border: 0;
     }
+    .yt-thumbnail {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      cursor: pointer;
+    }
+    .yt-play-btn {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 68px;
+      height: 48px;
+      cursor: pointer;
+      pointer-events: none;
+    }
+    .yt-play-btn .ytp-large-play-button-bg {
+      transition: fill .1s ease, fill-opacity .1s ease;
+      fill: #212121;
+      fill-opacity: 0.8;
+    }
+    .phone-screen:hover .ytp-large-play-button-bg {
+      fill: #f00;
+      fill-opacity: 1;
+    }
 
     @media (max-width: 640px) {
       .os-selector {
@@ -1044,6 +1077,7 @@ export class MobileInstallComponent implements OnInit {
   data: any;
   os: 'android' | 'ios' = 'android';
   copied = signal(false);
+  playIosVideo = signal(false);
 
   protected readonly pathFor = pathFor;
   protected readonly storeUrl = CHROME_WEB_STORE_URL;
