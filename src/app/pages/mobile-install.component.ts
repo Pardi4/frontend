@@ -167,7 +167,7 @@ import { ShellComponent } from './shell.component';
                   </div>
                   <div class="mini-browser-body">
                     <div class="mb-store-row">
-                      <div class="mb-store-icon">QS</div>
+                      <img src="/logo.svg" alt="QS Logo" class="mb-store-icon">
                       <div class="mb-store-meta">
                         <strong>QuizSolver — AI Quiz Solver</strong>
                         <span>chrome.google.com/webstore</span>
@@ -213,16 +213,16 @@ import { ShellComponent } from './shell.component';
                   </div>
                   <div class="menu-snippet">
                     <div class="menu-row muted">
-                      <span>{{ isPl ? 'Nowa karta' : 'New tab' }}</span>
+                      <span>{{ mockMenuCopy.newTab }}</span>
                     </div>
                     <div class="menu-row muted">
-                      <span>{{ isPl ? 'Ustawienia' : 'Settings' }}</span>
+                      <span>{{ mockMenuCopy.settings }}</span>
                     </div>
                     <div class="menu-divider"></div>
                     <div class="menu-row highlight">
-                      <div class="qs-badge-icon">QS</div>
-                      <strong>QuizSolver — AI Quiz Solver</strong>
-                      <span class="badge-ready">{{ isPl ? 'AKTYWNY' : 'ACTIVE' }}</span>
+                      <img src="/logo.svg" alt="QS Logo" class="qs-badge-icon">
+                      <strong>{{ mockMenuCopy.title }}</strong>
+                      <span class="badge-ready">{{ mockMenuCopy.active }}</span>
                     </div>
                   </div>
                 </div>
@@ -770,13 +770,7 @@ import { ShellComponent } from './shell.component';
       width: 34px;
       height: 34px;
       border-radius: 9px;
-      background: linear-gradient(135deg, var(--accent-cyan), #7c5cfc);
-      color: #030712;
-      font-weight: 900;
-      font-size: 0.75rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      object-fit: contain;
       flex-shrink: 0;
     }
     .mb-store-meta {
@@ -838,12 +832,10 @@ import { ShellComponent } from './shell.component';
       color: var(--text-primary);
     }
     .qs-badge-icon {
-      font-size: 0.7rem;
-      font-weight: 900;
-      background: var(--accent-cyan);
-      color: #030712;
-      padding: 0.15rem 0.4rem;
+      width: 22px;
+      height: 22px;
       border-radius: 4px;
+      object-fit: contain;
     }
     .badge-ready {
       margin-left: auto;
@@ -1079,6 +1071,19 @@ export class MobileInstallComponent implements OnInit {
 
   get isPl(): boolean {
     return this.locale === 'pl';
+  }
+
+  get mockMenuCopy() {
+    const t: Record<string, any> = {
+      en: { newTab: 'New tab', settings: 'Settings', active: 'ACTIVE', title: 'QuizSolver — AI Quiz Solver' },
+      pl: { newTab: 'Nowa karta', settings: 'Ustawienia', active: 'AKTYWNY', title: 'QuizSolver — AI Quiz Solver' },
+      de: { newTab: 'Neuer Tab', settings: 'Einstellungen', active: 'AKTIV', title: 'QuizSolver — AI Quiz Solver' },
+      es: { newTab: 'Nueva pestaña', settings: 'Configuración', active: 'ACTIVO', title: 'QuizSolver — AI Quiz Solver' },
+      fr: { newTab: 'Nouvel onglet', settings: 'Paramètres', active: 'ACTIF', title: 'QuizSolver — AI Quiz Solver' },
+      it: { newTab: 'Nuova scheda', settings: 'Impostazioni', active: 'ATTIVO', title: 'QuizSolver — AI Quiz Solver' },
+      uk: { newTab: 'Нова вкладка', settings: 'Налаштування', active: 'АКТИВНИЙ', title: 'QuizSolver — AI Quiz Solver' }
+    };
+    return t[this.locale] || t['en'];
   }
 
   copyLink(e?: Event) {
