@@ -30,10 +30,20 @@ import { ShellComponent } from './shell.component';
             </div>
           </div>
           
-          <div class="video-container glass glass-hover" *ngIf="os === 'ios'">
-            <!-- PASTE YOUR IOS VIDEO HERE -->
-            <div class="video-placeholder">
-              <p>iOS Video Tutorial goes here</p>
+          <div class="video-wrapper-vertical" *ngIf="os === 'ios'">
+            <div class="video-container video-container-vertical glass glass-hover">
+              <iframe
+                src="https://www.youtube-nocookie.com/embed/2YHPMk_xHAs"
+                title="How to install QuizSolver on iOS"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowfullscreen>
+              </iframe>
+            </div>
+            <div class="video-meta-note">
+              <a href="https://youtube.com/shorts/2YHPMk_xHAs" target="_blank" rel="noopener noreferrer" class="btn btn-outline btn-sm">
+                <span>{{ locale === 'pl' ? 'Otwórz w aplikacji YouTube' : 'Open in YouTube app' }}</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+              </a>
             </div>
           </div>
         </section>
@@ -68,13 +78,35 @@ import { ShellComponent } from './shell.component';
       max-width: 800px;
       margin: 0 auto;
     }
+    .video-wrapper-vertical {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.25rem;
+    }
     .video-container {
       position: relative;
       padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
       height: 0;
       overflow: hidden;
-      border-radius: 12px;
+      border-radius: 16px;
       background: rgba(0, 0, 0, 0.4);
+      border: 1px solid var(--border);
+      width: 100%;
+    }
+    .video-container-vertical {
+      max-width: 360px;
+      padding-bottom: 177.77%; /* 9:16 Aspect Ratio */
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+    }
+    .video-container iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+      border-radius: 16px;
     }
     .video-placeholder {
       position: absolute;
@@ -85,6 +117,14 @@ import { ShellComponent } from './shell.component';
       color: var(--text-secondary);
       font-size: 1.25rem;
       font-weight: 500;
+    }
+    .video-meta-note {
+      text-align: center;
+    }
+    .video-meta-note a {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
     }
   `]
 })
