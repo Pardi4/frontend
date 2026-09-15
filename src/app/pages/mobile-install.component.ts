@@ -40,19 +40,39 @@ import { ShellComponent } from './shell.component';
 
         <!-- ANDROID FLOW -->
         <section class="install-flow" *ngIf="os === 'android'">
+
+          <!-- Trust bar -->
+          <div class="trust-bar">
+            <div class="trust-pill">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+              <span>{{ isPl ? '100% za darmo' : '100% free' }}</span>
+            </div>
+            <div class="trust-pill">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>
+              <span>{{ isPl ? '~3 minuty' : '~3 minutes' }}</span>
+            </div>
+            <div class="trust-pill">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6l7-3z"/></svg>
+              <span>{{ isPl ? 'Bez roota' : 'No root needed' }}</span>
+            </div>
+          </div>
+
           <!-- Quick summary banner -->
           <div class="summary-card glass">
-            <div class="summary-badge">
-              <span class="pulse-dot"></span>
-              <span>{{ isPl ? 'Wymaga Kiwi Browser' : 'Requires Kiwi Browser' }}</span>
-            </div>
-            <div class="summary-main">
-              <h2>{{ isPl ? 'Instalacja na Androidzie w 3 krokach' : 'Android Installation in 3 Steps' }}</h2>
-              <p class="text-secondary">
-                {{ isPl 
-                  ? 'Standardowy mobilny Chrome nie pozwala instalować rozszerzeń. Rozwiązanie? Kiwi Browser — lekka przeglądarka na tym samym silniku Chromium, która obsługuje wtyczki z Chrome Web Store.' 
-                  : 'Standard Chrome on Android blocks extensions. The fix? Kiwi Browser — a fast browser built on Chromium that supports full Chrome Web Store extensions.' }}
-              </p>
+            <div class="summary-top">
+              <div class="summary-icon">QS</div>
+              <div class="summary-main">
+                <div class="summary-badge">
+                  <span class="pulse-dot"></span>
+                  <span>{{ isPl ? 'Wymaga Kiwi Browser' : 'Requires Kiwi Browser' }}</span>
+                </div>
+                <h2>{{ isPl ? 'Instalacja na Androidzie w 4 krokach' : 'Android Installation in 4 Steps' }}</h2>
+                <p class="text-secondary">
+                  {{ isPl
+                    ? 'Standardowy mobilny Chrome nie pozwala instalować rozszerzeń. Rozwiązanie? Kiwi Browser — lekka przeglądarka na tym samym silniku Chromium, która obsługuje wtyczki z Chrome Web Store.'
+                    : 'Standard Chrome on Android blocks extensions. The fix? Kiwi Browser — a fast browser built on Chromium that supports full Chrome Web Store extensions.' }}
+                </p>
+              </div>
             </div>
             <div class="summary-actions">
               <a [href]="kiwiPlayStoreUrl" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
@@ -63,6 +83,27 @@ import { ShellComponent } from './shell.component';
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
                 <span>{{ copied() ? (isPl ? 'Skopiowano link!' : 'Copied Link!') : (isPl ? 'Skopiuj link wtyczki' : 'Copy Extension URL') }}</span>
               </button>
+            </div>
+          </div>
+
+          <!-- Why Kiwi Browser compare strip -->
+          <div class="compare-strip glass">
+            <div class="compare-col compare-bad">
+              <div class="compare-head">
+                <span class="compare-dot"></span>
+                <span>{{ isPl ? 'Chrome na Androidzie' : 'Android Chrome' }}</span>
+              </div>
+              <div class="compare-row"><span class="mark bad">✕</span>{{ isPl ? 'Nie obsługuje rozszerzeń' : 'No extension support' }}</div>
+              <div class="compare-row"><span class="mark bad">✕</span>{{ isPl ? 'Brak dostępu do Web Store' : 'No Web Store access' }}</div>
+            </div>
+            <div class="compare-vs"><span>{{ isPl ? 'KONTRA' : 'VS' }}</span></div>
+            <div class="compare-col compare-good">
+              <div class="compare-head">
+                <span class="compare-dot good"></span>
+                <span>Kiwi Browser</span>
+              </div>
+              <div class="compare-row"><span class="mark good">✓</span>{{ isPl ? 'Pełne wsparcie Chrome Web Store' : 'Full Chrome Web Store support' }}</div>
+              <div class="compare-row"><span class="mark good">✓</span>{{ isPl ? 'Ten sam silnik co Chrome — szybka i stabilna' : 'Same engine as Chrome — fast & stable' }}</div>
             </div>
           </div>
 
@@ -80,8 +121,8 @@ import { ShellComponent } from './shell.component';
                   <span class="flow-tag">{{ isPl ? 'Krok 1' : 'Step 1' }}</span>
                 </div>
                 <p class="text-secondary">
-                  {{ isPl 
-                    ? 'Wejdź do sklepu Google Play na swoim telefonie i zainstaluj darmową przeglądarkę Kiwi Browser.' 
+                  {{ isPl
+                    ? 'Wejdź do sklepu Google Play na swoim telefonie i zainstaluj darmową przeglądarkę Kiwi Browser.'
                     : 'Open Google Play on your phone and install the free Kiwi Browser application.' }}
                 </p>
                 <div class="flow-box">
@@ -113,23 +154,35 @@ import { ShellComponent } from './shell.component';
                   <span class="flow-tag">{{ isPl ? 'Krok 2' : 'Step 2' }}</span>
                 </div>
                 <p class="text-secondary">
-                  {{ isPl 
-                    ? 'Uruchom Kiwi Browser na telefonie, wklej link do paska adresu i kliknij niebieski przycisk „Dodaj do Chrome”.' 
+                  {{ isPl
+                    ? 'Uruchom Kiwi Browser na telefonie, wklej link do paska adresu i kliknij niebieski przycisk „Dodaj do Chrome".'
                     : 'Launch Kiwi Browser on your device, paste the extension URL into the address bar and tap "Add to Chrome".' }}
                 </p>
-                <div class="flow-box url-box">
-                  <div class="url-snippet">
-                    <span class="url-label">URL:</span>
-                    <span class="url-text">{{ storeUrl }}</span>
+                <div class="flow-box mini-browser">
+                  <div class="mini-browser-bar">
+                    <span class="mb-dot"></span>
+                    <span class="mb-dot"></span>
+                    <span class="mb-dot"></span>
+                    <div class="mb-url">{{ storeUrl }}</div>
                   </div>
-                  <div class="url-buttons">
-                    <button class="btn btn-sm btn-outline" type="button" (click)="copyLink($event)">
-                      {{ copied() ? (isPl ? '✓ Skopiowano' : '✓ Copied') : (isPl ? 'Kopiuj link' : 'Copy link') }}
-                    </button>
-                    <a [href]="storeUrl" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-primary">
-                      {{ isPl ? 'Otwórz stronę wtyczki' : 'Open Web Store' }}
-                    </a>
+                  <div class="mini-browser-body">
+                    <div class="mb-store-row">
+                      <div class="mb-store-icon">QS</div>
+                      <div class="mb-store-meta">
+                        <strong>QuizSolver — AI Quiz Solver</strong>
+                        <span>chrome.google.com/webstore</span>
+                      </div>
+                      <span class="mb-add-btn">{{ isPl ? 'Dodaj do Chrome' : 'Add to Chrome' }}</span>
+                    </div>
                   </div>
+                </div>
+                <div class="url-buttons">
+                  <button class="btn btn-sm btn-outline" type="button" (click)="copyLink($event)">
+                    {{ copied() ? (isPl ? '✓ Skopiowano' : '✓ Copied') : (isPl ? 'Kopiuj link' : 'Copy link') }}
+                  </button>
+                  <a [href]="storeUrl" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-primary">
+                    {{ isPl ? 'Otwórz stronę wtyczki' : 'Open Web Store' }}
+                  </a>
                 </div>
               </div>
             </div>
@@ -146,11 +199,18 @@ import { ShellComponent } from './shell.component';
                   <span class="flow-tag">{{ isPl ? 'Krok 3' : 'Step 3' }}</span>
                 </div>
                 <p class="text-secondary">
-                  {{ isPl 
-                    ? 'Kliknij menu w prawym górnym rogu Kiwi (trzy kropki ⋮), zjedź na sam dół listy i stuknij QuizSolver. Zaloguj się tym samym adresem e-mail, aby mieć dostęp do swoich kredytów.' 
+                  {{ isPl
+                    ? 'Kliknij menu w prawym górnym rogu Kiwi (trzy kropki ⋮), zjedź na sam dół listy i stuknij QuizSolver. Zaloguj się tym samym adresem e-mail, aby mieć dostęp do swoich kredytów.'
                     : 'Tap the three dots (⋮) in the top-right corner of Kiwi and scroll to the bottom. Tap QuizSolver and log in with your email to access your credits.' }}
                 </p>
-                <div class="flow-box menu-box">
+                <div class="flow-box mini-browser">
+                  <div class="mini-browser-bar">
+                    <span class="mb-dot"></span>
+                    <span class="mb-dot"></span>
+                    <span class="mb-dot"></span>
+                    <div class="mb-url">testportal.pl/test/8842</div>
+                    <span class="mb-menu-dots">⋮</span>
+                  </div>
                   <div class="menu-snippet">
                     <div class="menu-row muted">
                       <span>{{ isPl ? 'Nowa karta' : 'New tab' }}</span>
@@ -172,7 +232,7 @@ import { ShellComponent } from './shell.component';
             <!-- STEP 4 -->
             <div class="flow-card glass">
               <div class="flow-side">
-                <span class="flow-num">4</span>
+                <span class="flow-num flow-num-final">4</span>
               </div>
               <div class="flow-body">
                 <div class="flow-header">
@@ -180,10 +240,18 @@ import { ShellComponent } from './shell.component';
                   <span class="flow-tag">{{ isPl ? 'Gotowe' : 'Ready' }}</span>
                 </div>
                 <p class="text-secondary">
-                  {{ isPl 
-                    ? 'Otwórz dowolny test w Kiwi (Testportal, Google Forms, Moodle, Canvas, Kahoot). Otwórz menu Kiwi -> QuizSolver -> kliknij „Rozwiąż obecną stronę” lub użyj FocusScan.' 
-                    : 'Open any quiz in Kiwi (Testportal, Google Forms, Moodle, Canvas, Kahoot). Open Kiwi menu -> QuizSolver -> tap "Solve current page" or use FocusScan.' }}
+                  {{ isPl
+                    ? 'Otwórz dowolny test w Kiwi. Otwórz menu Kiwi -> QuizSolver -> kliknij „Rozwiąż obecną stronę" lub użyj FocusScan.'
+                    : 'Open any quiz in Kiwi. Open Kiwi menu -> QuizSolver -> tap "Solve current page" or use FocusScan.' }}
                 </p>
+                <div class="platform-chips">
+                  <span class="chip">Testportal</span>
+                  <span class="chip">Google Forms</span>
+                  <span class="chip">Moodle</span>
+                  <span class="chip">Canvas</span>
+                  <span class="chip">Kahoot</span>
+                  <span class="chip">Quizizz</span>
+                </div>
                 <div class="flow-box quiz-box">
                   <div class="quiz-tip">
                     <span class="quiz-check">✓</span>
@@ -199,6 +267,38 @@ import { ShellComponent } from './shell.component';
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
+
+          <!-- Feature grid -->
+          <div class="feature-grid">
+            <div class="feature-item">
+              <div class="feature-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="0.5" fill="currentColor"/></svg>
+              </div>
+              <strong>{{ isPl ? 'Auto-wykrywanie pytań' : 'Auto question detection' }}</strong>
+              <span>{{ isPl ? 'Wtyczka sama znajduje pytania na stronie' : 'Finds quiz questions on the page automatically' }}</span>
+            </div>
+            <div class="feature-item">
+              <div class="feature-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8"/></svg>
+              </div>
+              <strong>{{ isPl ? 'FocusScan' : 'FocusScan' }}</strong>
+              <span>{{ isPl ? 'Skanuj i rozwiązuj wybrany fragment ekranu' : 'Scan and solve a selected part of the screen' }}</span>
+            </div>
+            <div class="feature-item">
+              <div class="feature-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a6 6 0 00-4 10.5c.6.5 1 1.3 1 2.1V16h6v-1.4c0-.8.4-1.6 1-2.1A6 6 0 0012 2z"/></svg>
+              </div>
+              <strong>{{ isPl ? 'Tryb podpowiedzi' : 'Hint mode' }}</strong>
+              <span>{{ isPl ? 'Wskazówki zamiast gotowych odpowiedzi' : 'Gentle nudges instead of full answers' }}</span>
+            </div>
+            <div class="feature-item">
+              <div class="feature-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v5h5M3.05 13a9 9 0 106.16-8.44"/><path d="M12 7v5l3 2"/></svg>
+              </div>
+              <strong>{{ isPl ? 'Historia pytań' : 'Question history' }}</strong>
+              <span>{{ isPl ? 'Wszystko zapisane do nauki przed egzaminem' : 'Everything saved for exam revision' }}</span>
             </div>
           </div>
         </section>
@@ -319,16 +419,60 @@ import { ShellComponent } from './shell.component';
       margin: 0 auto;
     }
 
+    /* Trust bar */
+    .trust-bar {
+      display: flex;
+      justify-content: center;
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+    .trust-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.4rem 0.9rem;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+    .trust-pill svg {
+      color: #34d399;
+      flex-shrink: 0;
+    }
+
     /* Summary Card */
     .summary-card {
       padding: 2rem;
       border-radius: 20px;
-      margin-bottom: 2.5rem;
+      margin-bottom: 1.75rem;
       border: 1px solid rgba(14, 165, 233, 0.25);
       background: linear-gradient(135deg, rgba(14, 165, 233, 0.06), rgba(124, 92, 252, 0.04));
       display: flex;
       flex-direction: column;
+      gap: 1.5rem;
+    }
+    .summary-top {
+      display: flex;
       gap: 1.25rem;
+      align-items: flex-start;
+    }
+    .summary-icon {
+      flex-shrink: 0;
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 1.05rem;
+      color: #030712;
+      background: linear-gradient(135deg, var(--accent-cyan), #7c5cfc);
+      box-shadow: 0 6px 22px rgba(14, 165, 233, 0.35);
     }
     .summary-badge {
       display: inline-flex;
@@ -339,6 +483,7 @@ import { ShellComponent } from './shell.component';
       text-transform: uppercase;
       letter-spacing: 0.05em;
       color: var(--accent-cyan);
+      margin-bottom: 0.5rem;
     }
     .pulse-dot {
       width: 8px;
@@ -367,6 +512,94 @@ import { ShellComponent } from './shell.component';
       flex-wrap: wrap;
     }
 
+    /* Compare strip */
+    .compare-strip {
+      display: flex;
+      align-items: stretch;
+      gap: 0;
+      border-radius: 18px;
+      border: 1px solid var(--border);
+      margin-bottom: 2.5rem;
+      overflow: hidden;
+    }
+    .compare-col {
+      flex: 1;
+      padding: 1.5rem 1.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+    }
+    .compare-bad {
+      background: rgba(248, 113, 113, 0.04);
+    }
+    .compare-good {
+      background: rgba(52, 211, 153, 0.05);
+    }
+    .compare-head {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: var(--text-primary);
+      margin-bottom: 0.25rem;
+    }
+    .compare-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #f87171;
+      flex-shrink: 0;
+    }
+    .compare-dot.good {
+      background: #34d399;
+    }
+    .compare-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.6rem;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      line-height: 1.4;
+    }
+    .mark {
+      flex-shrink: 0;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      font-weight: 900;
+      margin-top: 0.05rem;
+    }
+    .mark.bad {
+      background: rgba(248, 113, 113, 0.15);
+      color: #f87171;
+    }
+    .mark.good {
+      background: rgba(52, 211, 153, 0.18);
+      color: #34d399;
+    }
+    .compare-vs {
+      flex-shrink: 0;
+      width: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg-surface-solid);
+      border-left: 1px solid var(--border);
+      border-right: 1px solid var(--border);
+    }
+    .compare-vs span {
+      font-size: 0.7rem;
+      font-weight: 900;
+      letter-spacing: 0.05em;
+      color: var(--text-tertiary);
+      writing-mode: vertical-rl;
+    }
+
     /* Timeline Stepper */
     .flow-steps {
       display: flex;
@@ -379,10 +612,12 @@ import { ShellComponent } from './shell.component';
       border-radius: 18px;
       gap: 1.75rem;
       border: 1px solid var(--border);
-      transition: border-color 0.2s;
+      transition: border-color 0.25s var(--ease-out), transform 0.25s var(--ease-out), box-shadow 0.25s var(--ease-out);
     }
     .flow-card:hover {
       border-color: rgba(14, 165, 233, 0.35);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
     }
     .flow-side {
       display: flex;
@@ -391,11 +626,11 @@ import { ShellComponent } from './shell.component';
       gap: 0.75rem;
     }
     .flow-num {
-      width: 36px;
-      height: 36px;
-      border-radius: 10px;
-      background: rgba(14, 165, 233, 0.12);
-      border: 1px solid rgba(14, 165, 233, 0.3);
+      width: 38px;
+      height: 38px;
+      border-radius: 11px;
+      background: linear-gradient(135deg, rgba(14, 165, 233, 0.18), rgba(124, 92, 252, 0.14));
+      border: 1px solid rgba(14, 165, 233, 0.35);
       color: var(--accent-cyan);
       display: flex;
       align-items: center;
@@ -403,6 +638,11 @@ import { ShellComponent } from './shell.component';
       font-weight: 800;
       font-size: 0.95rem;
       flex-shrink: 0;
+    }
+    .flow-num-final {
+      background: linear-gradient(135deg, rgba(52, 211, 153, 0.22), rgba(14, 165, 233, 0.14));
+      border-color: rgba(52, 211, 153, 0.4);
+      color: #34d399;
     }
     .flow-line {
       width: 2px;
@@ -412,6 +652,7 @@ import { ShellComponent } from './shell.component';
     }
     .flow-body {
       flex: 1;
+      min-width: 0;
     }
     .flow-header {
       display: flex;
@@ -426,6 +667,7 @@ import { ShellComponent } from './shell.component';
       color: var(--text-primary);
     }
     .flow-tag {
+      flex-shrink: 0;
       font-size: 0.75rem;
       font-weight: 700;
       color: var(--text-tertiary);
@@ -475,43 +717,103 @@ import { ShellComponent } from './shell.component';
       color: var(--text-secondary);
     }
 
-    .url-box {
-      display: flex;
-      flex-direction: column;
-      gap: 0.85rem;
+    /* Mini browser mockup (used in steps 2 & 3) */
+    .mini-browser {
+      padding: 0;
+      overflow: hidden;
     }
-    .url-snippet {
+    .mini-browser-bar {
       display: flex;
       align-items: center;
-      gap: 0.5rem;
-      background: rgba(0, 0, 0, 0.4);
-      padding: 0.5rem 0.85rem;
-      border-radius: 8px;
-      overflow: hidden;
-      font-size: 0.8rem;
+      gap: 0.4rem;
+      padding: 0.6rem 0.85rem;
+      background: rgba(255, 255, 255, 0.03);
+      border-bottom: 1px solid var(--border);
     }
-    .url-label {
-      color: var(--accent-cyan);
-      font-weight: 700;
+    .mb-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--text-tertiary);
+      opacity: 0.4;
       flex-shrink: 0;
     }
-    .url-text {
-      color: var(--text-secondary);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+    .mb-url {
+      flex: 1;
+      margin-left: 0.5rem;
       font-family: monospace;
+      font-size: 0.72rem;
+      color: var(--text-secondary);
+      background: rgba(0, 0, 0, 0.35);
+      padding: 0.25rem 0.6rem;
+      border-radius: 6px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
     }
+    .mb-menu-dots {
+      color: var(--text-tertiary);
+      font-weight: 900;
+      padding: 0 0.2rem;
+      flex-shrink: 0;
+    }
+    .mini-browser-body {
+      padding: 1rem 1.1rem;
+    }
+    .mb-store-row {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+    .mb-store-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 9px;
+      background: linear-gradient(135deg, var(--accent-cyan), #7c5cfc);
+      color: #030712;
+      font-weight: 900;
+      font-size: 0.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .mb-store-meta {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      min-width: 120px;
+    }
+    .mb-store-meta strong {
+      font-size: 0.88rem;
+    }
+    .mb-store-meta span {
+      font-size: 0.72rem;
+      color: var(--text-tertiary);
+    }
+    .mb-add-btn {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #030712;
+      background: var(--accent-cyan);
+      padding: 0.4rem 0.9rem;
+      border-radius: 8px;
+      flex-shrink: 0;
+    }
+
     .url-buttons {
       display: flex;
       gap: 0.75rem;
       flex-wrap: wrap;
+      margin-top: 0.85rem;
     }
 
     .menu-snippet {
       display: flex;
       flex-direction: column;
       font-size: 0.825rem;
+      padding: 0.75rem 1.1rem 1rem;
     }
     .menu-row {
       padding: 0.35rem 0;
@@ -554,6 +856,23 @@ import { ShellComponent } from './shell.component';
       border-radius: 4px;
     }
 
+    /* Platform chips (step 4) */
+    .platform-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1.1rem;
+    }
+    .chip {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border);
+      padding: 0.3rem 0.75rem;
+      border-radius: 999px;
+    }
+
     .quiz-box {
       display: flex;
       align-items: center;
@@ -590,6 +909,48 @@ import { ShellComponent } from './shell.component';
     .quiz-tip span {
       font-size: 0.85rem;
       line-height: 1.4;
+    }
+
+    /* Feature grid */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      margin-top: 2.5rem;
+    }
+    .feature-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      padding: 1.35rem 1.15rem;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.02);
+      transition: border-color 0.2s var(--ease-out), transform 0.2s var(--ease-out);
+    }
+    .feature-item:hover {
+      border-color: rgba(14, 165, 233, 0.35);
+      transform: translateY(-2px);
+    }
+    .feature-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: rgba(14, 165, 233, 0.12);
+      color: var(--accent-cyan);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 0.15rem;
+    }
+    .feature-item strong {
+      font-size: 0.88rem;
+      color: var(--text-primary);
+    }
+    .feature-item span {
+      font-size: 0.78rem;
+      line-height: 1.4;
+      color: var(--text-secondary);
     }
 
     /* iOS Phone Frame */
@@ -655,6 +1016,26 @@ import { ShellComponent } from './shell.component';
         justify-content: center;
         padding: 0.65rem 0.75rem;
       }
+      .trust-bar {
+        gap: 0.5rem;
+      }
+      .summary-top {
+        flex-direction: column;
+      }
+      .compare-strip {
+        flex-direction: column;
+      }
+      .compare-vs {
+        width: 100%;
+        padding: 0.4rem 0;
+        border-left: none;
+        border-right: none;
+        border-top: 1px solid var(--border);
+        border-bottom: 1px solid var(--border);
+      }
+      .compare-vs span {
+        writing-mode: horizontal-tb;
+      }
       .flow-card {
         padding: 1.25rem;
         gap: 1rem;
@@ -666,9 +1047,17 @@ import { ShellComponent } from './shell.component';
         flex-direction: column;
         align-items: stretch;
       }
+      .mb-store-row {
+        flex-direction: column;
+        align-items: stretch;
+        text-align: center;
+      }
       .quiz-box {
         flex-direction: column;
         align-items: stretch;
+      }
+      .feature-grid {
+        grid-template-columns: 1fr 1fr;
       }
     }
   `]
@@ -720,4 +1109,3 @@ export class MobileInstallComponent implements OnInit {
     });
   }
 }
-
