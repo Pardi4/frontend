@@ -32,7 +32,7 @@ export function trackGa4Event(eventName: string, params?: Record<string, string 
 
           <nav class="nav-links" aria-label="Main navigation">
             <a class="nav-link" [href]="homeHash('how-it-works')">{{ copy.nav.how }}</a>
-            <!-- <a class="nav-link" [href]="pathFor('mobileInstall')" [class.active]="pageKey === 'mobileInstall'">Mobile</a> -->
+            <a class="nav-link" [href]="pathFor('mobileInstall')" [class.active]="pageKey === 'mobileInstall'">{{ locale === 'pl' ? 'Na telefon' : 'Mobile' }}</a>
             <a class="nav-link" [href]="homeHash('features')">{{ copy.nav.features }}</a>
             <a class="nav-link" [href]="pathFor('credits')" [class.active]="pageKey === 'credits'">{{ copy.nav.pricing }}</a>
             <a class="nav-link" [href]="pathFor('demo')" [class.active]="pageKey === 'demo'">{{ copy.common.demo }}</a>
@@ -93,7 +93,7 @@ export function trackGa4Event(eventName: string, params?: Record<string, string 
         <nav class="mobile-menu" *ngIf="mobileMenuOpen()" aria-label="Mobile navigation">
           <div class="mobile-menu-inner">
             <a class="nav-link" [href]="homeHash('how-it-works')" (click)="mobileMenuOpen.set(false)">{{ copy.nav.how }}</a>
-            <!-- <a class="nav-link" [href]="pathFor('mobileInstall')" [class.active]="pageKey === 'mobileInstall'" (click)="mobileMenuOpen.set(false)">Mobile</a> -->
+            <a class="nav-link" [href]="pathFor('mobileInstall')" [class.active]="pageKey === 'mobileInstall'" (click)="mobileMenuOpen.set(false)">{{ locale === 'pl' ? 'Na telefon' : 'Mobile' }}</a>
             <a class="nav-link" [href]="homeHash('features')" (click)="mobileMenuOpen.set(false)">{{ copy.nav.features }}</a>
             <a class="nav-link" [href]="pathFor('credits')" [class.active]="pageKey === 'credits'" (click)="mobileMenuOpen.set(false)">{{ copy.nav.pricing }}</a>
             <a class="nav-link" [href]="pathFor('demo')" (click)="mobileMenuOpen.set(false)">{{ copy.common.demo }}</a>
