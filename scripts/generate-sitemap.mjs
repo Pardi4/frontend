@@ -37,7 +37,8 @@ const slugs = {
   quizizz: 'quizizz-solver',
   privacy: 'privacy',
   terms: 'terms',
-  blog: 'blog'
+  blog: 'blog',
+  mobileInstall: 'mobile-install'
 };
 
 const indexedPageKeys = Object.keys(slugs);
