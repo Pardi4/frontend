@@ -1309,7 +1309,7 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
         <div class="modal-card glass anim-slide-up" style="max-width: 800px;" (click)="$event.stopPropagation()">
           <header class="modal-header">
             <div>
-              <p class="eyebrow" style="margin: 0;">{{ tr('solveHistory') }}</p>
+              <p class="eyebrow" style="margin: 0;">Historia Konta i Rozwiązań</p>
               <h3 style="margin-top: 0.25rem;">{{ selectedUserHistory()?.email }}</h3>
             </div>
             <div class="modal-actions">
@@ -1371,7 +1371,7 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
               </button>
             </div>
           
-            <div *ngIf="selectedUserHistory()?.securityLogs?.length" style="margin-top: 2rem;">
+            <div style="margin-top: 2rem;">
               <h4 style="margin-bottom: 1rem;">Security & Account Events</h4>
               <div class="table-scroll" style="margin: 0; border: 1px solid var(--border); border-radius: var(--radius-md);">
                 <table class="admin-table" style="min-width: 100%;">
@@ -1395,6 +1395,10 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
                       </td>
                       <td>{{ formatDate(log.createdAt) }}</td>
                     </tr>
+                    <tr *ngIf="!selectedUserHistory()?.securityLogs?.length">
+                      <td colspan="4" class="empty-cell" style="text-align: center; padding: 2rem;">Brak zarejestrowanych zdarzeń (zmian haseł, adresów, itp.)</td>
+                    </tr>
+
                   </tbody>
                 </table>
               </div>
@@ -3554,7 +3558,7 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
 
     @media (max-width: 1200px) {
       .admin-command-center {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
       }
       .admin-stats {
         grid-template-columns: repeat(2, 1fr);
@@ -3569,7 +3573,7 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
     }
     @media (max-width: 992px) {
       .admin-shell {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
       }
       .admin-sidebar {
         position: sticky;
@@ -3607,19 +3611,19 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
         margin: -1.5rem -1.5rem 1rem;
       }
       .health-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
       }
       .parser-workspace {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
       }
       .parser-events-block .parser-event-list {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
       }
       .operations-strip {
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
       .support-layout {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
       }
       .support-summary {
         grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -3722,7 +3726,7 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
       .operations-strip,
       .insight-grid,
       .cache-summary {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
         gap: 0.75rem;
         margin-bottom: 1rem;
       }
@@ -3758,7 +3762,7 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
         grid-template-columns: minmax(0, 1fr) minmax(120px, 0.6fr) auto;
       }
       .parser-filters {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
       }
       .parser-filters .form-input,
       .parser-filters .form-select {
@@ -3772,7 +3776,7 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
         align-items: stretch;
       }
       .credit-usage-filters {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
       }
       .table-scroll {
         margin: 1rem 0 0;
@@ -3808,7 +3812,7 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
         align-items: stretch;
       }
       .support-meta-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
       }
       .support-reply-form .btn {
         justify-self: stretch;
@@ -3831,10 +3835,10 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
       .admin-search,
       .admin-header-actions,
       .admin-sidebar-foot {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
       }
       .support-summary {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
       }
       .admin-stats {
         grid-template-columns: 1fr 1fr;

@@ -86,7 +86,7 @@ import { FormsModule } from '@angular/forms';
                       </td>
                       <td>
                         <div class="row-actions">
-                          <button type="button" (click)="p.openUserHistory(user)" style="color: var(--accent-cyan);">{{ p.tr('history') }}</button>
+                          <button type="button" (click)="p.openUserHistory(user)" style="color: var(--accent-cyan);">{{ 'Historia Konta' }}</button>
                           <button type="button" (click)="p.copyUserEmail(user)">{{ p.tr('copyEmail') }}</button>
                           <button type="button" (click)="p.quickGrant(user.id, 50)">+50</button>
                           <button type="button" (click)="p.quickGrant(user.id, 100)">+100</button>
