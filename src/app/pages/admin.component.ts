@@ -230,6 +230,7 @@ const ADMIN_COPY = {
     questionText: 'Question text',
     answerSummary: 'Answer summary',
     explanation: 'Explanation',
+    sourcePage: 'Source page',
     solveHistory: 'Solve History',
     noSolvedQuestions: 'No questions solved by this user yet.',
     manualCredits: 'Manual credits',
@@ -492,6 +493,7 @@ const ADMIN_COPY = {
     questionText: 'Treść pytania',
     answerSummary: 'Podsumowanie odpowiedzi',
     explanation: 'Wyjaśnienie',
+    sourcePage: 'Strona źródłowa',
     solveHistory: 'Historia pytań',
     noSolvedQuestions: 'Ten użytkownik nie ma jeszcze rozwiązanych pytań.',
     manualCredits: 'Ręczne kredyty',
@@ -958,6 +960,7 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
                 <article class="glass clickable-row" *ngFor="let hit of cache().topHits || []" (click)="showQuestionDetails(hit)">
                   <div class="cache-question-main">
                     <p>{{ hit.questionText }}</p>
+                    <p *ngIf="formatAnswer(hit)" style="font-size: 0.85rem; color: var(--accent-emerald); margin-top: 0.25rem;">{{ tr('answerSummary') }}: {{ formatAnswer(hit) }}</p>
                     <div class="meta-chips">
                       <span class="badge badge-outline role-badge">{{ hit.questionType }}</span>
                       <span class="badge badge-outline">{{ hit.options?.length || 0 }} {{ tr('options') }}</span>
@@ -1130,6 +1133,12 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
                         <span>{{ formatDate(event.createdAt) }}</span>
                         <a class="primary-link parser-url" [href]="event.url" target="_blank" rel="noopener">{{ shortUrl(event.url) }}</a>
                       </div>
+                      <div *ngIf="event.snapshot?.questionTexts?.length" style="margin-top: 0.5rem; padding: 0.5rem; background: rgba(255,255,255,0.03); border-radius: var(--radius-sm);">
+                        <strong style="font-size: 0.8rem; color: var(--text-secondary);">{{ tr('parserQuestionsFound') }}:</strong>
+                        <ul style="margin: 0.25rem 0 0; padding-left: 1.25rem; font-size: 0.85rem;">
+                          <li *ngFor="let qt of event.snapshot.questionTexts">{{ qt }}</li>
+                        </ul>
+                      </div>
                       <details class="parser-snapshot-details" *ngIf="event.snapshot?.bodyText || event.snapshot?.htmlSnippet || event.snapshot?.fullHtmlFile?.id">
                         <summary>{{ tr('parserPageSnapshot') }}</summary>
                         <button class="parser-snapshot-download" type="button" *ngIf="event.snapshot?.fullHtmlFile?.id" (click)="downloadParserSnapshotFile(event.snapshot.fullHtmlFile)">
@@ -1176,6 +1185,12 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
                         <span class="badge badge-outline">{{ formatPercent(report.parserDiagnostics?.confidence || 0) }}</span>
                         <span class="badge badge-outline" *ngIf="report.hasPageCode">{{ tr('parserPageCode') }}</span>
                         <span class="badge badge-outline">{{ formatDate(report.date) }}</span>
+                      </div>
+                      <div *ngIf="report.parserSnapshot?.questionTexts?.length > 1" style="margin-top: 0.5rem; padding: 0.5rem; background: rgba(255,255,255,0.03); border-radius: var(--radius-sm);">
+                        <strong style="font-size: 0.8rem; color: var(--text-secondary);">{{ tr('parserQuestionsFound') }} ({{ report.parserSnapshot.questionTexts.length }}):</strong>
+                        <ul style="margin: 0.25rem 0 0; padding-left: 1.25rem; font-size: 0.85rem;">
+                          <li *ngFor="let qt of report.parserSnapshot.questionTexts">{{ qt }}</li>
+                        </ul>
                       </div>
                       <details class="parser-snapshot-details" *ngIf="report.parserSnapshot?.bodyText || report.parserSnapshot?.htmlSnippet || report.parserSnapshot?.fullHtmlFile?.id">
                         <summary>{{ tr('parserPageSnapshot') }}</summary>
@@ -1235,6 +1250,13 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
             <div class="detail-group">
               <label>{{ tr('type') }}</label>
               <span class="badge badge-outline" style="text-transform: uppercase;">{{ selectedQuestion()?.questionType }}</span>
+            </div>
+            <div class="detail-group" *ngIf="selectedQuestion()?.sourceUrl" style="margin-top: 1rem;">
+              <label>{{ tr('sourcePage') }}</label>
+              <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+                <a class="primary-link" [href]="selectedQuestion()?.sourceUrl" target="_blank" rel="noopener">{{ shortUrl(selectedQuestion()?.sourceUrl) }}</a>
+                <span class="badge badge-outline" *ngIf="selectedQuestion()?.platform" style="text-transform: capitalize;">{{ selectedQuestion()?.platform }}</span>
+              </div>
             </div>
             <div class="detail-group" *ngIf="selectedQuestion()?.hitCount != null" style="margin-top: 1rem;">
               <label>{{ tr('cacheHits') }}</label>
@@ -1346,20 +1368,27 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
                 <thead>
                   <tr>
                     <th>{{ tr('questionText') }}</th>
+                    <th>{{ tr('answerSummary') }}</th>
                     <th>{{ tr('type') }}</th>
+                    <th>{{ tr('sourcePage') }}</th>
                     <th>{{ tr('date') }}</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr *ngFor="let q of userQuestions()" (click)="showQuestionDetails(q)" class="clickable-row">
-                    <td style="max-width: 400px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                    <td style="max-width: 300px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
                       <strong>{{ q.questionText }}</strong>
                     </td>
+                    <td style="max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ q.answerText || '-' }}</td>
                     <td style="text-transform: capitalize;">{{ q.questionType }}</td>
+                    <td>
+                      <a *ngIf="q.sourceUrl" class="primary-link" [href]="q.sourceUrl" target="_blank" rel="noopener" (click)="$event.stopPropagation()">{{ shortUrl(q.sourceUrl) }}</a>
+                      <span *ngIf="!q.sourceUrl">-</span>
+                    </td>
                     <td>{{ formatDate(q.lastSeenAt) }}</td>
                   </tr>
                   <tr *ngIf="!userQuestions().length">
-                    <td colspan="3" class="empty-cell" style="text-align: center; padding: 3rem;">{{ tr('noSolvedQuestions') }}</td>
+                    <td colspan="5" class="empty-cell" style="text-align: center; padding: 3rem;">{{ tr('noSolvedQuestions') }}</td>
                   </tr>
                 </tbody>
               </table>
@@ -5096,7 +5125,10 @@ export class AdminComponent implements OnInit, OnDestroy {
       rows: q.rows || [],
       answer: q.answer,
       explanation: q.explanation || '',
-      hitCount: q.hitCount ?? null
+      hitCount: q.hitCount ?? null,
+      sourceUrl: q.sourceUrl || '',
+      platform: q.platform || '',
+      answerText: q.answerText || ''
     });
   }
 

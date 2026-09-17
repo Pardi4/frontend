@@ -79,6 +79,7 @@ import { Chart } from 'chart.js/auto';
                         <td class="question-audit-cell">
                           <strong>{{ group.questionText || p.shortHash(group.questionHash) }}</strong>
                           <span *ngIf="group.answerText">{{ p.tr('answerSummary') }}: {{ group.answerText }}</span>
+                          <a *ngIf="group.sourceUrl" class="primary-link" [href]="group.sourceUrl" target="_blank" rel="noopener" style="font-size: 0.8rem;">{{ p.shortUrl(group.sourceUrl) }}</a>
                           <span>{{ p.tr('duplicateReason') }}</span>
                         </td>
                         <td>{{ p.shortHash(group.questionHash) }}</td>
@@ -172,6 +173,7 @@ import { Chart } from 'chart.js/auto';
                           <td class="question-audit-cell">
                             <strong>{{ item.questionText }}</strong>
                             <span *ngIf="item.answerText">{{ p.tr('answerSummary') }}: {{ item.answerText }}</span>
+                            <a *ngIf="item.sourceUrl" class="primary-link" [href]="item.sourceUrl" target="_blank" rel="noopener" style="font-size: 0.8rem;">{{ p.shortUrl(item.sourceUrl) }}</a>
                             <span>{{ item.questionType || item.action }} - {{ p.shortHash(item.questionHash) }}</span>
                           </td>
                           <td>
