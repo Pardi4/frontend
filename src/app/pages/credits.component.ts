@@ -121,7 +121,7 @@ import { ShellComponent, trackGa4Event } from './shell.component';
                 <div class="pack-social-proof" *ngIf="pack.socialText">
                   <span class="pulse-dot"></span> {{ pack.socialText[locale] }}
                 </div>
-                
+
                 <div class="pack-promo-timer" *ngIf="pack.originalPrice && septemberTimer()">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
                   <span [innerHTML]="locale === 'pl' ? 'Koniec promocji za: <strong>' + septemberTimer() + '</strong>' : 'Promo ends in: <strong>' + septemberTimer() + '</strong>'"></span>
@@ -722,16 +722,16 @@ export class CreditsComponent implements OnInit, OnDestroy {
   protected readonly packs = [
     {
       id: 'starter',
-      price: '$1.99',
-      originalPrice: '$2.99',
+      price: '$2.99',
+      originalPrice: '',
       name: { en: '100 credits', pl: '100 kredytów', de: '100 Credits', es: '100 créditos', fr: '100 crédits', it: '100 crediti', uk: '100 кредитів' },
       caption: { en: 'Small one-time top-up', pl: 'Małe jednorazowe doładowanie', de: 'Kleine einmalige Aufladung', es: 'Recarga pequeña', fr: 'Petite recharge unique', it: 'Piccola ricarica una tantum', uk: 'Мале одноразове поповнення' },
       button: { en: 'Buy 100 credits', pl: 'Kup 100 kredytów', de: '100 Credits kaufen', es: 'Comprar 100 créditos', fr: 'Acheter 100 crédits', it: 'Compra 100 crediti', uk: 'Купити 100 кредитів' }
     },
     {
       id: 'popular',
-      price: '$4.99',
-      originalPrice: '$7.99',
+      price: '$6.99',
+      originalPrice: '',
       socialText: { en: 'Chosen by 84% of students', pl: 'Wybierane przez 84% studentów', de: 'Von 84% der Studenten gewählt', es: 'Elegido por el 84% de los estudiantes', fr: 'Choisi par 84% des étudiants', it: 'Scelto dall\'84% degli studenti', uk: 'Обрано 84% студентів' },
       name: { en: '500 credits', pl: '500 kredytów', de: '500 Credits', es: '500 créditos', fr: '500 crédits', it: '500 crediti', uk: '500 кредитів' },
       caption: { en: 'Best for regular use', pl: 'Najlepsze do regularnego użycia', de: 'Am besten für regelmäßige Nutzung', es: 'Ideal para uso regular', fr: 'Idéal pour usage régulier', it: 'Ideale per uso regolare', uk: 'Найкраще для регулярного використання' },
@@ -739,13 +739,14 @@ export class CreditsComponent implements OnInit, OnDestroy {
     },
     {
       id: 'pro',
-      price: '$9.99',
-      originalPrice: '$14.99',
+      price: '$14.99',
+      originalPrice: '',
       name: { en: '2000 credits', pl: '2000 kredytów', de: '2000 Credits', es: '2000 créditos', fr: '2000 crédits', it: '2000 crediti', uk: '2000 кредитів' },
       caption: { en: 'Large sessions and sharing', pl: 'Większe sesje i udostępnianie', de: 'Große Lernsessions und Teilen', es: 'Sesiones grandes y compartir', fr: 'Grandes sessions et partage', it: 'Sessioni grandi e condivisione', uk: 'Великі сесії та спільний доступ' },
       button: { en: 'Buy 2000 credits', pl: 'Kup 2000 kredytów', de: '2000 Credits kaufen', es: 'Comprar 2000 créditos', fr: 'Acheter 2000 crédits', it: 'Compra 2000 crediti', uk: 'Купити 2000 кредитів' }
     }
   ];
+
 
   protected get valueComp() {
     const data: Record<string, any> = {
