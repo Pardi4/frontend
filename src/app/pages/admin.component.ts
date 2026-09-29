@@ -1115,7 +1115,7 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
                     </div>
                   </div>
                   <div class="parser-event-list" *ngIf="parserEvents().length; else noParserEvents">
-                    <article class="parser-event-card" *ngFor="let event of parserEvents()">
+                    <article class="parser-event-card" *ngFor="let event of parserEvents()" (click)="selectedParserEvent.set(event)" style="cursor:pointer;" title="Kliknij aby zobaczyć szczegóły">
                       <div class="parser-event-head">
                         <div class="parser-row-main">
                           <strong>{{ event.platform || 'unknown' }}</strong>
@@ -1129,37 +1129,91 @@ type AdminCopyKey = keyof typeof ADMIN_COPY.en;
                         <span>{{ formatPercent(event.confidence || 0) }}</span>
                         <span>{{ formatNumber(event.questionCount || 0) }} {{ tr('parserQuestionsFound') }}</span>
                         <span>{{ formatNumber(event.optionCount || 0) }} {{ tr('parserOptionsFound') }}</span>
-                        <span *ngIf="event.hasPageCode">{{ tr('parserPageCode') }}</span>
+                        <span *ngIf="event.hasPageCode" style="color:var(--accent-cyan);">📄 {{ tr('parserPageCode') }}</span>
+                        <span *ngIf="event.email && event.email !== 'Unknown user'" style="color:var(--text-secondary);font-size:0.8rem;">{{ event.email }}</span>
                         <span>{{ formatDate(event.createdAt) }}</span>
-                        <a class="primary-link parser-url" [href]="event.url" target="_blank" rel="noopener">{{ shortUrl(event.url) }}</a>
+                        <a class="primary-link parser-url" [href]="event.url" target="_blank" rel="noopener" (click)="$event.stopPropagation()">{{ shortUrl(event.url) }}</a>
                       </div>
-                      <div *ngIf="event.snapshot?.questionTexts?.length" style="margin-top: 0.5rem; padding: 0.5rem; background: rgba(255,255,255,0.03); border-radius: var(--radius-sm);">
-                        <strong style="font-size: 0.8rem; color: var(--text-secondary);">{{ tr('parserQuestionsFound') }}:</strong>
-                        <ul style="margin: 0.25rem 0 0; padding-left: 1.25rem; font-size: 0.85rem;">
-                          <li *ngFor="let qt of event.snapshot.questionTexts">{{ qt }}</li>
-                        </ul>
-                      </div>
-                      <details class="parser-snapshot-details" *ngIf="event.snapshot?.bodyText || event.snapshot?.htmlSnippet || event.snapshot?.fullHtmlFile?.id">
-                        <summary>{{ tr('parserPageSnapshot') }}</summary>
-                        <button class="parser-snapshot-download" type="button" *ngIf="event.snapshot?.fullHtmlFile?.id" (click)="downloadParserSnapshotFile(event.snapshot.fullHtmlFile)">
-                          {{ tr('parserDownloadPageCode') }}
-                          <span>{{ formatBytes(event.snapshot.fullHtmlFile.bytes) }}</span>
-                        </button>
-                        <div class="parser-snapshot-pane" *ngIf="event.snapshot?.bodyText">
-                          <strong>{{ tr('parserPageText') }}</strong>
-                          <pre class="parser-snapshot-code">{{ event.snapshot.bodyText }}</pre>
-                        </div>
-                        <div class="parser-snapshot-pane" *ngIf="event.snapshot?.htmlSnippet">
-                          <strong>{{ tr('parserPageCode') }}</strong>
-                          <pre class="parser-snapshot-code">{{ event.snapshot.htmlSnippet }}</pre>
-                        </div>
-                      </details>
                     </article>
                   </div>
                   <ng-template #noParserEvents>
                     <div class="empty-panel">{{ tr('parserNoEvents') }}</div>
                   </ng-template>
                 </section>
+
+                <!-- Parser Event Detail Modal -->
+                <div class="modal-overlay" *ngIf="selectedParserEvent()" (click)="selectedParserEvent.set(null)" style="z-index:1100;">
+                  <div class="modal-card glass anim-slide-up" style="max-width:900px;max-height:90vh;overflow-y:auto;" (click)="$event.stopPropagation()">
+                    <header class="modal-header">
+                      <div>
+                        <p class="eyebrow" style="margin:0;">Parser Event</p>
+                        <h3 style="margin-top:0.25rem;">{{ selectedParserEvent()?.platform || 'unknown' }} — {{ selectedParserEvent()?.outcome }}</h3>
+                      </div>
+                      <div class="modal-actions">
+                        <a class="btn btn-outline" *ngIf="selectedParserEvent()?.url" [href]="selectedParserEvent()?.url" target="_blank" rel="noopener">Otwórz stronę ↗</a>
+                        <button class="btn-close" type="button" (click)="selectedParserEvent.set(null)">x</button>
+                      </div>
+                    </header>
+                    <div class="modal-body" style="padding-top:1rem;" *ngIf="selectedParserEvent() as ev">
+                      <!-- Metadata grid -->
+                      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:0.75rem;margin-bottom:1.5rem;padding:1rem;background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:var(--radius-md);">
+                        <div><p class="muted-line" style="margin:0 0 0.25rem;font-size:0.8rem;">Użytkownik</p><strong>{{ ev.email || 'Nieznany' }}</strong></div>
+                        <div><p class="muted-line" style="margin:0 0 0.25rem;font-size:0.8rem;">Platforma</p><strong>{{ ev.platform || 'universal' }}</strong><small *ngIf="ev.detectorPlatform" style="display:block;color:var(--text-secondary);">detector: {{ ev.detectorPlatform }}</small></div>
+                        <div><p class="muted-line" style="margin:0 0 0.25rem;font-size:0.8rem;">Wynik</p><span class="status-pill" [class.ok]="parserOutcomeTone(ev.outcome)==='ok'" [class.pending]="parserOutcomeTone(ev.outcome)==='pending'" [class.danger]="parserOutcomeTone(ev.outcome)==='danger'">{{ ev.outcome }}</span></div>
+                        <div><p class="muted-line" style="margin:0 0 0.25rem;font-size:0.8rem;">Pewność</p><strong>{{ formatPercent(ev.confidence || 0) }}</strong></div>
+                        <div><p class="muted-line" style="margin:0 0 0.25rem;font-size:0.8rem;">Pytania / Opcje</p><strong>{{ ev.questionCount || 0 }} / {{ ev.optionCount || 0 }}</strong></div>
+                        <div><p class="muted-line" style="margin:0 0 0.25rem;font-size:0.8rem;">Data</p><strong>{{ formatDate(ev.createdAt) }}</strong></div>
+                        <div *ngIf="ev.parserVersion || ev.extensionVersion"><p class="muted-line" style="margin:0 0 0.25rem;font-size:0.8rem;">Parser / Ext.</p><strong>{{ ev.parserVersion || '-' }} / {{ ev.extensionVersion || '-' }}</strong></div>
+                      </div>
+                      <!-- URL + powód -->
+                      <div style="margin-bottom:1rem;">
+                        <p class="muted-line" style="font-size:0.8rem;margin-bottom:0.25rem;">URL strony</p>
+                        <a [href]="ev.url" target="_blank" rel="noopener" class="primary-link" style="word-break:break-all;">{{ ev.url || '-' }}</a>
+                        <p *ngIf="ev.reason" style="margin-top:0.5rem;color:var(--accent-amber);">⚠ {{ ev.reason }}</p>
+                      </div>
+                      <!-- Wykryte pytania -->
+                      <div *ngIf="ev.snapshot?.questionTexts?.length" style="margin-bottom:1rem;padding:0.75rem;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:var(--radius-md);">
+                        <strong style="font-size:0.85rem;">Wykryte pytania ({{ ev.snapshot.questionTexts.length }}):</strong>
+                        <ul style="margin:0.5rem 0 0;padding-left:1.25rem;font-size:0.85rem;">
+                          <li *ngFor="let qt of ev.snapshot.questionTexts">{{ qt }}</li>
+                        </ul>
+                      </div>
+                      <!-- questionsData z AI odpowiedziami -->
+                      <div *ngIf="ev.snapshot?.questionsData?.length" style="margin-bottom:1rem;">
+                        <strong style="font-size:0.85rem;display:block;margin-bottom:0.5rem;">Dane pytań ({{ ev.snapshot.questionsData.length }}):</strong>
+                        <div *ngFor="let q of ev.snapshot.questionsData; let qi = index" style="margin-bottom:0.75rem;padding:0.75rem;background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:var(--radius-sm);">
+                          <p style="margin:0 0 0.25rem;font-weight:600;font-size:0.85rem;">#{{ qi+1 }} [{{ q.type || 'unknown' }}] {{ q.text }}</p>
+                          <div *ngIf="q.options?.length" style="font-size:0.8rem;color:var(--text-secondary);margin-bottom:0.25rem;">Opcje: {{ q.options.join(' | ') }}</div>
+                          <div *ngIf="q.aiAnswer !== null && q.aiAnswer !== undefined && q.aiAnswer !== ''" style="font-size:0.85rem;color:var(--accent-cyan);">AI: {{ q.aiAnswer | json }}</div>
+                          <details *ngIf="q.containerHtml" style="margin-top:0.25rem;">
+                            <summary style="font-size:0.8rem;cursor:pointer;color:var(--text-secondary);">HTML kontenera</summary>
+                            <pre style="font-size:0.72rem;overflow-x:auto;max-height:200px;background:rgba(0,0,0,0.3);padding:0.5rem;border-radius:4px;margin-top:0.25rem;">{{ q.containerHtml }}</pre>
+                          </details>
+                        </div>
+                      </div>
+                      <!-- Snapshot download + bodyText + htmlSnippet -->
+                      <div *ngIf="ev.snapshot?.fullHtmlFile?.id || ev.snapshot?.bodyText || ev.snapshot?.htmlSnippet" style="margin-bottom:1rem;">
+                        <button class="parser-snapshot-download" type="button" *ngIf="ev.snapshot?.fullHtmlFile?.id" (click)="downloadParserSnapshotFile(ev.snapshot.fullHtmlFile)" style="margin-bottom:0.75rem;">
+                          ⬇ {{ tr('parserDownloadPageCode') }}
+                          <span>{{ formatBytes(ev.snapshot.fullHtmlFile.bytes) }}</span>
+                          <span *ngIf="ev.snapshot.fullHtmlFile.truncated" style="color:var(--accent-amber);"> (przycięty)</span>
+                        </button>
+                        <details *ngIf="ev.snapshot?.bodyText" style="margin-bottom:0.5rem;">
+                          <summary style="cursor:pointer;font-weight:600;font-size:0.9rem;">📝 {{ tr('parserPageText') }}</summary>
+                          <pre class="parser-snapshot-code" style="margin-top:0.5rem;">{{ ev.snapshot.bodyText }}</pre>
+                        </details>
+                        <details *ngIf="ev.snapshot?.htmlSnippet">
+                          <summary style="cursor:pointer;font-weight:600;font-size:0.9rem;">💻 {{ tr('parserPageCode') }}</summary>
+                          <pre class="parser-snapshot-code" style="margin-top:0.5rem;">{{ ev.snapshot.htmlSnippet }}</pre>
+                        </details>
+                      </div>
+                      <div *ngIf="!ev.snapshot?.bodyText && !ev.snapshot?.htmlSnippet && !ev.snapshot?.fullHtmlFile?.id && !ev.snapshot?.questionsData?.length" style="padding:1rem;text-align:center;color:var(--text-secondary);">
+                        Brak danych snapshot dla tego eventu.
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
               </div>
 
               <div class="pagination" *ngIf="parserEventsPagination().pages > 1">
@@ -3916,6 +3970,7 @@ export class AdminComponent implements OnInit, OnDestroy {
 
   protected readonly selectedQuestion = signal<any | null>(null);
   protected readonly selectedUserHistory = signal<any | null>(null);
+  protected readonly selectedParserEvent = signal<any | null>(null);
   protected readonly selectedGrantUser = signal<any | null>(null);
   protected readonly userQuestions = signal<any[]>([]);
   protected readonly userQuestionsPagination = signal<any>({ page: 1, pages: 1, total: 0 });
@@ -4544,6 +4599,10 @@ export class AdminComponent implements OnInit, OnDestroy {
     return !!this.parserSearch.trim() || !!this.parserOutcomeFilter;
   }
 
+  protected objectKeys(obj: any): string[] {
+    return obj && typeof obj === 'object' ? Object.keys(obj) : [];
+  }
+
   protected shortUrl(value: unknown): string {
     const url = String(value || '').trim();
     if (!url) return '-';
@@ -5044,8 +5103,18 @@ export class AdminComponent implements OnInit, OnDestroy {
   }
 
   protected async openUserHistory(user: any): Promise<void> {
+    // Najpierw pokaż podstawowe dane z listy (szybki feedback), potem zastąp pełnymi danymi
     this.selectedUserHistory.set(user);
     await this.loadUserQuestions(user.id, 1);
+    // Pobierz pełne dane użytkownika (authProviders, emailVerified, securityLogs itp.)
+    try {
+      const result = await this.api(`/api/admin/users/${user.id}`);
+      if (result.success && result.user) {
+        this.selectedUserHistory.set(result.user);
+      }
+    } catch {
+      // fallback: zostają dane z listy
+    }
   }
 
   protected closeUserHistory(): void {
