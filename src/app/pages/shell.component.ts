@@ -509,13 +509,20 @@ export function trackGa4Event(eventName: string, params?: Record<string, string 
     .nav-links {
       display: flex;
       align-items: center;
-      gap: 2rem;
+      gap: clamp(0.5rem, 1.2vw, 1.6rem);
+      flex-shrink: 1;
+      min-width: 0;
+    }
+    .nav-links .nav-link {
+      white-space: nowrap;
+      font-size: clamp(0.78rem, 0.9vw, 0.9rem);
     }
 
     .nav-actions {
       display: flex;
       align-items: center;
-      gap: 1.25rem;
+      gap: clamp(0.5rem, 1vw, 1.25rem);
+      flex-shrink: 0;
     }
 
     .auth-action {
@@ -931,7 +938,9 @@ export function trackGa4Event(eventName: string, params?: Record<string, string 
         grid-template-columns: repeat(2, 1fr);
       }
     }
-    @media (max-width: 768px) {
+
+    /* Chowanie desktopowego nav przy wąskich ekranach (lub długich językach) */
+    @media (max-width: 1100px) {
       .nav-links, .nav-actions {
         display: none;
       }
@@ -941,6 +950,9 @@ export function trackGa4Event(eventName: string, params?: Record<string, string 
       .nav-container {
         height: 4.5rem;
       }
+    }
+
+    @media (max-width: 768px) {
       .nav-brand {
         font-size: 1.25rem;
       }
