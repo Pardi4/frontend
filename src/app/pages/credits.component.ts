@@ -722,7 +722,7 @@ export class CreditsComponent implements OnInit, OnDestroy {
   protected readonly packs = [
     {
       id: 'starter',
-      price: '$2.49',
+      price: '$1.99',
       originalPrice: '',
       name: { en: '100 credits', pl: '100 kredytów', de: '100 credits', es: '100 créditos', fr: '100 crédits', it: '100 crediti', uk: '100 кредитів' },
       caption: { en: 'Small one-time top-up', pl: 'Małe jednorazowe doładowanie', de: 'Kleine einmalige Aufladung', es: 'Recarga pequeña', fr: 'Petite recharge unique', it: 'Piccola ricarica una tantum', uk: 'Мале одноразове поповнення' },
@@ -739,7 +739,7 @@ export class CreditsComponent implements OnInit, OnDestroy {
     },
     {
       id: 'pro',
-      price: '$20.00',
+      price: '$14.99',
       originalPrice: '',
       name: { en: '2000 credits', pl: '2000 kredytów', de: '2000 Credits', es: '2000 créditos', fr: '2000 crédits', it: '2000 crediti', uk: '2000 кредитів' },
       caption: { en: 'Large sessions and sharing', pl: 'Większe sesje i udostępnianie', de: 'Große Lernsessions und Teilen', es: 'Sesiones grandes y compartir', fr: 'Grandes sessions et partage', it: 'Sessioni grandi e condivisione', uk: 'Великі сесії та спільний доступ' },

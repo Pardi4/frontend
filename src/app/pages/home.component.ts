@@ -1391,7 +1391,7 @@ const HOME_COPY: Partial<Record<Locale, any>> & { en: any; pl: any } = {
       packs: [
         { id: 'starter', name: '100 credits', price: '$1.99', originalPrice: '$2.99', caption: 'Small top-up', button: 'Get 100 credits', features: ['One-time purchase, no subscription', 'Good for quick practice tests', 'Works for both answers and explanations', 'Lifetime access to saved notes'] },
         { id: 'popular', name: '500 credits', price: '$4.99', originalPrice: '$7.99', caption: 'Regular use pack', socialText: 'Chosen by 84% of students', button: 'Choose 500 Credits', features: ['Save 15% compared to starter', 'Great for weekly homework tasks', 'High priority response speed', 'Lifetime access to saved notes'] },
-        { id: 'pro', name: '2000 credits', price: '$15.00', originalPrice: '$20.00', caption: 'Heavy study sessions', button: 'Choose 2000 Credits', features: ['Best value per credit', 'Perfect for midterms and finals preparation', 'Highest priority response speed', 'Lifetime access to saved notes'] }
+        { id: 'pro', name: '2000 credits', price: '$14.99', originalPrice: '$20.00', caption: 'Heavy study sessions', button: 'Choose 2000 Credits', features: ['Best value per credit', 'Perfect for midterms and finals preparation', 'Highest priority response speed', 'Lifetime access to saved notes'] }
       ]
     },
     faqTitle: 'Frequently asked questions',
@@ -1474,7 +1474,7 @@ const HOME_COPY: Partial<Record<Locale, any>> & { en: any; pl: any } = {
       packs: [
         { id: 'starter', name: '100 kredytów', price: '$1.99', originalPrice: '$2.99', caption: 'Małe doładowanie', button: 'Kup 100 kredytów', features: ['Jednorazowy zakup, brak subskrypcji', 'Idealne do szybkich testów sprawdzających', 'Obejmuje odpowiedzi i wyjaśnienia', 'Bezterminowy, darmowy dostęp do historii'] },
         { id: 'popular', name: '500 kredytów', price: '$4.99', originalPrice: '$7.99', caption: 'Pakiet regularny', socialText: 'Wybierane przez 84% studentów', button: 'Wybierz 500 Kredytów', features: ['Oszczędzasz 15% w porównaniu z pakietem Starter', 'Świetny do regularnej nauki i prac domowych', 'Wysoki priorytet generowania odpowiedzi', 'Bezterminowy, darmowy dostęp do historii'] },
-        { id: 'pro', name: '2000 kredytów', price: '$15.00', originalPrice: '$20.00', caption: 'Sesja egzaminacyjna', button: 'Wybierz 2000 Kredytów', features: ['Najlepsza cena w przeliczeniu na kredyt', 'Idealne do przygotowania przed kolokwiami i sesją', 'Najwyższy priorytet generowania odpowiedzi', 'Bezterminowy, darmowy dostęp do historii'] }
+        { id: 'pro', name: '2000 kredytów', price: '$14.99', originalPrice: '$20.00', caption: 'Sesja egzaminacyjna', button: 'Wybierz 2000 Kredytów', features: ['Najlepsza cena w przeliczeniu na kredyt', 'Idealne do przygotowania przed kolokwiami i sesją', 'Najwyższy priorytet generowania odpowiedzi', 'Bezterminowy, darmowy dostęp do historii'] }
       ]
     },
     faqTitle: 'Najczęściej zadawane pytania',
