@@ -24,6 +24,7 @@ import { AdminComponent } from './admin.component';
           <option value="30">30 dni</option>
           <option value="90">90 dni</option>
         </select>
+        <button class="a-btn a-btn-primary a-btn-sm" (click)="downloadZip()" [disabled]="zipLoading()">⬇ Raport ZIP</button>
         <button class="a-btn a-btn-ghost a-btn-sm" (click)="load()" [disabled]="loading()">🔄</button>
       </div>
     </div>
@@ -369,6 +370,7 @@ export class AdminParserComponent implements OnInit {
 
   loading        = signal(false);
   evLoading      = signal(false);
+  zipLoading     = signal(false);
   health         = signal<any>({});
   events         = signal<any[]>([]);
   evTotal        = signal(0);
@@ -387,6 +389,32 @@ export class AdminParserComponent implements OnInit {
   readonly Math = Math;
 
   ngOnInit() { this.load(); }
+
+  async downloadZip() {
+    this.zipLoading.set(true);
+    try {
+      const token = localStorage.getItem('qs_admin_token') || localStorage.getItem('qs_token') || '';
+      const res = await fetch(`/api/admin/parser/analysis-zip?days=${this.days}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err.error || 'Błąd pobierania raportu');
+      }
+      
+      const blob = await res.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `parser-analysis-${this.days}d.zip`;
+      a.click();
+      window.URL.revokeObjectURL(url);
+      this.p.toast('Pobrano raport', 'success');
+    } catch (err: any) {
+      this.p.toast(err.message || 'Błąd', 'error');
+    }
+    this.zipLoading.set(false);
+  }
 
   async load() {
     this.loading.set(true);
