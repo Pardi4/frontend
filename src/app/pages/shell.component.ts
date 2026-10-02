@@ -118,7 +118,7 @@ export function trackGa4Event(eventName: string, params?: Record<string, string 
                   <button class="btn btn-outline" type="button" (click)="goToCredits()">
                     {{ api.currentUser()?.role === 'admin' ? 'Unlimited' : (api.currentUser()?.credits || 0) + ' ' + copy.common.credits }}
                   </button>
-                  <button class="btn btn-primary" type="button" (click)="mobileMenuOpen.set(false); startQrScanner()" style="display:flex; align-items:center; gap:0.4rem; justify-content:center;">
+                  <button class="btn btn-primary" type="button" (click)="mobileMenuOpen.set(false); startQrScanner()" style="padding:0; display:flex; align-items:center; gap:0.4rem; justify-content:center;">
                     &#128247; Quick Login (QR)
                   </button>
                   <button class="btn btn-ghost" type="button" (click)="logout()">{{ copy.common.logout }}</button>
@@ -247,9 +247,13 @@ export function trackGa4Event(eventName: string, params?: Record<string, string 
               <h2>{{ copy.auth.loginTitle }}</h2>
               <p>{{ copy.auth.loginSubtitle }}</p>
             </header>
-            <button class="btn btn-outline btn-block google-auth-btn" type="button" (click)="startGoogleLogin()">
-              <span>G</span>
+            <button class="btn btn-outline btn-block google-auth-btn" type="button" style="padding:0; display:flex;align-items:center;justify-content:center;" (click)="startGoogleLogin()">
+              <img src="/images/google_logo.png" style="width: 100%; height: 44px; object-fit: contain; padding: 8px; box-sizing: border-box;">
               {{ copy.shell.continueGoogle }}
+            </button>
+            <button class="btn btn-outline btn-block google-auth-btn" type="button" style="padding:0; display:flex;align-items:center;justify-content:center;" style="margin-top:8px;display:flex;align-items:center;justify-content:center;" (click)="startDiscordLogin()">
+              <img src="/images/discord_logo.png" style="width: 100%; height: 44px; object-fit: contain; padding: 8px; box-sizing: border-box;">
+              Continue with Discord
             </button>
             <div class="auth-divider"><span>{{ copy.shell.or }}</span></div>
             <form (ngSubmit)="login()">
@@ -286,9 +290,13 @@ export function trackGa4Event(eventName: string, params?: Record<string, string 
                 {{ copy.shell.referralInfo }}
               </p>
             </header>
-            <button class="btn btn-outline btn-block google-auth-btn" type="button" (click)="startGoogleLogin()">
-              <span>G</span>
+            <button class="btn btn-outline btn-block google-auth-btn" type="button" style="padding:0; display:flex;align-items:center;justify-content:center;" (click)="startGoogleLogin()">
+              <img src="/images/google_logo.png" style="width: 100%; height: 44px; object-fit: contain; padding: 8px; box-sizing: border-box;">
               {{ copy.shell.signupGoogle }}
+            </button>
+            <button class="btn btn-outline btn-block google-auth-btn" type="button" style="padding:0; display:flex;align-items:center;justify-content:center;" style="margin-top:8px;display:flex;align-items:center;justify-content:center;" (click)="startDiscordLogin()">
+              <img src="/images/discord_logo.png" style="width: 100%; height: 44px; object-fit: contain; padding: 8px; box-sizing: border-box;">
+              Sign up with Discord
             </button>
             <div class="auth-divider"><span>{{ copy.shell.or }}</span></div>
             <form (ngSubmit)="register()">
@@ -1401,6 +1409,15 @@ protected switchLocale(event: MouseEvent, targetLocale: any): void {
     this.mobileMenuOpen.set(false);
     this.router.navigateByUrl(pathFor('home', this.locale));
   }
+
+
+  protected startDiscordLogin(): void {
+    if (!isPlatformBrowser(this.platformId)) return;
+    this.authError.set('');
+    this.authInfo.set('');
+    const currentPath = `${window.location.pathname}${window.location.search}${window.location.hash}`;
+    const redirect = currentPath || pathFor('dashboard', this.locale);
+    window.location.href = `/api/auth/discord/start?redirect=${encodeURIComponent(redirect)}&lang=${this.locale}`;
 
   protected startGoogleLogin(): void {
     if (!isPlatformBrowser(this.platformId)) return;
