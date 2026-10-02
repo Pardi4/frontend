@@ -100,6 +100,9 @@ import { AdminComponent } from './admin.component';
       <button class="a-ds-toggle" [class.on-credits]="showCredits" (click)="toggleDataset('credits')">
         <span class="a-ds-dot" style="background:#f59e0b"></span> Kredyty sprzedane
       </button>
+      <button class="a-ds-toggle" [class.on-spent]="showSpent" (click)="toggleDataset('spent')">
+        <span class="a-ds-dot" style="background:#ef4444"></span> Kredyty wydane
+      </button>
     </div>
 
     <!-- Canvas -->
@@ -124,6 +127,7 @@ import { AdminComponent } from './admin.component';
       <span class="tc" *ngIf="showRevenue">💰 {{ hoveredDay()?.revenue }}</span>
       <span class="ta" *ngIf="showSignups">👥 {{ hoveredDay()?.signups }} rejestracji</span>
       <span class="tw" *ngIf="showCredits">🎟 {{ hoveredDay()?.credits }} kredytów</span>
+      <span class="te" *ngIf="showSpent">🔥 {{ hoveredDay()?.spent }} wydanych</span>
     </div>
   </div>
 
@@ -207,6 +211,7 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit, OnDestroy
   showRevenue = true;
   showSignups = true;
   showCredits = false;
+  showSpent = false;
 
   ranges = [
     { label: '7 dni',  value: 7  },
@@ -220,6 +225,7 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit, OnDestroy
   private rawRevenue:    number[]  = [];
   private rawSignups:    number[]  = [];
   private rawCredits:    number[]  = [];
+  private rawSpent:      number[]  = [];
 
   ngOnInit()       { this.load(); }
   ngAfterViewInit(){ this.loadChart(); }
@@ -255,10 +261,11 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit, OnDestroy
   setRange(n: number)        { this.chartRange = n; this.renderChart(); }
   setType(t: 'line' | 'bar') { this.chartType  = t; this.renderChart(); }
 
-  toggleDataset(ds: 'revenue' | 'signups' | 'credits') {
+  toggleDataset(ds: 'revenue' | 'signups' | 'credits' | 'spent') {
     if (ds === 'revenue') this.showRevenue = !this.showRevenue;
     if (ds === 'signups') this.showSignups = !this.showSignups;
     if (ds === 'credits') this.showCredits = !this.showCredits;
+    if (ds === 'spent') this.showSpent = !this.showSpent;
     this.updateDatasets();
   }
 
@@ -274,6 +281,7 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit, OnDestroy
       revenue: this.rawRevenue.slice(-n),
       signups: this.rawSignups.slice(-n),
       credits: this.rawCredits.slice(-n),
+      spent: this.rawSpent.slice(-n),
     };
   }
 
@@ -339,6 +347,7 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit, OnDestroy
     this.rawRevenue = [];
     this.rawSignups = [];
     this.rawCredits = [];
+    this.rawSpent   = [];
 
     for (let i = 29; i >= 0; i--) {
       const d = new Date(today);
@@ -352,6 +361,9 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit, OnDestroy
 
       const usr = (data.users || []).find((u: any) => u._id === key);
       this.rawSignups.push(usr ? usr.signups : 0);
+
+      const usg = (data.usages || []).find((u: any) => u._id === key);
+      this.rawSpent.push(usg ? usg.spentCredits : 0);
     }
   }
 
@@ -420,6 +432,24 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit, OnDestroy
       });
     }
 
+    if (this.showSpent) {
+      datasets.push({
+        label: 'Kredyty wydane',
+        data: s.spent,
+        yAxisID: 'yRev',
+        borderColor: '#ef4444',
+        backgroundColor: isBar ? 'rgba(239,68,68,0.35)' : 'rgba(239,68,68,0.06)',
+        fill: !isBar,
+        tension: 0.4,
+        borderWidth: 2,
+        pointRadius: isBar ? 0 : 3,
+        pointHoverRadius: 5,
+        pointBackgroundColor: '#ef4444',
+        borderDash: [5, 5],
+        order: 4,
+      });
+    }
+
     const chartType: 'bar' | 'line' = isBar ? 'bar' : 'line';
     const config = {
       type: chartType,
@@ -450,6 +480,7 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit, OnDestroy
                     revenue: this.p.formatMoney(s.revenue[idx] || 0),
                     signups: s.signups[idx] || 0,
                     credits: s.credits[idx] || 0,
+                    spent: s.spent[idx] || 0,
                   }), 0);
                 }
                 return items[0]?.label || '';
@@ -458,7 +489,8 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit, OnDestroy
                 const v = ctx.parsed.y;
                 if (ctx.dataset.label?.includes('USD')) return ` Przychód: $${v.toFixed(2)}`;
                 if (ctx.dataset.label?.includes('Rejestr')) return ` Rejestracje: ${v}`;
-                if (ctx.dataset.label?.includes('Kredyt')) return ` Kredyty: ${v}`;
+                if (ctx.dataset.label?.includes('sprzedane')) return ` Sprzedane kredyty: ${v}`;
+                if (ctx.dataset.label?.includes('wydane')) return ` Wydane kredyty: ${v}`;
                 return ` ${v}`;
               },
             },
@@ -476,7 +508,7 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit, OnDestroy
           yRev: {
             type: 'linear' as const,
             position: 'left' as const,
-            display: this.showRevenue || this.showCredits,
+            display: this.showRevenue || this.showCredits || this.showSpent,
             grid: { color: 'rgba(255,255,255,0.04)' },
             ticks: {
               color: '#22d3ee', font: { size: 10 },
