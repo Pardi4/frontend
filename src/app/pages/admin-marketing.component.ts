@@ -1,292 +1,240 @@
-import { Component, signal, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component, Input, OnInit, signal, ViewChild, ElementRef } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ApiService } from '../api.service';
+import { AdminComponent } from './admin.component';
 
 @Component({
   selector: 'app-admin-marketing',
   standalone: true,
   imports: [CommonModule, FormsModule],
   template: `
-    <div class="admin-marketing glass" style="padding: 2rem; border-radius: 12px; max-width: 900px;">
-      <h2 style="margin-bottom: 0.5rem;">Marketing Campaign</h2>
-      <p class="text-secondary" style="margin-bottom: 2rem;">Zarządzaj mailingiem promocyjnym i wysyłaj wiadomości do użytkowników.</p>
-      
-      <div style="background: rgba(255,255,255,0.05); padding: 1.5rem; border-radius: 8px; margin-bottom: 2rem; display: flex; gap: 2rem;">
-        <div>
-          <h3 style="margin-bottom: 0.5rem;">Statystyki</h3>
-          <p>Użytkownicy zapisani na marketing: <strong style="font-size: 1.2rem; color: var(--accent-cyan);">{{ totalOptIn() }}</strong></p>
-          <button class="btn btn-outline" style="margin-top: 1rem;" (click)="loadStats()">Odśwież Statystyki</button>
+<div class="a-section anim-in">
+
+  <!-- Stats + opt-in list -->
+  <div class="a-grid-2">
+    <div class="a-card">
+      <div class="a-card-header">
+        <div class="a-card-title">📣 Statystyki marketingu</div>
+        <button class="a-btn a-btn-ghost a-btn-sm" (click)="loadStats()">🔄</button>
+      </div>
+      <div class="a-card-body">
+        <div class="a-stats-grid">
+          <div class="a-stat">
+            <div class="a-stat-label">Zapisani na marketing</div>
+            <div class="a-stat-value accent">{{ totalOptIn() }}</div>
+          </div>
         </div>
-        
-        <div style="flex: 1;">
-          <h4 style="margin-bottom: 0.5rem; font-size: 0.9rem;">Zapisani Użytkownicy</h4>
-          <div style="max-height: 120px; overflow-y: auto; background: rgba(0,0,0,0.3); padding: 0.5rem; border-radius: 8px; font-size: 0.85rem; color: #a1a1aa; border: 1px solid var(--border);">
-            <div *ngIf="usersLoading()" style="padding: 0.5rem;">Ładowanie...</div>
-            <div *ngIf="!usersLoading() && users().length === 0" style="padding: 0.5rem;">Brak użytkowników.</div>
-            <div *ngFor="let u of users()" style="padding: 0.2rem 0.5rem; border-bottom: 1px solid rgba(255,255,255,0.05);">{{ u }}</div>
+        <div style="margin-top:14px">
+          <div class="a-label">Lista emaili (opt-in)</div>
+          <div style="max-height:160px;overflow-y:auto;background:var(--surface-2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:8px;margin-top:6px;font-size:12px;color:var(--text-2)">
+            <div *ngIf="usersLoading()">Ładowanie...</div>
+            <div *ngIf="!usersLoading() && !optInUsers().length">Brak zapisanych użytkowników.</div>
+            <div *ngFor="let u of optInUsers()" style="padding:2px 4px;border-bottom:1px solid var(--border)">{{ u }}</div>
           </div>
         </div>
       </div>
-
-      <form (ngSubmit)="sendCampaign()" style="display: flex; flex-direction: column; gap: 1.5rem;">
-        
-        <div style="display:flex; gap:1rem; flex-wrap: wrap;">
-          <label style="flex:1; min-width: 250px; display: flex; flex-direction: column; gap: 0.5rem;">
-            <span>Temat Maila</span>
-            <input type="text" class="input" [(ngModel)]="subject" name="subject" required placeholder="Flash Sale! -50%!" style="padding: 0.75rem; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 8px; color: white;" />
-          </label>
-          <label style="display: flex; flex-direction: column; gap: 0.5rem; min-width: 150px;">
-            <span>Losowa pula (zostaw puste by wysłać do wszystkich)</span>
-            <input type="number" class="input" [(ngModel)]="targetCount" name="targetCount" placeholder="np. 100" style="padding: 0.75rem; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 8px; color: white;" />
-          </label>
-          <label style="display: flex; align-items: center; gap: 0.5rem; min-width: 200px; color: #ef4444; background: rgba(239, 68, 68, 0.1); padding: 0.75rem; border-radius: 8px; cursor: pointer;">
-            <input type="checkbox" [(ngModel)]="ignoreConsent" name="ignoreConsent" style="width: 18px; height: 18px;" />
-            <span>Ignoruj zgody (Wyślij WSZYSTKIM)</span>
-          </label>
-          <label style="flex:1; min-width: 250px; display: flex; flex-direction: column; gap: 0.5rem; position: relative;">
-            <span>Wyślij do jednej osoby (wpisz Email)</span>
-            <input type="email" class="input" [(ngModel)]="targetEmail" name="targetEmail" placeholder="user@example.com (nadpisuje resztę opcji)" autocomplete="off" (focus)="showEmailSuggestions = true" (blur)="hideSuggestions()" style="padding: 0.75rem; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 8px; color: white;" />
-            <div *ngIf="showEmailSuggestions && filteredEmails.length > 0" style="position: absolute; top: 100%; left: 0; right: 0; background: #1e293b; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; margin-top: 0.25rem; z-index: 50; max-height: 200px; overflow-y: auto; box-shadow: 0 10px 25px rgba(0,0,0,0.5);">
-              <div *ngFor="let u of filteredEmails" (mousedown)="selectEmail(u)" style="padding: 0.75rem 1rem; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.05); color: #cbd5e1; font-size: 0.9rem;" onmouseover="this.style.background='rgba(6,182,212,0.1)'; this.style.color='white'" onmouseout="this.style.background='transparent'; this.style.color='#cbd5e1'">
-                {{ u }}
-              </div>
-            </div>
-          </label>
-        </div>
-        
-        <!-- Discount Section -->
-        <div style="background: rgba(6, 182, 212, 0.05); border: 1px solid rgba(6, 182, 212, 0.2); padding: 1.5rem; border-radius: 8px;">
-          <h4 style="color: var(--accent-cyan); margin-bottom: 1rem;">Kody Rabatowe (LemonSqueezy)</h4>
-          
-          <label style="display:flex; gap:0.5rem; align-items:center; margin-bottom: 1rem;">
-            <span style="min-width: 150px;">Tryb Kodów:</span>
-            <select class="input" [(ngModel)]="discountType" name="discountType" style="padding: 0.5rem; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 8px; color: white; flex:1;">
-              <option value="none">Brak (Zwykły mail)</option>
-              <option value="global">Opcja 1: Jeden globalny kod dla wszystkich</option>
-              <option value="unique">Opcja 2: Unikalny, 1-razowy kod dla KAŻDEGO z osobna</option>
-            </select>
-          </label>
-
-          <div *ngIf="discountType !== 'none'" style="display:flex; gap:1rem; flex-wrap: wrap;">
-            <label style="display: flex; flex-direction: column; gap: 0.5rem;">
-              <span>Prefix (lub dokładny kod)</span>
-              <input type="text" class="input" [(ngModel)]="discountPrefix" name="discountPrefix" placeholder="PROMO" style="padding: 0.5rem; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 8px; color: white; width: 150px;" />
-            </label>
-            <label *ngIf="discountType === 'global'" style="display: flex; flex-direction: column; gap: 0.5rem; justify-content: flex-end; padding-bottom: 0.5rem;">
-              <div style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
-                <input type="checkbox" [(ngModel)]="discountExactCode" name="discountExactCode" style="width: 16px; height: 16px;" />
-                <span style="font-size: 0.85rem; color: #cbd5e1;">Dokładny kod (bez losowych znaków)</span>
-              </div>
-            </label>
-            <label style="display: flex; flex-direction: column; gap: 0.5rem;">
-              <span>Zniżka %</span>
-              <input type="number" class="input" [(ngModel)]="discountPercent" name="discountPercent" style="padding: 0.5rem; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 8px; color: white; width: 120px;" />
-            </label>
-            <label style="display: flex; flex-direction: column; gap: 0.5rem;">
-              <span>Wygasa za (Dni)</span>
-              <input type="number" class="input" [(ngModel)]="discountExpiresDays" name="discountExpiresDays" style="padding: 0.5rem; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 8px; color: white; width: 150px;" />
-            </label>
-            <label *ngIf="discountType === 'global'" style="display: flex; flex-direction: column; gap: 0.5rem;">
-              <span>Limit Użyć (0 = bez limitu)</span>
-              <input type="number" class="input" [(ngModel)]="discountMaxUses" name="discountMaxUses" style="padding: 0.5rem; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 8px; color: white; width: 150px;" />
-            </label>
-          </div>
-        </div>
-
-        <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-          <div style="display: flex; justify-content: space-between; align-items: flex-end;">
-            <span>Treść Maila (HTML)</span>
-            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: flex-end;">
-              <button type="button" class="btn btn-outline" style="padding: 0.25rem 0.75rem; font-size: 0.8rem;" (click)="insertTag('{{DISCOUNT_CODE}}')">Wstaw Kod Zniżkowy</button>
-              <button type="button" class="btn btn-outline" style="padding: 0.25rem 0.75rem; font-size: 0.8rem;" (click)="insertTag('{{DISCOUNT_PERCENT}}')">Wstaw % Zniżki</button>
-              <button type="button" class="btn btn-outline" style="padding: 0.25rem 0.75rem; font-size: 0.8rem;" (click)="insertTag('{{DISCOUNT_EXPIRES}}')">Wstaw Dni Ważności</button>
-              <button type="button" class="btn btn-outline" style="padding: 0.25rem 0.75rem; font-size: 0.8rem;" (click)="insertTag('{{EMAIL}}')">Wstaw Email</button>
-              <button type="button" class="btn btn-primary" style="padding: 0.25rem 0.75rem; font-size: 0.8rem;" (click)="loadBackToSchoolTemplate()">Szablon: Back to School</button>
-            </div>
-          </div>
-          <textarea #htmlEditor class="input" [(ngModel)]="html" name="html" required rows="10" placeholder="<h1>Cześć!</h1><p>Twój kod to: {{'{{'}}DISCOUNT_CODE{{'}}'}}</p>" style="padding: 0.75rem; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 8px; color: white; resize: vertical;"></textarea>
-          <small class="text-secondary">Stopka oraz link do wypisania się z newslettera zostaną dodane automatycznie na samym dole.</small>
-        </div>
-        
-        <div *ngIf="error()" class="form-error" style="color: #ef4444;">{{ error() }}</div>
-        <div *ngIf="success()" class="form-success" style="color: #22c55e;">{{ success() }}</div>
-
-        <button class="btn btn-primary" type="submit" [disabled]="loading()" style="align-self: flex-start; padding: 0.75rem 2rem;">
-          {{ loading() ? 'Wysyłanie...' : 'Wyślij Kampanię' }}
-        </button>
-      </form>
     </div>
+
+    <div class="a-card">
+      <div class="a-card-header">
+        <div class="a-card-title">⚙️ Ustawienia kampanii</div>
+      </div>
+      <div class="a-card-body a-section" style="gap:12px">
+        <div class="a-input-group">
+          <label class="a-label">Temat maila</label>
+          <input class="a-input" [(ngModel)]="subject" placeholder="Flash Sale! -50% OFF">
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <div class="a-input-group" style="flex:1;min-width:140px">
+            <label class="a-label">Wyślij do jednej osoby</label>
+            <input class="a-input" type="email" [(ngModel)]="targetEmail" placeholder="user@example.com">
+          </div>
+          <div class="a-input-group" style="min-width:120px">
+            <label class="a-label">Losowa pula</label>
+            <input class="a-input" type="number" [(ngModel)]="targetCount" placeholder="np. 100">
+          </div>
+        </div>
+        <label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer;background:var(--danger-bg);padding:8px 12px;border-radius:var(--radius-sm);border:1px solid rgba(239,68,68,.3)">
+          <input type="checkbox" [(ngModel)]="ignoreConsent">
+          <span class="td bold">Ignoruj zgody — wyślij WSZYSTKIM</span>
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <!-- Discount codes -->
+  <div class="a-card">
+    <div class="a-card-header">
+      <div class="a-card-title">🎟️ Kody rabatowe (LemonSqueezy)</div>
+    </div>
+    <div class="a-card-body">
+      <div class="a-input-group mb-4" style="max-width:320px">
+        <label class="a-label">Tryb kodów</label>
+        <select class="a-select" [(ngModel)]="discountType">
+          <option value="none">Brak — zwykły mail</option>
+          <option value="global">Jeden globalny kod dla wszystkich</option>
+          <option value="unique">Unikalny 1-razowy kod dla każdego</option>
+        </select>
+      </div>
+      <div *ngIf="discountType !== 'none'" style="display:flex;gap:12px;flex-wrap:wrap">
+        <div class="a-input-group" style="min-width:140px">
+          <label class="a-label">Prefix / dokładny kod</label>
+          <input class="a-input" [(ngModel)]="discountPrefix" placeholder="PROMO">
+        </div>
+        <div *ngIf="discountType === 'global'" class="a-input-group">
+          <label class="a-label">&nbsp;</label>
+          <label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer;margin-top:6px">
+            <input type="checkbox" [(ngModel)]="discountExactCode">
+            <span>Dokładny kod (bez losowych znaków)</span>
+          </label>
+        </div>
+        <div class="a-input-group" style="min-width:100px">
+          <label class="a-label">Zniżka %</label>
+          <input class="a-input" type="number" [(ngModel)]="discountPercent" min="1" max="100">
+        </div>
+        <div class="a-input-group" style="min-width:120px">
+          <label class="a-label">Wygasa za (dni)</label>
+          <input class="a-input" type="number" [(ngModel)]="discountExpiresDays" min="1">
+        </div>
+        <div *ngIf="discountType === 'global'" class="a-input-group" style="min-width:140px">
+          <label class="a-label">Limit użyć (0=∞)</label>
+          <input class="a-input" type="number" [(ngModel)]="discountMaxUses" min="0">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HTML editor -->
+  <div class="a-card">
+    <div class="a-card-header">
+      <div class="a-card-title">✏️ Treść maila (HTML)</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap">
+        <button class="a-btn a-btn-secondary a-btn-sm" (click)="insertTag('{{DISCOUNT_CODE}}')">Kod zniżkowy</button>
+        <button class="a-btn a-btn-secondary a-btn-sm" (click)="insertTag('{{DISCOUNT_PERCENT}}')">% zniżki</button>
+        <button class="a-btn a-btn-secondary a-btn-sm" (click)="insertTag('{{EMAIL}}')">Email</button>
+        <button class="a-btn a-btn-primary a-btn-sm" (click)="loadTemplate()">📋 Szablon Back2School</button>
+      </div>
+    </div>
+    <div class="a-card-body">
+      <textarea
+        #htmlEditor
+        class="a-input"
+        [(ngModel)]="html"
+        rows="10"
+        style="resize:vertical;font-family:var(--font-mono);font-size:12px"
+        placeholder="<h1>Cześć {{EMAIL}}!</h1><p>Twój kod: {{DISCOUNT_CODE}}</p>">
+      </textarea>
+      <div class="xs t3 mt-3">Stopka i link wypisania zostaną dodane automatycznie.</div>
+    </div>
+
+    <div class="a-card-footer">
+      <div *ngIf="error()" style="flex:1;color:var(--danger);font-size:13px">{{ error() }}</div>
+      <div *ngIf="successMsg()" style="flex:1;color:var(--success);font-size:13px">{{ successMsg() }}</div>
+      <div style="flex:1" *ngIf="!error() && !successMsg()"></div>
+      <button class="a-btn a-btn-primary a-btn-lg" (click)="send()" [disabled]="loading() || !subject || !html">
+        {{ loading() ? 'Wysyłanie...' : '📨 Wyślij kampanię' }}
+      </button>
+    </div>
+  </div>
+</div>
   `
 })
-export class AdminMarketingComponent {
+export class AdminMarketingComponent implements OnInit {
+  @Input() p!: AdminComponent;
   @ViewChild('htmlEditor') htmlEditor!: ElementRef<HTMLTextAreaElement>;
 
-  totalOptIn = signal<number>(0);
-  users = signal<string[]>([]);
+  loading      = signal(false);
   usersLoading = signal(false);
-  
-  subject = '';
-  html = '';
+  totalOptIn   = signal(0);
+  optInUsers   = signal<string[]>([]);
+  error        = signal('');
+  successMsg   = signal('');
+
+  subject      = '';
+  html         = '';
+  targetEmail  = '';
   targetCount: number | null = null;
-      targetEmail = '';
-  showEmailSuggestions = false;
-
-  get filteredEmails() {
-    if (!this.targetEmail) return [];
-    const search = this.targetEmail.toLowerCase();
-    return this.allEmails().filter(e => e.toLowerCase().includes(search)).slice(0, 8);
-  }
-
-  selectEmail(email: string) {
-    this.targetEmail = email;
-    this.showEmailSuggestions = false;
-  }
-
-  hideSuggestions() {
-    setTimeout(() => this.showEmailSuggestions = false, 150);
-  }
-  
-  // Discount Fields
-  discountType: 'none' | 'global' | 'unique' = 'none';
-  discountPrefix = 'PROMO';
-  discountPercent = 10;
-  discountExpiresDays = 7;
-  discountMaxUses = 100;
   ignoreConsent = false;
-  discountExactCode = false;
 
-  loading = signal(false);
-  error = signal('');
-  success = signal('');
+  discountType: 'none' | 'global' | 'unique' = 'none';
+  discountPrefix      = 'PROMO';
+  discountPercent     = 10;
+  discountExpiresDays = 7;
+  discountMaxUses     = 100;
+  discountExactCode   = false;
 
-  constructor(private api: ApiService) {}
-
-  allEmails = signal<string[]>([]);
-
-  ngOnInit() {
-    this.loadStats();
-    this.loadUsers();
-    this.loadAllEmails();
-  }
-
-  async loadAllEmails() {
-    const res = await this.api.request('/api/admin/marketing/all-emails');
-    if (res.success) {
-      this.allEmails.set(res.emails);
-    }
-  }
+  ngOnInit() { this.loadStats(); this.loadUsers(); }
 
   async loadStats() {
-    const res = await this.api.request('/api/admin/marketing/stats');
-    if (res.success) {
-      this.totalOptIn.set(res.totalOptIn);
-    }
+    const res = await this.p.api('/api/admin/marketing/stats');
+    if (res.success) this.totalOptIn.set(res.totalOptIn);
   }
 
   async loadUsers() {
     this.usersLoading.set(true);
-    const res = await this.api.request('/api/admin/marketing/users');
-    if (res.success) {
-      this.users.set(res.users);
-    }
+    const res = await this.p.api('/api/admin/marketing/users');
+    if (res.success) this.optInUsers.set(res.users || []);
     this.usersLoading.set(false);
   }
 
-  loadBackToSchoolTemplate() {
+  insertTag(tag: string) {
+    const ta = this.htmlEditor?.nativeElement;
+    if (!ta) { this.html += tag; return; }
+    const s = ta.selectionStart, e = ta.selectionEnd;
+    this.html = this.html.slice(0, s) + tag + this.html.slice(e);
+    setTimeout(() => { ta.focus(); ta.selectionStart = ta.selectionEnd = s + tag.length; }, 0);
+  }
+
+  loadTemplate() {
     this.subject = 'Tomorrow it starts again... 🎒 Get 50% OFF QuizSolver';
-    this.discountType = 'global';
-    this.discountPrefix = 'BACK2SCHOOL';
+    this.discountType     = 'global';
+    this.discountPrefix   = 'BACK2SCHOOL';
     this.discountExactCode = true;
-    this.discountPercent = 50;
+    this.discountPercent  = 50;
     this.discountExpiresDays = 7;
-    this.html = `
-<div style="font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; max-width: 600px; margin: 0 auto; background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); padding: 40px 20px; border-radius: 16px; overflow: hidden; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); color: #f8fafc; border: 1px solid rgba(255, 255, 255, 0.1);">
-  <div style="text-align: center; margin-bottom: 30px;">
-    <div style="display: inline-block; background: rgba(6, 182, 212, 0.2); padding: 10px 20px; border-radius: 50px; border: 1px solid rgba(6, 182, 212, 0.4); margin-bottom: 20px;">
-      <span style="color: #22d3ee; font-weight: 700; letter-spacing: 1px; font-size: 13px; text-transform: uppercase;">BACK TO SCHOOL SALE 🎒</span>
-    </div>
-    <h1 style="color: #ffffff; font-size: 32px; font-weight: 800; margin: 0; line-height: 1.2;">Tomorrow is<br><span style="color: #22d3ee;">September 1st.</span></h1>
+    this.html = `<div style="font-family:sans-serif;max-width:600px;margin:0 auto;background:linear-gradient(135deg,#0f172a,#1e293b);padding:40px 20px;border-radius:16px;color:#f8fafc;border:1px solid rgba(255,255,255,.1)">
+  <div style="text-align:center;margin-bottom:30px">
+    <h1 style="color:#fff;font-size:32px;font-weight:800;margin:0">Tomorrow is<br><span style="color:#22d3ee">September 1st.</span></h1>
   </div>
-  
-  <div style="background: rgba(255, 255, 255, 0.05); padding: 30px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.05);">
-    <p style="font-size: 16px; line-height: 1.6; margin-top: 0; color: #cbd5e1;">Hey {{EMAIL}},</p>
-    <p style="font-size: 16px; line-height: 1.6; color: #cbd5e1;">Summer is officially over. Tomorrow the chaos starts again — assignments, quizzes, and unexpected tests.</p>
-    <p style="font-size: 16px; line-height: 1.6; color: #cbd5e1;">But this semester, you're coming prepared. We are giving you a massive head start to crush every quiz without the stress.</p>
-    
-    <div style="background: linear-gradient(to right, rgba(6, 182, 212, 0.1), rgba(59, 130, 246, 0.1)); border: 1px dashed #22d3ee; border-radius: 8px; padding: 25px; text-align: center; margin: 30px 0;">
-      <p style="margin: 0 0 10px 0; font-size: 14px; color: #94a3b8; text-transform: uppercase; font-weight: 600;">Use promo code at checkout</p>
-      <div style="display: inline-block; background: #0ea5e9; color: white; font-size: 28px; font-weight: 900; padding: 12px 30px; border-radius: 8px; letter-spacing: 3px; box-shadow: 0 10px 15px -3px rgba(14, 165, 233, 0.4);">
-        {{DISCOUNT_CODE}}
-      </div>
-      <p style="margin: 15px 0 0 0; font-size: 18px; color: #f8fafc;">for <strong style="color: #22d3ee;">{{DISCOUNT_PERCENT}}% OFF</strong></p>
-    </div>
-    
-    <p style="font-size: 14px; color: #64748b; text-align: center; margin-bottom: 0;"><em>Hurry up, this code expires in {{DISCOUNT_EXPIRES}} days!</em></p>
+  <p style="font-size:16px;color:#cbd5e1">Hey {{EMAIL}},</p>
+  <p style="font-size:16px;color:#cbd5e1">Summer is over. This semester, you're coming prepared.</p>
+  <div style="background:rgba(6,182,212,.1);border:1px dashed #22d3ee;border-radius:8px;padding:25px;text-align:center;margin:30px 0">
+    <p style="margin:0 0 10px;font-size:14px;color:#94a3b8;text-transform:uppercase;font-weight:600">Your promo code</p>
+    <div style="display:inline-block;background:#0ea5e9;color:white;font-size:28px;font-weight:900;padding:12px 30px;border-radius:8px;letter-spacing:3px">{{DISCOUNT_CODE}}</div>
+    <p style="margin:15px 0 0;font-size:18px;color:#f8fafc">for <strong style="color:#22d3ee">{{DISCOUNT_PERCENT}}% OFF</strong></p>
   </div>
-  
-  <div style="text-align: center; margin-top: 30px;">
-    <a href="https://getquizsolver.com/#pricing" style="display: inline-block; background: #0ea5e9; color: white; text-decoration: none; font-weight: 600; padding: 14px 32px; border-radius: 8px; font-size: 16px; box-shadow: 0 4px 6px -1px rgba(14, 165, 233, 0.3);">Get My Credits Now</a>
+  <p style="font-size:14px;color:#64748b;text-align:center"><em>Hurry up, this code expires in {{DISCOUNT_EXPIRES}} days!</em></p>
+  <div style="text-align:center;margin-top:30px">
+    <a href="https://getquizsolver.com/#pricing" style="display:inline-block;background:#0ea5e9;color:white;text-decoration:none;font-weight:600;padding:14px 32px;border-radius:8px;font-size:16px">Get My Credits Now</a>
   </div>
 </div>`;
   }
 
-  insertTag(tag: string) {
-    if (!this.htmlEditor) {
-      this.html += tag;
-      return;
-    }
-    
-    const textarea = this.htmlEditor.nativeElement;
-    const start = textarea.selectionStart;
-    const end = textarea.selectionEnd;
-    
-    this.html = this.html.substring(0, start) + tag + this.html.substring(end);
-    
-    // Move cursor after the inserted tag
-    setTimeout(() => {
-      textarea.focus();
-      textarea.selectionStart = start + tag.length;
-      textarea.selectionEnd = start + tag.length;
-    }, 0);
-  }
-
-  async sendCampaign() {
-    if (!confirm('Na pewno chcesz rozpocząć tę wysyłkę?')) return;
+  async send() {
+    if (!confirm('Na pewno wysłać tę kampanię?')) return;
     this.loading.set(true);
     this.error.set('');
-    this.success.set('');
-    
-    const body: any = { 
-      subject: this.subject, 
-      html: this.html,
-      discountType: this.discountType,
-      discountPrefix: this.discountPrefix,
-      discountPercent: this.discountPercent,
-      discountExactCode: this.discountExactCode,
-      discountExpiresDays: this.discountExpiresDays,
-      discountMaxUses: this.discountMaxUses
+    this.successMsg.set('');
+
+    const body: any = {
+      subject: this.subject, html: this.html,
+      discountType: this.discountType, discountPrefix: this.discountPrefix,
+      discountPercent: this.discountPercent, discountExactCode: this.discountExactCode,
+      discountExpiresDays: this.discountExpiresDays, discountMaxUses: this.discountMaxUses
     };
-    
-    if (this.targetCount) body.targetCount = this.targetCount;
-    if (this.targetEmail) body.targetEmail = this.targetEmail;
-    if (this.ignoreConsent) body.ignoreConsent = this.ignoreConsent;
-    
-    const res = await this.api.request('/api/admin/marketing/send', {
-      method: 'POST',
-      body: JSON.stringify(body)
-    });
-    
-    if (res.success) {
-      this.success.set(`Sukces! Wysłano \${res.count} wiadomości.`);
-      this.subject = '';
-      this.html = '';
-      this.targetCount = null;
-      this.targetEmail = '';
+    if (this.targetCount)  body.targetCount  = this.targetCount;
+    if (this.targetEmail)  body.targetEmail  = this.targetEmail;
+    if (this.ignoreConsent) body.ignoreConsent = true;
+
+    const res = await this.p.api('/api/admin/marketing/send', { method: 'POST', body: JSON.stringify(body) });
+    if (res.success || res.count) {
+      this.successMsg.set(`✅ Wysłano ${res.count} wiadomości!`);
+      this.subject = ''; this.html = ''; this.targetEmail = ''; this.targetCount = null;
+      this.p.toast(`Kampania wysłana (${res.count} maili)`, 'success');
     } else {
-      this.error.set(res.error || 'Błąd podczas wysyłania');
+      this.error.set(res.error || 'Błąd podczas wysyłania.');
+      this.p.toast(res.error || 'Błąd wysyłania', 'error');
     }
     this.loading.set(false);
   }
 }
-
