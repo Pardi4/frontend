@@ -371,10 +371,6 @@ export class AnimatedNumberComponent implements OnInit {
                 <h3 class="tier-name">{{ pack.name }}</h3>
                 <p class="tier-caption text-secondary">{{ pack.caption }}</p>
                 <div class="tier-price-container">
-                  <div class="tier-original-price" *ngIf="pack.originalPrice">
-                    <s>{{ pack.originalPrice }}</s>
-                    <span class="discount-badge" *ngIf="pack.originalPrice">-{{ getDiscount(pack.price, pack.originalPrice) }}%</span>
-                  </div>
                   <div class="tier-price">{{ pack.price }}</div>
                 </div>
                 
@@ -382,10 +378,6 @@ export class AnimatedNumberComponent implements OnInit {
                   <span class="pulse-dot"></span> {{ pack.socialText }}
                 </div>
                 
-                <div class="tier-promo-timer" *ngIf="pack.originalPrice && septemberTimer()">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-                  <span [innerHTML]="locale === 'pl' ? 'Koniec promocji za: <strong>' + septemberTimer() + '</strong>' : 'Promo ends in: <strong>' + septemberTimer() + '</strong>'"></span>
-                </div>
 
                 <ul class="tier-features">
                   <li *ngFor="let feat of pack.features">
@@ -1389,9 +1381,9 @@ const HOME_COPY: Partial<Record<Locale, any>> & { en: any; pl: any } = {
       subtitle: 'No recurring subscriptions. One-time credit packages keep it simple: answers and explanations spend credits, your study history is free forever.',
       badge: 'Most Popular',
       packs: [
-        { id: 'starter', name: '100 credits', price: '$1.99', originalPrice: '$2.99', caption: 'Small top-up', button: 'Get 100 credits', features: ['One-time purchase, no subscription', 'Good for quick practice tests', 'Works for both answers and explanations', 'Lifetime access to saved notes'] },
-        { id: 'popular', name: '500 credits', price: '$4.99', originalPrice: '$7.99', caption: 'Regular use pack', socialText: 'Chosen by 84% of students', button: 'Choose 500 Credits', features: ['Save 15% compared to starter', 'Great for weekly homework tasks', 'High priority response speed', 'Lifetime access to saved notes'] },
-        { id: 'pro', name: '2000 credits', price: '$14.99', originalPrice: '$20.00', caption: 'Heavy study sessions', button: 'Choose 2000 Credits', features: ['Best value per credit', 'Perfect for midterms and finals preparation', 'Highest priority response speed', 'Lifetime access to saved notes'] }
+        { id: 'starter', name: '100 credits', price: '$1.99', originalPrice: '', caption: 'Small top-up', button: 'Get 100 credits', features: ['One-time purchase, no subscription', 'Good for quick practice tests', 'Works for both answers and explanations', 'Lifetime access to saved notes'] },
+        { id: 'popular', name: '500 credits', price: '$4.99', originalPrice: '', caption: 'Regular use pack', socialText: 'Chosen by 84% of students', button: 'Choose 500 Credits', features: ['Save 15% compared to starter', 'Great for weekly homework tasks', 'High priority response speed', 'Lifetime access to saved notes'] },
+        { id: 'pro', name: '2000 credits', price: '$14.99', originalPrice: '', caption: 'Heavy study sessions', button: 'Choose 2000 Credits', features: ['Best value per credit', 'Perfect for midterms and finals preparation', 'Highest priority response speed', 'Lifetime access to saved notes'] }
       ]
     },
     faqTitle: 'Frequently asked questions',
@@ -1472,9 +1464,9 @@ const HOME_COPY: Partial<Record<Locale, any>> & { en: any; pl: any } = {
       subtitle: 'Bez cyklicznych subskrypcji. Jednorazowe pakiety kredytów: odpowiedzi i wyjaśnienia zużywają kredyty, historia nauki pozostaje darmowa na zawsze.',
       badge: 'Najchętniej Wybierany',
       packs: [
-        { id: 'starter', name: '100 kredytów', price: '$1.99', originalPrice: '$2.99', caption: 'Małe doładowanie', button: 'Kup 100 kredytów', features: ['Jednorazowy zakup, brak subskrypcji', 'Idealne do szybkich testów sprawdzających', 'Obejmuje odpowiedzi i wyjaśnienia', 'Bezterminowy, darmowy dostęp do historii'] },
-        { id: 'popular', name: '500 kredytów', price: '$4.99', originalPrice: '$7.99', caption: 'Pakiet regularny', socialText: 'Wybierane przez 84% studentów', button: 'Wybierz 500 Kredytów', features: ['Oszczędzasz 15% w porównaniu z pakietem Starter', 'Świetny do regularnej nauki i prac domowych', 'Wysoki priorytet generowania odpowiedzi', 'Bezterminowy, darmowy dostęp do historii'] },
-        { id: 'pro', name: '2000 kredytów', price: '$14.99', originalPrice: '$20.00', caption: 'Sesja egzaminacyjna', button: 'Wybierz 2000 Kredytów', features: ['Najlepsza cena w przeliczeniu na kredyt', 'Idealne do przygotowania przed kolokwiami i sesją', 'Najwyższy priorytet generowania odpowiedzi', 'Bezterminowy, darmowy dostęp do historii'] }
+        { id: 'starter', name: '100 kredytów', price: '$1.99', originalPrice: '', caption: 'Małe doładowanie', button: 'Kup 100 kredytów', features: ['Jednorazowy zakup, brak subskrypcji', 'Idealne do szybkich testów sprawdzających', 'Obejmuje odpowiedzi i wyjaśnienia', 'Bezterminowy, darmowy dostęp do historii'] },
+        { id: 'popular', name: '500 kredytów', price: '$4.99', originalPrice: '', caption: 'Pakiet regularny', socialText: 'Wybierane przez 84% studentów', button: 'Wybierz 500 Kredytów', features: ['Oszczędzasz 15% w porównaniu z pakietem Starter', 'Świetny do regularnej nauki i prac domowych', 'Wysoki priorytet generowania odpowiedzi', 'Bezterminowy, darmowy dostęp do historii'] },
+        { id: 'pro', name: '2000 kredytów', price: '$14.99', originalPrice: '', caption: 'Sesja egzaminacyjna', button: 'Wybierz 2000 Kredytów', features: ['Najlepsza cena w przeliczeniu na kredyt', 'Idealne do przygotowania przed kolokwiami i sesją', 'Najwyższy priorytet generowania odpowiedzi', 'Bezterminowy, darmowy dostęp do historii'] }
       ]
     },
     faqTitle: 'Najczęściej zadawane pytania',

@@ -112,20 +112,13 @@ import { ShellComponent, trackGa4Event } from './shell.component';
                 <h3>{{ pack.name[locale] }}</h3>
                 <p class="text-secondary">{{ pack.caption[locale] }}</p>
                 <div class="pack-price-container">
-                  <div class="pack-original-price" *ngIf="pack.originalPrice">
-                    <s>{{ pack.originalPrice }}</s>
-                    <span class="discount-badge" *ngIf="pack.originalPrice">-{{ getDiscount(pack.price, pack.originalPrice) }}%</span>
-                  </div>
                   <div class="pack-price">{{ pack.price }}</div>
                 </div>
                 <div class="pack-social-proof" *ngIf="pack.socialText">
                   <span class="pulse-dot"></span> {{ pack.socialText[locale] }}
                 </div>
 
-                <div class="pack-promo-timer" *ngIf="pack.originalPrice && septemberTimer()">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-                  <span [innerHTML]="locale === 'pl' ? 'Koniec promocji za: <strong>' + septemberTimer() + '</strong>' : 'Promo ends in: <strong>' + septemberTimer() + '</strong>'"></span>
-                </div>
+
 
                 <button class="btn btn-block" [class.btn-primary]="pack.id === 'popular'" [class.btn-outline]="pack.id !== 'popular'" type="button" (click)="confirmPack(pack.id)" [disabled]="buying() === pack.id">
                   {{ buying() === pack.id ? copy.loading : pack.button[locale] }}
