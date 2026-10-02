@@ -137,7 +137,7 @@ type ErrorTab = 'client' | 'bugs' | 'parser';
 
     <!-- Pagination -->
     <div class="a-pager" *ngIf="clientTotal() > clientPageSize">
-      <span class="t3 sm">{{ clientPage() * clientPageSize - clientPageSize + 1 }}–{{ [clientPage() * clientPageSize, clientTotal()].min() }} z {{ clientTotal() }}</span>
+      <span class="t3 sm">{{ clientPage() * clientPageSize - clientPageSize + 1 }}–{{ Math.min(clientPage() * clientPageSize, clientTotal()) }} z {{ clientTotal() }}</span>
       <div class="a-pager-btns">
         <button class="a-btn a-btn-secondary a-btn-sm" [disabled]="clientPage() <= 1" (click)="clientPage.update(p => p - 1); loadClients()">←</button>
         <button class="a-btn a-btn-secondary a-btn-sm" [disabled]="clientPage() * clientPageSize >= clientTotal()" (click)="clientPage.update(p => p + 1); loadClients()">→</button>

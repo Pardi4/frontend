@@ -122,7 +122,7 @@ import { AdminComponent } from './admin.component';
         [(ngModel)]="html"
         rows="10"
         style="resize:vertical;font-family:var(--font-mono);font-size:12px"
-        placeholder="<h1>Cześć {{EMAIL}}!</h1><p>Twój kod: {{DISCOUNT_CODE}}</p>">
+        placeholder="<h1>Cześć {{ '{' }}{{ '{' }}EMAIL{{ '}' }}{{ '}' }}!</h1><p>Twój kod: {{ '{' }}{{ '{' }}DISCOUNT_CODE{{ '}' }}{{ '}' }}</p>">
       </textarea>
       <div class="xs t3 mt-3">Stopka i link wypisania zostaną dodane automatycznie.</div>
     </div>
