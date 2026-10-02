@@ -247,12 +247,12 @@ export function trackGa4Event(eventName: string, params?: Record<string, string 
               <h2>{{ copy.auth.loginTitle }}</h2>
               <p>{{ copy.auth.loginSubtitle }}</p>
             </header>
-            <button class="btn btn-outline btn-block google-auth-btn" type="button" style="padding:0; display:flex;align-items:center;justify-content:center;" (click)="startGoogleLogin()">
-              <img src="/images/g_icon.png" style="width: 24px; height: 24px; object-fit: contain; margin-right: 12px; display: block;">
+            <button class="btn btn-outline btn-block google-auth-btn" type="button" style="display:flex;align-items:center;justify-content:center;" (click)="startGoogleLogin()">
+              <img src="/images/g_icon.png" style="height: 24px; width: auto; object-fit: contain; display: block;">
               {{ copy.shell.continueGoogle }}
             </button>
-            <button class="btn btn-outline btn-block google-auth-btn" type="button" style="padding:0; display:flex;align-items:center;justify-content:center;" style="margin-top:8px;display:flex;align-items:center;justify-content:center;" (click)="startDiscordLogin()">
-              <img src="/images/d_icon.png" style="width: 24px; height: 24px; object-fit: contain; margin-right: 12px; display: block;">
+            <button class="btn btn-outline btn-block google-auth-btn" type="button" style="margin-top:8px; display:flex;align-items:center;justify-content:center;" (click)="startDiscordLogin()">
+              <img src="/images/d_icon.png" style="height: 24px; width: auto; object-fit: contain; display: block;">
               Continue with Discord
             </button>
             <div class="auth-divider"><span>{{ copy.shell.or }}</span></div>
@@ -290,12 +290,12 @@ export function trackGa4Event(eventName: string, params?: Record<string, string 
                 {{ copy.shell.referralInfo }}
               </p>
             </header>
-            <button class="btn btn-outline btn-block google-auth-btn" type="button" style="padding:0; display:flex;align-items:center;justify-content:center;" (click)="startGoogleLogin()">
-              <img src="/images/g_icon.png" style="width: 24px; height: 24px; object-fit: contain; margin-right: 12px; display: block;">
+            <button class="btn btn-outline btn-block google-auth-btn" type="button" style="display:flex;align-items:center;justify-content:center;" (click)="startGoogleLogin()">
+              <img src="/images/g_icon.png" style="height: 24px; width: auto; object-fit: contain; display: block;">
               {{ copy.shell.signupGoogle }}
             </button>
-            <button class="btn btn-outline btn-block google-auth-btn" type="button" style="padding:0; display:flex;align-items:center;justify-content:center;" style="margin-top:8px;display:flex;align-items:center;justify-content:center;" (click)="startDiscordLogin()">
-              <img src="/images/d_icon.png" style="width: 24px; height: 24px; object-fit: contain; margin-right: 12px; display: block;">
+            <button class="btn btn-outline btn-block google-auth-btn" type="button" style="margin-top:8px; display:flex;align-items:center;justify-content:center;" (click)="startDiscordLogin()">
+              <img src="/images/d_icon.png" style="height: 24px; width: auto; object-fit: contain; display: block;">
               Sign up with Discord
             </button>
             <div class="auth-divider"><span>{{ copy.shell.or }}</span></div>
@@ -1649,3 +1649,4 @@ protected switchLocale(event: MouseEvent, targetLocale: any): void {
     this.qrScannerOpen = false;
   }
 }
+
