@@ -322,6 +322,7 @@ type ProfileTab = 'overview' | 'security' | 'questions';
                 <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:5px">
                   <span class="a-badge a-badge-muted">{{ q.questionType }}</span>
                   <span class="a-badge a-badge-outline" *ngIf="q.platform">{{ q.platform }}</span>
+                  <span class="a-badge a-badge-outline" *ngIf="q.extensionVersion">v{{ q.extensionVersion }}</span>
                   <span class="a-badge a-badge-cyan" *ngIf="q.seenCount > 1">{{ q.seenCount }}× seen</span>
                 </div>
               </div>
@@ -369,6 +370,7 @@ type ProfileTab = 'overview' | 'security' | 'questions';
               <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">
                 <span class="a-badge a-badge-muted">Typ: {{ q.questionType }}</span>
                 <span class="a-badge a-badge-muted" *ngIf="q.platform">Platforma: {{ q.platform }}</span>
+                <span class="a-badge a-badge-muted" *ngIf="q.extensionVersion">Wersja wtyczki: v{{ q.extensionVersion }}</span>
                 <span class="a-badge a-badge-cyan">Seen: {{ q.seenCount }}</span>
                 <span class="a-badge a-badge-muted" *ngIf="q.explainCount">Explain: {{ q.explainCount }}</span>
                 <span class="a-badge a-badge-accent" *ngIf="q.cachedAnswerId">Zakeszowane</span>
@@ -562,11 +564,12 @@ export class AdminUsersComponent implements OnInit {
     const u = this.profileUser();
     if (!u) return [];
     return [
+      { label: 'Wersja rozszerzenia', value: u.extensionVersion ? `v${u.extensionVersion}` : '—', cls: u.extensionVersion ? 'accent' : 't3' },
       { label: 'Aktywna teraz',   value: u.isExtensionActive ? '✓ Tak' : 'Nie', cls: u.isExtensionActive ? 'ts bold' : 't3' },
       { label: 'Ostatnio widziany', value: this.p.formatDate(u.extensionLastSeenAt, true) },
       { label: 'Ostatni URL',     value: u.extensionLastSeenUrl || '—', isLink: true },
       { label: 'Platforma',       value: u.extensionLastSeenPlatform || '—' },
-      { label: 'Powód wyślij.',   value: u.extensionLastSeenReason || '—' },
+      { label: 'Powód wysłania',  value: u.extensionLastSeenReason || '—' },
     ];
   }
 

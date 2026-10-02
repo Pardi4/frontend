@@ -24,6 +24,7 @@ import { AdminComponent } from './admin.component';
           <option value="30">30 dni</option>
           <option value="90">90 dni</option>
         </select>
+        <input class="a-input a-input-sm" style="max-width:110px" [(ngModel)]="zipVersion" placeholder="np. 2.0.5">
         <button class="a-btn a-btn-primary a-btn-sm" (click)="downloadZip()" [disabled]="zipLoading()">⬇ Raport ZIP</button>
         <button class="a-btn a-btn-ghost a-btn-sm" (click)="load()" [disabled]="loading()">🔄</button>
       </div>
@@ -371,6 +372,7 @@ export class AdminParserComponent implements OnInit {
   loading        = signal(false);
   evLoading      = signal(false);
   zipLoading     = signal(false);
+  zipVersion     = '';
   health         = signal<any>({});
   events         = signal<any[]>([]);
   evTotal        = signal(0);
@@ -394,7 +396,9 @@ export class AdminParserComponent implements OnInit {
     this.zipLoading.set(true);
     try {
       const token = localStorage.getItem('qs_admin_token') || localStorage.getItem('qs_token') || '';
-      const res = await fetch(`/api/admin/parser/analysis-zip?days=${this.days}`, {
+      const v = this.zipVersion.trim();
+      const verParam = v ? `&version=${encodeURIComponent(v)}` : '';
+      const res = await fetch(`/api/admin/parser/analysis-zip?days=${this.days}${verParam}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (!res.ok) {
@@ -406,7 +410,8 @@ export class AdminParserComponent implements OnInit {
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = `parser-analysis-${this.days}d.zip`;
+      const fileSuffix = v ? `-${v}` : '';
+      a.download = `parser-analysis-${this.days}d${fileSuffix}.zip`;
       a.click();
       window.URL.revokeObjectURL(url);
       this.p.toast('Pobrano raport', 'success');
