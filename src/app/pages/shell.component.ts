@@ -252,8 +252,7 @@ export function trackGa4Event(eventName: string, params?: Record<string, string 
               {{ copy.shell.continueGoogle }}
             </button>
             <button class="btn btn-outline btn-block google-auth-btn" type="button" style="margin-top:8px; display:flex;align-items:center;justify-content:center;" (click)="startDiscordLogin()">
-              <img src="/images/d_icon.png" style="height: 24px; width: auto; object-fit: contain; display: block;">
-              Continue with Discord
+              Continue with <img src="/images/d_icon.png" style="height: 24px; width: auto; object-fit: contain; display: block;">
             </button>
             <div class="auth-divider"><span>{{ copy.shell.or }}</span></div>
             <form (ngSubmit)="login()">
@@ -295,8 +294,7 @@ export function trackGa4Event(eventName: string, params?: Record<string, string 
               {{ copy.shell.signupGoogle }}
             </button>
             <button class="btn btn-outline btn-block google-auth-btn" type="button" style="margin-top:8px; display:flex;align-items:center;justify-content:center;" (click)="startDiscordLogin()">
-              <img src="/images/d_icon.png" style="height: 24px; width: auto; object-fit: contain; display: block;">
-              Sign up with Discord
+              Sign up with <img src="/images/d_icon.png" style="height: 24px; width: auto; object-fit: contain; display: block;">
             </button>
             <div class="auth-divider"><span>{{ copy.shell.or }}</span></div>
             <form (ngSubmit)="register()">
@@ -1649,4 +1647,5 @@ protected switchLocale(event: MouseEvent, targetLocale: any): void {
     this.qrScannerOpen = false;
   }
 }
+
 
