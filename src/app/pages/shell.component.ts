@@ -248,11 +248,11 @@ export function trackGa4Event(eventName: string, params?: Record<string, string 
               <p>{{ copy.auth.loginSubtitle }}</p>
             </header>
             <button class="btn btn-outline btn-block google-auth-btn" type="button" style="padding:0; display:flex;align-items:center;justify-content:center;" (click)="startGoogleLogin()">
-              <img src="/images/google_logo.png" style="width: 100%; height: 44px; object-fit: contain; padding: 8px; box-sizing: border-box;">
+              <img src="/images/google_logo.png" style="width: 44px; height: 44px; object-fit: contain; padding: 8px; box-sizing: border-box;">
               {{ copy.shell.continueGoogle }}
             </button>
             <button class="btn btn-outline btn-block google-auth-btn" type="button" style="padding:0; display:flex;align-items:center;justify-content:center;" style="margin-top:8px;display:flex;align-items:center;justify-content:center;" (click)="startDiscordLogin()">
-              <img src="/images/discord_logo.png" style="width: 100%; height: 44px; object-fit: contain; padding: 8px; box-sizing: border-box;">
+              <img src="/images/discord_logo.png" style="width: 44px; height: 44px; object-fit: contain; padding: 8px; box-sizing: border-box;">
               Continue with Discord
             </button>
             <div class="auth-divider"><span>{{ copy.shell.or }}</span></div>
@@ -291,11 +291,11 @@ export function trackGa4Event(eventName: string, params?: Record<string, string 
               </p>
             </header>
             <button class="btn btn-outline btn-block google-auth-btn" type="button" style="padding:0; display:flex;align-items:center;justify-content:center;" (click)="startGoogleLogin()">
-              <img src="/images/google_logo.png" style="width: 100%; height: 44px; object-fit: contain; padding: 8px; box-sizing: border-box;">
+              <img src="/images/google_logo.png" style="width: 44px; height: 44px; object-fit: contain; padding: 8px; box-sizing: border-box;">
               {{ copy.shell.signupGoogle }}
             </button>
             <button class="btn btn-outline btn-block google-auth-btn" type="button" style="padding:0; display:flex;align-items:center;justify-content:center;" style="margin-top:8px;display:flex;align-items:center;justify-content:center;" (click)="startDiscordLogin()">
-              <img src="/images/discord_logo.png" style="width: 100%; height: 44px; object-fit: contain; padding: 8px; box-sizing: border-box;">
+              <img src="/images/discord_logo.png" style="width: 44px; height: 44px; object-fit: contain; padding: 8px; box-sizing: border-box;">
               Sign up with Discord
             </button>
             <div class="auth-divider"><span>{{ copy.shell.or }}</span></div>
