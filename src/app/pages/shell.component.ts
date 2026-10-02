@@ -1418,6 +1418,7 @@ protected switchLocale(event: MouseEvent, targetLocale: any): void {
     const currentPath = `${window.location.pathname}${window.location.search}${window.location.hash}`;
     const redirect = currentPath || pathFor('dashboard', this.locale);
     window.location.href = `/api/auth/discord/start?redirect=${encodeURIComponent(redirect)}&lang=${this.locale}`;
+  }
 
   protected startGoogleLogin(): void {
     if (!isPlatformBrowser(this.platformId)) return;
