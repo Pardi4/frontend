@@ -1494,6 +1494,7 @@ protected switchLocale(event: MouseEvent, targetLocale: any): void {
       method: 'POST',
       body: JSON.stringify({
         email: this.registerEmail,
+        deviceId: typeof localStorage !== 'undefined' ? (localStorage.getItem('qs_device_id') || (() => { const id = Math.random().toString(36).substring(2) + Date.now().toString(36); localStorage.setItem('qs_device_id', id); return id; })()) : 'ssr', 
         password: this.registerPassword,
         
         referralCode: this.referralCode || undefined,

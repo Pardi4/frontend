@@ -131,6 +131,51 @@ import { AdminComponent } from './admin.component';
     </div>
   </div>
 
+  <!-- Conversion funnel -->
+  <div class="a-card">
+    <div class="a-card-header" style="flex-wrap:wrap;gap:10px">
+      <div>
+        <div class="a-card-title">🧭 Lejek konwersji</div>
+        <div class="a-card-subtitle" *ngIf="funnel() as f">
+          Konta założone w ostatnich {{ f.days }} dniach · przychód {{ '$' + f.revenue }} · {{ '$' + f.arpu }} na rejestrację
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <select class="a-select" [(ngModel)]="funnelDays" (ngModelChange)="loadFunnel()" style="max-width:110px">
+          <option [ngValue]="7">7 dni</option>
+          <option [ngValue]="30">30 dni</option>
+          <option [ngValue]="90">90 dni</option>
+        </select>
+        <button class="a-btn a-btn-ghost a-btn-sm" (click)="loadFunnel()" [disabled]="funnelLoading()" title="Odśwież">🔄</button>
+      </div>
+    </div>
+    <div class="a-card-body">
+      <div *ngIf="funnelLoading() && !funnel()" class="t2" style="font-size:13px">Ładowanie…</div>
+      <ng-container *ngIf="funnel() as f">
+        <div *ngFor="let s of f.steps; let i = index" style="margin-bottom:14px">
+          <div style="display:flex;justify-content:space-between;align-items:baseline;gap:10px;font-size:13px;margin-bottom:5px;flex-wrap:wrap">
+            <span class="bold">{{ i + 1 }}. {{ s.label }}</span>
+            <span>
+              <strong>{{ s.count }}</strong>
+              <span class="t2"> · {{ funnelPct(s.count, f.steps[0].count) }}% rejestracji</span>
+              <span *ngIf="i > 0" [style.color]="(funnelDrop(f.steps, i) ?? 0) > 50 ? '#f87171' : '#94a3b8'" style="margin-left:8px">
+                {{ funnelDrop(f.steps, i) === null ? '—' : '−' + funnelDrop(f.steps, i) + '% vs poprzedni' }}
+              </span>
+            </span>
+          </div>
+          <div style="height:10px;border-radius:6px;background:rgba(255,255,255,0.06);overflow:hidden">
+            <div [style.width.%]="funnelPct(s.count, f.steps[0].count)" style="height:100%;border-radius:6px;background:linear-gradient(90deg,#22d3ee,#6366f1);min-width:2px"></div>
+          </div>
+        </div>
+        <div class="t2" style="font-size:12px;line-height:1.6;border-top:1px solid var(--border);padding-top:10px">
+          Wartość płacącego klienta: {{ '$' + f.payerValue }} ·
+          Porzucone płatności: {{ funnelAbandoned(f) }}
+          <ng-container *ngIf="f.checkoutTrackedSince"> · zapis checkoutów od {{ f.checkoutTrackedSince | date:'dd.MM.yyyy HH:mm' }} (wcześniejsze nie są liczone)</ng-container>
+          <ng-container *ngIf="!f.checkoutTrackedSince"> · brak jeszcze zapisanych checkoutów – krok 4 zacznie się liczyć od teraz</ng-container>
+        </div>
+      </ng-container>
+    </div>
+  </div>
   <!-- ── System health ── -->
   <div class="a-card">
     <div class="a-card-header">
@@ -227,7 +272,7 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit, OnDestroy
   private rawCredits:    number[]  = [];
   private rawSpent:      number[]  = [];
 
-  ngOnInit()       { this.load(); }
+  ngOnInit()       { this.load(); this.loadFunnel(); }
   ngAfterViewInit(){ this.loadChart(); }
   ngOnDestroy()    { this.destroyChart(); }
 
@@ -244,6 +289,37 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit, OnDestroy
     this.loading.set(false);
   }
 
+  // ── Conversion funnel ─────────────────────────────
+  funnel        = signal<any>(null);
+  funnelLoading = signal(false);
+  funnelDays    = 30;
+
+  async loadFunnel() {
+    this.funnelLoading.set(true);
+    try {
+      const res = await this.p.api('/api/admin/funnel?days=' + this.funnelDays);
+      if (res?.steps) this.funnel.set(res);
+    } catch { /* silent */ }
+    this.funnelLoading.set(false);
+  }
+
+  funnelPct(count: number, total: number): number {
+    return total ? Math.round((count / total) * 1000) / 10 : 0;
+  }
+
+  /** % of users lost vs previous step; null when data is not monotonic (e.g. purchases before checkout tracking) */
+  funnelDrop(steps: any[], i: number): number | null {
+    const prev = steps[i - 1]?.count || 0;
+    const cur = steps[i]?.count || 0;
+    if (!prev || cur > prev) return null;
+    return Math.round(((prev - cur) / prev) * 100);
+  }
+
+  funnelAbandoned(f: any): number {
+    const checkout = f.steps.find((s: any) => s.key === 'checkout')?.count || 0;
+    const purchase = f.steps.find((s: any) => s.key === 'purchase')?.count || 0;
+    return Math.max(checkout - purchase, 0);
+  }
   async loadChart() {
     this.chartLoading.set(true);
     try {

@@ -5,8 +5,8 @@ import { ActivatedRoute } from '@angular/router';
 import { Title, Meta } from '@angular/platform-browser';
 import { ApiService } from '../api.service';
 import { SeoService } from '../seo.service';
-import { Locale, pageData } from '../site-content';
-import { ShellComponent } from './shell.component';
+import { CHROME_WEB_STORE_URL, Locale, pageData } from '../site-content';
+import { ShellComponent, trackGa4Event } from './shell.component';
 
 @Component({
   standalone: true,
@@ -63,7 +63,11 @@ import { ShellComponent } from './shell.component';
                   <div class="score-num text-gradient-strong">{{ result.score }} / {{ result.totalQuestions }}</div>
                   <p class="text-secondary">{{ text.correctAnswers }}</p>
                 </div>
-              </aside>
+                <div class="shared-install-cta" *ngIf="!api.currentUser()" style="margin-top:1.5rem;padding-top:1.25rem;border-top:1px solid rgba(255,255,255,0.1)">
+                  <h3 style="margin:0 0 .5rem;font-size:1.05rem">{{ text.shareCtaTitle }}</h3>
+                  <p class="text-secondary" style="margin:0 0 1rem;font-size:.9rem;line-height:1.5">{{ text.shareCtaText }}</p>
+                  <a class="btn btn-primary btn-block" [href]="chromeStoreUrl" target="_blank" rel="noopener" (click)="trackInstall()">{{ text.shareCtaButton }}</a>
+                </div>              </aside>
             </div>
 
             <ng-template #sharedLoading>
@@ -967,6 +971,11 @@ export class QuizComponent implements OnInit {
   protected status = '';
   protected typedAnswer = '';
   protected sharedToken = '';
+  protected readonly chromeStoreUrl = CHROME_WEB_STORE_URL;
+
+  protected trackInstall(): void {
+    trackGa4Event('shared_quiz_install_click', { page: 'shared_quiz', locale: this.locale });
+  }
   protected sharedDisplayName = '';
 
   protected readonly notes = signal<any[]>([]);
@@ -1380,6 +1389,9 @@ const QUIZ_TEXT: Partial<Record<Locale, any>> & { en: any; pl: any } = {
     checkAnswers: 'Check answers',
     displayNameRequired: 'Enter a display name before checking answers.',
     sharedError: 'Could not load shared quiz.',
+    shareCtaTitle: 'Study smarter with QuizSolver',
+    shareCtaText: 'Solve quiz questions with AI explanations, save your history and make practice tests like this one. Get 20 free credits.',
+    shareCtaButton: 'Add to Chrome - free',
     anonymous: 'Anonymous'
   },
   pl: {
@@ -1462,12 +1474,18 @@ const QUIZ_TEXT: Partial<Record<Locale, any>> & { en: any; pl: any } = {
     checkAnswers: 'Sprawdź odpowiedzi',
     displayNameRequired: 'Wpisz nick przed sprawdzeniem odpowiedzi.',
     sharedError: 'Nie udało się wczytać quizu.',
+    shareCtaTitle: 'Ucz się mądrzej z QuizSolver',
+    shareCtaText: 'Rozwiązuj pytania z wyjaśnieniami AI, zapisuj historię i twórz quizy powtórkowe takie jak ten. 20 darmowych kredytów na start.',
+    shareCtaButton: 'Dodaj do Chrome - za darmo',
     anonymous: 'Anonimowy'
   }
 };
 
 const QUIZ_BASE_LOCALIZED: Record<Exclude<Locale, 'en' | 'pl'>, Partial<typeof QUIZ_TEXT.en>> = {
   de: {
+    shareCtaTitle: 'Smarter lernen mit QuizSolver',
+    shareCtaText: 'Löse Quizfragen mit KI-Erklärungen, speichere deinen Verlauf und erstelle Übungsquizze wie dieses. 20 kostenlose Credits zum Start.',
+    shareCtaButton: 'Zu Chrome hinzufügen - kostenlos',
     badge: 'Historie und Notizen',
     title: 'Verwandle deine Historie in Übungsquizze',
     subtitle: 'Verwalte gespeicherte Fragen, Notizen und personalisierte Übungstests.',
@@ -1517,6 +1535,9 @@ const QUIZ_BASE_LOCALIZED: Record<Exclude<Locale, 'en' | 'pl'>, Partial<typeof Q
     anonymous: 'Anonym'
   },
   es: {
+    shareCtaTitle: 'Estudia mejor con QuizSolver',
+    shareCtaText: 'Resuelve preguntas con explicaciones de IA, guarda tu historial y crea quizzes de práctica como este. 20 créditos gratis al empezar.',
+    shareCtaButton: 'Añadir a Chrome - gratis',
     badge: 'Historial y notas',
     title: 'Convierte tu historial en quizzes de práctica',
     subtitle: 'Gestiona preguntas guardadas, notas y tests personalizados.',
@@ -1566,6 +1587,9 @@ const QUIZ_BASE_LOCALIZED: Record<Exclude<Locale, 'en' | 'pl'>, Partial<typeof Q
     anonymous: 'Anónimo'
   },
   fr: {
+    shareCtaTitle: 'Étudiez plus intelligemment avec QuizSolver',
+    shareCtaText: 'Résolvez des questions avec des explications IA, gardez votre historique et créez des quiz d’entraînement comme celui-ci. 20 crédits offerts pour commencer.',
+    shareCtaButton: 'Ajouter à Chrome - gratuit',
     badge: 'Historique et notes',
     title: 'Transformez l’historique en quiz de révision',
     subtitle: 'Gérez questions sauvegardées, notes et tests personnalisés.',
@@ -1583,6 +1607,9 @@ const QUIZ_BASE_LOCALIZED: Record<Exclude<Locale, 'en' | 'pl'>, Partial<typeof Q
     anonymous: 'Anonyme'
   },
   it: {
+    shareCtaTitle: 'Studia meglio con QuizSolver',
+    shareCtaText: 'Risolvi le domande con spiegazioni AI, salva la cronologia e crea quiz di ripasso come questo. 20 crediti gratis per iniziare.',
+    shareCtaButton: 'Aggiungi a Chrome - gratis',
     badge: 'Cronologia e note',
     title: 'Trasforma la cronologia in quiz di pratica',
     subtitle: 'Gestisci domande salvate, note e test personalizzati.',
@@ -1600,6 +1627,9 @@ const QUIZ_BASE_LOCALIZED: Record<Exclude<Locale, 'en' | 'pl'>, Partial<typeof Q
     anonymous: 'Anonimo'
   },
   uk: {
+    shareCtaTitle: 'Навчайся розумніше з QuizSolver',
+    shareCtaText: 'Розв’язуй питання з поясненнями AI, зберігай історію й створюй тренувальні квізи, як цей. 20 безкоштовних кредитів на старті.',
+    shareCtaButton: 'Додати в Chrome - безкоштовно',
     badge: 'Історія і нотатки',
     title: 'Перетвори історію на тренувальні квізи',
     subtitle: 'Керуй збереженими питаннями, нотатками і персональними тестами.',

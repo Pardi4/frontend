@@ -39,25 +39,24 @@ import { AdminComponent } from './admin.component';
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let e of filtered(); let i = index">
-          <td class="xs t3">{{ i + 1 }}</td>
-          <td class="xs">{{ e.platform || 'universal' }}</td>
-          <td>
-            <span class="a-badge" [class]="outcomeClass(e.outcome || e.result)">{{ e.outcome || e.result || '?' }}</span>
-          </td>
-          <td class="t2">{{ e.questionCount || e.questions?.length || 0 }}</td>
-          <td class="ta">{{ e.confidence !== undefined ? (e.confidence * 100).toFixed(0) + '%' : '—' }}</td>
-          <td class="xs t3">{{ p.formatDate(e.createdAt || e.timestamp) }}</td>
-          <td>
-            <button class="a-btn a-btn-ghost a-btn-sm" (click)="toggle(i)">{{ expanded() === i ? '▲' : '▼' }}</button>
-          </td>
-        </tr>
-        <!-- Expanded row -->
         <ng-container *ngFor="let e of filtered(); let i = index">
+          <tr style="cursor:pointer" (click)="toggle(i)">
+            <td class="xs t3">{{ i + 1 }}</td>
+            <td class="xs">{{ e.platform || 'universal' }}</td>
+            <td>
+              <span class="a-badge" [class]="outcomeClass(e.outcome || e.result)">{{ e.outcome || e.result || '?' }}</span>
+            </td>
+            <td class="t2">{{ e.questionCount || e.questions?.length || 0 }}</td>
+            <td class="ta">{{ e.confidence !== undefined ? (e.confidence * 100).toFixed(0) + '%' : '—' }}</td>
+            <td class="xs t3">{{ p.formatDate(e.createdAt || e.timestamp) }}</td>
+            <td>
+              <button class="a-btn a-btn-ghost a-btn-sm" (click)="toggle(i); $event.stopPropagation()">{{ expanded() === i ? '▲' : '▼' }}</button>
+            </td>
+          </tr>
           <tr *ngIf="expanded() === i">
             <td colspan="7" style="padding:0">
               <div style="padding:16px;background:var(--surface-2);border-top:1px solid var(--border)">
-                <pre class="a-stack" style="max-height:300px">{{ formatJson(e) }}</pre>
+                <pre class="a-stack" style="max-height:300px;overflow:auto">{{ formatJson(e) }}</pre>
               </div>
             </td>
           </tr>

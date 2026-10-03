@@ -779,8 +779,9 @@ export class CreditsComponent implements OnInit, OnDestroy {
     if (packParam && this.api.token() && this.packs.some(p => p.id === packParam)) {
       setTimeout(() => this.confirmPack(packParam), 100);
     }
-    trackGa4Event('credits_page_view', { locale: this.locale });
+    trackGa4Event('credits_page_view', { locale: this.locale, from: this.route.snapshot.queryParamMap.get('from') || '' });
   }
+
 
   ngOnDestroy(): void {
     if (this.promoTimerInterval) clearInterval(this.promoTimerInterval);
