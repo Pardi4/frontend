@@ -11,7 +11,7 @@ import { AdminComponent } from './admin.component';
 <div class="a-section anim-in">
 
   <!-- ── Summary cards ── -->
-  <div class="a-card" *ngIf="health().summary">
+  <div class="a-card" *ngIf="health()">
     <div class="a-card-header">
       <div>
         <div class="a-card-title">🔍 Zdrowie parsera</div>
@@ -439,8 +439,8 @@ export class AdminParserComponent implements OnInit {
   async load() {
     this.loading.set(true);
     const res = await this.p.api(`/api/admin/parser/health?days=${this.days}`);
-    if (res.summary !== undefined) {
-      this.health.set(res);
+    if (res) {
+      this.health.set(res); if (res.error) this.p.toast(res.error + (res.details ? " " + res.details : ""), "error");
       this.windowDays.set(res.windowDays || 7);
     }
     this.loading.set(false);
@@ -524,3 +524,4 @@ export class AdminParserComponent implements OnInit {
     return ({ error: 'a-badge-danger', empty: 'a-badge-warning', weak: 'a-badge-warning', reported: 'a-badge-accent', success: 'a-badge-success', partial: 'a-badge-cyan' } as any)[outcome] || 'a-badge-muted';
   }
 }
+
