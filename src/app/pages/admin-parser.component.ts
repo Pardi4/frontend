@@ -24,7 +24,10 @@ import { AdminComponent } from './admin.component';
           <option value="30">30 dni</option>
           <option value="90">90 dni</option>
         </select>
-        <input class="a-input a-input-sm" style="max-width:110px" [(ngModel)]="zipVersion" placeholder="np. 2.0.5">
+        <select class="a-select" [(ngModel)]="zipVersion" style="max-width:150px" title="Wersja rozszerzenia do raportu ZIP">
+          <option value="">Wszystkie wersje</option>
+          <option *ngFor="let v of versions(); let i = index" [value]="v">{{ v }}{{ i === 0 ? ' (najnowsza)' : '' }}</option>
+        </select>
         <button class="a-btn a-btn-primary a-btn-sm" (click)="downloadZip()" [disabled]="zipLoading()">⬇ Raport ZIP</button>
         <button class="a-btn a-btn-ghost a-btn-sm" (click)="load()" [disabled]="loading()">🔄</button>
       </div>
@@ -390,7 +393,19 @@ export class AdminParserComponent implements OnInit {
 
   readonly Math = Math;
 
-  ngOnInit() { this.load(); }
+  versions = signal<string[]>([]);
+
+  ngOnInit() { this.load(); this.loadVersions(); }
+
+  async loadVersions() {
+    try {
+      const token = localStorage.getItem('qs_admin_token') || localStorage.getItem('qs_token') || '';
+      const res = await fetch('/api/admin/parser/versions', { headers: { Authorization: `Bearer ${token}` } });
+      if (!res.ok) return;
+      const data = await res.json();
+      this.versions.set(Array.isArray(data.versions) ? data.versions : []);
+    } catch { /* silent */ }
+  }
 
   async downloadZip() {
     this.zipLoading.set(true);

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, OnDestroy, inject, ChangeDetectionStrategy, signal } from '@angular/core';
+import { Component, OnInit, OnChanges, OnDestroy, inject, ChangeDetectionStrategy, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SeoService } from '../seo.service';
 import { CHROME_WEB_STORE_URL, Locale, PageKey, pathFor } from '../site-content';
@@ -12,29 +12,53 @@ import { HttpClient } from '@angular/common/http';
   selector: 'qs-animated-number',
   template: '{{ displayValue }}'
 })
-export class AnimatedNumberComponent implements OnInit {
+export class AnimatedNumberComponent implements OnInit, OnChanges, OnDestroy {
   @Input() target: number | null = null;
   displayValue: string = '0';
 
   constructor(private cdr: ChangeDetectorRef, private el: ElementRef, @Inject(PLATFORM_ID) private platformId: Object) {}
 
+  private visible = false;
+  private observer: IntersectionObserver | null = null;
+  private frameId = 0;
+
   ngOnInit() {
-    if (this.target === null) return;
     if (!isPlatformBrowser(this.platformId)) {
-      this.displayValue = this.target === Infinity || this.target === -1 ? '∞' : this.target.toLocaleString('en-US');
+      this.renderStatic();
       return;
     }
-    
-    const observer = new IntersectionObserver(entries => {
+    this.observer = new IntersectionObserver(entries => {
       if (entries[0].isIntersecting) {
+        this.visible = true;
+        this.observer?.disconnect();
         this.animate();
-        observer.disconnect();
       }
     });
-    observer.observe(this.el.nativeElement);
+    this.observer.observe(this.el.nativeElement);
+  }
+
+  ngOnChanges() {
+    if (!isPlatformBrowser(this.platformId)) {
+      this.renderStatic();
+      return;
+    }
+    // Target can arrive after init (e.g. loaded from API) - (re)start animation then
+    if (this.visible) this.animate();
+  }
+
+  ngOnDestroy() {
+    this.observer?.disconnect();
+    if (this.frameId) cancelAnimationFrame(this.frameId);
+  }
+
+  private renderStatic() {
+    if (this.target === null) return;
+    this.displayValue = this.target === Infinity || this.target === -1 ? '∞' : this.target.toLocaleString('en-US');
   }
 
   animate() {
+    if (this.target === null) return;
+    if (this.frameId) cancelAnimationFrame(this.frameId);
     const duration = 2000;
     const start = performance.now();
     
@@ -47,7 +71,7 @@ export class AnimatedNumberComponent implements OnInit {
         this.cdr.detectChanges();
         if (progress < 1) requestAnimationFrame(step);
       };
-      requestAnimationFrame(step);
+      this.frameId = requestAnimationFrame(step);
     } else {
       const step = (timestamp: number) => {
         const progress = Math.min((timestamp - start) / duration, 1);
@@ -55,9 +79,9 @@ export class AnimatedNumberComponent implements OnInit {
         const current = Math.floor(easeOut * this.target!);
         this.displayValue = current.toLocaleString('en-US');
         this.cdr.detectChanges();
-        if (progress < 1) requestAnimationFrame(step);
+        if (progress < 1) this.frameId = requestAnimationFrame(step);
       };
-      requestAnimationFrame(step);
+      this.frameId = requestAnimationFrame(step);
     }
   }
 }
@@ -1229,6 +1253,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   private readonly router = inject(Router);
   private readonly seo = inject(SeoService);
   private readonly http = inject(HttpClient);
+  private readonly homeCdr = inject(ChangeDetectorRef);
 
   get packs() {
     return this.text.pricing.packs;
@@ -1271,6 +1296,7 @@ export class HomeComponent implements OnInit, OnDestroy {
               users: Math.ceil(rawUsers / 100) * 100, // round up to nearest 100
               questions: Math.ceil(rawQuestions / 1000) * 1000 // round up to nearest 1000
             };
+            this.homeCdr.markForCheck(); // component is OnPush - re-render with loaded stats
           }
         },
         error: () => {}
