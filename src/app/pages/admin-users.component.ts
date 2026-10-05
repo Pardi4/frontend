@@ -338,6 +338,9 @@ type ProfileTab = 'overview' | 'security' | 'questions';
 
               <!-- Full question text -->
               <div class="a-label" style="margin-bottom:6px">Treść pytania</div>
+              <img *ngIf="q.questionImageBase64 || q.questionImageUrl" 
+                   [src]="q.questionImageBase64 || q.questionImageUrl" 
+                   style="max-width:100%;border-radius:4px;margin-bottom:12px;border:1px solid var(--border)" alt="">
               <div class="sm" style="line-height:1.7;color:var(--text-2);white-space:pre-wrap;margin-bottom:12px">{{ q.questionText }}</div>
 
               <!-- Answer -->
