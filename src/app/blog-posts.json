@@ -1,5 +1,86 @@
 [
   {
+    "translationKey": "can-professors-see-chatgpt",
+    "slug": "czy-wykladowca-widzi-ze-uzywasz-chatgpt-na-teście",
+    "title": "Czy wykładowca widzi, że używasz ChatGPT? Canvas i Moodle pod lupą",
+    "metaTitle": "Czy Moodle i Canvas wykrywają ChatGPT i zmianę kart? | QuizSolver",
+    "metaDescription": "Boisz się, że system wyłapie przełączanie kart lub kopiowanie treści? Wyjaśniamy krok po kroku, co dokładnie widzi nauczyciel na testach online.",
+    "datePublished": "2026-10-05",
+    "dateModified": "2026-10-05",
+    "excerpt": "Każdy student zastanawia się, ile prawdy jest w \"śledzeniu otwartych kart\". Rozwiewamy mity o systemach proctoringu i sprawdzamy, co jest bezpieczne.",
+    "author": "QuizSolver Team",
+    "locale": "pl",
+    "readTime": "7 min",
+    "category": "privacy-detection",
+    "tags": [
+      "canvas",
+      "moodle",
+      "chatgpt",
+      "ściąganie na testach",
+      "prywatność"
+    ]
+  },
+  {
+    "translationKey": "can-professors-see-chatgpt",
+    "slug": "can-professors-see-if-you-use-chatgpt-canvas-moodle",
+    "title": "Can Professors See If You Use ChatGPT? Canvas & Moodle Explained",
+    "metaTitle": "Can Professors Detect ChatGPT on Canvas/Moodle? | QuizSolver",
+    "metaDescription": "Wondering if Canvas or Moodle tracks tab switching, copy-pasting, or ChatGPT usage? Learn how online exam tracking actually works.",
+    "datePublished": "2026-10-05",
+    "dateModified": "2026-10-05",
+    "excerpt": "Everyone uses AI, but nobody wants to get caught. We break down exactly what your professor can (and cannot) see when you take an online quiz.",
+    "author": "QuizSolver Team",
+    "locale": "en",
+    "readTime": "7 min",
+    "category": "privacy-detection",
+    "tags": [
+      "canvas tracking",
+      "moodle tracking",
+      "chatgpt detection",
+      "online exams"
+    ]
+  },
+  {
+    "translationKey": "best-chrome-extensions-students-2026",
+    "slug": "10-najlepszych-rozszerzen-chrome-dla-studentow-2026",
+    "title": "10 najlepszych rozszerzeń Chrome dla studentów w 2026 roku",
+    "metaTitle": "10 Najlepszych Rozszerzeń Chrome dla Studentów (2026) | QuizSolver",
+    "metaDescription": "Oszczędź czas i popraw oceny dzięki najlepszym rozszerzeniom Chrome dla studentów. Narzędzia AI, blokady rozpraszaczy i inteligentne notatki.",
+    "datePublished": "2026-10-05",
+    "dateModified": "2026-10-05",
+    "excerpt": "Studia to ciągły brak czasu. Oto 10 darmowych rozszerzeń do Chrome, które pomogą Ci w pisaniu esejów, organizacji czasu i rozwiązywaniu testów.",
+    "author": "QuizSolver Team",
+    "locale": "pl",
+    "readTime": "6 min",
+    "category": "guides",
+    "tags": [
+      "studia",
+      "wtyczki chrome",
+      "produktywność",
+      "nauka"
+    ]
+  },
+  {
+    "translationKey": "best-chrome-extensions-students-2026",
+    "slug": "10-best-chrome-extensions-for-college-students-2026",
+    "title": "10 Best Chrome Extensions for College Students in 2026",
+    "metaTitle": "10 Best Chrome Extensions for College Students (2026) | QuizSolver",
+    "metaDescription": "Boost your productivity and GPA with the top 10 Chrome extensions for students. Featuring AI study tools, productivity hacks, and quiz solvers.",
+    "datePublished": "2026-10-05",
+    "dateModified": "2026-10-05",
+    "excerpt": "College is hard enough. From grammar checkers to AI quiz solvers, these 10 Chrome extensions will save your time and sanity this semester.",
+    "author": "QuizSolver Team",
+    "locale": "en",
+    "readTime": "6 min",
+    "category": "guides",
+    "tags": [
+      "college hacks",
+      "chrome extensions",
+      "productivity",
+      "study tools"
+    ]
+  },
+  {
     "translationKey": "study-smarter-ai",
     "slug": "ki-quiz-solver-chrome-erweiterung",
     "title": "KI Quiz Solver für Chrome: schneller lernen mit Erklärungen und Verlauf",
@@ -1336,7 +1417,11 @@
     "translationKey": "how-to-solve-testportal-quiz",
     "slug": "how-to-solve-testportal-quiz",
     "category": "platform-guides",
-    "tags": ["testportal", "guide", "focusscan"],
+    "tags": [
+      "testportal",
+      "guide",
+      "focusscan"
+    ],
     "title": "How to solve Testportal quizzes faster: step-by-step guide 2026",
     "metaTitle": "Solve Testportal Quizzes Faster | QuizSolver",
     "metaDescription": "Learn how to solve testportal quiz faster with our step-by-step guide on interfaces, timers, FocusScan for images and safe hint modes.",
@@ -1351,7 +1436,11 @@
     "translationKey": "moodle-quiz-answers-ai",
     "slug": "moodle-quiz-answers-ai",
     "category": "platform-guides",
-    "tags": ["moodle", "quiz answers", "ai"],
+    "tags": [
+      "moodle",
+      "quiz answers",
+      "ai"
+    ],
     "title": "How to get Moodle quiz answers with AI: complete walkthrough",
     "metaTitle": "Moodle Quiz Answers with AI | QuizSolver",
     "metaDescription": "Discover how to get moodle quiz answers with AI. Complete walkthrough of Moodle's timed, shuffled quizzes and how to save them for review.",
@@ -1366,7 +1455,11 @@
     "translationKey": "ai-quiz-solver-extension-how-it-works",
     "slug": "ai-quiz-solver-extension-how-it-works",
     "category": "study-workflows",
-    "tags": ["extension", "how it works", "study tool"],
+    "tags": [
+      "extension",
+      "how it works",
+      "study tool"
+    ],
     "title": "AI quiz solver Chrome extension: how it actually works (no magic)",
     "metaTitle": "AI Quiz Solver Extension: How It Works | QuizSolver",
     "metaDescription": "Curious about our ai quiz solver extension? Learn how it reads the DOM, sends to AI, and provides explanations to enhance your studying.",
@@ -1381,7 +1474,11 @@
     "translationKey": "google-forms-quiz-hack-2026",
     "slug": "google-forms-quiz-hack-2026",
     "category": "platform-guides",
-    "tags": ["google forms", "ai assistance", "study"],
+    "tags": [
+      "google forms",
+      "ai assistance",
+      "study"
+    ],
     "title": "Google Forms quiz answers: how to use AI assistance responsibly",
     "metaTitle": "Google Forms Quiz Answers Guide | QuizSolver",
     "metaDescription": "Learn how to handle google forms quiz answers safely. Master locked modes, response validations, and use AI tools for practice.",
@@ -1396,7 +1493,11 @@
     "translationKey": "universal-parser-any-quiz-website",
     "slug": "universal-parser-any-quiz-website",
     "category": "study-workflows",
-    "tags": ["universal parser", "focusscan", "any website"],
+    "tags": [
+      "universal parser",
+      "focusscan",
+      "any website"
+    ],
     "title": "How Universal Parser solves quizzes on any website — not just the big 10",
     "metaTitle": "Quiz Solver for Any Website | QuizSolver",
     "metaDescription": "Discover the quiz solver for any website. Learn how Universal Parser reads visible text or uses FocusScan to handle any platform layout.",
