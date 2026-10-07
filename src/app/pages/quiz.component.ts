@@ -1390,7 +1390,7 @@ const QUIZ_TEXT: Partial<Record<Locale, any>> & { en: any; pl: any } = {
     displayNameRequired: 'Enter a display name before checking answers.',
     sharedError: 'Could not load shared quiz.',
     shareCtaTitle: 'Study smarter with QuizSolver',
-    shareCtaText: 'Solve quiz questions with AI explanations, save your history and make practice tests like this one. Get 20 free credits.',
+    shareCtaText: 'Solve quiz questions with AI explanations, save your history and make practice tests like this one. Get 10 free credits.',
     shareCtaButton: 'Add to Chrome - free',
     anonymous: 'Anonymous'
   },
@@ -1475,7 +1475,7 @@ const QUIZ_TEXT: Partial<Record<Locale, any>> & { en: any; pl: any } = {
     displayNameRequired: 'Wpisz nick przed sprawdzeniem odpowiedzi.',
     sharedError: 'Nie udało się wczytać quizu.',
     shareCtaTitle: 'Ucz się mądrzej z QuizSolver',
-    shareCtaText: 'Rozwiązuj pytania z wyjaśnieniami AI, zapisuj historię i twórz quizy powtórkowe takie jak ten. 20 darmowych kredytów na start.',
+    shareCtaText: 'Rozwiązuj pytania z wyjaśnieniami AI, zapisuj historię i twórz quizy powtórkowe takie jak ten. 10 darmowych kredytów na start.',
     shareCtaButton: 'Dodaj do Chrome - za darmo',
     anonymous: 'Anonimowy'
   }
@@ -1484,7 +1484,7 @@ const QUIZ_TEXT: Partial<Record<Locale, any>> & { en: any; pl: any } = {
 const QUIZ_BASE_LOCALIZED: Record<Exclude<Locale, 'en' | 'pl'>, Partial<typeof QUIZ_TEXT.en>> = {
   de: {
     shareCtaTitle: 'Smarter lernen mit QuizSolver',
-    shareCtaText: 'Löse Quizfragen mit KI-Erklärungen, speichere deinen Verlauf und erstelle Übungsquizze wie dieses. 20 kostenlose Credits zum Start.',
+    shareCtaText: 'Löse Quizfragen mit KI-Erklärungen, speichere deinen Verlauf und erstelle Übungsquizze wie dieses. 10 kostenlose Credits zum Start.',
     shareCtaButton: 'Zu Chrome hinzufügen - kostenlos',
     badge: 'Historie und Notizen',
     title: 'Verwandle deine Historie in Übungsquizze',
@@ -1536,7 +1536,7 @@ const QUIZ_BASE_LOCALIZED: Record<Exclude<Locale, 'en' | 'pl'>, Partial<typeof Q
   },
   es: {
     shareCtaTitle: 'Estudia mejor con QuizSolver',
-    shareCtaText: 'Resuelve preguntas con explicaciones de IA, guarda tu historial y crea quizzes de práctica como este. 20 créditos gratis al empezar.',
+    shareCtaText: 'Resuelve preguntas con explicaciones de IA, guarda tu historial y crea quizzes de práctica como este. 10 créditos gratis al empezar.',
     shareCtaButton: 'Añadir a Chrome - gratis',
     badge: 'Historial y notas',
     title: 'Convierte tu historial en quizzes de práctica',
@@ -1588,7 +1588,7 @@ const QUIZ_BASE_LOCALIZED: Record<Exclude<Locale, 'en' | 'pl'>, Partial<typeof Q
   },
   fr: {
     shareCtaTitle: 'Étudiez plus intelligemment avec QuizSolver',
-    shareCtaText: 'Résolvez des questions avec des explications IA, gardez votre historique et créez des quiz d’entraînement comme celui-ci. 20 crédits offerts pour commencer.',
+    shareCtaText: 'Résolvez des questions avec des explications IA, gardez votre historique et créez des quiz d’entraînement comme celui-ci. 10 crédits offerts pour commencer.',
     shareCtaButton: 'Ajouter à Chrome - gratuit',
     badge: 'Historique et notes',
     title: 'Transformez l’historique en quiz de révision',
@@ -1608,7 +1608,7 @@ const QUIZ_BASE_LOCALIZED: Record<Exclude<Locale, 'en' | 'pl'>, Partial<typeof Q
   },
   it: {
     shareCtaTitle: 'Studia meglio con QuizSolver',
-    shareCtaText: 'Risolvi le domande con spiegazioni AI, salva la cronologia e crea quiz di ripasso come questo. 20 crediti gratis per iniziare.',
+    shareCtaText: 'Risolvi le domande con spiegazioni AI, salva la cronologia e crea quiz di ripasso come questo. 10 crediti gratis per iniziare.',
     shareCtaButton: 'Aggiungi a Chrome - gratis',
     badge: 'Cronologia e note',
     title: 'Trasforma la cronologia in quiz di pratica',
@@ -1628,7 +1628,7 @@ const QUIZ_BASE_LOCALIZED: Record<Exclude<Locale, 'en' | 'pl'>, Partial<typeof Q
   },
   uk: {
     shareCtaTitle: 'Навчайся розумніше з QuizSolver',
-    shareCtaText: 'Розв’язуй питання з поясненнями AI, зберігай історію й створюй тренувальні квізи, як цей. 20 безкоштовних кредитів на старті.',
+    shareCtaText: 'Розв’язуй питання з поясненнями AI, зберігай історію й створюй тренувальні квізи, як цей. 10 безкоштовних кредитів на старті.',
     shareCtaButton: 'Додати в Chrome - безкоштовно',
     badge: 'Історія і нотатки',
     title: 'Перетвори історію на тренувальні квізи',

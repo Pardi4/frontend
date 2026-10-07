@@ -99,7 +99,7 @@ import { ShellComponent, trackGa4Event } from './shell.component';
             {{ buyError() }}
           </section>
 
-          <section class="packages-section">
+          <section id="pricing" class="packages-section">
             <div class="section-header" style="position: relative;">
               <p class="eyebrow">{{ copy.packagesBadge }}</p>
               <h2>{{ copy.packagesTitle }}</h2>
