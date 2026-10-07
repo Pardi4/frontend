@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, OnDestroy, inject, signal } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit, inject, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ApiService } from '../api.service';
 import { SeoService } from '../seo.service';
@@ -686,7 +686,18 @@ import { ShellComponent, trackGa4Event } from './shell.component';
     }
   `]
 })
-export class CreditsComponent implements OnInit, OnDestroy {
+export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
+  ngAfterViewInit() {
+    this.route.fragment.subscribe(frag => {
+      if (frag) {
+        setTimeout(() => {
+          const el = document.getElementById(frag);
+          if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 150);
+      }
+    });
+  }
+
   protected readonly route = inject(ActivatedRoute);
   protected readonly seo = inject(SeoService);
   protected readonly api = inject(ApiService);
