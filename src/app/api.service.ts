@@ -24,7 +24,9 @@ export class ApiService {
     if (this.isBrowser) {
       const stored = this.getStoredToken();
       this.token.set(stored);
-      if (stored) this.markAccountKnown();
+      if (!stored) {
+        try { localStorage.removeItem('qs_has_account'); } catch {}
+      }
     } else {
       this.sessionReady.set(true);
     }
@@ -62,7 +64,6 @@ export class ApiService {
       const result = await this.request('/api/auth/me');
       if (result.success && result.user) {
         this.currentUser.set(result.user);
-        this.markAccountKnown();
       } else {
         this.clearSession();
       }
@@ -77,34 +78,23 @@ export class ApiService {
     this.sessionReady.set(true);
     if (this.isBrowser) {
       this.setStoredToken(token);
-      this.markAccountKnown();
     }
   }
 
   hasAccount(): boolean {
-    if (this.currentUser() || this.token()) return true;
-    if (!this.isBrowser) return false;
-    try {
-      return localStorage.getItem('qs_has_account') === '1' || !!localStorage.getItem('qs_token');
-    } catch {
-      return false;
-    }
-  }
-
-  private markAccountKnown(): void {
-    if (!this.isBrowser) return;
-    try {
-      localStorage.setItem('qs_has_account', '1');
-    } catch {
-      // Storage can be unavailable in hardened or file-based browser contexts.
-    }
+    return !!(this.currentUser() || this.token());
   }
 
   clearSession(): void {
     this.token.set(null);
     this.currentUser.set(null);
     this.sessionReady.set(true);
-    if (this.isBrowser) this.removeStoredToken();
+    if (this.isBrowser) {
+      this.removeStoredToken();
+      try {
+        localStorage.removeItem('qs_has_account');
+      } catch {}
+    }
   }
 
   private getStoredToken(): string | null {

@@ -1184,7 +1184,7 @@ export class ShellComponent implements OnInit, AfterViewInit, OnDestroy {
     if (publicPages.includes(this.pageKey as PageKey)) {
       window.addEventListener('scroll', this.onScroll, { passive: true });
     }
-    if (window.innerWidth > 768 && !this.hasAccount()) {
+    if (window.innerWidth > 768) {
       document.addEventListener('mouseout', this.onMouseOut);
     }
   }
