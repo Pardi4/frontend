@@ -417,7 +417,7 @@ export function trackGa4Event(eventName: string, params?: Record<string, string 
       </div>
 
       <!-- Scroll CTA Bar -->
-      <div class="scroll-cta-bar" *ngIf="showScrollCta() && !scrollCtaDismissed()" role="complementary" aria-label="Install prompt">
+      <div class="scroll-cta-bar" *ngIf="showScrollCta() && !scrollCtaDismissed() && !hasAccount()" role="complementary" aria-label="Install prompt">
         <div class="scroll-cta-inner">
           <span class="scroll-cta-text">{{ copy.scrollCta?.text || 'Install QuizSolver — 10 free AI credits included' }}</span>
           <a class="btn btn-primary btn-sm" [href]="storeUrl" target="_blank" rel="noopener">{{ copy.scrollCta?.button || 'Install free' }}</a>
@@ -426,7 +426,7 @@ export function trackGa4Event(eventName: string, params?: Record<string, string 
       </div>
 
       <!-- Exit Intent Popup -->
-      <div class="exit-popup-backdrop" *ngIf="showExitPopup()" (click)="closeExitPopup()">
+      <div class="exit-popup-backdrop" *ngIf="showExitPopup() && !hasAccount()" (click)="closeExitPopup()">
         <div class="exit-popup glass" (click)="$event.stopPropagation()">
           <button class="exit-popup-close" type="button" (click)="closeExitPopup()" aria-label="Close">✕</button>
           <p class="eyebrow" style="color: var(--accent-cyan);">{{ copy.exitPopup?.eyebrow || 'Before you go' }}</p>
@@ -1184,7 +1184,7 @@ export class ShellComponent implements OnInit, AfterViewInit, OnDestroy {
     if (publicPages.includes(this.pageKey as PageKey)) {
       window.addEventListener('scroll', this.onScroll, { passive: true });
     }
-    if (window.innerWidth > 768) {
+    if (window.innerWidth > 768 && !this.hasAccount()) {
       document.addEventListener('mouseout', this.onMouseOut);
     }
   }
@@ -1199,7 +1199,7 @@ export class ShellComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private onScroll = () => {
-    if (this.scrollCtaDismissed()) return;
+    if (this.scrollCtaDismissed() || this.hasAccount()) return;
     const scrollPct = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight);
     this.showScrollCta.set(scrollPct > 0.4);
   };
@@ -1210,13 +1210,17 @@ export class ShellComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private onMouseOut = (e: MouseEvent) => {
-    if (this.exitPopupShown() || this.scrollCtaDismissed()) return;
+    if (this.hasAccount() || this.exitPopupShown() || this.scrollCtaDismissed()) return;
     if (!e.relatedTarget && e.clientY < 5) {
       this.showExitPopup.set(true);
       this.exitPopupShown.set(true);
       document.removeEventListener('mouseout', this.onMouseOut);
     }
   };
+
+  protected hasAccount(): boolean {
+    return this.api.hasAccount();
+  }
 
   protected closeExitPopup(): void {
     this.showExitPopup.set(false);

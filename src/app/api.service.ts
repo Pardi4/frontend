@@ -22,7 +22,9 @@ export class ApiService {
   constructor(@Inject(PLATFORM_ID) platformId: object) {
     this.isBrowser = isPlatformBrowser(platformId);
     if (this.isBrowser) {
-      this.token.set(this.getStoredToken());
+      const stored = this.getStoredToken();
+      this.token.set(stored);
+      if (stored) this.markAccountKnown();
     } else {
       this.sessionReady.set(true);
     }
@@ -58,8 +60,12 @@ export class ApiService {
 
     try {
       const result = await this.request('/api/auth/me');
-      if (result.success && result.user) this.currentUser.set(result.user);
-      else this.clearSession();
+      if (result.success && result.user) {
+        this.currentUser.set(result.user);
+        this.markAccountKnown();
+      } else {
+        this.clearSession();
+      }
     } finally {
       this.sessionReady.set(true);
     }
@@ -69,7 +75,29 @@ export class ApiService {
     this.token.set(token);
     this.currentUser.set(user);
     this.sessionReady.set(true);
-    if (this.isBrowser) this.setStoredToken(token);
+    if (this.isBrowser) {
+      this.setStoredToken(token);
+      this.markAccountKnown();
+    }
+  }
+
+  hasAccount(): boolean {
+    if (this.currentUser() || this.token()) return true;
+    if (!this.isBrowser) return false;
+    try {
+      return localStorage.getItem('qs_has_account') === '1' || !!localStorage.getItem('qs_token');
+    } catch {
+      return false;
+    }
+  }
+
+  private markAccountKnown(): void {
+    if (!this.isBrowser) return;
+    try {
+      localStorage.setItem('qs_has_account', '1');
+    } catch {
+      // Storage can be unavailable in hardened or file-based browser contexts.
+    }
   }
 
   clearSession(): void {
