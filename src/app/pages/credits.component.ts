@@ -41,7 +41,7 @@ import { ShellComponent, trackGa4Event } from './shell.component';
           </div>
         </header>
 
-        <!-- Trust Ribbon: High-converting reassurances right below header -->
+        <!-- Trust Ribbon: 3 core guarantees right below header -->
         <section class="trust-ribbon glass">
           <div class="trust-item" *ngFor="let badge of trustBadges">
             <span class="trust-icon" [innerHTML]="badge.icon"></span>
@@ -60,26 +60,26 @@ import { ShellComponent, trackGa4Event } from './shell.component';
             <article class="package-card glass glass-hover" *ngFor="let pack of packs" [class.featured]="pack.id === 'popular'">
               <span *ngIf="pack.badge" class="featured-badge">{{ pack.badge[locale] || pack.badge['en'] }}</span>
 
-              <div class="pack-header">
-                <h3>{{ pack.name[locale] }}</h3>
-                <p class="pack-caption text-secondary">{{ pack.caption[locale] }}</p>
+              <!-- Clear Credit Count as Hero of Card -->
+              <div class="pack-credits-header">
+                <div class="pack-credits-number text-gradient-strong">{{ pack.credits }}</div>
+                <div class="pack-credits-label">{{ copy.creditsUnitLabel }}</div>
               </div>
 
-              <div class="pack-price-container">
+              <!-- Price & Unit Rate Calculation -->
+              <div class="pack-pricing-block">
                 <div class="pack-price">{{ pack.price }}</div>
-                <span class="pack-unit-rate text-secondary">{{ pack.unitRate[locale] }}</span>
+                <div class="pack-rate text-secondary" [class.highlight]="pack.id === 'popular' || pack.id === 'pro'">
+                  {{ pack.rateInfo[locale] }}
+                </div>
               </div>
+
+              <!-- Clear, Honest Recommendation of Pack Size -->
+              <p class="pack-use-case text-secondary">{{ pack.useCase[locale] }}</p>
 
               <div class="pack-social-proof" *ngIf="pack.socialText">
                 <span class="pulse-dot"></span> {{ pack.socialText[locale] }}
               </div>
-
-              <ul class="pack-features">
-                <li *ngFor="let feat of pack.features[locale]">
-                  <span class="check-icon">✓</span>
-                  <span>{{ feat }}</span>
-                </li>
-              </ul>
 
               <button class="btn btn-block" 
                       [class.btn-primary]="pack.id === 'popular'" 
@@ -90,6 +90,20 @@ import { ShellComponent, trackGa4Event } from './shell.component';
                 {{ buying() === pack.id ? copy.loading : pack.button[locale] }}
               </button>
             </article>
+          </div>
+
+          <!-- All packs include 100% full features banner -->
+          <div class="all-packs-includes glass">
+            <div class="includes-header">
+              <span class="includes-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span>
+              <h3>{{ copy.allPacksTitle }}</h3>
+            </div>
+            <ul class="includes-grid">
+              <li *ngFor="let item of copy.allPacksItems">
+                <span class="check-icon">✓</span>
+                <span>{{ item }}</span>
+              </li>
+            </ul>
           </div>
 
           <!-- Guest reassurance if not logged in -->
@@ -277,20 +291,20 @@ import { ShellComponent, trackGa4Event } from './shell.component';
       display: flex;
       justify-content: center;
       align-items: center;
-      gap: 2rem;
+      gap: 2.25rem;
       flex-wrap: wrap;
       padding: 0.85rem 1.5rem;
       margin: 1.25rem auto 2.25rem;
       border-radius: var(--radius-lg);
       background: rgba(255, 255, 255, 0.02);
       border: 1px solid rgba(255, 255, 255, 0.06);
-      max-width: 1040px;
+      max-width: 900px;
     }
     .trust-item {
       display: flex;
       align-items: center;
       gap: 0.55rem;
-      font-size: 0.86rem;
+      font-size: 0.88rem;
       font-weight: 650;
       color: var(--text-secondary);
     }
@@ -317,8 +331,8 @@ import { ShellComponent, trackGa4Event } from './shell.component';
       position: relative;
       display: flex;
       flex-direction: column;
-      padding: 2.25rem 1.85rem;
-      text-align: left;
+      padding: 2.5rem 1.85rem 2rem;
+      text-align: center;
       border-radius: var(--radius-xl);
       background: rgba(18, 22, 30, 0.72);
       border: 1px solid rgba(255, 255, 255, 0.08);
@@ -348,38 +362,55 @@ import { ShellComponent, trackGa4Event } from './shell.component';
       white-space: nowrap;
       box-shadow: 0 4px 12px rgba(6, 182, 212, 0.35);
     }
-    .pack-header h3 {
-      font-size: 1.5rem;
-      margin: 0 0 0.35rem;
+    .pack-credits-header {
+      margin-bottom: 0.25rem;
+    }
+    .pack-credits-number {
+      font-size: clamp(3rem, 4.5vw, 3.8rem);
+      font-weight: 900;
       font-family: var(--font-heading);
+      line-height: 1;
+      margin-bottom: 0.25rem;
     }
-    .pack-caption {
-      font-size: 0.9rem;
-      margin: 0;
-      min-height: 2.5em;
-      line-height: 1.35;
+    .pack-credits-label {
+      font-size: 0.95rem;
+      font-weight: 750;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
     }
-    .pack-price-container {
-      display: flex;
-      align-items: baseline;
-      gap: 0.65rem;
-      margin: 1.15rem 0 0.75rem;
-      flex-wrap: wrap;
+    .pack-pricing-block {
+      margin: 1.25rem 0 1rem;
+      padding: 0.95rem 1rem;
+      border-radius: var(--radius-lg);
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.06);
     }
     .pack-price {
       font-family: var(--font-heading);
-      font-size: 2.85rem;
+      font-size: 2.35rem;
       font-weight: 850;
       color: var(--text-primary);
       line-height: 1;
     }
-    .pack-unit-rate {
-      font-size: 0.82rem;
+    .pack-rate {
+      font-size: 0.84rem;
       font-weight: 700;
+      margin-top: 0.35rem;
+    }
+    .pack-rate.highlight {
+      color: var(--accent-cyan);
+    }
+    .pack-use-case {
+      font-size: 0.92rem;
+      margin: 0.25rem 0 1.25rem;
+      min-height: 2.8em;
+      line-height: 1.45;
     }
     .pack-social-proof {
       display: inline-flex;
       align-items: center;
+      justify-content: center;
       gap: 0.45rem;
       font-size: 0.8rem;
       font-weight: 650;
@@ -388,7 +419,7 @@ import { ShellComponent, trackGa4Event } from './shell.component';
       border: 1px solid rgba(139, 92, 246, 0.25);
       padding: 0.35rem 0.75rem;
       border-radius: var(--radius-full);
-      margin-bottom: 1.25rem;
+      margin: 0 auto 1.25rem;
       width: fit-content;
     }
     .pulse-dot {
@@ -403,22 +434,53 @@ import { ShellComponent, trackGa4Event } from './shell.component';
       70% { box-shadow: 0 0 0 6px rgba(6, 182, 212, 0); }
       100% { box-shadow: 0 0 0 0 rgba(6, 182, 212, 0); }
     }
-    .pack-features {
+    .package-card .btn {
+      margin-top: auto;
+      padding: 0.85rem;
+      font-size: 0.95rem;
+      font-weight: 750;
+    }
+
+    /* All packs included features banner */
+    .all-packs-includes {
+      margin: 2rem auto 0;
+      max-width: 1100px;
+      padding: 1.75rem 2rem;
+      border-radius: var(--radius-xl);
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .includes-header {
       display: flex;
-      flex-direction: column;
-      gap: 0.7rem;
-      margin: 0 0 1.75rem;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1.25rem;
+    }
+    .includes-icon {
+      color: var(--accent-cyan);
+      display: flex;
+      align-items: center;
+    }
+    .includes-header h3 {
+      font-size: 1.15rem;
+      margin: 0;
+      font-family: var(--font-heading);
+    }
+    .includes-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.85rem 2.5rem;
+      margin: 0;
       padding: 0;
       list-style: none;
-      flex: 1;
     }
-    .pack-features li {
+    .includes-grid li {
       display: flex;
       align-items: flex-start;
-      gap: 0.55rem;
-      font-size: 0.88rem;
+      gap: 0.65rem;
+      font-size: 0.9rem;
       color: var(--text-secondary);
-      line-height: 1.4;
+      line-height: 1.45;
     }
     .check-icon {
       color: var(--accent-cyan);
@@ -426,12 +488,6 @@ import { ShellComponent, trackGa4Event } from './shell.component';
       font-size: 0.95rem;
       flex-shrink: 0;
       margin-top: -1px;
-    }
-    .package-card .btn {
-      margin-top: auto;
-      padding: 0.85rem;
-      font-size: 0.95rem;
-      font-weight: 750;
     }
 
     /* Guest reassurance bar */
@@ -703,6 +759,10 @@ import { ShellComponent, trackGa4Event } from './shell.component';
         grid-template-columns: 1fr;
         max-width: 440px;
       }
+      .includes-grid {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+      }
       .faq-grid {
         grid-template-columns: 1fr;
       }
@@ -722,7 +782,8 @@ import { ShellComponent, trackGa4Event } from './shell.component';
         padding: 1.35rem;
       }
       .package-card,
-      .checkout-confirm {
+      .checkout-confirm,
+      .all-packs-includes {
         padding: 1.5rem;
       }
       .value-grid {
@@ -820,31 +881,31 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
   protected readonly packs = [
     {
       id: 'starter',
+      credits: 100,
       price: '$1.99',
-      unitRate: {
+      rateInfo: {
         en: '~$0.02 / answer',
-        pl: '~$0.02 / odp.',
-        de: '~$0.02 / Antwort',
-        es: '~$0.02 / respuesta',
-        fr: '~$0.02 / réponse',
-        it: '~$0.02 / risposta',
-        uk: '~$0.02 / відповідь'
+        pl: '~$0.02 za odpowiedź',
+        de: '~$0.02 pro Antwort',
+        es: '~$0.02 por respuesta',
+        fr: '~$0.02 par réponse',
+        it: '~$0.02 per risposta',
+        uk: '~$0.02 за відповідь'
       },
-      name: { en: '100 credits', pl: '100 kredytów', de: '100 Credits', es: '100 créditos', fr: '100 crédits', it: '100 crediti', uk: '100 кредитів' },
-      caption: { en: 'Quick tests & practice', pl: 'Szybkie testy i powtórki', de: 'Schnelle Tests & Übung', es: 'Pruebas rápidas y práctica', fr: 'Tests rapides et révisions', it: 'Test veloci e ripasso', uk: 'Швидкі тести та практика' },
-      button: { en: 'Buy 100 credits', pl: 'Kup 100 kredytów', de: '100 Credits kaufen', es: 'Comprar 100 créditos', fr: 'Acheter 100 crédits', it: 'Compra 100 crediti', uk: 'Купити 100 кредитів' },
-      features: {
-        en: ['100 AI answers + full explanations', 'Works with Universal Parser™ & FocusScan', 'Lifetime access to saved notes & history', 'One-time payment, no subscription'],
-        pl: ['100 odpowiedzi AI + pełne wyjaśnienia', 'Wsparcie Universal Parser™ i FocusScan', 'Darmowy dostęp do historii i notatek na zawsze', 'Jednorazowa opłata, brak abonamentu'],
-        de: ['100 KI-Antworten + vollständige Erklärungen', 'Unterstützt Universal Parser™ & FocusScan', 'Lebenslanger Zugriff auf Notizen & Historie', 'Einmalige Zahlung, kein Abonnement'],
-        es: ['100 respuestas IA + explicaciones completas', 'Compatible con Universal Parser™ y FocusScan', 'Acceso de por vida a notas e historial', 'Pago único, sin suscripción'],
-        fr: ['100 réponses IA + explications complètes', 'Compatible Universal Parser™ et FocusScan', 'Accès à vie aux notes et à l’historique', 'Paiement unique, sans abonnement'],
-        it: ['100 risposte IA + spiegazioni complete', 'Supporto Universal Parser™ e FocusScan', 'Accesso a vita a note e cronologia', 'Pagamento una tantum, nessun abbonamento'],
-        uk: ['100 AI-відповідей + повні пояснення', 'Підтримка Universal Parser™ та FocusScan', 'Довічний доступ до збережених нотаток', 'Одноразова оплата, без підписки']
-      }
+      useCase: {
+        en: 'Great for a quick test or 1–2 homework assignments',
+        pl: 'Na szybkie sprawdzenie lub 1–2 mniejsze testy',
+        de: 'Ideal für einen schnellen Test oder 1–2 Aufgaben',
+        es: 'Ideal para una prueba rápida o 1–2 tareas cortas',
+        fr: 'Idéal pour un test rapide ou 1–2 devoirs',
+        it: 'Ideale per un test veloce o 1–2 singoli compiti',
+        uk: 'На швидку перевірку або 1–2 короткі тести'
+      },
+      button: { en: 'Buy 100 credits', pl: 'Kup 100 kredytów', de: '100 Credits kaufen', es: 'Comprar 100 créditos', fr: 'Acheter 100 crédits', it: 'Compra 100 crediti', uk: 'Купити 100 кредитів' }
     },
     {
       id: 'popular',
+      credits: 500,
       price: '$4.99',
       badge: {
         en: 'Most Popular',
@@ -864,61 +925,58 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
         it: 'Scelto dall\'84% degli studenti',
         uk: 'Обрано 84% студентів'
       },
-      unitRate: {
+      rateInfo: {
         en: '~$0.01 / answer (Save 50%)',
-        pl: '~$0.01 / odp. (Oszczędzasz 50%!)',
-        de: '~$0.01 / Antwort (50% Ersparnis)',
-        es: '~$0.01 / respuesta (¡Ahorra 50%!)',
-        fr: '~$0.01 / réponse (Économisez 50%)',
-        it: '~$0.01 / risposta (Risparmi il 50%)',
-        uk: '~$0.01 / відповідь (Економія 50%!)'
+        pl: '~$0.01 za odpowiedź (50% taniej)',
+        de: '~$0.01 pro Antwort (50% Ersparnis)',
+        es: '~$0.01 por respuesta (Ahorra 50%)',
+        fr: '~$0.01 par réponse (50% d\'économie)',
+        it: '~$0.01 per risposta (Risparmi il 50%)',
+        uk: '~$0.01 за відповідь (50% дешевше)'
       },
-      name: { en: '500 credits', pl: '500 kredytów', de: '500 Credits', es: '500 créditos', fr: '500 crédits', it: '500 crediti', uk: '500 кредитів' },
-      caption: { en: 'Best for weekly homework & quizzes', pl: 'Najlepszy do regularnej nauki i kolokwiów', de: 'Ideal für wöchentliche Aufgaben & Tests', es: 'Ideal para tareas semanales y cuestionarios', fr: 'Idéal pour devoirs hebdomadaires et quiz', it: 'Ideale per compiti settimanali e quiz', uk: 'Найкраще для щотижневих тестів і завдань' },
-      button: { en: 'Buy 500 credits', pl: 'Kup 500 kredytów', de: '500 Credits kaufen', es: 'Comprar 500 créditos', fr: 'Acheter 500 crédits', it: 'Compra 500 crediti', uk: 'Купити 500 кредитів' },
-      features: {
-        en: ['500 AI answers + detailed explanations', 'Maximum AI answer speed priority', 'Works on Testportal, Moodle, Kahoot & all sites', 'Practice quizzes generated from your history', 'Lifetime access to saved notes & study vault'],
-        pl: ['500 odpowiedzi AI + szczegółowe wyjaśnienia', 'Wysoki priorytet szybkości odpowiedzi AI', 'Działa na Testportal, Moodle, Kahoot i wszędzie', 'Generowanie quizów ćwiczeniowych z historii', 'Bezterminowy dostęp do historii i notatek'],
-        de: ['500 KI-Antworten + detaillierte Erklärungen', 'Höchste KI-Antwortgeschwindigkeit', 'Funktioniert auf Testportal, Moodle, Kahoot & überall', 'Übungsquizze aus deiner Historie', 'Lebenslanger Zugriff auf Notizen & Bibliothek'],
-        es: ['500 respuestas IA + explicaciones detalladas', 'Prioridad de respuesta ultra rápida', 'Funciona en Testportal, Moodle, Kahoot y más', 'Cuestionarios de práctica desde tu historial', 'Acceso de por vida a notas y biblioteca'],
-        fr: ['500 réponses IA + explications détaillées', 'Vitesse de réponse IA prioritaire', 'Fonctionne sur Testportal, Moodle, Kahoot & partout', 'Quiz d\'entraînement générés depuis l\'historique', 'Accès à vie aux notes et à la bibliothèque'],
-        it: ['500 risposte IA + spiegazioni dettagliate', 'Priorità di elaborazione massima dell\'AI', 'Funziona su Testportal, Moodle, Kahoot e ovunque', 'Quiz di prova generati dalla cronologia', 'Accesso a vita a note e archivio'],
-        uk: ['500 AI-відповідей + детальні пояснення', 'Високий пріоритет швидкості відповіді AI', 'Працює на Testportal, Moodle, Kahoot та скрізь', 'Генерація практичних квізів з історії', 'Довічний доступ до збережених нотаток']
-      }
+      useCase: {
+        en: 'Best for weekly homework, tests & midterm prep',
+        pl: 'Świetne na regularne kolokwia i prace domowe',
+        de: 'Optimal für wöchentliche Tests und Aufgaben',
+        es: 'Ideal para exámenes semanales y tareas',
+        fr: 'Idéal pour examens réguliers et devoirs',
+        it: 'Perfetto per prove settimanali ed esami',
+        uk: 'Ідеально для щотижневих тестів та завдань'
+      },
+      button: { en: 'Buy 500 credits', pl: 'Kup 500 kredytów', de: '500 Credits kaufen', es: 'Comprar 500 créditos', fr: 'Acheter 500 crédits', it: 'Compra 500 crediti', uk: 'Купити 500 кредитів' }
     },
     {
       id: 'pro',
+      credits: 2000,
       price: '$14.99',
       badge: {
         en: 'Best Value',
         pl: 'Najlepsza Cena',
-        de: 'Bester Wert',
+        de: 'Bester Preis',
         es: 'Mejor Precio',
         fr: 'Meilleur Prix',
-        it: 'Miglior Valore',
-        uk: 'Найвигідніша ціна'
+        it: 'Miglior Prezzo',
+        uk: 'Найкраща ціна'
       },
-      unitRate: {
-        en: '<$0.008 / answer',
-        pl: '<$0.008 / odp.',
-        de: '<$0.008 / Antwort',
-        es: '<$0.008 / respuesta',
-        fr: '<$0.008 / réponse',
-        it: '<$0.008 / risposta',
-        uk: '<$0.008 / відповідь'
+      rateInfo: {
+        en: '<$0.008 / answer (Lowest rate)',
+        pl: '<$0.008 za odpowiedź (Największy rabat)',
+        de: '<$0.008 pro Antwort (Bester Rabatt)',
+        es: '<$0.008 por respuesta (Mayor ahorro)',
+        fr: '<$0.008 par réponse (Plus grosse remise)',
+        it: '<$0.008 per risposta (Massimo sconto)',
+        uk: '<$0.008 за відповідь (Найбільша знижка)'
       },
-      name: { en: '2000 credits', pl: '2000 kredytów', de: '2000 Credits', es: '2000 créditos', fr: '2000 crédits', it: '2000 crediti', uk: '2000 кредитів' },
-      caption: { en: 'Exam sessions & semester pass', pl: 'Sesja egzaminacyjna i cały semestr', de: 'Prüfungsphase & ganzes Semester', es: 'Temporada de exámenes y semestre', fr: 'Période d\'examens et semestre entier', it: 'Sessione esami e intero semestre', uk: 'Сесія, іспити та цілий семестр' },
-      button: { en: 'Buy 2000 credits', pl: 'Kup 2000 kredytów', de: '2000 Credits kaufen', es: 'Comprar 2000 créditos', fr: 'Acheter 2000 crédits', it: 'Compra 2000 crediti', uk: 'Купити 2000 кредитів' },
-      features: {
-        en: ['2000 AI answers + full explanations', 'Lowest cost per credit guaranteed', 'Perfect for midterms, finals & sharing', 'Share study quizzes with classmates', 'Credits never expire after semester ends'],
-        pl: ['2000 odpowiedzi AI + pełne wyjaśnienia', 'Najniższa cena w przeliczeniu na 1 odpowiedź', 'Idealne na kolokwia, sesję i cały rok studiów', 'Udostępnianie zestawów pytań znajomym', 'Kredyty nie przepadają po zakończeniu semestru'],
-        de: ['2000 KI-Antworten + vollständige Erklärungen', 'Niedrigster Preis pro Antwort garantiert', 'Perfekt für Prüfungsphasen und Teilen', 'Fragensets mit Kommilitonen teilen', 'Credits verfallen nie nach Semesterende'],
-        es: ['2000 respuestas IA + explicaciones completas', 'Precio más bajo por respuesta garantizado', 'Perfecto para parciales, finales y compartir', 'Comparte sets de preguntas con amigos', 'Los créditos no caducan al acabar el semestre'],
-        fr: ['2000 réponses IA + explications complètes', 'Prix le plus bas par réponse garanti', 'Idéal pour les partiels et examens finaux', 'Partage de séries de questions avec vos amis', 'Les crédits n\'expirent jamais après le semestre'],
-        it: ['2000 risposte IA + spiegazioni complete', 'Costo per credito più basso garantito', 'Perfetto per sessioni d\'esame e condivisione', 'Condividi quiz con i compagni di corso', 'I crediti non scadono mai dopo la sessione'],
-        uk: ['2000 AI-відповідей + повні пояснення', 'Найнижча ціна за одну відповідь', 'Ідеально для модулів, сесії та навчання', 'Спільний доступ до запитань з друзями', 'Кредити ніколи не згорають після сесії']
-      }
+      useCase: {
+        en: 'Massive supply for midterms, finals & exam seasons',
+        pl: 'Zapas na całą sesję egzaminacyjną lub cały semestr',
+        de: 'Großer Vorrat für Prüfungsphasen & das ganze Semester',
+        es: 'Gran reserva para exámenes parciales y finales',
+        fr: 'Grande réserve pour partiels et période d\'examens',
+        it: 'Scorta abbondante per sessioni d\'esame e semestre',
+        uk: 'Великий запас на модулі, сесію та цілий семестр'
+      },
+      button: { en: 'Buy 2000 credits', pl: 'Kup 2000 kredytów', de: '2000 Credits kaufen', es: 'Comprar 2000 créditos', fr: 'Acheter 2000 crédits', it: 'Compra 2000 crediti', uk: 'Купити 2000 кредитів' }
     }
   ];
 
@@ -1025,6 +1083,15 @@ const CREDITS_COPY: Record<Locale, any> = {
     badge: 'Simple Pricing',
     pageHeading: 'Choose your credits pack',
     subtitle: 'One-time top-up. No subscription, no hidden recurring fees. Credits never expire.',
+    creditsUnitLabel: 'credits',
+    allPacksTitle: 'Every package includes 100% full access to all features:',
+    allPacksItems: [
+      'Full AI answers with detailed step-by-step explanations',
+      'Works on all quiz sites: Testportal, Moodle, Canvas, Forms, Kahoot & any portal',
+      'Universal Parser™ and FocusScan screenshot mode included',
+      'Credits never expire — one-time purchase with no subscription',
+      'Permanent access to your study history, saved questions & notes'
+    ],
     loginTitle: 'Sign in to buy credits',
     loginText: 'Use the same account as the Chrome extension, then pick a top-up package.',
     loginButton: 'Sign in / Sign up',
@@ -1066,6 +1133,15 @@ const CREDITS_COPY: Record<Locale, any> = {
     badge: 'Prosty Cennik',
     pageHeading: 'Wybierz pakiet dla siebie',
     subtitle: 'Jednorazowe doładowanie. Bez subskrypcji i ukrytych opłat. Kredyty nigdy nie wygasają.',
+    creditsUnitLabel: 'kredytów',
+    allPacksTitle: 'Każdy pakiet zawiera pełny dostęp do 100% funkcji bez ograniczeń:',
+    allPacksItems: [
+      'Pełne odpowiedzi AI ze szczegółowym wyjaśnieniem krok po kroku',
+      'Działa na wszystkich platformach: Testportal, Moodle, Canvas, Forms, Kahoot i dowolnej innej stronie',
+      'Universal Parser™ oraz tryb wycinka ekranu FocusScan',
+      'Kredyty nigdy nie wygasają — płatność jednorazowa, brak abonamentu',
+      'Bezterminowy dostęp do historii rozwiązanych pytań, notatek i powtórek'
+    ],
     loginTitle: 'Zaloguj się, żeby kupić kredyty',
     loginText: 'Użyj tego samego konta co w rozszerzeniu Chrome, a potem wybierz pakiet doładowania.',
     loginButton: 'Zaloguj się / Załóż konto',
@@ -1107,6 +1183,15 @@ const CREDITS_COPY: Record<Locale, any> = {
     badge: 'Einfache Preise',
     pageHeading: 'Wähle dein Credit-Paket',
     subtitle: 'Einmaliges Aufladen. Kein Abonnement, keine laufenden Kosten. Credits verfallen nie.',
+    creditsUnitLabel: 'Credits',
+    allPacksTitle: 'Jedes Paket beinhaltet 100% vollen Zugriff auf alle Funktionen:',
+    allPacksItems: [
+      'Präzise KI-Antworten mit schrittweisen Erklärungen',
+      'Funktioniert überall: Testportal, Moodle, Canvas, Forms, Kahoot & jede Website',
+      'Universal Parser™ & FocusScan Screenshot-Modus',
+      'Credits verfallen nie — Einmalzahlung, kein Abonnement',
+      'Dauerhafter Zugriff auf Fragenhistorie, Notizen und Übungen'
+    ],
     loginTitle: 'Einloggen, um Credits zu kaufen',
     loginText: 'Nutze dasselbe Konto wie in der Chrome-Erweiterung und wähle dann ein Paket.',
     loginButton: 'Einloggen / Registrieren',
@@ -1125,7 +1210,7 @@ const CREDITS_COPY: Record<Locale, any> = {
     packagesTitle: 'Aufladen nach Bedarf',
     packagesText: 'Gespeicherte Fragen und Lernhistorie bleiben immer kostenlos verfügbar.',
     popular: 'Am Beliebtesten',
-    bestValue: 'Bester Wert',
+    bestValue: 'Bester Preis',
     loading: 'Weiterleitung...',
     paymentError: 'Zahlungen sind vorübergehend nicht verfügbar. Versuche es später erneut.',
     emailWarningTitle: 'Verwende deine QuizSolver-E-Mail',
@@ -1148,6 +1233,15 @@ const CREDITS_COPY: Record<Locale, any> = {
     badge: 'Precios Claros',
     pageHeading: 'Elige tu paquete de créditos',
     subtitle: 'Recarga única. Sin suscripciones ni cobros recurrentes. Los créditos nunca caducan.',
+    creditsUnitLabel: 'créditos',
+    allPacksTitle: 'Cada paquete incluye acceso al 100% de las funciones sin restricciones:',
+    allPacksItems: [
+      'Respuestas completas de IA con explicaciones paso a paso',
+      'Funciona en todas partes: Testportal, Moodle, Canvas, Forms, Kahoot y cualquier web',
+      'Universal Parser™ y modo captura FocusScan incluidos',
+      'Los créditos nunca caducan — pago único, sin suscripción',
+      'Acceso de por vida al historial de preguntas guardadas y notas'
+    ],
     loginTitle: 'Inicia sesión para comprar créditos',
     loginText: 'Usa la misma cuenta que en la extensión Chrome y elige un paquete.',
     loginButton: 'Entrar / Registrarse',
@@ -1189,6 +1283,15 @@ const CREDITS_COPY: Record<Locale, any> = {
     badge: 'Tarifs Simples',
     pageHeading: 'Choisissez votre pack de crédits',
     subtitle: 'Recharge unique. Sans abonnement ni prélèvement automatique. Les crédits n\'expirent jamais.',
+    creditsUnitLabel: 'crédits',
+    allPacksTitle: 'Chaque pack inclut 100% d\'accès à toutes les fonctionnalités sans restriction :',
+    allPacksItems: [
+      'Réponses IA complètes avec explications détaillées étape par étape',
+      'Fonctionne partout : Testportal, Moodle, Canvas, Forms, Kahoot et tout site web',
+      'Universal Parser™ et mode capture FocusScan inclus',
+      'Les crédits n\'expirent jamais — paiement unique sans abonnement',
+      'Accès à vie à votre historique de questions enregistrées et à vos notes'
+    ],
     loginTitle: 'Connectez-vous pour acheter des crédits',
     loginText: 'Utilisez le même compte que dans l’extension Chrome, puis choisissez un pack.',
     loginButton: 'Connexion / Inscription',
@@ -1230,6 +1333,15 @@ const CREDITS_COPY: Record<Locale, any> = {
     badge: 'Prezzi Trasparenti',
     pageHeading: 'Scegli il tuo pacchetto crediti',
     subtitle: 'Ricarica una tantum. Nessun abbonamento né costi nascosti. I crediti non scadono mai.',
+    creditsUnitLabel: 'crediti',
+    allPacksTitle: 'Ogni pacchetto include l\'accesso completo al 100% di tutte le funzionalità:',
+    allPacksItems: [
+      'Risposte IA complete con spiegazioni dettagliate passaggio per passaggio',
+      'Funziona ovunque: Testportal, Moodle, Canvas, Forms, Kahoot e qualsiasi sito',
+      'Universal Parser™ e modalità screenshot FocusScan inclusi',
+      'I crediti non scadono mai — pagamento una tantum senza abbonamento',
+      'Accesso a vita alla cronologia delle domande salvate e agli appunti'
+    ],
     loginTitle: 'Accedi per comprare crediti',
     loginText: 'Usa lo stesso account dell’estensione Chrome e scegli un pacchetto.',
     loginButton: 'Accedi / Registrati',
@@ -1248,7 +1360,7 @@ const CREDITS_COPY: Record<Locale, any> = {
     packagesTitle: 'Ricarica quando serve',
     packagesText: 'Le domande salvate e la cronologia restano sempre disponibili.',
     popular: 'Più Popolare',
-    bestValue: 'Miglior Valore',
+    bestValue: 'Miglior Prezzo',
     loading: 'Reindirizzamento...',
     paymentError: 'I pagamenti sono temporaneamente non disponibili. Riprova più tardi.',
     emailWarningTitle: 'Usa l\'email del tuo account QuizSolver',
@@ -1271,6 +1383,15 @@ const CREDITS_COPY: Record<Locale, any> = {
     badge: 'Прості Тарифи',
     pageHeading: 'Обери свій пакет кредитів',
     subtitle: 'Одноразове поповнення. Без підписки та прихованих платежів. Кредити ніколи не згорають.',
+    creditsUnitLabel: 'кредитів',
+    allPacksTitle: 'Кожен пакет включає 100% повний доступ до всіх функцій без обмежень:',
+    allPacksItems: [
+      'Повні AI-відповіді з детальними покроковими поясненнями',
+      'Працює всюди: Testportal, Moodle, Canvas, Forms, Kahoot та будь-який сайт',
+      'Universal Parser™ та режим знімка екрана FocusScan',
+      'Кредити ніколи не згорають — одноразова оплата без підписки',
+      'Довічний доступ до збереженої історії питань, нотаток та тестів'
+    ],
     loginTitle: 'Увійди, щоб купити кредити',
     loginText: 'Використай той самий акаунт, що й у Chrome-розширенні, і вибери пакет.',
     loginButton: 'Увійти / Зареєструватися',
@@ -1289,7 +1410,7 @@ const CREDITS_COPY: Record<Locale, any> = {
     packagesTitle: 'Поповнюй, коли потрібно',
     packagesText: 'Збережені питання та історія залишаються доступними назавжди.',
     popular: 'Найпопулярніший',
-    bestValue: 'Найвигідніша ціна',
+    bestValue: 'Найкраща ціна',
     loading: 'Переадресація...',
     paymentError: 'Платежі тимчасово недоступні. Спробуй пізніше.',
     emailWarningTitle: 'Використовуй email свого акаунту',
