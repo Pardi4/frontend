@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit, OnChanges, OnDestroy, inject, ChangeDetectionStrategy, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SeoService } from '../seo.service';
+import { CurrencyService } from '../currency.service';
 import { CHROME_WEB_STORE_URL, Locale, PageKey, pathFor } from '../site-content';
 import { ShellComponent, trackGa4Event } from './shell.component';
 import { Input, ChangeDetectorRef, ElementRef, Inject, PLATFORM_ID } from '@angular/core';
@@ -395,7 +396,10 @@ export class AnimatedNumberComponent implements OnInit, OnChanges, OnDestroy {
                 <h3 class="tier-name">{{ pack.name }}</h3>
                 <p class="tier-caption text-secondary">{{ pack.caption }}</p>
                 <div class="tier-price-container">
-                  <div class="tier-price">{{ pack.price }}</div>
+                  <div class="tier-price-row">
+                    <span class="tier-price">{{ pack.price }}</span>
+                    <span *ngIf="getApproxCurrencyPrice(pack.price)" class="tier-price-approx">{{ getApproxCurrencyPrice(pack.price) }}</span>
+                  </div>
                 </div>
                 
                 <div class="tier-social-proof" *ngIf="pack.socialText">
@@ -414,6 +418,11 @@ export class AnimatedNumberComponent implements OnInit, OnChanges, OnDestroy {
                 </a>
               </div>
             </div>
+
+            <!-- Currency note for non-USD locales -->
+            <p class="pricing-deck-note text-secondary" *ngIf="currencyNote">
+              {{ currencyNote }}
+            </p>
           </div>
         </section>
 
@@ -891,12 +900,39 @@ export class AnimatedNumberComponent implements OnInit, OnChanges, OnDestroy {
       border-radius: 4px;
       border: 1px solid rgba(239, 68, 68, 0.3);
     }
+    .tier-price-row {
+      display: flex;
+      align-items: baseline;
+      justify-content: center;
+      gap: 0.55rem;
+      flex-wrap: wrap;
+    }
     .tier-price {
       font-family: var(--font-heading);
       font-size: 3.25rem;
       font-weight: 800;
       line-height: 1;
       letter-spacing: -0.02em;
+    }
+    .tier-price-approx {
+      font-size: 1.05rem;
+      font-weight: 750;
+      color: var(--accent-cyan);
+      background: rgba(6, 182, 212, 0.12);
+      border: 1px solid rgba(6, 182, 212, 0.25);
+      padding: 0.15rem 0.6rem;
+      border-radius: var(--radius-full);
+      white-space: nowrap;
+      letter-spacing: -0.01em;
+    }
+    .pricing-deck-note {
+      text-align: center;
+      font-size: 0.82rem;
+      margin: 1.5rem auto 0;
+      color: var(--text-secondary);
+      opacity: 0.85;
+      max-width: 650px;
+      line-height: 1.5;
     }
     .tier-promo-timer {
       display: flex;
@@ -1254,9 +1290,18 @@ export class HomeComponent implements OnInit, OnDestroy {
   private readonly seo = inject(SeoService);
   private readonly http = inject(HttpClient);
   private readonly homeCdr = inject(ChangeDetectorRef);
+  private readonly currency = inject(CurrencyService);
 
   get packs() {
     return this.text.pricing.packs;
+  }
+
+  protected get currencyNote(): string {
+    return this.currency.getCurrencyNote(this.locale);
+  }
+
+  protected getApproxCurrencyPrice(usdPriceStr: string): string {
+    return this.currency.getApproxPrice(usdPriceStr, this.locale);
   }
 
   buyCredits() {
@@ -1282,6 +1327,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.locale = (this.route.snapshot.data['locale'] || 'en') as Locale;
     this.text = HOME_COPY[this.locale] || HOME_COPY.en;
     this.seo.applyPage('home', this.locale);
+    this.currency.init(this.locale);
 
     this.startPromoTimer();
 

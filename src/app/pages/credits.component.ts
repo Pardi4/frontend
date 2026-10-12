@@ -3,6 +3,7 @@ import { Component, OnInit, OnDestroy, AfterViewInit, inject, signal } from '@an
 import { ActivatedRoute } from '@angular/router';
 import { ApiService } from '../api.service';
 import { SeoService } from '../seo.service';
+import { CurrencyService } from '../currency.service';
 import { Locale, pageData, pathFor } from '../site-content';
 import { ShellComponent, trackGa4Event } from './shell.component';
 
@@ -68,7 +69,10 @@ import { ShellComponent, trackGa4Event } from './shell.component';
 
               <!-- Price & Unit Rate Calculation -->
               <div class="pack-pricing-block">
-                <div class="pack-price">{{ pack.price }}</div>
+                <div class="pack-price-row">
+                  <span class="pack-price">{{ pack.price }}</span>
+                  <span *ngIf="getApproxCurrencyPrice(pack.price)" class="pack-price-approx">{{ getApproxCurrencyPrice(pack.price) }}</span>
+                </div>
                 <div class="pack-rate text-secondary" [class.highlight]="pack.id === 'popular' || pack.id === 'pro'">
                   {{ pack.rateInfo[locale] }}
                 </div>
@@ -91,6 +95,11 @@ import { ShellComponent, trackGa4Event } from './shell.component';
               </button>
             </article>
           </div>
+
+          <!-- Live Currency Conversion Footnote -->
+          <p class="currency-note text-secondary" *ngIf="currencyNote">
+            {{ currencyNote }}
+          </p>
 
           <!-- Guest reassurance if not logged in -->
           <div class="guest-reassurance-bar glass" *ngIf="!api.currentUser()">
@@ -372,12 +381,30 @@ import { ShellComponent, trackGa4Event } from './shell.component';
       background: rgba(255, 255, 255, 0.03);
       border: 1px solid rgba(255, 255, 255, 0.06);
     }
+    .pack-price-row {
+      display: flex;
+      align-items: baseline;
+      justify-content: center;
+      gap: 0.55rem;
+      flex-wrap: wrap;
+    }
     .pack-price {
       font-family: var(--font-heading);
       font-size: 2.35rem;
       font-weight: 850;
       color: var(--text-primary);
       line-height: 1;
+    }
+    .pack-price-approx {
+      font-size: 0.95rem;
+      font-weight: 750;
+      color: var(--accent-cyan);
+      background: rgba(6, 182, 212, 0.12);
+      border: 1px solid rgba(6, 182, 212, 0.25);
+      padding: 0.15rem 0.55rem;
+      border-radius: var(--radius-full);
+      white-space: nowrap;
+      letter-spacing: -0.01em;
     }
     .pack-rate {
       font-size: 0.84rem;
@@ -425,6 +452,15 @@ import { ShellComponent, trackGa4Event } from './shell.component';
       padding: 0.85rem;
       font-size: 0.95rem;
       font-weight: 750;
+    }
+    .currency-note {
+      text-align: center;
+      font-size: 0.82rem;
+      margin: 1.15rem auto 0;
+      color: var(--text-secondary);
+      opacity: 0.85;
+      max-width: 650px;
+      line-height: 1.5;
     }
 
     /* Guest reassurance bar */
@@ -751,6 +787,15 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
   protected readonly buyError = signal('');
   protected readonly pendingPack = signal('');
   protected readonly pathFor = pathFor;
+  protected readonly currency = inject(CurrencyService);
+
+  protected get currencyNote(): string {
+    return this.currency.getCurrencyNote(this.locale);
+  }
+
+  protected getApproxCurrencyPrice(usdPriceStr: string): string {
+    return this.currency.getApproxPrice(usdPriceStr, this.locale);
+  }
 
   protected locale: Locale = 'en';
   protected data = pageData('credits', 'en');
@@ -826,7 +871,7 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
       },
       useCase: {
         en: 'Great for a quick test or 1–2 homework assignments',
-        pl: 'Na szybkie sprawdzenie lub 1–2 mniejsze testy',
+        pl: 'Na kilka testów lub pojedyncze kolokwia',
         de: 'Ideal für einen schnellen Test oder 1–2 Aufgaben',
         es: 'Ideal para una prueba rápida o 1–2 tareas cortas',
         fr: 'Idéal pour un test rapide ou 1–2 devoirs',
@@ -917,7 +962,7 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
       en: { badge: 'Smart investment', title: 'How QuizSolver compares', tutor: 'Private tutoring', tutorPrice: '$30–50 / hour', qs: 'QuizSolver 500 credits', qsPrice: '$4.99 for ~500 answers', note: 'Credits never expire. No subscription. Pay once, use whenever you need.' },
       pl: { badge: 'Mądra inwestycja', title: 'Jak QuizSolver wypada na tle alternatyw', tutor: 'Korepetycje', tutorPrice: '80–150 zł / godzina', qs: 'QuizSolver 500 kredytów', qsPrice: '$4.99 za ~500 odpowiedzi', note: 'Kredyty nigdy nie wygasają. Bez abonamentu. Płacisz raz, używasz kiedy potrzebujesz.' },
       de: { badge: 'Kluge Investition', title: 'QuizSolver im Vergleich', tutor: 'Nachhilfe', tutorPrice: '25–40 € / Stunde', qs: 'QuizSolver 500 Credits', qsPrice: '$4.99 für ~500 Antworten', note: 'Credits verfallen nie. Kein Abo. Einmal bezahlen, jederzeit nutzen.' },
-      es: { badge: 'Inversión inteligente', title: 'Cómo se compara QuizSolver', tutor: 'Tutorías privadas', tutorPrice: '$20–40 / hora', qs: 'QuizSolver 500 créditos', qsPrice: '$4.99 por ~500 respuestas', note: 'Los créditos nunca caducan. Sin suscripción. Paga una vez, usa cuando quieras.' },
+      es: { badge: 'Inversión inteligente', title: 'Cómo se compara QuizSolver', tutor: 'Tutorías privadas', tutorPrice: '20–35 € / hora', qs: 'QuizSolver 500 créditos', qsPrice: '$4.99 por ~500 respuestas', note: 'Los créditos nunca caducan. Sin suscripción. Paga una vez, usa cuando quieras.' },
       fr: { badge: 'Investissement malin', title: 'QuizSolver en comparaison', tutor: 'Cours particuliers', tutorPrice: '25–45 € / heure', qs: 'QuizSolver 500 crédits', qsPrice: '$4.99 pour ~500 réponses', note: 'Les crédits n\'expirent jamais. Sans abonnement. Payez une fois, utilisez quand vous voulez.' },
       it: { badge: 'Investimento intelligente', title: 'Come si confronta QuizSolver', tutor: 'Ripetizioni private', tutorPrice: '20–35 € / ora', qs: 'QuizSolver 500 crediti', qsPrice: '$4.99 per ~500 risposte', note: 'I crediti non scadono mai. Nessun abbonamento. Paga una volta, usa quando vuoi.' },
       uk: { badge: 'Розумна інвестиція', title: 'Як QuizSolver порівняно з альтернативами', tutor: 'Репетитор', tutorPrice: '300–600 грн / година', qs: 'QuizSolver 500 кредитів', qsPrice: '$4.99 за ~500 відповідей', note: 'Кредити ніколи не закінчуються. Без підписки. Плати раз, використовуй коли потрібно.' }
@@ -930,6 +975,7 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
     this.data = pageData('credits', this.locale);
     this.copy = CREDITS_COPY[this.locale] || CREDITS_COPY.en;
     this.seo.applyPage('credits', this.locale);
+    this.currency.init(this.locale);
     await this.api.restoreSession();
 
     // Check for pending pack from before login
