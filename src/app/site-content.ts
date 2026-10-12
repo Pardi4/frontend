@@ -418,7 +418,8 @@ const en: SiteCopy = {
           "3. Digital Content delivery (crediting the Account balance with Credits) occurs electronically and immediately upon receiving confirmation of successful transaction authorization from the payment operator.",
           "4. Electronic payment processing is handled by licensed providers:",
           "a) dpay: PLN payments via BLIK code and instant online bank transfers – operated by Payments Lab sp. z o.o., Warsaw, KNF register MIP 85/2020,",
-          "b) Lemon Squeezy: international credit cards, Apple Pay, Google Pay – operated by Lemon Squeezy LLC acting as Merchant of Record."
+          "b) Lemon Squeezy: international credit cards, Apple Pay, Google Pay – operated by Lemon Squeezy LLC acting as Merchant of Record.",
+          "5. Credit Consumption Order and Usage Audit: Where a User holds both free/promotional Credits (such as starter grants, welcome bonuses, or referral rewards) and paid Credits (acquired via top-up), paid Credits are consumed and debited first during the use of the Service and Extension, until fully depleted. Every credit deduction is recorded in the User's account history as proof of digital service initiation and performance."
         ]
       },
       {
@@ -943,7 +944,8 @@ const pl: SiteCopy = {
           "3. Dostawa Treści Cyfrowych (zasilenie salda Konta Kredytami) następuje drogą elektroniczną, natychmiast po otrzymaniu potwierdzenia udanej autoryzacji transakcji od operatora płatności.",
           "4. Obsługa płatności elektronicznych realizowana jest przez wyspecjalizowanych operatorów:",
           "a) dpay: obsługa płatności w PLN (kod BLIK, szybkie przelewy online) świadczona przez Payments Lab sp. z o.o. z siedzibą w Warszawie (rejestr KNF nr MIP 85/2020),",
-          "b) Lemon Squeezy: obsługa międzynarodowych kart płatniczych oraz portfeli cyfrowych (Apple Pay, Google Pay) świadczona przez Lemon Squeezy LLC, działające jako podmiot pośredniczący / Merchant of Record."
+          "b) Lemon Squeezy: obsługa międzynarodowych kart płatniczych oraz portfeli cyfrowych (Apple Pay, Google Pay) świadczona przez Lemon Squeezy LLC, działające jako podmiot pośredniczący / Merchant of Record.",
+          "5. Kolejność pobierania Kredytów i rejestr zużycia: W przypadku posiadania przez Użytkownika na Koncie zarówno Kredytów bezpłatnych (np. pakietu startowego, bonusów promocyjnych lub polecających), jak i Kredytów płatnych (nabytych w drodze doładowania), w pierwszej kolejności podczas korzystania z funkcji Serwisu i Rozszerzenia pobierane i rozliczane są Kredyty płatne, aż do ich pełnego wyczerpania. Każde użycie Kredytów jest rejestrowane w historii konta Użytkownika, stanowiąc dowód rozpoczęcia i realizacji świadczenia usługi cyfrowej."
         ]
       },
       {

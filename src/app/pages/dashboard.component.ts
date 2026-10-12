@@ -33,6 +33,12 @@ type DashboardUi = {
   history: string;
   historyTitle: string;
   noPurchases: string;
+  usageLogTab: string;
+  purchasesTab: string;
+  noUsages: string;
+  paidBadge: string;
+  freeBadge: string;
+  auditNote: string;
 };
 
 const DASHBOARD_UI: Record<Locale, DashboardUi> = {
@@ -59,8 +65,14 @@ const DASHBOARD_UI: Record<Locale, DashboardUi> = {
     bonusCredits: 'Bonus credits',
     ofPurchase: 'Of purchase',
     history: 'History',
-    historyTitle: 'Purchases and bonuses',
-    noPurchases: 'No purchases yet.'
+    historyTitle: 'Account Activity & History',
+    noPurchases: 'No purchases yet.',
+    usageLogTab: 'Credit Usage Log',
+    purchasesTab: 'Top-ups & Purchases',
+    noUsages: 'No credit usage recorded yet.',
+    paidBadge: 'Paid (Top-up)',
+    freeBadge: 'Free / Starter',
+    auditNote: 'Pursuant to § 4(5) of the Terms of Service, paid top-up credits are consumed first. Solves after a top-up confirm digital service delivery.'
   },
   pl: {
     dashboard: 'Panel',
@@ -85,8 +97,14 @@ const DASHBOARD_UI: Record<Locale, DashboardUi> = {
     bonusCredits: 'Kredyty bonusowe',
     ofPurchase: 'Od zakupu',
     history: 'Historia',
-    historyTitle: 'Zakupy i bonusy',
-    noPurchases: 'Nie ma jeszcze zakupów.'
+    historyTitle: 'Aktywność konta i historia',
+    noPurchases: 'Nie ma jeszcze zakupów.',
+    usageLogTab: 'Rejestr zużycia kredytów',
+    purchasesTab: 'Doładowania i Zakupy',
+    noUsages: 'Brak zarejestrowanego zużycia kredytów.',
+    paidBadge: 'Płatny (z doładowania)',
+    freeBadge: 'Darmowy / Startowy',
+    auditNote: 'Zgodnie z § 4 ust. 5 Regulaminu, w pierwszej kolejności rozliczane są Kredyty płatne z doładowania. Każde użycie po doładowaniu stanowi dowód konsumpcji zakupionej usługi cyfrowej.'
   },
   de: {
     dashboard: 'Dashboard',
@@ -112,7 +130,13 @@ const DASHBOARD_UI: Record<Locale, DashboardUi> = {
     ofPurchase: 'Vom Kauf',
     history: 'Historie',
     historyTitle: 'Käufe und Boni',
-    noPurchases: 'Noch keine Käufe.'
+    noPurchases: 'Noch keine Käufe.',
+    usageLogTab: 'Credit-Verbrauch',
+    purchasesTab: 'Käufe & Aufladungen',
+    noUsages: 'Noch kein Credit-Verbrauch erfasst.',
+    paidBadge: 'Bezahlt (Aufladung)',
+    freeBadge: 'Kostenlos / Start',
+    auditNote: 'Gemäß § 4.5 der AGB werden bezahlte Credits zuerst verbraucht.'
   },
   es: {
     dashboard: 'Panel',
@@ -138,7 +162,13 @@ const DASHBOARD_UI: Record<Locale, DashboardUi> = {
     ofPurchase: 'De la compra',
     history: 'Historial',
     historyTitle: 'Compras y bonos',
-    noPurchases: 'Todavía no hay compras.'
+    noPurchases: 'Todavía no hay compras.',
+    usageLogTab: 'Registro de créditos',
+    purchasesTab: 'Compras y recargas',
+    noUsages: 'Aún no hay uso de créditos registrado.',
+    paidBadge: 'Pagado (Recarga)',
+    freeBadge: 'Gratis / Inicial',
+    auditNote: 'Según el § 4.5 de los Términos, los créditos de recarga pagados se consumen primero.'
   },
   fr: {
     dashboard: 'Tableau de bord',
@@ -164,7 +194,13 @@ const DASHBOARD_UI: Record<Locale, DashboardUi> = {
     ofPurchase: 'De l’achat',
     history: 'Historique',
     historyTitle: 'Achats et bonus',
-    noPurchases: 'Aucun achat pour l’instant.'
+    noPurchases: 'Aucun achat pour l’instant.',
+    usageLogTab: 'Utilisation des crédits',
+    purchasesTab: 'Achats et recharges',
+    noUsages: 'Aucune utilisation de crédits enregistrée pour le moment.',
+    paidBadge: 'Payé (Recharge)',
+    freeBadge: 'Gratuit / Démarrage',
+    auditNote: 'Selon le § 4.5 des CGU, les crédits payés sont consommés en premier.'
   },
   it: {
     dashboard: 'Dashboard',
@@ -190,7 +226,13 @@ const DASHBOARD_UI: Record<Locale, DashboardUi> = {
     ofPurchase: 'Dell’acquisto',
     history: 'Cronologia',
     historyTitle: 'Acquisti e bonus',
-    noPurchases: 'Ancora nessun acquisto.'
+    noPurchases: 'Ancora nessun acquisto.',
+    usageLogTab: 'Registro crediti',
+    purchasesTab: 'Acquisti e ricariche',
+    noUsages: 'Nessun utilizzo di crediti ancora registrato.',
+    paidBadge: 'Pagato (Ricarica)',
+    freeBadge: 'Gratuito / Iniziale',
+    auditNote: 'In base al § 4.5 dei Termini, i crediti acquistati vengono consumati per primi.'
   },
   uk: {
     dashboard: 'Панель',
@@ -216,7 +258,13 @@ const DASHBOARD_UI: Record<Locale, DashboardUi> = {
     ofPurchase: 'Від покупки',
     history: 'Історія',
     historyTitle: 'Покупки та бонуси',
-    noPurchases: 'Покупок поки немає.'
+    noPurchases: 'Покупок поки немає.',
+    usageLogTab: 'Журнал кредитів',
+    purchasesTab: 'Покупки та поповнення',
+    noUsages: 'Використання кредитів поки що не зафіксовано.',
+    paidBadge: 'Оплачений (Поповнення)',
+    freeBadge: 'Безкоштовний / Стартовий',
+    auditNote: 'Згідно з § 4.5 Правил, оплачені кредити списуються в першу чергу.'
   }
 };
 
@@ -393,28 +441,109 @@ const DASHBOARD_UI: Record<Locale, DashboardUi> = {
             </div>
           </section>
 
-          <!-- Purchase History -->
+          <!-- Account History & Credit Audit -->
           <section class="history-section">
             <div class="history-header">
-              <p class="eyebrow">{{ ui.history }}</p>
-              <h2>{{ ui.historyTitle }}</h2>
-            </div>
-            <div class="history-list glass" *ngIf="purchases().length; else noPurchases">
-              <div class="history-item" *ngFor="let purchase of purchases()">
-                <div class="item-details">
-                  <strong class="pack-title">{{ purchase.pack }}</strong>
-                  <p class="credits-count text-secondary">{{ purchase.credits }} {{ copy.credits }}</p>
-                </div>
-                <div class="price-val">
-                  {{ purchase.priceUsd ? ('$' + purchase.priceUsd) : (purchase.paymentProvider === 'referral' ? 'bonus' : '') }}
-                </div>
+              <div class="history-title-group">
+                <p class="eyebrow">{{ ui.history }}</p>
+                <h2>{{ ui.historyTitle }}</h2>
+              </div>
+              <!-- Tab Switcher -->
+              <div class="history-tabs">
+                <button
+                  type="button"
+                  class="tab-btn"
+                  [class.active]="activeTab === 'usage'"
+                  (click)="activeTab = 'usage'">
+                  <span>{{ ui.usageLogTab }}</span>
+                  <span class="tab-count" *ngIf="usages().length">({{ usages().length }})</span>
+                </button>
+                <button
+                  type="button"
+                  class="tab-btn"
+                  [class.active]="activeTab === 'purchases'"
+                  (click)="activeTab = 'purchases'">
+                  <span>{{ ui.purchasesTab }}</span>
+                  <span class="tab-count" *ngIf="purchases().length">({{ purchases().length }})</span>
+                </button>
               </div>
             </div>
-            <ng-template #noPurchases>
-              <div class="no-purchases glass">
-                <p class="text-secondary">{{ ui.noPurchases }}</p>
+
+            <!-- USAGE LOG TAB -->
+            <div *ngIf="activeTab === 'usage'">
+              <div class="history-list glass" *ngIf="usages().length; else noUsagesTpl">
+                <div class="history-item" *ngFor="let item of usages()">
+                  <div class="item-details">
+                    <div class="item-title-row">
+                      <strong class="pack-title">
+                        {{ locale === 'pl' ? (item.actionLabelPl || item.action) : (item.actionLabelEn || item.action) }}
+                      </strong>
+                      <span
+                        *ngIf="item.wasPaid || item.afterPurchase"
+                        class="badge-usage badge-paid"
+                        [title]="locale === 'pl' ? 'Kredyt z doładowania pobrany zgodnie z § 4 ust. 5 Regulaminu' : 'Paid credit debited under § 4.5 of Terms'">
+                        ✓ {{ ui.paidBadge }}
+                      </span>
+                      <span
+                        *ngIf="!item.wasPaid && !item.afterPurchase && item.status !== 'waived'"
+                        class="badge-usage badge-free">
+                        {{ ui.freeBadge }}
+                      </span>
+                      <span
+                        *ngIf="item.status === 'waived'"
+                        class="badge-usage badge-waived">
+                        {{ locale === 'pl' ? 'Zwolniony (Admin)' : 'Waived (Admin)' }}
+                      </span>
+                    </div>
+                    <p class="credits-count text-secondary">
+                      {{ item.date | date:'medium' }}
+                      <span *ngIf="item.afterPurchase" class="after-topup-flag"> • {{ locale === 'pl' ? 'Po doładowaniu konta' : 'After top-up' }}</span>
+                    </p>
+                  </div>
+                  <div class="price-val usage-val">
+                    -{{ item.credits }} {{ copy.credits }}
+                  </div>
+                </div>
               </div>
-            </ng-template>
+              <ng-template #noUsagesTpl>
+                <div class="no-purchases glass">
+                  <p class="text-secondary">{{ ui.noUsages }}</p>
+                </div>
+              </ng-template>
+
+              <!-- Audit note for consumer trust & complaint reference -->
+              <div class="audit-callout glass">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"/>
+                  <line x1="12" y1="16" x2="12" y2="12"/>
+                  <line x1="12" y1="8" x2="12.01" y2="8"/>
+                </svg>
+                <span>{{ ui.auditNote }}</span>
+              </div>
+            </div>
+
+            <!-- PURCHASES TAB -->
+            <div *ngIf="activeTab === 'purchases'">
+              <div class="history-list glass" *ngIf="purchases().length; else noPurchases">
+                <div class="history-item" *ngFor="let purchase of purchases()">
+                  <div class="item-details">
+                    <strong class="pack-title">{{ (purchase.pack || '').toUpperCase() }}</strong>
+                    <p class="credits-count text-secondary">
+                      +{{ purchase.credits }} {{ copy.credits }} • {{ purchase.createdAt | date:'mediumDate' }}
+                      <span *ngIf="purchase.paymentProvider">({{ purchase.paymentProvider }})</span>
+                    </p>
+                  </div>
+                  <div class="price-val">
+                    {{ purchase.priceUsd ? ('$' + purchase.priceUsd) : (purchase.paymentProvider === 'referral' ? 'bonus' : 'PLN / online') }}
+                  </div>
+                </div>
+              </div>
+              <ng-template #noPurchases>
+                <div class="no-purchases glass">
+                  <p class="text-secondary">{{ ui.noPurchases }}</p>
+                </div>
+              </ng-template>
+            </div>
           </section>
 
 <!-- Settings Modal -->
@@ -717,17 +846,61 @@ const DASHBOARD_UI: Record<Locale, DashboardUi> = {
       margin: 0;
     }
 
-    /* Purchase History */
+    /* Account Activity & History */
     .history-section {
       padding: 3rem 0 1rem;
     }
+    .history-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      flex-wrap: wrap;
+      gap: 1.25rem;
+      margin-bottom: 1.5rem;
+    }
     .history-header h2 {
       font-size: 2rem;
-      margin: 0.5rem 0 1.5rem;
+      margin: 0.35rem 0 0;
+    }
+    .history-tabs {
+      display: flex;
+      gap: 0.5rem;
+      background: rgba(15, 23, 42, 0.6);
+      padding: 0.3rem;
+      border-radius: 9999px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .history-tabs .tab-btn {
+      padding: 0.45rem 1.15rem;
+      border-radius: 9999px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      background: transparent;
+      border: 1px solid transparent;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: all 0.2s ease;
+    }
+    .history-tabs .tab-btn:hover {
+      color: #fff;
+    }
+    .history-tabs .tab-btn.active {
+      color: #fff;
+      background: rgba(99, 102, 241, 0.25);
+      border-color: rgba(139, 92, 246, 0.5);
+      box-shadow: 0 0 15px rgba(139, 92, 246, 0.2);
+    }
+    .tab-count {
+      font-size: 0.75rem;
+      opacity: 0.8;
     }
     .history-list {
       background: rgba(15, 18, 35, 0.4);
       padding: 1rem 1.5rem;
+      border-radius: 14px;
     }
     .history-item {
       display: flex;
@@ -739,13 +912,45 @@ const DASHBOARD_UI: Record<Locale, DashboardUi> = {
     .history-item:last-child {
       border-bottom: none;
     }
+    .item-title-row {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      flex-wrap: wrap;
+    }
     .pack-title {
       font-size: 1.05rem;
       color: var(--text-primary);
     }
+    .badge-usage {
+      font-size: 0.7rem;
+      padding: 0.2rem 0.55rem;
+      border-radius: 9999px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+    .badge-paid {
+      background: rgba(16, 185, 129, 0.15);
+      color: #34d399;
+      border: 1px solid rgba(16, 185, 129, 0.35);
+    }
+    .badge-free {
+      background: rgba(148, 163, 184, 0.12);
+      color: #94a3b8;
+      border: 1px solid rgba(148, 163, 184, 0.25);
+    }
+    .badge-waived {
+      background: rgba(59, 130, 246, 0.15);
+      color: #60a5fa;
+      border: 1px solid rgba(59, 130, 246, 0.35);
+    }
+    .after-topup-flag {
+      color: #a78bfa;
+      font-weight: 500;
+    }
     .credits-count {
       font-size: 0.85rem;
-      margin-top: 0.15rem;
+      margin-top: 0.25rem;
     }
     .price-val {
       font-family: var(--font-heading);
@@ -753,9 +958,30 @@ const DASHBOARD_UI: Record<Locale, DashboardUi> = {
       font-weight: 700;
       color: var(--accent-cyan);
     }
+    .usage-val {
+      color: #f87171;
+    }
     .no-purchases {
       padding: 3rem;
       text-align: center;
+      border-radius: 14px;
+    }
+    .audit-callout {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-top: 1rem;
+      padding: 0.85rem 1.25rem;
+      border-radius: 12px;
+      background: rgba(15, 23, 42, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      font-size: 0.825rem;
+      color: #94a3b8;
+      line-height: 1.45;
+    }
+    .audit-callout svg {
+      flex-shrink: 0;
+      color: #818cf8;
     }
 
     /* Responsive */
@@ -804,6 +1030,11 @@ export class DashboardComponent implements OnInit {
   protected readonly seo = inject(SeoService);
   protected readonly api = inject(ApiService);
   protected readonly purchases = signal<any[]>([]);
+  protected readonly usages = signal<any[]>([]);
+  protected readonly paidCreditsRemaining = signal<number>(0);
+  protected readonly freeCreditsRemaining = signal<number>(0);
+  protected readonly hasPurchasedCredits = signal<boolean>(false);
+  protected activeTab: 'usage' | 'purchases' = 'usage';
   protected readonly referral = signal<any>({});
 
   protected locale: Locale = 'en';
@@ -860,7 +1091,16 @@ export class DashboardComponent implements OnInit {
   protected async loadHistory(): Promise<void> {
     if (!this.api.token()) return;
     const result = await this.api.request('/api/credits/history');
-    if (result.success && Array.isArray(result.purchases)) this.purchases.set(result.purchases);
+    if (result.success) {
+      if (Array.isArray(result.purchases)) this.purchases.set(result.purchases);
+      if (Array.isArray(result.usages)) this.usages.set(result.usages);
+      this.paidCreditsRemaining.set(result.paidCreditsRemaining || 0);
+      this.freeCreditsRemaining.set(result.freeCreditsRemaining || 0);
+      this.hasPurchasedCredits.set(Boolean(result.hasPurchasedCredits));
+      if (result.usages?.length === 0 && result.purchases?.length > 0) {
+        this.activeTab = 'purchases';
+      }
+    }
   }
 
   protected async loadReferral(): Promise<void> {
