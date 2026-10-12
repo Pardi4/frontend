@@ -92,20 +92,6 @@ import { ShellComponent, trackGa4Event } from './shell.component';
             </article>
           </div>
 
-          <!-- All packs include 100% full features banner -->
-          <div class="all-packs-includes glass">
-            <div class="includes-header">
-              <span class="includes-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span>
-              <h3>{{ copy.allPacksTitle }}</h3>
-            </div>
-            <ul class="includes-grid">
-              <li *ngFor="let item of copy.allPacksItems">
-                <span class="check-icon">✓</span>
-                <span>{{ item }}</span>
-              </li>
-            </ul>
-          </div>
-
           <!-- Guest reassurance if not logged in -->
           <div class="guest-reassurance-bar glass" *ngIf="!api.currentUser()">
             <span>{{ copy.guestReassurance }}</span>
@@ -441,55 +427,6 @@ import { ShellComponent, trackGa4Event } from './shell.component';
       font-weight: 750;
     }
 
-    /* All packs included features banner */
-    .all-packs-includes {
-      margin: 2rem auto 0;
-      max-width: 1100px;
-      padding: 1.75rem 2rem;
-      border-radius: var(--radius-xl);
-      background: rgba(255, 255, 255, 0.02);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-    }
-    .includes-header {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      margin-bottom: 1.25rem;
-    }
-    .includes-icon {
-      color: var(--accent-cyan);
-      display: flex;
-      align-items: center;
-    }
-    .includes-header h3 {
-      font-size: 1.15rem;
-      margin: 0;
-      font-family: var(--font-heading);
-    }
-    .includes-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 0.85rem 2.5rem;
-      margin: 0;
-      padding: 0;
-      list-style: none;
-    }
-    .includes-grid li {
-      display: flex;
-      align-items: flex-start;
-      gap: 0.65rem;
-      font-size: 0.9rem;
-      color: var(--text-secondary);
-      line-height: 1.45;
-    }
-    .check-icon {
-      color: var(--accent-cyan);
-      font-weight: 900;
-      font-size: 0.95rem;
-      flex-shrink: 0;
-      margin-top: -1px;
-    }
-
     /* Guest reassurance bar */
     .guest-reassurance-bar {
       display: flex;
@@ -759,10 +696,6 @@ import { ShellComponent, trackGa4Event } from './shell.component';
         grid-template-columns: 1fr;
         max-width: 440px;
       }
-      .includes-grid {
-        grid-template-columns: 1fr;
-        gap: 0.75rem;
-      }
       .faq-grid {
         grid-template-columns: 1fr;
       }
@@ -782,8 +715,7 @@ import { ShellComponent, trackGa4Event } from './shell.component';
         padding: 1.35rem;
       }
       .package-card,
-      .checkout-confirm,
-      .all-packs-includes {
+      .checkout-confirm {
         padding: 1.5rem;
       }
       .value-grid {
@@ -1084,14 +1016,6 @@ const CREDITS_COPY: Record<Locale, any> = {
     pageHeading: 'Choose your credits pack',
     subtitle: 'One-time top-up. No subscription, no hidden recurring fees. Credits never expire.',
     creditsUnitLabel: 'credits',
-    allPacksTitle: 'Every package includes 100% full access to all features:',
-    allPacksItems: [
-      'Full AI answers with detailed step-by-step explanations',
-      'Works on all quiz sites: Testportal, Moodle, Canvas, Forms, Kahoot & any portal',
-      'Universal Parser™ and FocusScan screenshot mode included',
-      'Credits never expire — one-time purchase with no subscription',
-      'Permanent access to your study history, saved questions & notes'
-    ],
     loginTitle: 'Sign in to buy credits',
     loginText: 'Use the same account as the Chrome extension, then pick a top-up package.',
     loginButton: 'Sign in / Sign up',
@@ -1134,14 +1058,6 @@ const CREDITS_COPY: Record<Locale, any> = {
     pageHeading: 'Wybierz pakiet dla siebie',
     subtitle: 'Jednorazowe doładowanie. Bez subskrypcji i ukrytych opłat. Kredyty nigdy nie wygasają.',
     creditsUnitLabel: 'kredytów',
-    allPacksTitle: 'Każdy pakiet zawiera pełny dostęp do 100% funkcji bez ograniczeń:',
-    allPacksItems: [
-      'Pełne odpowiedzi AI ze szczegółowym wyjaśnieniem krok po kroku',
-      'Działa na wszystkich platformach: Testportal, Moodle, Canvas, Forms, Kahoot i dowolnej innej stronie',
-      'Universal Parser™ oraz tryb wycinka ekranu FocusScan',
-      'Kredyty nigdy nie wygasają — płatność jednorazowa, brak abonamentu',
-      'Bezterminowy dostęp do historii rozwiązanych pytań, notatek i powtórek'
-    ],
     loginTitle: 'Zaloguj się, żeby kupić kredyty',
     loginText: 'Użyj tego samego konta co w rozszerzeniu Chrome, a potem wybierz pakiet doładowania.',
     loginButton: 'Zaloguj się / Załóż konto',
@@ -1184,14 +1100,6 @@ const CREDITS_COPY: Record<Locale, any> = {
     pageHeading: 'Wähle dein Credit-Paket',
     subtitle: 'Einmaliges Aufladen. Kein Abonnement, keine laufenden Kosten. Credits verfallen nie.',
     creditsUnitLabel: 'Credits',
-    allPacksTitle: 'Jedes Paket beinhaltet 100% vollen Zugriff auf alle Funktionen:',
-    allPacksItems: [
-      'Präzise KI-Antworten mit schrittweisen Erklärungen',
-      'Funktioniert überall: Testportal, Moodle, Canvas, Forms, Kahoot & jede Website',
-      'Universal Parser™ & FocusScan Screenshot-Modus',
-      'Credits verfallen nie — Einmalzahlung, kein Abonnement',
-      'Dauerhafter Zugriff auf Fragenhistorie, Notizen und Übungen'
-    ],
     loginTitle: 'Einloggen, um Credits zu kaufen',
     loginText: 'Nutze dasselbe Konto wie in der Chrome-Erweiterung und wähle dann ein Paket.',
     loginButton: 'Einloggen / Registrieren',
@@ -1234,14 +1142,6 @@ const CREDITS_COPY: Record<Locale, any> = {
     pageHeading: 'Elige tu paquete de créditos',
     subtitle: 'Recarga única. Sin suscripciones ni cobros recurrentes. Los créditos nunca caducan.',
     creditsUnitLabel: 'créditos',
-    allPacksTitle: 'Cada paquete incluye acceso al 100% de las funciones sin restricciones:',
-    allPacksItems: [
-      'Respuestas completas de IA con explicaciones paso a paso',
-      'Funciona en todas partes: Testportal, Moodle, Canvas, Forms, Kahoot y cualquier web',
-      'Universal Parser™ y modo captura FocusScan incluidos',
-      'Los créditos nunca caducan — pago único, sin suscripción',
-      'Acceso de por vida al historial de preguntas guardadas y notas'
-    ],
     loginTitle: 'Inicia sesión para comprar créditos',
     loginText: 'Usa la misma cuenta que en la extensión Chrome y elige un paquete.',
     loginButton: 'Entrar / Registrarse',
@@ -1284,14 +1184,6 @@ const CREDITS_COPY: Record<Locale, any> = {
     pageHeading: 'Choisissez votre pack de crédits',
     subtitle: 'Recharge unique. Sans abonnement ni prélèvement automatique. Les crédits n\'expirent jamais.',
     creditsUnitLabel: 'crédits',
-    allPacksTitle: 'Chaque pack inclut 100% d\'accès à toutes les fonctionnalités sans restriction :',
-    allPacksItems: [
-      'Réponses IA complètes avec explications détaillées étape par étape',
-      'Fonctionne partout : Testportal, Moodle, Canvas, Forms, Kahoot et tout site web',
-      'Universal Parser™ et mode capture FocusScan inclus',
-      'Les crédits n\'expirent jamais — paiement unique sans abonnement',
-      'Accès à vie à votre historique de questions enregistrées et à vos notes'
-    ],
     loginTitle: 'Connectez-vous pour acheter des crédits',
     loginText: 'Utilisez le même compte que dans l’extension Chrome, puis choisissez un pack.',
     loginButton: 'Connexion / Inscription',
@@ -1334,14 +1226,6 @@ const CREDITS_COPY: Record<Locale, any> = {
     pageHeading: 'Scegli il tuo pacchetto crediti',
     subtitle: 'Ricarica una tantum. Nessun abbonamento né costi nascosti. I crediti non scadono mai.',
     creditsUnitLabel: 'crediti',
-    allPacksTitle: 'Ogni pacchetto include l\'accesso completo al 100% di tutte le funzionalità:',
-    allPacksItems: [
-      'Risposte IA complete con spiegazioni dettagliate passaggio per passaggio',
-      'Funziona ovunque: Testportal, Moodle, Canvas, Forms, Kahoot e qualsiasi sito',
-      'Universal Parser™ e modalità screenshot FocusScan inclusi',
-      'I crediti non scadono mai — pagamento una tantum senza abbonamento',
-      'Accesso a vita alla cronologia delle domande salvate e agli appunti'
-    ],
     loginTitle: 'Accedi per comprare crediti',
     loginText: 'Usa lo stesso account dell’estensione Chrome e scegli un pacchetto.',
     loginButton: 'Accedi / Registrati',
@@ -1384,14 +1268,6 @@ const CREDITS_COPY: Record<Locale, any> = {
     pageHeading: 'Обери свій пакет кредитів',
     subtitle: 'Одноразове поповнення. Без підписки та прихованих платежів. Кредити ніколи не згорають.',
     creditsUnitLabel: 'кредитів',
-    allPacksTitle: 'Кожен пакет включає 100% повний доступ до всіх функцій без обмежень:',
-    allPacksItems: [
-      'Повні AI-відповіді з детальними покроковими поясненнями',
-      'Працює всюди: Testportal, Moodle, Canvas, Forms, Kahoot та будь-який сайт',
-      'Universal Parser™ та режим знімка екрана FocusScan',
-      'Кредити ніколи не згорають — одноразова оплата без підписки',
-      'Довічний доступ до збереженої історії питань, нотаток та тестів'
-    ],
     loginTitle: 'Увійди, щоб купити кредити',
     loginText: 'Використай той самий акаунт, що й у Chrome-розширенні, і вибери пакет.',
     loginButton: 'Увійти / Зареєструватися',
