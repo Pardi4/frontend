@@ -3,7 +3,7 @@ import { Component, Input, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AdminComponent } from './admin.component';
 
-type ProfileTab = 'overview' | 'security' | 'questions';
+type ProfileTab = 'overview' | 'security' | 'questions' | 'credits';
 
 @Component({
   selector: 'app-admin-users',
@@ -75,7 +75,10 @@ type ProfileTab = 'overview' | 'security' | 'questions';
             <td>
               <span class="a-badge" [class]="u.role === 'admin' ? 'a-badge-accent' : 'a-badge-muted'">{{ u.role }}</span>
             </td>
-            <td class="bold tc">{{ u.credits }}</td>
+            <td class="bold tc">
+              {{ u.credits }}
+              <span *ngIf="u.paidCredits" class="xs accent" style="display:block;font-size:10px" title="Kredyty z płatnych doładowań">({{ u.paidCredits }} płatnych)</span>
+            </td>
             <td class="t2">{{ u.stats?.totalQuestionsSolved || 0 }}</td>
             <td class="t2">{{ u.streak?.current || 0 }}</td>
             <td>
@@ -152,6 +155,10 @@ type ProfileTab = 'overview' | 'security' | 'questions';
       <button class="a-tab" [class.active]="profileTab() === 'questions'" (click)="switchToQuestions()">
         📚 Historia pytań
         <span class="a-tab-cnt" *ngIf="historyPag().total > 0">{{ historyPag().total }}</span>
+      </button>
+      <button class="a-tab" [class.active]="profileTab() === 'credits'" (click)="switchToCredits()">
+        💳 Historia kredytów
+        <span class="a-tab-cnt" *ngIf="creditUsages().length > 0">{{ creditUsages().length }}</span>
       </button>
     </div>
 
@@ -422,6 +429,144 @@ id: {{ q.id }}</div>
         </div>
       </div>
 
+      <!-- ── CREDITS TAB ── -->
+      <div *ngIf="profileTab() === 'credits'" style="padding:20px;display:flex;flex-direction:column;gap:16px">
+
+        <!-- Legal & Audit banner -->
+        <div style="padding:14px 16px;background:rgba(99,102,241,.08);border:1px solid rgba(99,102,241,.25);border-radius:var(--radius);display:flex;gap:12px;align-items:flex-start">
+          <span style="font-size:20px;line-height:1">⚖️</span>
+          <div style="font-size:12px;line-height:1.6;color:var(--text-2)">
+            <strong style="color:var(--text-1)">Weryfikacja procedury reklamacyjnej i prawa do odstąpienia od umowy:</strong><br>
+            Zgodnie z <strong>§ 4 ust. 5</strong> i <strong>§ 5</strong> Regulaminu, w pierwszej kolejności zużywane są kredyty zakupione przez Użytkownika.
+            Jeśli w poniższym rejestrze widnieją operacje ze statusem <span class="a-badge a-badge-success" style="font-size:10px;padding:1px 5px">✓ Płatny (po zakupie)</span>, konsument rozpoczął spełnianie świadczenia, a prawo do zwrotu pakietu wygasło.
+          </div>
+        </div>
+
+        <!-- Balance breakdown cards -->
+        <div class="a-stats-grid">
+          <div class="a-stat">
+            <div class="a-stat-label">Saldo łączne</div>
+            <div class="a-stat-value cyan">{{ profileUser()?.credits }}</div>
+          </div>
+          <div class="a-stat">
+            <div class="a-stat-label">W tym kredyty płatne</div>
+            <div class="a-stat-value accent">{{ profileUser()?.paidCredits || 0 }}</div>
+          </div>
+          <div class="a-stat">
+            <div class="a-stat-label">Liczba zakupów</div>
+            <div class="a-stat-value">{{ creditPurchases().length }}</div>
+          </div>
+          <div class="a-stat">
+            <div class="a-stat-label">Zużycia w rejestrze</div>
+            <div class="a-stat-value">{{ creditUsages().length }}</div>
+          </div>
+        </div>
+
+        <div *ngIf="creditsLoading()" style="padding:40px;text-align:center;color:var(--text-3)">
+          Ładowanie historii kredytów i zakupów...
+        </div>
+
+        <div *ngIf="!creditsLoading()">
+
+          <!-- 1. Purchases table -->
+          <div class="a-card" style="margin-bottom:16px">
+            <div class="a-card-header" style="padding:12px 16px">
+              <div class="a-card-title" style="font-size:13px">💳 Zakupy i doładowania konta</div>
+              <span class="xs t3">{{ creditPurchases().length }} transakcji</span>
+            </div>
+            <div *ngIf="!creditPurchases().length" style="padding:24px;text-align:center;color:var(--text-3);font-size:13px">
+              Brak historii doładowań płatnych dla tego konta.
+            </div>
+            <div class="a-table-wrap" *ngIf="creditPurchases().length">
+              <table class="a-table">
+                <thead>
+                  <tr>
+                    <th>Data</th>
+                    <th>Pakiet</th>
+                    <th>Kredyty</th>
+                    <th>Kwota</th>
+                    <th>Bramka</th>
+                    <th>Status</th>
+                    <th>ID Zamówienia</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let pur of creditPurchases()">
+                    <td class="xs t3">{{ p.formatDate(pur.date, true) }}</td>
+                    <td class="bold">{{ pur.pack }}</td>
+                    <td class="bold tc">{{ pur.credits }}</td>
+                    <td>
+                      <span class="bold ts" *ngIf="pur.priceUsd">{{ pur.priceUsd }} {{ pur.currency }}</span>
+                      <span class="xs t3" *ngIf="!pur.priceUsd">—</span>
+                    </td>
+                    <td>
+                      <span class="a-badge" [class.a-badge-accent]="pur.provider === 'dpay'" [class.a-badge-muted]="pur.provider !== 'dpay'" style="text-transform:uppercase;font-size:10px">
+                        {{ pur.provider }}
+                      </span>
+                    </td>
+                    <td>
+                      <span class="a-badge" [class]="pur.creditsApplied ? 'a-badge-success' : 'a-badge-warning'">
+                        {{ pur.creditsApplied ? '✓ Przypisane' : 'Oczekuje' }}
+                      </span>
+                    </td>
+                    <td class="xs t3 mono trunc" style="max-width:140px">{{ pur.orderId || pur.id }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- 2. Usages table -->
+          <div class="a-card">
+            <div class="a-card-header" style="padding:12px 16px">
+              <div class="a-card-title" style="font-size:13px">📊 Rejestr operacji i zużycia kredytów (Audit Trail)</div>
+              <span class="xs t3">{{ creditUsages().length }} operacji</span>
+            </div>
+            <div *ngIf="!creditUsages().length" style="padding:24px;text-align:center;color:var(--text-3);font-size:13px">
+              Brak zarejestrowanych operacji zużycia kredytów.
+            </div>
+            <div class="a-table-wrap" *ngIf="creditUsages().length">
+              <table class="a-table">
+                <thead>
+                  <tr>
+                    <th>Data i godzina</th>
+                    <th>Akcja</th>
+                    <th>Typ jednostki</th>
+                    <th>Pobrane</th>
+                    <th>Saldo po</th>
+                    <th>Status</th>
+                    <th>Treść pytania / Platforma</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let u of creditUsages()">
+                    <td class="xs t3" style="white-space:nowrap">{{ p.formatDate(u.time || u.createdAt, true) }}</td>
+                    <td><span class="a-badge a-badge-muted">{{ u.action }}</span></td>
+                    <td>
+                      <span class="a-badge" [class]="u.wasPaid || u.creditType === 'paid' ? 'a-badge-success' : 'a-badge-muted'" style="font-size:10px">
+                        {{ (u.wasPaid || u.creditType === 'paid') ? '✓ Płatny (po zakupie)' : 'Darmowy / Bonus' }}
+                      </span>
+                    </td>
+                    <td class="bold tc">{{ u.credits }}</td>
+                    <td class="bold t2">{{ u.balanceAfter !== null ? u.balanceAfter : '—' }}</td>
+                    <td>
+                      <span class="a-badge" [class]="u.status === 'charged' ? 'a-badge-accent' : 'a-badge-muted'">
+                        {{ u.status }}
+                      </span>
+                    </td>
+                    <td style="max-width:260px">
+                      <div class="xs bold trunc">{{ u.questionText || '(brak treści pytania)' }}</div>
+                      <div class="xs t3" *ngIf="u.platform">{{ u.platform }}</div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
     </div><!-- end tab content -->
   </div>
 </div>
@@ -482,6 +627,11 @@ export class AdminUsersComponent implements OnInit {
   historyPag       = signal({ page: 1, pages: 1, total: 0 });
   qSearch          = '';
 
+  // Credits & purchases history
+  creditUsages    = signal<any[]>([]);
+  creditPurchases = signal<any[]>([]);
+  creditsLoading  = signal(false);
+
   // Grant modal
   grantUser   = signal<any>(null);
   grantAmount = 0;
@@ -516,6 +666,8 @@ export class AdminUsersComponent implements OnInit {
     this.profileTab.set('overview');
     this.historyQuestions.set([]);
     this.historyPag.set({ page: 1, pages: 1, total: 0 });
+    this.creditUsages.set([]);
+    this.creditPurchases.set([]);
     this.selectedQuestion.set(null);
     this.qSearch = '';
   }
@@ -527,6 +679,28 @@ export class AdminUsersComponent implements OnInit {
     if (!this.historyQuestions().length && !this.historyLoading()) {
       this.loadQuestions(1);
     }
+  }
+
+  switchToCredits() {
+    this.profileTab.set('credits');
+    if (!this.creditUsages().length && !this.creditPurchases().length && !this.creditsLoading()) {
+      this.loadUserCredits();
+    }
+  }
+
+  async loadUserCredits() {
+    const u = this.profileUser();
+    if (!u) return;
+    this.creditsLoading.set(true);
+    const res = await this.p.api(`/api/admin/users/${u.id}/credits`);
+    if (res.success) {
+      this.creditPurchases.set(res.purchases || []);
+      this.creditUsages.set(res.usages || []);
+      if (res.user?.paidCredits !== undefined) {
+        this.profileUser.update(pu => pu ? { ...pu, paidCredits: res.user.paidCredits } : pu);
+      }
+    }
+    this.creditsLoading.set(false);
   }
 
   async loadQuestions(page: number) {
@@ -556,6 +730,7 @@ export class AdminUsersComponent implements OnInit {
       { label: 'Email',           value: u.email },
       { label: 'Wyświetlana nazwa', value: u.displayName || '—' },
       { label: 'Rola',            value: u.role, cls: u.role === 'admin' ? 'ta bold' : '' },
+      { label: 'Kredyty (płatne)', value: `${u.paidCredits || 0} płatnych (z ${u.credits} całk.)`, cls: 'accent bold' },
       { label: 'Email weryfik.',  value: u.emailVerified ? '✓ Tak' : '✗ Nie', cls: u.emailVerified ? 'ts' : 'tw' },
       { label: 'Marketing opt-in', value: u.marketingConsent ? '✓ Tak' : 'Nie', cls: u.marketingConsent ? 'ts' : 't3' },
       { label: 'Konto założone',  value: this.p.formatDate(u.createdAt, true) },

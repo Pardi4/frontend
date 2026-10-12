@@ -134,19 +134,25 @@ import { AdminComponent } from './admin.component';
     <div class="a-table-wrap" *ngIf="!usageLoading()">
       <table class="a-table">
         <thead>
-          <tr><th>Email</th><th>Akcja</th><th>Status</th><th>Kredyty</th><th>Pytanie</th><th>Kiedy</th></tr>
+          <tr><th>Email</th><th>Akcja</th><th>Typ</th><th>Status</th><th>Kredyty</th><th>Pytanie</th><th>Kiedy</th></tr>
         </thead>
         <tbody>
           <tr *ngFor="let u of usageList()">
             <td class="xs">{{ u.email }}</td>
             <td><span class="a-badge a-badge-muted">{{ u.action }}</span></td>
+            <td>
+              <span class="a-badge" [class]="u.wasPaid || u.creditType === 'paid' ? 'a-badge-accent' : 'a-badge-muted'" style="font-size:10px">
+                {{ (u.wasPaid || u.creditType === 'paid') ? 'Płatny' : 'Darmowy' }}
+              </span>
+              <span *ngIf="u.afterPurchase" class="a-badge a-badge-success" style="font-size:9px;margin-left:4px" title="Zużycie po doładowaniu">po zakupie</span>
+            </td>
             <td><span class="a-badge" [class]="usageStatusClass(u.status)">{{ u.status }}</span></td>
             <td class="bold tc">{{ u.credits }}</td>
             <td style="max-width:200px"><div class="xs t3 trunc">{{ u.questionText | slice:0:60 }}</div></td>
             <td class="xs t3">{{ p.formatDate(u.time) }}</td>
           </tr>
           <tr *ngIf="!usageList().length">
-            <td colspan="6" class="a-table-empty">Brak rekordów dla tych filtrów.</td>
+            <td colspan="7" class="a-table-empty">Brak rekordów dla tych filtrów.</td>
           </tr>
         </tbody>
       </table>
