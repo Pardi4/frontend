@@ -160,6 +160,14 @@ import { ShellComponent } from './shell.component';
 
               <div class="info-list">
                 <div class="info-item">
+                  <span class="info-label">{{ locale === 'pl' ? 'Usługodawca / Właściciel:' : 'Provider / Owner:' }}</span>
+                  <span class="info-value-text">Kamil Pardała (działalność nierejestrowana)</span>
+                </div>
+                <div class="info-item">
+                  <span class="info-label">{{ locale === 'pl' ? 'Adres korespondencyjny:' : 'Physical address:' }}</span>
+                  <span class="info-value-text">ul. Drukarska 7/15, 30-348 Kraków</span>
+                </div>
+                <div class="info-item">
                   <span class="info-label">{{ locale === 'pl' ? 'Serwis internetowy:' : 'Service domain:' }}</span>
                   <a class="info-value" href="https://getquizsolver.com">getquizsolver.com</a>
                 </div>
@@ -173,11 +181,11 @@ import { ShellComponent } from './shell.component';
                 </div>
                 <div class="info-item">
                   <span class="info-label">{{ locale === 'pl' ? 'Rozpatrywanie reklamacji:' : 'Complaint resolution:' }}</span>
-                  <span class="info-value-text">{{ locale === 'pl' ? 'Do 14 dni kalendarzowych drogą mailową' : 'Within 14 calendar days via email' }}</span>
+                  <span class="info-value-text">{{ locale === 'pl' ? 'Do 14 dni (brak odpowiedzi = uznanie reklamacji)' : 'Within 14 calendar days (failure to respond = deemed acceptance)' }}</span>
                 </div>
                 <div class="info-item">
                   <span class="info-label">{{ locale === 'pl' ? 'Dostępne płatności:' : 'Accepted payments:' }}</span>
-                  <span class="info-value-text">DPay (BLIK, Przelewy w PLN), Lemon Squeezy (Karty, Apple Pay, Google Pay)</span>
+                  <span class="info-value-text">dpay (Payments Lab sp. z o.o., MIP 85/2020: BLIK, przelewy PLN), Lemon Squeezy (karty, Apple Pay, Google Pay)</span>
                 </div>
               </div>
 

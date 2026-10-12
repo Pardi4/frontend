@@ -372,81 +372,84 @@ const en: SiteCopy = {
   },
   termsPage: {
     metaTitle: "Terms of Service & Sales Policy | QuizSolver",
-    metaDescription: "Read the QuizSolver terms for account usage, digital credits, DPay and Lemon Squeezy payments, 14-day withdrawal waiver once credits are used, and complaints procedure.",
+    metaDescription: "Official QuizSolver Terms of Service. Provider details (Kamil Pardała), AI credit packages, dpay (BLIK, transfers) and Lemon Squeezy payments, 14-day refund waiver upon credit allocation, and statutory complaint procedure.",
     title: "Terms of Service & Sales Policy",
     badge: "Legal & Terms",
-    subtitle: "Rules governing the use of QuizSolver, Chrome extension, digital credits top-up, payment processing, and refund policy.",
-    effective: "Effective date: October 12, 2026 (Updated: Payment Providers & Digital Services)",
+    subtitle: "Terms and conditions for electronic services, digital content credit packs, and use of the QuizSolver browser extension.",
+    effective: "Effective date: October 12, 2026",
     sections: [
       {
-        title: "1. Acceptance and Service Provider",
-        text: "These Terms of Service govern your access to QuizSolver (getquizsolver.com) and the official browser extension (Google Chrome, Microsoft Edge).",
+        title: "§ 1. General Provisions and Service Provider Details",
+        text: "1. These Terms of Service set forth the terms and conditions for using the QuizSolver online platform at getquizsolver.com and the related browser extension.",
         items: [
-          "Service Provider: QuizSolver. Electronic contact: contact@getquizsolver.com and support@getquizsolver.com (or via the /contact page).",
-          "User: Any individual accessing the Service or purchasing Digital Content / AI Credits.",
-          "Credits: Prepaid digital usage units granting access to AI question solutions, step-by-step explanations, and quiz analysis tools.",
-          "Digital Content: Data produced and supplied in digital form, specifically AI credit packs and educational analysis features."
+          "2. Service Provider: Kamil Pardała, residing at ul. Drukarska 7, 30-348 Kraków, Poland, electronic mail: contact@getquizsolver.com and support@getquizsolver.com, operating an unregistered business activity under Art. 5 of the Polish Entrepreneurs Law Act of March 6, 2018.",
+          "3. Definitions:",
+          "Service / Extension: the getquizsolver.com web application and the browser extension (Google Chrome, Microsoft Edge).",
+          "User / Customer: a natural person with full legal capacity (or limited capacity with statutory guardian consent) using the Service or purchasing Digital Content.",
+          "Credits / Tokens: prepaid digital units within the Service granting access to AI answer generation, summaries, and study assistance features.",
+          "Digital Content: data produced and supplied in digital form, specifically AI credit packs credited to the User's Account."
         ]
       },
       {
-        title: "2. Technical Requirements and Educational Scope",
-        text: "QuizSolver is an educational study and review assistance tool.",
+        title: "§ 2. Technical Requirements and Service Nature",
+        text: "1. QuizSolver is software designed to support studying, knowledge verification, and test preparation.",
         items: [
-          "Requirements: An active internet connection and a modern browser (such as Google Chrome) supporting browser extensions and JavaScript.",
-          "QuizSolver analyzes visible page content and user-selected regions. Compatibility with custom, obfuscated, or iframe-restricted third-party tests is not guaranteed.",
-          "Users are solely responsible for ensuring compliance with applicable school, university, exam, course, or employer policies."
+          "2. Technical requirements: an end device with internet access; an up-to-date web browser supporting extensions (e.g. Google Chrome, Microsoft Edge) with JavaScript, Cookies, and LocalStorage enabled; and an active email account.",
+          "3. The extension processes visible website content and user-designated screen regions. The Service Provider does not guarantee compatibility with custom or secured layouts of third-party test platforms.",
+          "4. The User agrees to use the Service in accordance with applicable laws, good practices, and the rules of institutions and platforms they utilize."
         ]
       },
       {
-        title: "3. User Accounts and Fair Usage",
-        text: "Purchasing and synchronizing credits requires a QuizSolver account.",
+        title: "§ 3. User Account and Security Rules",
+        text: "1. Full functionality of the Service and purchasing Credits requires Account registration.",
         items: [
-          "Registration is free via email/password or OAuth single sign-on (Google, Discord).",
-          "Accounts are personal. Reselling, credential sharing, automated bot scraping, or abusive stress-testing of backend infrastructure is strictly prohibited.",
-          "We reserve the right to suspend accounts engaged in fraudulent activity or severe violations of these Terms."
+          "2. Registration is free and performed via email and password or third-party identity providers (e.g., Google, Discord).",
+          "3. An Account belongs to a single User. Sharing login credentials with third parties, reselling Accounts, and using automated bots or scripts that disrupt infrastructure stability is strictly prohibited.",
+          "4. The Service Provider reserves the right to suspend or block Account access in the event of a material violation of these Terms."
         ]
       },
       {
-        title: "4. Credit Packs, Pricing, and Payment Gateways (DPay & Lemon Squeezy)",
-        text: "Credit purchases are one-time transactions. We do not charge recurring subscriptions or hidden maintenance fees.",
+        title: "§ 4. Credit Packs, Pricing, and Payment Processing",
+        text: "1. Credit purchases operate on a one-time top-up model (no subscription fees or recurring auto-renewals). Purchased Credits do not expire.",
         items: [
-          "All prices displayed on the website are gross amounts (inclusive of taxes where applicable). Purchased credits do not expire.",
-          "Payment Providers: 1) DPay (operated by D-PAY Sp. z o.o.) – instant online bank transfers and BLIK payments in PLN; 2) Lemon Squeezy (operated by Lemon Squeezy LLC) – Visa, Mastercard, Apple Pay, and Google Pay worldwide.",
-          "Order Fulfillment: Digital Content is delivered instantly and automatically upon payment authorization from the payment provider (credits are credited to your balance in real time).",
-          "Users must confirm their account email address prior to checkout to ensure seamless credit allocation."
+          "2. Prices displayed on the Service are gross prices. Prices are presented in Polish Złoty (PLN) or foreign currencies (USD, EUR) depending on the selected payment gateway and User location.",
+          "3. Digital Content delivery (crediting the Account balance with Credits) occurs electronically and immediately upon receiving confirmation of successful transaction authorization from the payment operator.",
+          "4. Electronic payment processing is handled by licensed providers: dpay (PLN payments via BLIK code and instant online bank transfers – operated by Payments Lab sp. z o.o., Warsaw, KNF register MIP 85/2020) and Lemon Squeezy (international credit cards, Apple Pay, Google Pay – operated by Lemon Squeezy LLC acting as Merchant of Record)."
         ]
       },
       {
-        title: "5. Right of Withdrawal and Strict No-Refund Policy After Credit Usage",
-        text: "Consumer statutory cancellation rights and explicit digital waiver:",
+        title: "§ 5. Right of Withdrawal (Statutory Exclusion of Refunds)",
+        text: "1. Pursuant to Art. 38(1)(13) of the Polish Consumer Rights Act of May 30, 2014 and EU Directive 2011/83/EU, the 14-day statutory right of withdrawal does NOT apply to contracts for the supply of digital content not delivered on a tangible medium, for which the consumer is obligated to pay, if performance began with the consumer's prior express consent and acknowledgment that they will lose their right of withdrawal upon performance.",
         items: [
-          "Legal Basis: Under Article 38(1)(13) of the Polish Consumer Rights Act and EU Directive 2011/83/EU Article 16(m), the statutory 14-day right of withdrawal from distance contracts does NOT apply to contracts for the supply of digital content not supplied on a tangible medium, where the performance has begun with the consumer's prior express consent and acknowledgment that they thereby lose their right of withdrawal.",
-          "Express Prior Consent: Before completing any purchase, the User must check an explicit confirmation acknowledging immediate digital delivery prior to the expiration of the 14-day withdrawal period and agreeing to waive the right of withdrawal once delivery and usage begin.",
-          "Credit Consumption Clause (No Refunds): Specifically, if the User uses even one (1) single credit from the purchased package (e.g., generating an AI answer, analyzing a question, requesting an explanation, or using FocusScan), the service is deemed fully initiated and consumed. This definitively and irrevocably voids any right to cancel the order or claim a refund.",
-          "AI Accuracy: AI responses are generated probabilistically for educational review purposes. Subjective dissatisfaction with an AI suggested answer does not qualify for a refund."
+          "2. Prior to order completion, the User provides express consent to immediate performance (adding Credits to the Account) before the expiration of the 14-day withdrawal period, and acknowledges that they forfeit their right of withdrawal once Credits are made available.",
+          "3. The contract is deemed fully executed at the moment purchased Credits are added to the User's Account balance, definitively extinguishing any right of withdrawal or refund claim under consumer regulations.",
+          "4. AI algorithms generate responses probabilistically. Subjective dissatisfaction with generated answers or not achieving desired exam scores does not constitute a defect of Digital Content and does not warrant refunds (this does not limit technical complaint rights under § 6)."
         ]
       },
       {
-        title: "6. Complaints Procedure",
-        text: "Technical issues regarding credit delivery or service availability may be submitted through our formal complaints channel.",
+        title: "§ 6. Complaint Procedure",
+        text: "1. Any technical disruptions in Service functionality, balance tally errors, or fulfillment issues may be reported electronically.",
         items: [
-          "Complaints should be sent via email to support@getquizsolver.com or via the /contact form.",
-          "Please include: account email, transaction/order ID from DPay or Lemon Squeezy, date of purchase, and a description of the issue.",
-          "We will review and respond to complaints within 14 calendar days from receipt via email.",
-          "Upon validation of a technical issue, missing credits will be credited promptly or transaction adjustments made."
+          "2. Complaints must be sent by email to support@getquizsolver.com or submitted through the dedicated contact form on the Service.",
+          "3. A valid complaint should include: the email address registered to the Account, transaction ID from the payment operator, date of incident, and a detailed description of the technical issue.",
+          "4. The Service Provider will respond to the complaint within up to 14 calendar days from receipt via email. Failure to respond within this 14-day period is legally deemed an acceptance of the complaint (under Art. 7a of the Consumer Rights Act).",
+          "5. If a technical complaint is accepted, the Service Provider will promptly assign the missing Credits to the User's Account or issue a transaction refund."
         ]
       },
       {
-        title: "7. Intellectual Property and Liability",
-        text: "All website content, parsing algorithms, extension source code, and QuizSolver trademarks are protected by copyright and intellectual property laws."
+        title: "§ 7. Personal Data Protection",
+        text: "1. The Service Provider acts as the personal data controller under the GDPR.",
+        items: [
+          "2. Personal data is processed for account creation, transaction processing, complaint handling, and legal/tax compliance.",
+          "3. Detailed rules regarding data collection, processing, and privacy are set forth in the Privacy Policy available at getquizsolver.com/privacy."
+        ]
       },
       {
-        title: "8. Dispute Resolution and Final Provisions",
-        text: "We strive to resolve any disagreements amicably.",
+        title: "§ 8. Final Provisions and Dispute Resolution",
+        text: "1. In matters not regulated by these Terms, the provisions of Polish law, particularly the Civil Code and the Consumer Rights Act, shall apply.",
         items: [
-          "Consumers within the European Union may access the European Commission's Online Dispute Resolution (ODR) platform at: http://ec.europa.eu/consumers/odr.",
-          "Governing law: Polish law applies to matters not explicitly covered in these Terms.",
-          "These Terms are effective as of the date of publication."
+          "2. Consumers have the right to seek out-of-court dispute resolution through Consumer Ombudsmen, the Trade Inspection, or the European Commission's Online Dispute Resolution (ODR) platform at ec.europa.eu/consumers/odr.",
+          "3. The Service Provider reserves the right to amend these Terms for legitimate legal, technical, or organizational reasons. Users will be notified in advance on the Service."
         ]
       }
     ]
@@ -890,86 +893,85 @@ const pl: SiteCopy = {
     ]
   },
   termsPage: {
-    metaTitle: "Regulamin świadczenia usług i sprzedaży | QuizSolver",
-    metaDescription: "Oficjalny regulamin serwisu QuizSolver. Zasady korzystania, zakup kredytów AI, płatności DPay i Lemon Squeezy, brak zwrotów po zużyciu kredytów oraz procedura reklamacji.",
-    title: "Regulamin serwisu i sprzedaży",
+    metaTitle: "Regulamin Serwisu i Rozszerzenia QuizSolver | getquizsolver.com",
+    metaDescription: "Oficjalny regulamin serwisu QuizSolver. Dane Usługodawcy (Kamil Pardała), zasady zakupu kredytów AI, płatności dpay (BLIK, przelewy) i Lemon Squeezy, wyłączenie prawa do zwrotu oraz procedura reklamacji.",
+    title: "Regulamin Serwisu i Rozszerzenia QuizSolver",
     badge: "Zasady i warunki prawne",
-    subtitle: "Zasady korzystania z serwisu QuizSolver, rozszerzenia przeglądarkowego, zakupu kredytów cyfrowych oraz procedury reklamacji.",
-    effective: "Data wejścia w życie: 12 października 2026 (Aktualizacja: Płatności DPay / Treści Cyfrowe)",
+    subtitle: "Regulamin świadczenia usług drogą elektroniczną, zakupu Treści Cyfrowych oraz zasady korzystania z rozszerzenia QuizSolver.",
+    effective: "Data wejścia w życie: 12 października 2026 r.",
     sections: [
       {
         title: "§ 1. Postanowienia ogólne i dane Usługodawcy",
-        text: "Niniejszy Regulamin określa zasady korzystania z serwisu internetowego QuizSolver dostępnego pod adresem getquizsolver.com oraz oficjalnego rozszerzenia do przeglądarek internetowych (Google Chrome, Microsoft Edge).",
+        text: "1. Niniejszy Regulamin określa zasady korzystania z serwisu internetowego QuizSolver dostępnego pod adresem getquizsolver.com oraz powiązanego rozszerzenia do przeglądarek internetowych.",
         items: [
-          "Usługodawca: QuizSolver, kontakt elektroniczny: contact@getquizsolver.com oraz support@getquizsolver.com (formularz kontaktowy dostępny na podstronie /contact).",
-          "Użytkownik / Klient: osoba fizyczna posiadająca pełną zdolność do czynności prawnych (lub ograniczoną za zgodą przedstawiciela ustawowego), korzystająca z Serwisu lub dokonująca zakupu Treści Cyfrowych.",
-          "Kredyty / Tokeny: przedpłacone cyfrowe jednostki rozliczeniowe w Serwisie, uprawniające Użytkownika do generowania odpowiedzi, wyjaśnień AI i korzystania z analizy pytań.",
-          "Treści Cyfrowe: dane wytwarzane i dostarczane w postaci cyfrowej, w tym pakiety Kredytów oraz dostęp do algorytmów analizy edukacyjnej."
+          "2. Usługodawcą jest: Kamil Pardała, zam. ul. Drukarska 7, 30-348 Kraków, adres poczty elektronicznej: contact@getquizsolver.com oraz support@getquizsolver.com, prowadzący działalność nierejestrowaną zgodnie z art. 5 ustawy z dnia 6 marca 2018 r. – Prawo przedsiębiorców.",
+          "3. Definicje:",
+          "Serwis / Rozszerzenie: aplikacja internetowa getquizsolver.com oraz wtyczka do przeglądarek internetowych (Google Chrome, Microsoft Edge).",
+          "Użytkownik / Klient: osoba fizyczna posiadająca pełną zdolność do czynności prawnych (lub ograniczoną zdolność za zgodą przedstawiciela ustawowego), korzystająca z Serwisu lub dokonująca zakupu Treści Cyfrowych.",
+          "Kredyty / Tokeny: przedpłacone cyfrowe jednostki rozliczeniowe w Serwisie, uprawniające Użytkownika do generowania odpowiedzi AI, podsumowań oraz korzystania z funkcji asystujących nauce.",
+          "Treści Cyfrowe: dane wytwarzane i dostarczane w postaci cyfrowej, w tym pakiety Kredytów zasilające Konto Użytkownika."
         ]
       },
       {
         title: "§ 2. Wymagania techniczne i charakter usługi",
-        text: "QuizSolver jest narzędziem asystującym proces nauki, powtórek materiału i weryfikacji wiedzy.",
+        text: "1. QuizSolver jest oprogramowaniem wspomagającym proces nauki, weryfikacji wiedzy oraz przygotowania do testów.",
         items: [
-          "Do korzystania z Serwisu wymagane jest: urządzenie z dostępem do Internetu, aktualna przeglądarka internetowa (np. Google Chrome lub zgodna) z obsługą rozszerzeń i włączonym JavaScript.",
-          "QuizSolver działa na widocznej treści stron oraz zaznaczonych obszarach ekranu. Usługodawca nie gwarantuje kompatybilności z niestandardowymi lub zabezpieczonymi layoutami zewnętrznych platform testowych.",
-          "Użytkownik zobowiązany jest do korzystania z Serwisu w sposób zgodny z prawem, dobrymi obyczajami oraz regulaminami instytucji edukacyjnych, do których uczęszcza."
+          "2. Do prawidłowego korzystania z Serwisu i Rozszerzenia wymagane jest: urządzenie końcowe z dostępem do sieci Internet; aktualna wersja przeglądarki internetowej obsługującej rozszerzenia (np. Google Chrome, Microsoft Edge) z włączoną obsługą JavaScript, plików Cookies oraz pamięci LocalStorage; aktywne konto poczty elektronicznej (e-mail).",
+          "3. Rozszerzenie przetwarza widoczną treść witryn internetowych oraz wskazane przez Użytkownika obszary ekranu. Usługodawca nie gwarantuje kompatybilności z niestandardowymi lub zabezpieczonymi układami zewnętrznych platform testowych.",
+          "4. Użytkownik zobowiązany jest do korzystania z Serwisu w sposób zgodny z prawem, dobrymi obyczajami oraz regulaminami instytucji i platform, z których korzysta."
         ]
       },
       {
-        title: "§ 3. Rejestracja, konto użytkownika i zasady bezpieczeństwa",
-        text: "Dostęp do zakupu i synchronizacji Kredytów wymaga utworzenia Konta Użytkownika.",
+        title: "§ 3. Konto Użytkownika i zasady bezpieczeństwa",
+        text: "1. Korzystanie z pełnej funkcjonalności Serwisu oraz zakup Kredytów wymaga rejestracji Konta.",
         items: [
-          "Rejestracja jest bezpłatna i następuje poprzez podanie adresu e-mail i hasła lub uwierzytelnienie za pośrednictwem dostawców zewnętrznych (Google, Discord).",
-          "Konto jest przypisane do jednego Użytkownika. Zabrania się udostępniania danych dostępowych osobom trzecim, odsprzedaży konta oraz stosowania botów lub automatycznych skryptów naruszających infrastrukturę Serwisu.",
-          "Usługodawca zastrzega sobie prawo do zablokowania Konta w przypadku rażącego naruszenia postanowień Regulaminu."
+          "2. Rejestracja jest bezpłatna i następuje poprzez podanie adresu e-mail oraz hasła lub za pośrednictwem zewnętrznych dostawców tożsamości (np. Google, Discord).",
+          "3. Konto przypisane jest do jednego Użytkownika. Zabrania się udostępniania danych logowania osobom trzecim, odsprzedaży Konta oraz stosowania botów lub skryptów automatyzujących zapytania w sposób zakłócający stabilność infrastruktury.",
+          "4. Usługodawca zastrzega sobie prawo do zablokowania dostępu do Konta w przypadku rażącego naruszenia postanowień niniejszego Regulaminu."
         ]
       },
       {
-        title: "§ 4. Pakiety Kredytów, Ceny i Metody Płatności (DPay i Lemon Squeezy)",
-        text: "Zakup Kredytów odbywa się na zasadach jednorazowego doładowania bez konieczności zawierania umowy abonamentowej.",
+        title: "§ 4. Pakiety Kredytów, Ceny i Realizacja Płatności",
+        text: "1. Zakup Kredytów odbywa się w modelu jednorazowego doładowania konta (brak opłat subskrypcyjnych i automatycznych odnowień). Zakupione Kredyty są bezterminowe i nie wygasają w czasie.",
         items: [
-          "Ceny pakietów podane w Serwisie są cenami brutto. Kredyty nie tracą ważności i nie wygasają w czasie.",
-          "Dostępne metody płatności: 1) DPay (obsługiwane przez krajową instytucję płatniczą D-PAY Sp. z o.o.) – szybkie przelewy bankowe online oraz płatności kodem BLIK w PLN; 2) Lemon Squeezy (obsługiwane przez Lemon Squeezy LLC) – karty płatnicze Visa, Mastercard, Apple Pay i Google Pay.",
-          "Realizacja zamówienia: Dostarczenie zakupionych Treści Cyfrowych (przypisanie Kredytów do salda Konta) następuje niezwłocznie (automatycznie) po potwierdzeniu dokonania płatności przez wybranego operatora płatności.",
-          "W procesie zakupu Użytkownik potwierdza adres e-mail przypisany do swojego konta w celu poprawnej i automatycznej alokacji środków."
+          "2. Ceny pakietów podane w Serwisie są cenami brutto. Ceny prezentowane są w złotych polskich (PLN) lub walutach obcych (USD, EUR) w zależności od wybranej bramki płatności i lokalizacji Użytkownika.",
+          "3. Dostawa Treści Cyfrowych (zasilenie salda Konta Kredytami) następuje drogą elektroniczną, natychmiast po otrzymaniu potwierdzenia udanej autoryzacji transakcji od operatora płatności.",
+          "4. Obsługa płatności elektronicznych realizowana jest przez wyspecjalizowanych operatorów: dpay (obsługa płatności w PLN: kod BLIK, szybkie przelewy online – świadczona przez Payments Lab sp. z o.o. z siedzibą w Warszawie, rejestr KNF nr MIP 85/2020) oraz Lemon Squeezy (obsługa międzynarodowych kart płatniczych oraz portfeli cyfrowych Apple Pay i Google Pay – świadczona przez Lemon Squeezy LLC, działające jako podmiot pośredniczący / Merchant of Record)."
         ]
       },
       {
-        title: "§ 5. Prawo do odstąpienia od umowy i wyłączenie prawa do zwrotu",
-        text: "Kluczowe informacje dotyczące praw konsumenta i braku możliwości zwrotu po rozpoczęciu korzystania z usługi:",
+        title: "§ 5. Prawo do odstąpienia od umowy (Wyłączenie prawa do zwrotu)",
+        text: "1. Zgodnie z art. 38 ust. 1 pkt 13 ustawy z dnia 30 maja 2014 r. o prawach konsumenta, prawo do odstąpienia od umowy zawartej na odległość w terminie 14 dni nie przysługuje konsumentowi w odniesieniu do umów o dostarczanie treści cyfrowych niedostarczanych na nośniku materialnym, za które konsument jest zobowiązany do zapłaty ceny, jeżeli przedsiębiorca rozpoczął spełnianie świadczenia za wyraźną i uprzednią zgodą konsumenta, który został poinformowany przed rozpoczęciem świadczenia, że po spełnieniu świadczenia przez przedsiębiorcę utraci prawo odstąpienia od umowy, i przyjął to do wiadomości.",
         items: [
-          "Podstawa prawna: Zgodnie z art. 38 ust. 1 pkt 13 Ustawy z dnia 30 maja 2014 r. o prawach konsumenta (Dz.U. z 2020 r. poz. 287 ze zm.), prawo odstąpienia od umowy zawartej na odległość NIE PRZYSŁUGUJE konsumentowi w odniesieniu do umów o dostarczanie treści cyfrowych niedostarczanych na nośniku materialnym, za które konsument jest zobowiązany do zapłaty ceny, jeżeli przedsiębiorca rozpoczął spełnianie świadczenia za wyraźną i uprzednią zgodą konsumenta, który został poinformowany przed rozpoczęciem świadczenia, że po spełnieniu świadczenia przez przedsiębiorcę utraci prawo odstąpienia od umowy, i przyjął to do wiadomości.",
-          "Zgoda przed zakupem: Przed sfinalizowaniem zamówienia Użytkownik składa oświadczenie (poprzez zaznaczenie dedykowanego pola wyboru / checkboxa), że wyraża zgodę na natychmiastowe udostępnienie zakupionych Kredytów przed upływem 14-dniowego terminu do odstąpienia od umowy i przyjmuje do wiadomości, że traci prawo do odstąpienia od umowy z chwilą udostępnienia i rozpoczęcia świadczenia.",
-          "Klauzula konsumpcji kredytów (brak zwrotów): W szczególności, jeżeli Użytkownik po dokonaniu zakupu wykorzysta chociażby 1 (jeden) kredyt z zakupionego pakietu (m.in. wygeneruje odpowiedź, skorzysta z pomocy AI, wyśle zapytanie lub użyje narzędzia FocusScan), świadczenie uważa się za w pełni rozpoczęte i skonsumowane, co bezpowrotnie i całkowicie wyłącza możliwość odstąpienia od umowy oraz uzyskania zwrotu uiszczonej opłaty.",
-          "Brak gwarancji wyniku egzaminu: Narzędzie AI generuje podpowiedzi w sposób probabilistyczny i służy celom edukacyjnym. Subiektywne niezadowolenie z wygenerowanej odpowiedzi nie uprawnia do zwrotu środków."
+          "2. Przed finalizacją zakupu Użytkownik wyraża wyraźną zgodę na natychmiastowe rozpoczęcie spełniania świadczenia (przypisanie Kredytów do Konta) przed upływem 14-dniowego terminu na odstąpienie od umowy oraz potwierdza, że przyjmuje do wiadomości utratę prawa do odstąpienia od umowy z chwilą udostępnienia Kredytów.",
+          "3. Z chwilą zaksięgowania zakupionych Kredytów na Koncie Użytkownika świadczenie uważa się za zrealizowane w całości, co bezpowrotnie wyłącza możliwość odstąpienia od umowy i żądania zwrotu płatności na podstawie przepisów konsumenckich.",
+          "4. Narzędzia sztucznej inteligencji generują podpowiedzi w sposób probabilistyczny. Subiektywne niezadowolenie z generowanych odpowiedzi lub nieosiągnięcie pożądanego wyniku na teście nie stanowi wady Treści Cyfrowej i nie stanowi podstawy do zwrotu środków (nie wyłącza to prawa do reklamacji technicznej na zasadach § 6)."
         ]
       },
       {
-        title: "§ 6. Postępowanie reklamacyjne",
-        text: "Wszelkie zastrzeżenia techniczne dotyczące funkcjonowania Serwisu lub zakupu Kredytów mogą być zgłaszane w drodze reklamacji.",
+        title: "§ 6. Procedura reklamacyjna",
+        text: "1. Wszelkie zakłócenia w funkcjonowaniu Serwisu, błędy w zliczaniu salda lub problemy z realizacją zamówienia mogą być zgłaszane drogą elektroniczną.",
         items: [
-          "Reklamacje należy składać drogą elektroniczną na adres e-mail: support@getquizsolver.com lub za pośrednictwem formularza kontaktowego.",
-          "Zgłoszenie reklamacyjne powinno zawierać: adres e-mail Konta, identyfikator zamówienia/transakcji (od DPay lub Lemon Squeezy), datę zakupu oraz szczegółowy opis nieprawidłowości (np. brak zaksięgowania kredytów mimo pobrania opłaty).",
-          "Usługodawca rozpatruje reklamację w terminie 14 dni kalendarzowych od dnia jej otrzymania i przesyła odpowiedź na wskazany adres e-mail.",
-          "W przypadku uznania reklamacji technicznej, Usługodawca niezwłocznie przypisuje brakujące Kredyty do konta lub dokonuje korekty transakcji."
+          "2. Reklamacje należy przesyłać na adres e-mail: support@getquizsolver.com lub za pośrednictwem dedykowanego formularza kontaktowego w Serwisie.",
+          "3. Prawidłowe zgłoszenie reklamacyjne powinno zawierać: adres e-mail przypisany do Konta, identyfikator transakcji z systemu płatności, datę zdarzenia oraz opis napotkanego problemu technicznego.",
+          "4. Usługodawca ustosunkuje się do złożonej reklamacji w terminie do 14 dni kalendarzowych od dnia jej otrzymania. Odpowiedź przesyłana jest na adres e-mail składającego reklamację. Nierozpatrzenie reklamacji w tym terminie uważa się za jej uznanie (zgodnie z art. 7a ustawy o prawach konsumenta).",
+          "5. W przypadku uznania reklamacji związanej z problemem technicznym, Usługodawca niezwłocznie przypisuje brakujące Kredyty do konta Użytkownika lub dokonuje zwrotu uiszczonej kwoty."
         ]
       },
       {
-        title: "§ 7. Ochrona danych osobowych i prywatność",
-        text: "Zasady przetwarzania danych osobowych określa Polityka Prywatności dostępna w Serwisie pod adresem /privacy.",
+        title: "§ 7. Ochrona danych osobowych",
+        text: "1. Administratorem danych osobowych Użytkowników w rozumieniu RODO jest Usługodawca.",
         items: [
-          "Administratorem danych osobowych Użytkowników jest Usługodawca.",
-          "Dane przetwarzane są w celu realizacji umowy, obsługi płatności przez operatorów DPay oraz Lemon Squeezy, a także rozpatrywania reklamacji zgodnie z RODO."
+          "2. Dane osobowe przetwarzane są w celu utworzenia Konta, realizacji transakcji, obsługi zgłoszeń reklamacyjnych oraz realizacji obowiązków prawno-podatkowych.",
+          "3. Szczegółowe zasady gromadzenia, przetwarzania oraz ochrony danych określa Polityka Prywatności dostępna pod adresem getquizsolver.com/privacy."
         ]
       },
       {
-        title: "§ 8. Pozasądowe rozwiązywanie sporów i postanowienia końcowe",
-        text: "Usługodawca dąży do polubownego rozwiązywania wszelkich sporów z Użytkownikami.",
+        title: "§ 8. Postanowienia końcowe",
+        text: "1. W sprawach nieuregulowanych niniejszym Regulaminem zastosowanie mają powszechnie obowiązujące przepisy prawa polskiego, w szczególności Kodeksu cywilnego oraz ustawy o prawach konsumenta.",
         items: [
-          "Konsument ma możliwość skorzystania z pozasądowych sposobów rozpatrywania reklamacji i dochodzenia roszczeń, w tym za pośrednictwem unijnej platformy ODR dostępnej pod adresem: http://ec.europa.eu/consumers/odr.",
-          "W sprawach nieuregulowanych niniejszym Regulaminem zastosowanie mają właściwe przepisy prawa polskiego, w szczególności Kodeksu Cywilnego oraz Ustawy o prawach konsumenta.",
-          "Regulamin obowiązuje od dnia publikacji w Serwisie."
+          "2. Użytkownik będący konsumentem posiada uprawnienie do skorzystania z pozasądowych sposobów rozpatrywania reklamacji i dochodzenia roszczeń (m.in. za pośrednictwem Miejskiego lub Powiatowego Rzecznika Konsumentów lub właściwego Wojewódzkiego Inspektoratu Inspekcji Handlowej, a także unijnej platformy ODR).",
+          "3. Usługodawca zastrzega sobie prawo do zmiany Regulaminu z ważnych przyczyn prawnych, technologicznych lub organizacyjnych. O zmianach Użytkownicy zostaną powiadomieni z odpowiednim wyprzedzeniem w Serwisie."
         ]
       }
     ]
