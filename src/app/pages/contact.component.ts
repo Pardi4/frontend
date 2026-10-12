@@ -170,7 +170,7 @@ import { ShellComponent } from './shell.component';
                 </div>
                 <div class="info-item">
                   <span class="info-label">{{ locale === 'pl' ? 'Adres sprzedawcy / Adres siedziby:' : 'Seller Address / Registered Office:' }}</span>
-                  <span class="info-value-text"><strong>ul. Drukarska 7/15, 30-348 Kraków</strong>, Polska</span>
+                  <span class="info-value-text"><strong>ul. Drukarska 7, 30-348 Kraków</strong>, Polska</span>
                 </div>
                 <div class="info-item">
                   <span class="info-label">{{ locale === 'pl' ? 'Adres e-mail do kontaktu na stronie:' : 'Contact Email Address:' }}</span>

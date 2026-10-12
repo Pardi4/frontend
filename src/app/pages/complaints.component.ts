@@ -91,7 +91,7 @@ import { ShellComponent } from './shell.component';
             </div>
             <div class="seller-item">
               <span class="seller-lbl">{{ isPl ? 'Adres siedziby i do doręczeń:' : 'Registered Office & Postal Address:' }}</span>
-              <strong class="seller-val">ul. Drukarska 7/15, 30-348 Kraków</strong>
+              <strong class="seller-val">ul. Drukarska 7, 30-348 Kraków</strong>
               <span class="seller-hint">Polska / Poland</span>
             </div>
             <div class="seller-item">
@@ -628,8 +628,8 @@ export class ComplaintsComponent implements OnInit {
       ? 'Procedura reklamacyjna | QuizSolver'
       : 'Complaints Procedure | QuizSolver';
     const description = this.isPl
-      ? 'Oficjalna procedura reklamacyjna serwisu QuizSolver. Rozpatrzenie w terminie 14 dni zgodnie z art. 7a ustawy o prawach konsumenta. Sprzedawca: Kamil Pardała, ul. Drukarska 7/15, Kraków.'
-      : 'Official complaints procedure for QuizSolver. Claims resolution within 14 calendar days. Merchant: Kamil Pardała, ul. Drukarska 7/15, Kraków, Poland.';
+      ? 'Oficjalna procedura reklamacyjna serwisu QuizSolver. Rozpatrzenie w terminie 14 dni zgodnie z art. 7a ustawy o prawach konsumenta. Sprzedawca: Kamil Pardała, ul. Drukarska 7, Kraków.'
+      : 'Official complaints procedure for QuizSolver. Claims resolution within 14 calendar days. Merchant: Kamil Pardała, ul. Drukarska 7, Kraków, Poland.';
 
     this.seo.applyPage('complaints', this.locale, {
       robots: 'index, follow'

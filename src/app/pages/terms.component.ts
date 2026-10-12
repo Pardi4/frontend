@@ -1094,7 +1094,7 @@ export class TermsComponent implements OnInit, AfterViewInit {
           icon: 'building',
           iconClass: 'emerald',
           title: 'Dane Usługodawcy',
-          desc: 'Kamil Pardała (działalność nierejestrowana), ul. Drukarska 7/15, Kraków. 100% jawności i bezpośredni kontakt.'
+          desc: 'Kamil Pardała (działalność nierejestrowana), ul. Drukarska 7, Kraków. 100% jawności i bezpośredni kontakt.'
         },
         {
           icon: 'zap',
@@ -1121,7 +1121,7 @@ export class TermsComponent implements OnInit, AfterViewInit {
         icon: 'building',
         iconClass: 'emerald',
         title: 'Verified Merchant',
-        desc: 'Kamil Pardała (unregistered business), ul. Drukarska 7/15, Krakow, Poland. Full legal identity and direct support.'
+        desc: 'Kamil Pardała (unregistered business), ul. Drukarska 7, Krakow, Poland. Full legal identity and direct support.'
       },
       {
         icon: 'zap',

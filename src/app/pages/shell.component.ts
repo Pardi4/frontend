@@ -194,7 +194,7 @@ export function trackGa4Event(eventName: string, params?: Record<string, string 
               </p>
               <p class="footer-seller-line">
                 <span class="footer-seller-lbl">{{ locale === 'pl' ? 'Adres siedziby:' : 'Address:' }}</span>
-                <span>ul. Drukarska 7/15, 30-348 Kraków</span>
+                <span>ul. Drukarska 7, 30-348 Kraków</span>
               </p>
               <p class="footer-seller-line">
                 <span class="footer-seller-lbl">{{ locale === 'pl' ? 'Adres e-mail do kontaktu:' : 'Contact email:' }}</span>
@@ -250,8 +250,8 @@ export function trackGa4Event(eventName: string, params?: Record<string, string 
             <div class="footer-bottom-rights">{{ copy.footer.rights }}</div>
             <div class="footer-bottom-seller">
               {{ locale === 'pl'
-                ? 'Nazwa sprzedawcy: Kamil Pardała (działalność nierejestrowana) | Adres siedziby: ul. Drukarska 7/15, 30-348 Kraków | Adres e-mail do kontaktu: contact@getquizsolver.com'
-                : 'Seller name: Kamil Pardała | Registered address: ul. Drukarska 7/15, 30-348 Kraków, Poland | Contact email: contact@getquizsolver.com' }}
+                ? 'Nazwa sprzedawcy: Kamil Pardała (działalność nierejestrowana) | Adres siedziby: ul. Drukarska 7, 30-348 Kraków | Adres e-mail do kontaktu: contact@getquizsolver.com'
+                : 'Seller name: Kamil Pardała | Registered address: ul. Drukarska 7, 30-348 Kraków, Poland | Contact email: contact@getquizsolver.com' }}
             </div>
           </div>
         </div>

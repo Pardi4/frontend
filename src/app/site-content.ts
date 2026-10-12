@@ -384,7 +384,7 @@ const en: SiteCopy = {
         title: "§ 1. General Provisions and Service Provider Details",
         items: [
           "1. These Terms of Service set forth the terms and conditions for using the QuizSolver online platform at getquizsolver.com and the related browser extension.",
-          "2. Service Provider: Kamil Pardała, residing at ul. Drukarska 7/15, 30-348 Kraków, Poland, electronic mail: contact@getquizsolver.com and support@getquizsolver.com, operating an unregistered business activity under Art. 5 of the Polish Entrepreneurs Law Act of March 6, 2018.",
+          "2. Service Provider: Kamil Pardała, residing at ul. Drukarska 7, 30-348 Kraków, Poland, electronic mail: contact@getquizsolver.com and support@getquizsolver.com, operating an unregistered business activity under Art. 5 of the Polish Entrepreneurs Law Act of March 6, 2018.",
           "3. Definitions:",
           "a) Service / Extension: the getquizsolver.com web application and the browser extension (Google Chrome, Microsoft Edge).",
           "b) User / Customer: a natural person with full legal capacity (or limited capacity with statutory guardian consent) using the Service or purchasing Digital Content.",
@@ -909,7 +909,7 @@ const pl: SiteCopy = {
         title: "§ 1. Postanowienia ogólne i dane Usługodawcy",
         items: [
           "1. Niniejszy Regulamin określa zasady korzystania z serwisu internetowego QuizSolver dostępnego pod adresem getquizsolver.com oraz powiązanego rozszerzenia do przeglądarek internetowych.",
-          "2. Usługodawcą jest: Kamil Pardała, zam. ul. Drukarska 7/15, 30-348 Kraków, adres poczty elektronicznej: contact@getquizsolver.com oraz support@getquizsolver.com, prowadzący działalność nierejestrowaną zgodnie z art. 5 ustawy z dnia 6 marca 2018 r. – Prawo przedsiębiorców.",
+          "2. Usługodawcą jest: Kamil Pardała, zam. ul. Drukarska 7, 30-348 Kraków, adres poczty elektronicznej: contact@getquizsolver.com oraz support@getquizsolver.com, prowadzący działalność nierejestrowaną zgodnie z art. 5 ustawy z dnia 6 marca 2018 r. – Prawo przedsiębiorców.",
           "3. Definicje:",
           "a) Serwis / Rozszerzenie: aplikacja internetowa getquizsolver.com oraz wtyczka do przeglądarek internetowych (Google Chrome, Microsoft Edge).",
           "b) Użytkownik / Klient: osoba fizyczna posiadająca pełną zdolność do czynności prawnych (lub ograniczoną zdolność za zgodą przedstawiciela ustawowego), korzystająca z Serwisu lub dokonująca zakupu Treści Cyfrowych.",
