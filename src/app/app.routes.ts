@@ -42,6 +42,7 @@ export const routes: Routes = [
   ...localizedRoutes('privacy', () => import('./pages/privacy.component').then(m => m.PrivacyComponent)),
   ...localizedRoutes('cookies', () => import('./pages/cookies.component').then(m => m.CookiesComponent)),
   ...localizedRoutes('terms', () => import('./pages/terms.component').then(m => m.TermsComponent)),
+  ...localizedRoutes('contact', () => import('./pages/contact.component').then(m => m.ContactComponent)),
   ...localizedRoutes('blog', () => import('./pages/blog-list.component').then(m => m.BlogListComponent)),
   ...localizedRoutes('blogCategory', () => import('./pages/blog-list.component').then(m => m.BlogListComponent)),
   ...localizedRoutes('blogPost', () => import('./pages/blog-post.component').then(m => m.BlogPostComponent)),

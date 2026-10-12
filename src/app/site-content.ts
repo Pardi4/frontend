@@ -49,6 +49,7 @@ export interface SiteCopy {
     legal: string;
     privacy: string;
     terms: string;
+    contact?: string;
     rights: string;
     description: string;
   };
@@ -88,6 +89,47 @@ export interface SiteCopy {
       text?: string;
       items?: string[];
     }>;
+  };
+  contactPage?: {
+    metaTitle: string;
+    metaDescription: string;
+    title: string;
+    badge: string;
+    subtitle: string;
+    responseTime: string;
+    cards: Array<{
+      title: string;
+      desc: string;
+      email: string;
+      actionLabel: string;
+    }>;
+    form: {
+      title: string;
+      subtitle: string;
+      nameLabel: string;
+      namePlaceholder: string;
+      emailLabel: string;
+      emailPlaceholder: string;
+      subjectLabel: string;
+      subjectPlaceholder: string;
+      messageLabel: string;
+      messagePlaceholder: string;
+      submitBtn: string;
+      sendingBtn: string;
+      successMsg: string;
+      errorMsg: string;
+      subjects: string[];
+    };
+    companyInfo: {
+      title: string;
+      desc: string;
+      serviceName: string;
+      website: string;
+      email: string;
+      hours: string;
+      termsLinkText: string;
+      privacyLinkText: string;
+    };
   };
   dashboardPage: {
     metaTitle: string;
@@ -261,6 +303,7 @@ const en: SiteCopy = {
     legal: "Legal",
     privacy: "Privacy Policy",
     terms: "Terms of Service",
+    contact: "Contact",
     rights: "© 2026 QuizSolver. All rights reserved.",
     description: "QuizSolver AI quiz solver Chrome extension."
   },
@@ -302,8 +345,8 @@ const en: SiteCopy = {
         ]
       },
       {
-        title: "3. Third-Party Payments (Lemon Squeezy)",
-        text: "All payment transactions are handled securely by Lemon Squeezy. We do not store or process your credit card numbers on our servers."
+        title: "3. Third-Party Payments (DPay & Lemon Squeezy)",
+        text: "Payment transactions are handled securely by authorized payment institutions: DPay (D-PAY Sp. z o.o.) for BLIK and bank transfers, and Lemon Squeezy (Lemon Squeezy LLC) for cards and mobile wallets. We do not store credit card numbers or banking credentials."
       },
       {
         title: "4. Information Sharing",
@@ -328,43 +371,152 @@ const en: SiteCopy = {
     ]
   },
   termsPage: {
-    metaTitle: "Terms of Service | QuizSolver",
-    metaDescription: "Read the QuizSolver terms for account use, credits, Chrome extension access, acceptable use, payments, refunds, and support.",
-    title: "Terms of Service",
-    badge: "Legal",
-    subtitle: "Rules for using the QuizSolver website, Chrome extension, credits, and study features.",
-    effective: "Effective date: July 3, 2026",
+    metaTitle: "Terms of Service & Sales Policy | QuizSolver",
+    metaDescription: "Read the QuizSolver terms for account usage, digital credits, DPay and Lemon Squeezy payments, 14-day withdrawal waiver once credits are used, and complaints procedure.",
+    title: "Terms of Service & Sales Policy",
+    badge: "Legal & Terms",
+    subtitle: "Rules governing the use of QuizSolver, Chrome extension, digital credits top-up, payment processing, and refund policy.",
+    effective: "Effective date: October 12, 2026 (Updated: Payment Providers & Digital Services)",
     sections: [
       {
-        title: "1. Acceptance",
-        text: "By using QuizSolver, you agree to these Terms of Service and to our Privacy Policy."
-      },
-      {
-        title: "2. Accounts and credits",
-        text: "You are responsible for your account and for keeping access credentials secure.",
+        title: "1. Acceptance and Service Provider",
+        text: "These Terms of Service govern your access to QuizSolver (getquizsolver.com) and the official browser extension (Google Chrome, Microsoft Edge).",
         items: [
-          "Credits are prepaid usage units for AI answers, explanations, cached answers when chargeable, and supported quiz tools.",
-          "Credit balances can change when questions are solved through the extension, dashboard, overlay, or supported cached-answer flows.",
-          "Do not share, resell, automate, or abuse account access."
+          "Service Provider: QuizSolver. Electronic contact: contact@getquizsolver.com and support@getquizsolver.com (or via the /contact page).",
+          "User: Any individual accessing the Service or purchasing Digital Content / AI Credits.",
+          "Credits: Prepaid digital usage units granting access to AI question solutions, step-by-step explanations, and quiz analysis tools.",
+          "Digital Content: Data produced and supplied in digital form, specifically AI credit packs and educational analysis features."
         ]
       },
       {
-        title: "3. Responsible use",
-        text: "QuizSolver is a study, review, and quiz assistance tool. You are responsible for following your school, course, employer, exam, and platform rules."
+        title: "2. Technical Requirements and Educational Scope",
+        text: "QuizSolver is an educational study and review assistance tool.",
+        items: [
+          "Requirements: An active internet connection and a modern browser (such as Google Chrome) supporting browser extensions and JavaScript.",
+          "QuizSolver analyzes visible page content and user-selected regions. Compatibility with custom, obfuscated, or iframe-restricted third-party tests is not guaranteed.",
+          "Users are solely responsible for ensuring compliance with applicable school, university, exam, course, or employer policies."
+        ]
       },
       {
-        title: "4. Extension and third-party platforms",
-        text: "QuizSolver works with visible page content, user-selected text, and user-selected screen regions. We do not control third-party quiz platforms and cannot guarantee that every layout, iframe, or question type will be supported."
+        title: "3. User Accounts and Fair Usage",
+        text: "Purchasing and synchronizing credits requires a QuizSolver account.",
+        items: [
+          "Registration is free via email/password or OAuth single sign-on (Google, Discord).",
+          "Accounts are personal. Reselling, credential sharing, automated bot scraping, or abusive stress-testing of backend infrastructure is strictly prohibited.",
+          "We reserve the right to suspend accounts engaged in fraudulent activity or severe violations of these Terms."
+        ]
       },
       {
-        title: "5. Payments and refunds",
-        text: "Payments are processed by our payment provider. Refund requests are reviewed through support according to purchase status, usage, account history, and applicable law."
+        title: "4. Credit Packs, Pricing, and Payment Gateways (DPay & Lemon Squeezy)",
+        text: "Credit purchases are one-time transactions. We do not charge recurring subscriptions or hidden maintenance fees.",
+        items: [
+          "All prices displayed on the website are gross amounts (inclusive of taxes where applicable). Purchased credits do not expire.",
+          "Payment Providers: 1) DPay (operated by D-PAY Sp. z o.o.) – instant online bank transfers and BLIK payments in PLN; 2) Lemon Squeezy (operated by Lemon Squeezy LLC) – Visa, Mastercard, Apple Pay, and Google Pay worldwide.",
+          "Order Fulfillment: Digital Content is delivered instantly and automatically upon payment authorization from the payment provider (credits are credited to your balance in real time).",
+          "Users must confirm their account email address prior to checkout to ensure seamless credit allocation."
+        ]
       },
       {
-        title: "6. Changes and support",
-        text: "We may update the service and these terms as QuizSolver changes. Contact support@getquizsolver.com for account, billing, or product questions."
+        title: "5. Right of Withdrawal and Strict No-Refund Policy After Credit Usage",
+        text: "Consumer statutory cancellation rights and explicit digital waiver:",
+        items: [
+          "Legal Basis: Under Article 38(1)(13) of the Polish Consumer Rights Act and EU Directive 2011/83/EU Article 16(m), the statutory 14-day right of withdrawal from distance contracts does NOT apply to contracts for the supply of digital content not supplied on a tangible medium, where the performance has begun with the consumer's prior express consent and acknowledgment that they thereby lose their right of withdrawal.",
+          "Express Prior Consent: Before completing any purchase, the User must check an explicit confirmation acknowledging immediate digital delivery prior to the expiration of the 14-day withdrawal period and agreeing to waive the right of withdrawal once delivery and usage begin.",
+          "Credit Consumption Clause (No Refunds): Specifically, if the User uses even one (1) single credit from the purchased package (e.g., generating an AI answer, analyzing a question, requesting an explanation, or using FocusScan), the service is deemed fully initiated and consumed. This definitively and irrevocably voids any right to cancel the order or claim a refund.",
+          "AI Accuracy: AI responses are generated probabilistically for educational review purposes. Subjective dissatisfaction with an AI suggested answer does not qualify for a refund."
+        ]
+      },
+      {
+        title: "6. Complaints Procedure",
+        text: "Technical issues regarding credit delivery or service availability may be submitted through our formal complaints channel.",
+        items: [
+          "Complaints should be sent via email to support@getquizsolver.com or via the /contact form.",
+          "Please include: account email, transaction/order ID from DPay or Lemon Squeezy, date of purchase, and a description of the issue.",
+          "We will review and respond to complaints within 14 calendar days from receipt via email.",
+          "Upon validation of a technical issue, missing credits will be credited promptly or transaction adjustments made."
+        ]
+      },
+      {
+        title: "7. Intellectual Property and Liability",
+        text: "All website content, parsing algorithms, extension source code, and QuizSolver trademarks are protected by copyright and intellectual property laws."
+      },
+      {
+        title: "8. Dispute Resolution and Final Provisions",
+        text: "We strive to resolve any disagreements amicably.",
+        items: [
+          "Consumers within the European Union may access the European Commission's Online Dispute Resolution (ODR) platform at: http://ec.europa.eu/consumers/odr.",
+          "Governing law: Polish law applies to matters not explicitly covered in these Terms.",
+          "These Terms are effective as of the date of publication."
+        ]
       }
     ]
+  },
+  contactPage: {
+    metaTitle: "Contact & Support | QuizSolver",
+    metaDescription: "Contact QuizSolver customer support. Technical assistance, DPay and Lemon Squeezy billing, complaints, and general inquiries. Response within 24h.",
+    title: "Contact Us",
+    badge: "Help & Support",
+    subtitle: "Have questions about the Chrome extension, credit packs, or billing? We are here to help.",
+    responseTime: "Average response time: within 24 hours (business days)",
+    cards: [
+      {
+        title: "Technical Support",
+        desc: "Help with the Chrome extension, supported quiz platforms, login, or bug reports.",
+        email: "support@getquizsolver.com",
+        actionLabel: "Email Support"
+      },
+      {
+        title: "Billing & Credits",
+        desc: "Questions about top-ups via DPay or Lemon Squeezy, invoices, and credit balances.",
+        email: "contact@getquizsolver.com",
+        actionLabel: "Billing Inquiries"
+      },
+      {
+        title: "Complaints & Claims",
+        desc: "Formal statutory complaint submissions as specified in our Terms (14-day turnaround).",
+        email: "support@getquizsolver.com",
+        actionLabel: "Submit Complaint"
+      },
+      {
+        title: "Partnership & Press",
+        desc: "Affiliate partnerships, business inquiries, and press questions.",
+        email: "contact@getquizsolver.com",
+        actionLabel: "Business Inquiries"
+      }
+    ],
+    form: {
+      title: "Send us a direct message",
+      subtitle: "Fill out the quick form and our support team will reply directly to your email.",
+      nameLabel: "Your Name",
+      namePlaceholder: "e.g. Alex",
+      emailLabel: "Your Email Address",
+      emailPlaceholder: "e.g. alex@example.com",
+      subjectLabel: "Subject",
+      subjectPlaceholder: "Select topic...",
+      messageLabel: "Message",
+      messagePlaceholder: "Describe your inquiry in detail...",
+      submitBtn: "Send message",
+      sendingBtn: "Sending...",
+      successMsg: "Thank you! Your message has been sent. We will reply as quickly as possible.",
+      errorMsg: "Failed to send message. Please try again or write directly to contact@getquizsolver.com.",
+      subjects: [
+        "Payment or credit top-up inquiry",
+        "Extension technical support",
+        "Account / login issues",
+        "Technical complaint",
+        "General inquiry"
+      ]
+    },
+    companyInfo: {
+      title: "Service Information",
+      desc: "QuizSolver is an AI-powered study assistance application and browser extension.",
+      serviceName: "QuizSolver (getquizsolver.com)",
+      website: "https://getquizsolver.com",
+      email: "contact@getquizsolver.com",
+      hours: "Monday – Friday: 9:00 AM – 6:00 PM CET",
+      termsLinkText: "View Terms of Service",
+      privacyLinkText: "View Privacy Policy"
+    }
   },
   dashboardPage: {
     metaTitle: "User Dashboard | QuizSolver",
@@ -670,6 +822,7 @@ const pl: SiteCopy = {
     legal: "Informacje prawne",
     privacy: "Polityka prywatności",
     terms: "Regulamin",
+    contact: "Kontakt",
     rights: "© 2026 QuizSolver. Wszelkie prawa zastrzeżone.",
     description: "Inteligentne rozszerzenie do Chrome sugerujące odpowiedzi i pomagające w nauce."
   },
@@ -711,8 +864,8 @@ const pl: SiteCopy = {
         ]
       },
       {
-        title: "3. Bezpieczne płatności (Lemon Squeezy)",
-        text: "Wszystkie płatności za pakiety kredytów są przetwarzane w bezpieczny sposób za pośrednictwem platformy Lemon Squeezy. Nie przechowujemy ani nie przetwarzamy danych kart płatniczych na naszych serwerach."
+        title: "3. Bezpieczne płatności (DPay i Lemon Squeezy)",
+        text: "Płatności są realizowane za pośrednictwem licencjonowanych instytucji płatniczych: DPay (D-PAY Sp. z o.o.) dla płatności BLIK i szybkich przelewów online w PLN oraz Lemon Squeezy (Lemon Squeezy LLC) dla kart płatniczych i portfeli cyfrowych. Nie przechowujemy danych kart ani kont bankowych na naszych serwerach."
       },
       {
         title: "4. Udostępnianie danych",
@@ -737,43 +890,156 @@ const pl: SiteCopy = {
     ]
   },
   termsPage: {
-    metaTitle: "Regulamin | QuizSolver",
-    metaDescription: "Przeczytaj zasady korzystania z QuizSolver: konto, kredyty, rozszerzenie Chrome, platnosci, zwroty, odpowiedzialne uzycie i support.",
-    title: "Regulamin",
-    badge: "Informacje prawne",
-    subtitle: "Zasady korzystania ze strony, rozszerzenia Chrome, kredytow i funkcji nauki QuizSolver.",
-    effective: "Data obowiazywania: 3 lipca 2026",
+    metaTitle: "Regulamin świadczenia usług i sprzedaży | QuizSolver",
+    metaDescription: "Oficjalny regulamin serwisu QuizSolver. Zasady korzystania, zakup kredytów AI, płatności DPay i Lemon Squeezy, brak zwrotów po zużyciu kredytów oraz procedura reklamacji.",
+    title: "Regulamin serwisu i sprzedaży",
+    badge: "Zasady i warunki prawne",
+    subtitle: "Zasady korzystania z serwisu QuizSolver, rozszerzenia przeglądarkowego, zakupu kredytów cyfrowych oraz procedury reklamacji.",
+    effective: "Data wejścia w życie: 12 października 2026 (Aktualizacja: Płatności DPay / Treści Cyfrowe)",
     sections: [
       {
-        title: "1. Akceptacja regulaminu",
-        text: "Korzystajac z QuizSolver, akceptujesz ten regulamin oraz Polityke prywatnosci."
-      },
-      {
-        title: "2. Konto i kredyty",
-        text: "Odpowiadasz za swoje konto oraz za bezpieczne przechowywanie danych dostepowych.",
+        title: "§ 1. Postanowienia ogólne i dane Usługodawcy",
+        text: "Niniejszy Regulamin określa zasady korzystania z serwisu internetowego QuizSolver dostępnego pod adresem getquizsolver.com oraz oficjalnego rozszerzenia do przeglądarek internetowych (Google Chrome, Microsoft Edge).",
         items: [
-          "Kredyty sa jednostkami uzycia dla odpowiedzi AI, wyjasnien, odpowiedzi z cache gdy sa rozliczane, oraz obslugiwanych narzedzi quizowych.",
-          "Saldo kredytow moze zmieniac sie, gdy pytania sa rozwiazywane przez rozszerzenie, panel, overlay lub obslugiwane przeplywy odpowiedzi z cache.",
-          "Nie udostepniaj, nie odsprzedawaj, nie automatyzuj i nie naduzywaj dostepu do konta."
+          "Usługodawca: QuizSolver, kontakt elektroniczny: contact@getquizsolver.com oraz support@getquizsolver.com (formularz kontaktowy dostępny na podstronie /contact).",
+          "Użytkownik / Klient: osoba fizyczna posiadająca pełną zdolność do czynności prawnych (lub ograniczoną za zgodą przedstawiciela ustawowego), korzystająca z Serwisu lub dokonująca zakupu Treści Cyfrowych.",
+          "Kredyty / Tokeny: przedpłacone cyfrowe jednostki rozliczeniowe w Serwisie, uprawniające Użytkownika do generowania odpowiedzi, wyjaśnień AI i korzystania z analizy pytań.",
+          "Treści Cyfrowe: dane wytwarzane i dostarczane w postaci cyfrowej, w tym pakiety Kredytów oraz dostęp do algorytmów analizy edukacyjnej."
         ]
       },
       {
-        title: "3. Odpowiedzialne uzycie",
-        text: "QuizSolver jest narzedziem do nauki, powtorek i pomocy przy quizach. To Ty odpowiadasz za przestrzeganie zasad szkoly, kursu, egzaminu, pracodawcy oraz platformy, z ktorej korzystasz."
+        title: "§ 2. Wymagania techniczne i charakter usługi",
+        text: "QuizSolver jest narzędziem asystującym proces nauki, powtórek materiału i weryfikacji wiedzy.",
+        items: [
+          "Do korzystania z Serwisu wymagane jest: urządzenie z dostępem do Internetu, aktualna przeglądarka internetowa (np. Google Chrome lub zgodna) z obsługą rozszerzeń i włączonym JavaScript.",
+          "QuizSolver działa na widocznej treści stron oraz zaznaczonych obszarach ekranu. Usługodawca nie gwarantuje kompatybilności z niestandardowymi lub zabezpieczonymi layoutami zewnętrznych platform testowych.",
+          "Użytkownik zobowiązany jest do korzystania z Serwisu w sposób zgodny z prawem, dobrymi obyczajami oraz regulaminami instytucji edukacyjnych, do których uczęszcza."
+        ]
       },
       {
-        title: "4. Rozszerzenie i platformy zewnetrzne",
-        text: "QuizSolver pracuje na widocznej tresci strony, zaznaczonym tekscie i zaznaczonych obszarach ekranu. Nie kontrolujemy zewnetrznych platform quizowych i nie gwarantujemy, ze kazdy layout, iframe albo typ pytania bedzie obslugiwany."
+        title: "§ 3. Rejestracja, konto użytkownika i zasady bezpieczeństwa",
+        text: "Dostęp do zakupu i synchronizacji Kredytów wymaga utworzenia Konta Użytkownika.",
+        items: [
+          "Rejestracja jest bezpłatna i następuje poprzez podanie adresu e-mail i hasła lub uwierzytelnienie za pośrednictwem dostawców zewnętrznych (Google, Discord).",
+          "Konto jest przypisane do jednego Użytkownika. Zabrania się udostępniania danych dostępowych osobom trzecim, odsprzedaży konta oraz stosowania botów lub automatycznych skryptów naruszających infrastrukturę Serwisu.",
+          "Usługodawca zastrzega sobie prawo do zablokowania Konta w przypadku rażącego naruszenia postanowień Regulaminu."
+        ]
       },
       {
-        title: "5. Platnosci i zwroty",
-        text: "Platnosci obsluguje zewnetrzny operator platnosci. Prosby o zwrot sprawdzamy przez support, uwzgledniajac status zakupu, uzycie, historie konta i obowiazujace przepisy."
+        title: "§ 4. Pakiety Kredytów, Ceny i Metody Płatności (DPay i Lemon Squeezy)",
+        text: "Zakup Kredytów odbywa się na zasadach jednorazowego doładowania bez konieczności zawierania umowy abonamentowej.",
+        items: [
+          "Ceny pakietów podane w Serwisie są cenami brutto. Kredyty nie tracą ważności i nie wygasają w czasie.",
+          "Dostępne metody płatności: 1) DPay (obsługiwane przez krajową instytucję płatniczą D-PAY Sp. z o.o.) – szybkie przelewy bankowe online oraz płatności kodem BLIK w PLN; 2) Lemon Squeezy (obsługiwane przez Lemon Squeezy LLC) – karty płatnicze Visa, Mastercard, Apple Pay i Google Pay.",
+          "Realizacja zamówienia: Dostarczenie zakupionych Treści Cyfrowych (przypisanie Kredytów do salda Konta) następuje niezwłocznie (automatycznie) po potwierdzeniu dokonania płatności przez wybranego operatora płatności.",
+          "W procesie zakupu Użytkownik potwierdza adres e-mail przypisany do swojego konta w celu poprawnej i automatycznej alokacji środków."
+        ]
       },
       {
-        title: "6. Zmiany i kontakt",
-        text: "Mozemy aktualizowac usluge i regulamin wraz z rozwojem QuizSolver. W sprawach konta, platnosci albo produktu napisz na support@getquizsolver.com."
+        title: "§ 5. Prawo do odstąpienia od umowy i wyłączenie prawa do zwrotu",
+        text: "Kluczowe informacje dotyczące praw konsumenta i braku możliwości zwrotu po rozpoczęciu korzystania z usługi:",
+        items: [
+          "Podstawa prawna: Zgodnie z art. 38 ust. 1 pkt 13 Ustawy z dnia 30 maja 2014 r. o prawach konsumenta (Dz.U. z 2020 r. poz. 287 ze zm.), prawo odstąpienia od umowy zawartej na odległość NIE PRZYSŁUGUJE konsumentowi w odniesieniu do umów o dostarczanie treści cyfrowych niedostarczanych na nośniku materialnym, za które konsument jest zobowiązany do zapłaty ceny, jeżeli przedsiębiorca rozpoczął spełnianie świadczenia za wyraźną i uprzednią zgodą konsumenta, który został poinformowany przed rozpoczęciem świadczenia, że po spełnieniu świadczenia przez przedsiębiorcę utraci prawo odstąpienia od umowy, i przyjął to do wiadomości.",
+          "Zgoda przed zakupem: Przed sfinalizowaniem zamówienia Użytkownik składa oświadczenie (poprzez zaznaczenie dedykowanego pola wyboru / checkboxa), że wyraża zgodę na natychmiastowe udostępnienie zakupionych Kredytów przed upływem 14-dniowego terminu do odstąpienia od umowy i przyjmuje do wiadomości, że traci prawo do odstąpienia od umowy z chwilą udostępnienia i rozpoczęcia świadczenia.",
+          "Klauzula konsumpcji kredytów (brak zwrotów): W szczególności, jeżeli Użytkownik po dokonaniu zakupu wykorzysta chociażby 1 (jeden) kredyt z zakupionego pakietu (m.in. wygeneruje odpowiedź, skorzysta z pomocy AI, wyśle zapytanie lub użyje narzędzia FocusScan), świadczenie uważa się za w pełni rozpoczęte i skonsumowane, co bezpowrotnie i całkowicie wyłącza możliwość odstąpienia od umowy oraz uzyskania zwrotu uiszczonej opłaty.",
+          "Brak gwarancji wyniku egzaminu: Narzędzie AI generuje podpowiedzi w sposób probabilistyczny i służy celom edukacyjnym. Subiektywne niezadowolenie z wygenerowanej odpowiedzi nie uprawnia do zwrotu środków."
+        ]
+      },
+      {
+        title: "§ 6. Postępowanie reklamacyjne",
+        text: "Wszelkie zastrzeżenia techniczne dotyczące funkcjonowania Serwisu lub zakupu Kredytów mogą być zgłaszane w drodze reklamacji.",
+        items: [
+          "Reklamacje należy składać drogą elektroniczną na adres e-mail: support@getquizsolver.com lub za pośrednictwem formularza kontaktowego.",
+          "Zgłoszenie reklamacyjne powinno zawierać: adres e-mail Konta, identyfikator zamówienia/transakcji (od DPay lub Lemon Squeezy), datę zakupu oraz szczegółowy opis nieprawidłowości (np. brak zaksięgowania kredytów mimo pobrania opłaty).",
+          "Usługodawca rozpatruje reklamację w terminie 14 dni kalendarzowych od dnia jej otrzymania i przesyła odpowiedź na wskazany adres e-mail.",
+          "W przypadku uznania reklamacji technicznej, Usługodawca niezwłocznie przypisuje brakujące Kredyty do konta lub dokonuje korekty transakcji."
+        ]
+      },
+      {
+        title: "§ 7. Ochrona danych osobowych i prywatność",
+        text: "Zasady przetwarzania danych osobowych określa Polityka Prywatności dostępna w Serwisie pod adresem /privacy.",
+        items: [
+          "Administratorem danych osobowych Użytkowników jest Usługodawca.",
+          "Dane przetwarzane są w celu realizacji umowy, obsługi płatności przez operatorów DPay oraz Lemon Squeezy, a także rozpatrywania reklamacji zgodnie z RODO."
+        ]
+      },
+      {
+        title: "§ 8. Pozasądowe rozwiązywanie sporów i postanowienia końcowe",
+        text: "Usługodawca dąży do polubownego rozwiązywania wszelkich sporów z Użytkownikami.",
+        items: [
+          "Konsument ma możliwość skorzystania z pozasądowych sposobów rozpatrywania reklamacji i dochodzenia roszczeń, w tym za pośrednictwem unijnej platformy ODR dostępnej pod adresem: http://ec.europa.eu/consumers/odr.",
+          "W sprawach nieuregulowanych niniejszym Regulaminem zastosowanie mają właściwe przepisy prawa polskiego, w szczególności Kodeksu Cywilnego oraz Ustawy o prawach konsumenta.",
+          "Regulamin obowiązuje od dnia publikacji w Serwisie."
+        ]
       }
     ]
+  },
+  contactPage: {
+    metaTitle: "Kontakt i Pomoc | QuizSolver",
+    metaDescription: "Skontaktuj się z zespołem QuizSolver. Pomoc techniczna, płatności DPay i Lemon Squeezy, zgłoszenia reklamacyjne i współpraca. Odpowiedź w ciągu 24h.",
+    title: "Skontaktuj się z nami",
+    badge: "Centrum Pomocy & Kontakt",
+    subtitle: "Masz pytania dotyczące rozszerzenia, doładowania konta lub działania QuizSolver? Jesteśmy do Twojej dyspozycji.",
+    responseTime: "Średni czas odpowiedzi: do 24 godzin (dni robocze)",
+    cards: [
+      {
+        title: "Pomoc techniczna",
+        desc: "Pytania o działanie rozszerzenia na platformach quizowych, logowanie, błędy techniczne.",
+        email: "support@getquizsolver.com",
+        actionLabel: "Napisz na support"
+      },
+      {
+        title: "Płatności & Kredyty",
+        desc: "Pytania o doładowania przez DPay (BLIK) lub Lemon Squeezy, faktury i status płatności.",
+        email: "contact@getquizsolver.com",
+        actionLabel: "Dział rozliczeń"
+      },
+      {
+        title: "Reklamacje & Zwroty",
+        desc: "Oficjalne zgłoszenia reklamacji transakcji zgodnie z Regulaminem (czas rozpatrzenia: 14 dni).",
+        email: "support@getquizsolver.com",
+        actionLabel: "Zgłoś reklamację"
+      },
+      {
+        title: "Współpraca & Biznes",
+        desc: "Oferty partnerskie, propozycje integracji lub pytania prasowe.",
+        email: "contact@getquizsolver.com",
+        actionLabel: "Kontakt biznesowy"
+      }
+    ],
+    form: {
+      title: "Napisz do nas bezpośrednio",
+      subtitle: "Wypełnij krótki formularz, a nasza pomoc techniczna skontaktuje się z Tobą mailowo.",
+      nameLabel: "Twoje imię / Nick",
+      namePlaceholder: "np. Jan",
+      emailLabel: "Twój adres e-mail",
+      emailPlaceholder: "np. jan@example.com (ten sam co w koncie)",
+      subjectLabel: "Temat wiadomości",
+      subjectPlaceholder: "Wybierz temat...",
+      messageLabel: "Treść wiadomości",
+      messagePlaceholder: "Opisz dokładnie, w czym możemy Ci pomóc...",
+      submitBtn: "Wyślij wiadomość",
+      sendingBtn: "Wysyłanie...",
+      successMsg: "Dziękujemy! Twoja wiadomość została wysłana. Odpowiemy najszybciej jak to możliwe.",
+      errorMsg: "Nie udało się wysłać wiadomości. Spróbuj ponownie lub napisz bezpośrednio na contact@getquizsolver.com.",
+      subjects: [
+        "Pytanie o płatność / doładowanie (DPay, Lemon Squeezy)",
+        "Pomoc techniczna z rozszerzeniem",
+        "Problem z logowaniem / kontem",
+        "Reklamacja techniczna",
+        "Inne zapytanie"
+      ]
+    },
+    companyInfo: {
+      title: "Informacje o usłudze",
+      desc: "QuizSolver to zaawansowane narzędzie AI wspomagające naukę i rozwiązywanie pytań testowych.",
+      serviceName: "QuizSolver (getquizsolver.com)",
+      website: "https://getquizsolver.com",
+      email: "contact@getquizsolver.com",
+      hours: "Poniedziałek – Piątek: 9:00 – 18:00 CET",
+      termsLinkText: "Zobacz Regulamin serwisu",
+      privacyLinkText: "Zobacz Politykę Prywatności"
+    }
   },
   dashboardPage: {
     metaTitle: "Panel użytkownika | QuizSolver",
@@ -1039,6 +1305,7 @@ export type PageKey =
   | 'quizizz'
   | 'privacy'
   | 'terms'
+  | 'contact'
   | 'notFound'
   | 'success'
   | 'blog'
@@ -1066,6 +1333,7 @@ interface LocalizedSiteBundle {
   shell: Record<string, string>;
   privacyPage: SiteCopy['privacyPage'];
   termsPage?: SiteCopy['termsPage'];
+  contactPage?: SiteCopy['contactPage'];
   dashboardPage: SiteCopy['dashboardPage'];
   creditsPage: SiteCopy['creditsPage'];
   quizPage: SiteCopy['quizPage'];
@@ -1335,6 +1603,7 @@ function buildLocalizedSiteCopy(locale: ExtraLocale): SiteCopy {
     auth: bundle.auth,
     privacyPage: bundle.privacyPage,
     termsPage: bundle.termsPage || en.termsPage,
+    contactPage: bundle.contactPage || en.contactPage,
     dashboardPage: bundle.dashboardPage,
     creditsPage: bundle.creditsPage,
     quizPage: bundle.quizPage,
@@ -1999,6 +2268,7 @@ export const PAGE_SLUGS: Record<PageKey, string> = {
   privacy: 'privacy',
   cookies: 'cookies',
   terms: 'terms',
+  contact: 'contact',
   notFound: '404',
   success: 'success',
   blog: 'blog',
@@ -2029,6 +2299,7 @@ export const INDEXED_PAGE_KEYS: PageKey[] = [
   'quizizz',
   'privacy',
   'terms',
+  'contact',
   'blog',
   'blogPost',
   'mobileInstall'
@@ -2051,6 +2322,7 @@ export function pageData(pageKey: PageKey, locale: Locale): any {
   if (pageKey === 'home') return copy['home'];
   if (pageKey === 'privacy') return copy['privacyPage'];
   if (pageKey === 'terms') return copy['termsPage'];
+  if (pageKey === 'contact') return copy['contactPage'];
   if (pageKey === 'dashboard') return copy['dashboardPage'];
   if (pageKey === 'credits') return copy['creditsPage'];
   if (pageKey === 'quiz') return copy['quizPage'];

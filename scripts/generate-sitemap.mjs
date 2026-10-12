@@ -37,6 +37,7 @@ const slugs = {
   quizizz: 'quizizz-solver',
   privacy: 'privacy',
   terms: 'terms',
+  contact: 'contact',
   blog: 'blog',
   mobileInstall: 'mobile-install'
 };

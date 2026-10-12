@@ -155,9 +155,10 @@ export class AnimatedNumberComponent implements OnInit, OnChanges, OnDestroy {
                 </div>
               </div>
             </div>
-          <p class="hero-asterisk delay-4" style="font-size: 0.75rem; opacity: 0.6; margin-top: 1.5rem; text-align: center;">
-              * {{ text.hero.asterisk || 'Universal Parser™ reads most standard web quiz layouts. Highly custom, interactive or locked visual interfaces may require manual FocusScan.' }}
-            </p>
+          <div class="hero-asterisks delay-4" style="font-size: 0.75rem; opacity: 0.65; margin-top: 1.5rem; text-align: center; display: grid; gap: 0.35rem; max-width: 820px; margin-left: auto; margin-right: auto; line-height: 1.45;">
+            <p class="hero-asterisk" style="margin: 0;">{{ text.hero.asterisk }}</p>
+            <p class="hero-asterisk" style="margin: 0;" *ngIf="text.hero.asterisk2">{{ text.hero.asterisk2 }}</p>
+          </div>
           </div>
         </section>
 
@@ -1402,7 +1403,8 @@ const HOME_COPY: Partial<Record<Locale, any>> & { en: any; pl: any } = {
         { prefix: '', target: 35, suffix: '+ directly supported quiz platforms' },
         { prefix: '', target: -1, suffix: ' other sites — works anywhere thanks to Universal Parser™*', href: '/blog/universal-parser-infinite-quiz-platforms' }
       ],
-      asterisk: '*Universal Parser™ automatically adapts to almost any quiz on the internet. For heavily-locked or graphical interfaces, simply use our foolproof FocusScan.',
+      asterisk: '* Universal Parser™ automatically adapts to almost any quiz on the internet. For heavily-locked or graphical interfaces, simply use our foolproof FocusScan.',
+      asterisk2: '** Websites and quiz portals may periodically update their layout or code, so automated parsing might not always succeed immediately — that is exactly why FocusScan (screen region capture) guarantees 100% question capture.',
       socialProof: 'Built for real quiz pages: Universal Parser, FocusScan and saved study history in one Chrome extension.'
     },
     how: {
@@ -1453,9 +1455,9 @@ const HOME_COPY: Partial<Record<Locale, any>> & { en: any; pl: any } = {
       subtitle: 'No recurring subscriptions. One-time credit packages keep it simple: answers and explanations spend credits, your study history is free forever.',
       badge: 'Most Popular',
       packs: [
-        { id: 'starter', name: '100 credits', price: '$1.99', originalPrice: '', caption: 'Small top-up', button: 'Get 100 credits', features: ['One-time purchase, no subscription', 'Good for quick practice tests', 'Works for both answers and explanations', 'Lifetime access to saved notes'] },
-        { id: 'popular', name: '500 credits', price: '$4.99', originalPrice: '', caption: 'Regular use pack', socialText: 'Chosen by 84% of students', button: 'Choose 500 Credits', features: ['Save 15% compared to starter', 'Great for weekly homework tasks', 'High priority response speed', 'Lifetime access to saved notes'] },
-        { id: 'pro', name: '2000 credits', price: '$14.99', originalPrice: '', caption: 'Heavy study sessions', button: 'Choose 2000 Credits', features: ['Best value per credit', 'Perfect for midterms and finals preparation', 'Highest priority response speed', 'Lifetime access to saved notes'] }
+        { id: 'starter', name: 'Rescue Pack (100 answers)', price: '$1.99', originalPrice: '', caption: '3–5 full tests or exams • Less than a coffee', button: 'Get Rescue Pack', features: ['100 AI answer suggestions + explanations', 'Peace of mind for 3–5 full exams or midterms', 'Works on Testportal, Moodle, Canvas & Forms', 'Credits never expire — pay once, no subscription'] },
+        { id: 'popular', name: 'Semester Pack (500 answers)', price: '$4.99', originalPrice: '', caption: 'Stress-free homework & exams • Less than a pizza', socialText: 'Chosen by 84% of students', button: 'Get Semester Pack', features: ['500 AI answer suggestions + explanations', '50% discount vs Starter (~$0.01 / answer)', 'High priority response speed for timed tests', 'Lifetime access to saved notes & history'] },
+        { id: 'pro', name: 'Annual & Group Pack (2000 answers)', price: '$14.99', originalPrice: '', caption: 'Massive supply for the entire year or to share • Lowest rate (<$0.008)', button: 'Get Annual Pack', features: ['2000 AI answer suggestions + explanations', 'Lowest price per answer anywhere (<$0.008)', 'Share with friends or use across multiple semesters', 'Instant maximum priority speed'] }
       ]
     },
     faqTitle: 'Frequently asked questions',
@@ -1485,7 +1487,8 @@ const HOME_COPY: Partial<Record<Locale, any>> & { en: any; pl: any } = {
         { prefix: '', target: 35, suffix: '+ platform quizowych ze wsparciem bezpośrednim' },
         { prefix: '', target: -1, suffix: ' innych stron — działa wszędzie dzięki Universal Parser™*', href: '/pl/blog/universal-parser-nieskonczonosc-platform-quizowych' }
       ],
-      asterisk: '*Universal Parser™ automatycznie dopasowuje się do niemal każdego quizu w internecie. Przy bardzo restrykcyjnych interfejsach z pomocą przychodzi niezawodny FocusScan.',
+      asterisk: '* Universal Parser™ automatycznie dopasowuje się do niemal każdego quizu w internecie. Przy bardzo restrykcyjnych interfejsach z pomocą przychodzi niezawodny FocusScan.',
+      asterisk2: '** Strony i platformy quizowe mogą okresowo zmieniać swoją budowę kodu, przez co parser nie zawsze natychmiast rozpozna layout — właśnie dlatego FocusScan (zaznaczenie wycinka ekranu) gwarantuje 100% skuteczności.',
       socialProof: 'Stworzone pod prawdziwe quizy: Universal Parser, FocusScan i historia nauki w jednym rozszerzeniu Chrome.'
     },
     how: {
@@ -1536,9 +1539,9 @@ const HOME_COPY: Partial<Record<Locale, any>> & { en: any; pl: any } = {
       subtitle: 'Bez cyklicznych subskrypcji. Jednorazowe pakiety kredytów: odpowiedzi i wyjaśnienia zużywają kredyty, historia nauki pozostaje darmowa na zawsze.',
       badge: 'Najchętniej Wybierany',
       packs: [
-        { id: 'starter', name: '100 kredytów', price: '$1.99', originalPrice: '', caption: 'Małe doładowanie', button: 'Kup 100 kredytów', features: ['Jednorazowy zakup, brak subskrypcji', 'Idealne do szybkich testów sprawdzających', 'Obejmuje odpowiedzi i wyjaśnienia', 'Bezterminowy, darmowy dostęp do historii'] },
-        { id: 'popular', name: '500 kredytów', price: '$4.99', originalPrice: '', caption: 'Pakiet regularny', socialText: 'Wybierane przez 84% studentów', button: 'Wybierz 500 Kredytów', features: ['Oszczędzasz 15% w porównaniu z pakietem Starter', 'Świetny do regularnej nauki i prac domowych', 'Wysoki priorytet generowania odpowiedzi', 'Bezterminowy, darmowy dostęp do historii'] },
-        { id: 'pro', name: '2000 kredytów', price: '$14.99', originalPrice: '', caption: 'Sesja egzaminacyjna', button: 'Wybierz 2000 Kredytów', features: ['Najlepsza cena w przeliczeniu na kredyt', 'Idealne do przygotowania przed kolokwiami i sesją', 'Najwyższy priorytet generowania odpowiedzi', 'Bezterminowy, darmowy dostęp do historii'] }
+        { id: 'starter', name: 'Pakiet Ratunkowy (100 pytań)', price: '$1.99', originalPrice: '', caption: 'Spokój na 3–5 kolokwiów • Mniej niż energy drink', button: 'Wybierz Pakiet Ratunkowy', features: ['100 odpowiedzi AI ze szczegółowym wyjaśnieniem', 'Spokój na 3–5 pełnych kolokwiów lub testów', 'Działa na Testportal, Moodle, Canvas, Forms i innych', 'Kredyty nigdy nie wygasają — brak abonamentu'] },
+        { id: 'popular', name: 'Pakiet Semestralny (500 pytań)', price: '$4.99', originalPrice: '', caption: 'Bezstresowa nauka i sesja • Mniej niż pizza', socialText: 'Wybierane przez 84% studentów', button: 'Wybierz Pakiet Semestralny', features: ['500 odpowiedzi AI ze szczegółowym wyjaśnieniem', '50% taniej w porównaniu do Starter (~$0.01 / odp.)', 'Wysoki priorytet odpowiedzi na testach z czasem', 'Bezterminowy dostęp do historii i powtórek'] },
+        { id: 'pro', name: 'Pakiet Roczny / Na spółkę (2000 pytań)', price: '$14.99', originalPrice: '', caption: 'Zapas na cały rok lub dla paczki znajomych • Tylko <$0.008 / odp.', button: 'Wybierz Pakiet Roczny', features: ['2000 odpowiedzi AI ze szczegółowym wyjaśnieniem', 'Najniższy koszt za pojedynczą odpowiedź (<$0.008)', 'Idealne na spółkę ze znajomymi lub na cały rok', 'Maksymalny priorytet i natychmiastowe odpowiedzi'] }
       ]
     },
     faqTitle: 'Najczęściej zadawane pytania',
@@ -1566,7 +1569,8 @@ const HOME_LOCALE_TEXT: Record<Exclude<Locale, 'en' | 'pl'>, any> = {
     primary: 'Aus dem Chrome Web Store installieren',
     secondary: 'So funktioniert es',
     proof: [{ prefix: '', target: 35, suffix: '+ direkt unterstützte Quiz-Plattformen' }, { prefix: '', target: -1, suffix: ' andere Seiten — funktioniert überall dank Universal Parser™*', href: '/de/blog/universal-parser-unendlich-viele-quiz-plattformen' }],
-    asterisk: '*Universal Parser™ passt sich automatisch an fast jedes Quiz im Internet an. Für stark gesperrte oder grafische Oberflächen nutze einfach unseren FocusScan.',
+    asterisk: '* Universal Parser™ passt sich automatisch an fast jedes Quiz im Internet an. Für stark gesperrte oder grafische Oberflächen nutze einfach unseren FocusScan.',
+    asterisk2: '** Webseiten können ihren Code ändern, sodass der Parser nicht immer sofort greift — genau dafür sorgt FocusScan (Bildschirmbereich) für 100% Zuverlässigkeit.',
     socialProof: 'Gemacht für echte Quizseiten: Universal Parser, FocusScan und gespeicherte Lernhistorie in einer Chrome-Erweiterung.',
     how: ['So funktioniert QuizSolver', '3 Schritte, um jedes Quiz mit KI zu lösen', 'Einmal installieren, auf unterstützten Plattformen lösen und automatisch eine persönliche Lernbibliothek aufbauen.'],
     steps: [['Installieren und anmelden', 'Installiere QuizSolver kostenlos in Chrome. Dein Konto synchronisiert gelöste Fragen, Notizen und Übungsquizze zwischen Erweiterung und Website.'], ['Lösen oder scannen', 'Klicke Aktuelle Seite lösen. Bei Bildern, Canvas, PDF oder ungewöhnlichem Layout markierst du nur den Fragebereich mit FocusScan.'], ['Wiederholen und teilen', 'Jede gelöste Frage landet in der Historie. Daraus entstehen Karteikarten, Übungsquizze und teilbare Fragensets.']],
@@ -1582,7 +1586,8 @@ const HOME_LOCALE_TEXT: Record<Exclude<Locale, 'en' | 'pl'>, any> = {
     primary: 'Instalar desde Chrome Web Store',
     secondary: 'Ver cómo funciona',
     proof: [{ prefix: '', target: 35, suffix: '+ plataformas de quizzes con soporte directo' }, { prefix: '', target: -1, suffix: ' otros sitios — funciona en cualquier lugar gracias a Universal Parser™*', href: '/es/blog/universal-parser-infinitas-plataformas-quizzes' }],
-    asterisk: '*Universal Parser™ se adapta automáticamente a casi cualquier quiz en internet. Para interfaces fuertemente bloqueadas, utiliza nuestro infalible FocusScan.',
+    asterisk: '* Universal Parser™ se adapta automáticamente a casi cualquier quiz en internet. Para interfaces fuertemente bloqueadas, utiliza nuestro infalible FocusScan.',
+    asterisk2: '** Los sitios web pueden cambiar su estructura y el parser no siempre funciona de inmediato — por eso FocusScan garantiza un 100% de efectividad.',
     socialProof: 'Creado para quizzes reales: Universal Parser, FocusScan e historial de estudio guardado en una extensión Chrome.',
     how: ['Cómo funciona QuizSolver', '3 pasos para resolver cualquier quiz con IA', 'Instala una vez, resuelve en plataformas compatibles y crea automáticamente tu biblioteca de estudio.'],
     steps: [['Instala e inicia sesión', 'Añade QuizSolver a Chrome gratis. Tu cuenta sincroniza preguntas resueltas, notas y quizzes de práctica entre la extensión y la web.'], ['Resuelve o escanea', 'Haz clic en Resolver página actual. Para imágenes, canvas, PDF o diseños raros, usa FocusScan solo sobre el área de la pregunta.'], ['Repasa y comparte', 'Cada pregunta resuelta se guarda en Historial. Úsala para tarjetas, quizzes de práctica o enlaces compartidos.']],
@@ -1598,7 +1603,8 @@ const HOME_LOCALE_TEXT: Record<Exclude<Locale, 'en' | 'pl'>, any> = {
     primary: 'Installer depuis Chrome Web Store',
     secondary: 'Voir le fonctionnement',
     proof: [{ prefix: '', target: 35, suffix: '+ plateformes de quiz avec support direct' }, { prefix: '', target: -1, suffix: ' autres sites — fonctionne partout grâce à Universal Parser™*', href: '/fr/blog/universal-parser-infinite-plateformes-quiz' }],
-    asterisk: '*Universal Parser™ s\'adapte automatiquement à presque n\'importe quel quiz sur internet. Pour les interfaces fortement bloquées, utilisez notre FocusScan infaillible.',
+    asterisk: '* Universal Parser™ s\'adapte automatiquement à presque n\'importe quel quiz sur internet. Pour les interfaces fortement bloquées, utilisez notre FocusScan infaillible.',
+    asterisk2: '** Les sites web peuvent modifier leur structure de code et le parser peut ne pas fonctionner immédiatement — c\'est pourquoi FocusScan garantit une efficacité à 100%.',
     socialProof: 'Conçu pour de vrais quiz: Universal Parser, FocusScan et historique d’étude dans une extension Chrome.',
     how: ['Comment fonctionne QuizSolver', '3 étapes pour résoudre un quiz avec l’IA', 'Installez une fois, résolvez sur les plateformes compatibles et créez automatiquement une bibliothèque d’étude.'],
     steps: [['Installer et se connecter', 'Ajoutez QuizSolver à Chrome gratuitement. Votre compte synchronise questions résolues, notes et quiz d’entraînement entre l’extension et le site.'], ['Résoudre ou scanner', 'Cliquez Résoudre la page. Pour images, canvas, PDF ou layouts inhabituels, utilisez FocusScan uniquement sur la zone de question.'], ['Réviser et partager', 'Chaque question résolue est sauvegardée dans l’historique pour créer des cartes, des quiz ou des liens partagés.']],
@@ -1614,7 +1620,8 @@ const HOME_LOCALE_TEXT: Record<Exclude<Locale, 'en' | 'pl'>, any> = {
     primary: 'Installa da Chrome Web Store',
     secondary: 'Vedi come funziona',
     proof: [{ prefix: '', target: 35, suffix: '+ piattaforme di quiz con supporto diretto' }, { prefix: '', target: -1, suffix: ' altri siti — funziona ovunque grazie a Universal Parser™*', href: '/it/blog/universal-parser-infinite-piattaforme-quiz' }],
-    asterisk: '*Universal Parser™ si adatta automaticamente a quasi tutti i quiz su internet. Per interfacce fortemente bloccate, usa il nostro infallibile FocusScan.',
+    asterisk: '* Universal Parser™ si adatta automaticamente a quasi tutti i quiz su internet. Per interfacce fortemente bloccate, usa il nostro infallibile FocusScan.',
+    asterisk2: '** I siti web possono aggiornare il proprio codice e il parser potrebbe non funzionare subito — per questo FocusScan garantisce il 100% di efficacia.',
     socialProof: 'Creato per quiz reali: Universal Parser, FocusScan e cronologia di studio salvata in un’estensione Chrome.',
     how: ['Come funziona QuizSolver', '3 passaggi per risolvere qualsiasi quiz con AI', 'Installa una volta, risolvi sulle piattaforme supportate e crea automaticamente una libreria di studio.'],
     steps: [['Installa e accedi', 'Aggiungi QuizSolver a Chrome gratis. Il tuo account sincronizza domande risolte, note e quiz di pratica tra estensione e sito.'], ['Risolvi o scansiona', 'Clicca Risolvi pagina corrente. Per immagini, canvas, PDF o layout insoliti usa FocusScan solo sull’area della domanda.'], ['Ripassa e condividi', 'Ogni domanda risolta viene salvata nella cronologia per creare flashcard, quiz di pratica o link condivisi.']],
@@ -1630,7 +1637,8 @@ const HOME_LOCALE_TEXT: Record<Exclude<Locale, 'en' | 'pl'>, any> = {
     primary: 'Встановити з Chrome Web Store',
     secondary: 'Як це працює',
     proof: [{ prefix: '', target: 35, suffix: '+ квіз-платформ із прямою підтримкою' }, { prefix: '', target: -1, suffix: ' інших сайтів — працює будь-де завдяки Universal Parser™*', href: '/uk/blog/universal-parser-bezlich-quiz-platform' }],
-    asterisk: '*Universal Parser™ автоматично адаптується до майже будь-якого квізу в інтернеті. Для сильно заблокованих інтерфейсів використовуйте наш надійний FocusScan.',
+    asterisk: '* Universal Parser™ автоматично адаптується до майже будь-якого квізу в інтернеті. Для сильно заблокованих інтерфейсів використовуйте наш надійний FocusScan.',
+    asterisk2: '** Сайти можуть оновлювати структуру коду, тому парсер не завжди спрацьовує миттєво — саме для цього FocusScan (виділення області) гарантує 100% точність.',
     socialProof: 'Створено для реальних квізів: Universal Parser, FocusScan і збережена історія навчання в одному Chrome-розширенні.',
     how: ['Як працює QuizSolver', '3 кроки, щоб розв’язати квіз з AI', 'Встанови один раз, розв’язуй на підтримуваних платформах і автоматично збирай власну бібліотеку для навчання.'],
     steps: [['Встанови й увійди', 'Додай QuizSolver у Chrome безкоштовно. Акаунт синхронізує розв’язані питання, нотатки і тренувальні квізи між розширенням та сайтом.'], ['Розв’язуй або скануй', 'Натисни Розв’язати сторінку. Для зображень, canvas, PDF або незвичного макета виділи лише область питання через FocusScan.'], ['Повторюй і ділись', 'Кожне розв’язане питання зберігається в історії, щоб робити картки, тренувальні квізи або посилання для інших.']],
@@ -1646,9 +1654,9 @@ const HOME_DETAIL_TEXT: Record<Exclude<Locale, 'en' | 'pl'>, any> = {
   de: {
     platforms: ['Nahtlose Plattform-Integrationen', 'Optimiert für die Systeme, die du wirklich nutzt', 'Eine Chrome-Erweiterung für Testportal, Moodle, Canvas, Google Forms, Microsoft Forms, Blackboard, Quizlet, Socrative, Kahoot und Quizizz.'],
     packs: [
-      ['Kleines Guthaben', '100 credits holen', ['Einmaliger Kauf, kein Abo', 'Gut für kurze Übungstests', 'Für Antworten und Erklärungen', 'Dauerhafter Zugriff auf Notizen']],
-      ['Paket für regelmäßige Nutzung', '500 Credits wählen', ['15% günstiger als Starter', 'Ideal für wöchentliche Aufgaben', 'Hohe Antwortpriorität', 'Dauerhafter Zugriff auf Notizen']],
-      ['Große Lernsessions', '2000 Credits wählen', ['Bester Preis pro Credit', 'Perfekt für Prüfungsphasen', 'Höchste Antwortpriorität', 'Dauerhafter Zugriff auf Notizen']]
+      ['Rettungs-Paket (100 Antworten)', 'Sicherheit für 3–5 Klausuren • Günstiger als ein Kaffee', 'Rettungs-Paket wählen', ['100 KI-Antworten mit Schritt-für-Schritt-Erklärung', 'Sicherheit für 3–5 komplette Tests & Klausuren', 'Funktioniert auf Moodle, Testportal, Canvas & Forms', 'Credits verfallen nie — Einmalkauf ohne Abo']],
+      ['Semester-Paket (500 Antworten)', 'Stressfreie Hausaufgaben & Klausuren das ganze Semester • Günstiger als Pizza', 'Semester-Paket wählen', ['500 KI-Antworten mit Erklärung', '50% Ersparnis gegenüber Starter (~$0.01 / Antwort)', 'Hohe Priorität bei zeitbegrenzten Tests', 'Dauerhafter Zugriff auf Historie & Notizen']],
+      ['Jahres- & Lerngruppen-Paket (2000 Antworten)', 'Vorrat fürs ganze Studienjahr oder zum Teilen • Bester Preis (<$0.008)', 'Jahres-Paket wählen', ['2000 KI-Antworten mit Erklärung', 'Tiefster Preis pro Antwort überhaupt (<$0.008)', 'Perfekt zum Teilen mit Freunden oder fürs ganze Jahr', 'Maximale Antwortpriorität']]
     ],
     faq: [
       ['Was klicke ich auf einer Quizseite?', 'Öffne die Erweiterung und klicke Aktuelle Seite lösen. Bei ungewöhnlichen Layouts markierst du die Frage mit FocusScan.'],
@@ -1665,9 +1673,9 @@ const HOME_DETAIL_TEXT: Record<Exclude<Locale, 'en' | 'pl'>, any> = {
   es: {
     platforms: ['Integraciones fluidas', 'Optimizado para los sistemas que usas', 'Una extensión de Chrome para Testportal, Moodle, Canvas, Google Forms, Microsoft Forms, Blackboard, Quizlet, Socrative, Kahoot y Quizizz.'],
     packs: [
-      ['Recarga pequeña', 'Obtener 100 créditos', ['Pago único, sin suscripción', 'Bueno para pruebas rápidas', 'Sirve para respuestas y explicaciones', 'Acceso permanente a notas']],
-      ['Pack de uso regular', 'Elegir 500 créditos', ['Ahorra 15% frente al starter', 'Ideal para tareas semanales', 'Respuesta con alta prioridad', 'Acceso permanente a notas']],
-      ['Sesiones intensas', 'Elegir 2000 créditos', ['Mejor valor por crédito', 'Perfecto para exámenes', 'Máxima prioridad de respuesta', 'Acceso permanente a notas']]
+      ['Pack Rescate (100 Respuestas)', 'Tranquilidad para 3–5 exámenes • Menos que un café', 'Elegir Pack Rescate', ['100 respuestas IA con explicación detallada', 'Tranquilidad para 3–5 exámenes o parciales', 'Funciona en Moodle, Canvas, Forms y Testportal', 'Los créditos nunca caducan — pago único sin suscripción']],
+      ['Pack Semestral (500 Respuestas)', 'Tareas, parciales y exámenes todo el semestre • Menos que una pizza', 'Elegir Pack Semestral', ['500 respuestas IA con explicaciones', 'Ahorra 50% vs Starter (~$0.01 / respuesta)', 'Alta prioridad de respuesta para exámenes con tiempo', 'Acceso permanente al historial y notas']],
+      ['Pack Anual o Grupal (2000 Respuestas)', 'Reserva para todo el año o para compartir • Precio mínimo (<$0.008)', 'Elegir Pack Anual', ['2000 respuestas IA con explicaciones', 'Precio más bajo por respuesta (<$0.008)', 'Ideal para compartir con amigos o todo el año', 'Máxima prioridad de respuesta']]
     ],
     faq: [
       ['¿Qué hago al abrir una página de quiz?', 'Abre la extensión y pulsa Resolver página actual. Si el diseño es raro, usa FocusScan y selecciona solo la pregunta.'],
@@ -1684,9 +1692,9 @@ const HOME_DETAIL_TEXT: Record<Exclude<Locale, 'en' | 'pl'>, any> = {
   fr: {
     platforms: ['Intégrations fluides', 'Optimisé pour les systèmes que tu utilises', 'Une extension Chrome pour Testportal, Moodle, Canvas, Google Forms, Microsoft Forms, Blackboard, Quizlet, Socrative, Kahoot et Quizizz.'],
     packs: [
-      ['Petite recharge', 'Obtenir 100 crédits', ['Achat unique, sans abonnement', 'Idéal pour des tests rapides', 'Fonctionne pour réponses et explications', 'Accès permanent aux notes']],
-      ['Pack régulier', 'Choisir 500 crédits', ['15% d’économie vs starter', 'Parfait pour les devoirs hebdomadaires', 'Réponses prioritaires', 'Accès permanent aux notes']],
-      ['Grosses sessions', 'Choisir 2000 crédits', ['Meilleur prix par crédit', 'Parfait pour les examens', 'Priorité maximale', 'Accès permanent aux notes']]
+      ['Pack Sauvetage (100 Réponses)', 'Sérénité pour 3–5 partiels • Moins cher qu\'un café', 'Prendre le Pack Sauvetage', ['100 réponses IA avec explications étape par étape', 'Sérénité pour 3–5 examens ou partiels complets', 'Fonctionne sur Moodle, Canvas, Forms et Testportal', 'Crédits sans expiration — paiement unique, sans abonnement']],
+      ['Pack Semestre (500 Réponses)', 'Devoirs, partiels et examens tout le semestre • Moins cher qu\'une pizza', 'Prendre le Pack Semestre', ['500 réponses IA avec explications', '50% d\'économie par rapport au Starter (~$0.01 / réponse)', 'Vitesse prioritaire pour les tests chronométrés', 'Accès illimité à l\'historique et aux notes']],
+      ['Pack Annuel & Groupe (2000 Réponses)', 'Réserve pour toute l\'année ou à partager • Prix minimal (<$0.008)', 'Prendre le Pack Annuel', ['2000 réponses IA avec explications', 'Prix le plus bas par réponse (<$0.008)', 'Idéal à partager entre amis ou pour toute l\'année', 'Vitesse et priorité maximales']]
     ],
     faq: [
       ['Que faire sur une page de quiz ?', 'Ouvrez l’extension et cliquez Résoudre la page. Si le layout est inhabituel, utilisez FocusScan sur la question.'],
@@ -1703,9 +1711,9 @@ const HOME_DETAIL_TEXT: Record<Exclude<Locale, 'en' | 'pl'>, any> = {
   it: {
     platforms: ['Integrazioni fluide', 'Ottimizzato per i sistemi che usi davvero', 'Un’estensione Chrome per Testportal, Moodle, Canvas, Google Forms, Microsoft Forms, Blackboard, Quizlet, Socrative, Kahoot e Quizizz.'],
     packs: [
-      ['Piccola ricarica', 'Ottieni 100 crediti', ['Acquisto una tantum, niente abbonamento', 'Ottimo per test rapidi', 'Vale per risposte e spiegazioni', 'Accesso permanente alle note']],
-      ['Pack uso regolare', 'Scegli 500 crediti', ['Risparmi il 15% rispetto allo starter', 'Ideale per compiti settimanali', 'Risposte ad alta priorità', 'Accesso permanente alle note']],
-      ['Sessioni intense', 'Scegli 2000 crediti', ['Miglior valore per credito', 'Perfetto per esami', 'Massima priorità', 'Accesso permanente alle note']]
+      ['Pacchetto Soccorso (100 Risposte)', 'Serenità per 3–5 esami • Meno di un caffè', 'Prendi Pacchetto Soccorso', ['100 risposte IA con spiegazioni dettagliate', 'Serenità per 3–5 verifiche o esami completi', 'Funziona su Moodle, Canvas, Forms e Testportal', 'I crediti non scadono mai — pagamento una tantum']],
+      ['Pacchetto Semestrale (500 Risposte)', 'Compiti, prove ed esami tutto il semestre • Meno del costo di una pizza', 'Prendi Pacchetto Semestrale', ['500 risposte IA con spiegazioni', 'Risparmi il 50% rispetto allo Starter (~$0.01 / risposta)', 'Alta priorità di risposta per test a tempo', 'Accesso illimitato a cronologia e note']],
+      ['Pacchetto Annuale & Gruppo (2000 Risposte)', 'Scorta per tutto l\'anno o da condividere • Prezzo più basso (<$0.008)', 'Prendi Pacchetto Annuale', ['2000 risposte IA con spiegazioni', 'Prezzo più basso per risposta (<$0.008)', 'Perfetto da dividere con compagni o per tutto l\'anno', 'Massima priorità di risposta']]
     ],
     faq: [
       ['Cosa clicco su una pagina quiz?', 'Apri l’estensione e premi Risolvi pagina corrente. Per layout insoliti usa FocusScan sulla domanda.'],
@@ -1722,9 +1730,9 @@ const HOME_DETAIL_TEXT: Record<Exclude<Locale, 'en' | 'pl'>, any> = {
   uk: {
     platforms: ['Плавні інтеграції', 'Оптимізовано для систем, якими ти реально користуєшся', 'Chrome-розширення для Testportal, Moodle, Canvas, Google Forms, Microsoft Forms, Blackboard, Quizlet, Socrative, Kahoot і Quizizz.'],
     packs: [
-      ['Мале поповнення', 'Отримати 100 кредитів', ['Разова покупка, без підписки', 'Добре для швидких тренувань', 'Працює для відповідей і пояснень', 'Постійний доступ до нотаток']],
-      ['Пакет для регулярного використання', 'Вибрати 500 кредитів', ['Економія 15% проти starter', 'Зручно для щотижневих завдань', 'Високий пріоритет відповіді', 'Постійний доступ до нотаток']],
-      ['Великі навчальні сесії', 'Вибрати 2000 кредитів', ['Найкраща ціна за кредит', 'Ідеально перед іспитами', 'Найвищий пріоритет відповіді', 'Постійний доступ до нотаток']]
+      ['Рятувальний пакет (100 Відповідей)', 'Спокій на 3–5 модулів • Дешевше за каву', 'Обрати Рятувальний пакет', ['100 AI-відповідей з покроковими поясненнями', 'Спокій на 3–5 повних модулів або тестів', 'Працює на Testportal, Moodle, Canvas та Forms', 'Кредити ніколи не згорають — без регулярних підписок']],
+      ['Семестровий пакет (500 Відповідей)', 'Домашки, модулі та сесія на весь семестр • Дешевше за піцу', 'Обрати Семестровий пакет', ['500 AI-відповідей з поясненнями', '50% економії проти Starter (~$0.01 / відповідь)', 'Високий пріоритет швидкості на тестах з таймером', 'Безтерміновий доступ до збереженої історії']],
+      ['Річний / Спільний пакет (2000 Відповідей)', 'Запас на весь рік або для спільних занять • Найкраща ціна (<$0.008)', 'Обрати Річний пакет', ['2000 AI-відповідей з поясненнями', 'Найнижча ціна за одну відповідь (<$0.008)', 'Ідеально для спілки з друзями або на весь навчальний рік', 'Максимальний пріоритет швидкості']]
     ],
     faq: [
       ['Що натиснути на сторінці квізу?', 'Відкрий розширення і натисни Розв’язати сторінку. Для незвичного макета використовуй FocusScan.'],
@@ -1750,9 +1758,10 @@ function makeHomeCopy(locale: Exclude<Locale, 'en' | 'pl'>): any {
   }));
   const packs = HOME_COPY.en.pricing.packs.map((pack: any, index: number) => ({
     ...pack,
-    caption: detail.packs[index][0],
-    button: detail.packs[index][1],
-    features: detail.packs[index][2]
+    name: detail.packs[index][0],
+    caption: detail.packs[index][1],
+    button: detail.packs[index][2],
+    features: detail.packs[index][3]
   }));
   return {
     hero: {
@@ -1764,6 +1773,7 @@ function makeHomeCopy(locale: Exclude<Locale, 'en' | 'pl'>): any {
       secondary: t.secondary,
       proof: t.proof,
       asterisk: t.asterisk,
+      asterisk2: t.asterisk2,
       socialProof: t.socialProof
     },
     how: {

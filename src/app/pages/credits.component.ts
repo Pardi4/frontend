@@ -50,6 +50,44 @@ import { ShellComponent, trackGa4Event } from './shell.component';
           </div>
         </section>
 
+        <!-- FIRST TOP-UP PROMO BANNER with Countdown Timer (Only for users who never topped up) -->
+        <section class="first-topup-banner glass" *ngIf="isFirstPurchasePromoEligible">
+          <div class="promo-glow"></div>
+          <div class="promo-content">
+            <div class="promo-left">
+              <div class="promo-badge-pill">
+                <span class="fire-icon">🔥</span>
+                <span>{{ promoCopy.badge }}</span>
+              </div>
+              <div class="promo-text-block">
+                <h3 class="promo-headline">{{ promoCopy.title }}</h3>
+                <p class="promo-sub">{{ promoCopy.subtitle }}</p>
+              </div>
+            </div>
+
+            <div class="promo-right">
+              <!-- Interactive Click-to-copy code button -->
+              <button type="button" class="promo-code-btn" (click)="copyPromoCode()" [title]="promoCopy.clickToCopy">
+                <span class="code-label">{{ promoCopy.codeLabel }}</span>
+                <span class="code-val">WELCOME10</span>
+                <span class="code-action-tag" [class.copied]="codeCopied()">
+                  {{ codeCopied() ? promoCopy.copied : promoCopy.copyBtn }}
+                </span>
+              </button>
+
+              <!-- Real-time FOMO Countdown Timer -->
+              <div class="promo-timer-box">
+                <span class="timer-label">{{ promoCopy.timerLabel }}</span>
+                <div class="timer-digits">
+                  <span class="digit-chunk">{{ timerMinutes }}</span>
+                  <span class="digit-sep">:</span>
+                  <span class="digit-chunk">{{ timerSeconds }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         <!-- Payment Error Alert (if any) -->
         <section class="payment-error glass" *ngIf="buyError()">
           {{ buyError() }}
@@ -60,6 +98,9 @@ import { ShellComponent, trackGa4Event } from './shell.component';
           <div class="packages-deck">
             <article class="package-card glass glass-hover" *ngFor="let pack of packs" [class.featured]="pack.id === 'popular'">
               <span *ngIf="pack.badge" class="featured-badge">{{ pack.badge[locale] || pack.badge['en'] }}</span>
+
+              <!-- Package Role Title -->
+              <h3 class="pack-role-title">{{ pack.name[locale] }}</h3>
 
               <!-- Clear Credit Count as Hero of Card -->
               <div class="pack-credits-header">
@@ -78,8 +119,15 @@ import { ShellComponent, trackGa4Event } from './shell.component';
                 </div>
               </div>
 
-              <!-- Clear, Honest Recommendation of Pack Size -->
-              <p class="pack-use-case text-secondary">{{ pack.useCase[locale] }}</p>
+              <!-- Tangible Academic Outcome: Passed Exams & Peace of Mind -->
+              <p class="pack-outcome">
+                {{ pack.outcome[locale] }}
+              </p>
+
+              <!-- Relatable Global Cost Comparison Chip -->
+              <div class="pack-comparison-chip">
+                {{ pack.comparison[locale] }}
+              </div>
 
               <div class="pack-social-proof" *ngIf="pack.socialText">
                 <span class="pulse-dot"></span> {{ pack.socialText[locale] }}
@@ -176,20 +224,112 @@ import { ShellComponent, trackGa4Event } from './shell.component';
           </div>
         </section>
 
-        <!-- Checkout Email Confirmation Modal -->
+        <!-- Checkout Confirmation Modal with Payment Provider & Mandatory Digital Consent -->
         <div class="checkout-confirm-backdrop" *ngIf="pendingPack()" (click)="cancelCheckout()">
           <section class="checkout-confirm glass" (click)="$event.stopPropagation()">
             <p class="eyebrow">{{ label('confirmBadge') }}</p>
             <h2>{{ label('confirmTitle') }}</h2>
             <p class="text-secondary">{{ label('confirmText') }}</p>
+
+            <!-- Selected Pack Header Summary -->
+            <div class="confirm-pack-summary glass" *ngIf="selectedPackDetails as pack">
+              <div class="summary-pack-title">
+                <strong>{{ pack.name[locale] || pack.name.en }}</strong>
+                <span class="summary-pack-credits">{{ pack.credits }} {{ copy.creditsUnitLabel || 'credits' }}</span>
+              </div>
+              <div class="summary-pack-price">
+                <span class="price-usd">{{ pack.price }}</span>
+                <span class="price-local" *ngIf="getApproxCurrencyPrice(pack.price)">({{ getApproxCurrencyPrice(pack.price) }})</span>
+              </div>
+            </div>
+
             <div class="confirm-email">
               <span>{{ label('confirmEmailLabel') }}</span>
               <code>{{ api.currentUser()?.email }}</code>
             </div>
-            <p class="confirm-note">{{ label('confirmNote') }}</p>
+
+            <!-- First purchase promo chip if eligible -->
+            <div class="confirm-promo-applied" *ngIf="isFirstPurchasePromoEligible">
+              <span class="promo-badge">WELCOME10</span>
+              <span>{{ promoCopy.checkoutApplied }}</span>
+            </div>
+
+            <!-- Payment Provider Selector (DPay vs Lemon Squeezy) -->
+            <div class="provider-selector-wrap">
+              <span class="selector-title">{{ checkoutProviderCopy.title }}</span>
+              <div class="provider-cards-grid">
+                <!-- DPay Option -->
+                <button
+                  type="button"
+                  class="provider-card glass"
+                  [class.active]="selectedProvider() === 'dpay'"
+                  (click)="selectedProvider.set('dpay')"
+                >
+                  <div class="provider-radio">
+                    <span class="radio-dot" *ngIf="selectedProvider() === 'dpay'"></span>
+                  </div>
+                  <div class="provider-info">
+                    <div class="provider-heading">
+                      <strong>{{ checkoutProviderCopy.dpayTitle }}</strong>
+                      <span class="provider-badge-tag" *ngIf="locale === 'pl'">{{ checkoutProviderCopy.dpayBadge }}</span>
+                    </div>
+                    <span class="provider-sub">{{ checkoutProviderCopy.dpaySubtitle }}</span>
+                  </div>
+                </button>
+
+                <!-- Lemon Squeezy Option -->
+                <button
+                  type="button"
+                  class="provider-card glass"
+                  [class.active]="selectedProvider() === 'lemonsqueezy'"
+                  (click)="selectedProvider.set('lemonsqueezy')"
+                >
+                  <div class="provider-radio">
+                    <span class="radio-dot" *ngIf="selectedProvider() === 'lemonsqueezy'"></span>
+                  </div>
+                  <div class="provider-info">
+                    <div class="provider-heading">
+                      <strong>{{ checkoutProviderCopy.lemonTitle }}</strong>
+                    </div>
+                    <span class="provider-sub">{{ checkoutProviderCopy.lemonSubtitle }}</span>
+                  </div>
+                </button>
+              </div>
+            </div>
+
+            <!-- Mandatory Legal Digital Waiver Checkbox -->
+            <div class="legal-consent-card glass" [class.checked]="digitalConsent()">
+              <label class="consent-checkbox-row">
+                <input
+                  type="checkbox"
+                  class="consent-native-check"
+                  [checked]="digitalConsent()"
+                  (change)="digitalConsent.set(!digitalConsent())"
+                />
+                <span class="consent-text-flow">
+                  <strong>{{ checkoutProviderCopy.consentTitle }}</strong>
+                  {{ checkoutProviderCopy.consentStatement }}
+                  <a [href]="pathFor('terms', locale)" target="_blank" class="terms-inline-link" (click)="$event.stopPropagation()">{{ checkoutProviderCopy.consentTermsLink }}</a>.
+                </span>
+              </label>
+            </div>
+
+            <div class="consent-warning" *ngIf="!digitalConsent()">
+              {{ checkoutProviderCopy.consentRequiredNote }}
+            </div>
+
+            <div class="confirm-error-banner" *ngIf="buyError()">
+              {{ buyError() }}
+            </div>
+
             <div class="confirm-actions">
               <button class="btn btn-outline" type="button" (click)="cancelCheckout()">{{ label('confirmBack') }}</button>
-              <button class="btn btn-primary" type="button" (click)="continueCheckout()" [disabled]="!!buying()">
+              <button
+                class="btn btn-primary"
+                type="button"
+                (click)="continueCheckout()"
+                [disabled]="!digitalConsent() || !!buying()"
+              >
                 {{ buying() ? copy.loading : label('confirmContinue') }}
               </button>
             </div>
@@ -310,6 +450,179 @@ import { ShellComponent, trackGa4Event } from './shell.component';
       flex-shrink: 0;
     }
 
+    /* First Top-up Promo Banner */
+    .first-topup-banner {
+      position: relative;
+      margin: 1.5rem auto 2.25rem;
+      max-width: 1100px;
+      padding: 1.35rem 2rem;
+      border-radius: var(--radius-xl);
+      border: 1px solid rgba(245, 158, 11, 0.4);
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.09) 0%, rgba(139, 92, 246, 0.09) 100%);
+      box-shadow: 0 10px 30px -10px rgba(245, 158, 11, 0.25);
+      overflow: hidden;
+    }
+    .promo-glow {
+      position: absolute;
+      top: -50%;
+      left: -20%;
+      width: 60%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(245, 158, 11, 0.15) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .promo-content {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+    .promo-left {
+      flex: 1;
+      min-width: 260px;
+    }
+    .promo-badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.75rem;
+      font-weight: 850;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #fbbf24;
+      background: rgba(245, 158, 11, 0.16);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      padding: 0.2rem 0.65rem;
+      border-radius: var(--radius-full);
+      margin-bottom: 0.35rem;
+    }
+    .promo-headline {
+      font-family: var(--font-heading);
+      font-size: 1.25rem;
+      font-weight: 850;
+      margin: 0.2rem 0 0.25rem;
+      color: var(--text-primary);
+    }
+    .promo-sub {
+      margin: 0;
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      line-height: 1.45;
+    }
+    .promo-right {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .promo-code-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.65rem;
+      background: rgba(0, 0, 0, 0.45);
+      border: 1.5px dashed rgba(245, 158, 11, 0.65);
+      border-radius: var(--radius-lg);
+      padding: 0.55rem 0.95rem;
+      cursor: pointer;
+      color: var(--text-primary);
+      transition: all 0.2s ease;
+    }
+    .promo-code-btn:hover {
+      background: rgba(245, 158, 11, 0.15);
+      border-color: #fbbf24;
+      transform: translateY(-1px);
+    }
+    .code-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-secondary);
+      font-weight: 700;
+    }
+    .code-val {
+      font-family: var(--font-mono, monospace);
+      font-weight: 900;
+      font-size: 1.05rem;
+      color: #fbbf24;
+      letter-spacing: 0.05em;
+    }
+    .code-action-tag {
+      font-size: 0.72rem;
+      font-weight: 800;
+      padding: 0.2rem 0.5rem;
+      border-radius: var(--radius-sm);
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text-secondary);
+      transition: all 0.2s ease;
+    }
+    .code-action-tag.copied {
+      background: rgba(16, 185, 129, 0.25);
+      color: #34d399;
+    }
+    .promo-timer-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-lg);
+      padding: 0.45rem 0.85rem;
+      min-width: 90px;
+    }
+    .timer-label {
+      font-size: 0.68rem;
+      font-weight: 750;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-secondary);
+      margin-bottom: 0.15rem;
+    }
+    .timer-digits {
+      display: flex;
+      align-items: center;
+      gap: 0.2rem;
+      font-family: var(--font-mono, monospace);
+      font-size: 1.15rem;
+      font-weight: 900;
+      color: #f43f5e;
+      line-height: 1;
+    }
+    .digit-chunk {
+      background: rgba(244, 63, 94, 0.12);
+      padding: 0.15rem 0.35rem;
+      border-radius: var(--radius-sm);
+      border: 1px solid rgba(244, 63, 94, 0.25);
+    }
+    .digit-sep {
+      animation: blink 1s infinite;
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+    .confirm-promo-applied {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      padding: 0.65rem 0.95rem;
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      border-radius: var(--radius-md);
+      color: #34d399;
+      font-size: 0.86rem;
+      font-weight: 650;
+      margin: 0.85rem 0;
+    }
+    .confirm-promo-applied .promo-badge {
+      font-family: var(--font-mono, monospace);
+      font-weight: 850;
+      background: rgba(16, 185, 129, 0.25);
+      padding: 0.15rem 0.45rem;
+      border-radius: var(--radius-sm);
+    }
+
     /* Packages Deck */
     .packages-section {
       padding: 0 0 2rem;
@@ -411,14 +724,39 @@ import { ShellComponent, trackGa4Event } from './shell.component';
       font-weight: 700;
       margin-top: 0.35rem;
     }
-    .pack-rate.highlight {
+    .pack-role-title {
+      font-family: var(--font-heading);
+      font-size: 1.35rem;
+      font-weight: 850;
+      color: var(--text-primary);
+      margin: 0.25rem 0 0.85rem;
+      letter-spacing: -0.02em;
+    }
+    .package-card.featured .pack-role-title {
       color: var(--accent-cyan);
     }
-    .pack-use-case {
-      font-size: 0.92rem;
-      margin: 0.25rem 0 1.25rem;
+    .pack-outcome {
+      font-size: 0.94rem;
+      line-height: 1.5;
+      margin: 0.4rem 0 0.85rem;
+      font-weight: 600;
+      color: var(--text-primary);
       min-height: 2.8em;
-      line-height: 1.45;
+    }
+    .pack-comparison-chip {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.35rem;
+      font-size: 0.82rem;
+      font-weight: 750;
+      color: var(--accent-amber);
+      background: rgba(245, 158, 11, 0.1);
+      border: 1px solid rgba(245, 158, 11, 0.25);
+      border-radius: var(--radius-full);
+      padding: 0.35rem 0.75rem;
+      margin: 0 auto 1.15rem;
+      width: fit-content;
     }
     .pack-social-proof {
       display: inline-flex;
@@ -719,6 +1057,200 @@ import { ShellComponent, trackGa4Event } from './shell.component';
       line-height: 1.55;
       font-size: 0.92rem;
     }
+    .confirm-pack-summary {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.95rem 1.25rem;
+      border-radius: var(--radius-md);
+      background: rgba(6, 182, 212, 0.08);
+      border: 1px solid rgba(6, 182, 212, 0.25);
+      margin: 0.75rem 0 1rem;
+    }
+    .summary-pack-title {
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
+      text-align: left;
+    }
+    .summary-pack-title strong {
+      font-size: 1.05rem;
+      color: var(--text-primary);
+    }
+    .summary-pack-credits {
+      font-size: 0.85rem;
+      color: var(--accent-cyan);
+      font-weight: 700;
+    }
+    .summary-pack-price {
+      text-align: right;
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
+    }
+    .price-usd {
+      font-size: 1.25rem;
+      font-weight: 900;
+      color: var(--text-primary);
+    }
+    .price-local {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      font-weight: 600;
+    }
+    .provider-selector-wrap {
+      margin: 1.25rem 0;
+      text-align: left;
+    }
+    .selector-title {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-secondary);
+      margin-bottom: 0.65rem;
+    }
+    .provider-cards-grid {
+      display: grid;
+      gap: 0.75rem;
+    }
+    .provider-card {
+      display: flex;
+      align-items: center;
+      gap: 0.95rem;
+      padding: 0.85rem 1.15rem;
+      border-radius: var(--radius-md);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(15, 23, 42, 0.55);
+      color: var(--text-primary);
+      cursor: pointer;
+      text-align: left;
+      width: 100%;
+      font-family: inherit;
+      transition: all 0.2s ease;
+    }
+    .provider-card:hover {
+      border-color: rgba(6, 182, 212, 0.4);
+      background: rgba(15, 23, 42, 0.8);
+    }
+    .provider-card.active {
+      border-color: var(--accent-cyan);
+      background: rgba(6, 182, 212, 0.1);
+      box-shadow: 0 0 16px rgba(6, 182, 212, 0.18);
+    }
+    .provider-radio {
+      width: 20px;
+      height: 20px;
+      border-radius: 999px;
+      border: 2px solid rgba(255, 255, 255, 0.35);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: border-color 0.2s ease;
+    }
+    .provider-card.active .provider-radio {
+      border-color: var(--accent-cyan);
+    }
+    .radio-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: var(--accent-cyan);
+    }
+    .provider-info {
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
+      flex: 1;
+    }
+    .provider-heading {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+    .provider-heading strong {
+      font-size: 0.95rem;
+    }
+    .provider-badge-tag {
+      font-size: 0.7rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      padding: 0.15rem 0.45rem;
+      border-radius: 999px;
+      background: rgba(16, 185, 129, 0.18);
+      color: #34d399;
+      border: 1px solid rgba(16, 185, 129, 0.35);
+    }
+    .provider-sub {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+    }
+    .legal-consent-card {
+      margin: 1.25rem 0 0.5rem;
+      padding: 0.95rem 1.15rem;
+      border-radius: var(--radius-md);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(15, 23, 42, 0.6);
+      text-align: left;
+      transition: border-color 0.2s ease, background 0.2s ease;
+    }
+    .legal-consent-card.checked {
+      border-color: rgba(6, 182, 212, 0.4);
+      background: rgba(6, 182, 212, 0.06);
+    }
+    .consent-checkbox-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      cursor: pointer;
+    }
+    .consent-native-check {
+      margin-top: 0.25rem;
+      width: 18px;
+      height: 18px;
+      accent-color: var(--accent-cyan);
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .consent-text-flow {
+      font-size: 0.82rem;
+      line-height: 1.48;
+      color: var(--text-secondary);
+    }
+    .consent-text-flow strong {
+      color: var(--text-primary);
+      display: block;
+      margin-bottom: 0.2rem;
+    }
+    .terms-inline-link {
+      color: var(--accent-cyan);
+      text-decoration: underline;
+      font-weight: 700;
+    }
+    .terms-inline-link:hover {
+      color: #38bdf8;
+    }
+    .consent-warning {
+      font-size: 0.78rem;
+      color: #fbbf24;
+      text-align: left;
+      margin-bottom: 1rem;
+      font-weight: 600;
+    }
+    .confirm-error-banner {
+      padding: 0.75rem 1rem;
+      border-radius: var(--radius-md);
+      background: rgba(239, 68, 68, 0.12);
+      border: 1px solid rgba(239, 68, 68, 0.35);
+      color: #fca5a5;
+      font-size: 0.88rem;
+      text-align: left;
+      margin-bottom: 1rem;
+      line-height: 1.45;
+    }
     .confirm-actions {
       display: flex;
       justify-content: flex-end;
@@ -728,6 +1260,20 @@ import { ShellComponent, trackGa4Event } from './shell.component';
 
     /* Responsive */
     @media (max-width: 960px) {
+      .first-topup-banner {
+        padding: 1.25rem 1.35rem;
+      }
+      .promo-content {
+        flex-direction: column;
+        align-items: stretch;
+        text-align: center;
+      }
+      .promo-badge-pill {
+        margin: 0 auto 0.35rem;
+      }
+      .promo-right {
+        justify-content: center;
+      }
       .packages-deck {
         grid-template-columns: 1fr;
         max-width: 440px;
@@ -786,8 +1332,15 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
   protected readonly buying = signal('');
   protected readonly buyError = signal('');
   protected readonly pendingPack = signal('');
+  protected readonly selectedProvider = signal<'dpay' | 'lemonsqueezy'>('dpay');
+  protected readonly digitalConsent = signal(false);
   protected readonly pathFor = pathFor;
   protected readonly currency = inject(CurrencyService);
+
+  protected get selectedPackDetails() {
+    const pId = this.pendingPack();
+    return this.packs.find(p => p.id === pId);
+  }
 
   protected get currencyNote(): string {
     return this.currency.getCurrencyNote(this.locale);
@@ -800,6 +1353,138 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
   protected locale: Locale = 'en';
   protected data = pageData('credits', 'en');
   protected copy = CREDITS_COPY.en;
+  protected readonly codeCopied = signal(false);
+  protected readonly timerRemainingSeconds = signal(15 * 60);
+  private promoTimerInterval?: any;
+
+  protected get timerMinutes(): string {
+    const m = Math.floor(this.timerRemainingSeconds() / 60);
+    return m.toString().padStart(2, '0');
+  }
+
+  protected get timerSeconds(): string {
+    const s = this.timerRemainingSeconds() % 60;
+    return s.toString().padStart(2, '0');
+  }
+
+  protected copyPromoCode(): void {
+    if (typeof navigator !== 'undefined' && navigator.clipboard) {
+      navigator.clipboard.writeText('WELCOME10').then(() => {
+        this.codeCopied.set(true);
+        setTimeout(() => this.codeCopied.set(false), 2200);
+      }).catch(() => {
+        this.codeCopied.set(true);
+        setTimeout(() => this.codeCopied.set(false), 2200);
+      });
+    } else {
+      this.codeCopied.set(true);
+      setTimeout(() => this.codeCopied.set(false), 2200);
+    }
+  }
+
+  protected get isFirstPurchasePromoEligible(): boolean {
+    const user = this.api.currentUser();
+    // Guests who haven't logged in are always eligible for the first-purchase promo
+    if (!user) return true;
+    // If user has ever purchased credits, they are NOT eligible
+    if (user.hasPurchasedCredits) return false;
+    if (user.stats?.totalCreditsPurchased && user.stats.totalCreditsPurchased > 0) return false;
+    if (user.appliedCreditPurchases && user.appliedCreditPurchases.length > 0) return false;
+    return true;
+  }
+
+  protected get promoCopy() {
+    const data: Record<Locale, {
+      badge: string;
+      title: string;
+      subtitle: string;
+      codeLabel: string;
+      copyBtn: string;
+      copied: string;
+      clickToCopy: string;
+      timerLabel: string;
+      checkoutApplied: string;
+    }> = {
+      pl: {
+        badge: 'Limitowana oferta na start',
+        title: '10% zniżki na Twoje pierwsze doładowanie',
+        subtitle: 'Wpisz kod w koszyku lub wybierz pakiet — rabat naliczy się automatycznie!',
+        codeLabel: 'Kod rabatowy',
+        copyBtn: 'Kopiuj',
+        copied: 'Skopiowano!',
+        clickToCopy: 'Kliknij, aby skopiować kod',
+        timerLabel: 'Wygasa za',
+        checkoutApplied: 'Kod WELCOME10 (-10%) zostanie naliczony przy płatności'
+      },
+      en: {
+        badge: 'First Top-Up Exclusive',
+        title: 'Get 10% OFF your first package',
+        subtitle: 'Use code at checkout or choose any package below — discount applies automatically!',
+        codeLabel: 'Promo code',
+        copyBtn: 'Copy',
+        copied: 'Copied!',
+        clickToCopy: 'Click to copy code',
+        timerLabel: 'Expires in',
+        checkoutApplied: 'Code WELCOME10 (-10%) will be applied at checkout'
+      },
+      de: {
+        badge: 'Exklusiv für Erstaufladung',
+        title: '10% Rabatt auf dein erstes Paket',
+        subtitle: 'Code an der Kasse eingeben oder Paket wählen — Rabatt wird automatisch aktiviert!',
+        codeLabel: 'Gutscheincode',
+        copyBtn: 'Kopieren',
+        copied: 'Kopiert!',
+        clickToCopy: 'Klicken zum Kopieren',
+        timerLabel: 'Endet in',
+        checkoutApplied: 'Code WELCOME10 (-10%) wird automatisch eingelöst'
+      },
+      es: {
+        badge: 'Exclusivo primera recarga',
+        title: '10% de descuento en tu primer paquete',
+        subtitle: 'Usa el código en el checkout o elige un paquete — ¡el descuento se aplica solo!',
+        codeLabel: 'Código promo',
+        copyBtn: 'Copiar',
+        copied: '¡Copiado!',
+        clickToCopy: 'Haz clic para copiar',
+        timerLabel: 'Expira en',
+        checkoutApplied: 'Código WELCOME10 (-10%) aplicado a tu compra'
+      },
+      fr: {
+        badge: 'Offre premier achat',
+        title: '10% de réduction sur votre premier pack',
+        subtitle: 'Entrez le code au paiement ou choisissez un pack — la remise s’applique automatiquement !',
+        codeLabel: 'Code promo',
+        copyBtn: 'Copier',
+        copied: 'Copié !',
+        clickToCopy: 'Cliquez pour copier',
+        timerLabel: 'Expire dans',
+        checkoutApplied: 'Code promo WELCOME10 (-10%) sera appliqué au paiement'
+      },
+      it: {
+        badge: 'Offerta prima ricarica',
+        title: '10% di sconto sul tuo primo pacchetto',
+        subtitle: 'Inserisci il codice al checkout o scegli un pacchetto — sconto applicato in automatico!',
+        codeLabel: 'Codice promo',
+        copyBtn: 'Copia',
+        copied: 'Copiato!',
+        clickToCopy: 'Clicca per copiare',
+        timerLabel: 'Scade tra',
+        checkoutApplied: 'Il codice WELCOME10 (-10%) sarà applicato al pagamento'
+      },
+      uk: {
+        badge: 'Знижка на перший пакет',
+        title: '10% знижки на твоє перше поповнення',
+        subtitle: 'Введи промокод при оплаті або обери будь-який пакет — знижка активується автоматично!',
+        codeLabel: 'Промокод',
+        copyBtn: 'Копіювати',
+        copied: 'Скопійовано!',
+        clickToCopy: 'Натисни, щоб скопіювати',
+        timerLabel: 'Діє ще',
+        checkoutApplied: 'Промокод WELCOME10 (-10%) буде додано до оплати'
+      }
+    };
+    return data[this.locale] || data.en;
+  }
 
   protected get referralCopy() {
     const data: Record<Locale, { title: string; text: string; button: string }> = {
@@ -860,6 +1545,15 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
       id: 'starter',
       credits: 100,
       price: '$1.99',
+      name: {
+        en: 'Rescue Pack',
+        pl: 'Pakiet Ratunkowy',
+        de: 'Rettungs-Paket',
+        es: 'Pack Rescate',
+        fr: 'Pack Sauvetage',
+        it: 'Pacchetto Soccorso',
+        uk: 'Рятувальний пакет'
+      },
       rateInfo: {
         en: '~$0.02 / answer',
         pl: '~$0.02 za odpowiedź',
@@ -869,16 +1563,33 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
         it: '~$0.02 per risposta',
         uk: '~$0.02 за відповідь'
       },
-      useCase: {
-        en: 'Great for a quick test or 1–2 homework assignments',
-        pl: 'Na kilka testów lub pojedyncze kolokwia',
-        de: 'Ideal für einen schnellen Test oder 1–2 Aufgaben',
-        es: 'Ideal para una prueba rápida o 1–2 tareas cortas',
-        fr: 'Idéal pour un test rapide ou 1–2 devoirs',
-        it: 'Ideale per un test veloce o 1–2 singoli compiti',
-        uk: 'На швидку перевірку або 1–2 короткі тести'
+      outcome: {
+        en: '100 answers = Peace of mind for 3–5 full tests or exams',
+        pl: '100 odpowiedzi = Spokój na 3–5 pełnych kolokwiów lub testów',
+        de: '100 Antworten = Sicherheit für 3–5 komplette Tests & Klausuren',
+        es: '100 respuestas = Tranquilidad para 3–5 exámenes o parciales',
+        fr: '100 réponses = Sérénité pour 3–5 examens ou partiels complets',
+        it: '100 risposte = Serenità per 3–5 verifiche o esami completi',
+        uk: '100 відповідей = Спокій на 3–5 повних модулів або тестів'
       },
-      button: { en: 'Buy 100 credits', pl: 'Kup 100 kredytów', de: '100 Credits kaufen', es: 'Comprar 100 créditos', fr: 'Acheter 100 crédits', it: 'Compra 100 crediti', uk: 'Купити 100 кредитів' }
+      comparison: {
+        en: '⚡ Less than an energy drink or coffee',
+        pl: '⚡ Mniej niż energy drink lub kawa',
+        de: '⚡ Günstiger als ein Energy-Drink oder Kaffee',
+        es: '⚡ Menos que una bebida energética o café',
+        fr: '⚡ Moins cher qu\'un café ou energy drink',
+        it: '⚡ Meno di un caffè o un energy drink',
+        uk: '⚡ Дешевше ніж енергетик або кава'
+      },
+      button: {
+        en: 'Get Rescue Pack',
+        pl: 'Wybierz Pakiet Ratunkowy',
+        de: 'Rettungs-Paket wählen',
+        es: 'Elegir Pack Rescate',
+        fr: 'Prendre le Pack Sauvetage',
+        it: 'Prendi Pacchetto Soccorso',
+        uk: 'Обрати Рятувальний пакет'
+      }
     },
     {
       id: 'popular',
@@ -892,6 +1603,15 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
         fr: 'Le Plus Populaire',
         it: 'Più Popolare',
         uk: 'Найпопулярніший'
+      },
+      name: {
+        en: 'Semester Pack',
+        pl: 'Pakiet Semestralny',
+        de: 'Semester-Paket',
+        es: 'Pack Semestral',
+        fr: 'Pack Semestre',
+        it: 'Pacchetto Semestrale',
+        uk: 'Семестровий пакет'
       },
       socialText: {
         en: 'Chosen by 84% of students',
@@ -911,16 +1631,33 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
         it: '~$0.01 per risposta (Risparmi il 50%)',
         uk: '~$0.01 за відповідь (50% дешевше)'
       },
-      useCase: {
-        en: 'Best for weekly homework, tests & midterm prep',
-        pl: 'Świetne na regularne kolokwia i prace domowe',
-        de: 'Optimal für wöchentliche Tests und Aufgaben',
-        es: 'Ideal para exámenes semanales y tareas',
-        fr: 'Idéal pour examens réguliers et devoirs',
-        it: 'Perfetto per prove settimanali ed esami',
-        uk: 'Ідеально для щотижневих тестів та завдань'
+      outcome: {
+        en: '500 answers = Stress-free studying, midterms & finals all semester',
+        pl: '500 odpowiedzi = Bezstresowa nauka, kolokwia i sesja przez cały semestr',
+        de: '500 Antworten = Stressfreie Hausaufgaben, Tests & Klausuren das ganze Semester',
+        es: '500 respuestas = Tareas, parciales y exámenes sin estrés todo el semestre',
+        fr: '500 réponses = Devoirs, partiels et examens sans stress tout le semestre',
+        it: '500 risposte = Compiti, prove ed esami senza stress per tutto il semestre',
+        uk: '500 відповідей = Домашки, модулі та сесія без стресу на весь семестр'
       },
-      button: { en: 'Buy 500 credits', pl: 'Kup 500 kredytów', de: '500 Credits kaufen', es: 'Comprar 500 créditos', fr: 'Acheter 500 crédits', it: 'Compra 500 crediti', uk: 'Купити 500 кредитів' }
+      comparison: {
+        en: '🍕 Less than a pizza (Save 50%)',
+        pl: '🍕 Mniej niż pizza (50% taniej)',
+        de: '🍕 Günstiger als eine Pizza (50% Ersparnis)',
+        es: '🍕 Menos de lo que cuesta una pizza (Ahorra 50%)',
+        fr: '🍕 Moins cher qu\'une pizza (50% d\'économie)',
+        it: '🍕 Meno del costo di una pizza (Risparmi il 50%)',
+        uk: '🍕 Менше ніж одна піца (50% дешевше)'
+      },
+      button: {
+        en: 'Get Semester Pack',
+        pl: 'Wybierz Pakiet Semestralny',
+        de: 'Semester-Paket wählen',
+        es: 'Elegir Pack Semestral',
+        fr: 'Prendre le Pack Semestre',
+        it: 'Prendi Pacchetto Semestrale',
+        uk: 'Обрати Семестровий пакет'
+      }
     },
     {
       id: 'pro',
@@ -935,6 +1672,15 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
         it: 'Miglior Prezzo',
         uk: 'Найкраща ціна'
       },
+      name: {
+        en: 'Annual & Group Pack',
+        pl: 'Pakiet Roczny / Na spółkę',
+        de: 'Jahres- & Lerngruppen-Paket',
+        es: 'Pack Anual o Compartido',
+        fr: 'Pack Annuel & Groupe',
+        it: 'Pacchetto Annuale & Gruppo',
+        uk: 'Річний / Спільний пакет'
+      },
       rateInfo: {
         en: '<$0.008 / answer (Lowest rate)',
         pl: '<$0.008 za odpowiedź (Największy rabat)',
@@ -944,16 +1690,33 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
         it: '<$0.008 per risposta (Massimo sconto)',
         uk: '<$0.008 за відповідь (Найбільша знижка)'
       },
-      useCase: {
-        en: 'Massive supply for midterms, finals & exam seasons',
-        pl: 'Zapas na całą sesję egzaminacyjną lub cały semestr',
-        de: 'Großer Vorrat für Prüfungsphasen & das ganze Semester',
-        es: 'Gran reserva para exámenes parciales y finales',
-        fr: 'Grande réserve pour partiels et période d\'examens',
-        it: 'Scorta abbondante per sessioni d\'esame e semestre',
-        uk: 'Великий запас на модулі, сесію та цілий семестр'
+      outcome: {
+        en: '2000 answers = Massive supply for the entire year or to split with friends',
+        pl: '2000 odpowiedzi = Zapas na cały rok lub do podziału ze znajomymi ze studiów',
+        de: '2000 Antworten = Riesiger Vorrat fürs ganze Studienjahr oder zum Teilen mit Freunden',
+        es: '2000 respuestas = Gran reserva para todo el año o para compartir con compañeros',
+        fr: '2000 réponses = Réserve massive pour toute l\'année ou à partager entre amis',
+        it: '2000 risposte = Riserva enorme per tutto l\'anno o da dividere con compagni',
+        uk: '2000 відповідей = Величезний запас на весь рік або для спільного користування з друзями'
       },
-      button: { en: 'Buy 2000 credits', pl: 'Kup 2000 kredytów', de: '2000 Credits kaufen', es: 'Comprar 2000 créditos', fr: 'Acheter 2000 crédits', it: 'Compra 2000 crediti', uk: 'Купити 2000 кредитів' }
+      comparison: {
+        en: '💎 Lowest price per answer (<$0.008)',
+        pl: '💎 Najniższy koszt za odpowiedź (<$0.008)',
+        de: '💎 Tiefster Preis pro Antwort (<$0.008)',
+        es: '💎 Precio más bajo por respuesta (<$0.008)',
+        fr: '💎 Prix le plus bas par réponse (<$0.008)',
+        it: '💎 Prezzo più basso per risposta (<$0.008)',
+        uk: '💎 Найнижча ціна за відповідь (<$0.008)'
+      },
+      button: {
+        en: 'Get Annual Pack',
+        pl: 'Wybierz Pakiet Roczny',
+        de: 'Jahres-Paket wählen',
+        es: 'Elegir Pack Anual',
+        fr: 'Prendre le Pack Annuel',
+        it: 'Prendi Pacchetto Annuale',
+        uk: 'Обрати Річний пакет'
+      }
     }
   ];
 
@@ -992,10 +1755,37 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
     if (packParam && this.api.token() && this.packs.some(p => p.id === packParam)) {
       setTimeout(() => this.confirmPack(packParam), 100);
     }
+    this.initPromoCountdown();
     trackGa4Event('credits_page_view', { locale: this.locale, from: this.route.snapshot.queryParamMap.get('from') || '' });
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    if (this.promoTimerInterval) clearInterval(this.promoTimerInterval);
+  }
+
+  private initPromoCountdown(): void {
+    if (typeof window === 'undefined') return;
+    const STORAGE_KEY = 'qs_welcome10_timer_end';
+    let endTime = Number(localStorage.getItem(STORAGE_KEY));
+    const now = Date.now();
+
+    if (!endTime || isNaN(endTime) || endTime <= now) {
+      endTime = now + 15 * 60 * 1000;
+      try { localStorage.setItem(STORAGE_KEY, String(endTime)); } catch {}
+    }
+
+    const update = () => {
+      const diffSec = Math.max(0, Math.floor((endTime - Date.now()) / 1000));
+      this.timerRemainingSeconds.set(diffSec);
+      if (diffSec <= 0 && this.promoTimerInterval) {
+        endTime = Date.now() + 15 * 60 * 1000;
+        try { localStorage.setItem(STORAGE_KEY, String(endTime)); } catch {}
+      }
+    };
+
+    update();
+    this.promoTimerInterval = setInterval(update, 1000);
+  }
 
   protected lowCredits(): boolean {
     const user = this.api.currentUser();
@@ -1014,6 +1804,115 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
     return this.copy?.faq || CREDITS_COPY.en.faq || [];
   }
 
+  protected get checkoutProviderCopy() {
+    const data: Record<Locale, {
+      title: string;
+      dpayTitle: string;
+      dpaySubtitle: string;
+      dpayBadge: string;
+      lemonTitle: string;
+      lemonSubtitle: string;
+      consentTitle: string;
+      consentStatement: string;
+      consentTermsLink: string;
+      consentRequiredNote: string;
+      selectedPackLabel: string;
+    }> = {
+      pl: {
+        title: 'Wybierz metodę płatności:',
+        dpayTitle: 'BLIK i szybki przelew (DPay)',
+        dpaySubtitle: 'Płatność w PLN • Polski operator KNF',
+        dpayBadge: 'Polecane w Polsce',
+        lemonTitle: 'Karta, Apple Pay, Google Pay',
+        lemonSubtitle: 'Visa, Mastercard, Revolut (Lemon Squeezy)',
+        consentTitle: 'Zgoda na natychmiastowe świadczenie:',
+        consentStatement: 'Zgadzam się na natychmiastowe udostępnienie usługi cyfrowej (dostępu do konta / pakietu kredytów AI) przed upływem 14 dni na odstąpienie od umowy i przyjmuję do wiadomości, że wraz z realizacją zamówienia i wykorzystaniem choćby jednego kredytu tracę prawo do odstąpienia od umowy. Akceptuję również ',
+        consentTermsLink: 'Regulamin serwisu',
+        consentRequiredNote: '* Zaznaczenie powyższej zgody jest wymagane prawnie do przejścia do płatności.',
+        selectedPackLabel: 'Wybrany pakiet:'
+      },
+      en: {
+        title: 'Select payment method:',
+        dpayTitle: 'BLIK & Polish Online Transfer (DPay)',
+        dpaySubtitle: 'Pay in PLN • Polish licensed payment provider',
+        dpayBadge: 'Popular in Poland',
+        lemonTitle: 'Cards, Apple Pay, Google Pay',
+        lemonSubtitle: 'Visa, Mastercard, Revolut (Lemon Squeezy)',
+        consentTitle: 'Immediate digital supply waiver:',
+        consentStatement: 'I agree to the immediate delivery of digital service (account access / AI credits) before the 14-day withdrawal period expires, and acknowledge that upon order fulfillment and use of even one credit, I lose the right of withdrawal. I also accept the ',
+        consentTermsLink: 'Terms of Service',
+        consentRequiredNote: '* Agreeing to immediate digital delivery is legally required to proceed to payment.',
+        selectedPackLabel: 'Selected pack:'
+      },
+      de: {
+        title: 'Zahlungsmethode wählen:',
+        dpayTitle: 'BLIK & Sofortüberweisung (DPay)',
+        dpaySubtitle: 'Zahlung in PLN • Lizenziertes polnisches Zahlungsinstitut',
+        dpayBadge: 'Beliebt in Polen',
+        lemonTitle: 'Kreditkarte, Apple Pay, Google Pay',
+        lemonSubtitle: 'Visa, Mastercard, Revolut (Lemon Squeezy)',
+        consentTitle: 'Sofortige Bereitstellung digitaler Inhalte:',
+        consentStatement: 'Ich stimme der sofortigen Bereitstellung der digitalen Dienstleistung (Credits) vor Ablauf der 14-tägigen Widerrufsfrist zu und nehme zur Kenntnis, dass ich mit Nutzung von mindestens einem Credit mein Widerrufsrecht verliere. Ich akzeptiere auch die ',
+        consentTermsLink: 'AGB',
+        consentRequiredNote: '* Diese Zustimmung ist gesetzlich erforderlich, um fortzufahren.',
+        selectedPackLabel: 'Gewähltes Paket:'
+      },
+      es: {
+        title: 'Elige método de pago:',
+        dpayTitle: 'BLIK y Transferencia bancaria (DPay)',
+        dpaySubtitle: 'Pago en PLN • Entidad de pago autorizada',
+        dpayBadge: 'Popular en Polonia',
+        lemonTitle: 'Tarjetas, Apple Pay, Google Pay',
+        lemonSubtitle: 'Visa, Mastercard, Revolut (Lemon Squeezy)',
+        consentTitle: 'Consentimiento de suministro digital:',
+        consentStatement: 'Acepto el suministro inmediato del servicio digital (créditos IA) antes de que venza el plazo de 14 días y reconozco que una vez consumido al menos un crédito, pierdo el derecho de desistimiento. Acepto también los ',
+        consentTermsLink: 'Términos de servicio',
+        consentRequiredNote: '* Aceptar este consentimiento es un requisito legal para continuar.',
+        selectedPackLabel: 'Paquete seleccionado:'
+      },
+      fr: {
+        title: 'Choisissez votre moyen de paiement :',
+        dpayTitle: 'BLIK & Virement bancaire (DPay)',
+        dpaySubtitle: 'Paiement en PLN • Établissement de paiement agréé',
+        dpayBadge: 'Populaire en Pologne',
+        lemonTitle: 'Cartes, Apple Pay, Google Pay',
+        lemonSubtitle: 'Visa, Mastercard, Revolut (Lemon Squeezy)',
+        consentTitle: 'Renonciation au droit de rétractation :',
+        consentStatement: 'J\'accepte la fourniture immédiate du service numérique avant l\'expiration du délai de rétractation de 14 jours et je reconnais qu\'après utilisation d\'au moins un crédit, je perds mon droit de rétractation. J\'accepte également les ',
+        consentTermsLink: 'Conditions d\'utilisation',
+        consentRequiredNote: '* Cette acceptation est requise par la loi pour poursuivre.',
+        selectedPackLabel: 'Pack sélectionné :'
+      },
+      it: {
+        title: 'Scegli il metodo di pagamento:',
+        dpayTitle: 'BLIK e Bonifico bancario (DPay)',
+        dpaySubtitle: 'Pagamento in PLN • Istituto di pagamento autorizzato',
+        dpayBadge: 'Popolare in Polonia',
+        lemonTitle: 'Carte, Apple Pay, Google Pay',
+        lemonSubtitle: 'Visa, Mastercard, Revolut (Lemon Squeezy)',
+        consentTitle: 'Consenso fornitura digitale immediata:',
+        consentStatement: 'Acconsento alla fornitura immediata del servizio digitale prima della scadenza del recesso di 14 giorni e prendo atto che consumando almeno un credito perdo il diritto di recesso. Accetto anche i ',
+        consentTermsLink: 'Termini di servizio',
+        consentRequiredNote: '* Questo consenso è richiesto dalla legge per procedere.',
+        selectedPackLabel: 'Pacchetto selezionato:'
+      },
+      uk: {
+        title: 'Оберіть спосіб оплати:',
+        dpayTitle: 'BLIK та банківський переказ (DPay)',
+        dpaySubtitle: 'Оплата в PLN • Польський ліцензований оператор',
+        dpayBadge: 'Популярно в Польщі',
+        lemonTitle: 'Картки, Apple Pay, Google Pay',
+        lemonSubtitle: 'Visa, Mastercard, Revolut (Lemon Squeezy)',
+        consentTitle: 'Згода на негайне надання послуги:',
+        consentStatement: 'Я погоджуюсь на негайне надання цифрової послуги (кредитів AI) до закінчення 14 днів і підтверджую, що з використанням хоча б 1 кредиту я втрачаю право на відмову від договору. Я також приймаю ',
+        consentTermsLink: 'Правила сервісу',
+        consentRequiredNote: '* Підтвердження згоди є обов\'язковою вимогою закону для продовження.',
+        selectedPackLabel: 'Обраний пакет:'
+      }
+    };
+    return data[this.locale] || data.en;
+  }
+
   protected confirmPack(pack: string, shell?: ShellComponent): void {
     if (!this.api.currentUser()) {
       if (typeof window !== 'undefined') {
@@ -1025,6 +1924,8 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
       return;
     }
     this.buyError.set('');
+    this.digitalConsent.set(false);
+    this.selectedProvider.set(this.locale === 'pl' ? 'dpay' : 'lemonsqueezy');
     this.pendingPack.set(pack);
     trackGa4Event('checkout_initiated', { pack, locale: this.locale });
   }
@@ -1032,10 +1933,16 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
   protected cancelCheckout(): void {
     if (this.buying()) return;
     this.pendingPack.set('');
+    this.digitalConsent.set(false);
   }
 
   protected async continueCheckout(): Promise<void> {
-    trackGa4Event('checkout_confirmed', { pack: this.pendingPack(), locale: this.locale });
+    if (!this.digitalConsent()) return;
+    trackGa4Event('checkout_confirmed', {
+      pack: this.pendingPack(),
+      provider: this.selectedProvider(),
+      locale: this.locale
+    });
     const pack = this.pendingPack();
     if (!pack) return;
     await this.buyPack(pack);
@@ -1047,12 +1954,19 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
     this.buying.set(pack);
     const result = await this.api.request('/api/credits/buy', {
       method: 'POST',
-      body: JSON.stringify({ pack })
+      body: JSON.stringify({
+        pack,
+        provider: this.selectedProvider(),
+        discountCode: this.isFirstPurchasePromoEligible ? 'WELCOME10' : undefined
+      })
     });
     this.buying.set('');
-    this.pendingPack.set('');
-    if (result.success && result.checkoutUrl) window.location.href = result.checkoutUrl;
-    else this.buyError.set(result.error || this.copy.paymentError);
+    if (result.success && result.checkoutUrl) {
+      this.pendingPack.set('');
+      window.location.href = result.checkoutUrl;
+    } else {
+      this.buyError.set(result.error || this.copy.paymentError);
+    }
   }
 }
 

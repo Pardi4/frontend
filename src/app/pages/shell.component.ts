@@ -215,8 +215,9 @@ export function trackGa4Event(eventName: string, params?: Record<string, string 
           <div class="footer-col">
             <h3>{{ copy.footer.legal }}</h3>
             <div class="footer-links">
-              <a class="nav-link" [href]="pathFor('privacy')">{{ copy.footer.privacy }}</a>
+              <a class="nav-link" [href]="pathFor('contact')">{{ copy.footer.contact || 'Contact' }}</a>
               <a class="nav-link" [href]="pathFor('terms')">{{ copy.footer.terms || 'Terms of Service' }}</a>
+              <a class="nav-link" [href]="pathFor('privacy')">{{ copy.footer.privacy }}</a>
               <a class="nav-link" [href]="pathFor('cookies')">Cookie Policy</a>
               <span class="nav-link">support&#64;getquizsolver.com</span>
             </div>

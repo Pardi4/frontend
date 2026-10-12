@@ -148,7 +148,7 @@ export class SeoService {
   private resolveMeta(pageKey: PageKey, locale: Locale, data: any): { title: string; description: string } {
     data = data || {};
     if (data?.meta?.title && data?.meta?.description) return data.meta;
-    if (['privacy', 'terms', 'dashboard', 'credits', 'quiz', 'demo', 'success', 'notFound', 'blog'].includes(pageKey)) {
+    if (['privacy', 'terms', 'contact', 'dashboard', 'credits', 'quiz', 'demo', 'success', 'notFound', 'blog'].includes(pageKey)) {
       return { title: data.metaTitle || data.title || 'QuizSolver', description: data.metaDescription || '' };
     }
     const copy = contentFor(locale);
@@ -169,7 +169,9 @@ export class SeoService {
         ? 'Blog'
         : pageKey === 'blogCategory'
           ? 'CollectionPage'
-          : 'WebPage';
+          : pageKey === 'contact'
+            ? 'ContactPage'
+            : 'WebPage';
 
     const graph: any[] = [
       /* Organization */
