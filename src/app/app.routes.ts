@@ -20,7 +20,15 @@ const sharedQuizRoutes = (): Routes =>
     data: { locale: code as Locale }
   }));
 
+const pricingRedirectRoutes = (): Routes =>
+  SUPPORTED_LOCALES.map(({ code, prefix }) => ({
+    path: `${prefix ? prefix.replace(/^\//, '') + '/' : ''}pricing`,
+    redirectTo: routePath(PAGE_ROUTES.credits[code as Locale]),
+    pathMatch: 'full' as const
+  }));
+
 export const routes: Routes = [
+  ...pricingRedirectRoutes(),
   { path: 'qr-login/:sessionId', loadComponent: () => import('./pages/qr-login.component').then(m => m.QrLoginComponent), data: { locale: 'en' } },
   { path: 'pl/qr-login/:sessionId', loadComponent: () => import('./pages/qr-login.component').then(m => m.QrLoginComponent), data: { locale: 'pl' } },
   ...localizedRoutes('home', () => import('./pages/home.component').then(m => m.HomeComponent)),
