@@ -109,7 +109,7 @@ const COPY: Partial<Record<Locale, DemoCopy>> & { en: DemoCopy; pl: DemoCopy } =
     install: 'Install extension',
     openStore: 'Open Chrome Web Store',
     demoBadge: 'No credits used',
-    localBadge: 'Guided practice',
+    localBadge: 'Interactive practice',
     mapTitle: 'How to use this demo',
     mapText: 'Test solving directly in your browser with the buttons below, or open the official QuizSolver Chrome extension on this page.',
     prev: 'Previous',
@@ -322,7 +322,7 @@ const DEMO_LOCALE_COPY: Record<Exclude<Locale, 'en' | 'pl'>, Omit<DemoCopy, 'que
     install: 'Erweiterung installieren',
     openStore: 'Chrome Web Store öffnen',
     demoBadge: 'Keine Credits',
-    localBadge: 'Geführtes Training',
+    localBadge: 'Testmodus',
     mapTitle: 'So nutzt du die Demo',
     mapText: 'Du kannst das Quiz direkt im Browser testen oder die offizielle QuizSolver-Erweiterung in Chrome öffnen.',
     prev: 'Zurück',
@@ -343,7 +343,7 @@ const DEMO_LOCALE_COPY: Record<Exclude<Locale, 'en' | 'pl'>, Omit<DemoCopy, 'que
     install: 'Instalar extensión',
     openStore: 'Abrir Chrome Web Store',
     demoBadge: 'Sin créditos',
-    localBadge: 'Práctica guiada',
+    localBadge: 'Modo de prueba',
     mapTitle: 'Cómo usar este demo',
     mapText: 'Puedes probar la resolución directamente en tu navegador o abrir la extensión QuizSolver en Chrome.',
     prev: 'Anterior',
@@ -364,7 +364,7 @@ const DEMO_LOCALE_COPY: Record<Exclude<Locale, 'en' | 'pl'>, Omit<DemoCopy, 'que
     install: 'Installer l’extension',
     openStore: 'Ouvrir Chrome Web Store',
     demoBadge: 'Aucun crédit',
-    localBadge: 'Pratique guidée',
+    localBadge: 'Mode test',
     mapTitle: 'Utiliser cette démo',
     mapText: 'Testez directement dans le navigateur avec les boutons ou utilisez l’extension QuizSolver Chrome.',
     prev: 'Précédent',
@@ -385,7 +385,7 @@ const DEMO_LOCALE_COPY: Record<Exclude<Locale, 'en' | 'pl'>, Omit<DemoCopy, 'que
     install: 'Installa estensione',
     openStore: 'Apri Chrome Web Store',
     demoBadge: 'Nessun credito',
-    localBadge: 'Pratica guidata',
+    localBadge: 'Modalità test',
     mapTitle: 'Come usare la demo',
     mapText: 'Puoi provare le risposte direttamente nel browser o aprire l’estensione QuizSolver in Chrome.',
     prev: 'Precedente',
@@ -406,7 +406,7 @@ const DEMO_LOCALE_COPY: Record<Exclude<Locale, 'en' | 'pl'>, Omit<DemoCopy, 'que
     install: 'Встановити розширення',
     openStore: 'Відкрити Chrome Web Store',
     demoBadge: 'Без кредитів',
-    localBadge: 'Покрокова практика',
+    localBadge: 'Тестовий режим',
     mapTitle: 'Як користуватися демо',
     mapText: 'Ви можете спробувати розв’язання прямо у браузері або відкрити розширення QuizSolver для Chrome.',
     prev: 'Назад',
@@ -487,7 +487,7 @@ const DEMO_QUESTIONS: Record<Exclude<Locale, 'en' | 'pl'>, DemoQuestion[]> = {
             <!-- HELPER BANNER (CLEAN & FRIENDLY, NO ALARMS) -->
             <div class="demo-mode-card glass">
               <div class="mode-left">
-                <span class="mode-badge">💡 Tryb testowy</span>
+                <span class="mode-badge">💡 {{ copy.localBadge }}</span>
                 <p>{{ copy.mapText }}</p>
               </div>
               <div class="mode-actions">
@@ -558,8 +558,8 @@ const DEMO_QUESTIONS: Record<Exclude<Locale, 'en' | 'pl'>, DemoQuestion[]> = {
                       (change)="setAnswer(question, option)">
                     <span class="option-label">{{ option }}</span>
                   </div>
-                  <span class="option-badge" *ngIf="isHinted(question) && option === question.correctText">💡 Podpowiedź</span>
-                  <span class="option-badge check" *ngIf="isChecked(question) && option === question.correctText">✓ Poprawna</span>
+                  <span class="option-badge" *ngIf="isHinted(question) && option === question.correctText">💡 {{ label('hintTitle') }}</span>
+                  <span class="option-badge check" *ngIf="isChecked(question) && option === question.correctText">✓ {{ label('correctTitle') }}</span>
                 </label>
               </fieldset>
 
@@ -1362,7 +1362,82 @@ export class DemoComponent implements OnInit, OnDestroy {
   }
 
   protected label(key: keyof DemoLabels): string {
-    return this.copy.labels?.[key] || DEFAULT_DEMO_LABELS[key];
+    const localizedDefaults: Record<Locale, Partial<DemoLabels>> = {
+      en: DEFAULT_DEMO_LABELS,
+      pl: COPY.pl.labels || {},
+      de: {
+        correctTitle: 'Richtig',
+        hintTitle: 'Hinweis',
+        wrongTitle: 'Noch nicht',
+        emptyTitle: 'Wähle zuerst eine Antwort',
+        explanationLabel: 'Warum das funktioniert',
+        simulateSolver: '✨ Mit QuizSolver lösen',
+        showHint: '💡 Hinweis anzeigen',
+        checkAnswer: 'Meine Antwort prüfen',
+        resultTitle: 'Demo abgeschlossen!',
+        resultText: 'Du hast Einzelauswahl, Hinweis-Modus, Texteingabe, Dropdowns und Textauswahl getestet.',
+        finalPrimary: 'Erweiterung installieren',
+        finalSecondary: 'Demo neu starten'
+      },
+      es: {
+        correctTitle: 'Correcta',
+        hintTitle: 'Pista',
+        wrongTitle: 'Aún no',
+        emptyTitle: 'Elige una respuesta primero',
+        explanationLabel: 'Por qué funciona',
+        simulateSolver: '✨ Resolver con QuizSolver',
+        showHint: '💡 Mostrar pista',
+        checkAnswer: 'Comprobar mi respuesta',
+        resultTitle: '¡Demo completada!',
+        resultText: 'Has probado opción única, modo pista, respuesta escrita, desplegables y texto seleccionado.',
+        finalPrimary: 'Instalar extensión',
+        finalSecondary: 'Reiniciar demo'
+      },
+      fr: {
+        correctTitle: 'Correct',
+        hintTitle: 'Indice',
+        wrongTitle: 'Pas tout à fait',
+        emptyTitle: 'Choisissez d’abord une réponse',
+        explanationLabel: 'Pourquoi ça fonctionne',
+        simulateSolver: '✨ Résoudre avec QuizSolver',
+        showHint: '💡 Afficher l’indice',
+        checkAnswer: 'Vérifier ma réponse',
+        resultTitle: 'Démo terminée !',
+        resultText: 'Vous avez testé le choix unique, le mode indice, la saisie, les menus déroulants et le texte sélectionné.',
+        finalPrimary: 'Installer l’extension',
+        finalSecondary: 'Recommencer'
+      },
+      it: {
+        correctTitle: 'Corretto',
+        hintTitle: 'Indizio',
+        wrongTitle: 'Non ancora',
+        emptyTitle: 'Scegli prima una risposta',
+        explanationLabel: 'Perché funziona',
+        simulateSolver: '✨ Risolvi con QuizSolver',
+        showHint: '💡 Mostra suggerimento',
+        checkAnswer: 'Verifica la mia risposta',
+        resultTitle: 'Demo completata!',
+        resultText: 'Hai testato scelta singola, hint mode, risposta scritta, menu a tendina e testo selezionato.',
+        finalPrimary: 'Installa estensione',
+        finalSecondary: 'Riavvia demo'
+      },
+      uk: {
+        correctTitle: 'Правильно',
+        hintTitle: 'Підказка',
+        wrongTitle: 'Ще ні',
+        emptyTitle: 'Спочатку виберіть відповідь',
+        explanationLabel: 'Чому це працює',
+        simulateSolver: '✨ Розв’язати з QuizSolver',
+        showHint: '💡 Показати підказку',
+        checkAnswer: 'Перевірити відповідь',
+        resultTitle: 'Демо завершено!',
+        resultText: 'Ви протестували один варіант, режим Hint mode, текстову відповідь, списки та виділений текст.',
+        finalPrimary: 'Встановити розширення',
+        finalSecondary: 'Почати заново'
+      }
+    };
+
+    return this.copy.labels?.[key] || localizedDefaults[this.locale]?.[key] || DEFAULT_DEMO_LABELS[key];
   }
 
   protected proofItems(): string[] {
