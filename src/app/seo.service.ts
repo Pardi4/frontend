@@ -148,8 +148,11 @@ export class SeoService {
   private resolveMeta(pageKey: PageKey, locale: Locale, data: any): { title: string; description: string } {
     data = data || {};
     if (data?.meta?.title && data?.meta?.description) return data.meta;
-    if (['privacy', 'terms', 'contact', 'dashboard', 'credits', 'quiz', 'demo', 'success', 'notFound', 'blog'].includes(pageKey)) {
-      return { title: data.metaTitle || data.title || 'QuizSolver', description: data.metaDescription || '' };
+    if (['privacy', 'terms', 'contact', 'complaints', 'dashboard', 'credits', 'quiz', 'demo', 'success', 'notFound', 'blog'].includes(pageKey)) {
+      return {
+        title: data.metaTitle || data.title || (pageKey === 'complaints' ? (locale === 'pl' ? 'Procedura reklamacyjna | QuizSolver' : 'Complaints Procedure | QuizSolver') : 'QuizSolver'),
+        description: data.metaDescription || (pageKey === 'complaints' ? (locale === 'pl' ? 'Oficjalna procedura reklamacyjna serwisu QuizSolver. Rozpatrzenie w terminie 14 dni zgodnie z art. 7a ustawy o prawach konsumenta. Sprzedawca: Kamil Pardała.' : 'Official complaints procedure for QuizSolver. Handling within 14 calendar days.') : '')
+      };
     }
     const copy = contentFor(locale);
     return {

@@ -38,6 +38,7 @@ const slugs = {
   privacy: 'privacy',
   terms: 'terms',
   contact: 'contact',
+  complaints: 'complaints',
   blog: 'blog',
   mobileInstall: 'mobile-install'
 };

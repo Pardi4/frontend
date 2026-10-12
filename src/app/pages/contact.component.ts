@@ -27,7 +27,7 @@ import { ShellComponent } from './shell.component';
                 </span>
                 <span class="meta-item">
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-                  contact&#64;getquizsolver.com
+                  <a href="mailto:contact@getquizsolver.com" style="color:inherit; text-decoration:none;">contact&#64;getquizsolver.com</a>
                 </span>
               </div>
             </div>
@@ -62,6 +62,11 @@ import { ShellComponent } from './shell.component';
                 <span>{{ card.email }}</span>
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
               </a>
+              <div *ngIf="card.title.includes('Reklamac') || card.title.includes('Claim') || card.title.includes('Complaint')" style="margin-top:0.75rem;">
+                <a [href]="complaintsPath()" style="color:var(--accent-cyan); font-size:0.85rem; text-decoration:underline; font-weight:600;">
+                  {{ locale === 'pl' ? 'Otwórz procedurę reklamacyjną' : 'Open complaints procedure' }} &rarr;
+                </a>
+              </div>
             </article>
           </div>
         </section>
@@ -160,36 +165,42 @@ import { ShellComponent } from './shell.component';
 
               <div class="info-list">
                 <div class="info-item">
-                  <span class="info-label">{{ locale === 'pl' ? 'Usługodawca / Właściciel:' : 'Provider / Owner:' }}</span>
-                  <span class="info-value-text">Kamil Pardała (działalność nierejestrowana)</span>
+                  <span class="info-label">{{ locale === 'pl' ? 'Nazwa sprzedawcy / Usługodawca:' : 'Seller Name / Service Provider:' }}</span>
+                  <span class="info-value-text"><strong>Kamil Pardała</strong> (działalność nierejestrowana)</span>
                 </div>
                 <div class="info-item">
-                  <span class="info-label">{{ locale === 'pl' ? 'Adres korespondencyjny:' : 'Physical address:' }}</span>
-                  <span class="info-value-text">ul. Drukarska 7/15, 30-348 Kraków</span>
+                  <span class="info-label">{{ locale === 'pl' ? 'Adres sprzedawcy / Adres siedziby:' : 'Seller Address / Registered Office:' }}</span>
+                  <span class="info-value-text"><strong>ul. Drukarska 7/15, 30-348 Kraków</strong>, Polska</span>
                 </div>
                 <div class="info-item">
-                  <span class="info-label">{{ locale === 'pl' ? 'Serwis internetowy:' : 'Service domain:' }}</span>
-                  <a class="info-value" href="https://getquizsolver.com">getquizsolver.com</a>
-                </div>
-                <div class="info-item">
-                  <span class="info-label">{{ locale === 'pl' ? 'Oficjalny e-mail:' : 'Official email:' }}</span>
+                  <span class="info-label">{{ locale === 'pl' ? 'Adres e-mail do kontaktu na stronie:' : 'Contact Email Address:' }}</span>
                   <a class="info-value" href="mailto:contact@getquizsolver.com">contact&#64;getquizsolver.com</a>
                 </div>
                 <div class="info-item">
-                  <span class="info-label">{{ locale === 'pl' ? 'Wsparcie i reklamacje:' : 'Support & claims:' }}</span>
+                  <span class="info-label">{{ locale === 'pl' ? 'Adres e-mail do reklamacji:' : 'Complaints & Claims Email:' }}</span>
                   <a class="info-value" href="mailto:support@getquizsolver.com">support&#64;getquizsolver.com</a>
                 </div>
                 <div class="info-item">
-                  <span class="info-label">{{ locale === 'pl' ? 'Rozpatrywanie reklamacji:' : 'Complaint resolution:' }}</span>
-                  <span class="info-value-text">{{ locale === 'pl' ? 'Do 14 dni (brak odpowiedzi = uznanie reklamacji)' : 'Within 14 calendar days (failure to respond = deemed acceptance)' }}</span>
+                  <span class="info-label">{{ locale === 'pl' ? 'Serwis internetowy:' : 'Service Domain:' }}</span>
+                  <a class="info-value" href="https://getquizsolver.com">getquizsolver.com</a>
                 </div>
                 <div class="info-item">
-                  <span class="info-label">{{ locale === 'pl' ? 'Dostępne płatności:' : 'Accepted payments:' }}</span>
-                  <span class="info-value-text">dpay (Payments Lab sp. z o.o., MIP 85/2020: BLIK, przelewy PLN), Lemon Squeezy (karty, Apple Pay, Google Pay)</span>
+                  <span class="info-label">{{ locale === 'pl' ? 'Procedura reklamacyjna:' : 'Complaints Procedure:' }}</span>
+                  <a class="info-value" [href]="complaintsPath()" style="color:var(--accent-cyan); text-decoration:underline; font-weight:700;">
+                    {{ locale === 'pl' ? 'Procedura reklamacyjna (14 dni na odpowiedź, art. 7a)' : 'Complaints Procedure (14 days, Art. 7a)' }}
+                  </a>
+                </div>
+                <div class="info-item">
+                  <span class="info-label">{{ locale === 'pl' ? 'Dostępne metody płatności:' : 'Accepted Payment Gateways:' }}</span>
+                  <span class="info-value-text">dpay (Payments Lab sp. z o.o., MIP 85/2020: BLIK, szybkie przelewy w PLN), Lemon Squeezy (karty, Apple Pay, Google Pay)</span>
                 </div>
               </div>
 
               <div class="legal-links-block">
+                <a class="legal-link" [href]="complaintsPath()">
+                  <span>{{ locale === 'pl' ? 'Procedura reklamacyjna' : 'Complaints Procedure' }}</span>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                </a>
                 <a class="legal-link" [href]="pathFor('terms', locale)">
                   <span>{{ data.companyInfo.termsLinkText }}</span>
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
@@ -550,6 +561,10 @@ export class ContactComponent implements OnInit {
   protected c = contentFor('en');
   protected data = pageData('contact', 'en');
   protected readonly pathFor = pathFor;
+
+  protected complaintsPath(): string {
+    return pathFor('complaints', this.locale);
+  }
 
   protected name = '';
   protected email = '';

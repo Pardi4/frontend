@@ -185,6 +185,26 @@ export function trackGa4Event(eventName: string, params?: Record<string, string 
             <p class="text-secondary footer-logo-desc">
               {{ copy.shell.footerDesc }}
             </p>
+            <div class="footer-seller-box">
+              <h4 class="footer-seller-title">{{ locale === 'pl' ? 'Dane sprzedawcy / Usługodawca:' : 'Merchant / Service Provider:' }}</h4>
+              <p class="footer-seller-line">
+                <span class="footer-seller-lbl">{{ locale === 'pl' ? 'Nazwa sprzedawcy:' : 'Seller name:' }}</span>
+                <strong>Kamil Pardała</strong>
+                <span class="footer-seller-tag">{{ locale === 'pl' ? '(działalność nierejestrowana)' : '(unregistered activity)' }}</span>
+              </p>
+              <p class="footer-seller-line">
+                <span class="footer-seller-lbl">{{ locale === 'pl' ? 'Adres siedziby:' : 'Address:' }}</span>
+                <span>ul. Drukarska 7/15, 30-348 Kraków</span>
+              </p>
+              <p class="footer-seller-line">
+                <span class="footer-seller-lbl">{{ locale === 'pl' ? 'Adres e-mail do kontaktu:' : 'Contact email:' }}</span>
+                <a href="mailto:contact@getquizsolver.com">contact&#64;getquizsolver.com</a>
+              </p>
+              <p class="footer-seller-line">
+                <span class="footer-seller-lbl">{{ locale === 'pl' ? 'Obsługa reklamacji:' : 'Complaints:' }}</span>
+                <a href="mailto:support@getquizsolver.com">support&#64;getquizsolver.com</a>
+              </p>
+            </div>
           </div>
           <div class="footer-col">
             <h3>{{ copy.footer.product }}</h3>
@@ -215,16 +235,25 @@ export function trackGa4Event(eventName: string, params?: Record<string, string 
           <div class="footer-col">
             <h3>{{ copy.footer.legal }}</h3>
             <div class="footer-links">
-              <a class="nav-link" [href]="pathFor('contact')">{{ copy.footer.contact || 'Contact' }}</a>
-              <a class="nav-link" [href]="pathFor('terms')">{{ copy.footer.terms || 'Terms of Service' }}</a>
+              <a class="nav-link" [href]="pathFor('contact')">{{ copy.footer.contact || (locale === 'pl' ? 'Kontakt' : 'Contact') }}</a>
+              <a class="nav-link" [href]="pathFor('terms')">{{ copy.footer.terms || (locale === 'pl' ? 'Regulamin' : 'Terms of Service') }}</a>
+              <a class="nav-link" [href]="pathFor('complaints')">{{ copy.footer.complaints || (locale === 'pl' ? 'Procedura reklamacyjna' : 'Complaints Procedure') }}</a>
               <a class="nav-link" [href]="pathFor('privacy')">{{ copy.footer.privacy }}</a>
               <a class="nav-link" [href]="pathFor('cookies')">Cookie Policy</a>
-              <span class="nav-link">support&#64;getquizsolver.com</span>
+              <a class="nav-link footer-mail-link" href="mailto:contact@getquizsolver.com">contact&#64;getquizsolver.com</a>
+              <a class="nav-link footer-mail-link" href="mailto:support@getquizsolver.com">support&#64;getquizsolver.com</a>
             </div>
           </div>
         </div>
         <div class="container footer-bottom">
-          {{ copy.footer.rights }}
+          <div class="footer-bottom-grid">
+            <div class="footer-bottom-rights">{{ copy.footer.rights }}</div>
+            <div class="footer-bottom-seller">
+              {{ locale === 'pl'
+                ? 'Nazwa sprzedawcy: Kamil Pardała (działalność nierejestrowana) | Adres siedziby: ul. Drukarska 7/15, 30-348 Kraków | Adres e-mail do kontaktu: contact@getquizsolver.com'
+                : 'Seller name: Kamil Pardała | Registered address: ul. Drukarska 7/15, 30-348 Kraków, Poland | Contact email: contact@getquizsolver.com' }}
+            </div>
+          </div>
         </div>
       </footer>
 
@@ -926,10 +955,54 @@ export function trackGa4Event(eventName: string, params?: Record<string, string 
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 0.75rem 1.5rem;
     }
-    .footer-links .nav-link {
-      font-size: 0.9rem;
-      display: inline-block;
-      width: fit-content;
+    .footer-seller-box {
+      margin-top: 1.5rem;
+      padding: 1rem 1.2rem;
+      border-radius: var(--radius-lg);
+      background: rgba(255, 255, 255, 0.025);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      text-align: left;
+    }
+    .footer-seller-title {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--accent-cyan);
+      font-weight: 800;
+      margin: 0 0 0.15rem;
+    }
+    .footer-seller-line {
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      margin: 0;
+      line-height: 1.45;
+    }
+    .footer-seller-line strong {
+      color: var(--text-primary);
+    }
+    .footer-seller-lbl {
+      display: block;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+      font-weight: 700;
+      letter-spacing: 0.03em;
+    }
+    .footer-seller-tag {
+      font-size: 0.74rem;
+      color: var(--text-tertiary);
+      margin-left: 0.25rem;
+    }
+    .footer-seller-line a {
+      color: var(--accent-cyan);
+      text-decoration: underline;
+    }
+    .footer-mail-link {
+      color: var(--accent-cyan) !important;
+      font-weight: 600;
     }
     .footer-bottom {
       border-top: 1px solid var(--border);
@@ -937,6 +1010,22 @@ export function trackGa4Event(eventName: string, params?: Record<string, string 
       text-align: center;
       font-size: 0.85rem;
       color: var(--text-tertiary);
+    }
+    .footer-bottom-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      align-items: center;
+      justify-content: center;
+    }
+    .footer-bottom-rights {
+      color: var(--text-tertiary);
+    }
+    .footer-bottom-seller {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      max-width: 52rem;
+      line-height: 1.5;
     }
 
     /* Responsive */

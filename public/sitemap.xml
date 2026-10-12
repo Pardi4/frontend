@@ -1765,6 +1765,104 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://getquizsolver.com/complaints</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/complaints"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/complaints"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/complaints"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/complaints"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/complaints"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/complaints"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/complaints"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/complaints"/>
+    <lastmod>2026-07-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://getquizsolver.com/pl/complaints</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/complaints"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/complaints"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/complaints"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/complaints"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/complaints"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/complaints"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/complaints"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/complaints"/>
+    <lastmod>2026-07-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://getquizsolver.com/de/complaints</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/complaints"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/complaints"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/complaints"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/complaints"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/complaints"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/complaints"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/complaints"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/complaints"/>
+    <lastmod>2026-07-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://getquizsolver.com/es/complaints</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/complaints"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/complaints"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/complaints"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/complaints"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/complaints"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/complaints"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/complaints"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/complaints"/>
+    <lastmod>2026-07-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://getquizsolver.com/fr/complaints</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/complaints"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/complaints"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/complaints"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/complaints"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/complaints"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/complaints"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/complaints"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/complaints"/>
+    <lastmod>2026-07-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://getquizsolver.com/it/complaints</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/complaints"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/complaints"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/complaints"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/complaints"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/complaints"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/complaints"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/complaints"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/complaints"/>
+    <lastmod>2026-07-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://getquizsolver.com/uk/complaints</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/complaints"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/complaints"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://getquizsolver.com/de/complaints"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://getquizsolver.com/es/complaints"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://getquizsolver.com/fr/complaints"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://getquizsolver.com/it/complaints"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://getquizsolver.com/uk/complaints"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getquizsolver.com/complaints"/>
+    <lastmod>2026-07-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://getquizsolver.com/blog</loc>
     <xhtml:link rel="alternate" hreflang="en" href="https://getquizsolver.com/blog"/>
     <xhtml:link rel="alternate" hreflang="pl" href="https://getquizsolver.com/pl/blog"/>
