@@ -254,8 +254,8 @@ import { ShellComponent, trackGa4Event } from './shell.component';
               <span>{{ promoCopy.checkoutApplied }}</span>
             </div>
 
-            <!-- Payment Provider Selector (DPay vs Lemon Squeezy) -->
-            <div class="provider-selector-wrap">
+            <!-- Payment Provider Selector (DPay vs Lemon Squeezy) - Only shown if DPay/BLIK is available -->
+            <div class="provider-selector-wrap" *ngIf="isDpayAvailable">
               <span class="selector-title">{{ checkoutProviderCopy.title }}</span>
               <div class="provider-cards-grid">
                 <!-- DPay Option -->
@@ -1332,7 +1332,16 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
   protected readonly buying = signal('');
   protected readonly buyError = signal('');
   protected readonly pendingPack = signal('');
-  protected readonly selectedProvider = signal<'dpay' | 'lemonsqueezy'>('dpay');
+  protected readonly selectedProvider = signal<'dpay' | 'lemonsqueezy'>('lemonsqueezy');
+
+  // Feature flag for DPay (BLIK / szybki przelew).
+  // Kept false until dpay merchant verification approval.
+  // When enabled, it will ONLY be displayed if locale === 'pl'.
+  readonly enableDpayBlik = false;
+
+  get isDpayAvailable(): boolean {
+    return this.enableDpayBlik && this.locale === 'pl';
+  }
   protected readonly digitalConsent = signal(false);
   protected readonly pathFor = pathFor;
   protected readonly currency = inject(CurrencyService);
@@ -1925,7 +1934,7 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
     }
     this.buyError.set('');
     this.digitalConsent.set(false);
-    this.selectedProvider.set(this.locale === 'pl' ? 'dpay' : 'lemonsqueezy');
+    this.selectedProvider.set(this.isDpayAvailable ? 'dpay' : 'lemonsqueezy');
     this.pendingPack.set(pack);
     trackGa4Event('checkout_initiated', { pack, locale: this.locale });
   }
