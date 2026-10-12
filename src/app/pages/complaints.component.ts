@@ -95,11 +95,7 @@ import { ShellComponent } from './shell.component';
               <span class="seller-hint">Polska / Poland</span>
             </div>
             <div class="seller-item">
-              <span class="seller-lbl">{{ isPl ? 'Adres e-mail do kontaktu:' : 'Official Contact Email:' }}</span>
-              <a class="seller-link" href="mailto:contact@getquizsolver.com">contact&#64;getquizsolver.com</a>
-            </div>
-            <div class="seller-item">
-              <span class="seller-lbl">{{ isPl ? 'Adres e-mail do reklamacji:' : 'Dedicated Complaints Email:' }}</span>
+              <span class="seller-lbl">{{ isPl ? 'Adres e-mail do kontaktu i reklamacji:' : 'Official Contact & Claims Email:' }}</span>
               <a class="seller-link highlight" href="mailto:support@getquizsolver.com">support&#64;getquizsolver.com</a>
             </div>
             <div class="seller-item">
@@ -148,9 +144,7 @@ import { ShellComponent } from './shell.component';
                 <li>
                   <strong>{{ isPl ? 'Pocztą elektroniczną e-mail:' : 'By email:' }}</strong>
                   {{ isPl ? ' bezpośrednio na adres ' : ' directly to ' }}
-                  <a href="mailto:support@getquizsolver.com">support&#64;getquizsolver.com</a>
-                  {{ isPl ? ' (lub pomocniczo na ' : ' (or alternatively to ' }}
-                  <a href="mailto:contact@getquizsolver.com">contact&#64;getquizsolver.com</a>).
+                  <a href="mailto:support@getquizsolver.com">support&#64;getquizsolver.com</a>.
                 </li>
                 <li>
                   <strong>{{ isPl ? 'Poprzez formularz kontaktowy:' : 'Via online contact form:' }}</strong>

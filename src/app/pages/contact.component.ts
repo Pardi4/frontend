@@ -27,7 +27,7 @@ import { ShellComponent } from './shell.component';
                 </span>
                 <span class="meta-item">
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-                  <a href="mailto:contact@getquizsolver.com" style="color:inherit; text-decoration:none;">contact&#64;getquizsolver.com</a>
+                  <a href="mailto:support@getquizsolver.com" style="color:inherit; text-decoration:none;">support&#64;getquizsolver.com</a>
                 </span>
               </div>
             </div>
@@ -173,11 +173,7 @@ import { ShellComponent } from './shell.component';
                   <span class="info-value-text"><strong>ul. Drukarska 7, 30-348 Kraków</strong>, Polska</span>
                 </div>
                 <div class="info-item">
-                  <span class="info-label">{{ locale === 'pl' ? 'Adres e-mail do kontaktu na stronie:' : 'Contact Email Address:' }}</span>
-                  <a class="info-value" href="mailto:contact@getquizsolver.com">contact&#64;getquizsolver.com</a>
-                </div>
-                <div class="info-item">
-                  <span class="info-label">{{ locale === 'pl' ? 'Adres e-mail do reklamacji:' : 'Complaints & Claims Email:' }}</span>
+                  <span class="info-label">{{ locale === 'pl' ? 'Adres e-mail do kontaktu i reklamacji:' : 'Official Contact & Complaints Email:' }}</span>
                   <a class="info-value" href="mailto:support@getquizsolver.com">support&#64;getquizsolver.com</a>
                 </div>
                 <div class="info-item">

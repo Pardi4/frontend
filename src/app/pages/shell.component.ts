@@ -197,11 +197,7 @@ export function trackGa4Event(eventName: string, params?: Record<string, string 
                 <span>ul. Drukarska 7, 30-348 Kraków</span>
               </p>
               <p class="footer-seller-line">
-                <span class="footer-seller-lbl">{{ locale === 'pl' ? 'Adres e-mail do kontaktu:' : 'Contact email:' }}</span>
-                <a href="mailto:contact@getquizsolver.com">contact&#64;getquizsolver.com</a>
-              </p>
-              <p class="footer-seller-line">
-                <span class="footer-seller-lbl">{{ locale === 'pl' ? 'Obsługa reklamacji:' : 'Complaints:' }}</span>
+                <span class="footer-seller-lbl">{{ locale === 'pl' ? 'Adres e-mail do kontaktu i reklamacji:' : 'Contact & complaints email:' }}</span>
                 <a href="mailto:support@getquizsolver.com">support&#64;getquizsolver.com</a>
               </p>
             </div>
@@ -240,7 +236,6 @@ export function trackGa4Event(eventName: string, params?: Record<string, string 
               <a class="nav-link" [href]="pathFor('complaints')">{{ copy.footer.complaints || (locale === 'pl' ? 'Procedura reklamacyjna' : 'Complaints Procedure') }}</a>
               <a class="nav-link" [href]="pathFor('privacy')">{{ copy.footer.privacy }}</a>
               <a class="nav-link" [href]="pathFor('cookies')">Cookie Policy</a>
-              <a class="nav-link footer-mail-link" href="mailto:contact@getquizsolver.com">contact&#64;getquizsolver.com</a>
               <a class="nav-link footer-mail-link" href="mailto:support@getquizsolver.com">support&#64;getquizsolver.com</a>
             </div>
           </div>
@@ -250,8 +245,8 @@ export function trackGa4Event(eventName: string, params?: Record<string, string 
             <div class="footer-bottom-rights">{{ copy.footer.rights }}</div>
             <div class="footer-bottom-seller">
               {{ locale === 'pl'
-                ? 'Nazwa sprzedawcy: Kamil Pardała (działalność nierejestrowana) | Adres siedziby: ul. Drukarska 7, 30-348 Kraków | Adres e-mail do kontaktu: contact@getquizsolver.com'
-                : 'Seller name: Kamil Pardała | Registered address: ul. Drukarska 7, 30-348 Kraków, Poland | Contact email: contact@getquizsolver.com' }}
+                ? 'Nazwa sprzedawcy: Kamil Pardała (działalność nierejestrowana) | Adres siedziby: ul. Drukarska 7, 30-348 Kraków | Adres e-mail do kontaktu: support@getquizsolver.com'
+                : 'Seller name: Kamil Pardała | Registered address: ul. Drukarska 7, 30-348 Kraków, Poland | Contact email: support@getquizsolver.com' }}
             </div>
           </div>
         </div>

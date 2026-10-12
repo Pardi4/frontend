@@ -384,7 +384,7 @@ const en: SiteCopy = {
         title: "§ 1. General Provisions and Service Provider Details",
         items: [
           "1. These Terms of Service set forth the terms and conditions for using the QuizSolver online platform at getquizsolver.com and the related browser extension.",
-          "2. Service Provider: Kamil Pardała, residing at ul. Drukarska 7, 30-348 Kraków, Poland, electronic mail: contact@getquizsolver.com and support@getquizsolver.com, operating an unregistered business activity under Art. 5 of the Polish Entrepreneurs Law Act of March 6, 2018.",
+          "2. Service Provider: Kamil Pardała, residing at ul. Drukarska 7, 30-348 Kraków, Poland, electronic mail: support@getquizsolver.com, operating an unregistered business activity under Art. 5 of the Polish Entrepreneurs Law Act of March 6, 2018.",
           "3. Definitions:",
           "a) Service / Extension: the getquizsolver.com web application and the browser extension (Google Chrome, Microsoft Edge).",
           "b) User / Customer: a natural person with full legal capacity (or limited capacity with statutory guardian consent) using the Service or purchasing Digital Content.",
@@ -475,7 +475,7 @@ const en: SiteCopy = {
       {
         title: "Billing & Credits",
         desc: "Questions about top-ups via DPay or Lemon Squeezy, invoices, and credit balances.",
-        email: "contact@getquizsolver.com",
+        email: "support@getquizsolver.com",
         actionLabel: "Billing Inquiries"
       },
       {
@@ -487,7 +487,7 @@ const en: SiteCopy = {
       {
         title: "Partnership & Press",
         desc: "Affiliate partnerships, business inquiries, and press questions.",
-        email: "contact@getquizsolver.com",
+        email: "support@getquizsolver.com",
         actionLabel: "Business Inquiries"
       }
     ],
@@ -505,7 +505,7 @@ const en: SiteCopy = {
       submitBtn: "Send message",
       sendingBtn: "Sending...",
       successMsg: "Thank you! Your message has been sent. We will reply as quickly as possible.",
-      errorMsg: "Failed to send message. Please try again or write directly to contact@getquizsolver.com.",
+      errorMsg: "Failed to send message. Please try again or write directly to support@getquizsolver.com.",
       subjects: [
         "Payment or credit top-up inquiry",
         "Extension technical support",
@@ -519,7 +519,7 @@ const en: SiteCopy = {
       desc: "QuizSolver is an AI-powered study assistance application and browser extension.",
       serviceName: "QuizSolver (getquizsolver.com)",
       website: "https://getquizsolver.com",
-      email: "contact@getquizsolver.com",
+      email: "support@getquizsolver.com",
       hours: "Monday – Friday: 9:00 AM – 6:00 PM CET",
       termsLinkText: "View Terms of Service",
       privacyLinkText: "View Privacy Policy"
@@ -909,7 +909,7 @@ const pl: SiteCopy = {
         title: "§ 1. Postanowienia ogólne i dane Usługodawcy",
         items: [
           "1. Niniejszy Regulamin określa zasady korzystania z serwisu internetowego QuizSolver dostępnego pod adresem getquizsolver.com oraz powiązanego rozszerzenia do przeglądarek internetowych.",
-          "2. Usługodawcą jest: Kamil Pardała, zam. ul. Drukarska 7, 30-348 Kraków, adres poczty elektronicznej: contact@getquizsolver.com oraz support@getquizsolver.com, prowadzący działalność nierejestrowaną zgodnie z art. 5 ustawy z dnia 6 marca 2018 r. – Prawo przedsiębiorców.",
+          "2. Usługodawcą jest: Kamil Pardała, zam. ul. Drukarska 7, 30-348 Kraków, adres poczty elektronicznej: support@getquizsolver.com, prowadzący działalność nierejestrowaną zgodnie z art. 5 ustawy z dnia 6 marca 2018 r. – Prawo przedsiębiorców.",
           "3. Definicje:",
           "a) Serwis / Rozszerzenie: aplikacja internetowa getquizsolver.com oraz wtyczka do przeglądarek internetowych (Google Chrome, Microsoft Edge).",
           "b) Użytkownik / Klient: osoba fizyczna posiadająca pełną zdolność do czynności prawnych (lub ograniczoną zdolność za zgodą przedstawiciela ustawowego), korzystająca z Serwisu lub dokonująca zakupu Treści Cyfrowych.",
@@ -1000,7 +1000,7 @@ const pl: SiteCopy = {
       {
         title: "Płatności & Kredyty",
         desc: "Pytania o doładowania przez DPay (BLIK) lub Lemon Squeezy, faktury i status płatności.",
-        email: "contact@getquizsolver.com",
+        email: "support@getquizsolver.com",
         actionLabel: "Dział rozliczeń"
       },
       {
@@ -1012,7 +1012,7 @@ const pl: SiteCopy = {
       {
         title: "Współpraca & Biznes",
         desc: "Oferty partnerskie, propozycje integracji lub pytania prasowe.",
-        email: "contact@getquizsolver.com",
+        email: "support@getquizsolver.com",
         actionLabel: "Kontakt biznesowy"
       }
     ],
@@ -1030,7 +1030,7 @@ const pl: SiteCopy = {
       submitBtn: "Wyślij wiadomość",
       sendingBtn: "Wysyłanie...",
       successMsg: "Dziękujemy! Twoja wiadomość została wysłana. Odpowiemy najszybciej jak to możliwe.",
-      errorMsg: "Nie udało się wysłać wiadomości. Spróbuj ponownie lub napisz bezpośrednio na contact@getquizsolver.com.",
+      errorMsg: "Nie udało się wysłać wiadomości. Spróbuj ponownie lub napisz bezpośrednio na support@getquizsolver.com.",
       subjects: [
         "Pytanie o płatność / doładowanie (DPay, Lemon Squeezy)",
         "Pomoc techniczna z rozszerzeniem",
@@ -1044,7 +1044,7 @@ const pl: SiteCopy = {
       desc: "QuizSolver to zaawansowane narzędzie AI wspomagające naukę i rozwiązywanie pytań testowych.",
       serviceName: "QuizSolver (getquizsolver.com)",
       website: "https://getquizsolver.com",
-      email: "contact@getquizsolver.com",
+      email: "support@getquizsolver.com",
       hours: "Poniedziałek – Piątek: 9:00 – 18:00 CET",
       termsLinkText: "Zobacz Regulamin serwisu",
       privacyLinkText: "Zobacz Politykę Prywatności"
