@@ -84,64 +84,65 @@ const DEFAULT_DEMO_LABELS: DemoLabels = {
   scoreLabel: 'Score',
   answeredLabel: 'Answered',
   accuracyLabel: 'Accuracy',
-  checkAnswer: 'Check answer',
-  showHint: 'Show hint',
-  simulateSolver: 'Simulate QuizSolver',
-  resetAnswers: 'Reset answers',
-  correctTitle: 'Correct',
-  wrongTitle: 'Not quite',
+  checkAnswer: 'Check my answer',
+  showHint: '💡 Show hint (Hint mode)',
+  simulateSolver: '✨ Solve with QuizSolver',
+  resetAnswers: 'Restart quiz',
+  correctTitle: 'Correct answer',
+  wrongTitle: 'Not quite right',
   emptyTitle: 'Choose an answer first',
-  hintTitle: 'Hint',
+  hintTitle: 'QuizSolver Hint',
   explanationLabel: 'Why this answer works',
-  resultTitle: 'Demo complete',
-  resultText: 'You have tested radio, hint mode, text input, dropdown matching and selected-text solving. The real extension uses the same workflow on supported quiz pages.',
-  finalPrimary: 'Install the extension',
+  resultTitle: 'Demo complete!',
+  resultText: 'You tested choices, hint mode, text input, matching dropdowns, and selected text. QuizSolver works exactly like this on real quiz pages.',
+  finalPrimary: 'Install Chrome Extension',
   finalSecondary: 'Restart quiz',
-  sideTitle: 'What QuizSolver would do',
-  sideText: 'Open the extension on this page, solve the current question, or use the quick overlay for selected text. This demo mirrors the real extension flow without spending credits.'
+  sideTitle: 'QuizSolver in action',
+  sideText: 'Test in browser or use the Chrome extension.'
 };
 
 const COPY: Partial<Record<Locale, DemoCopy>> & { en: DemoCopy; pl: DemoCopy } = {
   en: {
-    eyebrow: 'Interactive onboarding',
-    title: 'Try QuizSolver on a safe demo quiz',
-    lead: 'Try the full QuizSolver workflow without spending credits. Pick a predefined everyday question, open the extension, and see how QuizSolver suggests an answer, gives a hint, fills text fields, handles dropdowns and solves selected text.',
+    eyebrow: 'Interactive Practice · 0 Credits Used',
+    title: 'See QuizSolver in action',
+    lead: 'Test 5 real question formats: multiple choice, discreet Hint mode, typed inputs, matching dropdowns, and quick selected-text solving.',
     install: 'Install extension',
     openStore: 'Open Chrome Web Store',
     demoBadge: 'No credits used',
     localBadge: 'Guided practice',
     mapTitle: 'How to use this demo',
-    mapText: 'Click Start extension tutorial first. The extension will point at this demo quiz step by step; then open the QuizSolver popup, follow the highlighted action, and move to the next question.',
+    mapText: 'Test solving directly in your browser with the buttons below, or open the official QuizSolver Chrome extension on this page.',
     prev: 'Previous',
     next: 'Next question',
     restart: 'Restart quiz',
     startTour: 'Start extension tutorial',
-    selectText: 'Select demo question text',
-    selectedTip: 'Select the question text, open the quick overlay, then click Solve selected text.',
+    selectText: '✂️ Select question text',
+    selectedTip: 'Select only the question text and click Solve selected text (or press Alt+Q in the extension).',
     yourAnswer: 'Your answer',
     chooseOption: 'Choose',
     popupTitle: 'Popup flow',
     popupSteps: [
-      'Click the QS extension icon in Chrome while this demo page is open.',
       'Click Solve current page and check that the correct answer is selected.',
       'Turn on Hint mode before solving to see a subtle clue instead of an automatic click.',
-      'Use the text and dropdown examples to see how non-radio questions are handled.',
-      'Open Quick overlay with the popup button or Alt+Q, select question text, then solve only that selection.'
+      'Use the text example to see how typed answers are filled.',
+      'Use dropdown matching to test LMS multiple select fields.',
+      'Highlight question text and solve only that selection with Quick overlay (Alt+Q).'
     ],
     labels: {
-      quizMeta: 'Safe interactive quiz',
-      resultText: 'You have completed a realistic mini quiz with choices, hint mode, typed answers, matching fields and selected text.',
-      sideTitle: 'Extension preview',
-      sideText: 'Use this page like a real quiz. Answer manually, ask for a hint, or simulate how QuizSolver would fill the current question.'
+      quizMeta: 'Safe test quiz',
+      resultText: 'You have tested choices, hint mode, typed answers, matching fields, and selected text without spending credits.',
+      simulateSolver: '✨ Solve with QuizSolver',
+      showHint: '💡 Show hint (Hint mode)',
+      checkAnswer: 'Check my answer'
     },
     proofItems: ['Works without credits on this demo', 'Shows why an answer is correct', 'Built to match real quiz layouts'],
     questions: [
       {
         id: 'demo-radio',
         type: 'radio',
-        kicker: 'Step 1',
+        kicker: 'Step 1 of 5 · Multiple Choice',
         title: 'Biology multiple choice',
-        instruction: 'Answer manually or simulate how QuizSolver selects the best option on a standard quiz card.',
+        instruction: 'QuizSolver scans the question and automatically selects the correct answer in one click.',
         question: 'Which organelle is mainly responsible for producing ATP in eukaryotic cells?',
         options: ['Nucleus', 'Mitochondrion', 'Ribosome', 'Cell membrane'],
         correctText: 'Mitochondrion',
@@ -151,23 +152,23 @@ const COPY: Partial<Record<Locale, DemoCopy>> & { en: DemoCopy; pl: DemoCopy } =
       {
         id: 'demo-hidden',
         type: 'hidden',
-        kicker: 'Step 2',
-        title: 'Hint mode on a history question',
-        instruction: 'Use Hint mode when you want guidance without automatically clicking the answer.',
+        kicker: 'Step 2 of 5 · Hint Mode',
+        title: 'History: Hint mode',
+        instruction: 'Don’t want the tool to click for you? Hint mode discreetly highlights the clue, keeping you in full control.',
         question: 'Which source is the strongest example of primary historical evidence?',
         options: ['A textbook chapter', 'A diary written during the event', 'A modern documentary', 'An encyclopedia summary'],
         correctText: 'A diary written during the event',
-        hint: 'Primary evidence is created close to the event by someone who directly experienced it.',
+        hint: 'Primary evidence is created during the event by someone who directly experienced it.',
         explanation: 'A diary written during the event is a primary source because it records first-hand information from that time.'
       },
       {
         id: 'demo-text',
         type: 'text',
-        kicker: 'Step 3',
-        title: 'Typed math answer',
-        instruction: 'Type the answer yourself or let the demo fill the text field like the extension would.',
+        kicker: 'Step 3 of 5 · Text Input',
+        title: 'Math: Typed answer',
+        instruction: 'QuizSolver accurately fills numbers and short text into quiz form inputs.',
         question: 'What is the value of 12 x 8?',
-        placeholder: 'Type the number',
+        placeholder: 'Type your answer',
         correctText: '96',
         hint: 'Break it into 10 x 8 plus 2 x 8.',
         explanation: '12 x 8 equals 96 because 10 x 8 is 80 and 2 x 8 is 16, giving 96 together.'
@@ -175,223 +176,142 @@ const COPY: Partial<Record<Locale, DemoCopy>> & { en: DemoCopy; pl: DemoCopy } =
       {
         id: 'demo-matching',
         type: 'matching',
-        kicker: 'Step 4',
+        kicker: 'Step 4 of 5 · Dropdowns',
         title: 'Science matching dropdowns',
-        instruction: 'Match each concept to its definition. This mirrors dropdown and matching questions found in LMS quizzes.',
+        instruction: 'Matches multiple definitions to terms simultaneously, just like in LMS exams.',
         question: 'Match each science term with the correct definition.',
         prompts: ['Photosynthesis', 'Evaporation', 'Gravity'],
         options: ['Plants make glucose using light', 'Liquid changes into gas', 'Force attracting objects with mass'],
         correctText: 'Photosynthesis = Plants make glucose using light, Evaporation = Liquid changes into gas, Gravity = Force attracting objects with mass',
-        hint: 'Think about what happens to light in plants, water in heat, and objects with mass.',
+        hint: 'Think about light in plants, water turning to steam, and planetary attraction.',
         explanation: 'Photosynthesis uses light to make glucose, evaporation changes liquid into gas, and gravity attracts objects with mass.'
       },
       {
         id: 'demo-selected',
         type: 'selected',
-        kicker: 'Step 5',
-        title: 'Quick overlay for selected text',
-        instruction: 'Select only the question text, press Alt+Q, and solve the selected fragment instead of the whole page.',
+        kicker: 'Step 5 of 5 · Quick Overlay',
+        title: 'Selected text solver',
+        instruction: 'When a page has cluttered layout or extra text, select only the question and solve it with Alt+Q.',
         question: 'Which QuizSolver action is best when a messy page contains extra text around the actual question?',
         options: ['Solve selected text', 'Credit checkout', 'Admin panel', 'Browser history'],
         correctText: 'Solve selected text',
         hint: 'Use the action that works only on the text you highlighted.',
-        explanation: 'Solve selected text sends only the highlighted question to QuizSolver, which helps when the full-page parser sees too much unrelated content.'
+        explanation: 'Solve selected text sends only the highlighted fragment to QuizSolver, bypassing cluttered full-page layouts.'
       }
     ]
   },
   pl: {
-    eyebrow: 'Interaktywny onboarding',
-    title: 'Przetestuj QuizSolver na bezpiecznym demo',
-    lead: 'Przetestuj pełny workflow QuizSolver bez zużywania kredytów. Wybierz gotowe pytanie z codziennego życia, otwórz rozszerzenie i zobacz, jak QuizSolver sugeruje odpowiedź, pokazuje podpowiedź, wypełnia pola tekstowe, obsługuje selecty i rozwiązuje zaznaczony tekst.',
+    eyebrow: 'Interaktywne demo · Bez zużycia kredytów',
+    title: 'Zobacz, jak działa QuizSolver',
+    lead: 'Przetestuj 5 typowych zadań: od pytań jednokrotnego wyboru, przez dyskretny tryb podpowiedzi (Hint mode), po pola tekstowe i dopasowania.',
     install: 'Zainstaluj rozszerzenie',
     openStore: 'Otwórz Chrome Web Store',
-    demoBadge: 'Bez zużycia kredytów',
-    localBadge: 'Tryb treningowy',
-    mapTitle: 'Jak korzystać z demo',
-    mapText: 'Najpierw kliknij Uruchom tutorial w rozszerzeniu. Rozszerzenie pokaże po kolei, gdzie patrzeć i co kliknąć; potem otwórz popup QuizSolver, wykonaj podświetloną akcję i przejdź do następnego pytania.',
+    demoBadge: '0 kredytów',
+    localBadge: 'Tryb bezpieczny',
+    mapTitle: 'Jak to działa?',
+    mapText: 'Możesz przetestować rozwiązywanie bezpośrednio na tej stronie za pomocą przycisków lub otworzyć zainstalowane rozszerzenie QuizSolver w Chrome.',
     prev: 'Poprzednie',
     next: 'Następne pytanie',
-    restart: 'Uruchom ponownie',
-    startTour: 'Uruchom tutorial w rozszerzeniu',
-    selectText: 'Zaznacz tekst pytania',
-    selectedTip: 'Zaznacz sam tekst pytania, otwórz szybki overlay i kliknij Rozwiąż zaznaczony tekst.',
+    restart: 'Zacznij od nowa',
+    startTour: 'Uruchom tutorial',
+    selectText: '✂️ Zaznacz tekst pytania',
+    selectedTip: 'Zaznacz sam tekst pytania i kliknij Rozwiąż zaznaczony fragment (w rozszerzeniu skrót Alt+Q).',
     yourAnswer: 'Twoja odpowiedź',
-    chooseOption: 'Wybierz',
-    popupTitle: 'Co klikać w popupie',
+    chooseOption: 'Wybierz opcję',
+    popupTitle: 'QuizSolver w akcji',
     popupSteps: [
-      'Kliknij ikonę QS w Chrome, gdy ta strona demo jest otwarta.',
-      'Kliknij Rozwiąż bieżącą stronę i sprawdź, czy poprawna odpowiedź została zaznaczona.',
-      'Włącz Hint mode przed rozwiązaniem, żeby zobaczyć dyskretną podpowiedź zamiast automatycznego kliknięcia.',
-      'Przejdź przez przykład z polem tekstowym i selectami, żeby zobaczyć obsługę innych typów pytań.',
-      'Otwórz szybki overlay przyciskiem w popupie albo skrótem Alt+Q, zaznacz tekst pytania i rozwiąż tylko zaznaczenie.'
+      'Automatyczne zaznaczanie poprawnej odpowiedzi',
+      'Dyskretna podpowiedź zamiast kliknięcia (Hint mode)',
+      'Wpisywanie odpowiedzi w pola tekstowe',
+      'Dopasowywanie wartości w dropdownach',
+      'Błyskawiczny Quick Overlay dla zaznaczonego tekstu'
     ],
+    labels: {
+      quizMeta: 'Testowy quiz demo',
+      scoreLabel: 'Wynik',
+      answeredLabel: 'Ukończone',
+      accuracyLabel: 'Skuteczność',
+      checkAnswer: 'Sprawdź moją odpowiedź',
+      showHint: '💡 Pokaż podpowiedź (Hint mode)',
+      simulateSolver: '✨ Rozwiąż z QuizSolver',
+      resetAnswers: 'Zacznij od nowa',
+      correctTitle: 'Świetnie! Poprawna odpowiedź',
+      wrongTitle: 'Nie do końca poprawnie',
+      emptyTitle: 'Najpierw wybierz lub wpisz odpowiedź',
+      hintTitle: 'Podpowiedź QuizSolver (Hint mode)',
+      explanationLabel: 'Dlaczego to działa',
+      resultTitle: 'Gratulacje! Przetestowałeś wszystkie 5 funkcji',
+      resultText: 'Sprawdziłeś jednokrotny wybór, tryb podpowiedzi, pole tekstowe, dopasowania i Quick Overlay. Dokładnie tak samo QuizSolver działa na Twoich testach i egzaminach.',
+      finalPrimary: 'Dodaj QuizSolver do Chrome',
+      finalSecondary: 'Uruchom demo ponownie',
+      sideTitle: 'Co robi QuizSolver',
+      sideText: 'QuizSolver błyskawicznie analizuje stronę i wskazuje właściwą odpowiedź.'
+    },
+    proofItems: ['Bezpieczny quiz demo (0 kredytów)', 'Wyjaśnienia krok po kroku', 'Wsparcie dla wszystkich formatów pytań'],
     questions: [
       {
         id: 'demo-radio',
         type: 'radio',
-        kicker: 'Krok 1',
-        title: 'Zwykłe rozwiązywanie',
-        instruction: 'Kliknij Solve current page w popupie rozszerzenia. QuizSolver powinien zaznaczyć poprawną opcję.',
-        question: 'Co warto zabrać, gdy na zewnątrz pada deszcz?',
-        options: ['Okulary przeciwsłoneczne', 'Parasol', 'Ręcznik plażowy', 'Łyżwy'],
-        correctText: 'Parasol'
+        kicker: 'Krok 1 z 5 · Jednokrotny wybór',
+        title: 'Biologia: jednokrotny wybór',
+        instruction: 'QuizSolver błyskawicznie analizuje treść pytania i automatycznie zaznacza właściwą opcję.',
+        question: 'Które organellum odpowiada głównie za produkcję ATP w komórkach eukariotycznych?',
+        options: ['Jądro komórkowe', 'Mitochondrium', 'Rybosom', 'Błona komórkowa'],
+        correctText: 'Mitochondrium',
+        hint: 'Szukaj organellum nazywanego często elektrownią komórki.',
+        explanation: 'Mitochondria przeprowadzają oddychanie komórkowe i wytwarzają większość ATP, czyli podstawowego nośnika energii w komórkach eukariotycznych.'
       },
       {
         id: 'demo-hidden',
         type: 'hidden',
-        kicker: 'Krok 2',
-        title: 'Tryb ukryty',
-        instruction: 'Włącz Hint mode w popupie przed rozwiązaniem. Odpowiedź zostanie podpowiedziana zamiast kliknięta.',
-        question: 'Co najczęściej trzymamy w lodówce, żeby było chłodne?',
-        options: ['Koc', 'Mleko', 'Zeszyt', 'Klucze'],
-        correctText: 'Mleko'
+        kicker: 'Krok 2 z 5 · Tryb podpowiedzi',
+        title: 'Historia: tryb podpowiedzi (Hint mode)',
+        instruction: 'Nie chcesz automatycznego klikania? Włącz Hint mode – rozszerzenie wskaże subtelną wskazówkę, a ostateczny wybór podejmujesz Ty.',
+        question: 'Które źródło jest najlepszym przykładem pierwotnego źródła historycznego?',
+        options: ['Rozdział w podręczniku', 'Dziennik napisany podczas wydarzenia', 'Współczesny film dokumentalny', 'Hasło w encyklopedii'],
+        correctText: 'Dziennik napisany podczas wydarzenia',
+        hint: 'Źródło pierwotne powstaje bezpośrednio w czasie wydarzenia (np. relacja świadka).',
+        explanation: 'Dziennik napisany podczas wydarzenia jest źródłem pierwotnym, bo zawiera bezpośredni zapis z danego czasu.'
       },
       {
         id: 'demo-text',
         type: 'text',
-        kicker: 'Krok 3',
-        title: 'Odpowiedź wpisywana',
-        instruction: 'Rozwiąż stronę, a rozszerzenie wypełni pole tekstowe lokalną odpowiedzią demo.',
-        question: 'Ile dni ma zwykły tydzień?',
-        placeholder: 'Wpisz odpowiedź tutaj',
-        correctText: '7'
+        kicker: 'Krok 3 z 5 · Odpowiedź wpisywana',
+        title: 'Matematyka: wpisywanie tekstu',
+        instruction: 'QuizSolver potrafi wpisywać liczby i tekst bezpośrednio do pól formularzy quizowych.',
+        question: 'Ile wynosi 12 x 8?',
+        placeholder: 'Wpisz liczbę',
+        correctText: '96',
+        hint: 'Rozbij działanie na (10 x 8) + (2 x 8).',
+        explanation: '12 x 8 = 96, ponieważ 10 x 8 daje 80, a 2 x 8 daje 16. Razem to 96.'
       },
       {
         id: 'demo-matching',
         type: 'matching',
-        kicker: 'Krok 4',
-        title: 'Selecty i dopasowanie',
-        instruction: 'Ten krok pokazuje dopasowywanie wielu selectów. QuizSolver wypełnia każdy select pasującym pojęciem.',
-        question: 'Dopasuj codzienną czynność do miejsca, w którym zwykle się odbywa.',
-        prompts: ['Gotowanie', 'Spanie', 'Zakupy'],
-        options: ['Kuchnia', 'Sypialnia', 'Sklep'],
-        correctText: 'Gotowanie = Kuchnia, Spanie = Sypialnia, Zakupy = Sklep'
+        kicker: 'Krok 4 z 5 · Dopasowanie w selectach',
+        title: 'Nauka: listy wyboru i dopasowanie',
+        instruction: 'Rozszerzenie radzi sobie z wieloma listami wyboru na raz i precyzyjnie przypisuje pary.',
+        question: 'Dopasuj pojęcie naukowe do właściwej definicji.',
+        prompts: ['Fotosynteza', 'Parowanie', 'Grawitacja'],
+        options: ['Rośliny tworzą glukozę ze światła', 'Ciecz zmienia się w gaz', 'Siła przyciągająca obiekty z masą'],
+        correctText: 'Fotosynteza = Rośliny tworzą glukozę ze światła, Parowanie = Ciecz zmienia się w gaz, Grawitacja = Siła przyciągająca obiekty z masą',
+        hint: 'Pomyśl o świetle u roślin, wodzie pod wpływem ciepła i obiektach z masą.',
+        explanation: 'Fotosynteza wykorzystuje światło do tworzenia glukozy, parowanie zmienia ciecz w gaz, a grawitacja przyciąga obiekty z masą.'
       },
       {
         id: 'demo-selected',
         type: 'selected',
-        kicker: 'Krok 5',
-        title: 'Szybki overlay i zaznaczony tekst',
-        instruction: 'Zaznacz tekst pytania, naciśnij Alt+Q albo otwórz Quick overlay, a potem rozwiąż zaznaczony tekst.',
-        question: 'Które narzędzie QuizSolver otwiera małe okno z szybkimi akcjami?',
-        options: ['Szybki overlay', 'Płatność za kredyty', 'Panel admina', 'Historia przeglądarki'],
-        correctText: 'Szybki overlay'
+        kicker: 'Krok 5 z 5 · Zaznaczony fragment',
+        title: 'Quick overlay: zaznaczony tekst',
+        instruction: 'Gdy strona ma skomplikowany lub nieczytelny układ, zaznacz sam fragment pytania i użyj Quick overlay (skrót Alt+Q).',
+        question: 'Która akcja QuizSolver najlepiej sprawdza się, gdy strona ma dużo dodatkowego tekstu wokół właściwego pytania?',
+        options: ['Rozwiąż zaznaczony tekst', 'Płatność za kredyty', 'Panel admina', 'Historia przeglądarki'],
+        correctText: 'Rozwiąż zaznaczony tekst',
+        hint: 'Wybierz akcję, która pracuje tylko na zaznaczonym fragmencie tekstu.',
+        explanation: 'Rozwiąż zaznaczony tekst wysyła do QuizSolver tylko podświetlone pytanie, co pomaga, gdy pełny parser strony widzi zbyt dużo pobocznej treści.'
       }
     ]
   }
-};
-
-COPY.pl = {
-  eyebrow: 'Interaktywne demo',
-  title: 'Sprawdź QuizSolver na quizie, który działa jak prawdziwy',
-  lead: 'Odpowiedz samodzielnie, poproś o podpowiedź albo zasymuluj działanie rozszerzenia. Demo pokazuje wybór odpowiedzi, tryb podpowiedzi, pole tekstowe, dopasowania i rozwiązywanie zaznaczonego tekstu bez zużywania kredytów.',
-  install: 'Zainstaluj rozszerzenie',
-  openStore: 'Otwórz Chrome Web Store',
-  demoBadge: 'Bez zużycia kredytów',
-  localBadge: 'Prawdziwy przepływ quizu',
-  mapTitle: 'Jak przejść demo',
-  mapText: 'Przejdź pytania jak zwykły quiz. Możesz sprawdzić własną odpowiedź, zobaczyć hint albo kliknąć symulację QuizSolver, żeby zobaczyć jak rozszerzenie pomaga na realnych stronach.',
-  prev: 'Poprzednie',
-  next: 'Następne pytanie',
-  restart: 'Zacznij od nowa',
-  startTour: 'Uruchom tutorial rozszerzenia',
-  selectText: 'Zaznacz tekst pytania',
-  selectedTip: 'Zaznacz sam tekst pytania, otwórz szybki overlay i kliknij rozwiązywanie zaznaczonego tekstu.',
-  yourAnswer: 'Twoja odpowiedź',
-  chooseOption: 'Wybierz',
-  popupTitle: 'Podgląd pracy rozszerzenia',
-  popupSteps: [
-    'Odpowiedz ręcznie albo użyj przycisku Symuluj QuizSolver.',
-    'Włącz podpowiedź, żeby zobaczyć delikatną wskazówkę zamiast gotowego kliknięcia.',
-    'Sprawdź pole tekstowe i zobacz, że demo zachowuje się jak formularz quizowy.',
-    'Przejdź dopasowania w dropdownach, tak jak w LMS-ach i formularzach.',
-    'Na końcu zaznacz tekst pytania i sprawdź przepływ Quick overlay.'
-  ],
-  labels: {
-    quizMeta: 'Bezpieczny quiz testowy',
-    scoreLabel: 'Wynik',
-    answeredLabel: 'Sprawdzone',
-    accuracyLabel: 'Skuteczność',
-    checkAnswer: 'Sprawdź odpowiedź',
-    showHint: 'Pokaż podpowiedź',
-    simulateSolver: 'Symuluj QuizSolver',
-    resetAnswers: 'Wyczyść odpowiedzi',
-    correctTitle: 'Poprawnie',
-    wrongTitle: 'Jeszcze nie',
-    emptyTitle: 'Najpierw wybierz odpowiedź',
-    hintTitle: 'Podpowiedź',
-    explanationLabel: 'Dlaczego to działa',
-    resultTitle: 'Demo ukończone',
-    resultText: 'To był pełny mini-quiz: wybór odpowiedzi, hint mode, pole tekstowe, dropdowny i zaznaczony tekst. Takie typy pytań QuizSolver obsługuje na realnych stronach.',
-    finalPrimary: 'Zainstaluj rozszerzenie',
-    finalSecondary: 'Uruchom ponownie',
-    sideTitle: 'Co zrobiłby QuizSolver',
-    sideText: 'Otwórz rozszerzenie na tej stronie, rozwiąż aktualne pytanie albo użyj Quick overlay dla zaznaczonego tekstu. Ten quiz pokazuje realny przepływ bez zużywania kredytów.'
-  },
-  proofItems: ['Nie zużywa kredytów w demo', 'Tłumaczy poprawną odpowiedź', 'Pokazuje realne typy quizów'],
-  questions: [
-    {
-      id: 'demo-radio',
-      type: 'radio',
-      kicker: 'Krok 1',
-      title: 'Biologia: jednokrotny wybór',
-      instruction: 'Wybierz odpowiedź samodzielnie albo zasymuluj działanie rozszerzenia na typowej karcie pytania.',
-      question: 'Które organellum odpowiada głównie za produkcję ATP w komórkach eukariotycznych?',
-      options: ['Jądro komórkowe', 'Mitochondrium', 'Rybosom', 'Błona komórkowa'],
-      correctText: 'Mitochondrium',
-      hint: 'Szukaj organellum nazywanego często elektrownią komórki.',
-      explanation: 'Mitochondria przeprowadzają oddychanie komórkowe i wytwarzają większość ATP, czyli podstawowego nośnika energii w komórkach eukariotycznych.'
-    },
-    {
-      id: 'demo-hidden',
-      type: 'hidden',
-      kicker: 'Krok 2',
-      title: 'Historia: tryb podpowiedzi',
-      instruction: 'Ten krok pokazuje sytuację, w której użytkownik chce wskazówkę, a nie automatyczne kliknięcie.',
-      question: 'Które źródło jest najlepszym przykładem pierwotnego źródła historycznego?',
-      options: ['Rozdział w podręczniku', 'Dziennik napisany podczas wydarzenia', 'Współczesny film dokumentalny', 'Hasło w encyklopedii'],
-      correctText: 'Dziennik napisany podczas wydarzenia',
-      hint: 'Źródło pierwotne powstaje blisko opisywanego wydarzenia i zwykle pochodzi od bezpośredniego świadka.',
-      explanation: 'Dziennik napisany podczas wydarzenia jest źródłem pierwotnym, bo zawiera bezpośredni zapis z czasu, którego dotyczy.'
-    },
-    {
-      id: 'demo-text',
-      type: 'text',
-      kicker: 'Krok 3',
-      title: 'Matematyka: odpowiedź wpisywana',
-      instruction: 'Wpisz wynik w pole tekstowe albo pozwól demo uzupełnić je tak, jak zrobiłoby to rozszerzenie.',
-      question: 'Ile wynosi 12 x 8?',
-      placeholder: 'Wpisz liczbę',
-      correctText: '96',
-      hint: 'Rozbij działanie na 10 x 8 oraz 2 x 8.',
-      explanation: '12 x 8 = 96, ponieważ 10 x 8 daje 80, a 2 x 8 daje 16. Razem to 96.'
-    },
-    {
-      id: 'demo-matching',
-      type: 'matching',
-      kicker: 'Krok 4',
-      title: 'Nauka: dropdowny i dopasowanie',
-      instruction: 'Dopasuj pojęcia do definicji. Tak wyglądają pytania spotykane w LMS-ach i formularzach.',
-      question: 'Dopasuj pojęcie naukowe do właściwej definicji.',
-      prompts: ['Fotosynteza', 'Parowanie', 'Grawitacja'],
-      options: ['Rośliny tworzą glukozę ze światła', 'Ciecz zmienia się w gaz', 'Siła przyciągająca obiekty z masą'],
-      correctText: 'Fotosynteza = Rośliny tworzą glukozę ze światła, Parowanie = Ciecz zmienia się w gaz, Grawitacja = Siła przyciągająca obiekty z masą',
-      hint: 'Pomyśl o świetle u roślin, wodzie pod wpływem ciepła i obiektach posiadających masę.',
-      explanation: 'Fotosynteza wykorzystuje światło do tworzenia glukozy, parowanie zmienia ciecz w gaz, a grawitacja przyciąga obiekty z masą.'
-    },
-    {
-      id: 'demo-selected',
-      type: 'selected',
-      kicker: 'Krok 5',
-      title: 'Quick overlay i zaznaczony tekst',
-      instruction: 'Zaznacz tylko tekst pytania, użyj Alt+Q i rozwiąż fragment zamiast całej strony.',
-      question: 'Która akcja QuizSolver najlepiej sprawdza się, gdy strona ma dużo dodatkowego tekstu wokół właściwego pytania?',
-      options: ['Rozwiąż zaznaczony tekst', 'Płatność za kredyty', 'Panel admina', 'Historia przeglądarki'],
-      correctText: 'Rozwiąż zaznaczony tekst',
-      hint: 'Wybierz akcję, która pracuje tylko na zaznaczonym fragmencie.',
-      explanation: 'Rozwiąż zaznaczony tekst wysyła do QuizSolver tylko podświetlone pytanie, co pomaga, gdy pełny parser strony widzi zbyt dużo pobocznej treści.'
-    }
-  ]
 };
 
 const DEMO_LOCALE_COPY: Record<Exclude<Locale, 'en' | 'pl'>, Omit<DemoCopy, 'questions'>> = {
@@ -404,17 +324,17 @@ const DEMO_LOCALE_COPY: Record<Exclude<Locale, 'en' | 'pl'>, Omit<DemoCopy, 'que
     demoBadge: 'Keine Credits',
     localBadge: 'Geführtes Training',
     mapTitle: 'So nutzt du die Demo',
-    mapText: 'Starte das Erweiterungs-Tutorial und öffne dann das QuizSolver-Popup auf dieser Seite.',
+    mapText: 'Du kannst das Quiz direkt im Browser testen oder die offizielle QuizSolver-Erweiterung in Chrome öffnen.',
     prev: 'Zurück',
     next: 'Nächste Frage',
     restart: 'Demo neu starten',
     startTour: 'Tutorial starten',
-    selectText: 'Demo-Fragetext markieren',
-    selectedTip: 'Markiere den Fragetext, öffne das Quick Overlay und löse die Auswahl.',
+    selectText: '✂️ Text markieren',
+    selectedTip: 'Markiere den Fragetext und nutze Quick Overlay (Alt+Q).',
     yourAnswer: 'Deine Antwort',
     chooseOption: 'Auswählen',
     popupTitle: 'Popup-Ablauf',
-    popupSteps: ['Klicke auf das QS-Symbol in Chrome.', 'Nutze „Aktuelle Seite lösen“.', 'Aktiviere den Hinweis-Modus.', 'Öffne Quick Overlay oder drücke Alt+Q.', 'Markiere Text und löse nur die Auswahl.']
+    popupSteps: ['Einzelauswahl', 'Hinweis-Modus', 'Texteingabe', 'Dropdown-Zuordnung', 'Quick Overlay']
   },
   es: {
     eyebrow: 'Onboarding interactivo',
@@ -425,17 +345,17 @@ const DEMO_LOCALE_COPY: Record<Exclude<Locale, 'en' | 'pl'>, Omit<DemoCopy, 'que
     demoBadge: 'Sin créditos',
     localBadge: 'Práctica guiada',
     mapTitle: 'Cómo usar este demo',
-    mapText: 'Inicia el tutorial de la extensión y abre el popup de QuizSolver en esta página.',
+    mapText: 'Puedes probar la resolución directamente en tu navegador o abrir la extensión QuizSolver en Chrome.',
     prev: 'Anterior',
     next: 'Siguiente pregunta',
     restart: 'Reiniciar demo',
     startTour: 'Iniciar tutorial',
-    selectText: 'Seleccionar texto de la pregunta',
-    selectedTip: 'Selecciona el texto, abre el overlay rápido y resuelve la selección.',
+    selectText: '✂️ Seleccionar texto',
+    selectedTip: 'Selecciona el texto y usa Quick Overlay (Alt+Q).',
     yourAnswer: 'Tu respuesta',
     chooseOption: 'Elegir',
     popupTitle: 'Flujo del popup',
-    popupSteps: ['Haz clic en el icono QS en Chrome.', 'Usa Resolver página actual.', 'Activa Hint mode.', 'Abre Quick overlay o pulsa Alt+Q.', 'Selecciona texto y resuelve solo esa selección.']
+    popupSteps: ['Opción única', 'Modo pista', 'Respuesta escrita', 'Emparejar menús', 'Quick Overlay']
   },
   fr: {
     eyebrow: 'Onboarding interactif',
@@ -446,17 +366,17 @@ const DEMO_LOCALE_COPY: Record<Exclude<Locale, 'en' | 'pl'>, Omit<DemoCopy, 'que
     demoBadge: 'Aucun crédit',
     localBadge: 'Pratique guidée',
     mapTitle: 'Utiliser cette démo',
-    mapText: 'Lancez le tutoriel de l’extension puis ouvrez le popup QuizSolver sur cette page.',
+    mapText: 'Testez directement dans le navigateur avec les boutons ou utilisez l’extension QuizSolver Chrome.',
     prev: 'Précédent',
     next: 'Question suivante',
     restart: 'Recommencer',
     startTour: 'Lancer le tutoriel',
-    selectText: 'Sélectionner le texte',
-    selectedTip: 'Sélectionnez la question, ouvrez l’overlay rapide et résolvez la sélection.',
+    selectText: '✂️ Sélectionner le texte',
+    selectedTip: 'Sélectionnez le texte et utilisez Quick Overlay (Alt+Q).',
     yourAnswer: 'Votre réponse',
     chooseOption: 'Choisir',
     popupTitle: 'Flux du popup',
-    popupSteps: ['Cliquez sur l’icône QS dans Chrome.', 'Utilisez Résoudre la page.', 'Activez le mode indice.', 'Ouvrez Quick overlay ou Alt+Q.', 'Sélectionnez du texte et résolvez seulement cette sélection.']
+    popupSteps: ['Choix unique', 'Mode indice', 'Réponse saisie', 'Association déroulante', 'Quick Overlay']
   },
   it: {
     eyebrow: 'Onboarding interattivo',
@@ -467,17 +387,17 @@ const DEMO_LOCALE_COPY: Record<Exclude<Locale, 'en' | 'pl'>, Omit<DemoCopy, 'que
     demoBadge: 'Nessun credito',
     localBadge: 'Pratica guidata',
     mapTitle: 'Come usare la demo',
-    mapText: 'Avvia il tutorial dell’estensione e poi apri il popup QuizSolver su questa pagina.',
+    mapText: 'Puoi provare le risposte direttamente nel browser o aprire l’estensione QuizSolver in Chrome.',
     prev: 'Precedente',
     next: 'Domanda successiva',
     restart: 'Riavvia demo',
     startTour: 'Avvia tutorial',
-    selectText: 'Seleziona testo domanda',
-    selectedTip: 'Seleziona il testo, apri l’overlay rapido e risolvi la selezione.',
+    selectText: '✂️ Seleziona testo',
+    selectedTip: 'Seleziona il testo della domanda e usa Quick Overlay (Alt+Q).',
     yourAnswer: 'La tua risposta',
     chooseOption: 'Scegli',
     popupTitle: 'Flusso popup',
-    popupSteps: ['Clicca l’icona QS in Chrome.', 'Usa Risolvi pagina corrente.', 'Attiva Hint mode.', 'Apri Quick overlay o premi Alt+Q.', 'Seleziona testo e risolvi solo quello.']
+    popupSteps: ['Scelta singola', 'Hint mode', 'Risposta scritta', 'Menu a tendina', 'Quick Overlay']
   },
   uk: {
     eyebrow: 'Інтерактивний onboarding',
@@ -488,55 +408,55 @@ const DEMO_LOCALE_COPY: Record<Exclude<Locale, 'en' | 'pl'>, Omit<DemoCopy, 'que
     demoBadge: 'Без кредитів',
     localBadge: 'Покрокова практика',
     mapTitle: 'Як користуватися демо',
-    mapText: 'Запусти tutorial розширення, а потім відкрий popup QuizSolver на цій сторінці.',
+    mapText: 'Ви можете спробувати розв’язання прямо у браузері або відкрити розширення QuizSolver для Chrome.',
     prev: 'Назад',
     next: 'Наступне питання',
     restart: 'Почати заново',
     startTour: 'Запустити tutorial',
-    selectText: 'Виділити текст питання',
-    selectedTip: 'Виділи текст, відкрий швидкий overlay і розв’яжи виділення.',
+    selectText: '✂️ Виділити текст',
+    selectedTip: 'Виділіть текст питання і скористайтесь Quick Overlay (Alt+Q).',
     yourAnswer: 'Твоя відповідь',
     chooseOption: 'Вибери',
     popupTitle: 'Popup flow',
-    popupSteps: ['Натисни іконку QS у Chrome.', 'Використай Solve current page.', 'Увімкни Hint mode.', 'Відкрий Quick overlay або Alt+Q.', 'Виділи текст і розв’яжи тільки його.']
+    popupSteps: ['Один варіант', 'Hint mode', 'Текстова відповідь', 'Matching', 'Quick Overlay']
   }
 };
 
 const DEMO_QUESTIONS: Record<Exclude<Locale, 'en' | 'pl'>, DemoQuestion[]> = {
   de: [
-    { ...COPY.en.questions[0], kicker: 'Schritt 1', title: 'Biologie: Einzelauswahl', instruction: 'Wähle selbst oder simuliere, wie QuizSolver eine typische Frage löst.', question: 'Welches Organell produziert hauptsächlich ATP in eukaryotischen Zellen?', options: ['Zellkern', 'Mitochondrium', 'Ribosom', 'Zellmembran'], correctText: 'Mitochondrium' },
-    { ...COPY.en.questions[1], kicker: 'Schritt 2', title: 'Hinweis-Modus', instruction: 'Nutze Hint mode, wenn du eine Hilfe statt eines automatischen Klicks möchtest.', question: 'Welche Quelle ist das stärkste Beispiel für eine primäre historische Quelle?', options: ['Ein Lehrbuchkapitel', 'Ein während des Ereignisses geschriebenes Tagebuch', 'Eine moderne Dokumentation', 'Ein Lexikonartikel'], correctText: 'Ein während des Ereignisses geschriebenes Tagebuch' },
-    { ...COPY.en.questions[2], kicker: 'Schritt 3', title: 'Mathe: Texteingabe', instruction: 'Gib das Ergebnis ein oder lasse das Demo das Feld wie die Erweiterung ausfüllen.', question: 'Wie viel ist 12 x 8?', placeholder: 'Antwort hier eingeben', correctText: '96' },
-    { ...COPY.en.questions[3], kicker: 'Schritt 4', title: 'Naturwissenschaft: Dropdowns', instruction: 'Ordne jeden Begriff der richtigen Definition zu.', question: 'Ordne jeden naturwissenschaftlichen Begriff der richtigen Definition zu.', prompts: ['Fotosynthese', 'Verdunstung', 'Gravitation'], options: ['Pflanzen bilden Glukose mit Licht', 'Flüssigkeit wird zu Gas', 'Kraft, die Objekte mit Masse anzieht'], correctText: 'Fotosynthese = Pflanzen bilden Glukose mit Licht, Verdunstung = Flüssigkeit wird zu Gas, Gravitation = Kraft, die Objekte mit Masse anzieht' },
-    { ...COPY.en.questions[4], kicker: 'Schritt 5', title: 'Quick overlay', instruction: 'Markiere den Fragetext und löse nur diese Auswahl.', question: 'Welches QuizSolver-Werkzeug löst nur den markierten Fragetext?', options: ['Markierten Text lösen', 'Credit checkout', 'Admin panel', 'Browserverlauf'], correctText: 'Markierten Text lösen' }
+    { ...COPY.en.questions[0], kicker: 'Schritt 1 von 5', title: 'Biologie: Einzelauswahl', instruction: 'QuizSolver erkennt die Frage und wählt die richtige Option mit einem Klick.', question: 'Welches Organell produziert hauptsächlich ATP in eukaryotischen Zellen?', options: ['Zellkern', 'Mitochondrium', 'Ribosom', 'Zellmembran'], correctText: 'Mitochondrium' },
+    { ...COPY.en.questions[1], kicker: 'Schritt 2 von 5', title: 'Hinweis-Modus', instruction: 'Nutze Hint mode, wenn du eine diskrete Hilfe statt eines automatischen Klicks möchtest.', question: 'Welche Quelle ist das stärkste Beispiel für eine primäre historische Quelle?', options: ['Ein Lehrbuchkapitel', 'Ein während des Ereignisses geschriebenes Tagebuch', 'Eine moderne Dokumentation', 'Ein Lexikonartikel'], correctText: 'Ein während des Ereignisses geschriebenes Tagebuch' },
+    { ...COPY.en.questions[2], kicker: 'Schritt 3 von 5', title: 'Mathe: Texteingabe', instruction: 'QuizSolver trägt Zahlen und kurze Texte fehlerfrei in Formularfelder ein.', question: 'Wie viel ist 12 x 8?', placeholder: 'Antwort eingeben', correctText: '96' },
+    { ...COPY.en.questions[3], kicker: 'Schritt 4 von 5', title: 'Naturwissenschaft: Dropdowns', instruction: 'Ordnet mehrere Begriffe gleichzeitig den passenden Definitionen zu.', question: 'Ordne jeden naturwissenschaftlichen Begriff der richtigen Definition zu.', prompts: ['Fotosynthese', 'Verdunstung', 'Gravitation'], options: ['Pflanzen bilden Glukose mit Licht', 'Flüssigkeit wird zu Gas', 'Kraft, die Objekte mit Masse anzieht'], correctText: 'Fotosynthese = Pflanzen bilden Glukose mit Licht, Verdunstung = Flüssigkeit wird zu Gas, Gravitation = Kraft, die Objekte mit Masse anzieht' },
+    { ...COPY.en.questions[4], kicker: 'Schritt 5 von 5', title: 'Quick overlay', instruction: 'Markiere nur den Fragetext und löse ihn gezielt per Quick Overlay (Alt+Q).', question: 'Welches QuizSolver-Werkzeug löst nur den markierten Fragetext?', options: ['Markierten Text lösen', 'Credit checkout', 'Admin panel', 'Browserverlauf'], correctText: 'Markierten Text lösen' }
   ],
   es: [
-    { ...COPY.en.questions[0], kicker: 'Paso 1', title: 'Biología: opción única', instruction: 'Elige una respuesta o simula cómo QuizSolver resolvería una tarjeta de pregunta.', question: '¿Qué orgánulo produce principalmente ATP en las células eucariotas?', options: ['Núcleo celular', 'Mitocondria', 'Ribosoma', 'Membrana celular'], correctText: 'Mitocondria' },
-    { ...COPY.en.questions[1], kicker: 'Paso 2', title: 'Modo pista', instruction: 'Usa Hint mode cuando quieras orientación sin clic automático.', question: '¿Qué fuente es el mejor ejemplo de evidencia histórica primaria?', options: ['Un capítulo de libro', 'Un diario escrito durante el evento', 'Un documental moderno', 'Un resumen de enciclopedia'], correctText: 'Un diario escrito durante el evento' },
-    { ...COPY.en.questions[2], kicker: 'Paso 3', title: 'Matemáticas: respuesta escrita', instruction: 'Escribe el resultado o deja que la demo complete el campo.', question: '¿Cuánto es 12 x 8?', placeholder: 'Escribe la respuesta', correctText: '96' },
-    { ...COPY.en.questions[3], kicker: 'Paso 4', title: 'Ciencia: menús desplegables', instruction: 'Relaciona cada concepto con su definición.', question: 'Relaciona cada término científico con la definición correcta.', prompts: ['Fotosíntesis', 'Evaporación', 'Gravedad'], options: ['Las plantas producen glucosa con luz', 'El líquido cambia a gas', 'Fuerza que atrae objetos con masa'], correctText: 'Fotosíntesis = Las plantas producen glucosa con luz, Evaporación = El líquido cambia a gas, Gravedad = Fuerza que atrae objetos con masa' },
-    { ...COPY.en.questions[4], kicker: 'Paso 5', title: 'Quick overlay', instruction: 'Selecciona el texto de la pregunta y resuelve solo esa selección.', question: '¿Qué herramienta de QuizSolver resuelve solo el texto seleccionado?', options: ['Resolver texto seleccionado', 'Pago de créditos', 'Panel admin', 'Historial del navegador'], correctText: 'Resolver texto seleccionado' }
+    { ...COPY.en.questions[0], kicker: 'Paso 1 de 5', title: 'Biología: opción única', instruction: 'QuizSolver analiza la pregunta y selecciona la respuesta correcta en un clic.', question: '¿Qué orgánulo produce principalmente ATP en las células eucariotas?', options: ['Núcleo celular', 'Mitocondria', 'Ribosoma', 'Membrana celular'], correctText: 'Mitocondria' },
+    { ...COPY.en.questions[1], kicker: 'Paso 2 de 5', title: 'Modo pista', instruction: 'El modo pista no hace clic por ti: marca una pista sutil para que tú decidas.', question: '¿Qué fuente es el mejor ejemplo de evidencia histórica primaria?', options: ['Un capítulo de libro', 'Un diario escrito durante el evento', 'Un documental moderno', 'Un resumen de enciclopedia'], correctText: 'Un diario escrito durante el evento' },
+    { ...COPY.en.questions[2], kicker: 'Paso 3 de 5', title: 'Matemáticas: respuesta escrita', instruction: 'QuizSolver completa números y respuestas de texto directamente en los formularios.', question: '¿Cuánto es 12 x 8?', placeholder: 'Escribe el número', correctText: '96' },
+    { ...COPY.en.questions[3], kicker: 'Paso 4 de 5', title: 'Ciencia: menús desplegables', instruction: 'Empareja múltiples opciones simultáneamente en menús desplegables.', question: 'Relaciona cada término científico con la definición correcta.', prompts: ['Fotosíntesis', 'Evaporación', 'Gravedad'], options: ['Las plantas producen glucosa con luz', 'El líquido cambia a gas', 'Fuerza que atrae objetos con masa'], correctText: 'Fotosíntesis = Las plantas producen glucosa con luz, Evaporación = El líquido cambia a gas, Gravedad = Fuerza que atrae objetos con masa' },
+    { ...COPY.en.questions[4], kicker: 'Paso 5 de 5', title: 'Quick overlay', instruction: 'Selecciona solo el texto de la pregunta y resuélvelo al instante con Alt+Q.', question: '¿Qué herramienta de QuizSolver resuelve solo el texto seleccionado?', options: ['Resolver texto seleccionado', 'Pago de créditos', 'Panel admin', 'Historial del navegador'], correctText: 'Resolver texto seleccionado' }
   ],
   fr: [
-    { ...COPY.en.questions[0], kicker: 'Étape 1', title: 'Biologie : choix unique', instruction: 'Choisissez une réponse ou simulez ce que ferait QuizSolver.', question: 'Quel organite produit principalement l’ATP dans les cellules eucaryotes ?', options: ['Noyau cellulaire', 'Mitochondrie', 'Ribosome', 'Membrane cellulaire'], correctText: 'Mitochondrie' },
-    { ...COPY.en.questions[1], kicker: 'Étape 2', title: 'Mode indice', instruction: 'Utilisez Hint mode pour obtenir une indication sans clic automatique.', question: 'Quelle source est le meilleur exemple de preuve historique primaire ?', options: ['Un chapitre de manuel', 'Un journal écrit pendant l’événement', 'Un documentaire moderne', 'Un article d’encyclopédie'], correctText: 'Un journal écrit pendant l’événement' },
-    { ...COPY.en.questions[2], kicker: 'Étape 3', title: 'Maths : réponse saisie', instruction: 'Saisissez le résultat ou laissez la démo remplir le champ.', question: 'Combien font 12 x 8 ?', placeholder: 'Tapez la réponse', correctText: '96' },
-    { ...COPY.en.questions[3], kicker: 'Étape 4', title: 'Sciences : menus déroulants', instruction: 'Associez chaque concept à sa définition.', question: 'Associez chaque terme scientifique à la bonne définition.', prompts: ['Photosynthèse', 'Évaporation', 'Gravité'], options: ['Les plantes produisent du glucose avec la lumière', 'Un liquide devient un gaz', 'Force qui attire les objets ayant une masse'], correctText: 'Photosynthèse = Les plantes produisent du glucose avec la lumière, Évaporation = Un liquide devient un gaz, Gravité = Force qui attire les objets ayant une masse' },
-    { ...COPY.en.questions[4], kicker: 'Étape 5', title: 'Overlay rapide', instruction: 'Sélectionnez le texte de la question et résolvez uniquement cette sélection.', question: 'Quel outil QuizSolver résout uniquement le texte sélectionné ?', options: ['Résoudre le texte sélectionné', 'Paiement des crédits', 'Panel admin', 'Historique navigateur'], correctText: 'Résoudre le texte sélectionné' }
+    { ...COPY.en.questions[0], kicker: 'Étape 1 sur 5', title: 'Biologie : choix unique', instruction: 'QuizSolver détecte la question et coche la bonne réponse en un seul clic.', question: 'Quel organite produit principalement l’ATP dans les cellules eucaryotes ?', options: ['Noyau cellulaire', 'Mitochondrie', 'Ribosome', 'Membrane cellulaire'], correctText: 'Mitochondrie' },
+    { ...COPY.en.questions[1], kicker: 'Étape 2 sur 5', title: 'Mode indice', instruction: 'Vous préférez décider vous-même ? Le mode indice donne un indice subtil.', question: 'Quelle source est le meilleur exemple de preuve historique primaire ?', options: ['Un chapitre de manuel', 'Un journal écrit pendant l’événement', 'Un documentaire moderne', 'Un article d’encyclopédie'], correctText: 'Un journal écrit pendant l’événement' },
+    { ...COPY.en.questions[2], kicker: 'Étape 3 sur 5', title: 'Maths : réponse saisie', instruction: 'QuizSolver remplit précisément les champs numériques et textuels.', question: 'Combien font 12 x 8 ?', placeholder: 'Tapez votre réponse', correctText: '96' },
+    { ...COPY.en.questions[3], kicker: 'Étape 4 sur 5', title: 'Sciences : menus déroulants', instruction: 'Associe plusieurs listes déroulantes en une seule opération.', question: 'Associez chaque terme scientifique à la bonne définition.', prompts: ['Photosynthèse', 'Évaporation', 'Gravité'], options: ['Les plantes produisent du glucose avec la lumière', 'Un liquide devient un gaz', 'Force qui attire les objets ayant une masse'], correctText: 'Photosynthèse = Les plantes produisent du glucose avec la lumière, Évaporation = Un liquide devient un gaz, Gravité = Force qui attire les objets ayant une masse' },
+    { ...COPY.en.questions[4], kicker: 'Étape 5 sur 5', title: 'Overlay rapide', instruction: 'Surlignez uniquement le texte et résolvez la sélection via Alt+Q.', question: 'Quel outil QuizSolver résout uniquement le texte sélectionné ?', options: ['Résoudre le texte sélectionné', 'Paiement des crédits', 'Panel admin', 'Historique navigateur'], correctText: 'Résoudre le texte sélectionné' }
   ],
   it: [
-    { ...COPY.en.questions[0], kicker: 'Passo 1', title: 'Biologia: scelta singola', instruction: 'Scegli una risposta o simula cosa farebbe QuizSolver.', question: 'Quale organello produce principalmente ATP nelle cellule eucariotiche?', options: ['Nucleo cellulare', 'Mitocondrio', 'Ribosoma', 'Membrana cellulare'], correctText: 'Mitocondrio' },
-    { ...COPY.en.questions[1], kicker: 'Passo 2', title: 'Hint mode', instruction: 'Usa Hint mode quando vuoi un suggerimento senza clic automatico.', question: 'Quale fonte è il miglior esempio di prova storica primaria?', options: ['Un capitolo di manuale', 'Un diario scritto durante l’evento', 'Un documentario moderno', 'Una voce di enciclopedia'], correctText: 'Un diario scritto durante l’evento' },
-    { ...COPY.en.questions[2], kicker: 'Passo 3', title: 'Matematica: risposta scritta', instruction: 'Scrivi il risultato o lascia che la demo compili il campo.', question: 'Quanto fa 12 x 8?', placeholder: 'Scrivi la risposta', correctText: '96' },
-    { ...COPY.en.questions[3], kicker: 'Passo 4', title: 'Scienze: menu a tendina', instruction: 'Abbina ogni concetto alla definizione corretta.', question: 'Abbina ogni termine scientifico alla definizione corretta.', prompts: ['Fotosintesi', 'Evaporazione', 'Gravità'], options: ['Le piante producono glucosio con la luce', 'Il liquido diventa gas', 'Forza che attrae oggetti con massa'], correctText: 'Fotosintesi = Le piante producono glucosio con la luce, Evaporazione = Il liquido diventa gas, Gravità = Forza che attrae oggetti con massa' },
-    { ...COPY.en.questions[4], kicker: 'Passo 5', title: 'Overlay rapido', instruction: 'Seleziona il testo della domanda e risolvi solo quella selezione.', question: 'Quale strumento QuizSolver risolve solo il testo selezionato?', options: ['Risolvi testo selezionato', 'Pagamento crediti', 'Pannello admin', 'Cronologia browser'], correctText: 'Risolvi testo selezionato' }
+    { ...COPY.en.questions[0], kicker: 'Passo 1 di 5', title: 'Biologia: scelta singola', instruction: 'QuizSolver analizza la domanda e seleziona la risposta esatta con un clic.', question: 'Quale organello produce principalmente ATP nelle cellule eucariotiche?', options: ['Nucleo cellulare', 'Mitocondrio', 'Ribosoma', 'Membrana cellulare'], correctText: 'Mitocondrio' },
+    { ...COPY.en.questions[1], kicker: 'Passo 2 di 5', title: 'Hint mode', instruction: 'Non vuoi il clic automatico? L’Hint mode offre un indizio discreto.', question: 'Quale fonte è il miglior esempio di prova storica primaria?', options: ['Un capitolo di manuale', 'Un diario scritto durante l’evento', 'Un documentario moderno', 'Una voce di enciclopedia'], correctText: 'Un diario scritto durante l’evento' },
+    { ...COPY.en.questions[2], kicker: 'Passo 3 di 5', title: 'Matematica: risposta scritta', instruction: 'QuizSolver compila numeri e testo nei campi dei quiz online.', question: 'Quanto fa 12 x 8?', placeholder: 'Scrivi la risposta', correctText: '96' },
+    { ...COPY.en.questions[3], kicker: 'Passo 4 di 5', title: 'Scienze: menu a tendina', instruction: 'Abbina contemporaneamente più concetti nei menu a tendina.', question: 'Abbina ogni termine scientifico alla definizione corretta.', prompts: ['Fotosintesi', 'Evaporazione', 'Gravità'], options: ['Le piante producono glucosio con la luce', 'Il liquido diventa gas', 'Forza che attrae oggetti con massa'], correctText: 'Fotosintesi = Le piante producono glucosio con la luce, Evaporazione = Il liquido diventa gas, Gravità = Forza che attrae oggetti con massa' },
+    { ...COPY.en.questions[4], kicker: 'Passo 5 di 5', title: 'Overlay rapido', instruction: 'Seleziona solo il testo ed esegui la risoluzione rapida con Alt+Q.', question: 'Quale strumento QuizSolver risolve solo il testo selezionato?', options: ['Risolvi testo selezionato', 'Pagamento crediti', 'Pannello admin', 'Cronologia browser'], correctText: 'Risolvi testo selezionato' }
   ],
   uk: [
-    { ...COPY.en.questions[0], kicker: 'Крок 1', title: 'Біологія: один варіант', instruction: 'Вибери відповідь або змоделюй, що зробив би QuizSolver.', question: 'Яка органела переважно виробляє АТФ в еукаріотичних клітинах?', options: ['Клітинне ядро', 'Мітохондрія', 'Рибосома', 'Клітинна мембрана'], correctText: 'Мітохондрія' },
-    { ...COPY.en.questions[1], kicker: 'Крок 2', title: 'Hint mode', instruction: 'Використай Hint mode, якщо потрібна підказка без автоматичного кліку.', question: 'Яке джерело є найкращим прикладом первинного історичного доказу?', options: ['Розділ підручника', 'Щоденник, написаний під час події', 'Сучасний документальний фільм', 'Енциклопедична стаття'], correctText: 'Щоденник, написаний під час події' },
-    { ...COPY.en.questions[2], kicker: 'Крок 3', title: 'Математика: текстова відповідь', instruction: 'Введи результат або дозволь демо заповнити поле.', question: 'Скільки буде 12 x 8?', placeholder: 'Введи відповідь', correctText: '96' },
-    { ...COPY.en.questions[3], kicker: 'Крок 4', title: 'Наука: dropdown і matching', instruction: 'Зістав кожне поняття з правильною дефініцією.', question: 'Зістав кожен науковий термін із правильною дефініцією.', prompts: ['Фотосинтез', 'Випаровування', 'Гравітація'], options: ['Рослини створюють глюкозу за допомогою світла', 'Рідина перетворюється на газ', 'Сила, що притягує об’єкти з масою'], correctText: 'Фотосинтез = Рослини створюють глюкозу за допомогою світла, Випаровування = Рідина перетворюється на газ, Гравітація = Сила, що притягує об’єкти з масою' },
-    { ...COPY.en.questions[4], kicker: 'Крок 5', title: 'Quick overlay', instruction: 'Виділи текст питання і розв’яжи тільки це виділення.', question: 'Який інструмент QuizSolver розв’язує лише виділений текст?', options: ['Розв’язати виділений текст', 'Оплата кредитів', 'Admin panel', 'Історія браузера'], correctText: 'Розв’язати виділений текст' }
+    { ...COPY.en.questions[0], kicker: 'Крок 1 з 5', title: 'Біологія: один варіант', instruction: 'QuizSolver сканує питання і автоматично обирає правильну відповідь.', question: 'Яка органела переважно виробляє АТФ в еукаріотичних клітинах?', options: ['Клітинне ядро', 'Мітохондрія', 'Рибосома', 'Клітинна мембрана'], correctText: 'Мітохондрія' },
+    { ...COPY.en.questions[1], kicker: 'Крок 2 з 5', title: 'Hint mode', instruction: 'Не хочете авто-клік? Режим Hint mode непомітно підказує варіант.', question: 'Яке джерело є найкращим прикладом первинного історичного доказу?', options: ['Розділ підручника', 'Щоденник, написаний під час події', 'Сучасний документальний фільм', 'Енциклопедична стаття'], correctText: 'Щоденник, написаний під час події' },
+    { ...COPY.en.questions[2], kicker: 'Крок 3 з 5', title: 'Математика: текстова відповідь', instruction: 'QuizSolver впевнено заповнює числа і текст у поля форми.', question: 'Скільки буде 12 x 8?', placeholder: 'Введіть відповідь', correctText: '96' },
+    { ...COPY.en.questions[3], kicker: 'Крок 4 з 5', title: 'Наука: dropdown і matching', instruction: 'Одночасно зіставляє декілька значень у випадаючих списках.', question: 'Зістав кожен науковий термін із правильною дефініцією.', prompts: ['Фотосинтез', 'Випаровування', 'Гравітація'], options: ['Рослини створюють глюкозу за допомогою світла', 'Рідина перетворюється на газ', 'Сила, що притягує об’єкти з масою'], correctText: 'Фотосинтез = Рослини створюють глюкозу за допомогою світла, Випаровування = Рідина перетворюється на газ, Гравітація = Сила, що притягує об’єкти з масою' },
+    { ...COPY.en.questions[4], kicker: 'Крок 5 з 5', title: 'Quick overlay', instruction: 'Виділіть тільки текст питання і розв’яжіть його через Alt+Q.', question: 'Який інструмент QuizSolver розв’язує лише виділений текст?', options: ['Розв’язати виділений текст', 'Оплата кредитів', 'Admin panel', 'Історія браузера'], correctText: 'Розв’язати виділений текст' }
   ]
 };
 
@@ -553,793 +473,810 @@ const DEMO_QUESTIONS: Record<Exclude<Locale, 'en' | 'pl'>, DemoQuestion[]> = {
   template: `
     <qs-shell [locale]="locale" pageKey="demo">
       <div class="demo-page" data-qs-demo-root="onboarding">
-        <section class="demo-hero">
-          <div class="container demo-hero-grid">
-            <div class="demo-copy">
-              <p class="eyebrow">{{ copy.eyebrow }}</p>
-              <h1>{{ copy.title }}</h1>
-              <p class="demo-lead">{{ copy.lead }}</p>
-              <div class="demo-badges" aria-label="Demo guarantees">
-                <span>{{ copy.demoBadge }}</span>
-                <span>{{ copy.localBadge }}</span>
-                <span>{{ label('quizMeta') }}</span>
-              </div>
+        <div class="demo-container">
 
-              <div class="demo-proof" *ngIf="proofItems().length">
-                <span *ngFor="let item of proofItems()">{{ item }}</span>
-              </div>
+          <!-- CLEAN HEADER -->
+          <header class="demo-hero">
+            <div class="demo-eyebrow-pill">
+              <span class="pill-dot"></span>
+              <span>{{ copy.eyebrow }}</span>
+            </div>
+            <h1>{{ copy.title }}</h1>
+            <p class="demo-lead">{{ copy.lead }}</p>
 
-              <!-- Warning Card -->
-              <div class="demo-extension-warning glass">
-                <div class="warning-icon">⚠️</div>
-                <div class="warning-content">
-                  <h3>{{ getExtensionWarning().title }}</h3>
-                  <p>{{ getExtensionWarning().text }}</p>
-                </div>
+            <!-- HELPER BANNER (CLEAN & FRIENDLY, NO ALARMS) -->
+            <div class="demo-mode-card glass">
+              <div class="mode-left">
+                <span class="mode-badge">💡 Tryb testowy</span>
+                <p>{{ copy.mapText }}</p>
               </div>
-
-              <div class="demo-actions">
-                <button class="btn btn-primary btn-lg" type="button" data-qs-tour-start (click)="startGuidedTour()">{{ copy.startTour }}</button>
-                <a [href]="storeUrl" target="_blank" rel="noopener" class="btn btn-outline btn-lg cta-store-btn">
-                  {{ copy.install }}
+              <div class="mode-actions">
+                <button class="btn btn-outline btn-sm" type="button" data-qs-tour-start (click)="startGuidedTour()">
+                  🎯 {{ copy.startTour }}
+                </button>
+                <a [href]="storeUrl" target="_blank" rel="noopener" class="btn btn-subtle btn-sm cta-store-btn">
+                  📥 {{ copy.install }}
                 </a>
               </div>
             </div>
+          </header>
 
-            <aside class="demo-map glass">
-              <h2>{{ copy.mapTitle }}</h2>
-              <p>{{ copy.mapText }}</p>
-              <ol>
-                <li *ngFor="let step of copy.popupSteps; let i = index" [class.active]="i === current()">
-                  <span>{{ i + 1 }}</span>
-                  <p>{{ step }}</p>
-                </li>
-              </ol>
+          <!-- 5-STEP STEPPER TABS -->
+          <nav class="demo-stepper" aria-label="Demo steps">
+            <button
+              *ngFor="let q of copy.questions; let i = index"
+              type="button"
+              class="stepper-tab"
+              [class.active]="i === current()"
+              [class.done]="isQuestionCompleted(q.id)"
+              (click)="setStep(i)">
+              <span class="stepper-idx">
+                <span *ngIf="isQuestionCompleted(q.id)">✓</span>
+                <span *ngIf="!isQuestionCompleted(q.id)">{{ i + 1 }}</span>
+              </span>
+              <span class="stepper-title">{{ getStepShortLabel(i) }}</span>
+            </button>
+          </nav>
 
-              <div class="demo-score-panel">
-                <div class="score-head">
-                  <span>{{ label('scoreLabel') }}</span>
-                  <strong>{{ score() }} / {{ copy.questions.length }}</strong>
-                </div>
-                <div class="score-meter" aria-hidden="true">
-                  <i [style.width.%]="progressPercent()"></i>
-                </div>
-                <dl class="score-stats">
-                  <div>
-                    <dt>{{ label('answeredLabel') }}</dt>
-                    <dd>{{ answeredCount() }}</dd>
+          <!-- ACTIVE QUESTION CARD (FOCUSED & SPACIOUS) -->
+          <section class="demo-workspace" *ngIf="currentQuestion() as question">
+            <article class="demo-card glass" [attr.data-qs-demo-question]="question.id" data-qs-tour="question-card">
+
+              <!-- TOP CARD BAR -->
+              <div class="card-meta-bar">
+                <span class="step-tag">{{ question.kicker }}</span>
+                <span class="step-counter">{{ current() + 1 }} / {{ copy.questions.length }}</span>
+              </div>
+
+              <!-- QUESTION TEXT -->
+              <h2 class="question-text" data-qs-demo-question-text [attr.data-qs-demo-selectable]="question.type === 'selected' ? 'true' : null">
+                {{ question.question }}
+              </h2>
+
+              <!-- FEATURE TIP (SINGLE CLEAN HINT INSTEAD OF 3 PARAGRAPHS) -->
+              <div class="feature-tip">
+                <span class="feature-icon">✨</span>
+                <p>{{ question.instruction }}</p>
+              </div>
+
+              <!-- INPUTS: 1. RADIO / HIDDEN / SELECTED -->
+              <fieldset class="demo-options" *ngIf="question.type === 'radio' || question.type === 'hidden' || question.type === 'selected'">
+                <legend class="sr-only">{{ question.question }}</legend>
+                <label
+                  class="demo-option"
+                  *ngFor="let option of question.options; let i = index"
+                  [class.selected]="answerValue(question.id) === option"
+                  [class.correct-reveal]="isChecked(question) && option === question.correctText"
+                  [class.wrong-reveal]="isChecked(question) && answerValue(question.id) === option && option !== question.correctText"
+                  [class.hint-reveal]="isHinted(question) && option === question.correctText">
+                  <div class="option-left">
+                    <input
+                      type="radio"
+                      [name]="question.id"
+                      [value]="option"
+                      [checked]="answerValue(question.id) === option"
+                      (change)="setAnswer(question, option)">
+                    <span class="option-label">{{ option }}</span>
                   </div>
-                  <div>
-                    <dt>{{ label('accuracyLabel') }}</dt>
-                    <dd>{{ accuracyPercent() }}%</dd>
-                  </div>
-                </dl>
-              </div>
-            </aside>
-          </div>
-        </section>
+                  <span class="option-badge" *ngIf="isHinted(question) && option === question.correctText">💡 Podpowiedź</span>
+                  <span class="option-badge check" *ngIf="isChecked(question) && option === question.correctText">✓ Poprawna</span>
+                </label>
+              </fieldset>
 
-        <section class="container demo-workspace" *ngIf="currentQuestion() as question">
-          <aside class="demo-side glass">
-            <p class="eyebrow">{{ copy.popupTitle }}</p>
-            <h2>{{ label('sideTitle') }}</h2>
-            <p>{{ label('sideText') }}</p>
-            <div class="demo-current-step">
-              <span>{{ question.kicker }}</span>
-              <strong>{{ question.title }}</strong>
-              <p>{{ question.instruction }}</p>
-            </div>
-            <div class="mock-popup" aria-hidden="true">
-              <div class="mock-popup-head">
-                <strong>QS</strong>
-                <span>QuizSolver</span>
-              </div>
-              <div class="mock-action primary" data-qs-tour="mock-solve">Solve current page</div>
-              <div class="mock-action">FocusScan</div>
-              <div class="mock-action" data-qs-tour="mock-overlay">Quick overlay</div>
-              <div class="mock-toggle" [class.on]="question.type === 'hidden'" data-qs-tour="mock-hint">
-                <span>Hint mode</span><i></i>
-              </div>
-            </div>
-          </aside>
-
-          <article class="demo-card glass" [attr.data-qs-demo-question]="question.id" data-qs-tour="question-card">
-            <div class="question-top">
-              <div>
-                <p class="eyebrow">{{ question.kicker }}</p>
-                <h2 class="question-text" data-qs-demo-question-text [attr.data-qs-demo-selectable]="question.type === 'selected' ? 'true' : null">
-                  {{ question.question }}
-                </h2>
-              </div>
-              <span class="question-count">{{ current() + 1 }} / {{ copy.questions.length }}</span>
-            </div>
-
-            <p class="question-instruction">{{ question.instruction }}</p>
-
-            <fieldset class="demo-options" *ngIf="question.type === 'radio' || question.type === 'hidden' || question.type === 'selected'">
-              <legend class="sr-only">{{ question.question }}</legend>
-              <label
-                class="demo-option"
-                *ngFor="let option of question.options; let i = index"
-                [class.selected]="answerValue(question.id) === option"
-                [class.correct-reveal]="isChecked(question) && option === question.correctText"
-                [class.wrong-reveal]="isChecked(question) && answerValue(question.id) === option && option !== question.correctText">
+              <!-- INPUTS: 2. TEXT ANSWER -->
+              <div class="text-answer-box" *ngIf="question.type === 'text'">
+                <label class="text-label" [for]="question.id + '-input'">{{ copy.yourAnswer }}:</label>
                 <input
-                  type="radio"
-                  [name]="question.id"
-                  [value]="option"
-                  [checked]="answerValue(question.id) === option"
-                  (change)="setAnswer(question, option)">
-                <span>{{ option }}</span>
-              </label>
-            </fieldset>
-
-            <label class="text-answer" *ngIf="question.type === 'text'">
-              <span>{{ copy.yourAnswer }}</span>
-              <input
-                type="text"
-                [name]="question.id + '-answer'"
-                [placeholder]="question.placeholder || ''"
-                [value]="answerValue(question.id)"
-                (input)="setAnswer(question, $any($event.target).value)">
-            </label>
-
-            <div class="matching-board" *ngIf="question.type === 'matching'">
-              <label class="match-row" *ngFor="let prompt of question.prompts; let i = index">
-                <span>{{ prompt }}</span>
-                <select [name]="question.id + '-' + i" [value]="matchValue(question.id, i)" (change)="setMatchAnswer(question, i, $any($event.target).value)">
-                  <option value="">{{ copy.chooseOption }}</option>
-                  <option *ngFor="let option of question.options" [value]="option">{{ option }}</option>
-                </select>
-              </label>
-            </div>
-
-            <div class="selected-tip" *ngIf="question.type === 'selected'">
-              <button class="btn btn-outline btn-sm" type="button" data-qs-tour="select-text" (click)="selectQuestionText()">{{ copy.selectText }}</button>
-              <p>{{ copy.selectedTip }}</p>
-            </div>
-
-            <section
-              class="demo-feedback"
-              *ngIf="feedbackVisible(question)"
-              [class.success]="feedbackKind(question) === 'correct'"
-              [class.warning]="feedbackKind(question) === 'wrong'"
-              [class.info]="feedbackKind(question) === 'hint'"
-              [class.empty]="feedbackKind(question) === 'empty'">
-              <strong>{{ feedbackTitle(question) }}</strong>
-              <p>{{ feedbackMessage(question) }}</p>
-              <div class="demo-explanation" *ngIf="showExplanation(question)">
-                <span>{{ label('explanationLabel') }}</span>
-                <p>{{ question.explanation }}</p>
+                  type="text"
+                  [id]="question.id + '-input'"
+                  [name]="question.id + '-answer'"
+                  [placeholder]="question.placeholder || ''"
+                  [value]="answerValue(question.id)"
+                  (input)="setAnswer(question, $any($event.target).value)">
               </div>
-            </section>
 
-            <div class="demo-controls">
-              <button class="btn btn-outline" type="button" (click)="showHint(question)">{{ label('showHint') }}</button>
-              <button class="btn btn-outline" type="button" data-qs-tour="mock-solve" (click)="simulateSolver(question)">{{ label('simulateSolver') }}</button>
-              <button class="btn btn-primary" type="button" (click)="checkAnswer(question)">{{ label('checkAnswer') }}</button>
+              <!-- INPUTS: 3. MATCHING DROPDOWNS -->
+              <div class="matching-grid" *ngIf="question.type === 'matching'">
+                <div class="match-item match-row" *ngFor="let prompt of question.prompts; let i = index">
+                  <span class="match-prompt">{{ prompt }}</span>
+                  <span class="match-arrow">→</span>
+                  <select
+                    class="form-select match-select"
+                    [name]="question.id + '-' + i"
+                    [value]="matchValue(question.id, i)"
+                    (change)="setMatchAnswer(question, i, $any($event.target).value)">
+                    <option value="">{{ copy.chooseOption }}</option>
+                    <option *ngFor="let option of question.options" [value]="option">{{ option }}</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- INPUTS: 4. SELECTED TEXT HELPER -->
+              <div class="selected-helper-bar" *ngIf="question.type === 'selected'">
+                <button class="btn btn-outline btn-sm" type="button" data-qs-tour="select-text" (click)="selectQuestionText()">
+                  {{ copy.selectText }}
+                </button>
+                <p class="selected-note">{{ copy.selectedTip }}</p>
+              </div>
+
+              <!-- FEEDBACK & EXPLANATION -->
+              <div
+                class="demo-feedback-card"
+                *ngIf="feedbackVisible(question)"
+                [class.success]="feedbackKind(question) === 'correct'"
+                [class.warning]="feedbackKind(question) === 'wrong'"
+                [class.info]="feedbackKind(question) === 'hint'"
+                [class.empty]="feedbackKind(question) === 'empty'">
+                <div class="feedback-head">
+                  <span class="feedback-badge">{{ feedbackTitle(question) }}</span>
+                </div>
+                <p class="feedback-msg">{{ feedbackMessage(question) }}</p>
+                <div class="feedback-explanation" *ngIf="showExplanation(question)">
+                  <span class="exp-title">{{ label('explanationLabel') }}</span>
+                  <p>{{ question.explanation }}</p>
+                </div>
+              </div>
+
+              <!-- CLEAR ACTION BUTTONS -->
+              <div class="card-actions">
+                <!-- Hint mode button on step 2 -->
+                <button
+                  class="btn btn-hint"
+                  type="button"
+                  *ngIf="question.type === 'hidden'"
+                  data-qs-tour="mock-hint"
+                  (click)="showHint(question)">
+                  {{ label('showHint') }}
+                </button>
+
+                <!-- Primary AI Solve button -->
+                <button
+                  class="btn btn-primary btn-solve"
+                  type="button"
+                  [attr.data-qs-tour]="question.type === 'selected' ? 'mock-overlay' : 'mock-solve'"
+                  (click)="simulateSolver(question)">
+                  {{ label('simulateSolver') }}
+                </button>
+
+                <!-- Secondary Manual check -->
+                <button
+                  class="btn btn-outline"
+                  type="button"
+                  (click)="checkAnswer(question)">
+                  {{ label('checkAnswer') }}
+                </button>
+              </div>
+
+              <!-- BOTTOM NAVIGATION -->
+              <div class="card-footer-nav">
+                <button
+                  class="btn btn-ghost btn-sm"
+                  type="button"
+                  (click)="previous()"
+                  [disabled]="current() === 0">
+                  {{ copy.prev }}
+                </button>
+
+                <button
+                  class="btn btn-primary btn-sm"
+                  type="button"
+                  data-qs-tour="next"
+                  (click)="nextOrRestart()">
+                  {{ current() === copy.questions.length - 1 ? (isDemoComplete() ? label('finalSecondary') : copy.restart) : copy.next }}
+                </button>
+              </div>
+
+            </article>
+          </section>
+
+          <!-- COMPLETION SCREEN -->
+          <section class="demo-finish glass" *ngIf="isDemoComplete()">
+            <div class="finish-icon">🎉</div>
+            <h2>{{ label('resultTitle') }}</h2>
+            <p class="finish-desc">{{ label('resultText') }}</p>
+
+            <div class="finish-checklist">
+              <span *ngFor="let item of checklistItems()">✓ {{ item }}</span>
             </div>
 
-            <div class="demo-nav">
-              <button class="btn btn-outline" type="button" (click)="previous()" [disabled]="current() === 0">{{ copy.prev }}</button>
-              <button class="btn btn-primary" type="button" data-qs-tour="next" (click)="nextOrRestart()">
-                {{ current() === copy.questions.length - 1 ? copy.restart : copy.next }}
+            <div class="finish-actions">
+              <a [href]="storeUrl" target="_blank" rel="noopener" class="btn btn-primary btn-lg">
+                📥 {{ label('finalPrimary') }}
+              </a>
+              <button class="btn btn-outline" type="button" (click)="resetAnswers()">
+                🔄 {{ label('finalSecondary') }}
               </button>
             </div>
-          </article>
-        </section>
+          </section>
 
-        <section class="container demo-finish" *ngIf="isDemoComplete()">
-          <div>
-            <p class="eyebrow">{{ label('scoreLabel') }} {{ score() }} / {{ copy.questions.length }}</p>
-            <h2>{{ label('resultTitle') }}</h2>
-            <p>{{ label('resultText') }}</p>
-            <div class="demo-finish-stats" aria-label="Quiz result">
-              <span>{{ label('scoreLabel') }}: <strong>{{ score() }} / {{ copy.questions.length }}</strong></span>
-              <span>{{ label('answeredLabel') }}: <strong>{{ answeredCount() }}</strong></span>
-              <span>{{ label('accuracyLabel') }}: <strong>{{ accuracyPercent() }}%</strong></span>
-            </div>
-          </div>
-          <div class="demo-finish-actions">
-            <a [href]="storeUrl" target="_blank" rel="noopener" class="btn btn-primary">{{ label('finalPrimary') }}</a>
-            <button class="btn btn-outline" type="button" (click)="resetAnswers()">{{ label('finalSecondary') }}</button>
-          </div>
-        </section>
+        </div>
       </div>
     </qs-shell>
   `,
   styles: [`
     .demo-page {
-      padding: 4.5rem 0 5rem;
+      padding: 3.5rem 0 5rem;
       width: 100%;
-      max-width: 100vw;
-      overflow-x: hidden;
+      min-height: 100vh;
       background:
-        linear-gradient(180deg, rgba(16, 19, 24, 0.98), rgba(13, 17, 25, 0.98)),
+        radial-gradient(ellipse 80% 50% at 50% -20%, rgba(124, 92, 252, 0.15), transparent),
+        radial-gradient(ellipse 60% 40% at 50% 120%, rgba(14, 165, 233, 0.1), transparent),
         #101318;
     }
 
+    .demo-container {
+      width: 100%;
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 0 1.25rem;
+    }
+
+    /* Hero */
     .demo-hero {
-      padding: 1.5rem 0 2.5rem;
-      max-width: 100vw;
-      overflow-x: hidden;
-      border-bottom: 1px solid rgba(43, 53, 69, 0.72);
+      text-align: center;
+      margin-bottom: 2rem;
     }
 
-    .demo-hero-grid,
-    .demo-workspace {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) minmax(340px, 0.92fr);
-      gap: 1.25rem;
-      align-items: stretch;
-    }
-
-    .demo-copy,
-    .demo-map,
-    .demo-side,
-    .demo-card {
-      min-width: 0;
-    }
-
-    .demo-copy h1 {
-      max-width: 780px;
-      margin: 0.75rem 0 0.9rem;
-      overflow-wrap: anywhere;
-    }
-
-    .demo-lead {
-      max-width: 720px;
-      font-size: 1.08rem;
-      overflow-wrap: break-word;
-    }
-
-    .demo-badges,
-    .demo-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.75rem;
-      margin-top: 1.2rem;
-    }
-
-    .demo-badges span {
-      min-width: 0;
-      border: 1px solid rgba(16, 185, 129, 0.28);
-      background: rgba(16, 185, 129, 0.08);
-      color: #b7f7d1;
-      border-radius: 999px;
-      padding: 0.45rem 0.75rem;
-      font-size: 0.85rem;
-      font-weight: 800;
-      overflow-wrap: anywhere;
-    }
-
-    .demo-proof {
-      display: grid;
-      gap: 0.55rem;
-      margin-top: 1.15rem;
-      max-width: 720px;
-    }
-
-    .demo-proof span {
-      position: relative;
-      padding-left: 1.35rem;
-      color: #dbeafe;
-      font-size: 0.94rem;
-      line-height: 1.45;
-    }
-
-    .demo-proof span::before {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 0.48rem;
-      width: 0.48rem;
-      height: 0.48rem;
-      border-radius: 50%;
-      background: #22c55e;
-      box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.14);
-    }
-
-    .demo-map,
-    .demo-side,
-    .demo-card {
-      border: 1px solid #2b3545;
-      border-radius: 12px;
-      background: #171c24;
-      box-shadow: 0 18px 50px rgba(0, 0, 0, 0.26);
-      padding: 1.1rem;
-    }
-
-    .demo-map h2,
-    .demo-side h2 {
-      font-size: 1.2rem;
-      margin-bottom: 0.65rem;
-    }
-
-    .demo-map ol {
-      display: grid;
+    .demo-eyebrow-pill {
+      display: inline-flex;
+      align-items: center;
       gap: 0.5rem;
-      margin-top: 0.9rem;
-    }
-
-    .demo-map li {
-      display: grid;
-      grid-template-columns: 1.8rem 1fr;
-      gap: 0.65rem;
-      align-items: center;
-      padding: 0.65rem;
-      border: 1px solid rgba(43, 53, 69, 0.9);
-      border-radius: 10px;
-      background: #1d2430;
-    }
-
-    .demo-map li.active {
-      border-color: rgba(14, 165, 233, 0.62);
-      background: linear-gradient(135deg, rgba(124, 92, 252, 0.16), rgba(14, 165, 233, 0.12));
-    }
-
-    .demo-map li span {
-      display: grid;
-      place-items: center;
-      width: 1.8rem;
-      height: 1.8rem;
-      border-radius: 8px;
-      background: linear-gradient(135deg, #7c5cfc, #0ea5e9);
-      color: #ffffff;
-      font-weight: 900;
-    }
-
-    .demo-map li p {
-      color: var(--text-primary);
-      font-size: 0.9rem;
-      line-height: 1.35;
-    }
-
-    .demo-score-panel {
-      display: grid;
-      gap: 0.75rem;
-      margin-top: 1rem;
-      padding: 0.9rem;
-      border: 1px solid rgba(14, 165, 233, 0.26);
-      border-radius: 10px;
-      background: rgba(14, 165, 233, 0.08);
-    }
-
-    .score-head,
-    .score-stats,
-    .score-stats div {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 0.75rem;
-    }
-
-    .score-head span,
-    .score-stats dt {
-      color: var(--text-secondary);
-      font-size: 0.84rem;
-      font-weight: 800;
-    }
-
-    .score-head strong,
-    .score-stats dd {
-      color: var(--text-primary);
-      font-weight: 900;
-    }
-
-    .score-meter {
-      height: 0.6rem;
+      padding: 0.4rem 0.95rem;
       border-radius: 999px;
-      overflow: hidden;
-      background: rgba(148, 163, 184, 0.16);
-    }
-
-    .score-meter i {
-      display: block;
-      height: 100%;
-      min-width: 0.35rem;
-      border-radius: inherit;
-      background: linear-gradient(90deg, #22c55e, #0ea5e9);
-      transition: width 0.22s ease;
-    }
-
-    .score-stats {
-      margin: 0;
-    }
-
-    .score-stats div {
-      flex: 1 1 0;
-      padding: 0.55rem 0.65rem;
-      border: 1px solid rgba(148, 163, 184, 0.14);
-      border-radius: 8px;
-      background: rgba(15, 23, 42, 0.22);
-    }
-
-    .demo-workspace {
-      grid-template-columns: minmax(280px, 0.42fr) minmax(0, 1fr);
-      align-items: start;
-      margin-top: 1.75rem;
-    }
-
-    .demo-side {
-      position: sticky;
-      top: 6rem;
-    }
-
-    .demo-side > p:not(.eyebrow) {
+      background: rgba(124, 92, 252, 0.1);
+      border: 1px solid rgba(124, 92, 252, 0.28);
+      color: #c4b5fd;
+      font-size: 0.85rem;
+      font-weight: 700;
       margin-bottom: 1rem;
     }
 
-    .demo-current-step {
-      display: grid;
-      gap: 0.25rem;
-      margin: 1rem 0;
-      padding: 0.85rem;
-      border: 1px solid rgba(124, 92, 252, 0.22);
-      border-radius: 10px;
-      background: rgba(124, 92, 252, 0.08);
+    .pill-dot {
+      width: 0.5rem;
+      height: 0.5rem;
+      border-radius: 50%;
+      background: #22c55e;
+      box-shadow: 0 0 8px #22c55e;
     }
 
-    .demo-current-step span {
-      color: #c4b5fd;
-      font-size: 0.78rem;
-      font-weight: 900;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
+    .demo-hero h1 {
+      font-size: clamp(2rem, 4.5vw, 2.75rem);
+      font-weight: 800;
+      margin: 0 0 0.75rem;
+      letter-spacing: -0.02em;
     }
 
-    .demo-current-step strong {
-      color: var(--text-primary);
-      font-size: 1rem;
-    }
-
-    .demo-current-step p {
+    .demo-lead {
+      font-size: 1.05rem;
       color: var(--text-secondary);
+      max-width: 660px;
+      margin: 0 auto 1.5rem;
+      line-height: 1.55;
+    }
+
+    /* Helper mode card */
+    .demo-mode-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.25rem;
+      padding: 1rem 1.25rem;
+      border-radius: 12px;
+      background: rgba(23, 28, 36, 0.75);
+      border: 1px solid rgba(14, 165, 233, 0.2);
+      text-align: left;
+    }
+
+    .mode-left {
+      flex: 1;
+    }
+
+    .mode-badge {
+      display: inline-block;
+      font-size: 0.78rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #38bdf8;
+      margin-bottom: 0.25rem;
+    }
+
+    .mode-left p {
       font-size: 0.9rem;
+      color: var(--text-secondary);
       line-height: 1.45;
       margin: 0;
     }
 
-    .mock-popup {
-      display: grid;
-      gap: 0.6rem;
-      margin-top: 1.15rem;
-      padding: 0.85rem;
-      border: 1px solid #2b3545;
-      border-radius: 12px;
-      background: #101318;
-    }
-
-    .mock-popup-head {
+    .mode-actions {
       display: flex;
       align-items: center;
-      gap: 0.55rem;
-      padding-bottom: 0.35rem;
-      color: var(--text-primary);
-      font-weight: 800;
+      gap: 0.65rem;
+      flex-shrink: 0;
     }
 
-    .mock-popup-head strong {
+    .btn-subtle {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border);
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+    .btn-subtle:hover {
+      background: rgba(255, 255, 255, 0.12);
+    }
+
+    /* Stepper Tabs */
+    .demo-stepper {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 0.5rem;
+      margin-bottom: 1.75rem;
+    }
+
+    .stepper-tab {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.45rem;
+      padding: 0.65rem 0.4rem;
+      border-radius: 10px;
+      background: rgba(29, 36, 48, 0.6);
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      font-size: 0.82rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .stepper-tab:hover {
+      border-color: rgba(14, 165, 233, 0.4);
+      color: var(--text-primary);
+      background: rgba(29, 36, 48, 0.9);
+    }
+
+    .stepper-tab.active {
+      background: linear-gradient(135deg, rgba(124, 92, 252, 0.2), rgba(14, 165, 233, 0.18));
+      border-color: rgba(14, 165, 233, 0.7);
+      color: #fff;
+      box-shadow: 0 4px 16px rgba(14, 165, 233, 0.15);
+    }
+
+    .stepper-tab.done {
+      border-color: rgba(34, 197, 94, 0.4);
+    }
+
+    .stepper-idx {
       display: grid;
       place-items: center;
-      width: 2rem;
-      height: 2rem;
-      border-radius: 0.6rem;
-      background: var(--grad-primary);
-    }
-
-    .mock-action,
-    .mock-toggle {
-      min-height: 2.65rem;
-      border: 1px solid #2b3545;
-      border-radius: 10px;
-      padding: 0.7rem 0.8rem;
-      background: #1d2430;
-      color: var(--text-primary);
+      width: 1.35rem;
+      height: 1.35rem;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.08);
+      font-size: 0.75rem;
       font-weight: 800;
     }
 
-    .mock-action.primary {
+    .stepper-tab.active .stepper-idx {
       background: var(--grad-primary);
-      color: white;
+      color: #fff;
     }
 
-    .mock-toggle {
+    .stepper-tab.done .stepper-idx {
+      background: rgba(34, 197, 94, 0.2);
+      color: #34d399;
+    }
+
+    /* Card */
+    .demo-card {
+      padding: 2rem;
+      border-radius: 16px;
+      background: #171c24;
+      border: 1px solid var(--border);
+      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.3);
+    }
+
+    .card-meta-bar {
       display: flex;
       align-items: center;
       justify-content: space-between;
+      margin-bottom: 0.75rem;
     }
 
-    .mock-toggle i {
-      width: 2.35rem;
-      height: 1.25rem;
-      border-radius: 999px;
-      background: rgba(148, 163, 184, 0.25);
-      position: relative;
+    .step-tag {
+      font-size: 0.82rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #38bdf8;
     }
 
-    .mock-toggle i::after {
-      content: '';
-      position: absolute;
-      top: 0.2rem;
-      left: 0.2rem;
-      width: 0.85rem;
-      height: 0.85rem;
-      border-radius: 50%;
-      background: white;
-      transition: transform 0.2s ease;
-    }
-
-    .mock-toggle.on i {
-      background: rgba(16, 185, 129, 0.55);
-    }
-
-    .mock-toggle.on i::after {
-      transform: translateX(1.1rem);
-    }
-
-    .question-top {
-      display: flex;
-      justify-content: space-between;
-      gap: 1rem;
-      margin-bottom: 1.3rem;
+    .step-counter {
+      font-size: 0.85rem;
+      font-weight: 800;
+      padding: 0.25rem 0.65rem;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: rgba(15, 23, 42, 0.4);
+      color: #bae6fd;
     }
 
     .question-text {
-      margin-top: 0.35rem;
-      font-size: clamp(1.5rem, 3vw, 2.25rem);
+      font-size: clamp(1.35rem, 2.5vw, 1.75rem);
+      font-weight: 700;
+      color: var(--text-primary);
+      margin: 0 0 1rem;
+      line-height: 1.35;
     }
 
-    .question-instruction {
-      margin: -0.45rem 0 1.1rem;
-      color: var(--text-secondary);
-      font-size: 0.96rem;
-      line-height: 1.55;
-    }
-
-    .question-count {
-      flex: 0 0 auto;
-      height: 2.3rem;
-      padding: 0.42rem 0.7rem;
+    .feature-tip {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.65rem;
+      padding: 0.75rem 1rem;
       border-radius: 10px;
-      border: 1px solid #2b3545;
-      color: #bae6fd;
-      font-weight: 900;
+      background: rgba(124, 92, 252, 0.08);
+      border: 1px solid rgba(124, 92, 252, 0.2);
+      margin-bottom: 1.5rem;
     }
 
+    .feature-icon {
+      font-size: 1.1rem;
+      line-height: 1.3;
+    }
+
+    .feature-tip p {
+      font-size: 0.92rem;
+      color: #dbeafe;
+      line-height: 1.45;
+      margin: 0;
+    }
+
+    /* Radio Options */
     .demo-options {
       display: grid;
       gap: 0.75rem;
       border: 0;
+      margin-bottom: 1.5rem;
+      padding: 0;
     }
 
     .demo-option {
       display: flex;
       align-items: center;
+      justify-content: space-between;
       gap: 0.75rem;
-      min-height: 3.35rem;
-      padding: 0.8rem 0.9rem;
+      padding: 0.95rem 1.15rem;
+      border-radius: 12px;
       border: 1px solid #2b3545;
-      border-radius: 10px;
       background: #1d2430;
-      color: var(--text-primary);
-      font-weight: 750;
+      cursor: pointer;
+      transition: all 0.2s ease;
     }
 
     .demo-option:hover {
-      border-color: rgba(6, 182, 212, 0.35);
-      background: rgba(6, 182, 212, 0.08);
+      border-color: rgba(14, 165, 233, 0.4);
+      background: rgba(29, 36, 48, 0.9);
     }
 
     .demo-option.selected {
-      border-color: rgba(14, 165, 233, 0.62);
-      background: rgba(14, 165, 233, 0.13);
+      border-color: rgba(14, 165, 233, 0.7);
+      background: rgba(14, 165, 233, 0.12);
     }
 
     .demo-option.correct-reveal {
-      border-color: rgba(34, 197, 94, 0.7);
+      border-color: rgba(34, 197, 94, 0.8);
       background: rgba(34, 197, 94, 0.12);
     }
 
     .demo-option.wrong-reveal {
-      border-color: rgba(248, 113, 113, 0.68);
+      border-color: rgba(248, 113, 113, 0.7);
       background: rgba(248, 113, 113, 0.1);
+    }
+
+    .demo-option.hint-reveal {
+      border-color: rgba(245, 158, 11, 0.7);
+      background: rgba(245, 158, 11, 0.1);
+    }
+
+    .option-left {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
     }
 
     .demo-option input {
       width: 1.15rem;
       height: 1.15rem;
-      accent-color: var(--accent-cyan);
+      accent-color: #0ea5e9;
+      cursor: pointer;
     }
 
-    .text-answer {
+    .option-label {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .option-badge {
+      font-size: 0.75rem;
+      font-weight: 800;
+      padding: 0.25rem 0.55rem;
+      border-radius: 6px;
+      background: rgba(245, 158, 11, 0.2);
+      color: #fde68a;
+      border: 1px solid rgba(245, 158, 11, 0.35);
+      white-space: nowrap;
+    }
+
+    .option-badge.check {
+      background: rgba(34, 197, 94, 0.2);
+      color: #bbf7d0;
+      border-color: rgba(34, 197, 94, 0.4);
+    }
+
+    /* Text Input */
+    .text-answer-box {
       display: grid;
       gap: 0.55rem;
-      color: var(--text-primary);
-      font-weight: 800;
+      margin-bottom: 1.5rem;
     }
 
-    .text-answer input,
-    .match-row select {
+    .text-label {
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+    }
+
+    .text-answer-box input {
       width: 100%;
-      min-height: 3.2rem;
-      border: 1px solid #2b3545;
+      min-height: 3.25rem;
+      padding: 0 1rem;
       border-radius: 10px;
+      border: 1px solid #2b3545;
       background: #101318;
       color: var(--text-primary);
-      padding: 0 0.9rem;
+      font-size: 1.05rem;
       outline: none;
+      transition: all 0.2s ease;
     }
 
-    .text-answer input:focus,
-    .match-row select:focus {
-      border-color: rgba(6, 182, 212, 0.55);
-      box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.14);
+    .text-answer-box input:focus {
+      border-color: #0ea5e9;
+      box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.15);
     }
 
-    .matching-board {
+    /* Matching */
+    .matching-grid {
       display: grid;
       gap: 0.85rem;
+      margin-bottom: 1.5rem;
     }
 
-    .match-row {
+    .match-item {
       display: grid;
-      grid-template-columns: minmax(120px, 0.35fr) minmax(0, 1fr);
-      gap: 0.85rem;
+      grid-template-columns: 140px 24px 1fr;
       align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem 1rem;
+      background: #1d2430;
+      border: 1px solid #2b3545;
+      border-radius: 10px;
     }
 
-    .match-row > span {
+    .match-prompt {
+      font-weight: 750;
       color: var(--text-primary);
-      font-weight: 900;
     }
 
-    .selected-tip,
-    .demo-nav {
+    .match-arrow {
+      color: var(--text-tertiary);
+      text-align: center;
+    }
+
+    .match-select {
+      min-height: 2.75rem;
+      background-color: #101318;
+    }
+
+    /* Selected text helper */
+    .selected-helper-bar {
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      gap: 0.85rem;
-      flex-wrap: wrap;
-      margin-top: 1.2rem;
-    }
-
-    .selected-tip {
-      justify-content: flex-start;
-      border: 1px solid rgba(245, 158, 11, 0.18);
-      background: rgba(245, 158, 11, 0.07);
+      gap: 1rem;
+      padding: 0.85rem 1.15rem;
       border-radius: 10px;
-      padding: 0.75rem;
+      background: rgba(245, 158, 11, 0.08);
+      border: 1px solid rgba(245, 158, 11, 0.22);
+      margin-bottom: 1.5rem;
     }
 
-    .selected-tip p {
-      flex: 1 1 260px;
+    .selected-note {
+      font-size: 0.9rem;
       color: #fde68a;
-      font-size: 0.92rem;
+      line-height: 1.45;
+      margin: 0;
     }
 
-    .demo-feedback {
+    /* Feedback Card */
+    .demo-feedback-card {
       display: grid;
       gap: 0.5rem;
-      margin-top: 1.15rem;
-      padding: 1rem;
-      border: 1px solid rgba(148, 163, 184, 0.22);
-      border-radius: 10px;
-      background: rgba(15, 23, 42, 0.42);
+      padding: 1.15rem 1.25rem;
+      border-radius: 12px;
+      background: rgba(15, 23, 42, 0.5);
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      margin-bottom: 1.5rem;
+      animation: fadeIn 0.25s ease-out;
     }
 
-    .demo-feedback strong {
-      color: var(--text-primary);
-      font-size: 1rem;
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
-    .demo-feedback > p,
-    .demo-explanation p {
-      margin: 0;
-      color: var(--text-secondary);
-      line-height: 1.55;
+    .feedback-head {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
     }
 
-    .demo-feedback.success {
-      border-color: rgba(34, 197, 94, 0.42);
-      background: rgba(34, 197, 94, 0.09);
-    }
-
-    .demo-feedback.warning {
-      border-color: rgba(248, 113, 113, 0.38);
-      background: rgba(248, 113, 113, 0.08);
-    }
-
-    .demo-feedback.info {
-      border-color: rgba(14, 165, 233, 0.4);
-      background: rgba(14, 165, 233, 0.08);
-    }
-
-    .demo-feedback.empty {
-      border-color: rgba(245, 158, 11, 0.38);
-      background: rgba(245, 158, 11, 0.08);
-    }
-
-    .demo-explanation {
-      display: grid;
-      gap: 0.35rem;
-      margin-top: 0.35rem;
-      padding-top: 0.75rem;
-      border-top: 1px solid rgba(148, 163, 184, 0.2);
-    }
-
-    .demo-explanation span {
-      color: #bae6fd;
-      font-size: 0.78rem;
-      font-weight: 900;
+    .feedback-badge {
+      font-size: 0.85rem;
+      font-weight: 800;
       text-transform: uppercase;
-      letter-spacing: 0.06em;
+      letter-spacing: 0.04em;
     }
 
-    .demo-controls {
+    .feedback-msg {
+      font-size: 0.95rem;
+      line-height: 1.5;
+      margin: 0;
+      color: var(--text-primary);
+    }
+
+    .demo-feedback-card.success {
+      background: rgba(34, 197, 94, 0.08);
+      border-color: rgba(34, 197, 94, 0.35);
+    }
+    .demo-feedback-card.success .feedback-badge { color: #4ade80; }
+
+    .demo-feedback-card.info {
+      background: rgba(14, 165, 233, 0.08);
+      border-color: rgba(14, 165, 233, 0.35);
+    }
+    .demo-feedback-card.info .feedback-badge { color: #38bdf8; }
+
+    .demo-feedback-card.warning {
+      background: rgba(248, 113, 113, 0.08);
+      border-color: rgba(248, 113, 113, 0.35);
+    }
+    .demo-feedback-card.warning .feedback-badge { color: #f87171; }
+
+    .demo-feedback-card.empty {
+      background: rgba(245, 158, 11, 0.08);
+      border-color: rgba(245, 158, 11, 0.35);
+    }
+    .demo-feedback-card.empty .feedback-badge { color: #fbbf24; }
+
+    .feedback-explanation {
+      margin-top: 0.5rem;
+      padding-top: 0.75rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .exp-title {
+      display: block;
+      font-size: 0.75rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #38bdf8;
+      margin-bottom: 0.25rem;
+    }
+
+    .feedback-explanation p {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+      margin: 0;
+    }
+
+    /* Action buttons */
+    .card-actions {
       display: flex;
       flex-wrap: wrap;
-      justify-content: flex-end;
+      align-items: center;
       gap: 0.75rem;
-      margin-top: 1.1rem;
-      padding-top: 1rem;
-      border-top: 1px solid rgba(43, 53, 69, 0.72);
+      margin-top: 1.5rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid rgba(43, 53, 69, 0.7);
     }
 
-    .demo-nav {
-      justify-content: flex-end;
+    .btn-solve {
+      background: var(--grad-primary);
+      color: #fff;
+      font-weight: 750;
+      box-shadow: 0 4px 18px rgba(124, 92, 252, 0.25);
+    }
+    .btn-solve:hover {
+      background: var(--grad-primary-hover);
+      box-shadow: 0 6px 24px rgba(14, 165, 233, 0.35);
     }
 
-    .demo-finish {
+    .btn-hint {
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      color: #fff;
+      font-weight: 750;
+      box-shadow: 0 4px 18px rgba(245, 158, 11, 0.25);
+    }
+    .btn-hint:hover {
+      background: linear-gradient(135deg, #fbbf24, #f59e0b);
+    }
+
+    /* Card footer nav */
+    .card-footer-nav {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 1rem;
-      margin-top: 1.75rem;
-      padding: 1.25rem;
-      border: 1px solid rgba(34, 197, 94, 0.26);
-      border-radius: 12px;
-      background: linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(14, 165, 233, 0.08));
+      margin-top: 1.25rem;
+      padding-top: 1rem;
+      border-top: 1px dashed rgba(43, 53, 69, 0.6);
+    }
+
+    /* Finish Card */
+    .demo-finish {
+      margin-top: 2rem;
+      padding: 2.25rem;
+      border-radius: 16px;
+      background: linear-gradient(135deg, rgba(34, 197, 94, 0.08), rgba(14, 165, 233, 0.06)), #171c24;
+      border: 1px solid rgba(34, 197, 94, 0.3);
+      text-align: center;
+    }
+
+    .finish-icon {
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
     }
 
     .demo-finish h2 {
-      margin: 0.25rem 0 0.35rem;
-      font-size: 1.45rem;
-    }
-
-    .demo-finish p {
-      max-width: 760px;
-      color: var(--text-secondary);
-      line-height: 1.55;
-      margin: 0;
-    }
-
-    .demo-finish-stats {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.6rem;
-      margin-top: 0.9rem;
-    }
-
-    .demo-finish-stats span {
-      padding: 0.52rem 0.7rem;
-      border: 1px solid rgba(148, 163, 184, 0.2);
-      border-radius: 8px;
-      background: rgba(15, 23, 42, 0.28);
-      color: var(--text-secondary);
-      font-size: 0.88rem;
+      font-size: 1.65rem;
       font-weight: 800;
+      margin-bottom: 0.5rem;
     }
 
-    .demo-finish-stats strong {
-      color: var(--text-primary);
+    .finish-desc {
+      max-width: 600px;
+      margin: 0 auto 1.5rem;
+      font-size: 0.98rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
     }
 
-    .demo-finish-actions {
+    .finish-checklist {
       display: flex;
       flex-wrap: wrap;
-      gap: 0.75rem;
-      justify-content: flex-end;
+      justify-content: center;
+      gap: 0.65rem;
+      margin-bottom: 1.75rem;
+    }
+
+    .finish-checklist span {
+      padding: 0.4rem 0.85rem;
+      border-radius: 999px;
+      background: rgba(34, 197, 94, 0.1);
+      border: 1px solid rgba(34, 197, 94, 0.3);
+      color: #bbf7d0;
+      font-size: 0.85rem;
+      font-weight: 700;
+    }
+
+    .finish-actions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.85rem;
     }
 
     .sr-only {
@@ -1350,129 +1287,40 @@ const DEMO_QUESTIONS: Record<Exclude<Locale, 'en' | 'pl'>, DemoQuestion[]> = {
       clip: rect(0, 0, 0, 0);
     }
 
-    @media (max-width: 900px) {
-      .demo-hero-grid,
-      .demo-workspace {
-        grid-template-columns: minmax(0, 1fr);
+    /* Responsive */
+    @media (max-width: 680px) {
+      .demo-page { padding: 2rem 0 3.5rem; }
+      .demo-card { padding: 1.25rem; }
+      .demo-mode-card { flex-direction: column; align-items: stretch; }
+      .mode-actions { flex-direction: column; }
+      .mode-actions .btn { width: 100%; }
+      .demo-stepper {
+        overflow-x: auto;
+        display: flex;
+        padding-bottom: 0.5rem;
       }
-
-      .demo-side {
-        position: static;
+      .stepper-tab {
+        flex: 0 0 auto;
+        padding: 0.5rem 0.75rem;
       }
-    }
-
-    @media (max-width: 640px) {
-      .demo-page {
-        padding-top: 3rem;
-        overflow-x: hidden;
-      }
-
-      .demo-hero {
-        padding-top: 1rem;
-      }
-
-      .demo-copy h1 {
-        font-size: 2rem;
-      }
-
-      .demo-hero-grid,
-      .demo-workspace,
-      .demo-copy,
-      .demo-card,
-      .demo-map,
-      .demo-side {
-        max-width: 100%;
-        overflow-x: hidden;
-      }
-
-      .demo-hero .container,
-      .demo-workspace.container {
-        padding-left: 1rem;
-        padding-right: 1rem;
-      }
-
-      .demo-lead,
-      .demo-map p,
-      .demo-map li p,
-      .demo-side p {
-        max-width: calc(100vw - 2rem);
-      }
-
-      .demo-badges,
-      .demo-actions {
-        flex-direction: column;
-        align-items: stretch;
-      }
-
-      .demo-badges span,
-      .demo-actions .btn,
-      .demo-controls .btn,
-      .demo-finish-actions .btn {
-        width: 100%;
-        justify-content: center;
-        text-align: center;
-        white-space: normal;
-      }
-
-      .demo-proof {
-        max-width: calc(100vw - 2rem);
-      }
-
-      .score-stats,
-      .demo-controls,
-      .demo-finish,
-      .demo-finish-stats,
-      .demo-finish-actions {
-        flex-direction: column;
-        align-items: stretch;
-      }
-
-      .match-row,
-      .question-top {
+      .match-item {
         grid-template-columns: 1fr;
+        gap: 0.4rem;
       }
-
-      .question-top {
-        display: grid;
+      .match-arrow { display: none; }
+      .card-actions {
+        flex-direction: column;
+        align-items: stretch;
       }
-
-      .question-count {
-        width: max-content;
+      .card-actions .btn {
+        width: 100%;
       }
-    }
-
-    .demo-extension-warning {
-      display: flex;
-      gap: 1rem;
-      align-items: flex-start;
-      margin-top: 1.5rem;
-      padding: 1.25rem 1.5rem;
-      border: 1px solid rgba(234, 179, 8, 0.3);
-      background: rgba(234, 179, 8, 0.04);
-      border-radius: 8px;
-      text-align: left;
-    }
-    .demo-extension-warning h3 {
-      font-size: 1.05rem;
-      font-weight: 700;
-      color: #fef08a;
-      margin: 0 0 0.25rem;
-    }
-    .demo-extension-warning p {
-      font-size: 0.925rem;
-      color: var(--text-secondary);
-      line-height: 1.45;
-      margin: 0;
-    }
-    .warning-icon {
-      font-size: 1.5rem;
-      line-height: 1;
-    }
-    .cta-store-btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
+      .finish-actions {
+        flex-direction: column;
+      }
+      .finish-actions .btn {
+        width: 100%;
+      }
     }
   `]
 })
@@ -1480,52 +1328,13 @@ export class DemoComponent implements OnInit, OnDestroy {
   protected locale: Locale = 'en';
   protected readonly storeUrl = CHROME_WEB_STORE_URL;
 
-  protected getExtensionWarning(): { title: string; text: string } {
-    const warnings: Record<Locale, { title: string; text: string }> = {
-      en: {
-        title: 'Chrome Extension Required',
-        text: 'To test this interactive demo, you must have the official QuizSolver Chrome extension installed and active. Download it directly from the Chrome Web Store.'
-      },
-      pl: {
-        title: 'Wymagane rozszerzenie Chrome',
-        text: 'Aby przetestować to interaktywne demo, musisz mieć zainstalowane i włączone oficjalne rozszerzenie QuizSolver. Pobierz je bezpośrednio z Chrome Web Store.'
-      },
-      de: {
-        title: 'Chrome-Erweiterung erforderlich',
-        text: 'Um diese interaktive Demo zu testen, müssen Sie die offizielle QuizSolver-Chrome-Erweiterung installiert und aktiviert haben. Laden Sie sie direkt aus dem Chrome Web Store herunter.'
-      },
-      es: {
-        title: 'Se requiere la extensión de Chrome',
-        text: 'Para probar este demo interactivo, debes tener instalada y activada la extensión oficial de Chrome de QuizSolver. Descárgala directamente desde Chrome Web Store.'
-      },
-      fr: {
-        title: 'Extension Chrome requise',
-        text: 'Pour tester cette démo interactive, vous devez avoir installé et activé l’extension Chrome officielle de QuizSolver. Téléchargez-la directement depuis le Chrome Web Store.'
-      },
-      it: {
-        title: 'Estensione Chrome richiesta',
-        text: 'Per testare questa demo interattiva, devi avere installata e attiva l’estensione ufficiale Chrome di QuizSolver. Scaricala direttamente dal Chrome Web Store.'
-      },
-      uk: {
-        title: 'Необхідно встановити розширення Chrome',
-        text: 'Щоб протестувати це інтерактивне демо, у вас має бути встановлене та увімкнене офіційне розширення QuizSolver для Chrome. Завантажте його безкоштовно з Chrome Web Store.'
-      }
-    };
-    if (this.locale === 'pl') {
-      return {
-        title: 'Wymagane rozszerzenie Chrome',
-        text: 'Aby przetestować demo razem z prawdziwym popupem QuizSolver, zainstaluj i włącz oficjalne rozszerzenie Chrome.'
-      };
-    }
-    return warnings[this.locale] || warnings.en;
-  }
-
   protected copy = COPY.en;
   protected readonly current = signal(0);
   protected readonly answers = signal<Record<string, DemoAnswerState>>({});
   private readonly route = inject(ActivatedRoute);
   private readonly seo = inject(SeoService);
   private readonly platformId = inject(PLATFORM_ID);
+
   private readonly handleTourStep = (event: Event) => {
     const step = Number((event as CustomEvent<{ step?: number }>).detail?.step ?? 0);
     const nextStep = Math.min(Math.max(0, step), this.copy.questions.length - 1);
@@ -1566,6 +1375,44 @@ export class DemoComponent implements OnInit, OnDestroy {
 
   protected matchValue(questionId: string, index: number): string {
     return this.answers()[questionId]?.matches?.[index] || '';
+  }
+
+  protected setStep(index: number): void {
+    const scrollSnapshot = this.captureScroll();
+    this.current.set(index);
+    this.restoreScroll(scrollSnapshot);
+  }
+
+  protected getStepShortLabel(index: number): string {
+    const labels: Record<Locale, string[]> = {
+      pl: ['1. Wybór ABCD', '2. Tryb Hint', '3. Wpisywanie', '4. Dopasowanie', '5. Zaznaczenie'],
+      en: ['1. Choice', '2. Hint mode', '3. Input', '4. Matching', '5. Selected'],
+      de: ['1. Auswahl', '2. Hinweis', '3. Eingabe', '4. Zuordnung', '5. Markiert'],
+      es: ['1. Opción', '2. Pista', '3. Escrita', '4. Emparejar', '5. Selección'],
+      fr: ['1. Choix', '2. Indice', '3. Saisie', '4. Association', '5. Sélection'],
+      it: ['1. Scelta', '2. Hint', '3. Scritta', '4. Tendina', '5. Selezione'],
+      uk: ['1. Варіант', '2. Hint', '3. Введення', '4. Matching', '5. Виділення']
+    };
+    const list = labels[this.locale] || labels.en;
+    return list[index] || `Krok ${index + 1}`;
+  }
+
+  protected checklistItems(): string[] {
+    const map: Record<Locale, string[]> = {
+      pl: ['Automatyczny wybór ABCD', 'Dyskretny tryb Hint mode', 'Wpisywanie odpowiedzi w pola', 'Dopasowywanie selectów', 'Quick overlay (Alt+Q)'],
+      en: ['Single choice solving', 'Discreet Hint mode', 'Typed input support', 'Dropdown matching', 'Quick overlay (Alt+Q)'],
+      de: ['Einzelauswahl', 'Diskreter Hinweis-Modus', 'Texteingabe', 'Dropdown-Zuordnung', 'Quick Overlay (Alt+Q)'],
+      es: ['Opción única', 'Modo pista discreto', 'Respuesta escrita', 'Emparejar menús', 'Quick overlay (Alt+Q)'],
+      fr: ['Choix unique', 'Mode indice discret', 'Réponse saisie', 'Association déroulante', 'Quick overlay (Alt+Q)'],
+      it: ['Scelta singola', 'Hint mode discreto', 'Risposta scritta', 'Associazione a tendina', 'Quick overlay (Alt+Q)'],
+      uk: ['Один варіант', 'Непомітний Hint mode', 'Текстова відповідь', 'Matching у списках', 'Quick overlay (Alt+Q)']
+    };
+    return map[this.locale] || map.en;
+  }
+
+  protected isQuestionCompleted(questionId: string): boolean {
+    const state = this.answers()[questionId];
+    return !!state?.correct || !!state?.solved;
   }
 
   protected setAnswer(question: DemoQuestion, value: string): void {
@@ -1637,6 +1484,10 @@ export class DemoComponent implements OnInit, OnDestroy {
     return !!state?.checked && !state.empty;
   }
 
+  protected isHinted(question: DemoQuestion): boolean {
+    return !!this.answers()[question.id]?.hinted;
+  }
+
   protected isCorrect(question: DemoQuestion): boolean {
     return !!this.answers()[question.id]?.correct;
   }
@@ -1688,15 +1539,6 @@ export class DemoComponent implements OnInit, OnDestroy {
     }).length;
   }
 
-  protected progressPercent(): number {
-    return Math.round((this.answeredCount() / Math.max(1, this.copy.questions.length)) * 100);
-  }
-
-  protected accuracyPercent(): number {
-    const answered = this.answeredCount();
-    return answered ? Math.round((this.score() / answered) * 100) : 0;
-  }
-
   protected isDemoComplete(): boolean {
     return this.answeredCount() >= this.copy.questions.length;
   }
@@ -1715,7 +1557,11 @@ export class DemoComponent implements OnInit, OnDestroy {
 
   protected nextOrRestart(): void {
     if (this.current() >= this.copy.questions.length - 1) {
-      this.resetAnswers();
+      if (this.isDemoComplete()) {
+        this.scrollToWorkspace();
+      } else {
+        this.resetAnswers();
+      }
       return;
     }
     this.next();
