@@ -256,14 +256,7 @@ import { ShellComponent, trackGa4Event } from './shell.component';
                   <span class="price-local">(BLIK / przelew w PLN)</span>
                 </ng-container>
                 <ng-container *ngIf="selectedProvider() !== 'dpay'">
-                  <div class="modal-price-stack" *ngIf="appliedDiscountPercent() > 0">
-                    <span class="price-strikethrough">{{ pack.price }}</span>
-                    <span class="price-usd text-gradient-strong">{{ getDiscountedUsdPrice(pack.price) }}</span>
-                    <span class="promo-discount-pill">-{{ appliedDiscountPercent() }}%</span>
-                  </div>
-                  <ng-container *ngIf="appliedDiscountPercent() <= 0">
-                    <span class="price-usd">{{ pack.price }}</span>
-                  </ng-container>
+                  <span class="price-usd">{{ pack.price }}</span>
                   <span class="price-local" *ngIf="getApproxCurrencyPrice(pack.price)">({{ getApproxCurrencyPrice(pack.price) }})</span>
                 </ng-container>
               </div>
@@ -272,53 +265,6 @@ import { ShellComponent, trackGa4Event } from './shell.component';
             <div class="confirm-email">
               <span>{{ label('confirmEmailLabel') }}</span>
               <code>{{ api.currentUser()?.email }}</code>
-            </div>
-
-            <!-- Interactive Promo Code Section in Modal -->
-            <div class="modal-promo-section">
-              <!-- When promo is applied -->
-              <div class="modal-promo-active glass" *ngIf="appliedPromoCode()">
-                <div class="promo-active-left">
-                  <span class="promo-active-icon">🏷️</span>
-                  <div class="promo-active-details">
-                    <div class="promo-active-badges">
-                      <span class="promo-code-pill">{{ appliedPromoCode() }}</span>
-                      <span class="promo-off-pill">-{{ appliedDiscountPercent() }}%</span>
-                    </div>
-                    <span class="promo-active-msg">{{ promoSuccess() || promoInputCopy.applied }}</span>
-                  </div>
-                </div>
-                <button type="button" class="promo-remove-btn" (click)="removePromoCode()" [title]="promoInputCopy.removeBtn">
-                  ✕ {{ promoInputCopy.removeBtn }}
-                </button>
-              </div>
-
-              <!-- When no promo is applied -->
-              <div class="modal-promo-entry" *ngIf="!appliedPromoCode()">
-                <div class="promo-entry-row">
-                  <input
-                    type="text"
-                    class="promo-entry-input"
-                    [placeholder]="promoInputCopy.placeholder"
-                    [value]="promoInputText()"
-                    (input)="onPromoInput($event)"
-                    (keyup.enter)="applyPromoCode()"
-                    maxlength="30"
-                    [disabled]="promoLoading()"
-                  />
-                  <button
-                    type="button"
-                    class="btn btn-outline btn-sm promo-entry-btn"
-                    (click)="applyPromoCode()"
-                    [disabled]="!promoInputText().trim() || promoLoading()"
-                  >
-                    {{ promoLoading() ? promoInputCopy.checking : promoInputCopy.applyBtn }}
-                  </button>
-                </div>
-                <div class="promo-entry-error" *ngIf="promoError()">
-                  ⚠️ {{ promoError() }}
-                </div>
-              </div>
             </div>
 
             <!-- Payment Provider Selector (DPay vs Lemon Squeezy) - Only shown if DPay/BLIK is available -->
@@ -361,6 +307,53 @@ import { ShellComponent, trackGa4Event } from './shell.component';
                     <span class="provider-sub">{{ checkoutProviderCopy.lemonSubtitle }}</span>
                   </div>
                 </button>
+              </div>
+            </div>
+
+            <!-- Interactive Promo Code Section in Modal - SHOWN ONLY FOR BLIK (dpay) -->
+            <div class="modal-promo-section" *ngIf="selectedProvider() === 'dpay'">
+              <!-- When promo is applied -->
+              <div class="modal-promo-active glass" *ngIf="appliedPromoCode()">
+                <div class="promo-active-left">
+                  <span class="promo-active-icon">🏷️</span>
+                  <div class="promo-active-details">
+                    <div class="promo-active-badges">
+                      <span class="promo-code-pill">{{ appliedPromoCode() }}</span>
+                      <span class="promo-off-pill">-{{ appliedDiscountPercent() }}%</span>
+                    </div>
+                    <span class="promo-active-msg">{{ promoSuccess() || promoInputCopy.applied }}</span>
+                  </div>
+                </div>
+                <button type="button" class="promo-remove-btn" (click)="removePromoCode()" [title]="promoInputCopy.removeBtn">
+                  ✕ {{ promoInputCopy.removeBtn }}
+                </button>
+              </div>
+
+              <!-- When no promo is applied -->
+              <div class="modal-promo-entry" *ngIf="!appliedPromoCode()">
+                <div class="promo-entry-row">
+                  <input
+                    type="text"
+                    class="promo-entry-input"
+                    [placeholder]="promoInputCopy.placeholder"
+                    [value]="promoInputText()"
+                    (input)="onPromoInput($event)"
+                    (keyup.enter)="applyPromoCode()"
+                    maxlength="30"
+                    [disabled]="promoLoading()"
+                  />
+                  <button
+                    type="button"
+                    class="btn btn-outline btn-sm promo-entry-btn"
+                    (click)="applyPromoCode()"
+                    [disabled]="!promoInputText().trim() || promoLoading()"
+                  >
+                    {{ promoLoading() ? promoInputCopy.checking : promoInputCopy.applyBtn }}
+                  </button>
+                </div>
+                <div class="promo-entry-error" *ngIf="promoError()">
+                  ⚠️ {{ promoError() }}
+                </div>
               </div>
             </div>
 

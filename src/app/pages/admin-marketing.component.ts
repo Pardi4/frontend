@@ -100,6 +100,19 @@ import { AdminComponent } from './admin.component';
           <label class="a-label">Limit użyć (0=∞)</label>
           <input class="a-input" type="number" [(ngModel)]="discountMaxUses" min="0">
         </div>
+        <div class="a-input-group" style="min-width:180px">
+          <label class="a-label">Obsługiwane platformy</label>
+          <div style="display:flex;gap:12px;margin-top:6px;align-items:center">
+            <label style="display:flex;align-items:center;gap:5px;font-size:12px;cursor:pointer">
+              <input type="checkbox" [(ngModel)]="discountPlatformBlik">
+              <span>BLIK (dPay)</span>
+            </label>
+            <label style="display:flex;align-items:center;gap:5px;font-size:12px;cursor:pointer">
+              <input type="checkbox" [(ngModel)]="discountPlatformLemon">
+              <span>Lemon Squeezy</span>
+            </label>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -162,6 +175,8 @@ export class AdminMarketingComponent implements OnInit {
   discountExpiresDays = 7;
   discountMaxUses     = 100;
   discountExactCode   = false;
+  discountPlatformBlik = true;
+  discountPlatformLemon = true;
 
   ngOnInit() { this.loadStats(); this.loadUsers(); }
 
@@ -216,11 +231,16 @@ export class AdminMarketingComponent implements OnInit {
     this.error.set('');
     this.successMsg.set('');
 
+    const platforms: string[] = [];
+    if (this.discountPlatformBlik) platforms.push('dpay');
+    if (this.discountPlatformLemon) platforms.push('lemonsqueezy');
+
     const body: any = {
       subject: this.subject, html: this.html,
       discountType: this.discountType, discountPrefix: this.discountPrefix,
       discountPercent: this.discountPercent, discountExactCode: this.discountExactCode,
-      discountExpiresDays: this.discountExpiresDays, discountMaxUses: this.discountMaxUses
+      discountExpiresDays: this.discountExpiresDays, discountMaxUses: this.discountMaxUses,
+      platforms
     };
     if (this.targetCount)  body.targetCount  = this.targetCount;
     if (this.targetEmail)  body.targetEmail  = this.targetEmail;

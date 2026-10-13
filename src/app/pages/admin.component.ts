@@ -13,11 +13,12 @@ import { AdminCacheComponent }      from './admin-cache.component';
 import { AdminPurchasesComponent }  from './admin-purchases.component';
 import { AdminSystemComponent }     from './admin-system.component';
 import { AdminMarketingComponent }  from './admin-marketing.component';
+import { AdminPromosComponent }     from './admin-promos.component';
 import { AdminDatasetComponent }    from './admin-dataset.component';
 
 import { ADMIN_PANEL_ROUTE_PATH } from '../admin-path';
 
-export type AdminTab = 'dashboard' | 'errors' | 'users' | 'support' | 'parser' | 'cache' | 'purchases' | 'system' | 'marketing' | 'dataset';
+export type AdminTab = 'dashboard' | 'errors' | 'users' | 'support' | 'parser' | 'cache' | 'purchases' | 'system' | 'marketing' | 'promos' | 'dataset';
 
 export interface AdminToast {
   id: number;
@@ -55,8 +56,9 @@ const NAV_GROUPS: NavGroup[] = [
   {
     label: 'Narzędzia',
     items: [
-      { id: 'marketing', label: 'Marketing', icon: '📣' },
-      { id: 'dataset',   label: 'Dataset',   icon: '📄' },
+      { id: 'promos',    label: 'Kody Rabatowe', icon: '🎟️' },
+      { id: 'marketing', label: 'Marketing',     icon: '📣' },
+      { id: 'dataset',   label: 'Dataset',       icon: '📄' },
     ]
   }
 ];
@@ -70,6 +72,7 @@ const TAB_TITLES: Record<AdminTab, string> = {
   parser:     'Parser',
   cache:      'Cache',
   system:     'System',
+  promos:     'Kody Rabatowe',
   marketing:  'Marketing',
   dataset:    'Dataset',
 };
@@ -83,6 +86,7 @@ const TAB_DESCRIPTIONS: Record<AdminTab, string> = {
   parser:     'Zdrowie parsera, analityka platform i dziennik eventów.',
   cache:      'Przeglądaj i zarządzaj cache odpowiedzi AI.',
   system:     'Stan serwera, bezpieczeństwo billingowe i log kredytów.',
+  promos:     'Kody promocyjne dla BLIK (dPay) i Lemon Squeezy ze wspólnym limitem użyć.',
   marketing:  'Kampanie email i kody rabatowe LemonSqueezy.',
   dataset:    'Przeglądarka datasetu parsera (JSONL).',
 };
@@ -102,6 +106,7 @@ const TAB_DESCRIPTIONS: Record<AdminTab, string> = {
     AdminCacheComponent,
     AdminPurchasesComponent,
     AdminSystemComponent,
+    AdminPromosComponent,
     AdminMarketingComponent,
     AdminDatasetComponent,
   ],
@@ -254,6 +259,7 @@ const TAB_DESCRIPTIONS: Record<AdminTab, string> = {
           <app-admin-cache      *ngIf="activeTab() === 'cache'"      [p]="this"></app-admin-cache>
           <app-admin-purchases  *ngIf="activeTab() === 'purchases'"  [p]="this"></app-admin-purchases>
           <app-admin-system     *ngIf="activeTab() === 'system'"     [p]="this"></app-admin-system>
+          <app-admin-promos     *ngIf="activeTab() === 'promos'"     [p]="this"></app-admin-promos>
           <app-admin-marketing  *ngIf="activeTab() === 'marketing'"  [p]="this"></app-admin-marketing>
           <app-admin-dataset    *ngIf="activeTab() === 'dataset'"    [p]="this"></app-admin-dataset>
         </div>
@@ -281,7 +287,7 @@ const TAB_DESCRIPTIONS: Record<AdminTab, string> = {
           <span class="a-bnav-lbl">Support</span>
           <span class="a-bnav-dot" *ngIf="supportCount() > 0"></span>
         </button>
-        <button class="a-bnav-btn" [class.active]="activeTab() === 'system' || activeTab() === 'parser' || activeTab() === 'cache' || activeTab() === 'purchases' || activeTab() === 'marketing' || activeTab() === 'dataset'"
+        <button class="a-bnav-btn" [class.active]="activeTab() === 'system' || activeTab() === 'parser' || activeTab() === 'cache' || activeTab() === 'purchases' || activeTab() === 'promos' || activeTab() === 'marketing' || activeTab() === 'dataset'"
           (click)="mobileSidebarOpen.set(true)">
           <span class="a-bnav-ico">☰</span>
           <span class="a-bnav-lbl">Więcej</span>
