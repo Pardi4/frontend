@@ -596,6 +596,19 @@ export class BlogPostComponent implements OnInit {
         notFoundTitle: 'Статтю не знайдено',
         notFoundText: 'Ця стаття не існує або була переміщена.',
         goBlog: 'До блогу'
+      },
+      pt: {
+        back: 'Voltar ao blog',
+        guide: 'Guia',
+        readSuffix: 'de leitura',
+        authorRole: 'Autor do QuizSolver',
+        ctaTitle: 'Pronto para revisar seu próximo teste com mais facilidade?',
+        ctaText: 'Instale a extensão gratuita QuizSolver para Chrome e use explicações de IA, anotações e simulados práticos direto na barra lateral.',
+        install: 'Adicionar ao Chrome (grátis)',
+        demo: 'Testar demonstração interativa',
+        notFoundTitle: 'Artigo não encontrado',
+        notFoundText: 'Desculpe, este artigo não existe ou foi movido.',
+        goBlog: 'Ir para o blog'
       }
     };
     labels.en.relatedEyebrow = 'Related';

@@ -419,6 +419,27 @@ const DEMO_LOCALE_COPY: Record<Exclude<Locale, 'en' | 'pl'>, Omit<DemoCopy, 'que
     chooseOption: 'Вибери',
     popupTitle: 'Popup flow',
     popupSteps: ['Один варіант', 'Hint mode', 'Текстова відповідь', 'Matching', 'Quick Overlay']
+  },
+  pt: {
+    eyebrow: 'Onboarding interativo',
+    title: 'Experimente o QuizSolver em um simulado seguro',
+    lead: 'Cinco perguntas cotidianas demonstram como a extensão funciona. Esta página não consome créditos.',
+    install: 'Instalar extensão',
+    openStore: 'Abrir Chrome Web Store',
+    demoBadge: 'Sem créditos',
+    localBadge: 'Modo de teste',
+    mapTitle: 'Como usar a demonstração',
+    mapText: 'Você pode testar a resolução diretamente no navegador ou abrir a extensão oficial do QuizSolver no Chrome.',
+    prev: 'Anterior',
+    next: 'Próxima pergunta',
+    restart: 'Reiniciar demonstração',
+    startTour: 'Iniciar tutorial',
+    selectText: '✂️ Selecionar texto',
+    selectedTip: 'Selecione o texto da pergunta e use o Quick Overlay (Alt+Q).',
+    yourAnswer: 'Sua resposta',
+    chooseOption: 'Escolher',
+    popupTitle: 'Fluxo do popup',
+    popupSteps: ['Múltipla escolha', 'Modo Dica', 'Resposta escrita', 'Associação em lista', 'Quick Overlay']
   }
 };
 
@@ -457,10 +478,17 @@ const DEMO_QUESTIONS: Record<Exclude<Locale, 'en' | 'pl'>, DemoQuestion[]> = {
     { ...COPY.en.questions[2], kicker: 'Крок 3 з 5', title: 'Математика: текстова відповідь', instruction: 'QuizSolver впевнено заповнює числа і текст у поля форми.', question: 'Скільки буде 12 x 8?', placeholder: 'Введіть відповідь', correctText: '96' },
     { ...COPY.en.questions[3], kicker: 'Крок 4 з 5', title: 'Наука: dropdown і matching', instruction: 'Одночасно зіставляє декілька значень у випадаючих списках.', question: 'Зістав кожен науковий термін із правильною дефініцією.', prompts: ['Фотосинтез', 'Випаровування', 'Гравітація'], options: ['Рослини створюють глюкозу за допомогою світла', 'Рідина перетворюється на газ', 'Сила, що притягує об’єкти з масою'], correctText: 'Фотосинтез = Рослини створюють глюкозу за допомогою світла, Випаровування = Рідина перетворюється на газ, Гравітація = Сила, що притягує об’єкти з масою' },
     { ...COPY.en.questions[4], kicker: 'Крок 5 з 5', title: 'Quick overlay', instruction: 'Виділіть тільки текст питання і розв’яжіть його через Alt+Q.', question: 'Який інструмент QuizSolver розв’язує лише виділений текст?', options: ['Розв’язати виділений текст', 'Оплата кредитів', 'Admin panel', 'Історія браузера'], correctText: 'Розв’язати виділений текст' }
+  ],
+  pt: [
+    { ...COPY.en.questions[0], kicker: 'Passo 1 de 5', title: 'Biologia: múltipla escolha', instruction: 'O QuizSolver detecta a pergunta e marca a alternativa correta em um clique.', question: 'Qual organela celular é a principal responsável pela produção de ATP em células eucarióticas?', options: ['Núcleo celular', 'Mitocôndria', 'Ribossomo', 'Membrana celular'], correctText: 'Mitocôndria' },
+    { ...COPY.en.questions[1], kicker: 'Passo 2 de 5', title: 'Modo Dica', instruction: 'Prefere resolver sozinho? O Modo Dica apenas destaca uma sugestão sutil sem clicar automaticamente.', question: 'Qual fonte histórica é o exemplo mais direto de documento primário?', options: ['Um capítulo de livro didático', 'Um diário escrito durante o acontecimento', 'Um documentário moderno', 'Um artigo de enciclopédia'], correctText: 'Um diário escrito durante o acontecimento' },
+    { ...COPY.en.questions[2], kicker: 'Passo 3 de 5', title: 'Matemática: resposta digitada', instruction: 'O QuizSolver preenche números e respostas em texto diretamente nos campos.', question: 'Quanto é 12 x 8?', placeholder: 'Digite sua resposta', correctText: '96' },
+    { ...COPY.en.questions[3], kicker: 'Passo 4 de 5', title: 'Ciências: menus suspensos', instruction: 'Associa vários conceitos simultaneamente em menus suspensos.', question: 'Associe cada termo científico à sua definição correta.', prompts: ['Fotossíntese', 'Evaporação', 'Gravidade'], options: ['Plantas produzem glicose com luz solar', 'Líquido se transforma em gás', 'Força que atrai objetos com massa'], correctText: 'Fotossíntese = Plantas produzem glicose com luz solar, Evaporação = Líquido se transforma em gás, Gravidade = Força que atrai objetos com massa' },
+    { ...COPY.en.questions[4], kicker: 'Passo 5 de 5', title: 'Quick Overlay', instruction: 'Selecione apenas o texto da questão e resolva instantaneamente com Alt+Q.', question: 'Qual recurso do QuizSolver resolve apenas o texto selecionado na página?', options: ['Resolver texto selecionado', 'Comprar créditos', 'Painel admin', 'Histórico do navegador'], correctText: 'Resolver texto selecionado' }
   ]
 };
 
-(['de', 'es', 'fr', 'it', 'uk'] as const).forEach((locale) => {
+(['de', 'es', 'fr', 'it', 'uk', 'pt'] as const).forEach((locale) => {
   COPY[locale] = {
     ...DEMO_LOCALE_COPY[locale],
     questions: DEMO_QUESTIONS[locale]
@@ -1434,6 +1462,20 @@ export class DemoComponent implements OnInit, OnDestroy {
         resultText: 'Ви протестували один варіант, режим Hint mode, текстову відповідь, списки та виділений текст.',
         finalPrimary: 'Встановити розширення',
         finalSecondary: 'Почати заново'
+      },
+      pt: {
+        correctTitle: 'Correto',
+        hintTitle: 'Dica',
+        wrongTitle: 'Ainda não',
+        emptyTitle: 'Escolha uma resposta primeiro',
+        explanationLabel: 'Por que funciona',
+        simulateSolver: '✨ Resolver com QuizSolver',
+        showHint: '💡 Mostrar dica',
+        checkAnswer: 'Conferir minha resposta',
+        resultTitle: 'Demonstração concluída!',
+        resultText: 'Você testou múltipla escolha, modo dica, resposta digitada, menus suspensos e texto selecionado.',
+        finalPrimary: 'Instalar extensão',
+        finalSecondary: 'Reiniciar demonstração'
       }
     };
 
@@ -1466,7 +1508,8 @@ export class DemoComponent implements OnInit, OnDestroy {
       es: ['1. Opción', '2. Pista', '3. Escrita', '4. Emparejar', '5. Selección'],
       fr: ['1. Choix', '2. Indice', '3. Saisie', '4. Association', '5. Sélection'],
       it: ['1. Scelta', '2. Hint', '3. Scritta', '4. Tendina', '5. Selezione'],
-      uk: ['1. Варіант', '2. Hint', '3. Введення', '4. Matching', '5. Виділення']
+      uk: ['1. Варіант', '2. Hint', '3. Введення', '4. Matching', '5. Виділення'],
+      pt: ['1. Múltipla escolha', '2. Modo Dica', '3. Digitação', '4. Associação', '5. Seleção']
     };
     const list = labels[this.locale] || labels.en;
     return list[index] || `Krok ${index + 1}`;
@@ -1480,7 +1523,8 @@ export class DemoComponent implements OnInit, OnDestroy {
       es: ['Opción única', 'Modo pista discreto', 'Respuesta escrita', 'Emparejar menús', 'Quick overlay (Alt+Q)'],
       fr: ['Choix unique', 'Mode indice discret', 'Réponse saisie', 'Association déroulante', 'Quick overlay (Alt+Q)'],
       it: ['Scelta singola', 'Hint mode discreto', 'Risposta scritta', 'Associazione a tendina', 'Quick overlay (Alt+Q)'],
-      uk: ['Один варіант', 'Непомітний Hint mode', 'Текстова відповідь', 'Matching у списках', 'Quick overlay (Alt+Q)']
+      uk: ['Один варіант', 'Непомітний Hint mode', 'Текстова відповідь', 'Matching у списках', 'Quick overlay (Alt+Q)'],
+      pt: ['Escolha única automática', 'Modo Dica discreto', 'Preenchimento de respostas', 'Associação em lista', 'Quick Overlay (Alt+Q)']
     };
     return map[this.locale] || map.en;
   }

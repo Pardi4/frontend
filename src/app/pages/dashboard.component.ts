@@ -217,6 +217,32 @@ const DASHBOARD_UI: Record<Locale, DashboardUi> = {
     history: 'Історія',
     historyTitle: 'Покупки та поповнення',
     noPurchases: 'Покупок поки немає.'
+  },
+  pt: {
+    dashboard: 'Painel',
+    credits: 'Créditos',
+    creditUnitText: '1 crédito = 1 resposta IA',
+    welcomeUser: 'Bem-vindo, usuário',
+    dashboardIntro: 'Créditos, histórico de compras e seu código de indicação em um só lugar.',
+    questionsSolved: 'Perguntas resolvidas',
+    referralBonus: 'Bônus de indicação',
+    referralCode: 'Código de indicação',
+    referralMockTitle: 'Indique usuários e ganhe 10%',
+    greeting: 'Olá,',
+    lowCreditsTitle: 'Seus créditos estão acabando',
+    lowCreditsText: 'Compre mais para não ficar sem respostas durante o quiz.',
+    buyCredits: 'Comprar créditos',
+    referralTitle: 'Indique amigos e ganhe 10% dos créditos comprados',
+    referralText: 'Quando alguém se cadastra pelo seu link e adquire créditos, você recebe um bônus equivalente a 10% desses créditos. O comprador mantém a compra integral.',
+    copied: 'Copiado',
+    copy: 'Copiar',
+    signups: 'Cadastros',
+    purchases: 'Compras',
+    bonusCredits: 'Créditos de bônus',
+    ofPurchase: 'Da compra',
+    history: 'Histórico',
+    historyTitle: 'Compras e recargas',
+    noPurchases: 'Nenhuma compra realizada ainda.'
   }
 };
 

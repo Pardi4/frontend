@@ -605,6 +605,25 @@ const PLATFORM_UI: Record<Locale, PlatformUi> = {
     faqTitle: 'Питання про цей сценарій',
     stats: ['10+ платформ', 'AI-відповіді за секунди', 'Безкоштовна установка'],
     intro: platform => `QuizSolver знаходить питання на ${platform}, пропонує AI-відповіді й автоматично зберігає все в історії навчання.`
+  },
+  pt: {
+    install: 'Instalar extensão',
+    related: 'Ver relacionados',
+    whatItDoes: platform => `Por que estudantes usam o QuizSolver no ${platform}`,
+    aiAnswers: 'Sugestões de resposta por IA',
+    explanations: 'Explicações detalhadas',
+    notes: 'Anotações e simulados',
+    sharing: 'Questionários compartilháveis',
+    howToStart: 'Como começar',
+    featuresTitle: 'Recursos deste fluxo',
+    platforms: 'Plataformas',
+    otherGuides: 'Outros guias do QuizSolver',
+    guidesIntro: 'Escolha sua plataforma e veja um guia passo a passo adaptado ao sistema do seu teste.',
+    relatedArticles: 'Artigos e tutoriais relacionados',
+    readArticle: 'Ler artigo',
+    faqTitle: 'Perguntas sobre este fluxo',
+    stats: ['Mais de 10 plataformas', 'Respostas de IA em segundos', 'Instalação gratuita'],
+    intro: platform => `O QuizSolver detecta perguntas no ${platform}, sugere respostas com IA e salva tudo no histórico de estudos automaticamente.`
   }
 };
 

@@ -390,6 +390,58 @@ export const BLOG_CATEGORIES: Record<Locale, Record<BlogCategorySlug, BlogCatego
       tutorialLabel: 'Читати приватність',
       tutorialPage: 'privacy'
     }
+  },
+  pt: {
+    kahoot: {
+      slug: 'kahoot',
+      title: 'Guias de IA para Kahoot',
+      shortTitle: 'Kahoot',
+      metaTitle: 'Guias do Kahoot AI Bot | QuizSolver',
+      metaDescription: 'Aprenda sobre Quiz ID, PIN do Kahoot, banco de respostas e modo automático para perguntas visíveis com guias do QuizSolver.',
+      description: 'Artigos práticos sobre Kahoot Quiz ID, PINs de jogos ao vivo, perguntas ocultas, bancos de respostas e resolução automática.',
+      tutorialLabel: 'Abrir tutorial do Kahoot',
+      tutorialPage: 'kahoot'
+    },
+    'platform-guides': {
+      slug: 'platform-guides',
+      title: 'Guias para plataformas de quiz',
+      shortTitle: 'Plataformas',
+      metaTitle: 'Guias de Resolução por Plataforma | QuizSolver',
+      metaDescription: 'Guias passo a passo para Google Forms, Testportal, Moodle, Canvas e outras plataformas compatíveis com o QuizSolver.',
+      description: 'Tutoriais focados em fluxos específicos de cada plataforma: como abrir, qual modo usar e como salvar perguntas.',
+      tutorialLabel: 'Ver todos os tutoriais',
+      tutorialPage: 'quizSolverAi'
+    },
+    'study-workflows': {
+      slug: 'study-workflows',
+      title: 'Métodos de estudo',
+      shortTitle: 'Estudo',
+      metaTitle: 'Métodos de Estudo com IA para Quizzes Online | QuizSolver',
+      metaDescription: 'Transforme perguntas resolvidas em notas, simulados práticos, recordação ativa e revisões eficientes com o QuizSolver.',
+      description: 'Artigos sobre o uso de respostas da IA como material de estudo: explicações, anotações, histórico, favoritos e simulados.',
+      tutorialLabel: 'Experimentar demonstração',
+      tutorialPage: 'demo'
+    },
+    focusscan: {
+      slug: 'focusscan',
+      title: 'Dicas do FocusScan OCR',
+      shortTitle: 'FocusScan',
+      metaTitle: 'FocusScan OCR para Perguntas com Imagens | QuizSolver',
+      metaDescription: 'Como usar o FocusScan para ler perguntas em imagens, diagramas, fórmulas e layouts bloqueados.',
+      description: 'Dicas sobre como capturar áreas da tela com precisão quando o texto da pergunta não pode ser selecionado.',
+      tutorialLabel: 'Testar FocusScan na demo',
+      tutorialPage: 'demo'
+    },
+    'privacy-detection': {
+      slug: 'privacy-detection',
+      title: 'Privacidade e segurança',
+      shortTitle: 'Privacidade',
+      metaTitle: 'Privacidade e Segurança em Quizzes | QuizSolver',
+      metaDescription: 'Saiba como o QuizSolver protege seus dados, gerencia permissões e mantém seus estudos seguros.',
+      description: 'Informações claras sobre o funcionamento das extensões de navegador e segurança de dados durante testes.',
+      tutorialLabel: 'Ver política de privacidade',
+      tutorialPage: 'privacy'
+    }
   }
 };
 

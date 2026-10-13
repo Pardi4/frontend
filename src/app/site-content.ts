@@ -200,7 +200,7 @@ export interface SiteCopy {
   [key: string]: any;
 }
 
-export type Locale = 'en' | 'pl' | 'de' | 'es' | 'fr' | 'it' | 'uk';
+export type Locale = 'en' | 'pl' | 'de' | 'es' | 'fr' | 'it' | 'uk' | 'pt';
 
 export interface LocaleOption {
   code: Locale;
@@ -220,7 +220,8 @@ export const SUPPORTED_LOCALES: readonly LocaleOption[] = [
   { code: 'es', shortLabel: 'ES', label: 'Spanish', nativeLabel: 'Español', htmlLang: 'es', ogLocale: 'es_ES', prefix: '/es', browserAliases: ['es'] },
   { code: 'fr', shortLabel: 'FR', label: 'French', nativeLabel: 'Français', htmlLang: 'fr', ogLocale: 'fr_FR', prefix: '/fr', browserAliases: ['fr'] },
   { code: 'it', shortLabel: 'IT', label: 'Italian', nativeLabel: 'Italiano', htmlLang: 'it', ogLocale: 'it_IT', prefix: '/it', browserAliases: ['it'] },
-  { code: 'uk', shortLabel: 'UK', label: 'Ukrainian', nativeLabel: 'Українська', htmlLang: 'uk', ogLocale: 'uk_UA', prefix: '/uk', browserAliases: ['uk', 'ua'] }
+  { code: 'uk', shortLabel: 'UK', label: 'Ukrainian', nativeLabel: 'Українська', htmlLang: 'uk', ogLocale: 'uk_UA', prefix: '/uk', browserAliases: ['uk', 'ua'] },
+  { code: 'pt', shortLabel: 'PT', label: 'Portuguese', nativeLabel: 'Português', htmlLang: 'pt', ogLocale: 'pt_BR', prefix: '/pt', browserAliases: ['pt', 'pt-br', 'pt-pt'] }
 ];
 
 export const LOCALE_CODES = SUPPORTED_LOCALES.map((locale) => locale.code) as Locale[];
@@ -1463,6 +1464,25 @@ const LOCALIZED_SITE: Record<ExtraLocale, LocalizedSiteBundle> = {
     successPage: { metaTitle: 'Платіж успішний | QuizSolver', metaDescription: 'Дякуємо. Кредити додано.', badge: 'Успіх', title: 'Платіж успішний', subtitle: 'Кредити готові до використання.', dashboardCta: 'Відкрити панель', storeCta: 'Встановити розширення' },
     notFoundPage: { metaTitle: '404 Сторінку не знайдено | QuizSolver', metaDescription: 'Ця сторінка не існує.', badge: '404', title: 'Сторінку не знайдено', subtitle: 'Ця сторінка не існує або посилання застаріло.', homeCta: 'На головну', storeCta: 'Встановити розширення' },
     platform: { badge: 'Workflow', title: (name) => `${name} Quiz Solver — AI-відповіді Миттєво`, subtitle: (name) => `Отримуй миттєві AI-підказки і детальні пояснення до кожного питання квізу ${name}.`, metaTitle: (name) => `${name} Quiz Solver — AI-відповіді Миттєво | QuizSolver`, metaDescription: (name) => `Chrome-розширення для ${name}. Миттєві AI-відповіді і пояснення до квізів ${name}. Підтримує всі типи питань. Безкоштовна установка — розв'язуй квізи за секунди.`, stepsTitle: 'Покрокова інструкція', steps: (name) => [`Відкрий квіз на ${name} і дочекайся завантаження питання та відповідей.`, `Натисни іконку QuizSolver і вибери Solve current page. Для незвичних макетів використовуй FocusScan.`, `Перевір запропоновану відповідь і пояснення перед відправкою. Увімкни Hint Mode для непомітної підказки.`], features: () => ['Миттєві AI-підказки', 'Пояснення крок за кроком', 'Автоматичне збереження в історії', 'Тренувальний квіз зі своєї історії'], keywordTitle: (name) => `Навчайся краще з ${name}`, keywordText: (name) => `QuizSolver допомагає швидше зрозуміти питання на ${name}, зберегти нотатки і ефективно повторити їх пізніше.`, faqQuestion: (name) => `Чи працює QuizSolver з ${name}?`, faqAnswer: (name) => `Так. QuizSolver автоматично знаходить видимі питання на ${name} і може використовувати FocusScan для нестандартних макетів.` }
+  },
+  pt: {
+    homeTitle: 'Extensão Chrome de IA para Resolver Quizzes',
+    homeSubtitle: 'Resolva e revise perguntas no Testportal, Moodle, Canvas, Kahoot e mais com IA',
+    homeMetaTitle: 'QuizSolver — Extensão Chrome com IA para Quizzes',
+    homeMetaDescription: 'Resolva quizzes online com dicas de IA, explicações passo a passo, FocusScan, anotações e modo Kahoot Quiz ID no QuizSolver.',
+    common: { credits: 'Créditos', dashboard: 'Painel', buyCredits: 'Comprar créditos', logout: 'Sair', createAccount: 'Criar conta', email: 'E-mail', password: 'Senha', confirmPassword: 'Confirmar senha', rememberMe: 'Lembrar de mim', signIn: 'Entrar', displayName: 'Nome de exibição (opcional)', referralCode: 'Código de indicação (opcional)', loading: 'Carregando...', close: 'Fechar', demo: 'Demonstração', historyQuiz: 'Histórico e quiz' },
+    nav: { how: 'Como funciona', features: 'Recursos', pricing: 'Preços', login: 'Entrar', signup: 'Cadastrar', toggle: 'Menu' },
+    footer: { product: 'Produto', seoPages: 'Plataformas suportadas', legal: 'Legal', privacy: 'Privacidade', terms: 'Termos', contact: 'Contato', complaints: 'Reclamações', rights: '© 2026 QuizSolver. Todos os direitos reservados.', description: 'Extensão Chrome QuizSolver para resolução de quizzes com IA.' },
+    auth: { loginTitle: 'Bem-vindo de volta', loginSubtitle: 'Entre na sua conta do QuizSolver.', showRegister: 'Ainda não tem conta?', showRegisterLink: 'Cadastre-se', registerTitle: 'Criar conta', showLogin: 'Já tem conta?', showLoginLink: 'Entrar' },
+    shell: { readyEyebrow: 'Pronto para instalar?', readyTitle: 'Adicione o QuizSolver ao Chrome e comece com o seu primeiro quiz.', readyDesc: 'Extensão, histórico de perguntas, anotações e simulados funcionam em uma única conta.', openStore: 'Abrir Chrome Web Store', footerDesc: 'Extensão Chrome para sugestões de respostas, explicações, anotações e revisões.', continueGoogle: 'Continuar com Google', signupGoogle: 'Cadastrar com Google', or: 'ou', forgotPassword: 'Esqueceu a senha?', referralInfo: 'O código de indicação é opcional. Quem indicou recebe 5% dos créditos comprados como bônus.', verifyEmail: 'Verificar e-mail', verifyEmailText: 'Insira o código de 6 dígitos enviado para:', verifyAndLogin: 'Verificar e entrar', noCode: 'Não recebeu o código?', resendCode: 'Reenviar código', resetPassword: 'Redefinir senha', resetPasswordText: 'Digite seu e-mail para enviarmos um código de redefinição.', sendCode: 'Enviar código', backToLogin: 'Voltar ao login', setNewPassword: 'Nova senha', setNewPasswordText: 'Insira o código enviado por e-mail e a nova senha.', changePassword: 'Alterar senha', mailDisabled: 'O envio de e-mails ainda não está configurado no servidor.', testCode: 'Código de teste', verificationSent: 'Enviamos um código de verificação para o seu e-mail.', loginFailed: 'Falha no login.', passwordsMismatch: 'As senhas não coincidem.', registerFailed: 'Falha no cadastro.', invalidCode: 'O código é inválido ou expirou.', alreadyVerified: 'Este e-mail já está verificado.', newCodeSent: 'Enviamos um novo código.', codeSendFailed: 'Não foi possível enviar o código.', resetSent: 'Se a conta existir, enviamos um código de redefinição.', resetStartFailed: 'Não foi possível iniciar a redefinição de senha.', passwordChanged: 'Senha alterada. Você já pode entrar.', passwordChangeFailed: 'Não foi possível alterar a senha.' },
+    privacyPage: { metaTitle: 'Privacidade | QuizSolver', metaDescription: 'Saiba como o QuizSolver protege sua conta, perguntas salvas, créditos, pagamentos, dados do FocusScan e suporte.', title: 'Política de Privacidade', badge: 'Privacidade e Segurança', subtitle: 'Protegemos seus dados e respeitamos sua privacidade.', effective: 'Vigência: 21 de maio de 2026', contactLabel: 'Suporte', contactValue: 'support@getquizsolver.com', sections: [{ title: '1. Coleta e controle de dados', text: 'Coletamos apenas as informações estritamente necessárias para a conta, créditos e o serviço.', items: ['Conta: e-mail, nome de exibição e senha criptografada (bcrypt).', 'Uso: perguntas resolvidas, créditos e compras.', 'Indicações: cadastros e compras associados ao seu código.'] }, { title: '2. Extensão do Chrome e FocusScan', text: 'A extensão analisa o conteúdo da página somente quando você aciona ativamente.', items: ['Varredura ativa: leitura de perguntas e alternativas visíveis.', 'FocusScan: captura apenas a região da tela selecionada por você.', 'As imagens do FocusScan são processadas temporariamente por provedores externos de IA. Não selecione dados confidenciais.', 'Nenhum rastreamento de outras abas ou histórico de navegação.'] }, { title: '3. Pagamentos', text: 'Os pagamentos são processados com segurança por provedores certificados (Lemon Squeezy e DPay).' }, { title: '4. Compartilhamento', text: 'Nunca vendemos nem alugamos seus dados pessoais a terceiros.' }, { title: '5. Seus direitos', text: 'Você pode acessar, exportar ou solicitar a exclusão de seus dados a qualquer momento.', items: ['Exportação de perguntas e anotações salvas.', 'Exclusão de conta pelas configurações ou pelo suporte.'] }] },
+    dashboardPage: { metaTitle: 'Painel do Usuário | QuizSolver', metaDescription: 'Gerencie créditos, recargas, link de indicação e estatísticas da sua conta.', title: 'Painel do Usuário', loginTitle: 'Acessar o Painel', loginText: 'Entre ou crie uma conta para gerenciar créditos e histórico de estudos.', loginButton: 'Entrar / Criar conta' },
+    creditsPage: { metaTitle: 'Comprar Créditos de IA | QuizSolver', metaDescription: 'Recarregue créditos do QuizSolver com pacotes avulsos. Um crédito equivale a uma resposta da IA, sem assinaturas ou mensalidades.', title: 'Comprar Créditos' },
+    quizPage: { metaTitle: 'Histórico e Simulados | QuizSolver', metaDescription: 'Revise perguntas salvas, anotações, favoritos e crie simulados práticos a partir do seu histórico no QuizSolver.', title: 'Histórico e Quiz' },
+    demoPage: { metaTitle: 'Demonstração Interativa | QuizSolver', metaDescription: 'Teste a extensão QuizSolver em um simulado de demonstração seguro com modo dica, FocusScan e anotações, sem consumir créditos.', title: 'Demonstração Interativa' },
+    successPage: { metaTitle: 'Pagamento Concluído | QuizSolver', metaDescription: 'Obrigado! Seus créditos foram adicionados com sucesso à sua conta.', badge: 'Sucesso', title: 'Pagamento Concluído', subtitle: 'Seus créditos estão prontos para uso.', dashboardCta: 'Abrir painel', storeCta: 'Instalar extensão' },
+    notFoundPage: { metaTitle: '404 Página Não Encontrada | QuizSolver', metaDescription: 'A página procurada não existe no QuizSolver.', badge: '404', title: 'Página Não Encontrada', subtitle: 'Esta página não existe ou o link expirou.', homeCta: 'Ir para o início', storeCta: 'Instalar extensão' },
+    platform: { badge: 'Fluxo', title: (name) => `${name} Quiz Solver — Respostas de IA Instantâneas`, subtitle: (name) => `Obtenha sugestões instantâneas de IA e explicações detalhadas para cada pergunta no ${name}.`, metaTitle: (name) => `${name} Quiz Solver — Respostas com IA | QuizSolver`, metaDescription: (name) => `Extensão Chrome para ${name}. Respostas de IA instantâneas e explicações para testes no ${name}. Instalação gratuita — resolva em segundos.`, stepsTitle: 'Passo a passo', steps: (name) => [`Abra o quiz no ${name} e aguarde carregar a pergunta e as alternativas visíveis.`, 'Clique no ícone do QuizSolver e escolha Resolver página atual. Para layouts incomuns, use o FocusScan.', 'Confira a sugestão e a explicação antes de enviar. Ative o Modo Dica para uma marcação sutil.'], features: () => ['Sugestões instantâneas de respostas com IA', 'Explicações passo a passo dos conceitos', 'Salvamento automático no histórico de estudos', 'Simulados práticos a partir do histórico'], keywordTitle: (name) => `Estude melhor no ${name}`, keywordText: (name) => `O QuizSolver ajuda você a entender perguntas no ${name}, salvar anotações e revisar de forma eficiente antes dos exames.`, faqQuestion: (name) => `O QuizSolver funciona no ${name}?`, faqAnswer: (name) => `Sim. O QuizSolver reconhece perguntas visíveis no ${name} automaticamente e oferece FocusScan para layouts bloqueados ou em imagem.` }
   }
 };
 
@@ -1829,6 +1849,45 @@ function enhancePlatformTutorials(copy: SiteCopy, locale: Locale): SiteCopy {
         { question: 'Чому auto mode не стартує?', answer: 'Якщо host приховує питання, використовуй Quiz ID.' },
         { question: 'Quiz ID витрачає кредити?', answer: 'Ні, він показує банк відповідей без AI-запиту.' }
       ]
+    },
+    pt: {
+      stepsTitle: 'Passo a passo de configuração',
+      genericSteps: (name) => [
+        'Instale o QuizSolver pela Chrome Web Store, fixe o ícone do QS e faça login na mesma conta do site.',
+        `Abra seu quiz no ${name} e aguarde até que a pergunta e todas as opções visíveis estejam carregadas.`,
+        'Clique no ícone do QuizSolver e escolha Resolver página atual. Se o layout for diferenciado, use o FocusScan e selecione a área da pergunta.',
+        'Confira a sugestão de resposta e a explicação antes de enviar. Ative o Modo Dica para um destaque discreto sem clique automático.',
+        'Salve perguntas úteis em Histórico e quiz, adicione anotações e crie um simulado prático para revisar mais tarde.'
+      ],
+      genericFeatures: [
+        'Identifica perguntas visíveis, alternativas, caixas de seleção e menus suspensos.',
+        'O FocusScan ajuda com imagens, PDFs, diagramas e conteúdos que não aparecem como texto simples.',
+        'O Modo Dica indica a resposta provável de forma sutil, sem interferir no envio.',
+        'Histórico, anotações e simulados transformam cada resposta em material de estudo.'
+      ],
+      genericFaq: (name) => [
+        { question: `Como inicio o QuizSolver no ${name}?`, answer: `Abra o quiz no ${name}, clique no ícone do QS no Chrome e selecione Resolver página atual.` },
+        { question: 'E se a pergunta não for detectada automaticamente?', answer: 'Use o FocusScan e desenhe um retângulo ao redor da pergunta e das alternativas na tela.' },
+        { question: 'Posso revisar as perguntas mais tarde?', answer: 'Sim. Todas as perguntas resolvidas podem ser salvas em Histórico e quiz para gerar simulados de revisão.' }
+      ],
+      kahootSteps: [
+        'Abra kahoot.it/instructions, o lobby do Kahoot ou a tela de respostas ao vivo e clique no ícone do QS.',
+        'Escolha Resolver quiz inteiro quando as perguntas e os blocos de alternativas estiverem visíveis no seu dispositivo.',
+        'Se o anfitrião ocultar as perguntas, copie o Quiz ID da URL do Kahoot (após quizId=) e cole no painel.',
+        'Use o banco de respostas com busca para encontrar a pergunta atual e a resposta correta. O modo Quiz ID não consome créditos de IA.',
+        'Mantenha o painel flutuante aberto e pause o modo automático sempre que quiser responder manualmente.'
+      ],
+      kahootFeatures: [
+        'Dois modos: resolução automática de perguntas visíveis ou banco de respostas por Quiz ID.',
+        'O modo Quiz ID não consome créditos de IA.',
+        'Painel flutuante com busca que funciona no computador e no celular.',
+        'Status claro: aguardando, resolvendo ou pausado.'
+      ],
+      kahootFaq: [
+        { question: 'O Quiz ID é o mesmo que o PIN do Kahoot?', answer: 'Não. O PIN serve para entrar em uma partida ao vivo. O Quiz ID identifica o quiz e fica na URL após quizId=.' },
+        { question: 'Por que o modo automático às vezes não inicia?', answer: 'Se o anfitrião oculta o texto da pergunta na tela dos jogadores, use o modo Quiz ID para ver o banco de respostas.' },
+        { question: 'O modo Quiz ID consome créditos?', answer: 'Não. Ele carrega o banco de respostas do quiz sem consultar a IA.' }
+      ]
     }
   };
 
@@ -2004,6 +2063,20 @@ function ensurePlatformSeoDepth(copy: SiteCopy, locale: Locale): SiteCopy {
       readText: (name) => `${name} може показувати питання як текст, плитки відповідей, поля форми, зображення або спеціальні компоненти сторінки. QuizSolver аналізує видимий контекст і варіанти відповідей перед запитом до AI, тому не спирається лише на загальні написи на кшталт "Question 5".`,
       historyTitle: (name) => `Історія питань ${name}`,
       historyText: 'Після розв’язання можна зберегти питання, відповідь, пояснення і власну нотатку. Так одноразовий квіз стає матеріалом для повторення, який можна фільтрувати, позначати і проходити знову.'
+    },
+    pt: {
+      questionTypes: (name) => `Quais tipos de perguntas do ${name} são compatíveis com o QuizSolver?`,
+      questionTypesAnswer: 'O QuizSolver reconhece múltipla escolha, escolha única, campos de texto, menus suspensos, correspondência de colunas, imagens e conteúdo visível. Para elementos especiais, o FocusScan lê a região da tela selecionada.',
+      submitQuestion: (name) => `O QuizSolver envia meu teste no ${name} automaticamente?`,
+      submitAnswer: 'Não. A extensão exibe a resposta sugerida e a explicação, mas a decisão final de marcar e enviar é sempre sua. O Modo Dica pode exibir apenas um indicativo discreto.',
+      imageQuestion: (name) => `O QuizSolver resolve perguntas com imagens no ${name}?`,
+      imageAnswer: 'Sim. O FocusScan permite selecionar uma área da tela, funcionando com imagens, diagramas, fórmulas, PDFs e conteúdos que não estão expostos como texto comum.',
+      kahootQuestion: 'O modo Quiz ID funciona quando as perguntas estão ocultas?',
+      kahootAnswer: 'Sim. Quando o anfitrião oculta o enunciado, o modo Quiz ID permite pesquisar no banco de respostas sem gastar créditos de IA.',
+      readTitle: (name) => `Como o QuizSolver analisa perguntas no ${name}`,
+      readText: (name) => `O ${name} pode exibir perguntas em texto, blocos de resposta, controles de formulário ou imagens. O QuizSolver analisa todo o contexto visível antes de consultar a IA, sem depender de rótulos genéricos como "Questão 5".`,
+      historyTitle: (name) => `Histórico de perguntas do ${name}`,
+      historyText: 'Após resolver, você pode salvar a pergunta, resposta, explicação e notas pessoais. Isso transforma um quiz em material de revisão permanente para praticar antes das provas.'
     }
   };
   const template = templates[locale] || templates.en;
@@ -2150,6 +2223,7 @@ const es = buildLocalizedSiteCopy('es');
 const fr = buildLocalizedSiteCopy('fr');
 const it = buildLocalizedSiteCopy('it');
 const uk = buildLocalizedSiteCopy('uk');
+const pt = buildLocalizedSiteCopy('pt');
 
 applySharedCopy(en, 'en');
 applySharedCopy(pl, 'pl');
@@ -2160,6 +2234,7 @@ enhancePlatformTutorials(es, 'es');
 enhancePlatformTutorials(fr, 'fr');
 enhancePlatformTutorials(it, 'it');
 enhancePlatformTutorials(uk, 'uk');
+enhancePlatformTutorials(pt, 'pt');
 ensurePlatformSeoDepth(en, 'en');
 ensurePlatformSeoDepth(pl, 'pl');
 ensurePlatformSeoDepth(de, 'de');
@@ -2167,6 +2242,7 @@ ensurePlatformSeoDepth(es, 'es');
 ensurePlatformSeoDepth(fr, 'fr');
 ensurePlatformSeoDepth(it, 'it');
 ensurePlatformSeoDepth(uk, 'uk');
+ensurePlatformSeoDepth(pt, 'pt');
 enhancePriorityPlatformSeo(en, 'en');
 enhancePriorityPlatformSeo(pl, 'pl');
 
@@ -2210,6 +2286,11 @@ function applyCompactSeo(copy: SiteCopy, locale: Locale): void {
       platform: (name) => `Розв’язуй квізи ${name} з AI-підказками, FocusScan OCR, нотатками та історією в QuizSolver.`,
       quiz: 'Переглядай збережені питання, нотатки, обране, спільні квізи й тренування у своєму акаунті QuizSolver.',
       privacy: 'Дізнайся, як QuizSolver обробляє акаунти, збережені питання, FocusScan, платежі, support і приватність.'
+    },
+    pt: {
+      platform: (name) => `Resolva quizzes do ${name} com respostas de IA, FocusScan OCR, notas e histórico de estudos no QuizSolver.`,
+      quiz: 'Revise perguntas salvas, anotações, favoritos, quizzes compartilhados e simulados na sua conta do QuizSolver.',
+      privacy: 'Saiba como o QuizSolver gerencia contas, perguntas salvas, imagens do FocusScan, pagamentos, suporte e privacidade.'
     }
   };
   const seo = templates[locale] || templates.en;
@@ -2235,6 +2316,7 @@ applyCompactSeo(es, 'es');
 applyCompactSeo(fr, 'fr');
 applyCompactSeo(it, 'it');
 applyCompactSeo(uk, 'uk');
+applyCompactSeo(pt, 'pt');
 
 export const CONTENT: Record<Locale, SiteCopy> = {
   en: en as SiteCopy,
@@ -2243,7 +2325,8 @@ export const CONTENT: Record<Locale, SiteCopy> = {
   es,
   fr,
   it,
-  uk
+  uk,
+  pt
 };
 
 export const PLATFORM_PAGE_KEYS: PageKey[] = [

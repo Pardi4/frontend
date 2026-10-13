@@ -1490,6 +1490,17 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
         clickToCopy: 'Натисни, щоб скопіювати',
         timerLabel: 'Діє ще',
         checkoutApplied: 'Промокод WELCOME10 (-10%) буде додано до оплати'
+      },
+      pt: {
+        badge: 'Desconto no primeiro pacote',
+        title: '10% de desconto na sua primeira recarga',
+        subtitle: 'Insira o cupom no checkout ou escolha qualquer pacote — o desconto é aplicado automaticamente!',
+        codeLabel: 'Cupom de desconto',
+        copyBtn: 'Copiar',
+        copied: 'Copiado!',
+        clickToCopy: 'Clique para copiar',
+        timerLabel: 'Expira em',
+        checkoutApplied: 'O cupom WELCOME10 (-10%) será aplicado no checkout'
       }
     };
     return data[this.locale] || data.en;
@@ -1503,7 +1514,8 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
       es: { title: 'Comparte y gana 10%', text: 'Invita amigos con tu enlace de referido. Cuando compren créditos, recibes un 10% de bonificación.', button: 'Obtener enlace' },
       fr: { title: 'Partagez et gagnez 10%', text: 'Invitez vos amis avec votre lien de parrainage. Quand ils achètent, vous recevez 10% de bonus.', button: 'Obtenir le lien' },
       it: { title: 'Condividi e guadagna 10%', text: 'Invita amici con il tuo link referral. Quando acquistano crediti, ricevi il 10% di bonus.', button: 'Ottieni il link' },
-      uk: { title: 'Поділись і отримай 10%', text: 'Запроси друзів через реферальне посилання. Коли вони куплять кредити, ти отримаєш 10% бонусу.', button: 'Отримати посилання' }
+      uk: { title: 'Поділись і отримай 10%', text: 'Запроси друзів через реферальне посилання. Коли вони куплять кредити, ти отримаєш 10% бонусу.', button: 'Отримати посилання' },
+      pt: { title: 'Compartilhe e ganhe 10%', text: 'Convide amigos com seu link de indicação. Quando eles comprarem créditos, você ganha 10% de créditos bônus.', button: 'Obter link' }
     };
     return data[this.locale] || data.en;
   }
@@ -1544,6 +1556,11 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
         { icon: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18.178 8c5.096 0 5.096 8 0 8-5.095 0-7.133-8-12.739-8-4.585 0-4.585 8 0 8 5.606 0 7.644-8 12.74-8z"/></svg>', text: 'Кредити ніколи не згорають' },
         { icon: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M4.93 4.93l14.14 14.14"/></svg>', text: 'Жодних регулярних підписок' },
         { icon: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>', text: 'Миттєве поповнення акаунту' }
+      ],
+      pt: [
+        { icon: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18.178 8c5.096 0 5.096 8 0 8-5.095 0-7.133-8-12.739-8-4.585 0-4.585 8 0 8 5.606 0 7.644-8 12.74-8z"/></svg>', text: 'Os créditos nunca expiram' },
+        { icon: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M4.93 4.93l14.14 14.14"/></svg>', text: 'Sem assinaturas recorrentes' },
+        { icon: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>', text: 'Liberação imediata na conta' }
       ]
     };
     return data[this.locale] || data.en;
@@ -1561,7 +1578,8 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
         es: 'Pack Rescate',
         fr: 'Pack Sauvetage',
         it: 'Pacchetto Soccorso',
-        uk: 'Рятувальний пакет'
+        uk: 'Рятувальний пакет',
+        pt: 'Pacote Resgate'
       },
       rateInfo: {
         en: '~$0.02 / answer',
@@ -1570,7 +1588,8 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
         es: '~$0.02 por respuesta',
         fr: '~$0.02 par réponse',
         it: '~$0.02 per risposta',
-        uk: '~$0.02 за відповідь'
+        uk: '~$0.02 за відповідь',
+        pt: '~$0.02 por resposta'
       },
       outcome: {
         en: '100 answers = Peace of mind for 3–5 full tests or exams',
@@ -1579,7 +1598,8 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
         es: '100 respuestas = Tranquilidad para 3–5 exámenes o parciales',
         fr: '100 réponses = Sérénité pour 3–5 examens ou partiels complets',
         it: '100 risposte = Serenità per 3–5 verifiche o esami completi',
-        uk: '100 відповідей = Спокій на 3–5 повних модулів або тестів'
+        uk: '100 відповідей = Спокій на 3–5 повних модулів або тестів',
+        pt: '100 respostas = Tranquilidade para 3–5 provas ou exames completos'
       },
       comparison: {
         en: '⚡ Less than an energy drink or coffee',
@@ -1588,7 +1608,8 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
         es: '⚡ Menos que una bebida energética o café',
         fr: '⚡ Moins cher qu\'un café ou energy drink',
         it: '⚡ Meno di un caffè o un energy drink',
-        uk: '⚡ Дешевше ніж енергетик або кава'
+        uk: '⚡ Дешевше ніж енергетик або кава',
+        pt: '⚡ Menos que um energético ou café'
       },
       button: {
         en: 'Get Rescue Pack',
@@ -1597,7 +1618,8 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
         es: 'Elegir Pack Rescate',
         fr: 'Prendre le Pack Sauvetage',
         it: 'Prendi Pacchetto Soccorso',
-        uk: 'Обрати Рятувальний пакет'
+        uk: 'Обрати Рятувальний пакет',
+        pt: 'Escolher Pacote Resgate'
       }
     },
     {
@@ -1611,7 +1633,8 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
         es: 'Más Popular',
         fr: 'Le Plus Populaire',
         it: 'Più Popolare',
-        uk: 'Найпопулярніший'
+        uk: 'Найпопулярніший',
+        pt: 'Mais Popular'
       },
       name: {
         en: 'Semester Pack',
@@ -1620,7 +1643,8 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
         es: 'Pack Semestral',
         fr: 'Pack Semestre',
         it: 'Pacchetto Semestrale',
-        uk: 'Семестровий пакет'
+        uk: 'Семестровий пакет',
+        pt: 'Pacote Semestral'
       },
       socialText: {
         en: 'Chosen by 84% of students',
@@ -1629,7 +1653,8 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
         es: 'Elegido por el 84% de los estudiantes',
         fr: 'Choisi par 84% des étudiants',
         it: 'Scelto dall\'84% degli studenti',
-        uk: 'Обрано 84% студентів'
+        uk: 'Обрано 84% студентів',
+        pt: 'Escolhido por 84% dos estudantes'
       },
       rateInfo: {
         en: '~$0.01 / answer (Save 50%)',
@@ -1637,8 +1662,9 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
         de: '~$0.01 pro Antwort (50% Ersparnis)',
         es: '~$0.01 por respuesta (Ahorra 50%)',
         fr: '~$0.01 par réponse (50% d\'économie)',
-        it: '~$0.01 per risposta (Risparmi il 50%)',
-        uk: '~$0.01 за відповідь (50% дешевше)'
+        it: '~$0.01 per resposta (Risparmi il 50%)',
+        uk: '~$0.01 за відповідь (50% дешевше)',
+        pt: '~$0.01 por resposta (50% de economia)'
       },
       outcome: {
         en: '500 answers = Stress-free studying, midterms & finals all semester',
@@ -1647,7 +1673,8 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
         es: '500 respuestas = Tareas, parciales y exámenes sin estrés todo el semestre',
         fr: '500 réponses = Devoirs, partiels et examens sans stress tout le semestre',
         it: '500 risposte = Compiti, prove ed esami senza stress per tutto il semestre',
-        uk: '500 відповідей = Домашки, модулі та сесія без стресу на весь семестр'
+        uk: '500 відповідей = Домашки, модулі та сесія без стресу на весь семестр',
+        pt: '500 respostas = Trabalhos, simulados e provas sem estresse o semestre todo'
       },
       comparison: {
         en: '🍕 Less than a pizza (Save 50%)',
@@ -1656,7 +1683,8 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
         es: '🍕 Menos de lo que cuesta una pizza (Ahorra 50%)',
         fr: '🍕 Moins cher qu\'une pizza (50% d\'économie)',
         it: '🍕 Meno del costo di una pizza (Risparmi il 50%)',
-        uk: '🍕 Менше ніж одна піца (50% дешевше)'
+        uk: '🍕 Менше ніж одна піца (50% дешевше)',
+        pt: '🍕 Menos que uma pizza (50% de economia)'
       },
       button: {
         en: 'Get Semester Pack',
@@ -1665,7 +1693,8 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
         es: 'Elegir Pack Semestral',
         fr: 'Prendre le Pack Semestre',
         it: 'Prendi Pacchetto Semestrale',
-        uk: 'Обрати Семестровий пакет'
+        uk: 'Обрати Семестровий пакет',
+        pt: 'Escolher Pacote Semestral'
       }
     },
     {
@@ -1679,7 +1708,8 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
         es: 'Mejor Precio',
         fr: 'Meilleur Prix',
         it: 'Miglior Prezzo',
-        uk: 'Найкраща ціна'
+        uk: 'Найкраща ціна',
+        pt: 'Melhor Custo-Benefício'
       },
       name: {
         en: 'Annual & Group Pack',
@@ -1688,7 +1718,8 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
         es: 'Pack Anual o Compartido',
         fr: 'Pack Annuel & Groupe',
         it: 'Pacchetto Annuale & Gruppo',
-        uk: 'Річний / Спільний пакет'
+        uk: 'Річний / Спільний пакет',
+        pt: 'Pacote Anual e Grupos'
       },
       rateInfo: {
         en: '<$0.008 / answer (Lowest rate)',
@@ -1697,7 +1728,8 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
         es: '<$0.008 por respuesta (Mayor ahorro)',
         fr: '<$0.008 par réponse (Plus grosse remise)',
         it: '<$0.008 per risposta (Massimo sconto)',
-        uk: '<$0.008 за відповідь (Найбільша знижка)'
+        uk: '<$0.008 за відповідь (Найбільша знижка)',
+        pt: '<$0.008 por resposta (Maior desconto)'
       },
       outcome: {
         en: '2000 answers = Massive supply for the entire year or to split with friends',
@@ -1706,7 +1738,8 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
         es: '2000 respuestas = Gran reserva para todo el año o para compartir con compañeros',
         fr: '2000 réponses = Réserve massive pour toute l\'année ou à partager entre amis',
         it: '2000 risposte = Riserva enorme per tutto l\'anno o da dividere con compagni',
-        uk: '2000 відповідей = Величезний запас на весь рік або для спільного користування з друзями'
+        uk: '2000 відповідей = Величезний запас на весь рік або для спільного користування з друзями',
+        pt: '2000 respostas = Reserva gigante para o ano inteiro ou para dividir com amigos'
       },
       comparison: {
         en: '💎 Lowest price per answer (<$0.008)',
@@ -1714,8 +1747,9 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
         de: '💎 Tiefster Preis pro Antwort (<$0.008)',
         es: '💎 Precio más bajo por respuesta (<$0.008)',
         fr: '💎 Prix le plus bas par réponse (<$0.008)',
-        it: '💎 Prezzo più basso per risposta (<$0.008)',
-        uk: '💎 Найнижча ціна за відповідь (<$0.008)'
+        it: '💎 Prezzo più basso per resposta (<$0.008)',
+        uk: '💎 Найнижча ціна за відповідь (<$0.008)',
+        pt: '💎 Menor custo por resposta (<$0.008)'
       },
       button: {
         en: 'Get Annual Pack',
@@ -1724,7 +1758,8 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
         es: 'Elegir Pack Anual',
         fr: 'Prendre le Pack Annuel',
         it: 'Prendi Pacchetto Annuale',
-        uk: 'Обрати Річний пакет'
+        uk: 'Обрати Річний пакет',
+        pt: 'Escolher Pacote Anual'
       }
     }
   ];
@@ -1737,7 +1772,8 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
       es: { badge: 'Inversión inteligente', title: 'Cómo se compara QuizSolver', tutor: 'Tutorías privadas', tutorPrice: '20–35 € / hora', qs: 'QuizSolver 500 créditos', qsPrice: '$4.99 por ~500 respuestas', note: 'Los créditos nunca caducan. Sin suscripción. Paga una vez, usa cuando quieras.' },
       fr: { badge: 'Investissement malin', title: 'QuizSolver en comparaison', tutor: 'Cours particuliers', tutorPrice: '25–45 € / heure', qs: 'QuizSolver 500 crédits', qsPrice: '$4.99 pour ~500 réponses', note: 'Les crédits n\'expirent jamais. Sans abonnement. Payez une fois, utilisez quand vous voulez.' },
       it: { badge: 'Investimento intelligente', title: 'Come si confronta QuizSolver', tutor: 'Ripetizioni private', tutorPrice: '20–35 € / ora', qs: 'QuizSolver 500 crediti', qsPrice: '$4.99 per ~500 risposte', note: 'I crediti non scadono mai. Nessun abbonamento. Paga una volta, usa quando vuoi.' },
-      uk: { badge: 'Розумна інвестиція', title: 'Як QuizSolver порівняно з альтернативами', tutor: 'Репетитор', tutorPrice: '300–600 грн / година', qs: 'QuizSolver 500 кредитів', qsPrice: '$4.99 за ~500 відповідей', note: 'Кредити ніколи не закінчуються. Без підписки. Плати раз, використовуй коли потрібно.' }
+      uk: { badge: 'Розумна інвестиція', title: 'Як QuizSolver порівняно з альтернативами', tutor: 'Репетитор', tutorPrice: '300–600 грн / година', qs: 'QuizSolver 500 кредитів', qsPrice: '$4.99 за ~500 відповідей', note: 'Кредити ніколи не закінчуються. Без підписки. Плати раз, використовуй коли потрібно.' },
+      pt: { badge: 'Investimento inteligente', title: 'Como o QuizSolver se compara', tutor: 'Aulas particulares', tutorPrice: 'R$ 50–120 / hora', qs: 'QuizSolver 500 créditos', qsPrice: '$4.99 por ~500 respostas', note: 'Créditos nunca expiram. Sem mensalidade. Pague uma vez e use quando precisar.' }
     };
     return data[this.locale] || data.en;
   }
@@ -1917,6 +1953,19 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
         consentTermsLink: 'Правила сервісу',
         consentRequiredNote: '* Підтвердження згоди є обов\'язковою вимогою закону для продовження.',
         selectedPackLabel: 'Обраний пакет:'
+      },
+      pt: {
+        title: 'Escolha a forma de pagamento:',
+        dpayTitle: 'BLIK e Transferência Bancária (dpay)',
+        dpaySubtitle: 'Pagamento em PLN • Payments Lab sp. z o.o. (MIP 85/2020)',
+        dpayBadge: 'Popular na Polônia',
+        lemonTitle: 'Cartão de crédito, Apple Pay, Google Pay',
+        lemonSubtitle: 'Visa, Mastercard, Revolut (Lemon Squeezy)',
+        consentTitle: 'Termo de fornecimento digital imediato:',
+        consentStatement: 'Concordo com o fornecimento imediato do serviço digital antes de decorrido o prazo de reflexão de 14 dias e reconheço que, com a disponibilização dos créditos na conta, perco o direito de arrependimento. Aceito também os ',
+        consentTermsLink: 'Termos de Serviço',
+        consentRequiredNote: '* A concordância com o fornecimento imediato é exigida por lei para prosseguir.',
+        selectedPackLabel: 'Pacote selecionado:'
       }
     };
     return data[this.locale] || data.en;
@@ -2272,6 +2321,48 @@ const CREDITS_COPY: Record<Locale, any> = {
       { question: 'Як швидко нараховуються кредити?', answer: 'Після підтвердження платежу кредити нараховуються автоматично та миттєво.' },
       { question: 'Чи згорають кредити?', answer: 'Ні! Куплені кредити ніколи не закінчуються і залишаються на твоїй сесії назавжди.' },
       { question: 'Чи можна змінити email на сторінці оплати?', answer: 'Не змінюй його. Залиш email твого акаунту QuizSolver для автоматичного поповнення.' }
+    ]
+  },
+  pt: {
+    badge: 'Preços Simples',
+    pageHeading: 'Escolha seu pacote de créditos',
+    subtitle: 'Recarga única. Sem assinaturas, sem cobranças recorrentes. Os créditos nunca expiram.',
+    creditsUnitLabel: 'créditos',
+    loginTitle: 'Entre para comprar créditos',
+    loginText: 'Use a mesma conta da extensão do Chrome e selecione o seu pacote.',
+    loginButton: 'Entrar / Criar conta',
+    guestReassurance: 'Ainda não tem conta? O cadastro leva 10 segundos e inclui créditos grátis!',
+    guestRegisterLink: 'Criar conta gratuita',
+    balanceLabel: 'Saldo atual',
+    balanceText: 'Os créditos são usados para respostas da IA, explicações, dúvidas adicionais e FocusScan.',
+    unitBadge: 'Como funcionam os créditos',
+    unitTitle: '1 crédito = 1 resposta da IA',
+    unitText: 'Um crédito é a unidade de uso do QuizSolver. Uma pergunta visível enviada para a IA consome 1 crédito e retorna a resposta sugerida.',
+    unitItems: ['O histórico salvo e as anotações não consom créditos.', 'O modo Kahoot Quiz ID não consome créditos de IA.', 'Perguntas adicionais, explicações extras ou FocusScan contam como novas respostas da IA.'],
+    dashboardCta: 'Voltar ao painel',
+    lowTitle: 'Saldo baixo',
+    lowText: 'Seus créditos estão acabando. Recarregue para não ficar sem créditos durante um quiz.',
+    packagesBadge: 'Pacotes avulsos',
+    packagesTitle: 'Recarregue quando precisar',
+    packagesText: 'Suas perguntas salvas e o histórico de estudos continuam disponíveis mesmo sem comprar novos créditos.',
+    popular: 'Mais Popular',
+    bestValue: 'Melhor Custo-Benefício',
+    loading: 'Redirecionando...',
+    paymentError: 'Os pagamentos estão temporariamente indisponíveis. Tente novamente mais tarde.',
+    emailWarningTitle: 'Use o e-mail da sua conta QuizSolver',
+    emailWarningText: 'Os créditos são adicionados à conta deste e-mail. Mantenha o mesmo e-mail no checkout.',
+    confirmBadge: 'Antes do pagamento',
+    confirmTitle: 'Confirme seu e-mail',
+    confirmText: 'Uma página segura de checkout será aberta. Mantenha o mesmo e-mail para que os créditos sejam creditados na conta correta.',
+    confirmEmailLabel: 'E-mail da conta QuizSolver',
+    confirmNote: 'Se você alterar o e-mail no checkout, a recarga pode atrasar ou exigir vinculação manual pelo suporte.',
+    confirmBack: 'Voltar',
+    confirmContinue: 'Continuar para o pagamento',
+    faqTitle: 'Perguntas frequentes sobre créditos',
+    faq: [
+      { question: 'Como os créditos são liberados?', answer: 'Após a confirmação do pagamento, os créditos são adicionados automaticamente e na hora à sua conta do QuizSolver.' },
+      { question: 'Os créditos expiram?', answer: 'Não! Os créditos comprados são permanentes. Eles nunca expiram e seu histórico de estudos fica disponível para sempre.' },
+      { question: 'Posso trocar o e-mail no checkout?', answer: 'Não mude o e-mail. Utilize o mesmo e-mail da sua conta QuizSolver para liberação imediata e automática.' }
     ]
   }
 };

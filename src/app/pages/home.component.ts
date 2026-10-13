@@ -1645,6 +1645,51 @@ const HOME_LOCALE_TEXT: Record<Exclude<Locale, 'en' | 'pl'>, any> = {
     features: ['Функції QuizSolver', 'Усе потрібне, щоб розв’язувати квізи швидше', 'Для видимих питань, питань у зображеннях, режиму підказки, швидкого overlay і повної системи повторення.', ['Універсальний парсер квізів', 'QuizSolver спочатку пробує прочитати видиме питання на будь-якій сторінці квізу, а потім використовує оптимізовані сценарії для Testportal, Moodle, Canvas і Forms.'], ['Режим підказки', 'Використовуй, коли не хочеш автоматичних кліків. QuizSolver лише підсвічує ймовірну відповідь.'], ['FocusScan', 'Виділи область, якщо питання в зображенні, canvas, PDF або незвичному макеті.'], ['Швидкий overlay', 'Відкрий маленьке рухоме вікно на сторінці з швидкими діями.'], ['Історія і нотатки', 'Зберігай розв’язані питання з відповіддю, поясненням, джерелом, зображеннями і нотатками.'], ['Квіз з історії', 'Перетвори збережені питання на тренувальний квіз і перевір правильні відповіді після завершення.'], ['Поширення питань', 'Обери останні питання і створи публічне посилання для інших.'], ['Kahoot Quiz ID', 'Якщо хост ховає питання, Quiz ID відкриває банк відповідей без витрати AI-кредитів.']],
     pricing: ['Прості ціни кредитів', 'Поповнюй лише коли потрібно', 'Без підписок. Відповіді й пояснення витрачають кредити, історія доступна завжди.', 'Популярне'],
     faqTitle: 'Поширені питання'
+  },
+  pt: {
+    headingStart: 'Resolva quizzes com o poder da',
+    headingAccent: 'Inteligência Artificial',
+    eyebrow: 'Extensão de IA para Chrome — Quiz Solver',
+    lead: 'Resolva quizzes instantaneamente em mais de 35 plataformas como Testportal, Moodle, Kahoot, Canvas, Google Forms... e em infinitas outras graças ao Universal Parser™*. Receba respostas sugeridas com explicações passo a passo.',
+    primary: 'Instalar no Chrome Web Store',
+    secondary: 'Ver como funciona',
+    proof: [
+      { prefix: '', target: 35, suffix: '+ plataformas de quiz com suporte direto' },
+      { prefix: '', target: -1, suffix: ' outros sites — funciona em qualquer lugar com o Universal Parser™*', href: '/pt/blog/universal-parser-infinite-quiz-platforms' }
+    ],
+    asterisk: '* O Universal Parser™ se adapta automaticamente a quase qualquer quiz na internet. Para interfaces muito bloqueadas ou gráficas, basta usar o FocusScan.',
+    asterisk2: '** Plataformas de quiz podem atualizar seu layout ou código, por isso a leitura automática pode nem sempre funcionar de imediato — é exatamente por isso que o FocusScan (captura de área na tela) garante 100% de sucesso.',
+    socialProof: 'Feito para páginas de quiz reais: Universal Parser, FocusScan e histórico de estudos salvo em uma única extensão do Chrome.',
+    how: [
+      'Como funciona o QuizSolver',
+      '3 passos simples para resolver qualquer quiz com IA',
+      'Instale uma vez, resolva quizzes em qualquer plataforma suportada e monte sua biblioteca de estudos automaticamente.'
+    ],
+    steps: [
+      ['Instale e conecte-se', 'Adicione o QuizSolver ao Chrome gratuitamente. Crie sua conta — suas perguntas resolvidas, anotações e simulados sincronizam entre a extensão e o site.'],
+      ['Resolva ou escaneie', 'Clique em "Resolver página atual". Para imagens, canvas, PDF ou layouts complexos, arraste o FocusScan selecionando apenas a área da pergunta.'],
+      ['Revise e compartilhe', 'Cada pergunta resolvida fica salva no Histórico. Transforme-as em flashcards, simulados de treino ou compartilhe perguntas com colegas.']
+    ],
+    features: [
+      'Recursos do QuizSolver',
+      'Um conjunto completo de ferramentas de IA para resolver quizzes e estudar melhor',
+      'Criado para situações reais: perguntas de texto, questões em imagem, Modo Dica, painel flutuante e um sistema completo de revisão.',
+      ['Parser universal de quizzes', 'O QuizSolver primeiro tenta ler a pergunta visível em qualquer página de quiz e depois usa fluxos otimizados para Testportal, Moodle, Canvas e Forms.'],
+      ['Modo Dica', 'Ative quando quiser manter o controle. O QuizSolver apenas destaca a resposta provável em vez de selecioná-la automaticamente.'],
+      ['FocusScan', 'Selecione uma área quando a pergunta estiver dentro de imagem, canvas, PDF ou layout bloqueado.'],
+      ['Quick Overlay', 'Abra uma pequena janela móvel na página para ações rápidas como resolver a pergunta atual ou texto selecionado.'],
+      ['Histórico e anotações', 'Suas perguntas resolvidas são salvas com respostas, explicações, fontes, imagens e anotações pessoais.'],
+      ['Simulado do histórico', 'Transforme perguntas salvas em um simulado de teste, pratique e confira o gabarito no final.'],
+      ['Compartilhar perguntas', 'Escolha perguntas recentes e gere um link público de quiz para seus colegas.'],
+      ['Modo Kahoot Quiz ID', 'Se o professor ocultar as perguntas, cole o Quiz ID da URL para abrir um banco de respostas sem gastar créditos de IA.']
+    ],
+    pricing: [
+      'Preços simples de créditos',
+      'Recarregue apenas quando precisar',
+      'Sem assinaturas recorrentes. Pacotes avulsos e diretos: respostas e explicações usam créditos, seu histórico de estudos é gratuito para sempre.',
+      'Mais Popular'
+    ],
+    faqTitle: 'Perguntas frequentes'
   }
 };
 
@@ -1745,6 +1790,26 @@ const HOME_DETAIL_TEXT: Record<Exclude<Locale, 'en' | 'pl'>, any> = {
       ['Де переглянути розв’язані питання?', 'В Історія і квіз можна переглядати, додавати нотатки, тренуватися і ділитися посиланням.'],
       ['Що таке Kahoot Quiz ID?', 'Quiz ID визначає сам квіз. PIN потрібен лише для входу в живу гру.']
     ]
+  },
+  pt: {
+    platforms: ['Integrações perfeitas', 'Otimizado para os sistemas que você realmente usa', 'Uma extensão do Chrome para Testportal, Moodle, Canvas, Google Forms, Microsoft Forms, Blackboard, Quizlet, Socrative, Kahoot e Quizizz.'],
+    packs: [
+      ['Pacote Resgate (100 Respostas)', 'Tranquilidade para 3–5 provas • Menos que um cafezinho', 'Escolher Pacote Resgate', ['100 sugestões de resposta com IA + explicações', 'Tranquilidade para 3–5 provas completas', 'Funciona no Moodle, Testportal, Canvas e Forms', 'Créditos nunca expiram — pagamento único, sem assinatura']],
+      ['Pacote Semestral (500 Respostas)', 'Trabalhos, provas e notas altas no semestre todo • Menos que uma pizza', 'Escolher Pacote Semestral', ['500 respostas sugeridas por IA com explicações', '50% de economia vs Starter (~$0.01 / resposta)', 'Prioridade máxima de resposta em testes com cronômetro', 'Acesso vitalício ao histórico e anotações salvas']],
+      ['Pacote Anual & Grupo (2000 Respostas)', 'Suprimento para o ano todo ou para dividir com a turma • Melhor preço (<$0.008)', 'Escolher Pacote Anual', ['2000 respostas sugeridas por IA com explicações', 'Menor preço por resposta do mercado (<$0.008)', 'Perfeito para dividir com amigos ou usar o ano inteiro', 'Prioridade máxima instantânea nos servidores de IA']]
+    ],
+    faq: [
+      ['O que devo clicar ao abrir uma página de teste?', 'Abra a extensão QuizSolver e clique em "Resolver página atual". Se o layout for suportado, a pergunta e opções são detectadas. Em layouts incomuns, use o FocusScan e selecione a área da pergunta.'],
+      ['O QuizSolver funciona apenas nas plataformas listadas?', 'Não. As plataformas listadas possuem fluxos otimizados, mas o Universal Parser também lê perguntas em praticamente qualquer outro site de quiz. Em formatos gráficos, use o FocusScan.'],
+      ['O que acontece se a minha plataforma ainda não tiver suporte direto?', 'O Universal Parser tenta ler o conteúdo primeiro. Se encontrar dificuldades, você pode reportar pela extensão. Atualizamos perfis de parser constantemente para suportar novos sistemas.'],
+      ['O QuizSolver funciona no Testportal?', 'Sim. O QuizSolver detecta automaticamente perguntas no Testportal, inclusive com cronômetro ativo. Basta clicar em "Resolver página atual" para ver a sugestão da IA em segundos.'],
+      ['O que é o FocusScan e quando usá-lo?', 'O FocusScan é uma ferramenta de captura integrada ao QuizSolver. Desenhe um retângulo sobre qualquer pergunta em imagem, PDF ou canvas bloqueado e a IA processará apenas aquela área.'],
+      ['Quantos créditos gratuitos eu recebo?', 'Todas as contas novas recebem créditos gratuitos para testar sugestões e explicações. Pacotes adicionais começam a partir de $1.99 por 100 créditos. O modo Kahoot Quiz ID não gasta créditos.'],
+      ['Para que serve o Modo Dica?', 'Ele destaca a resposta provável na tela sem clicar ou marcar automaticamente, mantendo você no total controle da decisão.'],
+      ['A página de demonstração consome créditos?', 'Não. A demonstração usa perguntas locais simuladas para você aprender e testar o funcionamento sem gastar créditos de IA.'],
+      ['Onde posso rever as questões que já resolvi?', 'Na aba Histórico e Quiz você pode rever questões respondidas, fazer anotações, praticar simulados e gerar links para compartilhar.'],
+      ['Qual a diferença entre o PIN do Kahoot e o Quiz ID?', 'O PIN serve para entrar em uma partida ao vivo. O Quiz ID identifica o questionário em si (visível no link). O QuizSolver usa o Quiz ID para o banco de respostas offline.']
+    ]
   }
 };
 
@@ -1811,3 +1876,4 @@ HOME_COPY.es = makeHomeCopy('es');
 HOME_COPY.fr = makeHomeCopy('fr');
 HOME_COPY.it = makeHomeCopy('it');
 HOME_COPY.uk = makeHomeCopy('uk');
+HOME_COPY.pt = makeHomeCopy('pt');

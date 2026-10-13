@@ -16,7 +16,8 @@ const locales = [
   { code: 'es', prefix: '/es', htmlLang: 'es' },
   { code: 'fr', prefix: '/fr', htmlLang: 'fr' },
   { code: 'it', prefix: '/it', htmlLang: 'it' },
-  { code: 'uk', prefix: '/uk', htmlLang: 'uk' }
+  { code: 'uk', prefix: '/uk', htmlLang: 'uk' },
+  { code: 'pt', prefix: '/pt', htmlLang: 'pt' }
 ];
 
 const slugs = {

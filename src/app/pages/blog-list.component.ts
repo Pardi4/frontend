@@ -408,7 +408,8 @@ export class BlogListComponent implements OnInit {
       es: { readArticle: 'Leer artículo', noPosts: 'Todavía no hay artículos en esta categoría.', all: 'Todas las guías', category: 'Categoría' },
       fr: { readArticle: 'Lire l’article', noPosts: 'Aucun article n’est encore disponible dans cette catégorie.', all: 'Tous les guides', category: 'Catégorie' },
       it: { readArticle: 'Leggi articolo', noPosts: 'Non ci sono ancora articoli in questa categoria.', all: 'Tutte le guide', category: 'Categoria' },
-      uk: { readArticle: 'Читати статтю', noPosts: 'У цій категорії ще немає статей.', all: 'Усі гайди', category: 'Категорія' }
+      uk: { readArticle: 'Читати статтю', noPosts: 'У цій категорії ще немає статей.', all: 'Усі гайди', category: 'Категорія' },
+      pt: { readArticle: 'Ler artigo', noPosts: 'Ainda não há artigos disponíveis nesta categoria.', all: 'Todos os guias', category: 'Central da categoria' }
     };
     return labels[locale] || labels.en;
   }

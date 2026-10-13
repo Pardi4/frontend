@@ -35,17 +35,29 @@ type ArticleDraft = {
 const routeFor = (locale: Locale, slug: string): string => locale === 'en' ? `/${slug}` : `/${locale}/${slug}`;
 
 const ctaFor = (locale: Locale): string => {
-  const isPl = locale === 'pl';
-  const title = isPl ? 'Sprawdź QuizSolver w praktyce' : 'Try QuizSolver in practice';
-  const text = isPl
-    ? 'Otwórz bezpieczne demo, uruchom panel rozszerzenia i przejdź przez przykładowe pytania bez zużywania kredytów.'
-    : 'Open the safe demo, launch the extension panel and walk through sample questions without spending credits.';
-  const button = isPl ? 'Otwórz demo' : 'Open demo';
+  if (locale === 'pl') {
+    return `
+    <div class="blog-native-ad">
+      <h4 class="blog-native-ad-title">Sprawdź QuizSolver w praktyce</h4>
+      <p class="blog-native-ad-text">Otwórz bezpieczne demo, uruchom panel rozszerzenia i przejdź przez przykładowe pytania bez zużywania kredytów.</p>
+      <a href="${routeFor(locale, 'demo')}" class="blog-native-ad-btn">Otwórz demo</a>
+    </div>
+  `;
+  }
+  if (locale === 'pt') {
+    return `
+    <div class="blog-native-ad">
+      <h4 class="blog-native-ad-title">Experimente o QuizSolver na prática</h4>
+      <p class="blog-native-ad-text">Abra a demonstração segura, inicie o painel da extensão e teste perguntas de exemplo sem gastar créditos.</p>
+      <a href="${routeFor(locale, 'demo')}" class="blog-native-ad-btn">Abrir demonstração</a>
+    </div>
+  `;
+  }
   return `
     <div class="blog-native-ad">
-      <h4 class="blog-native-ad-title">${title}</h4>
-      <p class="blog-native-ad-text">${text}</p>
-      <a href="${routeFor(locale, 'demo')}" class="blog-native-ad-btn">${button}</a>
+      <h4 class="blog-native-ad-title">Try QuizSolver in practice</h4>
+      <p class="blog-native-ad-text">Open the safe demo, launch the extension panel and walk through sample questions without spending credits.</p>
+      <a href="${routeFor(locale, 'demo')}" class="blog-native-ad-btn">Open demo</a>
     </div>
   `;
 };
@@ -162,6 +174,23 @@ const genericLocalizedDraft = (locale: Locale): ArticleDraft => {
       sections: [
         { heading: 'Як працювати з QuizSolver', paragraphs: ['Відкрийте квіз, запустіть QuizSolver, перевірте підказку та збережіть важливі питання. Якщо текст є зображенням, використайте FocusScan.'], bullets: ['AI-підказки з поясненнями.', 'OCR для зображень і заблокованого тексту.', 'Історія, нотатки та тренувальні квізи.'] },
         { heading: 'Навчання через пояснення', paragraphs: ['Пояснення допомагає зрозуміти правило, а не просто вибрати варіант відповіді.'] }
+      ]
+    },
+    pt: {
+      intro: [
+        'O QuizSolver é uma extensão para o Chrome criada para estudantes que desejam feedback imediato e explicações claras ao resolver quizzes online. Ele reconhece perguntas visíveis, sugere respostas e explica o raciocínio para você realmente aprender o conteúdo.',
+        'O melhor método de estudo é simples: abra o quiz, inicie o QuizSolver, confira a resposta sugerida, salve perguntas importantes e revise tudo mais tarde em um simulado prático.'
+      ],
+      sections: [
+        {
+          heading: 'O que o QuizSolver faz na página do quiz',
+          paragraphs: ['A extensão analisa o texto da pergunta, alternativas de múltipla escolha, caixas de seleção, menus suspensos e campos de texto visíveis. Se o layout for diferenciado, o FocusScan permite selecionar a região da tela manualmente.'],
+          bullets: ['Sugestões de respostas por IA com explicações detalhadas.', 'FocusScan OCR para imagens e textos protegidos.', 'Histórico de estudos, anotações e simulados práticos para revisão.']
+        },
+        {
+          heading: 'Por que explicações são essenciais',
+          paragraphs: ['Saber a resposta certa economiza tempo, mas entender a explicação é o que garante o aprendizado. Suas explicações salvas formam uma biblioteca pessoal de estudos para revisar antes das provas.']
+        }
       ]
     }
   };
