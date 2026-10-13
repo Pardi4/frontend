@@ -1667,6 +1667,106 @@ function applySharedCopy(copy: SiteCopy, locale: Locale): SiteCopy {
     historyQuiz: localizedCommon?.historyQuiz || shell.historyQuiz
   };
   copy.shell = shell;
+
+  const localizedMobileInstall: Record<Locale, SiteCopy['mobileInstall']> = {
+    en: {
+      title: "How to install on phone",
+      subtitle: "Follow these steps to use QuizSolver on mobile",
+      meta: {
+        title: "Mobile Installation Guide | QuizSolver",
+        description: "Learn how to easily install QuizSolver on your smartphone or tablet with Kiwi Browser on Android and Safari on iOS."
+      }
+    },
+    pl: {
+      title: "Jak zainstalować na telefonie",
+      subtitle: "Obejrzyj poradnik wideo poniżej, aby zacząć korzystać z QuizSolver na urządzeniu mobilnym.",
+      meta: {
+        title: "Instalacja na telefonie | QuizSolver",
+        description: "Poradnik jak w kilka minut zainstalować rozszerzenie QuizSolver na smartfonie z Kiwi Browser na Androidzie i Safari na iOS."
+      }
+    },
+    de: {
+      title: "Installation auf dem Smartphone",
+      subtitle: "Befolgen Sie diese Schritte, um QuizSolver auf dem Handy zu nutzen.",
+      meta: {
+        title: "Mobile Installation | QuizSolver",
+        description: "Erfahren Sie, wie Sie QuizSolver auf Ihrem Smartphone oder Tablet mit Kiwi Browser auf Android und Safari auf iOS installieren."
+      }
+    },
+    es: {
+      title: "Cómo instalar en el móvil",
+      subtitle: "Sigue estos pasos para usar QuizSolver en tu dispositivo móvil.",
+      meta: {
+        title: "Instalación en el móvil | QuizSolver",
+        description: "Aprende cómo instalar QuizSolver en tu smartphone o tablet con Kiwi Browser en Android y Safari en iOS."
+      }
+    },
+    fr: {
+      title: "Comment installer sur smartphone",
+      subtitle: "Suivez ces étapes pour utiliser QuizSolver sur mobile.",
+      meta: {
+        title: "Installation mobile | QuizSolver",
+        description: "Découvrez comment installer facilement QuizSolver sur votre smartphone ou tablette avec Kiwi Browser sur Android et Safari sur iOS."
+      }
+    },
+    it: {
+      title: "Come installare su smartphone",
+      subtitle: "Segui questi passaggi per usare QuizSolver su dispositivi mobili.",
+      meta: {
+        title: "Installazione su smartphone | QuizSolver",
+        description: "Scopri come installare facilmente QuizSolver sul tuo smartphone o tablet con Kiwi Browser su Android e Safari su iOS."
+      }
+    },
+    uk: {
+      title: "Як встановити на телефон",
+      subtitle: "Виконайте ці кроки, щоб використовувати QuizSolver на мобільному пристрої.",
+      meta: {
+        title: "Встановлення на телефон | QuizSolver",
+        description: "Дізнайтеся, як легко встановити розширення QuizSolver на смартфон або планшет через Kiwi Browser на Android та Safari на iOS."
+      }
+    },
+    pt: {
+      title: "Como instalar no celular",
+      subtitle: "Siga este passo a passo para usar o QuizSolver no dispositivo móvel.",
+      meta: {
+        title: "Instalação no Celular | QuizSolver",
+        description: "Aprenda a instalar a extensão QuizSolver no seu celular ou tablet com o Kiwi Browser no Android e Safari no iOS."
+      }
+    },
+    ar: {
+      title: "طريقة التثبيت على الهاتف",
+      subtitle: "اتبع هذه الخطوات البسيطة لاستخدام إضافة QuizSolver على هاتفك المحمول.",
+      meta: {
+        title: "تثبيت الإضافة على الهاتف | QuizSolver",
+        description: "تعرف على كيفية تثبيت إضافة QuizSolver بسهولة على هاتفك الذكي أو جهازك اللوحي عبر متصفح Kiwi على أندرويد وسفاري على iOS."
+      }
+    },
+    tr: {
+      title: "Telefona Kurulum Rehberi",
+      subtitle: "QuizSolver'ı mobil cihazınızda kullanmak için aşağıdaki adımları izleyin.",
+      meta: {
+        title: "Telefona Kurulum Rehberi | QuizSolver",
+        description: "QuizSolver uzantısını Android'de Kiwi Browser ve iOS'ta Safari ile akıllı telefonunuza veya tabletinize nasıl kuracağınızı öğrenin."
+      }
+    },
+    ja: {
+      title: "スマホへのインストール方法",
+      subtitle: "スマートフォンで QuizSolver を利用するための手順をご案内します。",
+      meta: {
+        title: "スマホへのインストール方法 | QuizSolver",
+        description: "Android の Kiwi Browser や iOS の Safari を使って、スマートフォンやタブレットに QuizSolver を導入する方法を解説。"
+      }
+    },
+    ko: {
+      title: "모바일 설치 가이드",
+      subtitle: "스마트폰에서 QuizSolver를 사용하는 간단한 단계별 안내입니다.",
+      meta: {
+        title: "모바일 설치 가이드 | QuizSolver",
+        description: "Android의 Kiwi Browser 및 iOS Safari를 사용하여 스마트폰이나 태블릿에 QuizSolver를 설치하는 방법을 확인하세요."
+      }
+    }
+  };
+  copy.mobileInstall = localizedMobileInstall[locale] || localizedMobileInstall.en;
   return copy;
 }
 
@@ -2763,6 +2863,7 @@ export function pageData(pageKey: PageKey, locale: Locale): any {
   if (pageKey === 'success') return copy['successPage'];
   if (pageKey === 'notFound') return copy['notFoundPage'];
   if (pageKey === 'blog') return copy['blogPage'];
+  if (pageKey === 'mobileInstall') return copy['mobileInstall'];
   return (copy['platformPages'] as any)?.[pageKey];
 }
 
