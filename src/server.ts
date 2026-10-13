@@ -237,6 +237,29 @@ app.use('/api', (_req, res) => {
   res.status(404).json({ error: 'Endpoint not found.' });
 });
 
+function isSearchBot(userAgent: string | undefined): boolean {
+  if (!userAgent) return false;
+  return /bot|crawler|spider|googlebot|bingbot|slurp|duckduckbot|baiduspider|yandexbot|facebookexternalhit|whatsapp|twitterbot|pinterest/i.test(userAgent);
+}
+
+function parsePreferredLocale(acceptLanguage: string | undefined): Locale | null {
+  if (!acceptLanguage) return null;
+  const parts = acceptLanguage.split(',').map(part => {
+    const [tag, qPart] = part.trim().split(';');
+    const q = qPart ? parseFloat(qPart.replace('q=', '')) || 0 : 1.0;
+    return { tag: tag.toLowerCase(), q };
+  }).sort((a, b) => b.q - a.q);
+
+  for (const { tag } of parts) {
+    for (const option of SUPPORTED_LOCALES) {
+      if (option.browserAliases.some(alias => tag === alias || tag.startsWith(`${alias}-`))) {
+        return option.code;
+      }
+    }
+  }
+  return null;
+}
+
 app.use((req, res, next) => {
   if (req.method !== 'GET' && req.method !== 'HEAD') return next();
   if (shouldSkipPathCleanup(req)) return next();
@@ -245,6 +268,25 @@ app.use((req, res, next) => {
   if (cleanUrl !== req.originalUrl) {
     return res.redirect(301, cleanUrl);
   }
+
+  // Automatic locale detection for real users (bots are never redirected to preserve SEO)
+  if (!isSearchBot(req.headers['user-agent'])) {
+    const cookieHeader = String(req.headers['cookie'] || '');
+    // Respect explicit user selection if already stored in cookie
+    if (!cookieHeader.includes('qs_user_selected_locale=')) {
+      const path = req.path.replace(/\/+$/, '') || '/';
+      // Only auto-redirect on default entry pages without prefix (e.g. / or /credits or /pricing)
+      if (path === '/' || path === '/credits' || path === '/pricing') {
+        const preferredLocale = parsePreferredLocale(req.headers['accept-language']);
+        if (preferredLocale && preferredLocale !== 'en') {
+          const targetPath = (path === '/' ? `/${preferredLocale}` : `/${preferredLocale}/credits`);
+          const query = req.url.includes('?') ? req.url.slice(req.url.indexOf('?')) : '';
+          return res.redirect(302, `${targetPath}${query}`);
+        }
+      }
+    }
+  }
+
   return next();
 });
 

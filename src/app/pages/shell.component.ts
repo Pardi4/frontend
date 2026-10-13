@@ -5,7 +5,7 @@ import { Router, NavigationEnd } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ApiService } from '../api.service';
 import { BLOG_POSTS } from '../blog-content';
-import { CHROME_WEB_STORE_URL, Locale, PageKey, SUPPORTED_LOCALES, contentFor, localeOption, pathFor } from '../site-content';
+import { CHROME_WEB_STORE_URL, Locale, PageKey, SUPPORTED_LOCALES, contentFor, isLocale, localeFromBrowser, localeOption, pathFor } from '../site-content';
 import jsQR from 'jsqr';
 
 type AuthModal = 'login' | 'register' | 'verify' | 'forgot' | 'reset';
@@ -1249,6 +1249,8 @@ export class ShellComponent implements OnInit, AfterViewInit, OnDestroy {
 
     if (!isPlatformBrowser(this.platformId)) return;
 
+    this.checkAndRedirectLocale();
+
     const params = new URLSearchParams(window.location.search);
     const ref = params.get('ref');
     if (ref && !this.referralCode) this.referralCode = ref.trim();
@@ -1378,19 +1380,69 @@ export class ShellComponent implements OnInit, AfterViewInit, OnDestroy {
     return pathFor(this.pageKey, targetLocale);
   }
 
-  protected switchLocaleSelect(event: any): void {
-const target = event.target;
-this.mobileMenuOpen.set(false);
-if (target.value === this.locale) return;
-this.router.navigateByUrl(this.alternatePath(target.value));
-}
+  private checkAndRedirectLocale(): void {
+    if (!isPlatformBrowser(this.platformId)) return;
+    if (typeof window === 'undefined' || typeof localStorage === 'undefined') return;
 
-protected switchLocale(event: MouseEvent, targetLocale: any): void {
+    // 1. If user already explicitly picked a language, respect their choice
+    const manualLocale = localStorage.getItem('qs_user_selected_locale');
+    if (manualLocale) {
+      if (isLocale(manualLocale) && manualLocale !== this.locale && this.locale === 'en') {
+        const target = this.alternatePath(manualLocale);
+        if (target && target !== window.location.pathname) {
+          void this.router.navigateByUrl(target + window.location.search + window.location.hash);
+        }
+      }
+      return;
+    }
+
+    // 2. No manual choice: check browser languages
+    const navLangs = (typeof navigator !== 'undefined' && navigator.languages && navigator.languages.length)
+      ? navigator.languages
+      : [(typeof navigator !== 'undefined' ? navigator.language : '')];
+
+    let detectedLocale: Locale = 'en';
+    for (const l of navLangs) {
+      const parsed = localeFromBrowser(l);
+      if (parsed !== 'en') {
+        detectedLocale = parsed;
+        break;
+      }
+    }
+
+    // 3. If Polish (or other non-English language) detected and user is on default English page:
+    if (detectedLocale !== 'en' && this.locale === 'en') {
+      const target = this.alternatePath(detectedLocale);
+      if (target && target !== window.location.pathname) {
+        void this.router.navigateByUrl(target + window.location.search + window.location.hash);
+      }
+    }
+  }
+
+  private saveUserLocalePreference(targetLocale: string): void {
+    if (typeof localStorage !== 'undefined') {
+      localStorage.setItem('qs_user_selected_locale', targetLocale);
+    }
+    if (typeof document !== 'undefined') {
+      document.cookie = `qs_user_selected_locale=${targetLocale}; path=/; max-age=31536000; SameSite=Lax`;
+    }
+  }
+
+  protected switchLocaleSelect(event: any): void {
+    const target = event.target;
+    this.mobileMenuOpen.set(false);
+    if (target.value === this.locale) return;
+    this.saveUserLocalePreference(target.value);
+    void this.router.navigateByUrl(this.alternatePath(target.value));
+  }
+
+  protected switchLocale(event: MouseEvent, targetLocale: any): void {
     event.preventDefault();
     this.languageMenuOpen.set(false);
     this.mobileMenuOpen.set(false);
     if (targetLocale === this.locale) return;
-    this.router.navigateByUrl(this.alternatePath(targetLocale));
+    this.saveUserLocalePreference(targetLocale);
+    void this.router.navigateByUrl(this.alternatePath(targetLocale));
   }
 
   protected homeHash(hash: string): string {

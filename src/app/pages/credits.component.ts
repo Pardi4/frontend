@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, OnDestroy, AfterViewInit, inject, signal } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from '../api.service';
 import { SeoService } from '../seo.service';
 import { CurrencyService } from '../currency.service';
@@ -111,11 +111,11 @@ import { ShellComponent, trackGa4Event } from './shell.component';
               <!-- Price & Unit Rate Calculation -->
               <div class="pack-pricing-block">
                 <div class="pack-price-row">
-                  <ng-container *ngIf="locale === 'pl'">
+                  <ng-container *ngIf="locale === 'pl' || isPolishBrowser">
                     <span class="pack-price">{{ getDpayPrice(pack.id, false) }}</span>
                     <span class="pack-price-approx">BLIK</span>
                   </ng-container>
-                  <ng-container *ngIf="locale !== 'pl'">
+                  <ng-container *ngIf="locale !== 'pl' && !isPolishBrowser">
                     <span class="pack-price">{{ pack.price }}</span>
                     <span *ngIf="getApproxCurrencyPrice(pack.price)" class="pack-price-approx">{{ getApproxCurrencyPrice(pack.price) }}</span>
                   </ng-container>
@@ -245,11 +245,25 @@ import { ShellComponent, trackGa4Event } from './shell.component';
               </div>
               <div class="summary-pack-price">
                 <ng-container *ngIf="selectedProvider() === 'dpay'">
-                  <span class="price-usd text-gradient-strong">{{ getDpayPrice(pack.id) }}</span>
+                  <div class="modal-price-stack" *ngIf="appliedDiscountPercent() > 0">
+                    <span class="price-strikethrough">{{ getDpayPrice(pack.id, false) }}</span>
+                    <span class="price-usd text-gradient-strong">{{ getDpayPrice(pack.id, true) }}</span>
+                    <span class="promo-discount-pill">-{{ appliedDiscountPercent() }}%</span>
+                  </div>
+                  <ng-container *ngIf="appliedDiscountPercent() <= 0">
+                    <span class="price-usd text-gradient-strong">{{ getDpayPrice(pack.id, false) }}</span>
+                  </ng-container>
                   <span class="price-local">(BLIK / przelew w PLN)</span>
                 </ng-container>
                 <ng-container *ngIf="selectedProvider() !== 'dpay'">
-                  <span class="price-usd">{{ pack.price }}</span>
+                  <div class="modal-price-stack" *ngIf="appliedDiscountPercent() > 0">
+                    <span class="price-strikethrough">{{ pack.price }}</span>
+                    <span class="price-usd text-gradient-strong">{{ getDiscountedUsdPrice(pack.price) }}</span>
+                    <span class="promo-discount-pill">-{{ appliedDiscountPercent() }}%</span>
+                  </div>
+                  <ng-container *ngIf="appliedDiscountPercent() <= 0">
+                    <span class="price-usd">{{ pack.price }}</span>
+                  </ng-container>
                   <span class="price-local" *ngIf="getApproxCurrencyPrice(pack.price)">({{ getApproxCurrencyPrice(pack.price) }})</span>
                 </ng-container>
               </div>
@@ -260,10 +274,51 @@ import { ShellComponent, trackGa4Event } from './shell.component';
               <code>{{ api.currentUser()?.email }}</code>
             </div>
 
-            <!-- First purchase promo chip if eligible -->
-            <div class="confirm-promo-applied" *ngIf="isFirstPurchasePromoEligible">
-              <span class="promo-badge">WELCOME10</span>
-              <span>{{ promoCopy.checkoutApplied }}</span>
+            <!-- Interactive Promo Code Section in Modal -->
+            <div class="modal-promo-section">
+              <!-- When promo is applied -->
+              <div class="modal-promo-active glass" *ngIf="appliedPromoCode()">
+                <div class="promo-active-left">
+                  <span class="promo-active-icon">🏷️</span>
+                  <div class="promo-active-details">
+                    <div class="promo-active-badges">
+                      <span class="promo-code-pill">{{ appliedPromoCode() }}</span>
+                      <span class="promo-off-pill">-{{ appliedDiscountPercent() }}%</span>
+                    </div>
+                    <span class="promo-active-msg">{{ promoSuccess() || promoInputCopy.applied }}</span>
+                  </div>
+                </div>
+                <button type="button" class="promo-remove-btn" (click)="removePromoCode()" [title]="promoInputCopy.removeBtn">
+                  ✕ {{ promoInputCopy.removeBtn }}
+                </button>
+              </div>
+
+              <!-- When no promo is applied -->
+              <div class="modal-promo-entry" *ngIf="!appliedPromoCode()">
+                <div class="promo-entry-row">
+                  <input
+                    type="text"
+                    class="promo-entry-input"
+                    [placeholder]="promoInputCopy.placeholder"
+                    [value]="promoInputText()"
+                    (input)="onPromoInput($event)"
+                    (keyup.enter)="applyPromoCode()"
+                    maxlength="30"
+                    [disabled]="promoLoading()"
+                  />
+                  <button
+                    type="button"
+                    class="btn btn-outline btn-sm promo-entry-btn"
+                    (click)="applyPromoCode()"
+                    [disabled]="!promoInputText().trim() || promoLoading()"
+                  >
+                    {{ promoLoading() ? promoInputCopy.checking : promoInputCopy.applyBtn }}
+                  </button>
+                </div>
+                <div class="promo-entry-error" *ngIf="promoError()">
+                  ⚠️ {{ promoError() }}
+                </div>
+              </div>
             </div>
 
             <!-- Payment Provider Selector (DPay vs Lemon Squeezy) - Only shown if DPay/BLIK is available -->
@@ -324,6 +379,15 @@ import { ShellComponent, trackGa4Event } from './shell.component';
                   <a [href]="pathFor('terms', locale)" target="_blank" class="terms-inline-link" (click)="$event.stopPropagation()">{{ checkoutProviderCopy.consentTermsLink }}</a>.
                 </span>
               </label>
+            </div>
+
+            <!-- Lemon Squeezy Email Warning (shown on the last stretch before completing payment) -->
+            <div class="lemon-email-warning-box" *ngIf="selectedProvider() === 'lemonsqueezy'">
+              <span class="lemon-warning-icon">⚠️</span>
+              <div class="lemon-warning-content">
+                <strong>{{ checkoutProviderCopy.lemonWarningTitle }}</strong>
+                <span>{{ checkoutProviderCopy.lemonWarningPre }} <code>{{ api.currentUser()?.email }}</code> {{ checkoutProviderCopy.lemonWarningPost }}</span>
+              </div>
             </div>
 
             <div class="consent-warning" *ngIf="!digitalConsent()">
@@ -633,6 +697,139 @@ import { ShellComponent, trackGa4Event } from './shell.component';
       background: rgba(16, 185, 129, 0.25);
       padding: 0.15rem 0.45rem;
       border-radius: var(--radius-sm);
+    }
+    .modal-price-stack {
+      display: flex;
+      align-items: baseline;
+      justify-content: flex-end;
+      gap: 0.45rem;
+      flex-wrap: wrap;
+    }
+    .price-strikethrough {
+      text-decoration: line-through;
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      font-weight: 700;
+      opacity: 0.7;
+    }
+    .promo-discount-pill {
+      font-size: 0.72rem;
+      font-weight: 850;
+      background: rgba(16, 185, 129, 0.2);
+      color: #34d399;
+      border: 1px solid rgba(16, 185, 129, 0.4);
+      padding: 0.1rem 0.45rem;
+      border-radius: 999px;
+    }
+    .modal-promo-section {
+      margin: 1rem 0 1.15rem;
+    }
+    .modal-promo-active {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      padding: 0.75rem 1rem;
+      border-radius: var(--radius-md);
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      text-align: left;
+    }
+    .promo-active-left {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+    }
+    .promo-active-icon {
+      font-size: 1.15rem;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+    .promo-active-details {
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
+    }
+    .promo-active-badges {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+    }
+    .promo-code-pill {
+      font-family: var(--font-mono, monospace);
+      font-weight: 850;
+      font-size: 0.85rem;
+      color: #34d399;
+      background: rgba(16, 185, 129, 0.22);
+      padding: 0.15rem 0.5rem;
+      border-radius: var(--radius-sm);
+      letter-spacing: 0.04em;
+    }
+    .promo-off-pill {
+      font-weight: 850;
+      font-size: 0.75rem;
+      color: #34d399;
+      background: rgba(52, 211, 153, 0.15);
+      padding: 0.1rem 0.4rem;
+      border-radius: 999px;
+    }
+    .promo-active-msg {
+      font-size: 0.78rem;
+      color: #a7f3d0;
+      font-weight: 600;
+    }
+    .promo-remove-btn {
+      background: none;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: var(--text-secondary);
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.3rem 0.65rem;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+    .promo-remove-btn:hover {
+      background: rgba(239, 68, 68, 0.15);
+      border-color: rgba(239, 68, 68, 0.4);
+      color: #fca5a5;
+    }
+    .modal-promo-entry {
+      text-align: left;
+    }
+    .promo-entry-row {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+    .promo-entry-input {
+      flex: 1;
+      padding: 0.55rem 0.85rem;
+      border-radius: var(--radius-sm);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      background: rgba(3, 7, 18, 0.55);
+      color: var(--text-primary);
+      font-size: 0.88rem;
+      font-family: inherit;
+      transition: border-color 0.2s ease;
+    }
+    .promo-entry-input:focus {
+      outline: none;
+      border-color: var(--accent-cyan);
+      box-shadow: 0 0 10px rgba(6, 182, 212, 0.25);
+    }
+    .promo-entry-btn {
+      white-space: nowrap;
+      padding: 0.55rem 0.95rem;
+      font-weight: 700;
+      font-size: 0.85rem;
+    }
+    .promo-entry-error {
+      margin-top: 0.45rem;
+      font-size: 0.78rem;
+      color: #fca5a5;
+      font-weight: 600;
     }
 
     /* Packages Deck */
@@ -1245,6 +1442,42 @@ import { ShellComponent, trackGa4Event } from './shell.component';
     .terms-inline-link:hover {
       color: #38bdf8;
     }
+    .lemon-email-warning-box {
+      margin: 0.85rem 0 0.65rem;
+      padding: 0.85rem 1.1rem;
+      border-radius: var(--radius-md);
+      background: rgba(245, 158, 11, 0.12);
+      border: 1px solid rgba(245, 158, 11, 0.45);
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      text-align: left;
+    }
+    .lemon-warning-icon {
+      font-size: 1.25rem;
+      line-height: 1.2;
+      flex-shrink: 0;
+    }
+    .lemon-warning-content {
+      font-size: 0.82rem;
+      line-height: 1.45;
+      color: #fef3c7;
+    }
+    .lemon-warning-content strong {
+      color: #fbbf24;
+      display: block;
+      margin-bottom: 0.25rem;
+      font-size: 0.85rem;
+    }
+    .lemon-warning-content code {
+      background: rgba(0, 0, 0, 0.45);
+      border: 1px solid rgba(245, 158, 11, 0.4);
+      padding: 0.15rem 0.45rem;
+      border-radius: 4px;
+      color: #fef08a;
+      font-weight: 700;
+      font-family: var(--font-mono, monospace);
+    }
     .consent-warning {
       font-size: 0.78rem;
       color: #fbbf24;
@@ -1339,6 +1572,7 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   protected readonly route = inject(ActivatedRoute);
+  protected readonly router = inject(Router);
   protected readonly seo = inject(SeoService);
   protected readonly api = inject(ApiService);
   protected readonly buying = signal('');
@@ -1346,12 +1580,31 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
   protected readonly pendingPack = signal('');
   protected readonly selectedProvider = signal<'dpay' | 'lemonsqueezy'>('lemonsqueezy');
 
+  // Promo code state
+  protected readonly appliedPromoCode = signal<string>('');
+  protected readonly appliedDiscountPercent = signal<number>(0);
+  protected readonly promoInputText = signal<string>('');
+  protected readonly promoLoading = signal<boolean>(false);
+  protected readonly promoError = signal<string>('');
+  protected readonly promoSuccess = signal<string>('');
+
   // Feature flag for DPay (BLIK / szybki przelew).
   // Active for Polish locale users (PLN payments).
   readonly enableDpayBlik = true;
 
+  get isPolishBrowser(): boolean {
+    if (this.locale === 'pl') return true;
+    if (typeof window !== 'undefined' && typeof navigator !== 'undefined') {
+      const navLangs = (navigator.languages && navigator.languages.length) ? navigator.languages : [navigator.language];
+      for (const l of navLangs) {
+        if (String(l || '').toLowerCase().startsWith('pl')) return true;
+      }
+    }
+    return false;
+  }
+
   get isDpayAvailable(): boolean {
-    return this.enableDpayBlik && this.locale === 'pl';
+    return this.enableDpayBlik && (this.locale === 'pl' || this.isPolishBrowser);
   }
 
   protected getDpayPrice(packId: string, applyPromo: boolean = true): string {
@@ -1361,10 +1614,19 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
       pro: 39.00
     };
     let amount = prices[packId] || 14.99;
-    if (applyPromo && this.isFirstPurchasePromoEligible) {
-      amount = Math.round(amount * 0.90 * 100) / 100;
+    if (applyPromo && this.appliedDiscountPercent() > 0) {
+      amount = Math.round(amount * (1 - this.appliedDiscountPercent() / 100) * 100) / 100;
     }
     return `${amount.toFixed(2).replace('.', ',')} zł`;
+  }
+
+  protected getDiscountedUsdPrice(usdPriceStr: string): string {
+    const num = parseFloat(usdPriceStr.replace(/[^0-9.]/g, ''));
+    if (isNaN(num)) return usdPriceStr;
+    const discount = this.appliedDiscountPercent();
+    if (discount <= 0) return usdPriceStr;
+    const discounted = Math.round(num * (1 - discount / 100) * 100) / 100;
+    return `$${discounted.toFixed(2)}`;
   }
   protected readonly digitalConsent = signal(false);
   protected readonly pathFor = pathFor;
@@ -1570,6 +1832,115 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
         clickToCopy: '클릭하여 코드 복사',
         timerLabel: '남은 시간',
         checkoutApplied: 'WELCOME10 코드(10% 할인)가 결제 시 자동 적용됩니다'
+      }
+    };
+    return data[this.locale] || data.en;
+  }
+
+  protected get promoInputCopy() {
+    const data: Record<Locale, {
+      placeholder: string;
+      applyBtn: string;
+      removeBtn: string;
+      applied: string;
+      invalid: string;
+      checking: string;
+    }> = {
+      pl: {
+        placeholder: 'Masz kod rabatowy? Wpisz tutaj',
+        applyBtn: 'Zastosuj',
+        removeBtn: 'Usuń',
+        applied: 'Rabat naliczony!',
+        invalid: 'Nieprawidłowy lub wygasły kod rabatowy.',
+        checking: 'Sprawdzam...'
+      },
+      en: {
+        placeholder: 'Have a promo code? Enter here',
+        applyBtn: 'Apply',
+        removeBtn: 'Remove',
+        applied: 'Discount applied!',
+        invalid: 'Invalid or expired promo code.',
+        checking: 'Checking...'
+      },
+      de: {
+        placeholder: 'Gutscheincode eingeben',
+        applyBtn: 'Anwenden',
+        removeBtn: 'Entfernen',
+        applied: 'Rabatt angewendet!',
+        invalid: 'Ungültiger oder abgelaufener Code.',
+        checking: 'Wird geprüft...'
+      },
+      es: {
+        placeholder: '¿Tienes un código? Ingrésalo aquí',
+        applyBtn: 'Aplicar',
+        removeBtn: 'Eliminar',
+        applied: '¡Descuento aplicado!',
+        invalid: 'Código inválido o vencido.',
+        checking: 'Verificando...'
+      },
+      fr: {
+        placeholder: 'Un code promo ? Entrez-le ici',
+        applyBtn: 'Appliquer',
+        removeBtn: 'Supprimer',
+        applied: 'Remise appliquée !',
+        invalid: 'Code promo invalide ou expiré.',
+        checking: 'Vérification...'
+      },
+      it: {
+        placeholder: 'Hai un codice promo? Inseriscilo qui',
+        applyBtn: 'Applica',
+        removeBtn: 'Rimuovi',
+        applied: 'Sconto applicato!',
+        invalid: 'Codice non valido o scaduto.',
+        checking: 'Verifica...'
+      },
+      uk: {
+        placeholder: 'Маєш промокод? Введи тут',
+        applyBtn: 'Застосувати',
+        removeBtn: 'Видалити',
+        applied: 'Знижку застосовано!',
+        invalid: 'Недійсний або прострочений промокод.',
+        checking: 'Перевірка...'
+      },
+      pt: {
+        placeholder: 'Tem um cupom? Digite aqui',
+        applyBtn: 'Aplicar',
+        removeBtn: 'Remover',
+        applied: 'Desconto aplicado!',
+        invalid: 'Cupom inválido ou expirado.',
+        checking: 'Verificando...'
+      },
+      ar: {
+        placeholder: 'هل لديك رمز خصم؟ أدخله هنا',
+        applyBtn: 'تطبيق',
+        removeBtn: 'إزالة',
+        applied: 'تم تطبيق الخصم!',
+        invalid: 'رمز الخصم غير صالح أو منتهي.',
+        checking: 'جاري التحقق...'
+      },
+      tr: {
+        placeholder: 'Kupon kodunuz var mı? Buraya girin',
+        applyBtn: 'Uygula',
+        removeBtn: 'Kaldır',
+        applied: 'İndirim uygulandı!',
+        invalid: 'Geçersiz veya süresi dolmuş kupon.',
+        checking: 'Kontrol ediliyor...'
+      },
+      ja: {
+        placeholder: 'クーポンコードを入力',
+        applyBtn: '適用',
+        removeBtn: '削除',
+        applied: '割引が適用されました！',
+        invalid: '無効または期限切れのコードです。',
+        checking: '確認中...'
+      },
+      ko: {
+        placeholder: '할인 코드가 있으신가요? 입력하세요',
+        applyBtn: '적용',
+        removeBtn: '삭제',
+        applied: '할인이 적용되었습니다!',
+        invalid: '유효하지 않거나 만료된 할인 코드입니다.',
+        checking: '확인 중...'
       }
     };
     return data[this.locale] || data.en;
@@ -1955,6 +2326,17 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
 
   async ngOnInit(): Promise<void> {
     this.locale = (this.route.snapshot.data['locale'] || 'en') as Locale;
+
+    // Auto-redirect Polish users if they land on default English /credits
+    if (this.locale === 'en' && this.isPolishBrowser) {
+      const manual = (typeof localStorage !== 'undefined') ? localStorage.getItem('qs_user_selected_locale') : null;
+      if (manual !== 'en') {
+        const query = (typeof window !== 'undefined') ? window.location.search : '';
+        void this.router.navigateByUrl(`/pl/credits${query}`);
+        return;
+      }
+    }
+
     this.data = pageData('credits', this.locale);
     this.copy = CREDITS_COPY[this.locale] || CREDITS_COPY.en;
     this.seo.applyPage('credits', this.locale);
@@ -2032,6 +2414,9 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
       dpayBadge: string;
       lemonTitle: string;
       lemonSubtitle: string;
+      lemonWarningTitle: string;
+      lemonWarningPre: string;
+      lemonWarningPost: string;
       consentTitle: string;
       consentStatement: string;
       consentTermsLink: string;
@@ -2045,6 +2430,9 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
         dpayBadge: 'Polecane w Polsce',
         lemonTitle: 'Karta, Apple Pay, Google Pay',
         lemonSubtitle: 'Visa, Mastercard, Revolut (Lemon Squeezy)',
+        lemonWarningTitle: 'Ważne przy płatności kartą / Apple Pay (Lemon Squeezy):',
+        lemonWarningPre: 'W formularzu płatności wpisz koniecznie ten sam adres e-mail:',
+        lemonWarningPost: '– wpisanie innego adresu uniemożliwi automatyczne doładowanie konta.',
         consentTitle: 'Zgoda na natychmiastowe świadczenie (wyłączenie zwrotu):',
         consentStatement: 'Zgadzam się na natychmiastowe udostępnienie usługi cyfrowej (dostępu do konta / tokenów i pakietu kredytów) przed upływem 14 dni na odstąpienie od umowy i przyjmuję do wiadomości, że wraz z realizacją zamówienia (przypisaniem kredytów do konta) tracę prawo do odstąpienia od umowy. Akceptuję również ',
         consentTermsLink: 'Regulamin serwisu',
@@ -2058,6 +2446,9 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
         dpayBadge: 'Popular in Poland',
         lemonTitle: 'Cards, Apple Pay, Google Pay',
         lemonSubtitle: 'Visa, Mastercard, Revolut (Lemon Squeezy)',
+        lemonWarningTitle: 'Important for Card / Apple Pay (Lemon Squeezy):',
+        lemonWarningPre: 'On the checkout form, make sure to enter your exact account email:',
+        lemonWarningPost: '– entering a different email will prevent automatic credit top-up.',
         consentTitle: 'Immediate digital supply waiver:',
         consentStatement: 'I agree to the immediate delivery of digital service (account access / AI credits) before the 14-day withdrawal period expires, and acknowledge that once the order is fulfilled (credits assigned to account), I lose the right of withdrawal. I also accept the ',
         consentTermsLink: 'Terms of Service',
@@ -2071,6 +2462,9 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
         dpayBadge: 'Beliebt in Polen',
         lemonTitle: 'Kreditkarte, Apple Pay, Google Pay',
         lemonSubtitle: 'Visa, Mastercard, Revolut (Lemon Squeezy)',
+        lemonWarningTitle: 'Wichtig bei Kartenzahlung / Apple Pay (Lemon Squeezy):',
+        lemonWarningPre: 'Gib im Zahlungsformular unbedingt dieselbe E-Mail-Adresse ein:',
+        lemonWarningPost: '– eine abweichende E-Mail verhindert die automatische Gutschrift.',
         consentTitle: 'Sofortige Bereitstellung digitaler Inhalte:',
         consentStatement: 'Ich stimme der sofortigen Bereitstellung der digitalen Dienstleistung (Credits) vor Ablauf der 14-tägigen Widerrufsfrist zu und nehme zur Kenntnis, dass ich mit Ausführung der Bestellung (Gutschrift der Credits) mein Widerrufsrecht verliere. Ich akzeptiere auch die ',
         consentTermsLink: 'AGB',
@@ -2084,6 +2478,9 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
         dpayBadge: 'Popular en Polonia',
         lemonTitle: 'Tarjetas, Apple Pay, Google Pay',
         lemonSubtitle: 'Visa, Mastercard, Revolut (Lemon Squeezy)',
+        lemonWarningTitle: 'Importante para pago con tarjeta / Apple Pay (Lemon Squeezy):',
+        lemonWarningPre: 'En el formulario de pago, asegúrate de ingresar exactamente el mismo correo:',
+        lemonWarningPost: '– usar otro correo impedirá la recarga automática de créditos.',
         consentTitle: 'Consentimiento de suministro digital:',
         consentStatement: 'Acepto el suministro inmediato del servicio digital (créditos IA) antes de que venza el plazo de 14 días y reconozco que con la ejecución del pedido (asignación de créditos) pierdo el derecho de desistimiento. Acepto también los ',
         consentTermsLink: 'Términos de servicio',
@@ -2097,6 +2494,9 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
         dpayBadge: 'Populaire en Pologne',
         lemonTitle: 'Cartes, Apple Pay, Google Pay',
         lemonSubtitle: 'Visa, Mastercard, Revolut (Lemon Squeezy)',
+        lemonWarningTitle: 'Important pour le paiement par carte / Apple Pay (Lemon Squeezy) :',
+        lemonWarningPre: 'Sur le formulaire de paiement, saisissez obligatoirement le même e-mail :',
+        lemonWarningPost: '– un e-mail différent empêchera l\'ajout automatique des crédits.',
         consentTitle: 'Renonciation au droit de rétractation :',
         consentStatement: 'J\'accepte la fourniture immédiate du service numérique avant l\'expiration du délai de rétractation de 14 jours et je reconnais qu\'avec l\'exécution de la commande (crédits ajoutés au compte), je perds mon droit de rétractation. J\'accepte également les ',
         consentTermsLink: 'Conditions d\'utilisation',
@@ -2110,6 +2510,9 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
         dpayBadge: 'Popolare in Polonia',
         lemonTitle: 'Carte, Apple Pay, Google Pay',
         lemonSubtitle: 'Visa, Mastercard, Revolut (Lemon Squeezy)',
+        lemonWarningTitle: 'Importante per pagamento con carta / Apple Pay (Lemon Squeezy):',
+        lemonWarningPre: 'Nel modulo di pagamento, inserisci esattamente la stessa e-mail del tuo account:',
+        lemonWarningPost: '– un\'e-mail diversa impedirà l\'accredito automatico.',
         consentTitle: 'Consenso fornitura digitale immediata:',
         consentStatement: 'Acconsento alla fornitura immediata del servizio digitale prima della scadenza del recesso di 14 giorni e prendo atto che con l\'esecuzione dell\'ordine (accredito dei crediti) perdo il diritto di recesso. Accetto anche i ',
         consentTermsLink: 'Termini di servizio',
@@ -2123,6 +2526,9 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
         dpayBadge: 'Популярно в Польщі',
         lemonTitle: 'Картки, Apple Pay, Google Pay',
         lemonSubtitle: 'Visa, Mastercard, Revolut (Lemon Squeezy)',
+        lemonWarningTitle: 'Важливо для оплати карткою / Apple Pay (Lemon Squeezy):',
+        lemonWarningPre: 'У формі оплати обов\'язково вкажіть ту саму адресу e-mail:',
+        lemonWarningPost: '– вказання іншої пошти завадить автоматичному нарахуванню кредитів.',
         consentTitle: 'Згода на негайне надання послуги:',
         consentStatement: 'Я погоджуюсь на негайне надання цифрової послуги (кредитів AI) до закінчення 14 днів і підтверджую, що з моменту виконання замовлення (зарахування кредитів на баланс) я втрачаю право на відмову від договору. Я також приймаю ',
         consentTermsLink: 'Правила сервісу',
@@ -2136,6 +2542,9 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
         dpayBadge: 'Popular na Polônia',
         lemonTitle: 'Cartão de crédito, Apple Pay, Google Pay',
         lemonSubtitle: 'Visa, Mastercard, Revolut (Lemon Squeezy)',
+        lemonWarningTitle: 'Importante para pagamento com cartão / Apple Pay (Lemon Squeezy):',
+        lemonWarningPre: 'No formulário de checkout, insira exatamente o mesmo e-mail da sua conta:',
+        lemonWarningPost: '– inserir outro e-mail impedirá o crédito automático.',
         consentTitle: 'Termo de fornecimento digital imediato:',
         consentStatement: 'Concordo com o fornecimento imediato do serviço digital antes de decorrido o prazo de reflexão de 14 dias e reconheço que, com a disponibilização dos créditos na conta, perco o direito de arrependimento. Aceito também os ',
         consentTermsLink: 'Termos de Serviço',
@@ -2149,13 +2558,15 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
         dpayBadge: 'شائع في بولندا',
         lemonTitle: 'البطاقات البنكية، Apple Pay، Google Pay',
         lemonSubtitle: 'Visa، Mastercard، Revolut (Lemon Squeezy)',
+        lemonWarningTitle: 'تنبيه هام عند الدفع عبر البطاقة أو Apple Pay (Lemon Squeezy):',
+        lemonWarningPre: 'في صفحة الدفع، احرص على إدخال نفس البريد الإلكتروني لحسابك:',
+        lemonWarningPost: '– إدخال بريد مختلف سيمنع إضافة الرصيد لحسابك تلقائياً.',
         consentTitle: 'الموافقة على تقديم المحتوى الرقمي الفوري:',
         consentStatement: 'أوافق على تقديم الخدمة الرقمية فوراً قبل انقضاء فترة التراجع المحددة بـ 14 يوماً، وأقر بأنه مع تنفيذ الطلب (إضافة الرصيد إلى الحساب) يسقط حقي في التراجع عن الشراء. كما أوافق على ',
         consentTermsLink: 'شروط الخدمة',
         consentRequiredNote: '* الموافقة مطلوبة قانونياً للمتابعة.',
         selectedPackLabel: 'الباقة المحددة:'
-      }
-    ,
+      },
       tr: {
         title: 'Uygun ödeme yöntemini seçin:',
         dpayTitle: 'BLIK ve Banka Havalesi (dpay)',
@@ -2163,6 +2574,9 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
         dpayBadge: 'Polonya için popüler',
         lemonTitle: 'Kredi Kartı, Apple Pay, Google Pay',
         lemonSubtitle: 'Visa, Mastercard, Revolut (Lemon Squeezy)',
+        lemonWarningTitle: 'Kart / Apple Pay ile ödemede önemli uyarı (Lemon Squeezy):',
+        lemonWarningPre: 'Ödeme formunda mutlaka hesabınızdaki e-posta adresini girin:',
+        lemonWarningPost: '– farklı bir e-posta girmek kredilerin otomatik yüklenmesini engeller.',
         consentTitle: 'Anında dijital içerik teslim onayı:',
         consentStatement: '14 günlük cayma hakkı süresi dolmadan önce dijital hizmetin derhal ifasına başlanmasını kabul ediyor ve hizmet ifa edildiğinde (krediler hesaba eklendiğinde) cayma hakkımı kaybedeceğimi onaylıyorum. Ayrıca ',
         consentTermsLink: 'Kullanım Koşulları',
@@ -2176,6 +2590,9 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
         dpayBadge: 'ポーランドで人気',
         lemonTitle: 'クレジットカード、Apple Pay、Google Pay',
         lemonSubtitle: 'Visa、Mastercard、Revolut (Lemon Squeezy)',
+        lemonWarningTitle: 'カード / Apple Pay 決済時の重要なお知らせ（Lemon Squeezy）：',
+        lemonWarningPre: '決済画面では、必ずログイン中のアカウントと同じメールアドレスを入力してください：',
+        lemonWarningPost: '– 別のメールアドレスを入力すると、クレジットの自動付与が行われません。',
         consentTitle: 'デジタルコンテンツの即時提供に関する同意:',
         consentStatement: '14日間のクーリングオフ期間の満了前にデジタルサービスの即時提供を開始することに同意し、サービスが提供された時点（アカウントにクレジットが付与された時点）で解約権を喪失することを確認します。また、',
         consentTermsLink: '利用規約',
@@ -2189,6 +2606,9 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
         dpayBadge: '폴란드 지원',
         lemonTitle: '신용카드, Apple Pay, Google Pay',
         lemonSubtitle: 'Visa, Mastercard, Revolut (Lemon Squeezy)',
+        lemonWarningTitle: '카드 / Apple Pay 결제 시 중요 안내 (Lemon Squeezy):',
+        lemonWarningPre: '결제 창에서 반드시 현재 로그인된 계정과 동일한 이메일을 입력하세요:',
+        lemonWarningPost: '– 다른 이메일을 입력하면 크레딧이 자동으로 충전되지 않습니다.',
         consentTitle: '디지털 콘텐츠 즉시 제공에 대한 동의:',
         consentStatement: '14일의 청약철회 기간 만료 전 디지털 서비스의 즉시 개시에 동의하며, 서비스가 제공되면(계정에 크레딧이 충전되면) 청약철회권이 소멸됨을 확인합니다. 또한 다음 약관에 동의합니다: ',
         consentTermsLink: '이용약관',
@@ -2213,7 +2633,70 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
     this.digitalConsent.set(false);
     this.selectedProvider.set(this.isDpayAvailable ? 'dpay' : 'lemonsqueezy');
     this.pendingPack.set(pack);
+    this.promoError.set('');
+    this.promoInputText.set('');
+
+    // Pre-apply WELCOME10 if user is eligible for first-purchase promo
+    if (this.isFirstPurchasePromoEligible) {
+      this.appliedPromoCode.set('WELCOME10');
+      this.appliedDiscountPercent.set(10);
+      this.promoSuccess.set(this.promoCopy.checkoutApplied || 'Kod WELCOME10 (-10%) naliczony');
+    } else {
+      this.appliedPromoCode.set('');
+      this.appliedDiscountPercent.set(0);
+      this.promoSuccess.set('');
+    }
+
     trackGa4Event('checkout_initiated', { pack, locale: this.locale });
+  }
+
+  protected onPromoInput(event: Event): void {
+    const val = (event.target as HTMLInputElement).value || '';
+    this.promoInputText.set(val);
+    if (this.promoError()) {
+      this.promoError.set('');
+    }
+  }
+
+  protected async applyPromoCode(): Promise<void> {
+    const raw = this.promoInputText().trim();
+    if (!raw) return;
+    this.promoError.set('');
+    this.promoLoading.set(true);
+
+    try {
+      const pack = this.pendingPack();
+      const res = await this.api.request('/api/credits/validate-promo', {
+        method: 'POST',
+        body: JSON.stringify({
+          code: raw,
+          pack,
+          provider: this.selectedProvider()
+        })
+      });
+
+      if (res && res.valid && res.discountPercent) {
+        this.appliedPromoCode.set(res.code);
+        this.appliedDiscountPercent.set(res.discountPercent);
+        this.promoSuccess.set(res.message || `${res.discountPercent}% zniżki naliczone!`);
+        this.promoError.set('');
+        this.promoInputText.set('');
+      } else {
+        this.promoError.set(res?.error || res?.message || this.promoInputCopy.invalid);
+      }
+    } catch (err: any) {
+      this.promoError.set(this.promoInputCopy.invalid);
+    } finally {
+      this.promoLoading.set(false);
+    }
+  }
+
+  protected removePromoCode(): void {
+    this.appliedPromoCode.set('');
+    this.appliedDiscountPercent.set(0);
+    this.promoSuccess.set('');
+    this.promoError.set('');
+    this.promoInputText.set('');
   }
 
   protected cancelCheckout(): void {
@@ -2243,7 +2726,7 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
       body: JSON.stringify({
         pack,
         provider: this.selectedProvider(),
-        discountCode: this.isFirstPurchasePromoEligible ? 'WELCOME10' : undefined
+        discountCode: this.appliedPromoCode() || undefined
       })
     });
     this.buying.set('');
