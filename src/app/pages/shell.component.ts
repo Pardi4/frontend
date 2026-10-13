@@ -1638,6 +1638,7 @@ export class ShellComponent implements OnInit, AfterViewInit, OnDestroy {
       method: 'POST',
       body: JSON.stringify({
         email: this.registerEmail,
+        locale: this.locale,
         deviceId: typeof localStorage !== 'undefined' ? (localStorage.getItem('qs_device_id') || (() => { const id = Math.random().toString(36).substring(2) + Date.now().toString(36); localStorage.setItem('qs_device_id', id); return id; })()) : 'ssr', 
         password: this.registerPassword,
         
@@ -1657,7 +1658,30 @@ export class ShellComponent implements OnInit, AfterViewInit, OnDestroy {
       return;
     }
 
+    if (result.code === 'DISPOSABLE_EMAIL_NOT_ALLOWED' || result.error === 'Temporary email addresses are not allowed.') {
+      this.authError.set(this.getDisposableEmailError());
+      return;
+    }
+
     this.authError.set(result.error || this.copy.shell.registerFailed);
+  }
+
+  private getDisposableEmailError(): string {
+    const messages: Record<string, string> = {
+      en: 'Temporary email addresses are not allowed.',
+      pl: 'Tymczasowe adresy e-mail są niedozwolone.',
+      de: 'Temporäre E-Mail-Adressen sind nicht erlaubt.',
+      es: 'No se permiten direcciones de correo electrónico temporales.',
+      fr: 'Les adresses e-mail temporaires ne sont pas autorisées.',
+      it: 'Gli indirizzi e-mail temporanei non sono consentiti.',
+      uk: 'Тимчасові адреси електронної пошти заборонені.',
+      pt: 'Endereços de e-mail temporários não são permitidos.',
+      ar: 'عناوين البريد الإلكتروني المؤقتة غير مسموح بها.',
+      tr: 'Geçici e-posta adreslerine izin verilmez.',
+      ja: '使い捨てメールアドレスは使用できません。',
+      ko: '임시 이메일 주소는 사용할 수 없습니다.'
+    };
+    return messages[this.locale] || messages.en;
   }
 
   protected async verifyEmail(): Promise<void> {
