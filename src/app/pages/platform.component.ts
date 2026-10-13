@@ -1401,24 +1401,62 @@ export class PlatformComponent implements OnInit {
   }
 
   protected relatedArticles(): BlogPost[] {
+    const rawKey = this.pageKey.toLowerCase();
+    const platformMatch = (post: BlogPost) => {
+      const text = `${post.slug} ${post.title} ${(post.tags || []).join(' ')}`.toLowerCase();
+      if (rawKey === 'testportal') return text.includes('testportal');
+      if (rawKey === 'moodle') return text.includes('moodle');
+      if (rawKey === 'canvas') return text.includes('canvas');
+      if (rawKey === 'googleforms') return text.includes('google') || text.includes('forms');
+      if (rawKey === 'microsoftforms') return text.includes('microsoft') || text.includes('forms');
+      if (rawKey === 'kahoot') return text.includes('kahoot');
+      if (rawKey === 'quizizz') return text.includes('quizizz');
+      if (rawKey === 'blackboard') return text.includes('blackboard');
+      if (rawKey === 'socrative') return text.includes('socrative');
+      return false;
+    };
+
+    // 1. Prioritize posts in current locale that specifically match this platform
+    const platformLocal = BLOG_POSTS.filter(post => post.locale === this.locale && platformMatch(post));
+    
+    // 2. Fallback to platform-matched English posts if not enough in current locale
+    const localKeys = new Set(platformLocal.map(post => post.translationKey));
+    const platformFallback = this.locale === 'en'
+      ? []
+      : BLOG_POSTS.filter(post =>
+          post.locale === 'en' &&
+          platformMatch(post) &&
+          !localKeys.has(post.translationKey)
+        );
+
+    // 3. Fallback to category posts if more articles are needed
     const category = this.articleCategory();
-    const localPosts = BLOG_POSTS
-      .filter(post => post.locale === this.locale && post.category === category);
-    const localKeys = new Set(localPosts.map(post => post.translationKey));
-    const fallbackPosts = this.locale === 'en'
+    const generalLocal = BLOG_POSTS.filter(post => post.locale === this.locale && post.category === category);
+    const generalKeys = new Set([...localKeys, ...generalLocal.map(p => p.translationKey)]);
+    const generalFallback = this.locale === 'en'
       ? []
       : BLOG_POSTS.filter(post =>
           post.locale === 'en' &&
           post.category === category &&
-          !localKeys.has(post.translationKey)
+          !generalKeys.has(post.translationKey)
         );
 
-    return [...localPosts, ...fallbackPosts]
-      .sort((a, b) =>
-        b.datePublished.localeCompare(a.datePublished) ||
-        b.dateModified.localeCompare(a.dateModified)
-      )
-      .slice(0, 3);
+    const pool = [
+      ...platformLocal,
+      ...platformFallback,
+      ...generalLocal,
+      ...generalFallback
+    ];
+
+    const seen = new Set<string>();
+    const unique = pool.filter(post => {
+      const id = post.translationKey || post.slug;
+      if (seen.has(id)) return false;
+      seen.add(id);
+      return true;
+    });
+
+    return unique.slice(0, 3);
   }
 
   protected postUrl(post: BlogPost): string {

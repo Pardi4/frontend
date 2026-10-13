@@ -9,6 +9,11 @@ Disallow: /es/dashboard
 Disallow: /fr/dashboard
 Disallow: /it/dashboard
 Disallow: /uk/dashboard
+Disallow: /pt/dashboard
+Disallow: /ar/dashboard
+Disallow: /tr/dashboard
+Disallow: /ja/dashboard
+Disallow: /ko/dashboard
 Disallow: /success
 Disallow: /pl/success
 Disallow: /de/success
@@ -16,6 +21,11 @@ Disallow: /es/success
 Disallow: /fr/success
 Disallow: /it/success
 Disallow: /uk/success
+Disallow: /pt/success
+Disallow: /ar/success
+Disallow: /tr/success
+Disallow: /ja/success
+Disallow: /ko/success
 Disallow: /404
 Disallow: /pl/404
 Disallow: /de/404
@@ -23,11 +33,31 @@ Disallow: /es/404
 Disallow: /fr/404
 Disallow: /it/404
 Disallow: /uk/404
+Disallow: /pt/404
+Disallow: /ar/404
+Disallow: /tr/404
+Disallow: /ja/404
+Disallow: /ko/404
 
 # Runtime and extension-only endpoints
-Disallow: /api
 Disallow: /api/
 Disallow: /_next/
 Disallow: /extension-auth/
+
+# Allow major search engines and AI assistants
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
 
 Sitemap: https://getquizsolver.com/sitemap.xml

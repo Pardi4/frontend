@@ -744,24 +744,174 @@ const ARTICLE_DRAFTS: Record<string, ArticleDraft> = {
       }
     ]
   },
-  'czy-testportal-wykrywa-karty': {
+  'czy-wykladowca-widzi-ze-uzywasz-chatgpt-na-teście': {
     intro: [
-      'Testportal nie widzi magicznie całego Twojego komputera, ale potrafi rejestrować zdarzenia dostępne dla zwykłej strony internetowej. Najczęściej chodzi o utratę fokusu okna, opuszczenie karty, przełączenie aplikacji albo wyjście z trybu pełnoekranowego.',
-      'Warto rozumieć te mechanizmy, bo wiele mitów o Testportalu bierze się z mieszania realnych zdarzeń przeglądarki z wyobrażeniem, że nauczyciel ma podgląd pulpitu.'
+      'Czy wykładowca na studiach lub nauczyciel w szkole widzi, że podczas testu online na Moodle, Canvas LMS czy Microsoft Teams używasz ChatGPT? To pytanie spędza sen z powiek tysiącom studentów przed każdą sesją egzaminacyjną.',
+      'Wokół tego tematu narosło mnóstwo mitów — od straszenia podglądem pulpitu, po opowieści o algorytmach analizujących ruch gałek ocznych. W tym artykule oddzielamy fakty od uniwersyteckich blefów i wyjaśniamy dokładnie, co systemy e-learningowe potrafią zarejestrować, a czego nie widzą nigdy.'
     ],
     sections: [
       {
-        heading: 'Co jest realnie wykrywalne',
-        paragraphs: ['Strona quizu może dostać informację, że karta przestała być aktywna. To nie mówi, co dokładnie zrobił użytkownik, ale w raporcie może pojawić się jako opuszczenie testu.'],
-        bullets: ['zmiana aktywnej karty lub okna', 'kliknięcie w inną aplikację', 'utrata trybu pełnoekranowego', 'czas spędzony poza aktywną kartą testu']
+        heading: 'Prawda o logach Canvas (Canvas Quiz Action Logs)',
+        paragraphs: [
+          'Canvas LMS posiada jeden z najbardziej rozbudowanych systemów logowania aktywności studenta podczas quizu. Nazywa się on Quiz Action Log (lub Canvas Quiz Audit). Gdy wypełniasz test, Canvas tworzy oś czasu z dokładnością co do sekundy.',
+          'Kluczowym wpisem w logach jest komunikat: „Stopped viewing the canvas” (przestał przeglądać Canvas) oraz powiązany z nim „Resumed quiz” (wznowił quiz). Wykładowca widzi dokładnie, o której godzinie kliknąłeś poza kartę testu i po ilu sekundach do niej wróciłeś. Jeśli opuściłeś kartę na 20 sekund przy trudnym zadaniu obliczeniowym, dla prowadzącego jest to powód do podejrzeń.'
+        ],
+        bullets: [
+          'Zdarzenie „Stopped viewing the canvas” wywoływane przy kliknięciu w inne okno lub kartę',
+          'Czas bezczynności i czas spędzony na każdym pytaniu',
+          'Godzina zaznaczenia i ewentualnej zmiany każdej odpowiedzi',
+          'Brak podglądu tego, co student faktycznie robił na komputerze'
+        ]
       },
       {
-        heading: 'Czego platforma zwykle nie widzi',
-        paragraphs: ['Bez dodatkowego oprogramowania egzaminacyjnego strona nie może po prostu przeskanować listy programów, zobaczyć innych kart ani odczytać plików z komputera. To ograniczenie wynika z bezpieczeństwa przeglądarki.']
+        heading: 'Co rejestruje Moodle podczas kolokwium?',
+        paragraphs: [
+          'Moodle z punktu widzenia studenta wygląda bardziej archaicznie, ale jego silnik zdarzeń (Moodle Event Monitoring) rejestruje wszystkie żądania HTTP przesyłane do serwera uczelni.',
+          'Domyślnie Moodle nie śledzi ruchów kursora ani utraty fokusu w tak agresywny sposób jak Canvas (chyba że administrator zainstalował wtyczkę Proctoring / Safe Exam Browser). Rejestruje natomiast adres IP, identyfikator sesji, dokładny czas nawigacji między stronami pytań oraz moment zatwierdzenia odpowiedzi. Zbyt szybkie rozwiązanie złożonego pytania (np. w 3 sekundy) może wzbudzić czujność egzaminatora.'
+        ]
       },
       {
-        heading: 'Jak korzystać z AI rozsądniej',
-        paragraphs: ['Najbezpieczniejszy kierunek to używanie AI do przygotowania i powtórek: zapisuj pytania, dodawaj notatki, twórz quiz z historii i sprawdzaj, czy naprawdę rozumiesz odpowiedź.']
+        heading: 'Detektory AI (Turnitin, GPTZero) a odpowiedzi w quizach',
+        paragraphs: [
+          'Czy detektory tekstu AI mogą wykryć odpowiedź wygenerowaną przez ChatGPT? Przy pytaniach zamkniętych (A, B, C, D) jest to absolutnie niemożliwe — zaznaczenie litery nie niesie żadnego śladu AI.',
+          'Zagrożenie pojawia się przy pytaniach otwartych i krótkich esejach. Jeśli skopiujesz surowy tekst z ChatGPT, Turnitin może oznaczyć go wysokim współczynnikiem AI ze względu na charakterystyczną składnię, nadużywanie spójników czy brak naturalnych błędów studenckich. Dlatego kluczowe jest rozumienie logiki odpowiedzi, a nie bezmyślne wklejanie zdań z bota.'
+        ]
+      },
+      {
+        heading: 'Uniwersyteckie blefy: co jest mitem, a co prawdą?',
+        paragraphs: [
+          'Wielu prowadzących celowo zastrasza studentów przed testem, twierdząc, że widzą otwarte programy, procesy w systemie czy inne karty w przeglądarce. Bez specjalnego oprogramowania typu lockdown browser (np. Respondus czy SEB) zainstalowanego na Twoim dysku, ZWYKŁA STRONA WWW NIE MA DO TEGO DOSTĘPU.',
+          'Zasada piaskownicy (sandbox) przeglądarki Chrome uniemożliwia stronie podgląd pulpitu czy skanowanie procesów Windows/macOS. Zagrożeniem są wyłącznie zdarzenia opuszczenia karty oraz logi czasowe.'
+        ]
+      },
+      {
+        heading: 'Jak bezpiecznie korzystać ze wsparcia AI z QuizSolver',
+        paragraphs: [
+          'QuizSolver powstał właśnie po to, by rozwiązać problem wykrywania przełączania kart. Działając w bocznym panelu Chrome (Side Panel), nie wyzwala zdarzenia „Stopped viewing the canvas” na Canvasie ani blur fokusu na Moodle czy Testportalu.',
+          'Co więcej, FocusScan pozwala na analizę pytań z wykresami i wzorami bez dotykania kodu strony, a natychmiastowe wyjaśnienia pomagają zrozumieć schemat rozwiązania przed ostatecznym zatwierdzeniem odpowiedzi.'
+        ],
+        bullets: [
+          'Niewykrywalny panel boczny — brak flag w logach Canvas i Moodle',
+          'Szybkie wyjaśnienia merytoryczne i logiczne uzasadnienie',
+          'FocusScan OCR dla zadań ze wzorami matematycznymi i wykresami',
+          'Prywatna baza pytań do powtórek przed egzaminem ustnym lub poprawkowym'
+        ]
+      }
+    ]
+  },
+  'can-professors-see-if-you-use-chatgpt-canvas-moodle': {
+    intro: [
+      'Can professors see if you use ChatGPT on Canvas, Moodle, or Blackboard? As universities adopt stricter academic integrity policies, students taking online exams constantly worry about getting caught by exam monitoring scripts.',
+      'From scary Canvas Quiz Action Logs to AI text detectors like Turnitin, rumors about what universities can track are everywhere. Here is the technical breakdown of what LMS platforms actually record, what professors can see, and what is just an exam scare tactic in 2026.'
+    ],
+    sections: [
+      {
+        heading: 'The Truth About Canvas Quiz Action Logs',
+        paragraphs: [
+          'Canvas LMS features a built-in auditing system called the Quiz Action Log. While you take an assessment, Canvas logs interactions with precise timestamps.',
+          'The most dreaded entry is „Stopped viewing the canvas” followed by „Resumed quiz”. This happens whenever you click outside the Canvas exam window or switch tabs. If a professor inspects your log and sees you left the screen for 45 seconds right on question 12, they have strong circumstantial evidence of tab-switching.'
+        ],
+        bullets: [
+          'Canvas logs the exact second you unfocus the quiz window',
+          'It records how long you spent on each question before clicking next',
+          'It logs every answer change or save event',
+          'It CANNOT see what other tab, website, or app you opened'
+        ]
+      },
+      {
+        heading: 'What Moodle and Blackboard Can Track',
+        paragraphs: [
+          'Standard Moodle and Blackboard environments do not track mouse cursor movements natively unless proctoring plugins are installed. However, their server-side event logs record every HTTP request, IP address, device user-agent, and submission timestamp.',
+          'If a complex 5-paragraph multi-step accounting problem is submitted in under 8 seconds, that statistical anomaly can trigger an instructor review even without tab-switch tracking.'
+        ]
+      },
+      {
+        heading: 'Can Turnitin Detect ChatGPT on Short Quiz Answers?',
+        paragraphs: [
+          'For multiple-choice and fill-in-the-blank questions, AI detection is completely impossible — there is no linguistic footprint to analyze. For short open-ended essay questions, however, pasting raw ChatGPT outputs can trigger AI detectors due to repetitive perplexity and burstiness patterns.',
+          'The smart approach is using AI to understand the core facts and reasoning rather than mindlessly copy-pasting robotic prose.'
+        ]
+      },
+      {
+        heading: 'Professor Bluffs: What Normal Browsers Block',
+        paragraphs: [
+          'Professors often claim they can see your running background processes, other open browser tabs, or webcam feed without permission. Unless you downloaded a kernel-level lock-down browser (like Respondus LockDown Browser or Honorlock), standard web browsers strictly sandbox websites.',
+          'Canvas and Moodle running in regular Google Chrome cannot access your desktop files, take covert screenshots, or monitor your second screen.'
+        ]
+      },
+      {
+        heading: 'How QuizSolver Keeps Students Safe in 2026',
+        paragraphs: [
+          'QuizSolver operates within Chrome’s native Side Panel API. Because the panel lives inside the active browser frame alongside the assessment, your quiz tab never loses focus or triggers „Stopped viewing the canvas” flags.',
+          'With instant step-by-step explanations and FocusScan OCR for diagrams, you get reliable AI study assistance right when you need it without leaving digital footprints.'
+        ],
+        bullets: [
+          'Zero tab-switch triggers — runs natively in the Chrome Side Panel',
+          'Bypasses Canvas Quiz Log scrutiny and focus-loss warnings',
+          'FocusScan OCR reads complex image prompts and equations',
+          'Saves all solved questions to your study review history'
+        ]
+      }
+    ]
+  },
+  'czy-testportal-wykrywa-karty': {
+    intro: [
+      'Czy Testportal widzi zmianę karty, otwieranie nowych okien lub korzystanie ze sztucznej inteligencji? To jedno z najczęściej wpisywanych pytań przez polskich uczniów i studentów przed każdym sprawdzianem i kolokwium online.',
+      'W sieci krąży mnóstwo mitów: od rzekomego podglądu całego pulpitu przez nauczyciela, po wykrywanie telefonów w tej samej sieci Wi-Fi. W tym artykule wyjaśniamy dokładnie, jak działa technologia „Uczciwy Rozwiązujący”, co naprawdę rejestruje skrypt w przeglądarce i co pojawia się w raporcie wykładowcy.'
+    ],
+    sections: [
+      {
+        heading: 'Jak działa „Uczciwy Rozwiązujący” na Testportalu?',
+        paragraphs: [
+          'Uczciwy Rozwiązujący to wbudowany mechanizm Testportalu oparty o standardowe API przeglądarki internetowej — głównie Page Visibility API oraz zdarzenia focus i blur okna (`window.onblur`). Strona internetowa działająca w Twojej przeglądarce nie ma uprawnień administratora systemu operacyjnego, ale doskonale wie, kiedy użytkownik przestaje z nią wchodzić w interakcję.',
+          'Gdy opuszczasz kartę testu, przeglądarka wysyła zdarzenie utraty fokusu. Testportal natychmiast rejestruje ten moment, uruchamia wewnętrzny stoper i wyświetla ostrzeżenie o konieczności powrotu do testu. Jeśli limit opuszczeń zostanie przekroczony, test może zostać automatycznie zablokowany.'
+        ],
+        bullets: [
+          'Przełączenie na inną kartę w przeglądarce (zdarzenie visibilitychange)',
+          'Użycie skrótu Alt + Tab lub kliknięcie w inną aplikację (np. Notatnik, Discord, Word)',
+          'Opuszczenie trybu pełnoekranowego (jeśli nauczyciel wymusił fullscreen)',
+          'Kliknięcie powiadomienia systemowego lub paska zadań Windows/macOS'
+        ]
+      },
+      {
+        heading: 'Co dokładnie widzi nauczyciel w raporcie po teście?',
+        paragraphs: [
+          'Wielu uczniów obawia się, że nauczyciel widzi zrzuty ekranu lub historię przeglądanych stron. To mit — przeglądarka nie pozwala na taki podgląd ze względów bezpieczeństwa (tzw. sandbox przeglądarki).',
+          'W raporcie nauczyciel widzi jednak bardzo precyzyjne zestawienie zdarzeń: dokładną liczbę opuszczeń karty z testem, moment (godzinę i sekundę), w którym doszło do opuszczenia, oraz łączny czas, jaki uczeń spędził poza testem. Dla prowadzącego spędzenie 40 sekund poza kartą podczas trudnego pytania jest jednoznacznym sygnałem ściągania.'
+        ],
+        bullets: [
+          'Dokładna liczba incydentów opuszczenia karty testowej',
+          'Łączny czas spędzony poza aktywnym testem (w sekundach)',
+          'Numery pytań, przy których doszło do utraty fokusu',
+          'Brak podglądu ekranu, historii wyszukiwania czy innych uruchomionych programów'
+        ]
+      },
+      {
+        heading: 'Mity o Testportalu: drugi monitor, telefon i sieć Wi-Fi',
+        paragraphs: [
+          'Czy podłączenie drugiego monitora pozwala oszukać Testportal? Nie, jeśli klikniesz na drugim ekranie w inne okno. Kliknięcie myszką na drugim monitorze powoduje natychmiastową utratę fokusu okna głównego i wyzwala ostrzeżenie Uczciwego Rozwiązującego.',
+          'Z kolei telefon leżący obok jest technicznie niewykrywalny przez stronę internetową, o ile nie korzystasz ze zsynchronizowanego konta lub mikrofonu. Największym problemem telefonu jest jednak czas — ręczne przepisywanie pytań pod presją uciekającego timera często prowadzi do błędów i braku czasu na dokończenie testu.'
+        ]
+      },
+      {
+        heading: 'Dlaczego otwieranie ChatGPT w drugiej karcie to gwarancja wpadki',
+        paragraphs: [
+          'Kopiowanie pytania do ChatGPT w sąsiedniej karcie to najczęstsza przyczyna oblania testu na Testportalu. Wystarczy ułamek sekundy na innej karcie, by Testportal zarejestrował incydent. Co więcej, wklejanie skopiowanego pytania z powrotem do pól otwartych może pozostawić niewidoczne znaki formatowania zdradzające użycie zewnętrznego generatora.',
+          'W nowoczesnych sprawdzianach potrzebne jest rozwiązanie, które nie zmusza do opuszczania aktywnej karty ani nie wyzwala żadnych zdarzeń utraty fokusu.'
+        ]
+      },
+      {
+        heading: 'Jak QuizSolver omija Uczciwego Rozwiązującego bez wykrycia',
+        paragraphs: [
+          'QuizSolver działa w dedykowanym bocznym panelu przeglądarki Google Chrome (Chrome Side Panel API). Oznacza to, że panel ze sztuczną inteligencją znajduje się wewnątrz tego samego okna przeglądarki, bezpośrednio obok Twojego testu.',
+          'Dzięki temu karta z Testportalem nigdy nie traci statusu dokumentu aktywnego — zdarzenia `window.blur` oraz `document.hidden` nie są wywoływane. Możesz czytać podpowiedzi AI, analizować pełne wyjaśnienia krok po kroku i rozwiązywać pytania pod presją czasu z zachowaniem 100% spokoju i bezpieczeństwa.'
+        ],
+        bullets: [
+          'Zero przełączania kart — praca w bezpiecznym panelu bocznym Chrome',
+          'FocusScan OCR — rozwiązywanie zadań z wykresów, tabel i zablokowanego tekstu',
+          'Obsługa pytań jednokrotnego i wielokrotnego wyboru oraz pól tekstowych',
+          'Automatyczna historia powtórek do nauki przed egzaminem końcowym'
+        ]
       }
     ]
   },
