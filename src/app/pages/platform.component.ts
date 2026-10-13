@@ -624,6 +624,25 @@ const PLATFORM_UI: Record<Locale, PlatformUi> = {
     faqTitle: 'Perguntas sobre este fluxo',
     stats: ['Mais de 10 plataformas', 'Respostas de IA em segundos', 'Instalação gratuita'],
     intro: platform => `O QuizSolver detecta perguntas no ${platform}, sugere respostas com IA e salva tudo no histórico de estudos automaticamente.`
+  },
+  ar: {
+    install: 'تثبيت الإضافة',
+    related: 'عرض ذو صلة',
+    whatItDoes: platform => `لماذا يفضل الطلاب QuizSolver على منصة ${platform}`,
+    aiAnswers: 'اقتراحات إجابات بالذكاء الاصطناعي',
+    explanations: 'شروحات مبسطة',
+    notes: 'الملاحظات واختبار السجل',
+    sharing: 'اختبارات قابلة للمشاركة',
+    howToStart: 'كيف تبدأ',
+    featuresTitle: 'قائمة خطوات الحل',
+    platforms: 'المنصات',
+    otherGuides: 'أدلة QuizSolver الأخرى',
+    guidesIntro: 'اختر منصتك واطلع على دليل خطوة بخطوة مخصص لنظام الاختبارات.',
+    relatedArticles: 'المقالات والأدلة الإرشادية ذات الصلة',
+    readArticle: 'قراءة المقال',
+    faqTitle: 'الأسئلة الشائعة حول هذا الدليل',
+    stats: ['10+ منصات', 'إجابات بالذكاء الاصطناعي في ثوانٍ', 'تثبيت مجاني'],
+    intro: platform => `يتعرف QuizSolver على الأسئلة في ${platform}، ويقترح إجابات الذكاء الاصطناعي، ويحفظ كل شيء تلقائياً في سجل مذاكرتك.`
   }
 };
 

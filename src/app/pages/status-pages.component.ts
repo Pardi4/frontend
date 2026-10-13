@@ -13,7 +13,8 @@ const STATUS_UI: Record<Locale, { home: string; install: string; successBadge: s
   fr: { home: 'Retour à l’accueil', install: 'Installer l’extension', successBadge: 'Succès', successSubtitle: 'Ton compte est prêt.', notFoundBadge: '404', notFoundSubtitle: 'Cette page n’existe pas ou a été déplacée.' },
   it: { home: 'Torna alla home', install: 'Installa estensione', successBadge: 'Successo', successSubtitle: 'Il tuo account è pronto.', notFoundBadge: '404', notFoundSubtitle: 'Questa pagina non esiste o è stata spostata.' },
   uk: { home: 'На головну', install: 'Встановити розширення', successBadge: 'Готово', successSubtitle: 'Твій акаунт готовий.', notFoundBadge: '404', notFoundSubtitle: 'Цієї сторінки не існує або її перемістили.' },
-  pt: { home: 'Voltar ao início', install: 'Instalar extensão', successBadge: 'Sucesso', successSubtitle: 'Sua conta está pronta.', notFoundBadge: '404', notFoundSubtitle: 'Esta página não existe ou foi movida.' }
+  pt: { home: 'Voltar ao início', install: 'Instalar extensão', successBadge: 'Sucesso', successSubtitle: 'Sua conta está pronta.', notFoundBadge: '404', notFoundSubtitle: 'Esta página não existe ou foi movida.' },
+  ar: { home: 'العودة للرئيسية', install: 'تثبيت الإضافة', successBadge: 'نجاح', successSubtitle: 'حسابك جاهز الآن.', notFoundBadge: '404', notFoundSubtitle: 'هذه الصفحة غير موجودة أو تم نقلها.' }
 };
 
 @Component({

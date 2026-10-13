@@ -609,6 +609,19 @@ export class BlogPostComponent implements OnInit {
         notFoundTitle: 'Artigo não encontrado',
         notFoundText: 'Desculpe, este artigo não existe ou foi movido.',
         goBlog: 'Ir para o blog'
+      },
+      ar: {
+        back: 'العودة للمدونة',
+        guide: 'دليل',
+        readSuffix: 'قراءة',
+        authorRole: 'فريق كتابة QuizSolver',
+        ctaTitle: 'هل أنت جاهز لتسهيل مراجعة اختبارك القادم؟',
+        ctaText: 'ثبت إضافة QuizSolver المجانية لـ Chrome واستفد من شروحات الذكاء الاصطناعي والملاحظات والتدريبات مباشرة في متصفحك.',
+        install: 'إضافة إلى Chrome (مجاناً)',
+        demo: 'تجربة بيئة العمل التفاعلية',
+        notFoundTitle: 'المقال غير موجود',
+        notFoundText: 'عذراً، هذا المقال غير موجود أو تم نقله.',
+        goBlog: 'الانتقال إلى المدونة'
       }
     };
     labels.en.relatedEyebrow = 'Related';

@@ -442,6 +442,58 @@ export const BLOG_CATEGORIES: Record<Locale, Record<BlogCategorySlug, BlogCatego
       tutorialLabel: 'Ver política de privacidade',
       tutorialPage: 'privacy'
     }
+  },
+  ar: {
+    kahoot: {
+      slug: 'kahoot',
+      title: 'أدلة بوت Kahoot بالذكاء الاصطناعي',
+      shortTitle: 'Kahoot',
+      metaTitle: 'أدلة بوت Kahoot بالذكاء الاصطناعي | QuizSolver',
+      metaDescription: 'تعلم استخدام Kahoot Quiz ID، ورمز PIN، وبنك الإجابات، والحل التلقائي للأسئلة المرئية مع أدلة QuizSolver.',
+      description: 'مقالات عملية حول Kahoot Quiz ID، ورموز PIN المباشرة، والأسئلة المخفية، وبنوك الإجابات، ومتى يمكن قراءة الصفحة تلقائياً.',
+      tutorialLabel: 'فتح دليل Kahoot',
+      tutorialPage: 'kahoot'
+    },
+    'platform-guides': {
+      slug: 'platform-guides',
+      title: 'أدلة حل منصات الاختبارات',
+      shortTitle: 'المنصات',
+      metaTitle: 'أدلة منصات حل الاختبارات | QuizSolver',
+      metaDescription: 'أدلة خطوة بخطوة لنماذج Google Forms وTestportal وMoodle وCanvas ومنصات الاختبارات الأخرى المدعومة.',
+      description: 'استخدم هذه الأدلة عندما تبحث عن خطوات محددة لمنصة معينة: ما الذي تفتحه، وأي وضع تستخدم، وكيف تحفظ الأسئلة.',
+      tutorialLabel: 'عرض كافة أدلة المنصات',
+      tutorialPage: 'quizSolverAi'
+    },
+    'study-workflows': {
+      slug: 'study-workflows',
+      title: 'طرق وأساليب المذاكرة',
+      shortTitle: 'المذاكرة',
+      metaTitle: 'أساليب المذاكرة بالذكاء الاصطناعي للاختبارات | QuizSolver',
+      metaDescription: 'حول الأسئلة المحلولة إلى ملاحظات واختبارات تدريبية ومراجعات ذكية مع QuizSolver.',
+      description: 'مقالات حول الاستفادة من إجابات الذكاء الاصطناعي كمادة مراجعة: شروحات وملاحظات وسجل الأسئلة والمفضلة والاختبارات التجريبية.',
+      tutorialLabel: 'تجربة بيئة المذاكرة التفاعلية',
+      tutorialPage: 'demo'
+    },
+    focusscan: {
+      slug: 'focusscan',
+      title: 'دليل FocusScan والأسئلة المصورة',
+      shortTitle: 'FocusScan',
+      metaTitle: 'أدلة قارئ الصور FocusScan OCR | QuizSolver',
+      metaDescription: 'حل الأسئلة المعتمدة على الصور والرسوم البيانية وملفات PDF والنصوص المقفلة باستخدام FocusScan OCR في QuizSolver.',
+      description: 'إرشادات للأسئلة المعروضة كلقطات شاشة أو رسوم بيانية أو أجزاء PDF أو نصوص مقفلة لا يقرؤها المحلل العادي.',
+      tutorialLabel: 'تجربة FocusScan الحية',
+      tutorialPage: 'demo'
+    },
+    'privacy-detection': {
+      slug: 'privacy-detection',
+      title: 'الخصوصية والأمان والاستخدام المسؤول',
+      shortTitle: 'الخصوصية',
+      metaTitle: 'أدلة الخصوصية وأمان الاختبارات | QuizSolver',
+      metaDescription: 'افهم ما يمكن لمنصات الاختبارات اكتشافه، وكيف تعمل إضافات المتصفح، وكيف تستخدم QuizSolver بأمان ومسؤولية.',
+      description: 'توضيحات دقيقة حول أحداث تركيز المتصفح وحدود الإضافات وخيارات الخصوصية والحقائق حول كشف المنصات.',
+      tutorialLabel: 'قراءة سياسة الخصوصية',
+      tutorialPage: 'privacy'
+    }
   }
 };
 

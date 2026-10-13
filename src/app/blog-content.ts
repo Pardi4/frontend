@@ -53,6 +53,15 @@ const ctaFor = (locale: Locale): string => {
     </div>
   `;
   }
+  if (locale === 'ar') {
+    return `
+    <div class="blog-native-ad">
+      <h4 class="blog-native-ad-title">جرب QuizSolver عملياً الآن</h4>
+      <p class="blog-native-ad-text">افتح بيئة التجربة الحية الآمنة، وشغل لوحة الإضافة وتدرب على أسئلة نموذجية دون استهلاك أي رصيد.</p>
+      <a href="${routeFor(locale, 'demo')}" class="blog-native-ad-btn">فتح التجربة الحية</a>
+    </div>
+  `;
+  }
   return `
     <div class="blog-native-ad">
       <h4 class="blog-native-ad-title">Try QuizSolver in practice</h4>
@@ -190,6 +199,23 @@ const genericLocalizedDraft = (locale: Locale): ArticleDraft => {
         {
           heading: 'Por que explicações são essenciais',
           paragraphs: ['Saber a resposta certa economiza tempo, mas entender a explicação é o que garante o aprendizado. Suas explicações salvas formam uma biblioteca pessoal de estudos para revisar antes das provas.']
+        }
+      ]
+    },
+    ar: {
+      intro: [
+        'QuizSolver هي إضافة لمتصفح Chrome مصممة للطلاب الذين يبحثون عن شروحات فورية ومفصلة أثناء حل الاختبارات الإلكترونية.',
+        'أفضل طريقة للاستفادة منها بسيطة: افتح الاختبار، وشغل QuizSolver، وراجع الإجابة المقترحة والشرح، واحفظ الأسئلة المهمة لمراجعتها لاحقاً في اختبار تدريبي.'
+      ],
+      sections: [
+        {
+          heading: 'ما الذي يفعله QuizSolver في صفحة الاختبار',
+          paragraphs: ['تبحث الإضافة عن نصوص الأسئلة، وخيارات الإجابة، ومربعات الاختيار، والقوائم المنسدلة، وحقول الإدخال المرئية. وإذا كان تصميم الصفحة غير تقليدي، تتيح لك ميزة FocusScan تحديد منطقة السؤال بالماوس يدوياً.'],
+          bullets: ['اقتراحات إجابات بالذكاء الاصطناعي مع شروحات تفصيلية.', 'قارئ الصور FocusScan OCR للأسئلة المصورة والمستندات.', 'سجل المذاكرة والملاحظات والاختبارات التجريبية للمراجعة.']
+        },
+        {
+          heading: 'لماذا تعد الشروحات بالغة الأهمية',
+          paragraphs: ['معرفة الإجابة الصحيحة توفر الوقت، لكن فهم الشرح هو ما يرسخ المفهوم في ذهنك. يشكل سجلك المحفوظ مكتبة مراجعة شخصية يمكنك الرجوع إليها قبل الامتحانات النهائية.']
         }
       ]
     }

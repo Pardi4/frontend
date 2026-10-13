@@ -75,8 +75,9 @@ export class SeoService {
 
     this.clearRouteSpecificMeta();
 
-    /* ── HTML lang ── */
+    /* ── HTML lang & dir ── */
     this.document.documentElement.lang = copy['htmlLang'] || locale;
+    this.document.documentElement.dir = locale === 'ar' ? 'rtl' : 'ltr';
 
     /* ── Core ── */
     this.title.setTitle(meta.title);
@@ -575,6 +576,7 @@ export class SeoService {
 
     this.clearRouteSpecificMeta();
     this.document.documentElement.lang = copy['htmlLang'] || locale;
+    this.document.documentElement.dir = locale === 'ar' ? 'rtl' : 'ltr';
     this.title.setTitle(meta.title);
     this.upsertMeta('name', 'description', meta.description);
     this.upsertMeta('name', 'robots', robots);
@@ -700,8 +702,9 @@ export class SeoService {
 
     this.clearRouteSpecificMeta();
 
-    /* ── HTML lang ── */
+    /* ── HTML lang & dir ── */
     this.document.documentElement.lang = copy['htmlLang'] || locale;
+    this.document.documentElement.dir = locale === 'ar' ? 'rtl' : 'ltr';
 
     /* ── Core ── */
     this.title.setTitle(meta.title);

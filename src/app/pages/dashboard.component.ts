@@ -243,6 +243,32 @@ const DASHBOARD_UI: Record<Locale, DashboardUi> = {
     history: 'Histórico',
     historyTitle: 'Compras e recargas',
     noPurchases: 'Nenhuma compra realizada ainda.'
+  },
+  ar: {
+    dashboard: 'لوحة التحكم',
+    credits: 'الرصيد',
+    creditUnitText: '1 رصيد = 1 إجابة ذكاء اصطناعي',
+    welcomeUser: 'مرحباً بك، أيها المستخدم',
+    dashboardIntro: 'الرصيد، وسجل المشتريات، ورمز الإحالة الخاص بك في مكان واحد.',
+    questionsSolved: 'الأسئلة المحلولة',
+    referralBonus: 'مكافأة الإحالة',
+    referralCode: 'رمز الإحالة',
+    referralMockTitle: 'ادعُ أصدقاءك واربح 10% رصيداً إضافياً',
+    greeting: 'أهلاً،',
+    lowCreditsTitle: 'رصيدك قارب على الانتهاء',
+    lowCreditsText: 'اشحن رصيدك الآن حتى لا تنفد منك الإجابات أثناء الاختبار.',
+    buyCredits: 'شراء رصيد',
+    referralTitle: 'ادعُ مستخدمين جدد واحصل على 10% من رصيدهم المشترى',
+    referralText: 'عندما يسجل أي شخص عبر رابطك ويشتري رصيداً، تحصل أنت على 10% رصيد إضافي كهدية دون أن ينقص من رصيده أي شيء.',
+    copied: 'تم النسخ',
+    copy: 'نسخ',
+    signups: 'التسجيلات',
+    purchases: 'المشتريات',
+    bonusCredits: 'رصيد المكافأة',
+    ofPurchase: 'من المشتريات',
+    history: 'السجل',
+    historyTitle: 'المشتريات وعمليات الشحن',
+    noPurchases: 'لا توجد مشتريات حتى الآن.'
   }
 };
 

@@ -440,6 +440,27 @@ const DEMO_LOCALE_COPY: Record<Exclude<Locale, 'en' | 'pl'>, Omit<DemoCopy, 'que
     chooseOption: 'Escolher',
     popupTitle: 'Fluxo do popup',
     popupSteps: ['Múltipla escolha', 'Modo Dica', 'Resposta escrita', 'Associação em lista', 'Quick Overlay']
+  },
+  ar: {
+    eyebrow: 'عرض توضيحي تفاعلي',
+    title: 'جرب QuizSolver في بيئة محاكاة آمنة',
+    lead: 'خمسة أسئلة نموذجية توضح كيفية عمل الإضافة. هذه الصفحة لا تستهلك أي أرصدة.',
+    install: 'تثبيت الإضافة',
+    openStore: 'فتح سوق Chrome الإلكتروني',
+    demoBadge: 'مجاني تماماً',
+    localBadge: 'وضع تجريبي',
+    mapTitle: 'كيفية استخدام العرض التجريبي',
+    mapText: 'يمكنك تجربة الحل مباشرة في المتصفح أو فتح إضافة QuizSolver الرسمية في Chrome.',
+    prev: 'السابق',
+    next: 'السؤال التالي',
+    restart: 'إعادة تشغيل العرض',
+    startTour: 'بدء الجولة الإرشادية',
+    selectText: '✂️ تحديد النص',
+    selectedTip: 'حدد نص السؤال واستخدم النافذة العائمة السريعة (Alt+Q).',
+    yourAnswer: 'إجابتك',
+    chooseOption: 'اختر',
+    popupTitle: 'خطوات النافذة المنبثقة',
+    popupSteps: ['اختيار من متعدد', 'وضع التلميح', 'إجابة نصية', 'المطابقة', 'النافذة العائمة السريعة']
   }
 };
 
@@ -485,10 +506,17 @@ const DEMO_QUESTIONS: Record<Exclude<Locale, 'en' | 'pl'>, DemoQuestion[]> = {
     { ...COPY.en.questions[2], kicker: 'Passo 3 de 5', title: 'Matemática: resposta digitada', instruction: 'O QuizSolver preenche números e respostas em texto diretamente nos campos.', question: 'Quanto é 12 x 8?', placeholder: 'Digite sua resposta', correctText: '96' },
     { ...COPY.en.questions[3], kicker: 'Passo 4 de 5', title: 'Ciências: menus suspensos', instruction: 'Associa vários conceitos simultaneamente em menus suspensos.', question: 'Associe cada termo científico à sua definição correta.', prompts: ['Fotossíntese', 'Evaporação', 'Gravidade'], options: ['Plantas produzem glicose com luz solar', 'Líquido se transforma em gás', 'Força que atrai objetos com massa'], correctText: 'Fotossíntese = Plantas produzem glicose com luz solar, Evaporação = Líquido se transforma em gás, Gravidade = Força que atrai objetos com massa' },
     { ...COPY.en.questions[4], kicker: 'Passo 5 de 5', title: 'Quick Overlay', instruction: 'Selecione apenas o texto da questão e resolva instantaneamente com Alt+Q.', question: 'Qual recurso do QuizSolver resolve apenas o texto selecionado na página?', options: ['Resolver texto selecionado', 'Comprar créditos', 'Painel admin', 'Histórico do navegador'], correctText: 'Resolver texto selecionado' }
+  ],
+  ar: [
+    { ...COPY.en.questions[0], kicker: 'الخطوة 1 من 5', title: 'الأحياء: اختيار فردي', instruction: 'يتعرف QuizSolver على السؤال ويحدد الإجابة الصحيحة بنقرة واحدة.', question: 'ما هي العضية الخلوية المسؤولة بشكل رئيسي عن إنتاج ATP في الخلايا حقيقية النواة؟', options: ['نواة الخلية', 'الميتوكوندريا', 'الريبوسوم', 'غشاء الخلية'], correctText: 'الميتوكوندريا' },
+    { ...COPY.en.questions[1], kicker: 'الخطوة 2 من 5', title: 'وضع التلميح', instruction: 'هل تفضل الحل بنفسك؟ وضع التلميح يعرض تلميحاً خفيفاً دون النقر التلقائي.', question: 'أي من المصادر التالية يمثل أوضح مثال على مصدر تاريخي أولي؟', options: ['فصل من كتاب مدرسي', 'مذكرات شخصية كُتبت أثناء الحدث', 'فيلم وثائقي حديث', 'مقال موسوعي'], correctText: 'مذكرات شخصية كُتبت أثناء الحدث' },
+    { ...COPY.en.questions[2], kicker: 'الخطوة 3 من 5', title: 'الرياضيات: إدخال نصي', instruction: 'يقوم QuizSolver بملء الأرقام والإجابات النصية بدقة مباشرة في الحقول.', question: 'كم حاصل ضرب 12 × 8؟', placeholder: 'اكتب إجابتك هنا', correctText: '96' },
+    { ...COPY.en.questions[3], kicker: 'الخطوة 4 من 5', title: 'العلوم: قوائم منسدلة', instruction: 'يطابق مفاهيم متعددة في وقت واحد داخل القوائم المنسدلة.', question: 'طابق كل مصطلح علمي بالتعريف الصحيح له.', prompts: ['التمثيل الضوئي', 'التبخر', 'الجاذبية'], options: ['تصنع النباتات الجلوكوز باستخدام ضوء الشمس', 'يتحول السائل إلى غاز', 'القوة التي تجذب الأجسام ذات الكتلة'], correctText: 'التمثيل الضوئي = تصنع النباتات الجلوكوز باستخدام ضوء الشمس, التبخر = يتحول السائل إلى غاز, الجاذبية = القوة التي تجذب الأجسام ذات الكتلة' },
+    { ...COPY.en.questions[4], kicker: 'الخطوة 5 من 5', title: 'النافذة العائمة السريعة', instruction: 'حدد نص السؤال فقط وقم بحله فورياً عبر Alt+Q.', question: 'ما هي أداة QuizSolver التي تحل النص المحدد فقط في الصفحة؟', options: ['حل النص المحدد', 'شراء الأرصدة', 'لوحة التحكم', 'سجل المتصفح'], correctText: 'حل النص المحدد' }
   ]
 };
 
-(['de', 'es', 'fr', 'it', 'uk', 'pt'] as const).forEach((locale) => {
+(['de', 'es', 'fr', 'it', 'uk', 'pt', 'ar'] as const).forEach((locale) => {
   COPY[locale] = {
     ...DEMO_LOCALE_COPY[locale],
     questions: DEMO_QUESTIONS[locale]
@@ -1476,6 +1504,20 @@ export class DemoComponent implements OnInit, OnDestroy {
         resultText: 'Você testou múltipla escolha, modo dica, resposta digitada, menus suspensos e texto selecionado.',
         finalPrimary: 'Instalar extensão',
         finalSecondary: 'Reiniciar demonstração'
+      },
+      ar: {
+        correctTitle: 'صحيح',
+        hintTitle: 'تلميح',
+        wrongTitle: 'حاول مجدداً',
+        emptyTitle: 'اختر إجابة أولاً',
+        explanationLabel: 'لماذا هذه الإجابة صحيحة',
+        simulateSolver: '✨ حل باستخدام QuizSolver',
+        showHint: '💡 إظهار التلميح',
+        checkAnswer: 'التحقق من إجابتي',
+        resultTitle: 'اكتمل العرض التجريبي!',
+        resultText: 'لقد جربت الاختيار من متعدد، وضع التلميح، الإجابة المكتوبة، القوائم المنسدلة، والنص المحدد.',
+        finalPrimary: 'تثبيت الإضافة',
+        finalSecondary: 'إعادة التجربة'
       }
     };
 
@@ -1509,7 +1551,8 @@ export class DemoComponent implements OnInit, OnDestroy {
       fr: ['1. Choix', '2. Indice', '3. Saisie', '4. Association', '5. Sélection'],
       it: ['1. Scelta', '2. Hint', '3. Scritta', '4. Tendina', '5. Selezione'],
       uk: ['1. Варіант', '2. Hint', '3. Введення', '4. Matching', '5. Виділення'],
-      pt: ['1. Múltipla escolha', '2. Modo Dica', '3. Digitação', '4. Associação', '5. Seleção']
+      pt: ['1. Múltipla escolha', '2. Modo Dica', '3. Digitação', '4. Associação', '5. Seleção'],
+      ar: ['1. اختيار متعدد', '2. وضع التلميح', '3. إدخال نصي', '4. مطابقة', '5. نص محدد']
     };
     const list = labels[this.locale] || labels.en;
     return list[index] || `Krok ${index + 1}`;
@@ -1524,7 +1567,8 @@ export class DemoComponent implements OnInit, OnDestroy {
       fr: ['Choix unique', 'Mode indice discret', 'Réponse saisie', 'Association déroulante', 'Quick overlay (Alt+Q)'],
       it: ['Scelta singola', 'Hint mode discreto', 'Risposta scritta', 'Associazione a tendina', 'Quick overlay (Alt+Q)'],
       uk: ['Один варіант', 'Непомітний Hint mode', 'Текстова відповідь', 'Matching у списках', 'Quick overlay (Alt+Q)'],
-      pt: ['Escolha única automática', 'Modo Dica discreto', 'Preenchimento de respostas', 'Associação em lista', 'Quick Overlay (Alt+Q)']
+      pt: ['Escolha única automática', 'Modo Dica discreto', 'Preenchimento de respostas', 'Associação em lista', 'Quick Overlay (Alt+Q)'],
+      ar: ['حل الاختيار من متعدد تلقائياً', 'وضع التلميح الهادئ', 'ملء الإجابات المكتوبة', 'مطابقة القوائم المنسدلة', 'النافذة السريعة (Alt+Q)']
     };
     return map[this.locale] || map.en;
   }
