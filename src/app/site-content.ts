@@ -174,7 +174,7 @@ export interface SiteCopy {
     homeCta?: string;
     storeCta?: string;
   };
-  platformPages: {
+  platformPages: Record<string, PlatformCopy> & {
     quizSolverAi: PlatformCopy;
     testportal: PlatformCopy;
     moodle: PlatformCopy;
@@ -779,6 +779,211 @@ const en: SiteCopy = {
       faq: [
         { question: "Does it support school accounts?", answer: "Yes, it runs locally in your browser so it doesn't matter what type of Quizizz account you use." }
       ]
+    },
+    blooket: {
+      platformName: "Blooket",
+      shortName: "Blooket",
+      badge: "Blooket Real-Time",
+      title: "Blooket Quiz Solver — AI Answers for Live Games & Modes",
+      subtitle: "Get instant AI answer suggestions in Blooket live games, Gold Quest, Crypto Hack and homework sets.",
+      meta: { title: "Blooket Quiz Solver — AI Answers for Live Games | QuizSolver", description: "Blooket quiz solver Chrome extension. Instant AI answers for Blooket live game modes, Gold Quest, Crypto Hack and homework. Free to install." },
+      stepsTitle: "How to use on Blooket",
+      steps: ["Join your Blooket live game or homework session", "Activate QuizSolver with Alt+Q or the extension icon", "See AI-highlighted answers in real time and answer before the timer runs out"],
+      features: ["Instant detection of Blooket question cards", "Ultra-fast response for timed speed modes", "Works across all game modes (Gold Quest, Crypto Hack, Tower Defense)"],
+      keywordSections: [
+        { title: "Dominate Blooket games with AI", text: "Whether competing live in class or finishing solo assignments, QuizSolver detects Blooket question prompts and highlights the winning option instantly." }
+      ],
+      faq: [
+        { question: "Does it work during live timed games?", answer: "Yes, QuizSolver reads visible question cards in fractions of a second so you can answer within fast game timers." },
+        { question: "Will Blooket detect this extension?", answer: "QuizSolver operates client-side inside the browser extension sandbox without injecting unauthorized scripts into the game." }
+      ]
+    },
+    gimkit: {
+      platformName: "Gimkit",
+      shortName: "Gimkit",
+      badge: "Gimkit Fast Solver",
+      title: "Gimkit Quiz Solver — Instant AI Answers & Strategy",
+      subtitle: "Solve Gimkit questions with instant AI answers and maximize your cash rewards in any 2D game mode.",
+      meta: { title: "Gimkit Quiz Solver — Instant AI Answers | QuizSolver", description: "Gimkit quiz solver Chrome extension. Get instant AI answers for Gimkit live 2D games and assignments. Free to install — never miss a question." },
+      stepsTitle: "How to use on Gimkit",
+      steps: ["Enter your Gimkit game or solo assignment", "Click the QuizSolver icon or press Alt+Q", "Review the AI answer suggestion and pick the right tile immediately"],
+      features: ["Rapid detection of Gimkit question prompts", "Compatible with 2D game modes and classic quizzes", "Hint mode support for discreet learning"],
+      keywordSections: [
+        { title: "Maximize Gimkit rewards", text: "Never lose your answer streak again. QuizSolver identifies the correct answer immediately so you earn maximum cash per round." }
+      ],
+      faq: [
+        { question: "Does QuizSolver work in 2D game modes?", answer: "Yes, whenever a question prompt appears on your screen, QuizSolver parses the prompt and highlights the winning answer." }
+      ]
+    },
+    edpuzzle: {
+      platformName: "Edpuzzle",
+      shortName: "Edpuzzle",
+      badge: "Edpuzzle Video AI",
+      title: "Edpuzzle Answers & Quiz Solver — Video Question Assistant",
+      subtitle: "Get instant AI answers for embedded video questions on Edpuzzle without scrubbing or rewatching.",
+      meta: { title: "Edpuzzle Answers & Quiz Solver — AI Video Assistant | QuizSolver", description: "Edpuzzle answers Chrome extension. Get instant AI answers to embedded video quiz questions on Edpuzzle. Supports multiple choice and open questions." },
+      stepsTitle: "How to use on Edpuzzle",
+      steps: ["Open your Edpuzzle video assignment", "When the video pauses at a question checkpoint, click QuizSolver", "Review the AI answer suggestion and comprehensive explanation"],
+      features: ["Reads paused video question checkpoints", "Handles multiple-choice and open-ended questions", "Detailed concept explanations to master the lesson"],
+      keywordSections: [
+        { title: "Understand video assessments faster", text: "Edpuzzle questions can be tricky when videos are long. QuizSolver analyzes the question checkpoint and explains the underlying concept clearly." }
+      ],
+      faq: [
+        { question: "Does it work when video scrubbing is locked?", answer: "Yes! QuizSolver evaluates the question currently paused on your screen without needing to manipulate the video timeline." }
+      ]
+    },
+    mentimeter: {
+      platformName: "Mentimeter",
+      shortName: "Mentimeter",
+      badge: "Mentimeter Live",
+      title: "Mentimeter Quiz Solver — Live Polls & Presentation Answers",
+      subtitle: "Answer live Mentimeter audience polls and timed presentation quizzes with real-time AI assistance.",
+      meta: { title: "Mentimeter Quiz Solver — Live Voting & Quiz Answers | QuizSolver", description: "Mentimeter quiz solver Chrome extension. Real-time AI answers for Mentimeter audience questions, live quizzes and presentations." },
+      stepsTitle: "How to use with Mentimeter",
+      steps: ["Join the Mentimeter presentation on menti.com", "Activate QuizSolver when the quiz question appears on screen", "Select the AI-suggested option before the timer expires"],
+      features: ["Real-time polling answer detection", "Fast processing for strict voting countdowns", "Clear explanations for key presentation topics"],
+      keywordSections: [
+        { title: "Ace live audience quizzes", text: "Mentimeter tests often award points for speed and accuracy. QuizSolver reads the active question and voting choices in real time." }
+      ],
+      faq: [
+        { question: "Does it work on menti.com participant screens?", answer: "Yes, QuizSolver reads question prompts and voting buttons on both menti.com and full presentation screens." }
+      ]
+    },
+    brightspace: {
+      platformName: "Brightspace D2L",
+      shortName: "Brightspace",
+      badge: "Brightspace LMS",
+      title: "Brightspace Quiz Solver — AI Answers for D2L Assessments",
+      subtitle: "Instant AI answers and comprehensive explanations for D2L Brightspace college and university quizzes.",
+      meta: { title: "Brightspace Quiz Solver — AI Answers for D2L LMS | QuizSolver", description: "Brightspace quiz solver Chrome extension. Instant AI answers and explanations for D2L Brightspace quizzes, midterms and assignments. Free to install." },
+      stepsTitle: "How to use on Brightspace",
+      steps: ["Log into your Brightspace portal and launch your quiz", "Click QuizSolver to scan the active question block", "Review the AI suggestion and reasoning before submitting"],
+      features: ["Compatible with D2L Brightspace assessment layouts", "FocusScan support for math formulas and diagrams", "Auto-saves questions to your study review notes"],
+      keywordSections: [
+        { title: "Succeed on Brightspace exams", text: "D2L Brightspace is used by leading universities worldwide. QuizSolver helps you understand difficult questions and study smarter." }
+      ],
+      faq: [
+        { question: "Does Brightspace detect QuizSolver?", answer: "No, QuizSolver runs client-side in your Chrome browser sandbox and does not interact with LMS monitoring scripts." }
+      ]
+    },
+    schoology: {
+      platformName: "Schoology",
+      shortName: "Schoology",
+      badge: "Schoology Integration",
+      title: "Schoology Quiz Solver — AI Answers & Study Helper",
+      subtitle: "Solve Schoology quizzes, tests and assessments quickly with step-by-step AI explanations.",
+      meta: { title: "Schoology Quiz Solver — AI Answers & Study Helper | QuizSolver", description: "Schoology quiz solver Chrome extension. Get AI answers and detailed study explanations for Schoology LMS assessments. Supports all question formats." },
+      stepsTitle: "How to use with Schoology",
+      steps: ["Open the test or assessment in Schoology", "Press Alt+Q or click the QuizSolver extension icon", "Inspect the suggested answer and submit with confidence"],
+      features: ["Handles Schoology multiple choice, matching and short answer", "Saves difficult questions for later study review", "Hint mode for discreet guidance"],
+      keywordSections: [
+        { title: "Complete Schoology assessments with ease", text: "QuizSolver reads the active question block on Schoology and provides fast, accurate answer recommendations." }
+      ],
+      faq: [
+        { question: "Does it work with Schoology Assessments?", answer: "Yes, QuizSolver supports both classic Schoology quizzes and newer Schoology Assessments modules." }
+      ]
+    },
+    coursera: {
+      platformName: "Coursera",
+      shortName: "Coursera",
+      badge: "Coursera Certification",
+      title: "Coursera Quiz Solver — AI Answers for Graded Assignments",
+      subtitle: "Ace Coursera graded quizzes, practice exams and course assessments with instant AI explanations.",
+      meta: { title: "Coursera Quiz Solver — AI Answers for Graded Quizzes | QuizSolver", description: "Coursera quiz solver Chrome extension. Pass graded assignments, practice quizzes and certificate tests with instant AI explanations. Free to install." },
+      stepsTitle: "How to use on Coursera",
+      steps: ["Open your Coursera graded assignment or practice quiz", "Trigger QuizSolver on the active question", "Understand the deep conceptual reasoning and select the right option"],
+      features: ["Supports complex academic and technical course material", "Detailed step-by-step explanations for deep learning", "Works across multiple assignment attempts"],
+      keywordSections: [
+        { title: "Master Coursera certificates", text: "Professional certifications require thorough understanding. QuizSolver explains every question concept so you truly learn the subject." }
+      ],
+      faq: [
+        { question: "Does it explain why an answer is correct?", answer: "Yes! QuizSolver provides thorough step-by-step explanations so you master the material for professional certifications." }
+      ]
+    },
+    udemy: {
+      platformName: "Udemy",
+      shortName: "Udemy",
+      badge: "Udemy Practice Tests",
+      title: "Udemy Practice Test Solver — AI Exam Preparation",
+      subtitle: "Solve Udemy certification practice exams with AI answers and verify your knowledge before real tests.",
+      meta: { title: "Udemy Practice Test Solver — AI Exam Preparation | QuizSolver", description: "Udemy practice test solver Chrome extension. Get instant AI answers and explanations for Udemy practice exams, AWS, IT and business certifications." },
+      stepsTitle: "How to use on Udemy",
+      steps: ["Start any Udemy practice test or course quiz", "Activate QuizSolver on the current question screen", "Review the verified answer and explanation"],
+      features: ["Optimized for multi-choice IT and certification practice tests", "Explains wrong options to reinforce learning", "Builds custom study reviews in your QuizSolver dashboard"],
+      keywordSections: [
+        { title: "Pass IT certifications on Udemy", text: "Udemy practice exams for AWS, Azure, CompTIA and Cisco can be tough. QuizSolver breaks down each question to guarantee exam readiness." }
+      ],
+      faq: [
+        { question: "Does it work on certification practice exams?", answer: "Yes, it works smoothly on Udemy practice exams for AWS, Cisco, CompTIA, PMP, and hundreds of other subjects." }
+      ]
+    },
+    ispring: {
+      platformName: "iSpring",
+      shortName: "iSpring",
+      badge: "iSpring QuizMaker",
+      title: "iSpring Quiz Solver — AI Answers for SCORM Modules",
+      subtitle: "Solve interactive iSpring Learn and QuizMaker tests with automatic question detection.",
+      meta: { title: "iSpring Quiz Solver — AI Answers for SCORM Modules | QuizSolver", description: "iSpring quiz solver Chrome extension. Instant AI answers for iSpring QuizMaker, iSpring Learn and interactive e-learning modules. Free to install." },
+      stepsTitle: "How to use with iSpring",
+      steps: ["Launch your iSpring course module or test", "Click QuizSolver or use FocusScan if embedded in an iframe", "Receive accurate AI suggestions instantly"],
+      features: ["Works with HTML5 iSpring player interfaces", "FocusScan overcomes iframe and custom player barriers", "Supports drag-and-drop, matching and multiple-choice"],
+      keywordSections: [
+        { title: "Fast iSpring e-learning completion", text: "iSpring modules are standard in corporate training. QuizSolver detects question controls and provides reliable answer guidance." }
+      ],
+      faq: [
+        { question: "What if iSpring is embedded in an iframe?", answer: "QuizSolver seamlessly reads embedded iframes, and FocusScan lets you capture any visual test widget directly." }
+      ]
+    },
+    h5p: {
+      platformName: "H5P",
+      shortName: "H5P",
+      badge: "H5P Interactive",
+      title: "H5P Quiz Solver — AI Answers for Interactive Content",
+      subtitle: "Solve interactive H5P quizzes, drag-and-drop questions and branch scenarios effortlessly.",
+      meta: { title: "H5P Quiz Solver — AI Answers for Interactive Content | QuizSolver", description: "H5P quiz solver Chrome extension. Instant AI answers for H5P interactive quizzes on Moodle, WordPress and university LMS portals. Free to install." },
+      stepsTitle: "How to use on H5P",
+      steps: ["Navigate to any H5P interactive question block", "Click QuizSolver to parse the prompt and interactive choices", "Select the AI-verified answer"],
+      features: ["Compatible with H5P Multiple Choice, Fill in Blanks and True/False", "Works across Moodle, Canvas and custom websites", "Preserves question notes for study review"],
+      keywordSections: [
+        { title: "Effortless H5P activity solving", text: "H5P interactive modules appear across modern learning portals. QuizSolver identifies H5P questions and suggests the correct option in real time." }
+      ],
+      faq: [
+        { question: "Does it support H5P inside Moodle?", answer: "Yes! H5P activities integrated into Moodle, Canvas, or WordPress are fully supported." }
+      ]
+    },
+    typeform: {
+      platformName: "Typeform",
+      shortName: "Typeform",
+      badge: "Typeform Workflow",
+      title: "Typeform Quiz Solver — AI Answers for One-by-One Questions",
+      subtitle: "Solve conversational Typeform assessments and tests with real-time AI assistance.",
+      meta: { title: "Typeform Quiz Solver — AI Answers for Online Quizzes | QuizSolver", description: "Typeform quiz solver Chrome extension. Get instant AI answers for Typeform assessments, surveys and interactive tests. Free to install." },
+      stepsTitle: "How to use with Typeform",
+      steps: ["Open the Typeform quiz link", "When each question card appears, click QuizSolver", "See the suggested choice and press Enter to proceed"],
+      features: ["Adapts to single-question slide transitions", "Reads choices and short-answer prompts cleanly", "Fast response time for seamless navigation"],
+      keywordSections: [
+        { title: "Fluid Typeform answering", text: "Typeform slides forward after every choice. QuizSolver gives you fast, reliable answers to keep your momentum going." }
+      ],
+      faq: [
+        { question: "Does it work with keyboard navigation on Typeform?", answer: "Yes, QuizSolver indicates the correct letter or option so you can advance smoothly with your keyboard." }
+      ]
+    },
+    scorm: {
+      platformName: "SCORM",
+      shortName: "SCORM",
+      badge: "SCORM Packages",
+      title: "SCORM Package Quiz Solver — AI Answers for Corporate LMS",
+      subtitle: "Solve compliance training and corporate SCORM e-learning quizzes with universal AI assistance.",
+      meta: { title: "SCORM Package Quiz Solver — AI Answers for Corporate LMS | QuizSolver", description: "SCORM package quiz solver Chrome extension. Instant AI answers for SCORM 1.2 and SCORM 2004 e-learning modules in corporate LMS portals. Free to install." },
+      stepsTitle: "How to use on SCORM packages",
+      steps: ["Launch the SCORM training module in your LMS", "Click QuizSolver or use FocusScan on the quiz iframe", "Review the AI answer and complete your certification"],
+      features: ["Works inside nested SCORM iframes and pop-up windows", "FocusScan fallback for canvas and proprietary player wrappers", "Guaranteed compliance test review notes"],
+      keywordSections: [
+        { title: "Pass compliance tests without stress", text: "Corporate SCORM packages can be long and tedious. QuizSolver helps you verify answers quickly and complete certifications on time." }
+      ],
+      faq: [
+        { question: "Does it work if SCORM opens in a pop-up window?", answer: "Yes! The QuizSolver extension icon and shortcut work across all opened browser windows and iframes." }
+      ]
     }
   }
 };
@@ -1297,6 +1502,211 @@ const pl: SiteCopy = {
       faq: [
         { question: "Czy wspiera konta szkolne?", answer: "Tak, rozszerzenie działa lokalnie w Twojej przeglądarce, więc nie ma znaczenia, jakiego rodzaju konta Quizizz używasz." }
       ]
+    },
+    blooket: {
+      platformName: "Blooket",
+      shortName: "Blooket",
+      badge: "Blooket na Żywo",
+      title: "Blooket Quiz Solver — AI Odpowiedzi do Gier i Trybów Live",
+      subtitle: "Błyskawiczne odpowiedzi AI w grach na żywo Blooket, trybie Gold Quest, Crypto Hack i zadaniach domowych.",
+      meta: { title: "Blooket Quiz Solver — AI Odpowiedzi do Gier Live | QuizSolver", description: "Rozszerzenie Chrome do Blooket. Natychmiastowe AI odpowiedzi do trybów live, Gold Quest, Crypto Hack i zadań domowych. Darmowa instalacja." },
+      stepsTitle: "Jak używać na Blooket",
+      steps: ["Dołącz do gry na żywo Blooket lub otwórz zadanie domowe.", "Uruchom QuizSolver skrótem Alt+Q lub kliknij ikonę rozszerzenia.", "Zobacz podświetloną odpowiedź AI w czasie rzeczywistym i wybierz ją przed upływem czasu."],
+      features: ["Błyskawiczne wykrywanie kart pytań Blooket", "Ekspresowy czas odpowiedzi dla gier z dynamicznym timerem", "Wsparcie dla wszystkich trybów (Gold Quest, Crypto Hack, Tower Defense)"],
+      keywordSections: [
+        { title: "Wygrywaj w grach Blooket dzięki AI", text: "Niezależnie od tego, czy rywalizujesz w klasie, czy rozwiązujesz zadanie solo, QuizSolver analizuje pytania i podpowiada wygrywające opcje w ułamku sekundy." }
+      ],
+      faq: [
+        { question: "Czy działa w dynamicznych grach na czas?", answer: "Tak, QuizSolver przetwarza widoczne pytania w ułamku sekundy, dzięki czemu zdążysz odpowiedzieć przed upływem timera." },
+        { question: "Czy gra może wykryć rozszerzenie?", answer: "Nie. QuizSolver działa w bezpiecznej, izolowanej piaskownicy rozszerzenia Chrome i nie ingeruje w kod gry." }
+      ]
+    },
+    gimkit: {
+      platformName: "Gimkit",
+      shortName: "Gimkit",
+      badge: "Gimkit Szybki Solver",
+      title: "Gimkit Quiz Solver — Błyskawiczne AI Odpowiedzi i Strategia",
+      subtitle: "Rozwiązuj pytania na Gimkit z natychmiastowymi odpowiedziami AI i zdobywaj maksymalne nagrody w każdym trybie 2D.",
+      meta: { title: "Gimkit Quiz Solver — Błyskawiczne AI Odpowiedzi | QuizSolver", description: "Rozszerzenie Chrome do Gimkit. Natychmiastowe AI odpowiedzi do gier Gimkit 2D i zadań. Darmowa instalacja — nigdy nie pomyl pytania." },
+      stepsTitle: "Jak używać na Gimkit",
+      steps: ["Wejdź do gry Gimkit lub otwórz zadanie domowe.", "Kliknij ikonę QuizSolver lub naciśnij Alt+Q.", "Przeanalizuj odpowiedź AI i wybierz właściwy kafelek bez zwłoki."],
+      features: ["Błyskawiczne rozpoznawanie pytań Gimkit", "Pełna kompatybilność z grami 2D i klasycznymi quizami", "Wsparcie dla trybu podpowiedzi (Hint Mode) do dyskretnej nauki"],
+      keywordSections: [
+        { title: "Maksymalizuj nagrody i serie w Gimkit", text: "Utrzymaj swoją passę poprawnych odpowiedzi. QuizSolver identyfikuje właściwą opcję, pomagając zdobywać maksymalne fundusze w każdej rundzie." }
+      ],
+      faq: [
+        { question: "Czy działa w trybach z mapą 2D?", answer: "Tak, za każdym razem gdy na ekranie pojawi się okno z pytaniem, QuizSolver analizuje treść i wskazuje trafną odpowiedź." }
+      ]
+    },
+    edpuzzle: {
+      platformName: "Edpuzzle",
+      shortName: "Edpuzzle",
+      badge: "Edpuzzle Asystent Wideo",
+      title: "Edpuzzle Odpowiedzi & Quiz Solver — Asystent do Filmów Edukacyjnych",
+      subtitle: "Natychmiastowe odpowiedzi AI do pytań wstrzymujących wideo na Edpuzzle bez mozolnego przewijania.",
+      meta: { title: "Edpuzzle Odpowiedzi & Quiz Solver — AI do Filmów | QuizSolver", description: "Rozszerzenie Chrome do Edpuzzle. Natychmiastowe AI odpowiedzi do pytań w filmach edukacyjnych Edpuzzle. Obsługuje pytania otwarte i testowe. Darmowe." },
+      stepsTitle: "Jak używać na Edpuzzle",
+      steps: ["Otwórz zadanie wideo na Edpuzzle.", "Gdy odtwarzacz zatrzyma się na pytaniu sprawdzającym, uruchom QuizSolver.", "Zapoznaj się z sugerowaną odpowiedzią i logicznym wyjaśnieniem tematu."],
+      features: ["Automatyczny odczyt pytań z zatrzymanego wideo", "Wsparcie dla pytań wielokrotnego wyboru oraz otwartych", "Szczegółowe wyjaśnienia ułatwiające zrozumienie lekcji"],
+      keywordSections: [
+        { title: "Szybsze i skuteczniejsze lekcje wideo", text: "Pytania w długich filmach potrafią sprawiać kłopoty. QuizSolver pomaga szybko zweryfikować wiedzę i zrozumieć omawiane pojęcia." }
+      ],
+      faq: [
+        { question: "Czy działa przy zablokowanym przewijaniu wideo?", answer: "Tak! QuizSolver czyta treść pytania aktualnie widocznego na zatrzymanym ekranie bez potrzeby manipulowania osią czasu filmu." }
+      ]
+    },
+    mentimeter: {
+      platformName: "Mentimeter",
+      shortName: "Mentimeter",
+      badge: "Mentimeter na Żywo",
+      title: "Mentimeter Quiz Solver — Głosowania i Quizy w Prezentacjach",
+      subtitle: "Odpowiadaj na żywo w ankietach i quizach Mentimeter z natychmiastowym wsparciem sztucznej inteligencji.",
+      meta: { title: "Mentimeter Quiz Solver — AI do Prezentacji na Żywo | QuizSolver", description: "Rozszerzenie Chrome do Mentimeter. AI odpowiedzi w czasie rzeczywistym do quizów publiczności, ankiet i interaktywnych prezentacji Mentimeter." },
+      stepsTitle: "Jak używać z Mentimeter",
+      steps: ["Dołącz do prezentacji na menti.com.", "Uruchom QuizSolver, gdy na ekranie pojawi się pytanie testowe.", "Wybierz opcję rekomendowaną przez AI przed zakończeniem odliczania."],
+      features: ["Błyskawiczna analiza pytań z ankiet na żywo", "Ekspresowe działanie dopasowane do krótkiego czasu na głosowanie", "Przejrzyste wyjaśnienia kluczowych pojęć"],
+      keywordSections: [
+        { title: "Wygrywaj w quizach na prezentacjach", text: "W quizach Mentimeter punkty zależą od poprawności i czasu. QuizSolver pozwala w ułamku sekundy poznać prawidłową odpowiedź." }
+      ],
+      faq: [
+        { question: "Czy działa na ekranie uczestnika menti.com?", answer: "Tak, QuizSolver odczytuje pytania i przyciski wyboru zarówno na urządzeniach uczestników menti.com, jak i pełnych slajdach prezentacji." }
+      ]
+    },
+    brightspace: {
+      platformName: "Brightspace D2L",
+      shortName: "Brightspace",
+      badge: "Brightspace LMS",
+      title: "Brightspace Quiz Solver — AI Odpowiedzi dla Testów D2L",
+      subtitle: "Natychmiastowe odpowiedzi AI i wyczerpujące wyjaśnienia do kolokwiów i quizów na platformie D2L Brightspace.",
+      meta: { title: "Brightspace Quiz Solver — AI Odpowiedzi dla D2L LMS | QuizSolver", description: "Rozszerzenie Chrome do Brightspace D2L. Błyskawiczne AI odpowiedzi i objaśnienia do testów i egzaminów na Brightspace LMS. Darmowa instalacja." },
+      stepsTitle: "Jak używać na Brightspace",
+      steps: ["Zaloguj się do portalu Brightspace i otwórz swój quiz.", "Kliknij QuizSolver, aby przeskanować aktywny blok pytania.", "Przeanalizuj odpowiedź AI i uzasadnienie przed zatwierdzeniem testu."],
+      features: ["Pełna kompatybilność z układami pytań D2L Brightspace", "Tryb FocusScan dla wzorów matematycznych i wykresów", "Automatyczne budowanie bazy pytań do powtórek"],
+      keywordSections: [
+        { title: "Pewność na egzaminach Brightspace", text: "D2L Brightspace to popularny system na wielu uczelniach. QuizSolver ułatwia zrozumienie skomplikowanych zadań i bezstresowe zaliczanie materiału." }
+      ],
+      faq: [
+        { question: "Czy system Brightspace wykrywa rozszerzenie?", answer: "Nie. QuizSolver działa po stronie klienta w przeglądarce i nie wchodzi w interakcję ze skryptami monitorującymi platformy." }
+      ]
+    },
+    schoology: {
+      platformName: "Schoology",
+      shortName: "Schoology",
+      badge: "Wsparcie Schoology",
+      title: "Schoology Quiz Solver — AI Odpowiedzi i Asystent Nauki",
+      subtitle: "Rozwiązuj sprawdziany i testy na Schoology szybciej dzięki wyjaśnieniom krok po kroku od AI.",
+      meta: { title: "Schoology Quiz Solver — AI Odpowiedzi dla Schoology | QuizSolver", description: "Rozszerzenie Chrome do Schoology LMS. Błyskawiczne odpowiedzi AI i pomoc w nauce do sprawdzianów Schoology. Obsługuje wszystkie formaty pytań." },
+      stepsTitle: "Jak używać na Schoology",
+      steps: ["Otwórz test lub zadanie w systemie Schoology.", "Naciśnij Alt+Q lub kliknij ikonę rozszerzenia QuizSolver.", "Sprawdź podpowiedź i ze spokojem wyślij zweryfikowaną odpowiedź."],
+      features: ["Obsługa pytań wyboru, dopasowywania i krótkich odpowiedzi", "Zapisywanie trudnych pytań na później do powtórki", "Dyskretny tryb podpowiedzi (Hint Mode)"],
+      keywordSections: [
+        { title: "Bezstresowe sprawdziany na Schoology", text: "QuizSolver precyzyjnie czyta widoczne bloki pytań na platformie Schoology i dostarcza logiczne podpowiedzi w czasie rzeczywistym." }
+      ],
+      faq: [
+        { question: "Czy wspiera moduł Schoology Assessments?", answer: "Tak, QuizSolver bez problemu radzi sobie zarówno z klasycznymi testami Schoology, jak i nowszymi modułami Assessments." }
+      ]
+    },
+    coursera: {
+      platformName: "Coursera",
+      shortName: "Coursera",
+      badge: "Certyfikaty Coursera",
+      title: "Coursera Quiz Solver — AI Odpowiedzi do Testów i Zadań",
+      subtitle: "Zaliczaj oceniane quizy, testy wiedzy i zadania certyfikacyjne na Coursera z pomocą sztucznej inteligencji.",
+      meta: { title: "Coursera Quiz Solver — AI Odpowiedzi do Testów | QuizSolver", description: "Rozszerzenie Chrome do Coursera. Zdawaj oceniane zadania i testy certyfikacyjne z wyjaśnieniami AI krok po kroku. Darmowa instalacja." },
+      stepsTitle: "Jak używać na Coursera",
+      steps: ["Otwórz oceniany quiz lub sprawdzian wiedzy na Coursera.", "Uruchom QuizSolver przy aktywnym pytaniu.", "Zrozum uzasadnienie merytoryczne i zaznacz trafną odpowiedź."],
+      features: ["Wsparcie dla zaawansowanych treści akademickich i technicznych", "Szczegółowe wyjaśnienia ułatwiające autentyczną naukę", "Przydatne przy kolejnych podejściach do testów"],
+      keywordSections: [
+        { title: "Zdobywaj certyfikaty Coursera z pewnością", text: "Certyfikaty zawodowe wymagają rzetelnego zrozumienia materiału. QuizSolver objaśnia logikę każdego pytania, wzmacniając wiedzę." }
+      ],
+      faq: [
+        { question: "Czy AI wyjaśnia dlaczego dana odpowiedź jest poprawna?", answer: "Tak! QuizSolver zapewnia szczegółowe wyjaśnienia krok po kroku, dzięki czemu z łatwością opanujesz materiał kursu." }
+      ]
+    },
+    udemy: {
+      platformName: "Udemy",
+      shortName: "Udemy",
+      badge: "Testy Próbne Udemy",
+      title: "Udemy Practice Test Solver — AI Przygotowanie do Egzaminów",
+      subtitle: "Rozwiązuj testy próbne na Udemy z AI odpowiedziami i upewnij się, że zdasz oficjalny certyfikat.",
+      meta: { title: "Udemy Practice Test Solver — AI Odpowiedzi do Testów | QuizSolver", description: "Rozszerzenie Chrome do Udemy. Natychmiastowe AI odpowiedzi i uzasadnienia do testów próbnych na Udemy (AWS, IT, biznes). Darmowa instalacja." },
+      stepsTitle: "Jak używać na Udemy",
+      steps: ["Rozpocznij test próbny lub quiz w kursie na Udemy.", "Aktywuj QuizSolver na ekranie aktualnego zadania.", "Przejrzyj zweryfikowaną odpowiedź oraz objaśnienia wszystkich opcji."],
+      features: ["Zoptymalizowany pod testy certyfikacyjne z branży IT i biznesu", "Wyjaśnia błędne dystraktory, aby utrwalić wiedzę", "Umożliwia tworzenie własnych notatek powtórkowych w panelu"],
+      keywordSections: [
+        { title: "Zaliczaj egzaminy IT na Udemy", text: "Testy próbne do certyfikacji AWS, Cisco, CompTIA czy PMP bywają trudne. QuizSolver rozkłada pytania na czynniki pierwsze." }
+      ],
+      faq: [
+        { question: "Czy działa na oficjalnych testach próbnych?", answer: "Tak, rozszerzenie idealnie sprawdza się w testach próbnych z AWS, Cisco, PMI i setek innych zagadnień na Udemy." }
+      ]
+    },
+    ispring: {
+      platformName: "iSpring",
+      shortName: "iSpring",
+      badge: "iSpring QuizMaker",
+      title: "iSpring Quiz Solver — AI Odpowiedzi do Modułów SCORM",
+      subtitle: "Rozwiązuj interaktywne testy i szkolenia iSpring Learn oraz QuizMaker z automatycznym wykrywaniem pytań.",
+      meta: { title: "iSpring Quiz Solver — AI Odpowiedzi do Szkoleń iSpring | QuizSolver", description: "Rozszerzenie Chrome do iSpring. Natychmiastowe AI odpowiedzi do testów iSpring QuizMaker, iSpring Learn i e-learningu. Darmowe." },
+      stepsTitle: "Jak używać z iSpring",
+      steps: ["Uruchom moduł szkoleniowy lub test iSpring w swojej przeglądarce.", "Kliknij QuizSolver lub użyj FocusScan, jeśli test znajduje się w ramce.", "Odbierz precyzyjną podpowiedź od AI i zalicz szkolenie."],
+      features: ["Zgodność z odtwarzaczami HTML5 iSpring", "FocusScan przełamuje bariery ramek i nietypowych playerów", "Wsparcie dla pytań wyboru, dopasowań i prawda/fałsz"],
+      keywordSections: [
+        { title: "Błyskawiczne zaliczanie szkoleń iSpring", text: "Moduły iSpring są standardem w szkoleniach firmowych. QuizSolver wykrywa kontrolki pytań i zapewnia pewne podpowiedzi." }
+      ],
+      faq: [
+        { question: "Co jeśli test iSpring jest osadzony w iframe?", answer: "QuizSolver bez problemu analizuje ramki iframe, a funkcja FocusScan pozwala zaznaczyć dowolny widoczny obszar ekranu." }
+      ]
+    },
+    h5p: {
+      platformName: "H5P",
+      shortName: "H5P",
+      badge: "Interaktywne H5P",
+      title: "H5P Quiz Solver — AI Odpowiedzi do Treści Interaktywnych",
+      subtitle: "Rozwiązuj interaktywne zadania H5P, pytania testowe i ćwiczenia w Moodle i na stronach kursów.",
+      meta: { title: "H5P Quiz Solver — AI Odpowiedzi do Zadań H5P | QuizSolver", description: "Rozszerzenie Chrome do H5P. Błyskawiczne odpowiedzi AI do interaktywnych zadań H5P na platformach Moodle, Canvas i WordPress. Darmowa instalacja." },
+      stepsTitle: "Jak używać na H5P",
+      steps: ["Przejdź do dowolnego interaktywnego bloku zadania H5P.", "Kliknij QuizSolver, aby przeanalizować treść i opcje odpowiedzi.", "Zaznacz odpowiedź zweryfikowaną przez sztuczną inteligencję."],
+      features: ["Zgodność z typami pytań Multiple Choice, Fill in Blanks i True/False", "Działa w systemach Moodle, Canvas i na niezależnych stronach", "Zapisywanie notatek do późniejszej nauki"],
+      keywordSections: [
+        { title: "Sprawne rozwiązywanie ćwiczeń H5P", text: "Moduły H5P są powszechne w nowoczesnej edukacji. QuizSolver natychmiast identyfikuje strukturę pytań H5P i podaje właściwy wynik." }
+      ],
+      faq: [
+        { question: "Czy działa z zadaniami H5P w Moodle?", answer: "Tak! Moduły H5P zintegrowane z Moodle, Canvas czy WordPress są w pełni obsługiwane." }
+      ]
+    },
+    typeform: {
+      platformName: "Typeform",
+      shortName: "Typeform",
+      badge: "Typeform Workflow",
+      title: "Typeform Quiz Solver — AI Odpowiedzi do Formularzy Krok po Kroku",
+      subtitle: "Rozwiązuj ankiety i testy wiedzy na Typeform w trybie konwersacyjnym z natychmiastową pomocą AI.",
+      meta: { title: "Typeform Quiz Solver — AI Odpowiedzi do Quizów Typeform | QuizSolver", description: "Rozszerzenie Chrome do Typeform. Natychmiastowe AI odpowiedzi do interaktywnych quizów i sprawdzianów Typeform. Darmowa instalacja." },
+      stepsTitle: "Jak używać na Typeform",
+      steps: ["Otwórz link do quizu Typeform w przeglądarce.", "Gdy na ekranie pojawi się karta z pytaniem, aktywuj QuizSolver.", "Zobacz wskazaną opcję i przejdź do następnego pytania klawiszem Enter."],
+      features: ["Idealne dopasowanie do płynnych przejść między slajdami", "Precyzyjny odczyt opcji wyboru i pól tekstowych", "Ekspresowy czas odpowiedzi gwarantujący płynność testu"],
+      keywordSections: [
+        { title: "Płynne rozwiązywanie quizów Typeform", text: "Typeform wyświetla pytania pojedynczo na pełnym ekranie. QuizSolver podpowiada właściwe opcje w locie." }
+      ],
+      faq: [
+        { question: "Czy współpracuje ze skrótami klawiszowymi?", answer: "Tak, QuizSolver wskazuje poprawną literę lub wariant, więc możesz płynnie przechodzić dalej klawiaturą." }
+      ]
+    },
+    scorm: {
+      platformName: "SCORM",
+      shortName: "SCORM",
+      badge: "Pakiety SCORM",
+      title: "SCORM Package Quiz Solver — AI Odpowiedzi do Szkoleń Korporacyjnych",
+      subtitle: "Rozwiązuj testy BHP, szkolenia zgodności i pakiety SCORM na firmowych portalach LMS z uniwersalnym asystentem AI.",
+      meta: { title: "SCORM Quiz Solver — AI Odpowiedzi do Pakietów SCORM | QuizSolver", description: "Rozszerzenie Chrome do SCORM. AI odpowiedzi do modułów e-learningowych SCORM 1.2 i 2004 na platformach korporacyjnych. Darmowa instalacja." },
+      stepsTitle: "Jak używać przy pakietach SCORM",
+      steps: ["Uruchom moduł szkoleniowy SCORM w swoim systemie LMS.", "Kliknij QuizSolver lub skorzystaj z FocusScan na ramce testu.", "Sprawdź poprawną odpowiedź i bez trudu uzyskaj certyfikat ukończenia."],
+      features: ["Obsługa zagnieżdżonych ramek iframe i wyskakujących okien", "FocusScan radzi sobie z nietypowymi playerami i grafikami", "Pewność zaliczenia obowiązkowych testów pracowniczych"],
+      keywordSections: [
+        { title: "Bezstresowe zaliczanie szkoleń pracowniczych", text: "Obowiązkowe szkolenia SCORM bywają długie i żmudne. QuizSolver pozwala sprawnie zweryfikować odpowiedzi i zaoszczędzić cenny czas." }
+      ],
+      faq: [
+        { question: "Czy działa, gdy moduł otwiera się w osobnym oknie?", answer: "Tak! Rozszerzenie QuizSolver działa we wszystkich otwartych oknach i kartach przeglądarki." }
+      ]
     }
   }
 };
@@ -1319,6 +1729,18 @@ export type PageKey =
   | 'socrative'
   | 'kahoot'
   | 'quizizz'
+  | 'blooket'
+  | 'gimkit'
+  | 'edpuzzle'
+  | 'mentimeter'
+  | 'brightspace'
+  | 'schoology'
+  | 'coursera'
+  | 'udemy'
+  | 'ispring'
+  | 'h5p'
+  | 'typeform'
+  | 'scorm'
   | 'privacy'
   | 'terms'
   | 'contact'
@@ -2775,7 +3197,19 @@ export const PLATFORM_PAGE_KEYS: PageKey[] = [
   'quizlet',
   'socrative',
   'kahoot',
-  'quizizz'
+  'quizizz',
+  'blooket',
+  'gimkit',
+  'edpuzzle',
+  'mentimeter',
+  'brightspace',
+  'schoology',
+  'coursera',
+  'udemy',
+  'ispring',
+  'h5p',
+  'typeform',
+  'scorm'
 ];
 
 export const PAGE_SLUGS: Record<PageKey, string> = {
@@ -2795,6 +3229,18 @@ export const PAGE_SLUGS: Record<PageKey, string> = {
   socrative: 'socrative-quiz-solver',
   kahoot: 'kahoot-ai-bot',
   quizizz: 'quizizz-solver',
+  blooket: 'blooket-quiz-solver',
+  gimkit: 'gimkit-quiz-solver',
+  edpuzzle: 'edpuzzle-quiz-solver',
+  mentimeter: 'mentimeter-quiz-solver',
+  brightspace: 'brightspace-quiz-solver',
+  schoology: 'schoology-quiz-solver',
+  coursera: 'coursera-quiz-solver',
+  udemy: 'udemy-quiz-solver',
+  ispring: 'ispring-quiz-solver',
+  h5p: 'h5p-quiz-solver',
+  typeform: 'typeform-quiz-solver',
+  scorm: 'scorm-quiz-solver',
   privacy: 'privacy',
   cookies: 'cookies',
   terms: 'terms',
@@ -2828,6 +3274,18 @@ export const INDEXED_PAGE_KEYS: PageKey[] = [
   'socrative',
   'kahoot',
   'quizizz',
+  'blooket',
+  'gimkit',
+  'edpuzzle',
+  'mentimeter',
+  'brightspace',
+  'schoology',
+  'coursera',
+  'udemy',
+  'ispring',
+  'h5p',
+  'typeform',
+  'scorm',
   'privacy',
   'terms',
   'contact',

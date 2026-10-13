@@ -14,7 +14,8 @@ import {
   localeOption,
   pageData,
   pathFor,
-  platformEntries
+  platformEntries,
+  PLATFORM_PAGE_KEYS
 } from './site-content';
 
 /* ─── Noindex pages ──────────────────────────────────────────────────────────── */
@@ -40,11 +41,6 @@ const socialImageUrl = (slug?: string) =>
   slug && PLATFORM_SOCIAL_IMAGE_SLUGS.has(slug)
     ? assetUrl(`/og-social/${slug}.png`)
     : assetUrl('/og-image.png');
-
-const PLATFORM_PAGE_KEYS = [
-  'quizSolverAi', 'testportal', 'moodle', 'canvas', 'googleForms',
-  'microsoftForms', 'blackboard', 'quizlet', 'socrative', 'kahoot', 'quizizz'
-];
 
 const categoryHasPosts = (locale: Locale, slug: string): boolean =>
   BLOG_POSTS.some(post => post.locale === locale && post.category === slug);

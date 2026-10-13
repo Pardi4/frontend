@@ -111,8 +111,14 @@ import { ShellComponent, trackGa4Event } from './shell.component';
               <!-- Price & Unit Rate Calculation -->
               <div class="pack-pricing-block">
                 <div class="pack-price-row">
-                  <span class="pack-price">{{ pack.price }}</span>
-                  <span *ngIf="getApproxCurrencyPrice(pack.price)" class="pack-price-approx">{{ getApproxCurrencyPrice(pack.price) }}</span>
+                  <ng-container *ngIf="locale === 'pl'">
+                    <span class="pack-price">{{ getDpayPrice(pack.id, false) }}</span>
+                    <span class="pack-price-approx">BLIK</span>
+                  </ng-container>
+                  <ng-container *ngIf="locale !== 'pl'">
+                    <span class="pack-price">{{ pack.price }}</span>
+                    <span *ngIf="getApproxCurrencyPrice(pack.price)" class="pack-price-approx">{{ getApproxCurrencyPrice(pack.price) }}</span>
+                  </ng-container>
                 </div>
                 <div class="pack-rate text-secondary" [class.highlight]="pack.id === 'popular' || pack.id === 'pro'">
                   {{ pack.rateInfo[locale] }}
@@ -238,8 +244,14 @@ import { ShellComponent, trackGa4Event } from './shell.component';
                 <span class="summary-pack-credits">{{ pack.credits }} {{ copy.creditsUnitLabel || 'credits' }}</span>
               </div>
               <div class="summary-pack-price">
-                <span class="price-usd">{{ pack.price }}</span>
-                <span class="price-local" *ngIf="getApproxCurrencyPrice(pack.price)">({{ getApproxCurrencyPrice(pack.price) }})</span>
+                <ng-container *ngIf="selectedProvider() === 'dpay'">
+                  <span class="price-usd text-gradient-strong">{{ getDpayPrice(pack.id) }}</span>
+                  <span class="price-local">(BLIK / przelew w PLN)</span>
+                </ng-container>
+                <ng-container *ngIf="selectedProvider() !== 'dpay'">
+                  <span class="price-usd">{{ pack.price }}</span>
+                  <span class="price-local" *ngIf="getApproxCurrencyPrice(pack.price)">({{ getApproxCurrencyPrice(pack.price) }})</span>
+                </ng-container>
               </div>
             </div>
 
@@ -1335,12 +1347,24 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
   protected readonly selectedProvider = signal<'dpay' | 'lemonsqueezy'>('lemonsqueezy');
 
   // Feature flag for DPay (BLIK / szybki przelew).
-  // Kept false until dpay merchant verification approval.
-  // When enabled, it will ONLY be displayed if locale === 'pl'.
-  readonly enableDpayBlik = false;
+  // Active for Polish locale users (PLN payments).
+  readonly enableDpayBlik = true;
 
   get isDpayAvailable(): boolean {
     return this.enableDpayBlik && this.locale === 'pl';
+  }
+
+  protected getDpayPrice(packId: string, applyPromo: boolean = true): string {
+    const prices: Record<string, number> = {
+      starter: 4.99,
+      popular: 14.99,
+      pro: 39.00
+    };
+    let amount = prices[packId] || 14.99;
+    if (applyPromo && this.isFirstPurchasePromoEligible) {
+      amount = Math.round(amount * 0.90 * 100) / 100;
+    }
+    return `${amount.toFixed(2).replace('.', ',')} zł`;
   }
   protected readonly digitalConsent = signal(false);
   protected readonly pathFor = pathFor;
@@ -1580,7 +1604,7 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
       pl: [
         { icon: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18.178 8c5.096 0 5.096 8 0 8-5.095 0-7.133-8-12.739-8-4.585 0-4.585 8 0 8 5.606 0 7.644-8 12.74-8z"/></svg>', text: 'Kredyty nigdy nie wygasają' },
         { icon: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M4.93 4.93l14.14 14.14"/></svg>', text: 'Zero abonamentów i ukrytych opłat' },
-        { icon: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>', text: 'Natychmiastowe doładowanie konta' }
+        { icon: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>', text: 'Płatność BLIK i szybki przelew' }
       ],
       de: [
         { icon: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18.178 8c5.096 0 5.096 8 0 8-5.095 0-7.133-8-12.739-8-4.585 0-4.585 8 0 8 5.606 0 7.644-8 12.74-8z"/></svg>', text: 'Credits verfallen nie' },
@@ -1661,7 +1685,7 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
       },
       rateInfo: {
         en: '~$0.02 / answer',
-        pl: '~$0.02 za odpowiedź',
+        pl: 'ok. 0,05 zł za odpowiedź (BLIK)',
         de: '~$0.02 pro Antwort',
         es: '~$0.02 por respuesta',
         fr: '~$0.02 par réponse',
@@ -1764,7 +1788,7 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
       },
       rateInfo: {
         en: '~$0.01 / answer (Save 50%)',
-        pl: '~$0.01 za odpowiedź (50% taniej)',
+        pl: 'ok. 0,03 zł za odpowiedź (50% taniej)',
         de: '~$0.01 pro Antwort (50% Ersparnis)',
         es: '~$0.01 por respuesta (Ahorra 50%)',
         fr: '~$0.01 par réponse (50% d\'économie)',
@@ -1853,7 +1877,7 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
       },
       rateInfo: {
         en: '<$0.008 / answer (Lowest rate)',
-        pl: '<$0.008 za odpowiedź (Największy rabat)',
+        pl: 'ok. 0,02 zł za odpowiedź (Największy rabat)',
         de: '<$0.008 pro Antwort (Bester Rabatt)',
         es: '<$0.008 por respuesta (Mayor ahorro)',
         fr: '<$0.008 par réponse (Plus grosse remise)',

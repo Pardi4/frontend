@@ -128,9 +128,97 @@ export class AnimatedNumberComponent implements OnInit, OnChanges, OnDestroy {
               <span class="rating-text">{{ text.hero.socialProof }}</span>
             </div>
 
-            
-            
+            <!-- Interactive Hero Mini Solver Demo -->
+            <div class="hero-mini-demo glass delay-4" *ngIf="miniDemoData as demo" aria-label="Interactive AI Quiz Solver Demo">
+              <div class="mini-demo-header">
+                <div class="mini-demo-badge">
+                  <span class="pulse-dot"></span>
+                  <span>{{ demo.badge }}</span>
+                </div>
+                <div class="mini-demo-controls">
+                  <label class="hint-toggle-label" [title]="demo.hintTooltip">
+                    <input type="checkbox" [checked]="miniDemoHintMode()" (change)="toggleMiniDemoHint()" />
+                    <span class="toggle-slider"></span>
+                    <span class="toggle-text">{{ demo.hintToggle }}</span>
+                  </label>
+                </div>
+              </div>
 
+              <div class="mini-demo-quiz-card">
+                <div class="quiz-kicker">
+                  <span class="subject-tag">{{ demo.kicker }}</span>
+                  <span class="timer-simulation">{{ demo.timer }}</span>
+                </div>
+                <h3 class="quiz-question-title">{{ demo.question }}</h3>
+                
+                <div class="quiz-options-list">
+                  <button 
+                    type="button" 
+                    *ngFor="let opt of demo.options; let i = index"
+                    class="quiz-option-btn"
+                    [class.selected]="miniDemoSelectedOption() === i"
+                    [class.correct-highlight]="miniDemoSolved() && i === 1 && !miniDemoHintMode()"
+                    [class.hint-highlight]="miniDemoSolved() && i === 1 && miniDemoHintMode()"
+                    (click)="selectMiniDemoOption(i)"
+                  >
+                    <span class="opt-letter">{{ ['A', 'B', 'C', 'D'][i] }}</span>
+                    <span class="opt-text">{{ opt }}</span>
+                    <span class="opt-status-tag" *ngIf="miniDemoSolved() && i === 1">
+                      {{ miniDemoHintMode() ? ('💡 ' + demo.hintTag) : ('✓ ' + demo.correctTag) }}
+                    </span>
+                  </button>
+                </div>
+
+                <!-- AI Explanation Box when solved -->
+                <div class="mini-demo-explanation glass" *ngIf="miniDemoSolved()">
+                  <div class="exp-header">
+                    <span class="exp-icon">💡</span>
+                    <strong>{{ demo.expTitle }}</strong>
+                  </div>
+                  <p class="exp-body">{{ demo.explanation }}</p>
+                </div>
+
+                <!-- Action Bar -->
+                <div class="mini-demo-footer">
+                  <div class="footer-left">
+                    <button 
+                      type="button" 
+                      class="btn btn-primary btn-sm solve-trigger-btn" 
+                      (click)="solveMiniDemo()" 
+                      [disabled]="miniDemoSolving()"
+                    >
+                      <span class="spinner-inline" *ngIf="miniDemoSolving()"></span>
+                      <span *ngIf="!miniDemoSolving()">⚡ {{ demo.solveBtn }}</span>
+                      <span *ngIf="miniDemoSolving()">{{ demo.solvingBtn }}</span>
+                    </button>
+                    <button 
+                      type="button" 
+                      class="btn btn-ghost btn-sm reset-demo-btn" 
+                      *ngIf="miniDemoSolved()" 
+                      (click)="resetMiniDemo()"
+                    >
+                      {{ demo.resetBtn }}
+                    </button>
+                  </div>
+
+                  <div class="footer-right">
+                    <a 
+                      [href]="storeUrl" 
+                      target="_blank" 
+                      rel="noopener" 
+                      class="mini-demo-install-link"
+                      (click)="trackCta('mini_demo_install_click')"
+                    >
+                      <span>{{ demo.installCta }}</span>
+                    </a>
+                  </div>
+                </div>
+
+                <div class="mini-demo-works-tag" *ngIf="demo.worksOnTag">
+                  <span>✦ {{ demo.worksOnTag }}</span>
+                </div>
+              </div>
+            </div>
             <div class="hero-proof-grid delay-5" aria-label="QuizSolver proof points">
               <div class="hero-proof-card glass" *ngFor="let item of text.hero.proof" [class.clickable-card]="item.href" (click)="item.href ? navigateTo(item.href) : null">
                 <span class="proof-content">
@@ -518,6 +606,279 @@ export class AnimatedNumberComponent implements OnInit, OnChanges, OnDestroy {
       font-family: var(--font-heading);
       font-weight: 500;
     }
+
+    /* Hero Mini Demo Styles */
+    .hero-mini-demo {
+      width: min(780px, 100%);
+      margin: 1.5rem auto 2.5rem;
+      border-radius: 18px;
+      padding: 1.35rem 1.5rem;
+      text-align: left;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(15, 23, 42, 0.72);
+      backdrop-filter: blur(20px);
+      box-shadow: 0 16px 48px -8px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(255, 255, 255, 0.06);
+      position: relative;
+      overflow: hidden;
+      z-index: 10;
+    }
+    .mini-demo-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .mini-demo-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      color: #38bdf8;
+      text-transform: uppercase;
+    }
+    .pulse-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #38bdf8;
+      box-shadow: 0 0 8px #38bdf8;
+      animation: pulse 1.8s infinite;
+    }
+    .hint-toggle-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      cursor: pointer;
+      user-select: none;
+    }
+    .hint-toggle-label input {
+      display: none;
+    }
+    .toggle-slider {
+      width: 34px;
+      height: 18px;
+      background: rgba(255, 255, 255, 0.16);
+      border-radius: 20px;
+      position: relative;
+      transition: background 0.2s;
+    }
+    .toggle-slider::after {
+      content: '';
+      position: absolute;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: #fff;
+      top: 2px;
+      left: 2px;
+      transition: transform 0.2s;
+    }
+    .hint-toggle-label input:checked + .toggle-slider {
+      background: #10b981;
+    }
+    .hint-toggle-label input:checked + .toggle-slider::after {
+      transform: translateX(16px);
+    }
+    .quiz-kicker {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.65rem;
+      font-size: 0.8rem;
+    }
+    .subject-tag {
+      color: #94a3b8;
+      font-weight: 600;
+    }
+    .timer-simulation {
+      color: #f59e0b;
+      font-family: monospace;
+      font-weight: 700;
+      background: rgba(245, 158, 11, 0.12);
+      padding: 0.15rem 0.5rem;
+      border-radius: 6px;
+    }
+    .quiz-question-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      line-height: 1.45;
+      color: var(--text-primary);
+      margin-bottom: 1.15rem;
+    }
+    .quiz-options-list {
+      display: grid;
+      gap: 0.65rem;
+      margin-bottom: 1.15rem;
+    }
+    .quiz-option-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      padding: 0.75rem 1rem;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text-primary);
+      cursor: pointer;
+      text-align: left;
+      font-size: 0.95rem;
+      transition: all 0.2s ease;
+      width: 100%;
+    }
+    .quiz-option-btn:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+    .quiz-option-btn.selected {
+      border-color: #38bdf8;
+      background: rgba(56, 189, 248, 0.1);
+    }
+    .quiz-option-btn.correct-highlight {
+      border-color: #10b981;
+      background: rgba(16, 185, 129, 0.18);
+      box-shadow: 0 0 16px rgba(16, 185, 129, 0.25);
+    }
+    .quiz-option-btn.hint-highlight {
+      border: 2px dashed #34d399;
+      background: rgba(52, 211, 153, 0.12);
+      box-shadow: 0 0 12px rgba(52, 211, 153, 0.2);
+    }
+    .opt-letter {
+      width: 26px;
+      height: 26px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.1);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .correct-highlight .opt-letter {
+      background: #10b981;
+      color: #022c22;
+    }
+    .hint-highlight .opt-letter {
+      background: #34d399;
+      color: #022c22;
+    }
+    .opt-text {
+      flex: 1;
+      font-weight: 500;
+    }
+    .opt-status-tag {
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 0.2rem 0.55rem;
+      border-radius: 6px;
+      background: rgba(16, 185, 129, 0.25);
+      color: #6ee7b7;
+      animation: fadeIn 0.3s ease;
+    }
+    .hint-highlight .opt-status-tag {
+      background: rgba(52, 211, 153, 0.25);
+      color: #a7f3d0;
+    }
+    .mini-demo-explanation {
+      padding: 0.95rem 1.15rem;
+      border-radius: 10px;
+      background: rgba(16, 185, 129, 0.08);
+      border: 1px solid rgba(16, 185, 129, 0.25);
+      margin-bottom: 1.15rem;
+      animation: slideDown 0.3s ease;
+    }
+    .exp-header {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      font-size: 0.88rem;
+      color: #6ee7b7;
+      margin-bottom: 0.35rem;
+    }
+    .exp-body {
+      font-size: 0.88rem;
+      line-height: 1.5;
+      color: #e2e8f0;
+      margin: 0;
+    }
+    .mini-demo-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      padding-top: 0.5rem;
+    }
+    .footer-left {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+    }
+    .solve-trigger-btn {
+      font-weight: 700;
+      box-shadow: 0 0 16px rgba(56, 189, 248, 0.35);
+    }
+    .reset-demo-btn {
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 8px;
+      padding: 0.4rem 0.75rem;
+      cursor: pointer;
+    }
+    .reset-demo-btn:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.08);
+    }
+    .mini-demo-install-link {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: #38bdf8;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      transition: color 0.2s, transform 0.2s;
+    }
+    .mini-demo-install-link:hover {
+      color: #7dd3fc;
+      transform: translateX(2px);
+    }
+    .mini-demo-works-tag {
+      font-size: 0.78rem;
+      color: #94a3b8;
+      margin-top: 0.75rem;
+      text-align: center;
+    }
+    .spinner-inline {
+      display: inline-block;
+      width: 14px;
+      height: 14px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin-right: 0.4rem;
+      vertical-align: middle;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
     .hero-proof-grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1321,6 +1682,44 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.router.navigateByUrl(url);
   }
 
+  protected miniDemoSolving = signal(false);
+  protected miniDemoSolved = signal(false);
+  protected miniDemoHintMode = signal(false);
+  protected miniDemoSelectedOption = signal<number | null>(null);
+
+  get miniDemoData() {
+    return this.text?.hero?.miniDemo || HOME_COPY.en.hero.miniDemo;
+  }
+
+  protected toggleMiniDemoHint(): void {
+    this.miniDemoHintMode.update(v => !v);
+  }
+
+  protected selectMiniDemoOption(idx: number): void {
+    if (this.miniDemoSolving()) return;
+    this.miniDemoSelectedOption.set(idx);
+  }
+
+  protected solveMiniDemo(): void {
+    if (this.miniDemoSolving()) return;
+    this.miniDemoSolving.set(true);
+    this.trackCta('hero_mini_demo_solve_click');
+    setTimeout(() => {
+      this.miniDemoSolving.set(false);
+      this.miniDemoSolved.set(true);
+      if (!this.miniDemoHintMode()) {
+        this.miniDemoSelectedOption.set(1);
+      }
+      this.homeCdr.markForCheck();
+    }, 380);
+  }
+
+  protected resetMiniDemo(): void {
+    this.miniDemoSolved.set(false);
+    this.miniDemoSolving.set(false);
+    this.miniDemoSelectedOption.set(null);
+  }
+
   protected septemberTimer = signal('');
   private timerInterval: any;
 
@@ -1405,7 +1804,30 @@ const HOME_COPY: Partial<Record<Locale, any>> & { en: any; pl: any } = {
       ],
       asterisk: '* Universal Parser™ automatically adapts to almost any quiz on the internet. For heavily-locked or graphical interfaces, simply use our foolproof FocusScan.',
       asterisk2: '** Websites and quiz portals may periodically update their layout or code, so automated parsing might not always succeed immediately — that is exactly why FocusScan (screen region capture) guarantees 100% question capture.',
-      socialProof: 'Built for real quiz pages: Universal Parser, FocusScan and saved study history in one Chrome extension.'
+      socialProof: 'Built for real quiz pages: Universal Parser, FocusScan and saved study history in one Chrome extension.',
+      miniDemo: {
+        badge: '⚡ Interactive Live Demo · Test AI in 1 click',
+        kicker: 'Molecular Biology · Question 1/1',
+        timer: '⏱ 00:24',
+        question: 'Which enzyme is responsible for unwinding the DNA double helix during replication?',
+        options: [
+          'DNA Polymerase III',
+          'DNA Helicase',
+          'DNA Ligase',
+          'RNA Primase'
+        ],
+        hintToggle: 'Hint Mode',
+        hintTooltip: 'Highlights the answer discreetly without auto-clicking',
+        solveBtn: 'Solve with AI (1 Click)',
+        solvingBtn: 'AI Analyzing question...',
+        correctTag: 'Correct Answer (99.8% confidence)',
+        hintTag: 'Hint active (Subtle outline)',
+        expTitle: 'Step-by-step AI Explanation',
+        explanation: 'Helicase breaks the hydrogen bonds between complementary base pairs, unwinding the double helix and creating the replication fork for polymerase to synthesize daughter strands.',
+        resetBtn: 'Reset demo',
+        installCta: 'Add to Chrome for free & get starter credits →',
+        worksOnTag: 'Works exactly like this on Testportal, Moodle, Kahoot, Canvas and 30+ other platforms.'
+      }
     },
     how: {
       eyebrow: 'How QuizSolver works',
@@ -1435,7 +1857,7 @@ const HOME_COPY: Partial<Record<Locale, any>> & { en: any; pl: any } = {
     platforms: {
       eyebrow: 'Seamless platform integrations',
       title: 'Optimized for the systems you actually use',
-      subtitle: 'Use one AI quiz solver for Testportal, Moodle, Canvas, Google Forms, Microsoft Forms, Blackboard, Quizlet, Socrative, Kahoot and Quizizz.',
+      subtitle: 'Use one AI quiz solver for Testportal, Moodle, Canvas, Google Forms, Microsoft Forms, Blackboard, Quizlet, Socrative, Kahoot, Quizizz, Blooket, Gimkit, Edpuzzle, Mentimeter, Brightspace, Schoology, Coursera and Udemy.',
       items: [
         { name: 'Testportal', href: '/testportal-quiz-solver' },
         { name: 'Moodle', href: '/moodle-quiz-solver' },
@@ -1446,7 +1868,15 @@ const HOME_COPY: Partial<Record<Locale, any>> & { en: any; pl: any } = {
         { name: 'Quizlet', href: '/quizlet-solver' },
         { name: 'Socrative', href: '/socrative-quiz-solver' },
         { name: 'Kahoot', href: '/kahoot-ai-bot' },
-        { name: 'Quizizz', href: '/quizizz-solver' }
+        { name: 'Quizizz', href: '/quizizz-solver' },
+        { name: 'Blooket', href: '/blooket-quiz-solver' },
+        { name: 'Gimkit', href: '/gimkit-quiz-solver' },
+        { name: 'Edpuzzle', href: '/edpuzzle-quiz-solver' },
+        { name: 'Mentimeter', href: '/mentimeter-quiz-solver' },
+        { name: 'Brightspace D2L', href: '/brightspace-quiz-solver' },
+        { name: 'Schoology', href: '/schoology-quiz-solver' },
+        { name: 'Coursera', href: '/coursera-quiz-solver' },
+        { name: 'Udemy', href: '/udemy-quiz-solver' }
       ]
     },
     pricing: {
@@ -1489,7 +1919,30 @@ const HOME_COPY: Partial<Record<Locale, any>> & { en: any; pl: any } = {
       ],
       asterisk: '* Universal Parser™ automatycznie dopasowuje się do niemal każdego quizu w internecie. Przy bardzo restrykcyjnych interfejsach z pomocą przychodzi niezawodny FocusScan.',
       asterisk2: '** Strony i platformy quizowe mogą okresowo zmieniać swoją budowę kodu, przez co parser nie zawsze natychmiast rozpozna layout — właśnie dlatego FocusScan (zaznaczenie wycinka ekranu) gwarantuje 100% skuteczności.',
-      socialProof: 'Stworzone pod prawdziwe quizy: Universal Parser, FocusScan i historia nauki w jednym rozszerzeniu Chrome.'
+      socialProof: 'Stworzone pod prawdziwe quizy: Universal Parser, FocusScan i historia nauki w jednym rozszerzeniu Chrome.',
+      miniDemo: {
+        badge: '⚡ Interaktywne Demo Na Żywo · Przetestuj AI w 1 kliknięcie',
+        kicker: 'Biologia molekularna · Pytanie 1/1',
+        timer: '⏱ 00:24',
+        question: 'Który enzym odpowiada za rozplatanie podwójnej helisy DNA podczas procesu replikacji?',
+        options: [
+          'Polimeraza DNA III',
+          'Helikaza DNA',
+          'Ligaza DNA',
+          'Prymaza RNA'
+        ],
+        hintToggle: 'Tryb podpowiedzi (Hint Mode)',
+        hintTooltip: 'Dyskretnie wskazuje odpowiedź bez automatycznego klikania',
+        solveBtn: 'Rozwiąż z AI (1 kliknięcie)',
+        solvingBtn: 'AI analizuje pytanie...',
+        correctTag: 'Poprawna odpowiedź (99.8% pewności)',
+        hintTag: 'Podpowiedź aktywna (Dyskretny obrys)',
+        expTitle: 'Szczegółowe wyjaśnienie AI krok po kroku',
+        explanation: 'Helikaza rozrywa wiązania wodorowe pomiędzy komplementarnymi parami zasad azotowych, rozplatając podwójną helisę DNA i tworząc widełki replikacyjne niezbędne do działania polimerazy.',
+        resetBtn: 'Zresetuj demo',
+        installCta: 'Dodaj bezpłatnie do Chrome i odbierz darmowe kredyty →',
+        worksOnTag: 'Działa dokładnie tak na Testportalu, Moodle, Kahoot, Canvas i 30+ innych platformach.'
+      }
     },
     how: {
       eyebrow: 'Jak działa QuizSolver',
@@ -1519,7 +1972,7 @@ const HOME_COPY: Partial<Record<Locale, any>> & { en: any; pl: any } = {
     platforms: {
       eyebrow: 'Integracja z platformami',
       title: 'Zoptymalizowane pod systemy, z których korzystasz',
-      subtitle: 'Jedno rozszerzenie AI do Testportal, Moodle, Canvas, Google Forms, Microsoft Forms, Blackboard, Quizlet, Socrative, Kahoot i Quizizz.',
+      subtitle: 'Jedno rozszerzenie AI do Testportal, Moodle, Canvas, Google Forms, Microsoft Forms, Blackboard, Quizlet, Socrative, Kahoot, Quizizz, Blooket, Gimkit, Edpuzzle, Mentimeter, Brightspace, Schoology, Coursera i Udemy.',
       items: [
         { name: 'Testportal', href: '/pl/testportal-quiz-solver' },
         { name: 'Moodle', href: '/pl/moodle-quiz-solver' },
@@ -1530,7 +1983,15 @@ const HOME_COPY: Partial<Record<Locale, any>> & { en: any; pl: any } = {
         { name: 'Quizlet', href: '/pl/quizlet-solver' },
         { name: 'Socrative', href: '/pl/socrative-quiz-solver' },
         { name: 'Kahoot', href: '/pl/kahoot-ai-bot' },
-        { name: 'Quizizz', href: '/pl/quizizz-solver' }
+        { name: 'Quizizz', href: '/pl/quizizz-solver' },
+        { name: 'Blooket', href: '/pl/blooket-quiz-solver' },
+        { name: 'Gimkit', href: '/pl/gimkit-quiz-solver' },
+        { name: 'Edpuzzle', href: '/pl/edpuzzle-quiz-solver' },
+        { name: 'Mentimeter', href: '/pl/mentimeter-quiz-solver' },
+        { name: 'Brightspace D2L', href: '/pl/brightspace-quiz-solver' },
+        { name: 'Schoology', href: '/pl/schoology-quiz-solver' },
+        { name: 'Coursera', href: '/pl/coursera-quiz-solver' },
+        { name: 'Udemy', href: '/pl/udemy-quiz-solver' }
       ]
     },
     pricing: {
@@ -1873,7 +2334,11 @@ const HOME_LOCALE_TEXT: Record<Exclude<Locale, 'en' | 'pl'>, any> = {
   }
 };
 
-const HOME_PLATFORM_KEYS: PageKey[] = ['testportal', 'moodle', 'canvas', 'googleForms', 'microsoftForms', 'blackboard', 'quizlet', 'socrative', 'kahoot', 'quizizz'];
+const HOME_PLATFORM_KEYS: PageKey[] = [
+  'testportal', 'moodle', 'canvas', 'googleForms', 'microsoftForms', 'blackboard',
+  'quizlet', 'socrative', 'kahoot', 'quizizz',
+  'blooket', 'gimkit', 'edpuzzle', 'mentimeter', 'brightspace', 'schoology', 'coursera', 'udemy'
+];
 
 const HOME_DETAIL_TEXT: Record<Exclude<Locale, 'en' | 'pl'>, any> = {
   de: {

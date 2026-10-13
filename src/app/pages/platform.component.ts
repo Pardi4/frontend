@@ -97,6 +97,54 @@ const PLATFORM_CONTEXT: Partial<Record<PageKey, { en: string; pl: string }>> = {
   quizizz: {
     en: 'Quizizz can appear as live games, homework, practice sets and meme-heavy question cards. QuizSolver reads the visible prompt, options and media so the answer suggestion stays tied to the exact card on screen.',
     pl: 'Quizizz może działać jako gra live, zadanie domowe, zestaw ćwiczeń albo karta pytania z multimediami. QuizSolver czyta widoczną treść, opcje i media, żeby sugestia odpowiedzi była powiązana z dokładnie tą kartą na ekranie.'
+  },
+  blooket: {
+    en: 'Blooket games move quickly in modes like Gold Quest, Crypto Hack and Tower Defense. QuizSolver reads the active question prompt and answer tiles in fractions of a second so you can maintain streaks and stay ahead.',
+    pl: 'Gry Blooket toczą się w szybkim tempie w trybach takich jak Gold Quest czy Crypto Hack. QuizSolver odczytuje aktywne pytanie i kafelki odpowiedzi w ułamku sekundy, pomagając utrzymać serię poprawnych odpowiedzi.'
+  },
+  gimkit: {
+    en: 'Gimkit mixes 2D game modes and quick answer rewards. QuizSolver detects the active question prompt instantly and highlights the optimal option so you earn maximum cash per round.',
+    pl: 'Gimkit łączy tryby 2D i nagrody za szybkie odpowiedzi. QuizSolver natychmiast wykrywa treść pytania i wskazuje optymalną opcję, pozwalając zmaksymalizować wynik w każdej rundzie.'
+  },
+  edpuzzle: {
+    en: 'Edpuzzle embeds assessment checkpoints into video timelines. When a video pauses at a question, QuizSolver reads the prompt and choices cleanly without requiring you to scrub or replay.',
+    pl: 'Edpuzzle osadza pytania sprawdzające bezpośrednio w osi czasu wideo. Gdy film zatrzymuje się na pytaniu, QuizSolver czyta treść i warianty odpowiedzi bez konieczności przewijania materiału.'
+  },
+  mentimeter: {
+    en: 'Mentimeter presentations use live polling with strict timers. QuizSolver analyzes the prompt and voting buttons on the fly so you can submit your answer before time expires.',
+    pl: 'Prezentacje Mentimeter wykorzystują głosowanie na żywo z krótkim czasem na odpowiedź. QuizSolver analizuje pytanie i opcje głosowania w locie, umożliwiając wybór przed upływem czasu.'
+  },
+  brightspace: {
+    en: 'Brightspace D2L quizzes often feature long multi-part assessments, timing constraints and embedded figures. QuizSolver isolates the active question block and uses FocusScan when complex diagrams appear.',
+    pl: 'Testy na platformie Brightspace D2L często zawierają wieloetapowe zadania, limity czasu i rysunki. QuizSolver izoluje aktywny blok pytania, a FocusScan pomaga przy skomplikowanych schematach.'
+  },
+  schoology: {
+    en: 'Schoology assessments blend multiple choice, matching and short answer questions. QuizSolver targets the visible item and saves full reasoning to your private history for later review.',
+    pl: 'Sprawdziany Schoology łączą pytania wyboru, dopasowania i krótkie odpowiedzi. QuizSolver celuje w widoczne zadanie i zapisuje pełne uzasadnienie w prywatnej historii powtórek.'
+  },
+  coursera: {
+    en: 'Coursera graded assignments test deep technical and conceptual understanding. QuizSolver delivers comprehensive explanations so you understand the underlying principles behind each certificate quiz.',
+    pl: 'Zadania oceniane na Coursera sprawdzają zaawansowaną wiedzę techniczną i pojęciową. QuizSolver dostarcza szczegółowe wyjaśnienia, ułatwiając zrozumienie materiału i zdobycie certyfikatu.'
+  },
+  udemy: {
+    en: 'Udemy practice exams prepare students for high-stakes professional certifications. QuizSolver breaks down every multiple-choice option, explaining why one answer is correct and others are distractors.',
+    pl: 'Testy próbne na Udemy przygotowują do prestiżowych certyfikatów zawodowych. QuizSolver analizuje każdą opcję, wyjaśniając dokładnie, dlaczego dana odpowiedź jest poprawna.'
+  },
+  ispring: {
+    en: 'iSpring QuizMaker modules are commonly exported as interactive SCORM or HTML5 packages. QuizSolver reads the player widgets directly and uses FocusScan if the content is contained in a secure frame.',
+    pl: 'Moduły iSpring QuizMaker są często publikowane jako interaktywne pakiety SCORM lub HTML5. QuizSolver odczytuje kontrolki odtwarzacza, a FocusScan pomaga, gdy test znajduje się w ramce.'
+  },
+  h5p: {
+    en: 'H5P interactive question blocks run inside Moodle, WordPress and custom CMS portals. QuizSolver parses the active H5P card structure and highlights correct answers without layout conflicts.',
+    pl: 'Interaktywne bloki H5P działają w systemach Moodle, WordPress i portalach uczelnianych. QuizSolver odczytuje strukturę karty H5P i podświetla poprawne odpowiedzi bez konfliktów z layoutem.'
+  },
+  typeform: {
+    en: 'Typeform presents questions in a full-screen conversational sequence. QuizSolver detects the single active card on screen, giving quick guidance as you navigate with your keyboard.',
+    pl: 'Typeform prezentuje pytania w konwersacyjnym trybie pełnoekranowym. QuizSolver wykrywa pojedynczą aktywną kartę na ekranie, ułatwiając płynne przechodzenie przez formularz.'
+  },
+  scorm: {
+    en: 'SCORM packages run in embedded iframes across corporate LMS portals. QuizSolver handles cross-frame questions effortlessly and uses FocusScan whenever proprietary player wrappers are used.',
+    pl: 'Pakiety SCORM działają w osadzonych ramkach iframe na portalach korporacyjnych i uczelnianych. QuizSolver radzi sobie z ramkami, a FocusScan wspiera niestandardowe playery e-learningowe.'
   }
 };
 
