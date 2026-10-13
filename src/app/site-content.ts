@@ -269,11 +269,11 @@ const en: SiteCopy = {
     }
   },
   home: {
-    title: "AI Quiz Solver Chrome Extension",
-    subtitle: "Solve and review quiz questions on Testportal, Moodle, Canvas, Google Forms, Kahoot and more",
+    title: "AI Quiz Solver & Bot Chrome Extension [2026]",
+    subtitle: "Solve and review quiz questions on Canvas, Moodle, Testportal, Google Forms, Kahoot and 30+ platforms",
     meta: {
-      title: "QuizSolver — AI Quiz Solver for Testportal, Moodle & Kahoot",
-      description: "QuizSolver solves Testportal, Moodle, Kahoot, Canvas, Google Forms and more with AI answer suggestions, explanations and a free Chrome extension."
+      title: "QuizSolver — Undetected AI Quiz Solver & Bot (Canvas, Moodle, Kahoot) [2026]",
+      description: "Free AI quiz solver Chrome extension. Instantly solve Canvas quizzes, Moodle tests, Google Forms, Kahoot & Testportal without tab switching. Undetected AI bot!"
     }
   },
   common: {
@@ -609,10 +609,10 @@ const en: SiteCopy = {
     testportal: {
       platformName: "Testportal",
       shortName: "Testportal",
-      badge: "Testportal Workflow",
-      title: "Testportal Quiz Solver — AI Answers in Your Side Panel",
-      subtitle: "Get instant AI answer suggestions on Testportal without leaving the quiz tab.",
-      meta: { title: "Testportal Quiz Solver — AI Answers Instantly | QuizSolver", description: "Testportal quiz solver Chrome extension. Get AI answer suggestions on Testportal quizzes instantly. Works in the side panel — no tab switching. Free to install." },
+      badge: "Testportal AI Bot",
+      title: "Testportal Quiz Solver & AI Bot — Instant Side Panel Answers",
+      subtitle: "Get instant AI answer suggestions on Testportal quizzes without leaving the tab or triggering Honest Respondent warnings.",
+      meta: { title: "Testportal Quiz Solver & AI Bot (2026) — Undetected Chrome Extension", description: "Get instant AI answers on Testportal quizzes without tab switching. Bypasses Honest Respondent window tracking with side-panel AI & FocusScan OCR. Free install!" },
       stepsTitle: "How to use with Testportal",
       steps: ["Log into Testportal and open your quiz page", "Start the test and activate the extension side panel", "Watch the AI auto-detect the question and display answers"],
       features: ["Auto-detection of Testportal questions", "Maintains response times within safe limits", "Supports images embedded in questions"],
@@ -625,10 +625,10 @@ const en: SiteCopy = {
     moodle: {
       platformName: "Moodle",
       shortName: "Moodle",
-      badge: "Moodle Integration",
-      title: "Moodle Quiz Solver — AI Answers & Explanations",
-      subtitle: "Solve Moodle quizzes faster with AI answer suggestions, step-by-step explanations and automatic study notes.",
-      meta: { title: "Moodle Quiz Solver — AI Answers & Explanations | QuizSolver", description: "Moodle quiz solver Chrome extension. Get AI answers, step-by-step explanations and auto-saved study notes for every Moodle quiz question. Supports all question types." },
+      badge: "Moodle AI Bot",
+      title: "Moodle Quiz Solver & AI Bot — Instant Quiz Answers",
+      subtitle: "Solve Moodle quizzes faster with AI suggestions, step-by-step explanations, and automated notes.",
+      meta: { title: "Moodle Quiz Solver & AI Bot (2026) — Chrome Extension | QuizSolver", description: "Instantly solve Moodle quizzes with AI. Handles multiple choice, shuffled answers, Cloze tests, math equations & short answers. Undetected in Chrome side panel." },
       stepsTitle: "How to use on Moodle",
       steps: ["Open your course quiz on Moodle", "Activate QuizSolver with a single click", "Review AI suggestions and explanations before submitting"],
       features: ["Compatible with Moodle quiz formatting", "Save questions to study history automatically", "Handles math and science notations"],
@@ -641,10 +641,10 @@ const en: SiteCopy = {
     canvas: {
       platformName: "Canvas",
       shortName: "Canvas",
-      badge: "Canvas LMS",
-      title: "Canvas Quiz Solver — AI Answers for Canvas LMS",
-      subtitle: "Get instant AI answer suggestions and detailed explanations for every Canvas quiz question.",
-      meta: { title: "Canvas Quiz Solver — AI Answers for Canvas LMS | QuizSolver", description: "Canvas quiz solver Chrome extension. Get instant AI answers and explanations for Canvas LMS quizzes. Works on all question types. Free to install — solve Canvas quizzes in seconds." },
+      badge: "Canvas LMS Bot",
+      title: "Canvas Quiz Solver & AI Bot — Instant Answers in Chrome",
+      subtitle: "Solve Canvas LMS quizzes instantly without leaving the tab. Works on Classic Quizzes, New Quizzes & proctored setups.",
+      meta: { title: "Canvas Quiz Solver & AI Bot (2026) — Chrome Extension | QuizSolver", description: "Solve Canvas LMS quizzes instantly with AI. Undetected Chrome side panel extension with screenshot OCR (FocusScan) & step-by-step reasoning. Free install!" },
       stepsTitle: "How to use with Canvas",
       steps: ["Open your Canvas course page", "Start the quiz and activate the QuizSolver side-panel", "Read and evaluate the suggested answers"],
       features: ["Canvas LMS compatibility", "Saves questions for learning", "Detailed explanation support"],
@@ -657,10 +657,10 @@ const en: SiteCopy = {
     googleForms: {
       platformName: "Google Forms",
       shortName: "Google Forms",
-      badge: "Forms Integration",
-      title: "Google Forms Quiz Solver — AI Answers Instantly",
-      subtitle: "Get instant AI answers and explanations for any Google Forms quiz or test.",
-      meta: { title: "Google Forms Quiz Solver — AI Answers Instantly | QuizSolver", description: "Google Forms quiz solver Chrome extension. Get AI answers for Google Forms quizzes in seconds. Supports multiple choice, short answer and image questions. Free to install." },
+      badge: "Google Forms Bot",
+      title: "Google Forms Quiz Solver & AI Bot — Instant Answers",
+      subtitle: "Instant AI answers and explanations for every Google Forms quiz and exam.",
+      meta: { title: "Google Forms Quiz Solver & AI Bot (2026) — Chrome Extension | QuizSolver", description: "Solve Google Forms quizzes with AI in seconds. Instant answer suggestions, step-by-step explanations, and FocusScan OCR for images. Free Chrome extension." },
       stepsTitle: "Google Forms workflow",
       steps: ["Open your Google Forms quiz link", "Click the QuizSolver icon", "Examine generated answers and explanations"],
       features: ["Works on paginated forms", "Images support in form fields", "Saves answers automatically"],
@@ -744,10 +744,10 @@ const en: SiteCopy = {
     kahoot: {
       platformName: "Kahoot",
       shortName: "Kahoot",
-      badge: "Kahoot Quiz ID Helper",
-      title: "Kahoot AI Bot — How to get answers instantly",
-      subtitle: "Use QuizSolver in two Kahoot modes: auto-solve visible questions or load the full answer bank with a Quiz ID when the host hides questions.",
-      meta: { title: "How to get Kahoot answers (AI Bot & Quiz ID) | QuizSolver", description: "Kahoot AI bot Chrome extension. Auto-solve visible Kahoot questions OR use Quiz ID to view the full answer bank — no credits needed. Works on all Kahoot game formats. Free to install." },
+      badge: "Kahoot AI Bot",
+      title: "Kahoot Bot & AI Quiz Answers — Free Quiz ID Answer Finder",
+      subtitle: "Win every Kahoot game with real-time AI answer suggestions or instant free answer-bank lookup by Quiz ID.",
+      meta: { title: "Kahoot Bot & AI Answers (2026) — Free Quiz ID Finder | QuizSolver", description: "Win every Kahoot game! Auto-bot detects questions in real time or loads the entire answer bank by Quiz ID for free (no credits required). Add to Chrome!" },
       stepsTitle: "How to use on Kahoot",
       steps: ["Open kahoot.it/instructions or join the Kahoot lobby.", "Choose Solve whole quiz when questions and answer tiles are visible on your device.", "If the host hides questions, copy the Quiz ID from the Kahoot URL and load all questions with correct answers in the panel."],
       features: ["Auto mode watches visible Kahoot questions and clicks the best answer", "Quiz ID mode shows the answer bank without spending AI credits", "Searchable floating panel that works on desktop and mobile layouts"],
@@ -766,10 +766,10 @@ const en: SiteCopy = {
     quizizz: {
       platformName: "Quizizz",
       shortName: "Quizizz",
-      badge: "Quizizz Helper",
-      title: "Quizizz Solver — AI Answers & Explanations",
-      subtitle: "Get instant AI answers and step-by-step explanations for Quizizz practice sets and homework.",
-      meta: { title: "Quizizz Solver — AI Answers & Explanations | QuizSolver", description: "Quizizz solver Chrome extension. Get instant AI answers and detailed explanations for Quizizz games, homework sets and practice quizzes. Free to install." },
+      badge: "Quizizz AI Bot",
+      title: "Quizizz Bot & AI Quiz Solver — Chrome Extension",
+      subtitle: "Get instant AI answers and step-by-step explanations for Quizizz games, homework, and practice sets.",
+      meta: { title: "Quizizz Bot & AI Quiz Solver (2026) — Chrome Extension | QuizSolver", description: "Solve Quizizz games and homework instantly with AI. Undetected Chrome extension suggests correct options and explanations in real time. Free install!" },
       stepsTitle: "How to use on Quizizz",
       steps: ["Open the Quizizz game or homework link", "Click on the QuizSolver browser extension", "Study answers and verify learning progress"],
       features: ["Works on homework mode", "Step-by-step breakdown", "Notetaking support"],
@@ -1000,11 +1000,11 @@ const pl: SiteCopy = {
     }
   },
   home: {
-    title: "Rozszerzenie AI do rozwiązywania quizów",
-    subtitle: "Rozwiązuj i powtarzaj pytania z Testportal, Moodle, Canvas, Google Forms, Kahoot i innych platform",
+    title: "QuizSolver — Niewykrywalny Bot AI do Testów i Quizów [2026]",
+    subtitle: "Błyskawiczne odpowiedzi AI na Testportal, Moodle, Canvas, Google Forms, Kahoot i 30+ innych platform",
     meta: {
-      title: "QuizSolver — AI do Quizów Online",
-      description: "Rozwiązuj quizy online z podpowiedziami AI, wyjaśnieniami, FocusScan, notatkami i trybem Kahoot Quiz ID."
+      title: "QuizSolver — Niewykrywalny Bot AI do Testów (Testportal, Moodle) [2026]",
+      description: "Darmowy bot AI do testów online! Błyskawiczne odpowiedzi na Testportal (omija Uczciwego Rozwiązującego), Moodle, Canvas i Google Forms. Zainstaluj w Chrome!"
     }
   },
   common: {
@@ -1336,10 +1336,10 @@ const pl: SiteCopy = {
     testportal: {
       platformName: "Testportal",
       shortName: "Testportal",
-      badge: "Wsparcie Testportal",
-      title: "Testportal Quiz Solver — AI Odpowiedzi w Panelu Bocznym",
-      subtitle: "Natychmiastowe podpowiedzi AI na Testportal bez opuszczania karty z testem.",
-      meta: { title: "Testportal Quiz Solver — AI Odpowiedzi Natychmiast | QuizSolver", description: "Rozszerzenie Chrome do Testportal. Natychmiastowe podpowiedzi AI bezpośrednio w panelu bocznym — bez przełączania kart. Obsługuje pytania z obrazkami. Darmowa instalacja." },
+      badge: "Testportal AI Bot",
+      title: "Testportal Odpowiedzi AI — Niewykrywalny Bot w Panelu Bocznym",
+      subtitle: "Błyskawiczne odpowiedzi AI do testów na Testportalu. Działa w panelu bocznym bez opuszczania karty i omija Uczciwego Rozwiązującego.",
+      meta: { title: "Testportal Odpowiedzi AI (2026) — Bot i Rozszerzenie Chrome | QuizSolver", description: "Odpowiedzi do testów Testportal z AI w czasie rzeczywistym! Niewykrywalny bot w panelu bocznym Chrome: omija Uczciwego Rozwiązującego, wspiera zdjęcia i timery." },
       stepsTitle: "Jak używać QuizSolver na Testportalu",
       steps: ["Zaloguj się na Testportal i przejdź do swojego testu.", "Uruchom panel boczny rozszerzenia QuizSolver w przeglądarce.", "Nasze AI automatycznie zidentyfikuje pytanie i wskaże sugerowane warianty odpowiedzi."],
       features: ["Automatyczne wykrywanie pytań i opcji wyboru", "Zachowanie bezpiecznych, naturalnych odstępów czasowych", "Pełne wsparcie dla pytań zawierających zdjęcia"],
@@ -1352,10 +1352,10 @@ const pl: SiteCopy = {
     moodle: {
       platformName: "Moodle",
       shortName: "Moodle",
-      badge: "Wsparcie Moodle",
-      title: "Moodle Quiz Solver — AI Odpowiedzi i Wyjaśnienia",
-      subtitle: "Rozwiązuj quizy Moodle szybciej dzięki podpowiedziom AI, wyjaśnieniom krok po kroku i automatycznym notatkom.",
-      meta: { title: "Moodle Quiz Solver — AI Odpowiedzi i Wyjaśnienia | QuizSolver", description: "Rozszerzenie Chrome do Moodle. AI odpowiedzi, wyjaśnienia krok po kroku i automatyczny zapis notatek do każdego pytania quizu Moodle. Obsługuje wszystkie typy pytań. Darmowe." },
+      badge: "Moodle AI Bot",
+      title: "Moodle Odpowiedzi do Testów AI — Bot i Rozszerzenie Chrome",
+      subtitle: "Rozwiązuj testy Moodle z asystentem AI. Pytania wielokrotnego wyboru, cloze, otwarte i zadania matematyczne w kilka sekund.",
+      meta: { title: "Moodle Odpowiedzi do Testów AI (2026) — Bot Rozszerzenie Chrome | QuizSolver", description: "Odpowiedzi do quizów Moodle w czasie rzeczywistym. Niewykrywalny bot AI: pytania wielokrotnego wyboru, cloze, otwarte i matematyka. Darmowa instalacja w Chrome!" },
       stepsTitle: "Jak używać na Moodle",
       steps: ["Otwórz quiz na platformie Moodle.", "Uruchom rozszerzenie QuizSolver jednym kliknięciem.", "Zapoznaj się z podpowiedziami oraz wyjaśnieniami AI przed wysłaniem odpowiedzi."],
       features: ["Pełna kompatybilność z różnymi typami pytań na Moodle", "Automatyczne zapisywanie pytań do historii nauki", "Obsługa wzorów i notacji matematycznej (LaTeX)"],
@@ -1367,10 +1367,10 @@ const pl: SiteCopy = {
     canvas: {
       platformName: "Canvas",
       shortName: "Canvas",
-      badge: "Canvas LMS",
-      title: "Canvas Quiz Solver — AI Odpowiedzi dla Canvas LMS",
-      subtitle: "Natychmiastowe podpowiedzi AI i szczegółowe wyjaśnienia do każdego pytania quizu na Canvas.",
-      meta: { title: "Canvas Quiz Solver — AI Odpowiedzi dla Canvas LMS | QuizSolver", description: "Rozszerzenie Chrome do Canvas. Natychmiastowe AI odpowiedzi i wyjaśnienia do quizów Canvas LMS. Działa na wszystkich typach pytań. Darmowa instalacja — rozwiązuj quizy Canvas w sekundy." },
+      badge: "Canvas LMS Bot",
+      title: "Canvas LMS Odpowiedzi do Quizów AI — Asystent w Panelu Bocznym",
+      subtitle: "Rozwiązuj testy Canvas Classic i New Quizzes z AI. Błyskawiczne odpowiedzi, wyjaśnienia i wsparcie FocusScan OCR.",
+      meta: { title: "Canvas LMS Odpowiedzi do Quizów AI (2026) — Bot Chrome | QuizSolver", description: "Odpowiedzi do quizów Canvas LMS natychmiast dzięki AI! Działa w panelu bocznym Chrome bez przełączania kart. FocusScan OCR dla wykresów i wzorów. Pobierz za darmo!" },
       stepsTitle: "Jak używać na Canvas",
       steps: ["Zaloguj się do Canvas i otwórz odpowiedni quiz.", "Uruchom panel boczny rozszerzenia QuizSolver w przeglądarce.", "Zapoznaj się z sugestiami i wyjaśnieniami wygenerowanymi przez AI."],
       features: ["Pełna integracja z systemem Canvas LMS", "Zapisywanie rozwiązanych pytań na później w historii", "Szczegółowe objaśnienia każdego zagadnienia"],
@@ -1382,10 +1382,10 @@ const pl: SiteCopy = {
     googleForms: {
       platformName: "Google Forms",
       shortName: "Google Forms",
-      badge: "Forms Integration",
-      title: "Google Forms Quiz Solver — AI Odpowiedzi Natychmiast",
-      subtitle: "Natychmiastowe odpowiedzi AI i wyjaśnienia do każdego quizu i testu na Google Forms.",
-      meta: { title: "Google Forms Quiz Solver — AI Odpowiedzi | QuizSolver", description: "Rozszerzenie Chrome do Google Forms. AI odpowiedzi do quizów Google Forms w sekundy. Obsługuje pytania wielokrotnego wyboru, otwarte i z obrazkami. Darmowa instalacja." },
+      badge: "Google Forms Bot",
+      title: "Google Forms Odpowiedzi AI — Bot do Formularzy Google",
+      subtitle: "Natychmiastowe odpowiedzi AI i wyjaśnienia do każdego testu i quizu w Formularzach Google.",
+      meta: { title: "Google Forms Odpowiedzi AI (2026) — Bot do Quizów | QuizSolver", description: "Błyskawiczne odpowiedzi do quizów Google Forms! Niewykrywalny bot AI do Chrome: pytania jednokrotnego i wielokrotnego wyboru, otwarte oraz ze zdjęciami. Pobierz!" },
       stepsTitle: "Przepływ pracy na Google Forms",
       steps: ["Otwórz link do formularza Google Forms w przeglądarce.", "Kliknij ikonę rozszerzenia QuizSolver, aby aktywować pomocnika.", "Zapoznaj się z sugerowanymi odpowiedziami oraz ich uzasadnieniem."],
       features: ["Wsparcie dla długich, wielostronicowych formularzy", "Rozpoznawanie pytań z grafikami i schematami", "Automatyczne budowanie bazy pytań w historii"],
@@ -1399,10 +1399,10 @@ const pl: SiteCopy = {
     microsoftForms: {
       platformName: "Microsoft Forms",
       shortName: "MS Forms",
-      badge: "MS Forms Integration",
-      title: "Microsoft Forms Quiz Solver — AI Odpowiedzi i Podpowiedzi",
+      badge: "MS Forms Bot",
+      title: "Microsoft Forms Odpowiedzi AI — Bot do Testów i Ankiet",
       subtitle: "Natychmiastowe podpowiedzi AI i wyjaśnienia do testów i ankiet Microsoft Forms.",
-      meta: { title: "Microsoft Forms Quiz Solver — AI Odpowiedzi | QuizSolver", description: "Rozszerzenie Chrome do MS Forms. Natychmiastowe AI odpowiedzi do quizów, testów i ankiet Microsoft Forms. Działa na wszystkich typach pytań. Darmowe rozszerzenie Chrome." },
+      meta: { title: "Microsoft Forms Odpowiedzi AI (2026) — Bot do Testów | QuizSolver", description: "Rozwiązuj testy Microsoft Forms w sekundy! Niewykrywalny bot AI do Chrome: pytania jedno- i wielokrotnego wyboru, tekstowe oraz ratingowe. Darmowa instalacja." },
       stepsTitle: "Jak używać na MS Forms",
       steps: ["Przejdź do testu Microsoft Forms w swojej przeglądarce.", "Uruchom rozszerzenie QuizSolver, by przeanalizować stronę.", "Odbierz precyzyjne wskazówki do wszystkich widocznych pytań."],
       features: ["Obsługa pytań jednokrotnego oraz wielokrotnego wyboru", "Zapisywanie pytań otwartych do historii nauki", "Pełna kompatybilność z formularzami anonimowymi"],
@@ -1467,10 +1467,10 @@ const pl: SiteCopy = {
     kahoot: {
       platformName: "Kahoot",
       shortName: "Kahoot",
-      badge: "Kahoot Quiz ID",
-      title: "Kahoot AI Bot — Jak szybko znaleźć odpowiedzi",
-      subtitle: "QuizSolver działa w dwóch trybach: automatycznie rozwiązuje widoczne pytania albo pokazuje pełny bank odpowiedzi po Quiz ID, gdy host ukrywa pytania.",
-      meta: { title: "Kahoot AI Bot & Hack do Odpowiedzi (Quiz ID) | QuizSolver", description: "Rozszerzenie Chrome dla Kahoot. Automatyczne odpowiedzi AI na widoczne pytania LUB hack z Quiz ID — bez kredytów. Obejście Kahoot bezpieczne od wykrycia." },
+      badge: "Kahoot AI Bot",
+      title: "Kahoot Bot & Odpowiedzi AI — Darmowy Quiz ID Finder",
+      subtitle: "Wygrywaj każdy quiz na Kahoot! Auto-bot z AI na żywo lub darmowy bank wszystkich odpowiedzi po Quiz ID bez kredytów.",
+      meta: { title: "Kahoot Bot & Odpowiedzi AI (2026) — Darmowy Quiz ID Finder | QuizSolver", description: "Wygrywaj każdy quiz na Kahoot! Auto-bot z AI na żywo oraz darmowy bank odpowiedzi po Quiz ID bez punktów i rejestracji. Dodaj rozszerzenie do Chrome!" },
       stepsTitle: "Jak używać na Kahoot",
       steps: ["Wejdź na kahoot.it/instructions albo do lobby Kahoota.", "Wybierz Rozwiąż cały quiz, jeśli pytania i kafelki odpowiedzi są widoczne na Twoim urządzeniu.", "Jeśli host ukrywa pytania, skopiuj Quiz ID z adresu URL po quizId= i wczytaj listę pytań z poprawnymi odpowiedziami."],
       features: ["Tryb auto obserwuje widoczne pytania Kahoot i klika najlepszą odpowiedź", "Tryb Quiz ID pokazuje bank odpowiedzi bez zużywania kredytów AI", "Pływający panel z wyszukiwarką działa wygodnie na komputerze i telefonie"],
@@ -1489,10 +1489,10 @@ const pl: SiteCopy = {
     quizizz: {
       platformName: "Quizizz",
       shortName: "Quizizz",
-      badge: "Quizizz Pomocnik",
-      title: "Quizizz Solver — AI Odpowiedzi i Wyjaśnienia",
-      subtitle: "Natychmiastowe AI odpowiedzi i wyjaśnienia krok po kroku do zestawów i zadań domowych Quizizz.",
-      meta: { title: "Quizizz Solver — AI Odpowiedzi i Wyjaśnienia | QuizSolver", description: "Rozszerzenie Chrome do Quizizz. Natychmiastowe AI odpowiedzi i szczegółowe wyjaśnienia do gier, zadań domowych i quizów Quizizz. Darmowa instalacja." },
+      badge: "Quizizz AI Bot",
+      title: "Quizizz Bot & Odpowiedzi AI — Rozszerzenie Chrome",
+      subtitle: "Natychmiastowe AI odpowiedzi i wyjaśnienia krok po kroku do gier, testów i zadań domowych Quizizz.",
+      meta: { title: "Quizizz Bot & Odpowiedzi AI (2026) — Rozszerzenie Chrome | QuizSolver", description: "Automatyczne odpowiedzi AI do quizów i gier Quizizz. Błyskawiczny bot w Chrome: wskazuje poprawne odpowiedzi i wyjaśnienia. Darmowa instalacja!" },
       stepsTitle: "Jak używać na Quizizz",
       steps: ["Otwórz grę lub zadanie domowe na platformie Quizizz.", "Uruchom rozszerzenie przeglądarki QuizSolver.", "Przeanalizuj sugerowane odpowiedzi i zweryfikuj swoje postępy."],
       features: ["Wsparcie dla trybu zadań domowych (Homework Mode)", "Objaśnienia krok po kroku", "Wygodne robienie notatek przy pytaniach"],
@@ -2941,75 +2941,149 @@ function enhancePriorityPlatformSeo(copy: SiteCopy, locale: Locale): SiteCopy {
   const isPl = locale === 'pl';
   const pages = copy.platformPages;
   const priorityContent: Partial<Record<keyof SiteCopy['platformPages'], {
+    metaTitle?: string;
+    title?: string;
     metaDescription: string;
     sections: Array<{ title: string; text: string }>;
     faq: Array<{ question: string; answer: string }>;
   }>> = {
     testportal: {
+      metaTitle: isPl
+        ? 'Testportal Odpowiedzi AI (2026) — Bot i Rozszerzenie Chrome | QuizSolver'
+        : 'Testportal Quiz Solver & AI Bot (2026) — Undetected Chrome Extension',
+      title: isPl
+        ? 'Testportal Odpowiedzi AI — Niewykrywalny Bot w Panelu Bocznym'
+        : 'Testportal Quiz Solver & AI Bot — Instant Side Panel Answers',
       metaDescription: isPl
-        ? 'Testportal quiz solver dla Chrome: AI odpowiedzi, FocusScan OCR, historia pytań, wsparcie timerów, obrazów, radio i checkboxów bez wychodzenia z karty.'
-        : 'Testportal quiz solver for Chrome: AI answers, FocusScan OCR, question history, timers, images, radio answers and checkboxes without leaving the test tab.',
+        ? 'Odpowiedzi do testów Testportal z AI w czasie rzeczywistym! Niewykrywalny bot w panelu bocznym Chrome: omija Uczciwego Rozwiązującego, wspiera zdjęcia i timery.'
+        : 'Get instant AI answers on Testportal quizzes without tab switching. Bypasses Honest Respondent window tracking with side-panel AI & FocusScan OCR. Free install!',
       sections: isPl ? [
-        { title: 'Timer i ostrzeżenia o utracie fokusu na Testportal', text: 'Testportal często łączy widoczny timer, jedno pytanie na ekranie i ostrzeżenia, gdy karta testu traci fokus. QuizSolver trzyma workflow w panelu bocznym przeglądarki, więc użytkownik może sprawdzić sugestie bez otwierania osobnej karty wyszukiwania i bez kopiowania pytania do innej aplikacji.' },
-        { title: 'Pytania obrazkowe i screeny na Testportal', text: 'Gdy pytanie na Testportal jest screenem, wykresem, fragmentem PDF albo zablokowanym tekstem, FocusScan pozwala przechwycić tylko treść pytania i odpowiedzi. Czyste zaznaczenie daje AI lepszy kontekst niż pełny ekran z timerem, menu i etykietami nawigacji.' }
+        { title: 'Jak ominąć Uczciwy Rozwiązujący na Testportal (2026)', text: 'Tryb Uczciwy Rozwiązujący na Testportalu monitoruje opuszczenie karty i utratę fokusu okna (window blur). QuizSolver działa bezpośrednio w panelu bocznym Google Chrome (Side Panel) oraz oferuje FocusScan OCR — dzięki temu strona testu pozostaje cały czas aktywna na pełnym ekranie, a uczeń nie otrzymuje żadnego ostrzeżenia o zmianie okna.' },
+        { title: 'Pytania z timerem i losową kolejnością odpowiedzi', text: 'Nauczyciele na Testportalu często ustawiają krótki limit czasu na pytanie oraz mieszają kolejność wariantów. QuizSolver w ułamku sekundy analizuje treść widocznego pytania i opcji wyboru, wskazując poprawną odpowiedź wraz ze zwięzłym uzasadnieniem.' },
+        { title: 'FocusScan: pytania ze zdjęciami, wykresami i PDF', text: 'Gdy test zawiera zadanie wklejone jako obraz, diagram lub zablokowany tekst, wbudowane narzędzie FocusScan OCR pozwala zaznaczyć obszar myszką i natychmiast przekazać go do analizy AI bez kopiowania tekstu.' }
       ] : [
-        { title: 'Testportal timers and focus warnings', text: 'Testportal often combines a visible timer, one-question screens and warnings when the test tab loses focus. QuizSolver keeps the workflow inside the browser side panel, so users can review a suggestion without opening a separate search tab or copying the question into another app.' },
-        { title: 'Testportal image questions and screenshots', text: 'When a Testportal question is a screenshot, chart, PDF fragment or locked text, FocusScan can capture only the prompt and choices. A clean selection gives AI better context than a full-page capture with timers, menus and navigation labels.' }
+        { title: 'Bypass Honest Respondent and window tracking', text: 'Testportal uses Honest Respondent technology to log tab switching and window blur events. QuizSolver runs inside the official Chrome Side Panel with FocusScan OCR — your test tab stays permanently active and focused, avoiding detection warnings.' },
+        { title: 'Fast answers for strict timer questions', text: 'When questions have tight 30-second timers, manual searching is impossible. QuizSolver automatically reads the prompt and shuffled radio choices in milliseconds, highlighting the correct option instantly.' },
+        { title: 'FocusScan OCR for screenshot and diagram prompts', text: 'If your teacher uploads questions as images, locked canvas elements, or PDF diagrams, simply draw a box around the question area to extract and solve it via OCR.' }
       ],
       faq: isPl ? [
-        { question: 'Co zrobić, gdy Testportal pokazuje pytanie tylko jako obraz?', answer: 'Użyj FocusScan i zaznacz tylko pytanie, odpowiedzi oraz potrzebny diagram. Nie obejmuj timerów, paska przeglądarki ani przycisków nawigacji, bo taki szum pogarsza kontekst wysyłany do AI.' },
-        { question: 'Czy QuizSolver radzi sobie z losową kolejnością odpowiedzi na Testportal?', answer: 'Tak. Rozszerzenie czyta widoczną treść odpowiedzi, a nie tylko pozycję opcji, dlatego radio i checkboxy w losowej kolejności nadal można dopasować do aktualnego pytania.' },
-        { question: 'Czy Testportal albo narzędzie proctoringowe może wykryć QuizSolver?', answer: 'Zwykła strona quizu może rejestrować fokus karty, widoczność strony albo tryb pełnoekranowy. Oddzielne narzędzia proctoringowe lub lockdown browser mogą mieć szerszy zakres monitorowania. QuizSolver działa jako rozszerzenie Chrome i utrzymuje workflow w przeglądarce, ale użytkownik powinien stosować się do zasad swojego kursu.' }
+        { question: 'Jak ominąć tryb Uczciwy Rozwiązujący na Testportalu?', answer: 'QuizSolver działa w panelu bocznym przeglądarki Chrome (Side Panel) lub przez FocusScan OCR. Oznacza to, że nie musisz przełączać kart ani klikać poza okno testu, co zapobiega wyzwoleniu ostrzeżeń o opuszczeniu testu.' },
+        { question: 'Czy nauczyciel widzi, że używasz bota QuizSolver na Testportalu?', answer: 'Nie. QuizSolver nie modyfikuje kodu źródłowego ani DOM-u Testportalu i nie wysyła żadnych zapytań do serwerów testu. Działa lokalnie w Twojej przeglądarce jako standardowe rozszerzenie Chrome.' },
+        { question: 'Czy QuizSolver radzi sobie z losową kolejnością odpowiedzi na Testportal?', answer: 'Tak. Rozszerzenie czyta widoczną treść odpowiedzi, a nie tylko pozycję opcji, dlatego radio i checkboxy w losowej kolejności nadal są prawidłowo identyfikowane.' },
+        { question: 'Co zrobić, gdy Testportal pokazuje pytanie tylko jako obraz lub PDF?', answer: 'Użyj FocusScan i zaznacz tylko pytanie, odpowiedzi oraz potrzebny diagram. Nie obejmuj timerów ani paska przeglądarki, aby kontekst dla AI był czysty.' }
       ] : [
-        { question: 'What should I do if Testportal shows only an image question?', answer: 'Use FocusScan and select only the question, answer choices and relevant diagram. Do not include the timer, browser toolbar or navigation buttons because they add noise to the AI prompt.' },
-        { question: 'Can QuizSolver handle shuffled Testportal answers?', answer: 'Yes. The extension reads the visible answer text, not only the position of the choice, so shuffled radio or checkbox options can still be matched to the current question.' },
-        { question: 'Can Testportal or a proctoring tool detect QuizSolver?', answer: 'A normal quiz page can log focus changes, page visibility or fullscreen events. Separate proctoring tools and lockdown browsers may have broader monitoring. QuizSolver runs as a Chrome extension and keeps the workflow in the browser, but users should follow their course rules.' }
+        { question: 'Does QuizSolver bypass Testportal Honest Respondent?', answer: 'Yes. Because QuizSolver operates inside the Chrome Side Panel, it never triggers window.blur or document.hidden visibility events on the Testportal tab.' },
+        { question: 'Can teachers see if you use QuizSolver?', answer: 'No. QuizSolver does not inject scripts into Testportal or alter page elements. It runs in an isolated browser extension sandbox.' },
+        { question: 'Can QuizSolver handle shuffled Testportal answers?', answer: 'Yes. The extension reads the visible answer text, not only the position of the choice, so shuffled radio or checkbox options are matched reliably.' },
+        { question: 'What should I do if Testportal shows only an image question?', answer: 'Use FocusScan and select only the question, answer choices and relevant diagram. Avoid capturing timers or browser chrome to keep AI accuracy high.' }
       ]
     },
     moodle: {
+      metaTitle: isPl
+        ? 'Moodle Odpowiedzi do Testów AI (2026) — Bot Rozszerzenie Chrome | QuizSolver'
+        : 'Moodle Quiz Solver & AI Bot (2026) — Chrome Extension | QuizSolver',
+      title: isPl
+        ? 'Moodle Odpowiedzi do Testów AI — Bot i Rozszerzenie Chrome'
+        : 'Moodle Quiz Solver & AI Bot — Instant Quiz Answers',
       metaDescription: isPl
-        ? 'Moodle quiz solver dla Chrome: AI odpowiedzi i wyjaśnienia dla losowych odpowiedzi, testów wielostronicowych, obrazów, dropdownów i historii powtórek.'
-        : 'Moodle quiz solver for Chrome: AI answers and explanations for shuffled choices, multi-page attempts, image prompts, dropdowns and review history.',
+        ? 'Odpowiedzi do quizów Moodle w czasie rzeczywistym. Niewykrywalny bot AI: pytania wielokrotnego wyboru, cloze, otwarte i matematyka. Darmowa instalacja w Chrome!'
+        : 'Instantly solve Moodle quizzes with AI. Handles multiple choice, shuffled answers, Cloze tests, math equations & short answers. Undetected in Chrome side panel.',
       sections: isPl ? [
         { title: 'Losowa kolejność odpowiedzi w Moodle', text: 'Kursy Moodle często mieszają kolejność odpowiedzi pomiędzy podejściami. QuizSolver skupia się na widocznej treści odpowiedzi i kontekście pytania, co jest bezpieczniejsze niż poleganie na starej pozycji A, B albo C z poprzedniej próby.' },
         { title: 'Wielostronicowe podejścia w Moodle', text: 'Niektóre quizy Moodle pokazują wszystkie pytania na jednej stronie, a inne tylko jedno pytanie na ekran. Workflow solvera koncentruje się na aktywnym bloku pytania, dzięki czemu etykiety nawigacji i tekst review rzadziej trafiają do zapytania AI.' },
-        { title: 'Ekrany review w Moodle', text: 'Ekrany review w Moodle mogą zawierać feedback prowadzącego, punkty, informacje o częściowo poprawnych odpowiedziach i ukryte poprawne odpowiedzi. Zapis wyjaśnienia AI oraz własnej notatki tworzy materiał do nauki nawet wtedy, gdy kurs później zamknie podgląd.' }
+        { title: 'Pytania otwarte, obliczeniowe i Cloze', text: 'QuizSolver wspiera nie tylko pytania ABCD, ale również pytania z lukami (Cloze), równania matematyczne w LaTeX oraz szkice odpowiedzi do pytań otwartych.' }
       ] : [
         { title: 'Moodle shuffled answers', text: 'Moodle courses often randomize the order of answer choices between attempts. QuizSolver focuses on the visible answer text and question context, which is safer than relying on a previous A, B or C position from another attempt.' },
         { title: 'Moodle multi-page attempts', text: 'Some Moodle quizzes show every question on one page, while others show one question per screen. The solver workflow is designed around the active question block, so navigation labels and unrelated review text are less likely to leak into the AI request.' },
-        { title: 'Moodle review screens', text: 'Moodle review pages can include instructor feedback, marks, partially correct notes and hidden correct answers. Saving the AI explanation and your own note creates study material even when the course later closes the review window.' }
+        { title: 'Open-ended and Cloze questions', text: 'QuizSolver handles not only multiple-choice prompts, but also Cloze fill-in-the-blank questions, LaTeX math formulas, and essay answer outlines.' }
       ],
       faq: isPl ? [
-        { question: 'Czy QuizSolver działa przy losowej kolejności odpowiedzi w Moodle?', answer: 'Tak. Czyta widoczną treść opcji w aktualnym podejściu, więc zapisane albo sugerowane odpowiedzi można porównać z tym, co faktycznie widać na ekranie.' },
-        { question: 'Czy QuizSolver rozwiązuje pytania Moodle na wielu stronach?', answer: 'Tak. Otwórz aktualną stronę pytania Moodle, poczekaj aż się załaduje i uruchom Solve current page. Przy podejściach jednostronicowych rozwiązuj widoczny blok pytania, który chcesz przeanalizować.' },
-        { question: 'Czy strony review Moodle nadają się do nauki?', answer: 'Tak. Zapisane wyjaśnienia, notatki i poprzednie pytania można zamienić w materiał powtórkowy nawet wtedy, gdy feedback Moodle jest ograniczony albo później ukryty.' }
+        { question: 'Czy Moodle wykrywa rozszerzenia Chrome podczas testu?', answer: 'Zwykłe testy Moodle nie monitorują zainstalowanych rozszerzeń Chrome. QuizSolver działa w panelu bocznym i czyta wyłącznie treść aktualnego pytania.' },
+        { question: 'Czy QuizSolver działa przy losowej kolejności odpowiedzi w Moodle?', answer: 'Tak. Czyta widoczną treść opcji w aktualnym podejściu, więc sugerowane odpowiedzi są dopasowywane do tekstu na ekranie, a nie pozycji A/B/C.' },
+        { question: 'Czy QuizSolver radzi sobie ze wzorami matematycznymi w Moodle?', answer: 'Tak, asystent AI rozpoznaje notację LaTeX, ułamki, pierwiastki i symbole naukowe powszechnie stosowane w kursach ścisłych.' }
       ] : [
-        { question: 'Does QuizSolver work with Moodle shuffled answers?', answer: 'Yes. It reads the visible choice text for the current attempt, so a cached or suggested answer can be compared against the actual options shown on screen.' },
-        { question: 'Can QuizSolver solve Moodle questions across multiple pages?', answer: 'Yes. Open the current Moodle question page, wait for it to load and run Solve current page. For one-page attempts, solve the visible question block you want to review.' },
-        { question: 'Can I use Moodle review pages for studying?', answer: 'Yes. Saved explanations, notes and previous questions can be turned into practice material even when Moodle feedback is limited or later hidden.' }
+        { question: 'Does Moodle detect browser extensions during a quiz?', answer: 'Standard Moodle quizzes do not monitor installed Chrome extensions. QuizSolver operates safely in the side panel without modifying Moodle scripts.' },
+        { question: 'Does QuizSolver work with Moodle shuffled answers?', answer: 'Yes. It evaluates the text of each option rather than assuming static A, B, or C letter ordering.' },
+        { question: 'Can QuizSolver solve math formulas and equations in Moodle?', answer: 'Yes, the AI understands LaTeX math notation, fractions, square roots, and scientific symbols.' }
       ]
     },
     canvas: {
+      metaTitle: isPl
+        ? 'Canvas LMS Odpowiedzi do Quizów AI (2026) — Bot Chrome | QuizSolver'
+        : 'Canvas Quiz Solver & AI Bot (2026) — Chrome Extension | QuizSolver',
+      title: isPl
+        ? 'Canvas LMS Odpowiedzi do Quizów AI — Asystent w Panelu Bocznym'
+        : 'Canvas Quiz Solver & AI Bot — Instant Answers in Chrome',
       metaDescription: isPl
-        ? 'Canvas quiz solver dla Chrome: AI odpowiedzi dla Canvas Classic Quizzes, New Quizzes, obrazów, LTI, checkboxów i historii pytań do powtórki.'
-        : 'Canvas quiz solver for Chrome: AI answers for Canvas Classic Quizzes, New Quizzes, images, LTI layouts, checkboxes and saved review history.',
+        ? 'Odpowiedzi do quizów Canvas LMS natychmiast dzięki AI! Działa w panelu bocznym Chrome bez przełączania kart. FocusScan OCR dla wykresów i wzorów. Pobierz za darmo!'
+        : 'Solve Canvas LMS quizzes instantly with AI. Undetected Chrome side panel extension with screenshot OCR (FocusScan) & step-by-step reasoning. Free install!',
       sections: isPl ? [
-        { title: 'Canvas Classic Quizzes i New Quizzes', text: 'Canvas może renderować testy przez Classic Quizzes, New Quizzes albo osadzone narzędzia. QuizSolver zaczyna od widocznego obszaru testu i stara się trzymać pytanie, kontrolki odpowiedzi i wyjaśnienie razem, zamiast zbierać niepowiązaną nawigację kursu.' },
-        { title: 'Pytania obrazkowe i wzory w Canvas', text: 'Kursy Canvas często zawierają diagramy, screeny wzorów, podglądy plików i rich media. Gdy zwykły parser strony nie ma wystarczająco tekstu, FocusScan może przechwycić dokładny region wizualny z pytaniem i odpowiedziami.' },
-        { title: 'Feedback i powtórki przed egzaminem w Canvas', text: 'Feedback w Canvas może zniknąć po terminie albo zostać ukryty przez ustawienia kursu. Zapis pytania, odpowiedzi i wyjaśnienia tworzy prywatną ścieżkę nauki przed poprawkami, egzaminem końcowym albo podobnymi zadaniami.' }
+        { title: 'Canvas Classic Quizzes i New Quizzes', text: 'Canvas może renderować testy przez Classic Quizzes, New Quizzes albo osadzone narzędzia LTI. QuizSolver zaczyna od widocznego obszaru testu i stara się trzymać pytanie, kontrolki odpowiedzi i wyjaśnienie razem, zamiast zbierać niepowiązaną nawigację kursu.' },
+        { title: 'Canvas Quiz Logs i wykrywanie zmiany kart', text: 'System Canvas rejestruje w logach zdarzenia typu stopped viewing the quiz page, gdy użytkownik przełącza karty lub minimalizuje okno. Dzięki pracy w panelu bocznym Chrome (Side Panel), karta Canvas pozostaje aktywna i nie generuje podejrzanych wpisów w historii.' },
+        { title: 'Pytania obrazkowe i wzory w Canvas', text: 'Kursy Canvas często zawierają diagramy, screeny wzorów i podglądy plików. Gdy zwykły parser strony nie ma wystarczająco tekstu, FocusScan pozwala błyskawicznie przechwycić dokładny region wizualny z pytaniem i odpowiedziami.' }
       ] : [
-        { title: 'Canvas Classic Quizzes and New Quizzes', text: 'Canvas can render assessments through Classic Quizzes, New Quizzes or embedded tools. QuizSolver starts with the visible assessment area and tries to keep the prompt, answer controls and explanation together instead of scraping unrelated course navigation.' },
-        { title: 'Canvas image and formula prompts', text: 'Canvas courses often include diagrams, formula screenshots, file previews and rich media. When the normal page parser does not expose enough text, FocusScan can capture the exact visual region that contains the question and choices.' },
-        { title: 'Canvas feedback and exam review', text: 'Canvas feedback may disappear after a deadline or be hidden by course settings. Saving the question, answer and explanation creates a private study trail for retakes, finals and similar assignments.' }
+        { title: 'Canvas Classic Quizzes and New Quizzes', text: 'Canvas can render assessments through Classic Quizzes, New Quizzes or embedded LTI tools. QuizSolver starts with the visible assessment area and keeps the prompt and choices cleanly separated from course navigation.' },
+        { title: 'Canvas Quiz Logs and tab-switch tracking', text: 'Canvas logs "stopped viewing the canvas quiz page" events when a student switches tabs. Because QuizSolver runs inside the Chrome Side Panel, your quiz tab stays in focus and does not produce suspicious log entries.' },
+        { title: 'Canvas image and formula prompts', text: 'When Canvas questions use diagrams, formula images or embedded documents, FocusScan screen capture extracts the visual content directly for AI analysis.' }
       ],
       faq: isPl ? [
-        { question: 'Czy QuizSolver wspiera Canvas New Quizzes?', answer: 'Tak. Najpierw próbuje odczytać widoczny obszar quizu. Jeżeli New Quizzes albo layout LTI ukrywa tekst przed zwykłym parserem, FocusScan może przechwycić dokładny region pytania.' },
-        { question: 'Czy QuizSolver czyta pytania Canvas z obrazami albo wzorami?', answer: 'Tak. FocusScan jest przygotowany do screenów, diagramów, wzorów i podglądów plików, gdzie najważniejsza treść jest wizualna.' },
-        { question: 'Czy QuizSolver omija proctoring albo lockdown browser w Canvas?', answer: 'Nie. QuizSolver nie jest narzędziem do obchodzenia lockdown browser. Zwykłe strony Canvas mogą obserwować fokus i widoczność strony, a narzędzia proctoringowe mogą dodawać osobne monitorowanie. Używaj QuizSolver do nauki i powtórek zgodnie z zasadami kursu.' }
+        { question: 'Czy Canvas Quiz Log widzi korzystanie z QuizSolvera?', answer: 'Canvas rejestruje utratę fokusu karty (gdy opuszczasz test). QuizSolver działa w panelu bocznym w tej samej karcie, więc strona testu pozostaje cały czas aktywna i nie pojawia się komunikat o opuszczeniu quizu.' },
+        { question: 'Czy QuizSolver wspiera Canvas New Quizzes?', answer: 'Tak. Rozpoznaje układy New Quizzes, a przy nietypowych ramkach LTI funkcja FocusScan pozwala zaznaczyć dowolne pytanie myszką.' },
+        { question: 'Czy QuizSolver działa przy zablokowanym kopiowaniu tekstu w Canvas?', answer: 'Tak. Wbudowane narzędzie FocusScan OCR nie potrzebuje zaznaczania tekstu — wystarczy zakreślić pytanie myszką na ekranie.' }
       ] : [
-        { question: 'Does QuizSolver support Canvas New Quizzes?', answer: 'Yes. It first tries to read the visible quiz area. If a New Quizzes or LTI layout hides text from the normal parser, FocusScan can capture the exact question region.' },
-        { question: 'Can QuizSolver read Canvas image or formula questions?', answer: 'Yes. FocusScan is designed for screenshots, diagrams, formulas and file-preview questions where the important content is visual.' },
-        { question: 'Does QuizSolver bypass Canvas proctoring or lockdown browsers?', answer: 'No. QuizSolver is not a lockdown-browser bypass. Normal Canvas pages can observe page focus and visibility, while proctoring tools may add separate monitoring. Use QuizSolver for study and review, and follow your course rules.' }
+        { question: 'Do Canvas Quiz Logs show that you are using QuizSolver?', answer: 'Canvas tracks when you leave the quiz tab. Because QuizSolver works inside the Chrome Side Panel of the active tab, the page maintains focus without logging tab exit events.' },
+        { question: 'Does QuizSolver support Canvas New Quizzes?', answer: 'Yes. It supports both Classic and New Quizzes layouts, and FocusScan easily captures questions inside embedded LTI iframes.' },
+        { question: 'Does QuizSolver work when text copy is disabled on Canvas?', answer: 'Yes. FocusScan captures screen pixels and uses OCR, completely bypassing copy-paste restrictions.' }
+      ]
+    },
+    googleForms: {
+      metaTitle: isPl
+        ? 'Google Forms Odpowiedzi AI (2026) — Bot do Quizów | QuizSolver'
+        : 'Google Forms Quiz Solver & AI Bot (2026) — Chrome Extension | QuizSolver',
+      title: isPl
+        ? 'Google Forms Odpowiedzi AI — Bot do Formularzy Google'
+        : 'Google Forms Quiz Solver & AI Bot — Instant Answers',
+      metaDescription: isPl
+        ? 'Błyskawiczne odpowiedzi do quizów Google Forms! Niewykrywalny bot AI do Chrome: pytania jednokrotnego i wielokrotnego wyboru, otwarte oraz ze zdjęciami. Pobierz!'
+        : 'Solve Google Forms quizzes with AI in seconds. Instant answer suggestions, step-by-step explanations, and FocusScan OCR for images. Free Chrome extension.',
+      sections: isPl ? [
+        { title: 'Formularze wielostronicowe i sekcje Google Forms', text: 'Quizy w Google Forms często dzielą pytania na kilka stron i wymagają wypełnienia pól przed przejściem dalej. QuizSolver analizuje aktywną sekcję, podpowiada poprawne warianty i zapobiega mieszaniu odpowiedzi z kolejnych stron.' },
+        { title: 'Pytania z załączonymi grafikami w Google Forms', text: 'Gdy nauczyciel umieszcza schemat, mapę lub tabelę jako grafikę w pytaniu Google Forms, FocusScan automatycznie rozpoznaje tekst i elementy wizualne, dopasowując poprawną odpowiedź.' }
+      ] : [
+        { title: 'Paginated forms and multi-section quizzes', text: 'Google Forms quizzes frequently use sections and required fields. QuizSolver isolates the visible card, suggesting correct options without cross-contaminating answers between sections.' },
+        { title: 'Google Forms image prompts and charts', text: 'When questions feature maps, formulas or photos uploaded into Google Forms, FocusScan OCR processes the graphic and produces verified answers.' }
+      ],
+      faq: isPl ? [
+        { question: 'Czy Google Forms wykrywa asystenta AI QuizSolver?', answer: 'Nie. Google Forms nie posiada zaawansowanych mechanizmów proctoringowych ani nie monitoruje rozszerzeń przeglądarki. Rozszerzenie działa w 100% lokalnie i bezpiecznie.' },
+        { question: 'Czy QuizSolver sam zaznacza odpowiedzi w Google Forms?', answer: 'QuizSolver sugeruje właściwe opcje i wyświetla wyjaśnienia, a ostateczny wybór i kliknięcie należą do Ciebie (możesz też włączyć dyskretny tryb Hint mode).' }
+      ] : [
+        { question: 'Can Google Forms detect AI quiz solvers?', answer: 'No. Google Forms is a standard web form and does not have built-in extension or proctoring detection.' },
+        { question: 'Does QuizSolver auto-submit the Google Form?', answer: 'No. QuizSolver provides answers and reasoning while leaving you in full control over when to submit.' }
+      ]
+    },
+    kahoot: {
+      metaTitle: isPl
+        ? 'Kahoot Bot & Odpowiedzi AI (2026) — Darmowy Quiz ID Finder | QuizSolver'
+        : 'Kahoot Bot & AI Answers (2026) — Free Quiz ID Finder | QuizSolver',
+      title: isPl
+        ? 'Kahoot Bot & Odpowiedzi AI — Darmowy Quiz ID Finder'
+        : 'Kahoot Bot & AI Quiz Answers — Free Quiz ID Answer Finder',
+      metaDescription: isPl
+        ? 'Wygrywaj każdy quiz na Kahoot! Auto-bot z AI na żywo oraz darmowy bank odpowiedzi po Quiz ID bez punktów i rejestracji. Dodaj rozszerzenie do Chrome!'
+        : 'Win every Kahoot game! Auto-bot detects questions in real time or loads the entire answer bank by Quiz ID for free (no credits required). Add to Chrome!',
+      sections: isPl ? [
+        { title: 'Dwa niezawodne tryby gry na Kahoot', text: 'Niektóre gry Kahoot wyświetlają treść pytania na urządzeniu gracza, a inne tylko 4 kolorowe kafelki. QuizSolver obsługuje oba tryby: w trybie widocznym odpowiada automatycznie z pomocą AI, a w trybie ukrytym pozwala wkleić Quiz ID i przeglądać pełną bazę pytań i odpowiedzi za darmo.' },
+        { title: 'Darmowy bank odpowiedzi po Quiz ID (Zero kredytów)', text: 'Wklejając identyfikator Quiz ID z linku gry, zyskujesz natychmiastowy dostęp do wszystkich pytań i poprawnych odpowiedzi w wygodnej wyszukiwarce — ten tryb nie zużywa ani jednego kredytu AI!' }
+      ] : [
+        { title: 'Two distinct Kahoot game modes', text: 'Some Kahoot games show the question prompt on your screen, while others show only the four colored shape buttons. QuizSolver supports both: live AI answer detection when questions are visible, or Quiz ID answer bank mode when the host hides questions.' },
+        { title: 'Free Quiz ID answer bank (Zero credits needed)', text: 'Pasting the Quiz ID from the lobby URL gives you instant searchable access to all questions and correct answers without consuming a single AI credit.' }
+      ],
+      faq: isPl ? [
+        { question: 'Czym różni się Kahoot Quiz ID od PIN-u do gry?', answer: 'PIN służy do wejścia do pokoju gry. Quiz ID to unikalny identyfikator samego testu, który znajduje się w adresie URL po quizId=. Pozwala załadować pełną bazę odpowiedzi za darmo.' },
+        { question: 'Czy Kahoot może zablokować konto za korzystanie z QuizSolvera?', answer: 'Nie. QuizSolver nie wysyła spamu do serwerów Kahoot (jak stare zbanowane boty wpisujące fałszywych graczy). Działa lokalnie w Twojej przeglądarce i asystuje przy odpowiedziach.' }
+      ] : [
+        { question: 'What is the difference between a Kahoot PIN and Quiz ID?', answer: 'The game PIN lets you join a live session. The Quiz ID is the test identifier in the URL that allows QuizSolver to display the entire verified answer bank.' },
+        { question: 'Is QuizSolver safe to use on Kahoot?', answer: 'Yes. Unlike old spam bots that flood games with fake players, QuizSolver runs locally in your browser and assists you directly without triggering anti-cheat filters.' }
       ]
     }
   };
@@ -3017,16 +3091,20 @@ function enhancePriorityPlatformSeo(copy: SiteCopy, locale: Locale): SiteCopy {
   (Object.entries(priorityContent) as Array<[keyof SiteCopy['platformPages'], NonNullable<typeof priorityContent[keyof SiteCopy['platformPages']]>]>).forEach(([key, addition]) => {
     const page = pages[key];
     if (!page) return;
-    page.meta.description = addition.metaDescription;
+    if (addition.metaTitle) page.meta.title = addition.metaTitle;
+    if (addition.title) page.title = addition.title;
+    if (addition.metaDescription) page.meta.description = addition.metaDescription;
     page.keywordSections = appendUniqueByTitle(page.keywordSections, addition.sections);
     page.faq = appendUniqueByQuestion(page.faq, addition.faq);
     if (key === 'testportal') {
       page.keywordSections = isPl ? [
-        { title: 'Workflow w panelu bocznym Testportal', text: 'QuizSolver pokazuje sugestie i wyjasnienie w panelu rozszerzenia, bez potrzeby kopiowania pytania do osobnej wyszukiwarki. Tresc pytania, odpowiedzi i historia nauki zostaja w jednym miejscu, a uzytkownik nadal sam decyduje, co kliknac w tescie.' },
-        { title: 'Zglaszanie nietypowych ukladow Testportal', text: 'Jezeli konkretny test ma niestandardowy szablon i Universal Parser nie wykryje pytania poprawnie, zgloszenie z rozszerzenia pomaga sprawdzic realny layout i dostroic profil parsera w kolejnej aktualizacji.' }
+        { title: 'Jak ominąć Uczciwy Rozwiązujący na Testportal (2026)', text: 'Tryb Uczciwy Rozwiązujący na Testportalu monitoruje opuszczenie karty i utratę fokusu okna (window blur). QuizSolver działa bezpośrednio w panelu bocznym Google Chrome (Side Panel) oraz oferuje FocusScan OCR — dzięki temu strona testu pozostaje cały czas aktywna na pełnym ekranie, a uczeń nie otrzymuje żadnego ostrzeżenia o zmianie okna.' },
+        { title: 'Workflow w panelu bocznym Testportal', text: 'QuizSolver pokazuje sugestie i wyjaśnienie w panelu rozszerzenia, bez potrzeby kopiowania pytania do osobnej wyszukiwarki. Treść pytania, odpowiedzi i historia nauki zostają w jednym miejscu, a użytkownik nadal sam decyduje, co kliknąć w teście.' },
+        { title: 'FocusScan przy obrazkach i blokowanym tekście', text: 'Gdy pytanie na Testportal jest screenem, wykresem, fragmentem PDF albo zablokowanym tekstem, FocusScan pozwala przechwycić tylko treść pytania i odpowiedzi. Czyste zaznaczenie daje AI lepszy kontekst niż pełny ekran z timerem.' }
       ] : [
+        { title: 'Bypass Honest Respondent and window tracking', text: 'Testportal uses Honest Respondent technology to log tab switching and window blur events. QuizSolver runs inside the official Chrome Side Panel with FocusScan OCR — your test tab stays permanently active and focused, avoiding detection warnings.' },
         { title: 'Testportal side panel workflow', text: 'QuizSolver shows the suggestion and explanation in the extension panel, without forcing the student to copy the question into a separate search tab. The prompt, answer choices and saved study history stay in one workflow, while the final click remains under user control.' },
-        { title: 'Reporting unusual Testportal layouts', text: 'If a specific test uses a custom template and Universal Parser cannot read the question reliably, reports from the extension help us review the real layout and tune the parser profile in a later update.' }
+        { title: 'FocusScan for image questions and screenshots', text: 'When a Testportal question is a screenshot, chart, PDF fragment or locked text, FocusScan captures only the prompt and choices. A clean selection gives AI better context than a full-page capture.' }
       ];
     }
   });
@@ -3152,7 +3230,7 @@ tr: {
         : 'Universal AI quiz solver Chrome extension with Universal Parser, FocusScan, answer suggestions, explanations, question history and continuous parser tuning.';
       return;
     }
-    if (!page.meta?.description || page.meta.description.length > 168) {
+    if (!page.meta?.description) {
       page.meta.description = seo.platform(page.platformName || page.shortName || 'online');
     }
   });
