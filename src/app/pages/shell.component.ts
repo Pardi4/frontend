@@ -32,7 +32,7 @@ export function trackGa4Event(eventName: string, params?: Record<string, string 
 
           <nav class="nav-links" aria-label="Main navigation">
             <a class="nav-link" [href]="homeHash('how-it-works')">{{ copy.nav.how }}</a>
-            <a class="nav-link" [href]="pathFor('mobileInstall')" [class.active]="pageKey === 'mobileInstall'">{{ locale === 'pl' ? 'Na telefon' : 'Mobile' }}</a>
+            <a class="nav-link" [href]="pathFor('mobileInstall')" [class.active]="pageKey === 'mobileInstall'">{{ mobileNavLabel() }}</a>
             <a class="nav-link" [href]="homeHash('features')">{{ copy.nav.features }}</a>
             <a class="nav-link" [href]="pathFor('credits')" [class.active]="pageKey === 'credits'">{{ copy.nav.pricing }}</a>
             <a class="nav-link" [href]="pathFor('demo')" [class.active]="pageKey === 'demo'">{{ copy.common.demo }}</a>
@@ -93,7 +93,7 @@ export function trackGa4Event(eventName: string, params?: Record<string, string 
         <nav class="mobile-menu" *ngIf="mobileMenuOpen()" aria-label="Mobile navigation">
           <div class="mobile-menu-inner">
             <a class="nav-link" [href]="homeHash('how-it-works')" (click)="mobileMenuOpen.set(false)">{{ copy.nav.how }}</a>
-            <a class="nav-link" [href]="pathFor('mobileInstall')" [class.active]="pageKey === 'mobileInstall'" (click)="mobileMenuOpen.set(false)">{{ locale === 'pl' ? 'Na telefon' : 'Mobile' }}</a>
+            <a class="nav-link" [href]="pathFor('mobileInstall')" [class.active]="pageKey === 'mobileInstall'" (click)="mobileMenuOpen.set(false)">{{ mobileNavLabel() }}</a>
             <a class="nav-link" [href]="homeHash('features')" (click)="mobileMenuOpen.set(false)">{{ copy.nav.features }}</a>
             <a class="nav-link" [href]="pathFor('credits')" [class.active]="pageKey === 'credits'" (click)="mobileMenuOpen.set(false)">{{ copy.nav.pricing }}</a>
             <a class="nav-link" [href]="pathFor('demo')" (click)="mobileMenuOpen.set(false)">{{ copy.common.demo }}</a>
@@ -338,12 +338,15 @@ export function trackGa4Event(eventName: string, params?: Record<string, string 
                 <div class="form-group consent-group" style="text-align: left; font-size: 0.85rem; display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.5rem; margin-bottom: 0.5rem;">
                   <label style="display: flex; gap: 0.5rem; align-items: flex-start; cursor: pointer; color: var(--text-secondary);">
                     <input type="checkbox" name="consentTos" [(ngModel)]="consentTos" required style="margin-top: 0.2rem;">
-                    <span *ngIf="locale === 'pl'">Akceptuję <a href="/terms" target="_blank" style="color: var(--accent-cyan); text-decoration: underline;">Regulamin</a> i <a href="/privacy" target="_blank" style="color: var(--accent-cyan); text-decoration: underline;">Politykę Prywatności</a> (wymagane)</span>
-                    <span *ngIf="locale !== 'pl'">I accept the <a href="/terms" target="_blank" style="color: var(--accent-cyan); text-decoration: underline;">Terms</a> and <a href="/privacy" target="_blank" style="color: var(--accent-cyan); text-decoration: underline;">Privacy Policy</a> (required)</span>
+                    <span>
+                      <ng-container *ngIf="consentTosLabel() as c">
+                        {{ c.before }} <a [href]="pathFor('terms')" target="_blank" style="color: var(--accent-cyan); text-decoration: underline;">{{ c.terms }}</a> {{ c.and }} <a [href]="pathFor('privacy')" target="_blank" style="color: var(--accent-cyan); text-decoration: underline;">{{ c.privacy }}</a> {{ c.required }}
+                      </ng-container>
+                    </span>
                   </label>
                   <label style="display: flex; gap: 0.5rem; align-items: flex-start; cursor: pointer; color: var(--text-secondary);">
                     <input type="checkbox" name="consentMarketing" [(ngModel)]="consentMarketing" style="margin-top: 0.2rem;">
-                    <span>{{ locale === 'pl' ? 'Zgadzam się na otrzymywanie informacji marketingowych (opcjonalne)' : 'I agree to receive marketing updates (optional)' }}</span>
+                    <span>{{ consentMarketingLabel() }}</span>
                   </label>
                 </div>
                 <div class="form-error" *ngIf="authError()">{{ authError() }}</div>
@@ -1575,7 +1578,7 @@ protected switchLocale(event: MouseEvent, targetLocale: any): void {
       return;
     }
     if (!this.consentTos) {
-      this.authError.set(this.locale === 'pl' ? 'Musisz zaakceptować Regulamin i Politykę Prywatności.' : 'You must accept the Terms and Privacy Policy.');
+      this.authError.set(this.authTosRequiredMessage());
       return;
     }
     this.authLoading.set(true);
@@ -1735,6 +1738,78 @@ protected switchLocale(event: MouseEvent, targetLocale: any): void {
 
   stopQrScanner() {
     this.qrScannerOpen = false;
+  }
+
+  protected mobileNavLabel(): string {
+    const labels: Record<string, string> = {
+      pl: 'Na telefon',
+      en: 'Mobile',
+      de: 'Mobil',
+      es: 'Móvil',
+      fr: 'Mobile',
+      it: 'Mobile',
+      pt: 'Celular',
+      uk: 'Мобільний',
+      ar: 'الهاتف',
+      tr: 'Mobil',
+      ja: 'モバイル',
+      ko: '모바일'
+    };
+    return labels[this.locale] || labels['en'];
+  }
+
+  protected consentTosLabel(): { before: string; terms: string; and: string; privacy: string; required: string } {
+    const labels: Record<string, { before: string; terms: string; and: string; privacy: string; required: string }> = {
+      pl: { before: 'Akceptuję', terms: 'Regulamin', and: 'oraz', privacy: 'Politykę Prywatności', required: '(wymagane)' },
+      en: { before: 'I accept the', terms: 'Terms of Service', and: 'and', privacy: 'Privacy Policy', required: '(required)' },
+      de: { before: 'Ich akzeptiere die', terms: 'Nutzungsbedingungen', and: 'und die', privacy: 'Datenschutzerklärung', required: '(erforderlich)' },
+      es: { before: 'Acepto los', terms: 'Términos de servicio', and: 'y la', privacy: 'Política de privacidad', required: '(obligatorio)' },
+      fr: { before: "J'accepte les", terms: "Conditions d'utilisation", and: 'et la', privacy: 'Politique de confidentialité', required: '(obligatoire)' },
+      it: { before: 'Accetto i', terms: 'Termini di servizio', and: "e l'", privacy: 'Informativa sulla privacy', required: '(obbligatorio)' },
+      pt: { before: 'Aceito os', terms: 'Termos de Serviço', and: 'e a', privacy: 'Política de Privacidade', required: '(obrigatório)' },
+      uk: { before: 'Я приймаю', terms: 'Умови використання', and: 'та', privacy: 'Політику конфіденційності', required: "(обов'язково)" },
+      ar: { before: 'أوافق على', terms: 'شروط الخدمة', and: 'و', privacy: 'سياسة الخصوصية', required: '(مطلوب)' },
+      tr: { before: 'Kullanım', terms: 'Koşullarını', and: 've', privacy: 'Gizlilik Politikasını', required: 'kabul ediyorum (zorunlu)' },
+      ja: { before: '', terms: '利用規約', and: 'および', privacy: 'プライバシーポリシー', required: 'に同意します（必須）' },
+      ko: { before: '', terms: '이용약관', and: '및', privacy: '개인정보처리방침', required: '에 동의합니다 (필수)' }
+    };
+    return labels[this.locale] || labels['en'];
+  }
+
+  protected consentMarketingLabel(): string {
+    const labels: Record<string, string> = {
+      pl: 'Wyrażam zgodę na otrzymywanie informacji marketingowych i ofert promocyjnych (opcjonalnie).',
+      en: 'I agree to receive marketing updates and promotional offers (optional).',
+      de: 'Ich stimme dem Erhalt von Marketing-Updates und Sonderangeboten zu (optional).',
+      es: 'Acepto recibir actualizaciones de marketing y ofertas promocionales (opcional).',
+      fr: "J'accepte de recevoir des actualités marketing et des offres promotionnelles (facultatif).",
+      it: 'Accetto di ricevere aggiornamenti di marketing e offerte promozionali (facoltativo).',
+      pt: 'Concordo em receber novidades de marketing e ofertas promocionais (opcional).',
+      uk: "Я погоджуюся отримувати маркетингові новини та рекламні пропозиції (необов'язково).",
+      ar: 'أوافق على تلقي التحديثات التسويقية والعروض الترويجية (اختياري).',
+      tr: 'Pazarlama güncellemeleri ve promosyon teklifleri almayı kabul ediyorum (isteğe bağlı).',
+      ja: 'マーケティング情報やお得なオファーの受信に同意します（任意）。',
+      ko: '마케팅 정보 및 프로모션 혜택 수신에 동의합니다 (선택).'
+    };
+    return labels[this.locale] || labels['en'];
+  }
+
+  protected authTosRequiredMessage(): string {
+    const labels: Record<string, string> = {
+      pl: 'Musisz zaakceptować Regulamin i Politykę Prywatności.',
+      en: 'You must accept the Terms of Service and Privacy Policy.',
+      de: 'Sie müssen den Nutzungsbedingungen und der Datenschutzerklärung zustimmen.',
+      es: 'Debes aceptar los Términos de servicio y la Política de privacidad.',
+      fr: "Vous devez accepter les Conditions d'utilisation et la Politique de confidentialité.",
+      it: "Devi accettare i Termini di servizio e l'Informativa sulla privacy.",
+      pt: 'Você deve aceitar os Termos de Serviço e a Política de Privacidade.',
+      uk: 'Ви повинні прийняти Умови використання та Політику конфіденційності.',
+      ar: 'يجب عليك الموافقة على شروط الخدمة وسياسة الخصوصية.',
+      tr: 'Kullanım Koşullarını ve Gizlilik Politikasını kabul etmelisiniz.',
+      ja: '利用規約とプライバシーポリシーに同意する必要があります。',
+      ko: '이용약관과 개인정보처리방침에 동의해야 합니다.'
+    };
+    return labels[this.locale] || labels['en'];
   }
 }
 
