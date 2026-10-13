@@ -461,6 +461,69 @@ const DEMO_LOCALE_COPY: Record<Exclude<Locale, 'en' | 'pl'>, Omit<DemoCopy, 'que
     chooseOption: 'اختر',
     popupTitle: 'خطوات النافذة المنبثقة',
     popupSteps: ['اختيار من متعدد', 'وضع التلميح', 'إجابة نصية', 'المطابقة', 'النافذة العائمة السريعة']
+  },
+  tr: {
+    eyebrow: 'Etkileşimli Alıştırma · 0 Kredi',
+    title: 'QuizSolver’ı güvenli bir demoda deneyin',
+    lead: 'Uzantının nasıl çalıştığını gösteren 5 soru formatını test edin. Bu sayfa kredi harcamaz.',
+    install: 'Uzantıyı yükle',
+    openStore: 'Chrome Web Mağazası’nı aç',
+    demoBadge: 'Kredi harcanmaz',
+    localBadge: 'Test modu',
+    mapTitle: 'Demoyu nasıl kullanabilirsiniz?',
+    mapText: 'Aşağıdaki düğmelerle doğrudan tarayıcınızda çözebilir veya bu sayfada resmi QuizSolver Chrome uzantısını açabilirsiniz.',
+    prev: 'Önceki',
+    next: 'Sonraki soru',
+    restart: 'Demoyu yeniden başlat',
+    startTour: 'Rehberi başlat',
+    selectText: '✂️ Metni seç',
+    selectedTip: 'Sadece soru metnini seçin ve Hızlı Katman (Alt+Q) ile çözün.',
+    yourAnswer: 'Cevabınız',
+    chooseOption: 'Seçin',
+    popupTitle: 'Açılır pencere akışı',
+    popupSteps: ['Çoktan seçmeli', 'İpucu modu', 'Yazılı cevap', 'Açılır menü eşleştirme', 'Hızlı Katman']
+  },
+  ja: {
+    eyebrow: 'インタラクティブ体験 · クレジット消費0',
+    title: 'QuizSolverの動作をデモで体験',
+    lead: '選択式、控えめなヒントモード、記述式入力、ドロップダウン一致、選択テキスト解決の5つの形式をテストできます。クレジットは消費されません。',
+    install: '拡張機能をインストール',
+    openStore: 'Chromeウェブストアを開く',
+    demoBadge: 'クレジット消費なし',
+    localBadge: 'テストモード',
+    mapTitle: 'デモの使い方',
+    mapText: '下のボタンを使ってブラウザ上で直接解答をテストするか、このページで公式QuizSolver Chrome拡張機能を開いてください。',
+    prev: '前へ',
+    next: '次の問題',
+    restart: '最初からやり直す',
+    startTour: 'チュートリアルを開始',
+    selectText: '✂️ 問題文を選択',
+    selectedTip: '問題文だけを選択し、クイックオーバーレイ（Alt+Q）で解答します。',
+    yourAnswer: 'あなたの回答',
+    chooseOption: '選択してください',
+    popupTitle: 'ポップアップの流れ',
+    popupSteps: ['単一選択', 'ヒントモード', '記述式入力', 'ドロップダウン一致', 'クイックオーバーレイ']
+  },
+  ko: {
+    eyebrow: '인터랙티브 온보딩 · 크레딧 0 소모',
+    title: '안전한 데모 환경에서 QuizSolver 체험',
+    lead: '객관식 선택, 은밀한 힌트 모드, 텍스트 입력, 드롭다운 매칭, 선택 텍스트 해결 등 5가지 유형을 테스트해 보세요. 크레딧이 소모되지 않습니다.',
+    install: '확장 프로그램 설치',
+    openStore: 'Chrome 웹 스토어 열기',
+    demoBadge: '크레딧 소모 없음',
+    localBadge: '테스트 모드',
+    mapTitle: '데모 이용 방법',
+    mapText: '아래 버튼으로 브라우저에서 직접 문제를 풀어보거나 이 페이지에서 공식 QuizSolver Chrome 확장 프로그램을 열어보세요.',
+    prev: '이전',
+    next: '다음 문제',
+    restart: '처음부터 다시 시작',
+    startTour: '튜토리얼 시작',
+    selectText: '✂️ 문제 텍스트 선택',
+    selectedTip: '문제 텍스트만 드래그하여 선택한 뒤 퀵 오버레이(Alt+Q)로 해결하세요.',
+    yourAnswer: '내 답변',
+    chooseOption: '선택하세요',
+    popupTitle: '팝업 진행 단계',
+    popupSteps: ['객관식 단일 선택', '힌트 모드', '텍스트 입력', '드롭다운 매칭', '퀵 오버레이']
   }
 };
 
@@ -513,10 +576,31 @@ const DEMO_QUESTIONS: Record<Exclude<Locale, 'en' | 'pl'>, DemoQuestion[]> = {
     { ...COPY.en.questions[2], kicker: 'الخطوة 3 من 5', title: 'الرياضيات: إدخال نصي', instruction: 'يقوم QuizSolver بملء الأرقام والإجابات النصية بدقة مباشرة في الحقول.', question: 'كم حاصل ضرب 12 × 8؟', placeholder: 'اكتب إجابتك هنا', correctText: '96' },
     { ...COPY.en.questions[3], kicker: 'الخطوة 4 من 5', title: 'العلوم: قوائم منسدلة', instruction: 'يطابق مفاهيم متعددة في وقت واحد داخل القوائم المنسدلة.', question: 'طابق كل مصطلح علمي بالتعريف الصحيح له.', prompts: ['التمثيل الضوئي', 'التبخر', 'الجاذبية'], options: ['تصنع النباتات الجلوكوز باستخدام ضوء الشمس', 'يتحول السائل إلى غاز', 'القوة التي تجذب الأجسام ذات الكتلة'], correctText: 'التمثيل الضوئي = تصنع النباتات الجلوكوز باستخدام ضوء الشمس, التبخر = يتحول السائل إلى غاز, الجاذبية = القوة التي تجذب الأجسام ذات الكتلة' },
     { ...COPY.en.questions[4], kicker: 'الخطوة 5 من 5', title: 'النافذة العائمة السريعة', instruction: 'حدد نص السؤال فقط وقم بحله فورياً عبر Alt+Q.', question: 'ما هي أداة QuizSolver التي تحل النص المحدد فقط في الصفحة؟', options: ['حل النص المحدد', 'شراء الأرصدة', 'لوحة التحكم', 'سجل المتصفح'], correctText: 'حل النص المحدد' }
+  ],
+  tr: [
+    { ...COPY.en.questions[0], kicker: 'Adım 1 / 5', title: 'Biyoloji: Çoktan seçmeli', instruction: 'QuizSolver soruyu tarar ve doğru cevabı tek tıklamayla otomatik seçer.', question: 'Ökaryotik hücrelerde ATP üretiminden esas olarak hangi organel sorumludur?', options: ['Hücre çekirdeği', 'Mitokondri', 'Ribozom', 'Hücre zarı'], correctText: 'Mitokondri' },
+    { ...COPY.en.questions[1], kicker: 'Adım 2 / 5', title: 'İpucu modu', instruction: 'Aracın sizin yerinize tıklamasını istemiyor musunuz? İpucu modu ince bir ipucu sunar.', question: 'Hangi kaynak birincil tarihsel kanıtın en güçlü örneğidir?', options: ['Bir ders kitabı bölümü', 'Olay sırasında yazılmış bir günlük', 'Modern bir belgesel', 'Bir ansiklopedi özeti'], correctText: 'Olay sırasında yazılmış bir günlük' },
+    { ...COPY.en.questions[2], kicker: 'Adım 3 / 5', title: 'Matematik: Yazılı cevap', instruction: 'QuizSolver sayıları ve kısa metinleri form alanlarına hatasız girer.', question: '12 x 8 kaçtır?', placeholder: 'Cevabı girin', correctText: '96' },
+    { ...COPY.en.questions[3], kicker: 'Adım 4 / 5', title: 'Fen Bilimleri: Açılır menü eşleştirme', instruction: 'Birden fazla terimi açılır menülerde aynı anda eşleştirin.', question: 'Her bilimsel terimi doğru tanımıyla eşleştirin.', prompts: ['Fotosentez', 'Buharlaşma', 'Yerçekimi'], options: ['Bitkiler ışıkla glikoz üretir', 'Sıvı gaza dönüşür', 'Kütlesi olan nesneleri çeken kuvvet'], correctText: 'Fotosentez = Bitkiler ışıkla glikoz üretir, Buharlaşma = Sıvı gaza dönüşür, Yerçekimi = Kütlesi olan nesneleri çeken kuvvet' },
+    { ...COPY.en.questions[4], kicker: 'Adım 5 / 5', title: 'Hızlı Katman', instruction: 'Yalnızca soru metnini vurgulayın ve Alt+Q ile doğrudan çözün.', question: 'Hangi QuizSolver aracı yalnızca seçilen metni çözer?', options: ['Seçilen metni çöz', 'Kredi satın alma', 'Yönetici paneli', 'Tarayıcı geçmişi'], correctText: 'Seçilen metni çöz' }
+  ],
+  ja: [
+    { ...COPY.en.questions[0], kicker: 'ステップ 1 / 5', title: '生物：単一選択問題', instruction: 'QuizSolverが問題をスキャンし、ワンクリックで正解を自動選択します。', question: '真核細胞でATPを主に産生する細胞小器官はどれですか？', options: ['細胞核', 'ミトコンドリア', 'リボソーム', '細胞膜'], correctText: 'ミトコンドリア' },
+    { ...COPY.en.questions[1], kicker: 'ステップ 2 / 5', title: 'ヒントモード', instruction: '自動クリックしたくない場合は、ヒントモードで控えめに手がかりを表示できます。', question: '一次史料の最も適切な例はどれですか？', options: ['教科書の記述', '当時の出来事中に書かれた日記', '現代のドキュメンタリー番組', '百科事典の要約'], correctText: '当時の出来事中に書かれた日記' },
+    { ...COPY.en.questions[2], kicker: 'ステップ 3 / 5', title: '数学：記述式入力', instruction: 'QuizSolverは数値やテキストの入力フォームに正確に入力します。', question: '12 × 8 はいくつですか？', placeholder: '答えを入力', correctText: '96' },
+    { ...COPY.en.questions[3], kicker: 'ステップ 4 / 5', title: '理科：ドロップダウン一致', instruction: '複数のドロップダウン項目を同時に正確な定義と一致させます。', question: '各科学用語を正しい定義と一致させてください。', prompts: ['光合成', '蒸発', '重力'], options: ['植物が光を利用して糖を生成する', '液体が気体に変化する', '質量を持つ物体を引き寄せる力'], correctText: '光合成 = 植物が光を利用して糖を生成する, 蒸発 = 液体が気体に変化する, 重力 = 質量を持つ物体を引き寄せる力' },
+    { ...COPY.en.questions[4], kicker: 'ステップ 5 / 5', title: 'クイックオーバーレイ', instruction: '問題文だけをハイライトして、Alt+Qでピンポイントに解答します。', question: '選択したテキストのみを解析・解答するQuizSolverの機能はどれですか？', options: ['選択テキストを解答', 'クレジット購入', '管理パネル', '閲覧履歴'], correctText: '選択テキストを解答' }
+  ],
+  ko: [
+    { ...COPY.en.questions[0], kicker: '1 / 5단계', title: '생물: 객관식 단일 선택', instruction: 'QuizSolver가 문제를 스캔하여 클릭 한 번으로 정답을 자동 선택합니다.', question: '진핵세포에서 ATP를 주로 생성하는 세포 소기관은 무엇인가요?', options: ['세포핵', '미토콘드리아', '리보솜', '세포막'], correctText: '미토콘드리아' },
+    { ...COPY.en.questions[1], kicker: '2 / 5단계', title: '힌트 모드', instruction: '자동 클릭 대신 은밀하게 힌트만 확인하고 싶다면 힌트 모드를 켜두세요.', question: '1차 역사적 사료의 가장 대표적인 예는 무엇인가요?', options: ['교과서 단원', '사건 당시 작성된 일기', '현대 다큐멘터리', '백과사전 요약문'], correctText: '사건 당시 작성된 일기' },
+    { ...COPY.en.questions[2], kicker: '3 / 5단계', title: '수학: 직접 입력형', instruction: 'QuizSolver는 숫자나 짧은 텍스트를 입력창에 정확하게 입력합니다.', question: '12 × 8의 값은 얼마인가요?', placeholder: '답 입력', correctText: '96' },
+    { ...COPY.en.questions[3], kicker: '4 / 5단계', title: '과학: 드롭다운 매칭', instruction: '여러 개의 드롭다운 항목을 올바른 정의와 한 번에 연결합니다.', question: '각 과학 용어를 올바른 설명과 연결하세요.', prompts: ['광합성', '증발', '중력'], options: ['식물이 빛을 이용해 포도당을 생성함', '액체가 기체로 변함', '질량이 있는 물체를 끌어당기는 힘'], correctText: '광합성 = 식물이 빛을 이용해 포도당을 생성함, 증발 = 액체가 기체로 변함, 중력 = 질량이 있는 물체를 끌어당기는 힘' },
+    { ...COPY.en.questions[4], kicker: '5 / 5단계', title: '퀵 오버레이', instruction: '문제 텍스트만 드래그하여 강조한 뒤 Alt+Q로 신속하게 문제를 풉니다.', question: '선택한 텍스트 영역만 분석하여 답변을 찾는 QuizSolver 기능은?', options: ['선택한 텍스트 풀기', '크레딧 구매', '관리자 패널', '브라우저 방문 기록'], correctText: '선택한 텍스트 풀기' }
   ]
 };
 
-(['de', 'es', 'fr', 'it', 'uk', 'pt', 'ar'] as const).forEach((locale) => {
+(['de', 'es', 'fr', 'it', 'uk', 'pt', 'ar', 'tr', 'ja', 'ko'] as const).forEach((locale) => {
   COPY[locale] = {
     ...DEMO_LOCALE_COPY[locale],
     questions: DEMO_QUESTIONS[locale]
@@ -1518,6 +1602,48 @@ export class DemoComponent implements OnInit, OnDestroy {
         resultText: 'لقد جربت الاختيار من متعدد، وضع التلميح، الإجابة المكتوبة، القوائم المنسدلة، والنص المحدد.',
         finalPrimary: 'تثبيت الإضافة',
         finalSecondary: 'إعادة التجربة'
+      },
+      tr: {
+        correctTitle: 'Doğru',
+        hintTitle: 'İpucu',
+        wrongTitle: 'Henüz değil',
+        emptyTitle: 'Önce bir cevap seçin',
+        explanationLabel: 'Bu cevap neden doğru',
+        simulateSolver: '✨ QuizSolver ile çöz',
+        showHint: '💡 İpucu göster',
+        checkAnswer: 'Cevabımı kontrol et',
+        resultTitle: 'Demo tamamlandı!',
+        resultText: 'Çoktan seçmeli, ipucu modu, yazılı cevap, açılır menü eşleştirme ve seçili metin çözmeyi test ettiniz.',
+        finalPrimary: 'Uzantıyı yükle',
+        finalSecondary: 'Demoyu yeniden başlat'
+      },
+      ja: {
+        correctTitle: '正解',
+        hintTitle: 'ヒント',
+        wrongTitle: '不正解',
+        emptyTitle: '先に回答を選択してください',
+        explanationLabel: '解説・根拠',
+        simulateSolver: '✨ QuizSolverで解答',
+        showHint: '💡 ヒントを表示',
+        checkAnswer: '回答を確認する',
+        resultTitle: 'デモ完了！',
+        resultText: '選択式、ヒントモード、記述式入力、ドロップダウン一致、選択テキスト解答をすべてテストしました。',
+        finalPrimary: '拡張機能をインストール',
+        finalSecondary: '最初からやり直す'
+      },
+      ko: {
+        correctTitle: '정답입니다',
+        hintTitle: '힌트',
+        wrongTitle: '다시 시도해 보세요',
+        emptyTitle: '먼저 답변을 선택하세요',
+        explanationLabel: '정답 이유 및 해설',
+        simulateSolver: '✨ QuizSolver로 풀기',
+        showHint: '💡 힌트 보기',
+        checkAnswer: '내 답안 확인하기',
+        resultTitle: '데모 완료!',
+        resultText: '객관식 선택, 힌트 모드, 텍스트 입력, 드롭다운 매칭, 선택 텍스트 해결을 모두 체험했습니다.',
+        finalPrimary: '확장 프로그램 설치',
+        finalSecondary: '처음부터 다시 시작'
       }
     };
 
@@ -1552,7 +1678,10 @@ export class DemoComponent implements OnInit, OnDestroy {
       it: ['1. Scelta', '2. Hint', '3. Scritta', '4. Tendina', '5. Selezione'],
       uk: ['1. Варіант', '2. Hint', '3. Введення', '4. Matching', '5. Виділення'],
       pt: ['1. Múltipla escolha', '2. Modo Dica', '3. Digitação', '4. Associação', '5. Seleção'],
-      ar: ['1. اختيار متعدد', '2. وضع التلميح', '3. إدخال نصي', '4. مطابقة', '5. نص محدد']
+      ar: ['1. اختيار متعدد', '2. وضع التلميح', '3. إدخال نصي', '4. مطابقة', '5. نص محدد'],
+      tr: ['1. Çoktan seçmeli', '2. İpucu modu', '3. Yazılı cevap', '4. Eşleştirme', '5. Seçili metin'],
+      ja: ['1. 選択問題', '2. ヒント', '3. 記述式', '4. ドロップダウン', '5. 選択テキスト'],
+      ko: ['1. 객관식', '2. 힌트', '3. 텍스트 입력', '4. 매칭', '5. 선택 텍스트']
     };
     const list = labels[this.locale] || labels.en;
     return list[index] || `Krok ${index + 1}`;
@@ -1568,7 +1697,10 @@ export class DemoComponent implements OnInit, OnDestroy {
       it: ['Scelta singola', 'Hint mode discreto', 'Risposta scritta', 'Associazione a tendina', 'Quick overlay (Alt+Q)'],
       uk: ['Один варіант', 'Непомітний Hint mode', 'Текстова відповідь', 'Matching у списках', 'Quick overlay (Alt+Q)'],
       pt: ['Escolha única automática', 'Modo Dica discreto', 'Preenchimento de respostas', 'Associação em lista', 'Quick Overlay (Alt+Q)'],
-      ar: ['حل الاختيار من متعدد تلقائياً', 'وضع التلميح الهادئ', 'ملء الإجابات المكتوبة', 'مطابقة القوائم المنسدلة', 'النافذة السريعة (Alt+Q)']
+      ar: ['حل الاختيار من متعدد تلقائياً', 'وضع التلميح الهادئ', 'ملء الإجابات المكتوبة', 'مطابقة القوائم المنسدلة', 'النافذة السريعة (Alt+Q)'],
+      tr: ['Otomatik çoktan seçmeli çözümü', 'Gizli İpucu modu', 'Yazılı cevap desteği', 'Açılır menü eşleştirme', 'Hızlı Katman (Alt+Q)'],
+      ja: ['自動クリック解答', '目立たないヒントモード', '記述式フォーム入力', 'ドロップダウン一致', 'クイックオーバーレイ (Alt+Q)'],
+      ko: ['객관식 자동 풀기', '은밀한 힌트 모드', '텍스트 입력 지원', '드롭다운 매칭', '퀵 오버레이 (Alt+Q)']
     };
     return map[this.locale] || map.en;
   }

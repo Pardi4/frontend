@@ -494,6 +494,162 @@ export const BLOG_CATEGORIES: Record<Locale, Record<BlogCategorySlug, BlogCatego
       tutorialLabel: 'قراءة سياسة الخصوصية',
       tutorialPage: 'privacy'
     }
+  },
+  tr: {
+    kahoot: {
+      slug: 'kahoot',
+      title: 'Kahoot Yapay Zeka Bot Rehberleri',
+      shortTitle: 'Kahoot',
+      metaTitle: 'Kahoot Yapay Zeka Bot Rehberleri | QuizSolver',
+      metaDescription: 'Kahoot Quiz ID, PIN, cevap bankası ve QuizSolver rehberleriyle görünür soruları otomatik çözmeyi öğrenin.',
+      description: 'Kahoot Quiz ID, canlı oyun PIN\'leri, gizli sorular, cevap bankaları ve otomatik okuma hakkında pratik rehberler.',
+      tutorialLabel: 'Kahoot rehberini aç',
+      tutorialPage: 'kahoot'
+    },
+    'platform-guides': {
+      slug: 'platform-guides',
+      title: 'Platform Çözüm Rehberleri',
+      shortTitle: 'Platformlar',
+      metaTitle: 'Quiz Platformları Çözüm Rehberleri | QuizSolver',
+      metaDescription: 'Google Forms, Testportal, Moodle, Canvas ve desteklenen diğer sınav sistemleri için adım adım rehberler.',
+      description: 'Belirli bir platform için adım adım yönergeler: Neyi açmalı, hangi modu kullanmalı ve soruları nasıl kaydetmeli.',
+      tutorialLabel: 'Tüm platform rehberlerini gör',
+      tutorialPage: 'quizSolverAi'
+    },
+    'study-workflows': {
+      slug: 'study-workflows',
+      title: 'Çalışma Yöntemleri ve Notlar',
+      shortTitle: 'Çalışma',
+      metaTitle: 'Yapay Zeka ile Sınava Hazırlık ve Çalışma | QuizSolver',
+      metaDescription: 'Çözülen soruları çalışma notlarına, deneme sınavlarına ve kalıcı bilgiye dönüştürün.',
+      description: 'Yapay zeka yanıtlarını çalışma materyali olarak kullanma: Açıklamalar, notlar, geçmiş, favoriler ve denemeler.',
+      tutorialLabel: 'İnteraktif çalışma ortamını dene',
+      tutorialPage: 'demo'
+    },
+    focusscan: {
+      slug: 'focusscan',
+      title: 'FocusScan ve Görsel Soru Rehberi',
+      shortTitle: 'FocusScan',
+      metaTitle: 'FocusScan OCR Görsel Soru Rehberleri | QuizSolver',
+      metaDescription: 'FocusScan OCR ile görsel, grafik, PDF ve kilitli soruları kolayca çözün.',
+      description: 'Ekran görüntüsü, grafik, PDF parçası veya kilitli metin olarak sunulan sorular için çözüm yönergeleri.',
+      tutorialLabel: 'FocusScan\'i canlı dene',
+      tutorialPage: 'demo'
+    },
+    'privacy-detection': {
+      slug: 'privacy-detection',
+      title: 'Gizlilik, Güvenlik ve Sorumlu Kullanım',
+      shortTitle: 'Gizlilik',
+      metaTitle: 'Sınav Gizliliği ve Güvenlik Rehberleri | QuizSolver',
+      metaDescription: 'Sınav sistemlerinin neleri algılayabildiğini, tarayıcı uzantılarının nasıl çalıştığını ve güvenli kullanımı öğrenin.',
+      description: 'Odaklanma olayları, uzantı sınırları, gizlilik seçenekleri ve platform algılamaları hakkında net açıklamalar.',
+      tutorialLabel: 'Gizlilik politikasını oku',
+      tutorialPage: 'privacy'
+    }
+  },
+  ja: {
+    kahoot: {
+      slug: 'kahoot',
+      title: 'Kahoot AI ボットガイド',
+      shortTitle: 'Kahoot',
+      metaTitle: 'Kahoot AI ボットガイド | QuizSolver',
+      metaDescription: 'Kahoot Quiz ID、ゲームPIN、解答バンク、表示問題の自動解答について学ぶ QuizSolver ガイド。',
+      description: 'Kahoot Quiz ID、リアルタイムPIN、非表示問題、解答バンク、自動認識に関する実践的な解説記事。',
+      tutorialLabel: 'Kahoot ガイドを開く',
+      tutorialPage: 'kahoot'
+    },
+    'platform-guides': {
+      slug: 'platform-guides',
+      title: 'プラットフォーム別解答ガイド',
+      shortTitle: 'プラットフォーム',
+      metaTitle: 'クイズプラットフォーム別ガイド | QuizSolver',
+      metaDescription: 'Google フォーム、Testportal、Moodle、Canvas などの対応プラットフォーム向けステップ別ガイド。',
+      description: '各システムごとの具体的な利用手順: 開き方、使用するモード、問題の保存方法を解説。',
+      tutorialLabel: '全プラットフォームガイドを見る',
+      tutorialPage: 'quizSolverAi'
+    },
+    'study-workflows': {
+      slug: 'study-workflows',
+      title: '学習ワークフローと復習法',
+      shortTitle: '学習法',
+      metaTitle: 'AI を活用した試験対策と復習ワークフロー | QuizSolver',
+      metaDescription: '解答した問題をノート、復習テスト、長期記憶に変える QuizSolver の学習活用法。',
+      description: 'AI の解答を学習教材として活かす方法: ステップ解説、ノート、履歴、お気に入り、模擬テスト。',
+      tutorialLabel: 'インタラクティブな学習体験を試す',
+      tutorialPage: 'demo'
+    },
+    focusscan: {
+      slug: 'focusscan',
+      title: 'FocusScan と画像問題ガイド',
+      shortTitle: 'FocusScan',
+      metaTitle: 'FocusScan OCR 画像問題ガイド | QuizSolver',
+      metaDescription: 'FocusScan OCR を使って画像、図表、PDF、選択不可テキストの問題を解答。',
+      description: 'スクリーンショット、図表、PDFスニペット、特殊なキャンバス問題に対する確実な解答手順。',
+      tutorialLabel: 'FocusScan を実際に体験',
+      tutorialPage: 'demo'
+    },
+    'privacy-detection': {
+      slug: 'privacy-detection',
+      title: 'プライバシーと安全性',
+      shortTitle: 'プライバシー',
+      metaTitle: 'テストにおけるプライバシーと安全性ガイド | QuizSolver',
+      metaDescription: 'テストプラットフォームの検知機能、拡張機能の仕組み、QuizSolver を安全に活用する方法を理解。',
+      description: 'ブラウザのフォーカスイベント、拡張機能の動作範囲、プライバシー設定、検知に関する正しい事実。',
+      tutorialLabel: 'プライバシーポリシーを確認',
+      tutorialPage: 'privacy'
+    }
+  },
+  ko: {
+    kahoot: {
+      slug: 'kahoot',
+      title: 'Kahoot AI 봇 가이드',
+      shortTitle: 'Kahoot',
+      metaTitle: 'Kahoot AI 봇 완벽 가이드 | QuizSolver',
+      metaDescription: 'Kahoot Quiz ID, 게임 PIN, 정답 모음 및 화면 문제 자동 풀기를 배우는 QuizSolver 가이드.',
+      description: 'Kahoot Quiz ID, 실시간 PIN, 숨겨진 문제, 정답 모음 및 자동 읽기 기능에 대한 실전 팁.',
+      tutorialLabel: 'Kahoot 가이드 열기',
+      tutorialPage: 'kahoot'
+    },
+    'platform-guides': {
+      slug: 'platform-guides',
+      title: '플랫폼별 풀이 가이드',
+      shortTitle: '플랫폼',
+      metaTitle: '퀴즈 플랫폼별 풀이 가이드 | QuizSolver',
+      metaDescription: 'Google Forms, Testportal, Moodle, Canvas 등 지원되는 온라인 시험 플랫폼 단계별 가이드.',
+      description: '각 시험 시스템에 맞춘 실전 지침: 화면 설정, 추천 풀이 모드 및 오답 노트 저장법.',
+      tutorialLabel: '모든 플랫폼 가이드 보기',
+      tutorialPage: 'quizSolverAi'
+    },
+    'study-workflows': {
+      slug: 'study-workflows',
+      title: '학습 워크플로우 및 복습법',
+      shortTitle: '학습법',
+      metaTitle: 'AI 기반 시험 대비 및 학습 워크플로우 | QuizSolver',
+      metaDescription: '해결한 문제를 학습 노트, 모의 테스트 및 실전 복습 자료로 전환하는 방법.',
+      description: 'AI 정답을 나만의 시험 대비 자료로 활용하기: 단계별 해설, 메모, 히스토리, 즐겨찾기, 복습 퀴즈.',
+      tutorialLabel: '인터랙티브 체험 환경 열기',
+      tutorialPage: 'demo'
+    },
+    focusscan: {
+      slug: 'focusscan',
+      title: 'FocusScan 및 이미지 문제 가이드',
+      shortTitle: 'FocusScan',
+      metaTitle: 'FocusScan OCR 이미지 문제 풀이 가이드 | QuizSolver',
+      metaDescription: 'FocusScan OCR로 이미지, 도표, PDF 및 드래그 방지 문제를 손쉽게 해결하세요.',
+      description: '스크린샷, 그래프, PDF 일부 또는 복사 불가능한 특수 시험 문제에 대한 완벽한 해결책.',
+      tutorialLabel: 'FocusScan 실시간 체험',
+      tutorialPage: 'demo'
+    },
+    'privacy-detection': {
+      slug: 'privacy-detection',
+      title: '개인정보 보호 및 안전한 이용',
+      shortTitle: '보안',
+      metaTitle: '온라인 시험 개인정보 및 안전 가이드 | QuizSolver',
+      metaDescription: '시험 시스템의 감지 방식, 확장 프로그램의 원리 및 QuizSolver를 안전하고 책임감 있게 사용하는 방법.',
+      description: '브라우저 포커스 이벤트, 확장 프로그램의 접근 권한, 프라이버시 옵션 및 안전한 이용 수칙.',
+      tutorialLabel: '개인정보 처리방침 읽기',
+      tutorialPage: 'privacy'
+    }
   }
 };
 

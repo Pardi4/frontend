@@ -1513,6 +1513,40 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
         timerLabel: 'ينتهي خلال',
         checkoutApplied: 'سيتم تطبيق رمز الخصم WELCOME10 (-10%) عند الدفع'
       }
+    ,
+      tr: {
+        badge: 'İlk Yükleme Teklifi',
+        title: 'İlk Kredi Yüklemenizde %10 İndirim',
+        subtitle: 'Ödeme sayfasında kodu kullanın veya bir paket seçin — indirim otomatik uygulanır!',
+        codeLabel: 'Kupon Kodu',
+        copyBtn: 'Kopyala',
+        copied: 'Kopyalandı!',
+        clickToCopy: 'Kodu kopyalamak için tıklayın',
+        timerLabel: 'Kalan süre',
+        checkoutApplied: 'WELCOME10 kodu (%10 indirim) ödeme aşamasında uygulanacaktır'
+      },
+      ja: {
+        badge: '初回限定オファー',
+        title: '初回クレジットチャージが 10% オフ',
+        subtitle: '決済時にコードを入力するかパッケージを選択 — 自動的に割引が適用されます！',
+        codeLabel: 'クーポンコード',
+        copyBtn: 'コピー',
+        copied: 'コピー完了！',
+        clickToCopy: 'クリックしてコードをコピー',
+        timerLabel: '有効期限',
+        checkoutApplied: 'WELCOME10 コード（10%割引）がお支払い時に適用されます'
+      },
+      ko: {
+        badge: '첫 충전 한정 혜택',
+        title: '첫 크레딧 충전 시 10% 할인',
+        subtitle: '결제 창에서 코드를 입력하거나 패키지를 선택하세요 — 할인이 자동 적용됩니다!',
+        codeLabel: '할인 코드',
+        copyBtn: '복사',
+        copied: '복사 완료!',
+        clickToCopy: '클릭하여 코드 복사',
+        timerLabel: '남은 시간',
+        checkoutApplied: 'WELCOME10 코드(10% 할인)가 결제 시 자동 적용됩니다'
+      }
     };
     return data[this.locale] || data.en;
   }
@@ -1528,6 +1562,10 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
       uk: { title: 'Поділись і отримай 10%', text: 'Запроси друзів через реферальне посилання. Коли вони куплять кредити, ти отримаєш 10% бонусу.', button: 'Отримати посилання' },
       pt: { title: 'Compartilhe e ganhe 10%', text: 'Convide amigos com seu link de indicação. Quando eles comprarem créditos, você ganha 10% de créditos bônus.', button: 'Obter link' },
       ar: { title: 'شارك واربح 10%', text: 'ادعُ أصدقاءك برابط الإحالة الخاص بك. عندما يشترون رصيداً، تحصل على 10% رصيد إضافي كهدية.', button: 'الحصول على الرابط' }
+    ,
+      tr: { title: 'Paylaş ve %10 Kazan', text: 'Arkadaşlarınızı davet edin ve satın aldıkları kredilerin %10\'u kadar bonus kredi kazanın.', button: 'Bağlantıyı kopyala' },
+      ja: { title: 'シェアして 10% 獲得', text: '友達を招待すると、購入されたクレジットの 10% 相当のボーナスクレジットを獲得できます。', button: 'リンクを取得' },
+      ko: { title: '공유하고 10% 받기', text: '친구를 초대하면 친구가 구매한 크레딧의 10%를 보너스 크레딧으로 받으실 수 있습니다.', button: '링크 받기' }
     };
     return data[this.locale] || data.en;
   }
@@ -1579,6 +1617,25 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
         { icon: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M4.93 4.93l14.14 14.14"/></svg>', text: 'بدون اشتراكات شهرية أو رسوم متكررة' },
         { icon: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>', text: 'إضافة فورية للرصيد بعد الدفع' }
       ]
+    ,
+      tr: [
+        { icon: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>', text: 'Güvenli Ödeme SSL' },
+        { icon: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>', text: 'Anında Kredi Tanımlama' },
+        { icon: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>', text: 'Süresi Dolmayan Krediler' },
+        { icon: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>', text: 'Abonelik Yok — Tek Seferlik' }
+      ],
+      ja: [
+        { icon: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>', text: 'SSL 暗号化安全決済' },
+        { icon: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>', text: '即時クレジット付与' },
+        { icon: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>', text: '有効期限なし' },
+        { icon: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>', text: '定期購入なし・買い切り' }
+      ],
+      ko: [
+        { icon: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>', text: 'SSL 안전 암호화 결제' },
+        { icon: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>', text: '결제 즉시 자동 지급' },
+        { icon: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>', text: '유효기간 없는 평생 크레딧' },
+        { icon: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>', text: '구독료 없음 — 1회 결제' }
+      ]
     };
     return data[this.locale] || data.en;
   }
@@ -1597,7 +1654,10 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
         it: 'Pacchetto Soccorso',
         uk: 'Рятувальний пакет',
         pt: 'Pacote Resgate',
-        ar: 'باقة الإنقاذ'
+        ar: 'باقة الإنقاذ',
+        tr: 'Kurtarma Paketi',
+        ja: 'レスキューパック',
+        ko: '구출 팩'
       },
       rateInfo: {
         en: '~$0.02 / answer',
@@ -1608,7 +1668,10 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
         it: '~$0.02 per risposta',
         uk: '~$0.02 за відповідь',
         pt: '~$0.02 por resposta',
-        ar: '~$0.02 لكل إجابة'
+        ar: '~$0.02 لكل إجابة',
+        tr: '~$0.02 / yanıt',
+        ja: '~$0.02 / 問',
+        ko: '~$0.02 / 문제당'
       },
       outcome: {
         en: '100 answers = Peace of mind for 3–5 full tests or exams',
@@ -1619,7 +1682,10 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
         it: '100 risposte = Serenità per 3–5 verifiche o esami completi',
         uk: '100 відповідей = Спокій на 3–5 повних модулів або тестів',
         pt: '100 respostas = Tranquilidade para 3–5 provas ou exames completos',
-        ar: '100 إجابة = راحة بال تامة لـ 3–5 اختبارات أو امتحانات كاملة'
+        ar: '100 إجابة = راحة بال تامة لـ 3–5 اختبارات أو امتحانات كاملة',
+        tr: '100 yanıt = 3–5 tam sınav veya test için iç huzuru',
+        ja: '100問解答 = 3〜5回のテストを安心して乗り切る',
+        ko: '100개 답변 = 3~5회 시험 완벽 대비'
       },
       comparison: {
         en: '⚡ Less than an energy drink or coffee',
@@ -1630,7 +1696,10 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
         it: '⚡ Meno di un caffè o un energy drink',
         uk: '⚡ Дешевше ніж енергетик або кава',
         pt: '⚡ Menos que um energético ou café',
-        ar: '⚡ أقل من سعر مشروب طاقة أو قهوة'
+        ar: '⚡ أقل من سعر مشروب طاقة أو قهوة',
+        tr: '⚡ Bir kahve veya enerji içeceğinden daha ucuz',
+        ja: '⚡ エナジードリンクやコーヒー1杯よりお得',
+        ko: '⚡ 에너지 드링크나 커피 한 잔보다 저렴'
       },
       button: {
         en: 'Get Rescue Pack',
@@ -1641,7 +1710,10 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
         it: 'Prendi Pacchetto Soccorso',
         uk: 'Обрати Рятувальний пакет',
         pt: 'Escolher Pacote Resgate',
-        ar: 'اختيار باقة الإنقاذ'
+        ar: 'اختيار باقة الإنقاذ',
+        tr: 'Kurtarma Paketini Seç',
+        ja: 'レスキューパックを選択',
+        ko: '구출 팩 선택'
       }
     },
     {
@@ -1657,7 +1729,10 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
         it: 'Più Popolare',
         uk: 'Найпопулярніший',
         pt: 'Mais Popular',
-        ar: 'الأكثر طلباً'
+        ar: 'الأكثر طلباً',
+        tr: 'En Popüler',
+        ja: '一番人気',
+        ko: '가장 인기'
       },
       name: {
         en: 'Semester Pack',
@@ -1668,7 +1743,10 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
         it: 'Pacchetto Semestrale',
         uk: 'Семестровий пакет',
         pt: 'Pacote Semestral',
-        ar: 'باقة الفصل الدراسي'
+        ar: 'باقة الفصل الدراسي',
+        tr: 'Dönem Paketi',
+        ja: '学期パック',
+        ko: '학기 패키지'
       },
       socialText: {
         en: 'Chosen by 84% of students',
@@ -1679,7 +1757,10 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
         it: 'Scelto dall\'84% degli studenti',
         uk: 'Обрано 84% студентів',
         pt: 'Escolhido por 84% dos estudantes',
-        ar: 'يختارها 84% من الطلاب'
+        ar: 'يختارها 84% من الطلاب',
+        tr: 'Öğrencilerin %84\'ü tarafından tercih edildi',
+        ja: '学生の84%が選択',
+        ko: '학생들의 84%가 선택함'
       },
       rateInfo: {
         en: '~$0.01 / answer (Save 50%)',
@@ -1690,7 +1771,10 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
         it: '~$0.01 per resposta (Risparmi il 50%)',
         uk: '~$0.01 за відповідь (50% дешевше)',
         pt: '~$0.01 por resposta (50% de economia)',
-        ar: '~$0.01 لكل إجابة (وفر 50%)'
+        ar: '~$0.01 لكل إجابة (وفر 50%)',
+        tr: '~$0.01 / yanıt (%50 tasarruf)',
+        ja: '~$0.01 / 問（50%お得）',
+        ko: '~$0.01 / 문제당 (50% 절약)'
       },
       outcome: {
         en: '500 answers = Stress-free studying, midterms & finals all semester',
@@ -1701,7 +1785,10 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
         it: '500 risposte = Compiti, prove ed esami senza stress per tutto il semestre',
         uk: '500 відповідей = Домашки, модулі та сесія без стресу на весь семестр',
         pt: '500 respostas = Trabalhos, simulados e provas sem estresse o semestre todo',
-        ar: '500 إجابة = مذاكرة واختبارات وامتحانات فصل دراسي كامل بدون أي توتر'
+        ar: '500 إجابة = مذاكرة واختبارات وامتحانات فصل دراسي كامل بدون أي توتر',
+        tr: '500 yanıt = Tüm dönem boyunca stressiz ödevler, sınavlar ve finaller',
+        ja: '500問解答 = 学期全体の課題・テストで高得点を維持',
+        ko: '500개 답변 = 학기 내내 과제, 퀴즈, 시험 스트레스 해소'
       },
       comparison: {
         en: '🍕 Less than a pizza (Save 50%)',
@@ -1712,7 +1799,10 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
         it: '🍕 Meno del costo di una pizza (Risparmi il 50%)',
         uk: '🍕 Менше ніж одна піца (50% дешевше)',
         pt: '🍕 Menos que uma pizza (50% de economia)',
-        ar: '🍕 أقل من سعر بيتزا واحدة (وفر 50%)'
+        ar: '🍕 أقل من سعر بيتزا واحدة (وفر 50%)',
+        tr: '🍕 Bir pizzadan daha ucuz (%50 tasarruf)',
+        ja: '🍕 ピザ1枚よりお得（50%お得）',
+        ko: '🍕 피자 한 판보다 저렴 (50% 절약)'
       },
       button: {
         en: 'Get Semester Pack',
@@ -1723,7 +1813,10 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
         it: 'Prendi Pacchetto Semestrale',
         uk: 'Обрати Семестровий пакет',
         pt: 'Escolher Pacote Semestral',
-        ar: 'اختيار باقة الفصل الدراسي'
+        ar: 'اختيار باقة الفصل الدراسي',
+        tr: 'Dönem Paketini Seç',
+        ja: '学期パックを選択',
+        ko: '학기 패키지 선택'
       }
     },
     {
@@ -1739,7 +1832,10 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
         it: 'Miglior Prezzo',
         uk: 'Найкраща ціна',
         pt: 'Melhor Custo-Benefício',
-        ar: 'أفضل قيمة وتوفير'
+        ar: 'أفضل قيمة وتوفير',
+        tr: 'En Avantajlı',
+        ja: '最高コスパ',
+        ko: '최고 가성비'
       },
       name: {
         en: 'Annual & Group Pack',
@@ -1750,7 +1846,10 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
         it: 'Pacchetto Annuale & Gruppo',
         uk: 'Річний / Спільний пакет',
         pt: 'Pacote Anual e Grupos',
-        ar: 'الباقة السنوية والمجموعات'
+        ar: 'الباقة السنوية والمجموعات',
+        tr: 'Yıllık ve Grup Paketi',
+        ja: '年間・グループパック',
+        ko: '연간 & 그룹 팩'
       },
       rateInfo: {
         en: '<$0.008 / answer (Lowest rate)',
@@ -1761,7 +1860,10 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
         it: '<$0.008 per risposta (Massimo sconto)',
         uk: '<$0.008 за відповідь (Найбільша знижка)',
         pt: '<$0.008 por resposta (Maior desconto)',
-        ar: '<$0.008 لكل إجابة (أكبر خصم)'
+        ar: '<$0.008 لكل إجابة (أكبر خصم)',
+        tr: '<$0.008 / yanıt (En düşük oran)',
+        ja: '<$0.008 / 問（最安値）',
+        ko: '<$0.008 / 문제당 (최저가)'
       },
       outcome: {
         en: '2000 answers = Massive supply for the entire year or to split with friends',
@@ -1772,7 +1874,10 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
         it: '2000 risposte = Riserva enorme per tutto l\'anno o da dividere con compagni',
         uk: '2000 відповідей = Величезний запас на весь рік або для спільного користування з друзями',
         pt: '2000 respostas = Reserva gigante para o ano inteiro ou para dividir com amigos',
-        ar: '2000 إجابة = رصيد هائل يكفي العام بأكمله أو للمشاركة مع الأصدقاء'
+        ar: '2000 إجابة = رصيد هائل يكفي العام بأكمله أو للمشاركة مع الأصدقاء',
+        tr: '2000 yanıt = Tüm yıl için devasa kaynak veya arkadaşlarla paylaşım',
+        ja: '2000問解答 = 1年間の圧倒的な余裕、または友人とシェア',
+        ko: '2000개 답변 = 1년 내내 여유롭게 쓰거나 친구들과 공유'
       },
       comparison: {
         en: '💎 Lowest price per answer (<$0.008)',
@@ -1783,7 +1888,10 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
         it: '💎 Prezzo più basso per resposta (<$0.008)',
         uk: '💎 Найнижча ціна за відповідь (<$0.008)',
         pt: '💎 Menor custo por resposta (<$0.008)',
-        ar: '💎 أقل سعر للإجابة الواحدة (<$0.008)'
+        ar: '💎 أقل سعر للإجابة الواحدة (<$0.008)',
+        tr: '💎 Yanıt başı en düşük fiyat (<$0.008)',
+        ja: '💎 1問あたり最安値（<$0.008）',
+        ko: '💎 문제당 최저 가격 (<$0.008)'
       },
       button: {
         en: 'Get Annual Pack',
@@ -1794,7 +1902,10 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
         it: 'Prendi Pacchetto Annuale',
         uk: 'Обрати Річний пакет',
         pt: 'Escolher Pacote Anual',
-        ar: 'اختيار الباقة السنوية'
+        ar: 'اختيار الباقة السنوية',
+        tr: 'Yıllık Paketi Seç',
+        ja: '年間パックを選択',
+        ko: '연간 팩 선택'
       }
     }
   ];
@@ -1810,6 +1921,10 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
       uk: { badge: 'Розумна інвестиція', title: 'Як QuizSolver порівняно з альтернативами', tutor: 'Репетитор', tutorPrice: '300–600 грн / година', qs: 'QuizSolver 500 кредитів', qsPrice: '$4.99 за ~500 відповідей', note: 'Кредити ніколи не закінчуються. Без підписки. Плати раз, використовуй коли потрібно.' },
       pt: { badge: 'Investimento inteligente', title: 'Como o QuizSolver se compara', tutor: 'Aulas particulares', tutorPrice: 'R$ 50–120 / hora', qs: 'QuizSolver 500 créditos', qsPrice: '$4.99 por ~500 respostas', note: 'Créditos nunca expiram. Sem mensalidade. Pague uma vez e use quando precisar.' },
       ar: { badge: 'استثمار ذكي', title: 'مقارنة القيمة في QuizSolver', tutor: 'الدروس الخصوصية', tutorPrice: '$30–50 / ساعة', qs: 'QuizSolver 500 رصيد', qsPrice: '$4.99 لنحو 500 إجابة', note: 'الرصيد لا تنتهي صلاحيته أبداً. لا توجد اشتراكات دورية. ادفع مرة واحدة واستخدمه متى شئت.' }
+    ,
+      tr: { badge: 'Akıllı Yatırım', title: 'QuizSolver Değer Karşılaştırması', tutor: 'Özel Ders', tutorPrice: '$20–35 / saat', qs: 'QuizSolver 500 Kredi', qsPrice: '~500 yanıt için $4.99', note: 'Kredilerin süresi asla dolmaz. Abonelik yok. Bir kez ödeyin, dilediğiniz zaman kullanın.' },
+      ja: { badge: '賢い投資', title: 'QuizSolver の圧倒的コスパ', tutor: '個別指導・家庭教師', tutorPrice: '3,000〜5,000円 / 時間', qs: 'QuizSolver 500クレジット', qsPrice: '約500問で $4.99', note: 'クレジットの有効期限はありません。定期課金なし。1回の支払いでいつでも使えます。' },
+      ko: { badge: '현명한 투자', title: 'QuizSolver 가치 비교', tutor: '개인 과외', tutorPrice: '30,000~50,000원 / 시간', qs: 'QuizSolver 500 크레딧', qsPrice: '약 500회 답변에 $4.99', note: '크레딧은 평생 소멸되지 않습니다. 정기 구독 없음. 한 번 결제하고 언제든 사용하세요.' }
     };
     return data[this.locale] || data.en;
   }
@@ -2015,6 +2130,46 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
         consentTermsLink: 'شروط الخدمة',
         consentRequiredNote: '* الموافقة مطلوبة قانونياً للمتابعة.',
         selectedPackLabel: 'الباقة المحددة:'
+      }
+    ,
+      tr: {
+        title: 'Uygun ödeme yöntemini seçin:',
+        dpayTitle: 'BLIK ve Banka Havalesi (dpay)',
+        dpaySubtitle: 'PLN cinsinden ödeme • Payments Lab sp. z o.o.',
+        dpayBadge: 'Polonya için popüler',
+        lemonTitle: 'Kredi Kartı, Apple Pay, Google Pay',
+        lemonSubtitle: 'Visa, Mastercard, Revolut (Lemon Squeezy)',
+        consentTitle: 'Anında dijital içerik teslim onayı:',
+        consentStatement: '14 günlük cayma hakkı süresi dolmadan önce dijital hizmetin derhal ifasına başlanmasını kabul ediyor ve hizmet ifa edildiğinde (krediler hesaba eklendiğinde) cayma hakkımı kaybedeceğimi onaylıyorum. Ayrıca ',
+        consentTermsLink: 'Kullanım Koşulları',
+        consentRequiredNote: '* Devam etmek için onay gereklidir.',
+        selectedPackLabel: 'Seçilen paket:'
+      },
+      ja: {
+        title: 'お支払い方法を選択してください:',
+        dpayTitle: 'BLIK および銀行振込 (dpay)',
+        dpaySubtitle: 'PLN 決済 • Payments Lab sp. z o.o.',
+        dpayBadge: 'ポーランドで人気',
+        lemonTitle: 'クレジットカード、Apple Pay、Google Pay',
+        lemonSubtitle: 'Visa、Mastercard、Revolut (Lemon Squeezy)',
+        consentTitle: 'デジタルコンテンツの即時提供に関する同意:',
+        consentStatement: '14日間のクーリングオフ期間の満了前にデジタルサービスの即時提供を開始することに同意し、サービスが提供された時点（アカウントにクレジットが付与された時点）で解約権を喪失することを確認します。また、',
+        consentTermsLink: '利用規約',
+        consentRequiredNote: '* 続行するには同意が必要です。',
+        selectedPackLabel: '選択したパック:'
+      },
+      ko: {
+        title: '결제 수단을 선택하세요:',
+        dpayTitle: 'BLIK 및 계좌 이체 (dpay)',
+        dpaySubtitle: 'PLN 결제 • Payments Lab sp. z o.o.',
+        dpayBadge: '폴란드 지원',
+        lemonTitle: '신용카드, Apple Pay, Google Pay',
+        lemonSubtitle: 'Visa, Mastercard, Revolut (Lemon Squeezy)',
+        consentTitle: '디지털 콘텐츠 즉시 제공에 대한 동의:',
+        consentStatement: '14일의 청약철회 기간 만료 전 디지털 서비스의 즉시 개시에 동의하며, 서비스가 제공되면(계정에 크레딧이 충전되면) 청약철회권이 소멸됨을 확인합니다. 또한 다음 약관에 동의합니다: ',
+        consentTermsLink: '이용약관',
+        consentRequiredNote: '* 진행하려면 동의가 필요합니다.',
+        selectedPackLabel: '선택한 패키지:'
       }
     };
     return data[this.locale] || data.en;
@@ -2454,6 +2609,133 @@ const CREDITS_COPY: Record<Locale, any> = {
       { question: 'ما مدى سرعة وصول الرصيد إلى حسابي؟', answer: 'بمجرد تأكيد عملية الدفع، يُضاف الرصيد تلقائياً وفورياً إلى حسابك في QuizSolver.' },
       { question: 'هل تنتهي صلاحية الرصيد بمرور الوقت؟', answer: 'لا! الرصيد المشترى دائم ولا تنتهي صلاحيته أبداً، ويبقى في حسابك حتى تستخدمه بالكامل.' },
       { question: 'هل يمكنني تغيير البريد الإلكتروني أثناء الدفع؟', answer: 'لا ننصح بتغييره. يرجى الإبقاء على نفس بريد حسابك لضمان الشحن الفوري والتلقائي دون تأخير.' }
+    ]
+  }
+,
+  tr: {
+    badge: 'Net ve Şeffaf Fiyatlandırma',
+    pageHeading: 'Size En Uygun Kredi Paketini Seçin',
+    subtitle: 'Tek seferlik ödeme. Abonelik yok, tekrarlayan ücret yok. Kredilerin süresi asla dolmaz.',
+    creditsUnitLabel: 'Kredi',
+    loginTitle: 'Kredi satın almak için giriş yapın',
+    loginText: 'Chrome uzantısındaki hesabınızla oturum açın ve dilediğiniz paketi seçin.',
+    loginButton: 'Giriş Yap / Hesap Oluştur',
+    guestReassurance: 'Henüz hesabınız yok mu? Kayıt olmak yalnızca 10 saniye sürer ve ücretsiz krediler içerir!',
+    guestRegisterLink: 'Ücretsiz Hesap Oluşturun',
+    balanceLabel: 'Mevcut Bakiye',
+    balanceText: 'Krediler yapay zeka yanıtları, açıklamalar, takip soruları ve FocusScan için kullanılır.',
+    unitBadge: 'Kredi Nasıl Çalışır',
+    unitTitle: '1 Kredi = 1 Yapay Zeka Yanıtı',
+    unitText: 'Kredi, QuizSolver\'ın kullanım birimidir. Yapay zekaya gönderdiğiniz her görünür soru 1 kredi tüketir ve önerilen cevabı sunar.',
+    unitItems: ['Kayıtlı geçmiş ve notlar kredi tüketmez.', 'Kahoot Quiz ID modu yapay zeka kredisi harcamaz.', 'Takip soruları, genişletilmiş açıklamalar ve FocusScan yeni yapay zeka yanıtları olarak sayılır.'],
+    dashboardCta: 'Panele Dön',
+    lowTitle: 'Kredi Bakiyesi Düşük',
+    lowText: 'Krediniz tükenmek üzere. Sınav sırasında yarı yolda kalmamak için hemen bakiye yükleyin.',
+    packagesBadge: 'Tek Seferlik Paketler',
+    packagesTitle: 'İhtiyacınız Olduğunda Yükleyin',
+    packagesText: 'Yeni kredi satın almasanız bile sorularınız, çalışma geçmişiniz ve notlarınız her zaman tamamen erişilebilir kalır.',
+    popular: 'En Popüler',
+    bestValue: 'En Avantajlı Fiyat',
+    loading: 'Yönlendiriliyor...',
+    paymentError: 'Ödeme kapıları geçici olarak kullanılamıyor. Lütfen biraz sonra tekrar deneyin.',
+    emailWarningTitle: 'QuizSolver hesabınızdaki e-postayı kullanın',
+    emailWarningText: 'Krediler bu e-posta ile kayıtlı hesaba eklenir. Lütfen ödeme yaparken aynı e-posta adresini girin.',
+    confirmBadge: 'Ödeme Öncesi',
+    confirmTitle: 'E-posta Adresini Onaylayın',
+    confirmText: 'Güvenli ödeme sayfası açılacaktır. Kredilerin hesabınıza hemen tanımlanması için e-postanızın eşleştiğinden emin olun.',
+    confirmEmailLabel: 'QuizSolver Hesap E-postası',
+    confirmNote: 'Ödeme sayfasında e-postayı değiştirirseniz, kredilerin tanımlanması gecikebilir ve manuel destek gerekebilir.',
+    confirmBack: 'Geri',
+    confirmContinue: 'Ödemeye Devam Et',
+    faqTitle: 'Krediler Hakkında Sıkça Sorulan Sorular',
+    faq: [
+      { question: 'Krediler hesabıma ne kadar sürede yüklenir?', answer: 'Ödeme işlemi onaylandığı anda krediler otomatik olarak ve anında QuizSolver hesabınıza tanımlanır.' },
+      { question: 'Kredilerin bir geçerlilik süresi var mı?', answer: 'Hayır! Satın alınan krediler kalıcıdır. Süreleri asla dolmaz ve siz kullanana kadar hesabınızda bekler.' },
+      { question: 'Ödeme sırasında e-posta adresimi değiştirebilir miyim?', answer: 'Değiştirmenizi önermiyoruz. Otomatik ve anında aktivasyon için QuizSolver hesap e-postanızı kullanın.' }
+    ]
+  },
+  ja: {
+    badge: '明瞭な料金体系',
+    pageHeading: '最適なクレジットパックを選択',
+    subtitle: '買い切り決済。定期購読や追加料金なし。クレジットの有効期限はありません。',
+    creditsUnitLabel: 'クレジット',
+    loginTitle: 'クレジット購入にはログインが必要です',
+    loginText: 'Chrome 拡張機能と同じアカウントでログインし、お好きなパックをお選びください。',
+    loginButton: 'ログイン / アカウント作成',
+    guestReassurance: 'アカウントをお持ちでないですか？ 10秒で登録でき、無料クレジットも付属します！',
+    guestRegisterLink: '無料アカウントを作成',
+    balanceLabel: '現在の残高',
+    balanceText: 'クレジットは AI 解答、解説、追加の質問、FocusScan に使用されます。',
+    unitBadge: 'クレジットの仕組み',
+    unitTitle: '1 クレジット = 1 回の AI 解答',
+    unitText: 'クレジットは QuizSolver の利用単位です。AI に送信した表示問題1問につき1クレジットを消費し、正解の提案を受け取ります。',
+    unitItems: ['保存した履歴やノートはクレジットを消費しません。', 'Kahoot Quiz ID モードは AI クレジットを消費しません。', '追加の質問、詳細な解説、FocusScan は新しい AI 解答としてカウントされます。'],
+    dashboardCta: 'ダッシュボードに戻る',
+    lowTitle: 'クレジット残高低下',
+    lowText: 'クレジットが少なくなっています。テスト中に途切れないよう、事前にチャージしてください。',
+    packagesBadge: '買い切りパッケージ',
+    packagesTitle: '必要な時にいつでもチャージ',
+    packagesText: '新しくクレジットを購入しなくても、保存した問題、学習履歴、ノートはいつでも閲覧可能です。',
+    popular: '一番人気',
+    bestValue: '最高コスパ',
+    loading: '決済ページへ移動中...',
+    paymentError: '決済ゲートウェイが一時的に利用できません。しばらくしてから再試行してください。',
+    emailWarningTitle: 'QuizSolver アカウントと同じメールアドレスを使用してください',
+    emailWarningText: 'クレジットはこのメールアドレスに紐づくアカウントに付与されます。決済時にも同一のアドレスを入力してください。',
+    confirmBadge: '決済前の確認',
+    confirmTitle: 'メールアドレスの確認',
+    confirmText: '安全な決済ページが開きます。クレジットを即座に受け取るため、登録メールアドレスと一致していることを確認してください。',
+    confirmEmailLabel: 'QuizSolver アカウントのメールアドレス',
+    confirmNote: '決済画面でメールアドレスを変更すると、クレジットの反映が遅れ、手動サポートが必要になる場合があります。',
+    confirmBack: '戻る',
+    confirmContinue: '決済画面へ進む',
+    faqTitle: 'クレジットに関するよくある質問',
+    faq: [
+      { question: 'クレジットはどのくらいでアカウントに反映されますか？', answer: '決済が確認され次第、数秒以内に QuizSolver アカウントへ自動的かつ即時に付与されます。' },
+      { question: 'クレジットに有効期限はありますか？', answer: 'いいえ！購入したクレジットは無期限です。失効することなく、使い切るまでいつでもご利用いただけます。' },
+      { question: '決済画面でメールアドレスを変更してもいいですか？', answer: '変更しないことを強くおすすめします。即時自動付与を確実に行うため、QuizSolver アカウントのメールアドレスをそのままご使用ください。' }
+    ]
+  },
+  ko: {
+    badge: '투명하고 합리적인 요금제',
+    pageHeading: '나에게 꼭 맞는 크레딧 패키지 선택',
+    subtitle: '단건 결제. 정기 구독 및 반복 결제 없음. 크레딧은 평생 소멸되지 않습니다.',
+    creditsUnitLabel: '크레딧',
+    loginTitle: '크레딧을 구매하려면 로그인하세요',
+    loginText: 'Chrome 확장 프로그램과 동일한 계정으로 로그인한 뒤 원하는 패키지를 선택하세요.',
+    loginButton: '로그인 / 회원가입',
+    guestReassurance: '아직 계정이 없으신가요? 10초 만에 가입하고 무료 크레딧을 받아보세요!',
+    guestRegisterLink: '무료 회원가입',
+    balanceLabel: '현재 잔액',
+    balanceText: '크레딧은 AI 정답 추천, 단계별 해설, 추가 질문 및 FocusScan에 사용됩니다.',
+    unitBadge: '크레딧 이용 안내',
+    unitTitle: '1 크레딧 = AI 정답 1회',
+    unitText: '크레딧은 QuizSolver의 기본 이용 단위입니다. 화면에 보이는 문제를 AI에 전송할 때마다 1 크레딧이 소모되며 정답 제안을 받습니다.',
+    unitItems: ['저장된 문제 히스토리와 오답 노트는 크레딧을 소모하지 않습니다.', 'Kahoot Quiz ID 모드는 AI 크레딧을 전혀 사용하지 않습니다.', '후속 질문, 확장 해설 및 FocusScan은 새로운 AI 정답으로 처리됩니다.'],
+    dashboardCta: '대시보드로 돌아가기',
+    lowTitle: '크레딧 잔액 부족',
+    lowText: '크레딧이 거의 소진되었습니다. 시험 도중에 멈추지 않도록 미리 충전해두세요.',
+    packagesBadge: '1회 충전 패키지',
+    packagesTitle: '필요할 때 언제든 충전',
+    packagesText: '추가 크레딧을 구매하지 않더라도 저장된 문제, 학습 기록 및 메모는 평생 언제든 열람할 수 있습니다.',
+    popular: '가장 인기',
+    bestValue: '최고 가성비',
+    loading: '결제 페이지로 이동 중...',
+    paymentError: '결제 시스템이 일시적으로 원활하지 않습니다. 잠시 후 다시 시도해주세요.',
+    emailWarningTitle: 'QuizSolver 계정의 이메일을 사용하세요',
+    emailWarningText: '크레딧은 해당 이메일로 가입된 계정으로 즉시 지급됩니다. 결제 시 반드시 동일한 이메일을 입력하세요.',
+    confirmBadge: '결제 전 확인',
+    confirmTitle: '이메일 주소 확인',
+    confirmText: '보안 결제 페이지가 열립니다. 크레딧이 즉시 계정에 반영되도록 이메일이 일치하는지 확인해주세요.',
+    confirmEmailLabel: 'QuizSolver 계정 이메일',
+    confirmNote: '결제 창에서 이메일을 변경할 경우 크레딧 지급이 지연되어 고객지원을 통한 수동 처리가 필요할 수 있습니다.',
+    confirmBack: '뒤로가기',
+    confirmContinue: '결제 계속하기',
+    faqTitle: '크레딧 관련 자주 묻는 질문',
+    faq: [
+      { question: '결제 후 크레딧은 얼마나 빨리 지급되나요?', answer: '결제가 완료되는 즉시 QuizSolver 계정에 자동으로 실시간 지급됩니다.' },
+      { question: '크레딧에 유효기간이 있나요?', answer: '아닙니다! 충전한 크레딧은 평생 유효합니다. 절대 소멸되지 않으며 필요할 때 언제든 사용할 수 있습니다.' },
+      { question: '결제 시 이메일을 다른 주소로 변경해도 되나요?', answer: '변경하지 않는 것을 권장합니다. 즉시 자동 충전을 위해 반드시 기존 QuizSolver 계정 이메일을 유지해주세요.' }
     ]
   }
 };

@@ -1735,6 +1735,141 @@ const HOME_LOCALE_TEXT: Record<Exclude<Locale, 'en' | 'pl'>, any> = {
       'الأكثر شعبية'
     ],
     faqTitle: 'الأسئلة الشائعة'
+  },
+  tr: {
+    headingStart: 'Quizleri çözün —',
+    headingAccent: 'Yapay Zekanın Gücüyle',
+    eyebrow: 'Chrome için Yapay Zeka Quiz Çözücü Uzantısı',
+    lead: 'Testportal, Moodle, Kahoot, Canvas, Google Forms gibi 35+ platformda ve Universal Parser™* sayesinde internetteki sayısız sitede quizleri anında çözün. Adım adım açıklamalarla yapay zeka önerileri alın.',
+    primary: 'Chrome Web Mağazası\'ndan Yükle',
+    secondary: 'Nasıl Çalıştığını Gör',
+    proof: [
+      { prefix: '', target: 35, suffix: '+ doğrudan desteklenen quiz platformu' },
+      { prefix: '', target: -1, suffix: ' diğer site — Universal Parser™* ile her yerde çalışır', href: '/tr/blog/universal-parser-infinite-quiz-platforms' }
+    ],
+    asterisk: '* Universal Parser™ internetteki neredeyse tüm quiz sistemlerine otomatik uyum sağlar. Çok kilitli veya grafik ağırlıklı arayüzler için FocusScan kullanmanız yeterlidir.',
+    asterisk2: '** Quiz platformları tasarım güncellemeleri yapabilir; bu nedenle otomatik okuma bazen doğrudan çalışmayabilir — FocusScan (ekran alanı yakalama) işte bu yüzden %100 başarı garantisi sunar.',
+    socialProof: 'Gerçek sınav sayfaları için tasarlandı: Universal Parser, FocusScan ve kayıtlı çalışma geçmişi tek bir Chrome uzantısında.',
+    how: [
+      'QuizSolver Nasıl Çalışır',
+      'Yapay zeka ile herhangi bir quizi çözmek için 3 basit adım',
+      'Bir kez kurun, desteklenen tüm platformlarda quizleri çözün ve çalışma kütüphanenizi otomatik oluşturun.'
+    ],
+    steps: [
+      ['Yükleyin ve Bağlanın', 'QuizSolver\'ı Chrome\'a ücretsiz ekleyin. Hesabınızı oluşturun — çözülen sorular, notlar ve denemeler uzantı ile web sitesi arasında senkronize olur.'],
+      ['Çözün veya Tarayın', '"Mevcut sayfayı çöz" seçeneğine tıklayın. Resimler, canvas, PDF veya karmaşık düzenler için FocusScan ile yalnızca soru alanını seçin.'],
+      ['Tekrar Edin ve Paylaşın', 'Çözülen her soru Geçmiş\'e kaydedilir. Bunları çalışma kartlarına, pratik denemelere dönüştürün veya arkadaşlarınızla paylaşın.']
+    ],
+    features: [
+      'QuizSolver Özellikleri',
+      'Quiz çözmek ve daha verimli çalışmak için eksiksiz bir yapay zeka araç seti',
+      'Gerçek sınav senaryoları için geliştirildi: Metin soruları, görsel sorular, İpucu Modu, kayan kontrol paneli ve kapsamlı bir tekrar sistemi.',
+      ['Evrensel Quiz Ayrıştırıcı', 'QuizSolver önce sayfadaki görünür soruyu okur, ardından Testportal, Moodle, Canvas ve Forms için optimize edilmiş akışları devreye sokar.'],
+      ['İpucu Modu', 'Kontrolü elinizde tutmak istediğinizde açın. QuizSolver otomatik tıklama yapmaz, yalnızca muhtemel doğru cevabı ekranda hafifçe vurgular.'],
+      ['FocusScan', 'Soru resim, canvas, PDF veya kilitli bir tasarım içindeyse ekran alanını seçerek yapay zekaya gönderin.'],
+      ['Hızlı Katman (Quick Overlay)', 'Mevcut soruyu veya seçili metni çözmek gibi işlemler için sayfada mobil ve hızlı bir araç kutusu açın.'],
+      ['Geçmiş ve Notlar', 'Çözdüğünüz sorular cevapları, açıklamaları, kaynakları, ekran görüntüleri ve kişisel notlarınızla güvenle saklanır.'],
+      ['Geçmişten Deneme Quizi', 'Kayıtlı sorularınızı otomatik bir deneme testine dönüştürün, pratik yapın ve sonunda başarı yüzdenizi görün.'],
+      ['Soru Paylaşımı', 'Son çözdüğünüz soruları seçin ve sınıf arkadaşlarınız için herkese açık bir quiz bağlantısı oluşturun.'],
+      ['Kahoot Quiz ID Modu', 'Öğretmen soruları gizlediyse, bağlantıdaki Quiz ID\'yi yapıştırarak kredi harcamadan yanıt bankasını görüntüleyin.']
+    ],
+    pricing: [
+      'Şeffaf Kredi Fiyatları',
+      'Yalnızca ihtiyaç duyduğunuzda yükleyin',
+      'Abonelik yok. Net tek seferlik paketler: Yanıtlar ve açıklamalar kredi kullanır, çalışma geçmişiniz her zaman ücretsizdir.',
+      'En Popüler'
+    ],
+    faqTitle: 'Sıkça Sorulan Sorular'
+  },
+  ja: {
+    headingStart: 'クイズをスムーズに攻略 —',
+    headingAccent: '最先端 AI の力で',
+    eyebrow: 'Chrome 向け AI クイズ解答拡張機能',
+    lead: 'Testportal、Moodle、Kahoot、Canvas、Google フォームなど 35 以上の主要プラットフォームや、Universal Parser™* により無数のサイトでクイズを瞬時に解答。ステップ解説付きの解答提案を取得できます。',
+    primary: 'Chrome ウェブストアから追加',
+    secondary: '仕組みを見る',
+    proof: [
+      { prefix: '', target: 35, suffix: '+ の直接対応クイズプラットフォーム' },
+      { prefix: '', target: -1, suffix: ' 他のすべてのサイト — Universal Parser™* でどこでも動作', href: '/ja/blog/universal-parser-infinite-quiz-platforms' }
+    ],
+    asterisk: '* Universal Parser™ はインターネット上のほぼすべてのクイズ形式に自動適応します。極度に保護された画面や画像問題には FocusScan をご利用ください。',
+    asterisk2: '** クイズプラットフォームのアップデートにより自動認識が一時的に行えない場合でも、画面選択ツール FocusScan により 100% 確実に問題を読み取れます。',
+    socialProof: '実際のテスト環境のために設計: Universal Parser、FocusScan、学習履歴保存を1つの拡張機能に統合。',
+    how: [
+      'QuizSolver の使い方',
+      'あらゆるクイズを AI で解くための簡単 3 ステップ',
+      '一度インストールすれば、対応プラットフォームで解答しながら、自動的に復習用ライブラリを構築できます。'
+    ],
+    steps: [
+      ['追加してログイン', 'QuizSolver を Chrome に無料で追加。アカウントを作成すれば、解答した問題、ノート、模擬テストが拡張機能とサイト間で同期します。'],
+      ['解答またはスキャン', '「現在のページを解答」をクリック。画像、キャンバス、PDF、複雑な配置の場合は FocusScan で問題領域をドラッグ選択します。'],
+      ['復習してシェア', '解答した問題はすべて履歴に保存されます。単語カードや復習テストに変換したり、友人と問題を共有できます。']
+    ],
+    features: [
+      'QuizSolver の機能',
+      'クイズ解答と学習効率化のためのオールインワン AI ツールキット',
+      '実戦を想定した設計: テキスト問題、画像問題、ヒントモード、フローティングパネル、充実の復習システム。',
+      ['ユニバーサルクイズパーサー', 'QuizSolver はまず画面上の問題を読み取り、Testportal、Moodle、Canvas、Forms などに最適化された処理を行います。'],
+      ['ヒントモード', '自分で最終決定したい時に最適。自動クリックを行わず、正解候補の選択肢を画面上にさりげなくハイライト表示します。'],
+      ['FocusScan', '問題が画像、キャンバス、PDF、または保護されたレイアウト内にある場合、画面範囲を指定して即座に解析します。'],
+      ['クイックオーバーレイ', 'ページ上に小型のツールウィンドウを表示し、現在の問題や選択したテキストの解答をすばやく実行できます。'],
+      ['学習履歴とノート', '解答した問題は正解、解説、参照元、画像、個人ノートとともに整理して保存されます。'],
+      ['履歴からの復習テスト', '保存した問題をオリジナルの模擬テストに変換して練習し、正答率をチェックできます。'],
+      ['問題のシェア機能', '最近解いた問題を選んで、クラスメイト向けの公開クイズリンクをワンクリックで生成できます。'],
+      ['Kahoot Quiz ID モード', 'ホストが問題を非表示にしている場合でも、URL の Quiz ID を入力すればクレジット消費なしで解答バンクを閲覧できます。']
+    ],
+    pricing: [
+      '分かりやすいクレジット料金',
+      '必要な時だけ買い切りチャージ',
+      '定期課金なし。買い切りパック: 解答と解説にクレジットを使用し、学習履歴は永久に無料で利用できます。',
+      '一番人気'
+    ],
+    faqTitle: 'よくある質問'
+  },
+  ko: {
+    headingStart: '온라인 퀴즈를 완벽하게 —',
+    headingAccent: '인공지능의 힘으로',
+    eyebrow: 'Chrome 전용 AI 퀴즈 풀이 확장 프로그램',
+    lead: 'Testportal, Moodle, Kahoot, Canvas, Google Forms 등 35개 이상의 주요 플랫폼과 Universal Parser™*를 통해 수많은 웹사이트의 문제를 실시간으로 해결하세요. 단계별 개념 해설이 함께 제공됩니다.',
+    primary: 'Chrome 웹 스토어에서 무료 설치',
+    secondary: '작동 방식 보기',
+    proof: [
+      { prefix: '', target: 35, suffix: '+ 개 공식 지원 퀴즈 플랫폼' },
+      { prefix: '', target: -1, suffix: ' 기타 모든 사이트 — Universal Parser™*로 어디서나 지원', href: '/ko/blog/universal-parser-infinite-quiz-platforms' }
+    ],
+    asterisk: '* Universal Parser™는 웹상의 거의 모든 퀴즈 구조에 자동 적응합니다. 복사 방지나 그래픽 인터페이스의 경우 FocusScan을 사용하시면 됩니다.',
+    asterisk2: '** 시험 플랫폼의 디자인 변경으로 자동 인식이 일시적으로 어려운 경우에도 FocusScan(화면 캡처 영역 지정)을 통해 100% 확실하게 문제를 풀 수 있습니다.',
+    socialProof: '실제 시험 환경을 위한 완벽한 도구: Universal Parser, FocusScan, 오답 노트 시스템이 하나의 Chrome 확장에 통합되어 있습니다.',
+    how: [
+      'QuizSolver 이용 방법',
+      'AI로 모든 시험을 정복하는 간단한 3단계',
+      '한 번만 설치하면 지원 플랫폼에서 문제를 풀며 나만의 맞춤형 오답 노트를 자동으로 구축할 수 있습니다.'
+    ],
+    steps: [
+      ['설치 및 로그인', 'Chrome에 QuizSolver를 무료로 추가하세요. 계정을 생성하면 해결한 문제, 메모, 복습 테스트가 확장 프로그램과 웹사이트 간에 자동 동기화됩니다.'],
+      ['풀기 또는 스캔', '\'현재 페이지 풀기\'를 클릭하세요. 이미지, 캔버스, PDF, 특수 레이아웃은 FocusScan으로 문제 영역만 마우스로 드래그합니다.'],
+      ['복습 및 공유', '해결한 문제는 모두 히스토리에 저장됩니다. 플래시카드, 복습 퀴즈로 전환하거나 친구들과 공유할 수 있습니다.']
+    ],
+    features: [
+      'QuizSolver 주요 기능',
+      '퀴즈 풀이와 효과적인 시험 대비를 위한 올인원 AI 도구',
+      '실전 상황 맞춤 설계: 텍스트 문제, 이미지 문제, 힌트 모드, 플로팅 패널 및 완벽한 복습 시스템.',
+      ['유니버설 퀴즈 파서', 'QuizSolver는 화면의 문제를 먼저 인식한 후 Testportal, Moodle, Canvas, Forms 맞춤 최적화 알고리즘을 실행합니다.'],
+      ['힌트 모드', '직접 정답을 선택하고 싶을 때 유용합니다. 자동 클릭 없이 화면에 정답 후보만 은은하게 강조 표시합니다.'],
+      ['FocusScan', '문제가 이미지, 캔버스, PDF 또는 복사 방지 레이아웃에 포함된 경우 화면 영역을 드래그하여 즉시 분석합니다.'],
+      ['퀵 오버레이 (Quick Overlay)', '페이지 위에 편리한 미니 도구 창을 띄워 현재 문제나 드래그한 텍스트 풀기를 빠르게 실행합니다.'],
+      ['학습 히스토리 & 메모', '해결한 문제는 정답, 단계별 해설, 출처, 이미지 및 개인 메모와 함께 체계적으로 보관됩니다.'],
+      ['히스토리 기반 모의고사', '저장된 문제들을 실전 복습 퀴즈로 변환하여 연습하고 최종 정답률을 확인할 수 있습니다.'],
+      ['문제 공유 링크 생성', '최근 푼 문제들을 선택하여 스터디 친구들을 위한 공개 퀴즈 링크를 생성할 수 있습니다.'],
+      ['Kahoot Quiz ID 모드', '문제가 숨겨진 라이브 게임에서도 URL의 Quiz ID를 입력하여 크레딧 소모 없이 정답 모음을 열람할 수 있습니다.']
+    ],
+    pricing: [
+      '투명하고 합리적인 요금',
+      '필요할 때만 충전하는 단건 패키지',
+      '정기 구독 없음. 깔끔한 1회 결제: 정답과 해설에만 크레딧이 사용되며, 학습 히스토리와 오답 노트는 평생 무료입니다.',
+      '가장 인기'
+    ],
+    faqTitle: '자주 묻는 질문'
   }
 };
 
@@ -1875,6 +2010,66 @@ const HOME_DETAIL_TEXT: Record<Exclude<Locale, 'en' | 'pl'>, any> = {
       ['أين يمكنني مراجعة الأسئلة التي قمت بحلها سابقاً؟', 'في تبويب "السجل والاختبار" يمكنك مراجعة الأسئلة المحلولة، وإضافة الملاحظات، وخوض اختبارات تجريبية، وإنشاء روابط للمشاركة.'],
       ['ما الفرق بين رمز Kahoot PIN ومعرّف Quiz ID؟', 'يُستخدم PIN للانضمام إلى لعبة مباشرة. بينما يحدد معرّف Quiz ID الاختبار نفسه (موجود في رابط الاختبار). يستخدم QuizSolver معرّف Quiz ID للوصول إلى بنك الإجابات دون الحاجة إلى تشغيل اللعبة.']
     ]
+  },
+  tr: {
+    platforms: ['Mükemmel Entegrasyonlar', 'Gerçekten kullandığınız sistemler için optimize edildi', 'Testportal, Moodle, Canvas, Google Forms, Microsoft Forms, Blackboard, Quizlet, Socrative, Kahoot ve Quizizz için tek bir Chrome uzantısı.'],
+    packs: [
+      ['Kurtarma Paketi (100 Yanıt)', '3–5 tam sınav için iç huzuru • Bir kahveden daha ucuz', 'Kurtarma Paketini Seç', ['100 yapay zeka yanıt önerisi + açıklamalar', '3–5 tam sınav veya test için yeterli', 'Moodle, Testportal, Canvas ve Forms üzerinde çalışır', 'Krediler asla sona ermez — tek seferlik ödeme, abonelik yok']],
+      ['Dönem Paketi (500 Yanıt)', 'Tüm dönem boyunca ödevler, sınavlar ve yüksek notlar • Bir pizzadan daha ucuz', 'Dönem Paketini Seç', ['500 yapay zeka yanıt önerisi ve açıklamalar', 'Başlangıç paketine göre %50 tasarruf (~$0.01 / yanıt)', 'Süreli sınavlarda en yüksek yanıt önceliği', 'Kayıtlı geçmiş ve notlara ömür boyu erişim']],
+      ['Yıllık ve Grup Paketi (2000 Yanıt)', 'Tüm yıl için devasa kaynak veya arkadaşlarla paylaşım • En iyi fiyat (<$0.008)', 'Yıllık Paketi Seç', ['2000 yapay zeka yanıt önerisi ve açıklamalar', 'Piyasadaki en düşük yanıt başı maliyet (<$0.008)', 'Arkadaşlarla paylaşmak veya tüm yıl kullanmak için mükemmel', 'Yapay zeka sunucularında anında maksimum öncelik hızı']]
+    ],
+    faq: [
+      ['Bir sınav sayfasını açtığımda neye tıklamalıyım?', 'QuizSolver uzantısını açın ve "Mevcut sayfayı çöz" seçeneğine tıklayın. Düzen destekleniyorsa soru ve seçenekler otomatik algılanır. Özel tasarımlarda FocusScan kullanıp soru alanını seçin.'],
+      ['QuizSolver yalnızca listelenen platformlarda mı çalışır?', 'Hayır. Listelenen platformlar için optimize edilmiş özel akışlar bulunur, ancak Universal Parser internetteki hemen her quiz sitesindeki soruları okuyabilir. Grafik ağırlıklı sayfalarda FocusScan kullanın.'],
+      ['Platformum henüz doğrudan desteklenmiyorsa ne olur?', 'Universal Parser önce içeriği okumaya çalışır. Zorluk yaşarsa uzantı üzerinden bildirebilirsiniz. Yeni sistemleri desteklemek için ayrıştırıcı profillerini düzenli olarak güncelliyoruz.'],
+      ['QuizSolver Testportal üzerinde çalışır mı?', 'Evet. QuizSolver, aktif zamanlayıcı olsa bile Testportal sorularını otomatik olarak algılar. Saniyeler içinde yapay zeka önerisini görmek için "Mevcut sayfayı çöz" seçeneğine tıklamanız yeterlidir.'],
+      ['FocusScan nedir ve ne zaman kullanılmalıdır?', 'FocusScan, QuizSolver\'a entegre bir ekran yakalama aracıdır. Resim, PDF veya kilitli canvas içindeki herhangi bir sorunun üzerine bir dikdörtgen çizin; yapay zeka yalnızca o alanı okuyup çözecektir.'],
+      ['Kaç adet ücretsiz kredi alırım?', 'Tüm yeni hesaplar yanıt önerilerini ve açıklamaları denemek için ücretsiz krediler alır. Ek paketler 100 kredi için $1.99\'dan başlar. Kahoot Quiz ID modu kredi tüketmez.'],
+      ['İpucu Modu ne işe yarar?', 'Ekranda otomatik tıklama veya işaretleme yapmadan muhtemel doğru cevabı hafifçe vurgular, böylece karar tamamen sizde kalır.'],
+      ['Demo sayfası kredi harcar mı?', 'Hayır. Demo sayfası, yapay zeka kredisi harcamadan sistemi öğrenmeniz ve test etmeniz için simüle edilmiş yerel sorular kullanır.'],
+      ['Daha önce çözdüğüm soruları nerede görebilirim?', 'Geçmiş ve Quiz sekmesinde cevaplanan soruları inceleyebilir, notlar alabilir, deneme testleri çözebilir ve paylaşım bağlantıları oluşturabilirsiniz.'],
+      ['Kahoot PIN ile Quiz ID arasındaki fark nedir?', 'PIN canlı bir oyuna katılmak içindir. Quiz ID ise quizin kendisini tanımlar (bağlantıda görünür). QuizSolver, çevrimdışı yanıt bankasını açmak için Quiz ID\'yi kullanır.']
+    ]
+  },
+  ja: {
+    platforms: ['シームレスな統合', '日常的に使用する学習システムに最適化', 'Testportal、Moodle、Canvas、Google フォーム、Microsoft Forms、Blackboard、Quizlet、Socrative、Kahoot、Quizizz に対応する唯一の Chrome 拡張機能。'],
+    packs: [
+      ['レスキューパック（100問解答）', '3〜5回のテストを安心して乗り切る • コーヒー1杯よりお得', 'レスキューパックを選択', ['100回の AI 解答提案 ＋ ステップ解説', '3〜5回の定期試験や小テストをカバー', 'Moodle、Testportal、Canvas、Google フォームで動作', 'クレジットの有効期限なし — 買い切り、定期購入なし']],
+      ['学期パック（500問解答）', '学期全体の課題・テストで高得点を維持 • ピザ1枚よりお得', '学期パックを選択', ['500回の AI 解答提案 ＋ ステップ解説', 'Starter 比で 50% お得（1問あたり約 $0.01）', '制限時間付きテストにおける最高優先度の応答速度', '保存した履歴とノートへの無期限アクセス']],
+      ['年間・グループパック（2000問解答）', '1年間の圧倒的な余裕、または友人とシェア • 最安値（<$0.008）', '年間パックを選択', ['2000回の AI 解答提案 ＋ ステップ解説', '業界最安の1問あたり単価（<$0.008）', '友人とシェアするか、1年を通じて活用するのに最適', 'AI サーバーでの最優先レスポンス処理']]
+    ],
+    faq: [
+      ['テスト画面を開いたら何をクリックすればよいですか？', 'QuizSolver 拡張機能を開き、「現在のページを解答」をクリックします。対応レイアウトであれば問題と選択肢が自動検出されます。特殊な場合は FocusScan で問題範囲を選択してください。'],
+      ['QuizSolver は一覧にあるプラットフォームでのみ動作しますか？', 'いいえ。一覧のプラットフォームには最適化された専用フローがありますが、Universal Parser によりほぼすべてのクイズサイトの問題を読み取れます。画像には FocusScan を使用します。'],
+      ['利用しているプラットフォームが公式対応していない場合は？', 'Universal Parser がまず自動読み取りを試みます。うまく読み取れない場合は拡張機能から報告できます。新しいシステムに対応するため定期的にパーサーを更新しています。'],
+      ['QuizSolver は Testportal で動作しますか？', 'はい。QuizSolver はタイマーが作動している状態でも Testportal の問題を自動検出します。「現在のページを解答」をクリックするだけで、数秒で AI の提案が表示されます。'],
+      ['FocusScan とは何ですか？どのような時に使いますか？', 'FocusScan は QuizSolver 内蔵の画面キャプチャツールです。画像、PDF、または保護されたキャンバス上の問題部分をドラッグして囲むだけで、AI がその領域を読み取って解答します。'],
+      ['無料クレジットは何回分もらえますか？', '新規アカウント作成時、解答や解説を試せる無料クレジットが付与されます。追加パックは100問で $1.99 から。Kahoot Quiz ID モードはクレジットを消費しません。'],
+      ['ヒントモードの用途は何ですか？', '画面上で自動クリックや回答選択を行わず、正解候補の選択肢を目立たないようにハイライト表示するため、安全に自分のペースで解答できます。'],
+      ['デモページはクレジットを消費しますか？', 'いいえ。デモページはシミュレーション用のサンプル問題を使用しているため、クレジットを消費せずに操作方法を体験できます。'],
+      ['過去に解いた問題はどこで確認できますか？', '「履歴とクイズ」タブから解答済み問題の確認、メモの追加、復習テストの作成、共有リンクの発行が可能です。'],
+      ['Kahoot の PIN と Quiz ID の違いは何ですか？', 'PIN はライブゲームへの参加用番号です。Quiz ID はクイズ自体を識別するIDです（URL内に表示）。QuizSolver は Quiz ID を使って解答バンクを開きます。']
+    ]
+  },
+  ko: {
+    platforms: ['완벽한 호환성', '실제 사용하는 주요 시험 시스템에 최적화', 'Testportal, Moodle, Canvas, Google Forms, Microsoft Forms, Blackboard, Quizlet, Socrative, Kahoot, Quizizz를 지원하는 단 하나의 Chrome 확장 프로그램.'],
+    packs: [
+      ['구출 팩 (100개 답변)', '3~5회 시험 완벽 대비 • 커피 한 잔보다 저렴', '구출 팩 선택', ['100회 AI 정답 제안 + 상세 해설', '3~5회의 전체 시험 및 퀴즈 완벽 커버', 'Moodle, Testportal, Canvas, Google Forms 완벽 지원', '크레딧 평생 유효 — 1회 결제, 구독 없음']],
+      ['학기 패키지 (500개 답변)', '학기 내내 과제, 퀴즈, 고득점 달성 • 피자 한 판보다 저렴', '학기 패키지 선택', ['500회 AI 정답 제안 및 상세 해설', 'Starter 대비 50% 절약 (문제당 약 $0.01)', '타이머가 있는 시험에서 최우선 순위 빠른 응답', '저장된 오답 노트 및 히스토리 평생 무제한 이용']],
+      ['연간 & 그룹 팩 (2000개 답변)', '1년 내내 여유롭게 쓰거나 친구들과 공유 • 최저가 (<$0.008)', '연간 팩 선택', ['2000회 AI 정답 제안 및 상세 해설', '업계 최저 수준의 문제당 비용 (<$0.008)', '친구들과 분할 결제하거나 1년 내내 사용하기에 최적', 'AI 전용 서버 최우선 즉각 처리 속도']]
+    ],
+    faq: [
+      ['시험 페이지를 열었을 때 무엇을 클릭해야 하나요?', 'QuizSolver 확장 프로그램을 열고 \'현재 페이지 풀기\'를 클릭하세요. 지원되는 레이아웃이면 문제와 선택지가 자동 감지됩니다. 특수 레이아웃은 FocusScan으로 문제 영역을 드래그하세요.'],
+      ['QuizSolver는 목록에 있는 플랫폼에서만 작동하나요?', '아닙니다. 목록의 플랫폼에는 전용 최적화 알고리즘이 적용되어 있지만, Universal Parser를 통해 웹상의 거의 모든 퀴즈 사이트를 지원합니다. 그래픽 문제에는 FocusScan을 사용하세요.'],
+      ['내 플랫폼이 아직 목록에 없으면 어떻게 되나요?', 'Universal Parser가 먼저 문제 인식을 시도합니다. 인식이 어려울 경우 확장 프로그램에서 문제를 신고할 수 있으며, 정기 업데이트를 통해 지속적으로 파서 프로필을 추가하고 있습니다.'],
+      ['QuizSolver가 Testportal에서 작동하나요?', '네. QuizSolver는 타이머가 작동 중인 상태에서도 Testportal 문제를 자동으로 인식합니다. \'현재 페이지 풀기\'를 누르면 몇 초 만에 AI 정답 제안을 확인할 수 있습니다.'],
+      ['FocusScan이란 무엇이며 언제 사용하나요?', 'FocusScan은 QuizSolver에 내장된 화면 캡처 분석 도구입니다. 이미지, PDF 또는 복사 방지 캔버스 화면 위의 문제 영역을 마우스로 드래그하면 AI가 해당 영역만 정확히 판독하여 풀이합니다.'],
+      ['무료 크레딧은 얼마나 제공되나요?', '모든 신규 계정에는 AI 정답 제안과 해설을 체험할 수 있는 무료 크레딧이 기본 제공됩니다. 추가 패키지는 100회 풀이에 $1.99부터 시작합니다. Kahoot Quiz ID 모드는 크레딧을 소모하지 않습니다.'],
+      ['힌트 모드는 어떤 기능인가요?', '화면에서 정답을 자동으로 클릭하거나 선택하지 않고, 정답 후보만 눈에 띄지 않게 은은하게 강조 표시하여 본인이 직접 판단하고 제출할 수 있도록 돕습니다.'],
+      ['체험용 데모 페이지에서 크레딧이 소모되나요?', '아닙니다. 데모 페이지는 모의 문제를 사용하므로 AI 크레딧 소모 없이 확장 프로그램의 모든 기능을 안심하고 테스트할 수 있습니다.'],
+      ['이전에 해결한 문제는 어디서 다시 볼 수 있나요?', '\'히스토리 & 퀴즈\' 탭에서 풀었던 문제들을 복습하고, 오답 노트를 작성하며, 맞춤형 복습 모의고사를 풀거나 공유 링크를 생성할 수 있습니다.'],
+      ['Kahoot PIN과 Quiz ID의 차이점은 무엇인가요?', 'PIN은 실시간 게임에 참여하기 위한 코드입니다. Quiz ID는 퀴즈 자체를 식별하는 고유 ID입니다 (URL 링크에 표시됨). QuizSolver는 Quiz ID를 이용해 오프라인 정답 모음을 불러옵니다.']
+    ]
   }
 };
 
@@ -1943,3 +2138,6 @@ HOME_COPY.it = makeHomeCopy('it');
 HOME_COPY.uk = makeHomeCopy('uk');
 HOME_COPY.pt = makeHomeCopy('pt');
 HOME_COPY.ar = makeHomeCopy('ar');
+HOME_COPY.tr = makeHomeCopy('tr');
+HOME_COPY.ja = makeHomeCopy('ja');
+HOME_COPY.ko = makeHomeCopy('ko');

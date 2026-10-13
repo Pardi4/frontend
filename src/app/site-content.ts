@@ -200,7 +200,7 @@ export interface SiteCopy {
   [key: string]: any;
 }
 
-export type Locale = 'en' | 'pl' | 'de' | 'es' | 'fr' | 'it' | 'uk' | 'pt' | 'ar';
+export type Locale = 'en' | 'pl' | 'de' | 'es' | 'fr' | 'it' | 'uk' | 'pt' | 'ar' | 'tr' | 'ja' | 'ko';
 
 export interface LocaleOption {
   code: Locale;
@@ -222,7 +222,10 @@ export const SUPPORTED_LOCALES: readonly LocaleOption[] = [
   { code: 'it', shortLabel: 'IT', label: 'Italian', nativeLabel: 'Italiano', htmlLang: 'it', ogLocale: 'it_IT', prefix: '/it', browserAliases: ['it'] },
   { code: 'uk', shortLabel: 'UK', label: 'Ukrainian', nativeLabel: 'Українська', htmlLang: 'uk', ogLocale: 'uk_UA', prefix: '/uk', browserAliases: ['uk', 'ua'] },
   { code: 'pt', shortLabel: 'PT', label: 'Portuguese', nativeLabel: 'Português', htmlLang: 'pt', ogLocale: 'pt_BR', prefix: '/pt', browserAliases: ['pt', 'pt-br', 'pt-pt'] },
-  { code: 'ar', shortLabel: 'AR', label: 'Arabic', nativeLabel: 'العربية', htmlLang: 'ar', ogLocale: 'ar_SA', prefix: '/ar', browserAliases: ['ar', 'ar-sa', 'ar-ae', 'ar-eg'] }
+  { code: 'ar', shortLabel: 'AR', label: 'Arabic', nativeLabel: 'العربية', htmlLang: 'ar', ogLocale: 'ar_SA', prefix: '/ar', browserAliases: ['ar', 'ar-sa', 'ar-ae', 'ar-eg'] },
+  { code: 'tr', shortLabel: 'TR', label: 'Turkish', nativeLabel: 'Türkçe', htmlLang: 'tr', ogLocale: 'tr_TR', prefix: '/tr', browserAliases: ['tr', 'tr-tr'] },
+  { code: 'ja', shortLabel: 'JA', label: 'Japanese', nativeLabel: '日本語', htmlLang: 'ja', ogLocale: 'ja_JP', prefix: '/ja', browserAliases: ['ja', 'ja-jp'] },
+  { code: 'ko', shortLabel: 'KO', label: 'Korean', nativeLabel: '한국어', htmlLang: 'ko', ogLocale: 'ko_KR', prefix: '/ko', browserAliases: ['ko', 'ko-kr'] }
 ];
 
 export const LOCALE_CODES = SUPPORTED_LOCALES.map((locale) => locale.code) as Locale[];
@@ -1503,6 +1506,69 @@ const LOCALIZED_SITE: Record<ExtraLocale, LocalizedSiteBundle> = {
     successPage: { metaTitle: 'اكتملت عملية الدفع | QuizSolver', metaDescription: 'شكراً لك! تمت إضافة رصيدك بنجاح إلى حسابك.', badge: 'نجاح', title: 'اكتملت عملية الدفع', subtitle: 'رصيدك جاهز للاستخدام الآن.', dashboardCta: 'فتح لوحة التحكم', storeCta: 'تثبيت الإضافة' },
     notFoundPage: { metaTitle: '404 الصفحة غير موجودة | QuizSolver', metaDescription: 'الصفحة المطلوبة غير موجودة في QuizSolver.', badge: '404', title: 'الصفحة غير موجودة', subtitle: 'هذه الصفحة غير موجودة أو انتهت صلاحية الرابط.', homeCta: 'العودة للرئيسية', storeCta: 'تثبيت الإضافة' },
     platform: { badge: 'الخطوات', title: (name) => `حل اختبارات ${name} — إجابات فورية بالذكاء الاصطناعي`, subtitle: (name) => `احصل على اقتراحات فورية وشروحات تفصيلية لكل سؤال في اختبارات ${name}.`, metaTitle: (name) => `حل اختبارات ${name} بالذكاء الاصطناعي | QuizSolver`, metaDescription: (name) => `إضافة Chrome لاختبارات ${name}. إجابات فورية وشروحات ذكية للاختبارات في ${name}. تثبيت مجاني — حل في ثوانٍ.`, stepsTitle: 'خطوات الحل', steps: (name) => [`افتح الاختبار في ${name} وتأكد من اكتمال تحميل السؤال والخيارات المرئية.`, 'انقر على أيقونة QuizSolver واختر حل الصفحة الحالية. للتصميمات المعقدة استخدم FocusScan.', 'راجع الإجابة والشرح قبل الإرسال. فعّل وضع التلميح لإشارة سرية بدون نقر تلقائي.'], features: () => ['اقتراحات إجابات فورية بالذكاء الاصطناعي', 'شروحات مفصلة خطوة بخطوة للمفاهيم', 'حفظ تلقائي في سجل المذاكرة', 'اختبارات تدريبية مخصصة من السجل'], keywordTitle: (name) => `تعلم بذكاء في ${name}`, keywordText: (name) => `يساعدك QuizSolver على فهم أسئلة ${name} وحفظ الملاحظات والمراجعة بكفاءة قبل الامتحانات.`, faqQuestion: (name) => `هل يعمل QuizSolver على منصة ${name}؟`, faqAnswer: (name) => `نعم، يتعرف QuizSolver تلقائياً على الأسئلة المرئية في ${name} ويوفر ميزة FocusScan للتصميمات المعتمدة على الصور.` }
+  },
+  tr: {
+    homeTitle: 'Yapay Zeka Destekli Quiz Çözücü Chrome Uzantısı',
+    homeSubtitle: 'Testportal, Moodle, Canvas, Kahoot ve daha fazlasında quiz sorularını yapay zeka ile çözün ve tekrar edin',
+    homeMetaTitle: 'QuizSolver — Yapay Zeka Destekli Quiz Çözücü Chrome Uzantısı',
+    homeMetaDescription: 'Online quizleri yapay zeka önerileri, adım adım açıklamalar, FocusScan, çalışma notları ve Kahoot Quiz ID moduyla çözün.',
+    common: { credits: 'Krediler', dashboard: 'Panel', buyCredits: 'Kredi Satın Al', logout: 'Çıkış Yap', createAccount: 'Hesap Oluştur', email: 'E-posta', password: 'Şifre', confirmPassword: 'Şifreyi Onayla', rememberMe: 'Beni Hatırla', signIn: 'Giriş Yap', displayName: 'Görünen İsim (isteğe bağlı)', referralCode: 'Tavsiye Kodu (isteğe bağlı)', loading: 'Yükleniyor...', close: 'Kapat', demo: 'Canlı Demo', historyQuiz: 'Geçmiş ve Quiz' },
+    nav: { how: 'Nasıl Çalışır', features: 'Özellikler', pricing: 'Fiyatlandırma', login: 'Giriş Yap', signup: 'Kayıt Ol', toggle: 'Menü' },
+    footer: { product: 'Ürün', seoPages: 'Desteklenen Platformlar', legal: 'Yasal', privacy: 'Gizlilik Politikası', terms: 'Kullanım Koşulları', contact: 'İletişim', complaints: 'Şikayetler', rights: '© 2026 QuizSolver. Tüm hakları saklıdır.', description: 'Online sınavlar ve testler için yapay zeka destekli quiz çözücü uzantısı.' },
+    auth: { loginTitle: 'Giriş Yapın', loginSubtitle: 'Kredilerinizi ve geçmişinizi yönetmek için giriş yapın.', showRegister: 'Hesabınız yok mu?', showRegisterLink: 'Kayıt Olun', registerTitle: 'QuizSolver Hesabı Oluşturun', showLogin: 'Zaten hesabınız var mı?', showLoginLink: 'Giriş Yapın' },
+    shell: {
+      readyEyebrow: 'Hemen Başlayın', readyTitle: 'QuizSolver\'ı Chrome\'a Ekleyin', readyDesc: 'Ücretsiz 10 krediyle başlayın. Kurulum yalnızca birkaç saniye sürer.', openStore: 'Chrome Web Mağazası\'ndan Yükle', footerDesc: 'Yapay zeka destekli quiz çözücü uzantısı.', continueGoogle: 'Google ile Giriş Yap', signupGoogle: 'Google ile Kayıt Ol', or: 'veya', forgotPassword: 'Şifremi unuttum', referralInfo: 'Arkadaşlarınızı davet edin ve her satın alımlarında %10 bonus kredi kazanın.', verifyEmail: 'E-postayı Doğrula', verifyEmailText: 'E-postanıza bir doğrulama kodu gönderdik.', verifyAndLogin: 'Doğrula ve Giriş Yap', noCode: 'Kodu almadınız mı?', resendCode: 'Kodu Tekrar Gönder', resetPassword: 'Şifreyi Sıfırla', resetPasswordText: 'E-posta adresinizi girin, sıfırlama kodunu gönderelim.', sendCode: 'Kodu Gönder', backToLogin: 'Girişe Dön', setNewPassword: 'Yeni Şifre Belirleyin', setNewPasswordText: 'E-postadaki kodu girin ve yeni şifrenizi seçin.', changePassword: 'Şifreyi Değiştir', mailDisabled: 'E-posta servisi şu anda devre dışı.', testCode: 'Test kodu: {code}', verificationSent: 'Doğrulama kodu gönderildi.', loginFailed: 'Giriş başarısız oldu.', passwordsMismatch: 'Şifreler eşleşmiyor.', registerFailed: 'Kayıt başarısız oldu.', invalidCode: 'Geçersiz doğrulama kodu.', alreadyVerified: 'E-posta zaten doğrulanmış.', newCodeSent: 'Yeni kod gönderildi.', codeSendFailed: 'Kod gönderilemedi.', resetSent: 'Sıfırlama kodu gönderildi.', resetStartFailed: 'Sıfırlama işlemi başlatılamadı.', passwordChanged: 'Şifre başarıyla değiştirildi.', passwordChangeFailed: 'Şifre değiştirilemedi.'
+    },
+    privacyPage: { metaTitle: 'Gizlilik Politikası | QuizSolver', metaDescription: 'QuizSolver\'ın hesabınızı, kayıtlı sorularınızı, kredilerinizi ve FocusScan verilerinizi nasıl koruduğunu öğrenin.', title: 'Gizlilik Politikası', badge: 'Gizlilik ve Güvenlik', subtitle: 'Verilerinizi koruyor ve gizliliğinize saygı duyuyoruz.', effective: 'Yürürlük tarihi: 21 Mayıs 2026', contactLabel: 'Destek', contactValue: 'support@getquizsolver.com', sections: [{ title: '1. Veri Toplama', text: 'Yalnızca hesap ve kredi yönetimi için zorunlu olan bilgileri topluyoruz.', items: ['Hesap: E-posta, görünen isim ve şifrelenmiş parola (bcrypt).', 'Kullanım: Çözülen sorular, krediler ve işlemler.', 'Tavsiyeler: Kodunuzla yapılan kayıt ve alımlar.'] }, { title: '2. Chrome Uzantısı ve FocusScan', text: 'Uzantı, sayfa içeriğini yalnızca siz aktif olarak başlattığınızda tarar.', items: ['Etkin tarama: Görünür soru ve seçenekleri okur.', 'FocusScan: Yalnızca ekranda sizin seçtiğiniz alanı yakalar.', 'FocusScan görüntüleri yapay zeka tarafından geçici olarak işlenir. Gizli kişisel verileri seçmeyiniz.', 'Diğer sekmeler veya tarama geçmişi kesinlikle izlenmez.'] }, { title: '3. Ödemeler', text: 'Ödemeler sertifikalı sağlayıcılar (Lemon Squeezy ve DPay) aracılığıyla güvenle işlenir.' }, { title: '4. Paylaşım', text: 'Kişisel bilgilerinizi asla üçüncü taraflara satmaz veya kiralamayız.' }, { title: '5. Haklarınız', text: 'Verilerinizi dilediğiniz zaman inceleyebilir, dışa aktarabilir veya silebilirsiniz.', items: ['Kayıtlı soru ve notların dışa aktarımı.', 'Ayarlardan veya destek aracılığıyla hesap silme.'] }] },
+    dashboardPage: { metaTitle: 'Kullanıcı Paneli | QuizSolver', metaDescription: 'Kredilerinizi, satın alımlarınızı, tavsiye bağlantınızı ve hesap istatistiklerinizi yönetin.', title: 'Kullanıcı Paneli', loginTitle: 'Panele Giriş Yapın', loginText: 'Kredilerinizi ve çalışma geçmişinizi yönetmek için giriş yapın veya hesap oluşturun.', loginButton: 'Giriş Yap / Kayıt Ol' },
+    creditsPage: { metaTitle: 'Yapay Zeka Kredisi Satın Al | QuizSolver', metaDescription: 'QuizSolver kredilerini tek seferlik paketlerle yükleyin. 1 kredi = 1 yapay zeka cevabı. Abonelik yok.', title: 'Kredi Satın Al' },
+    quizPage: { metaTitle: 'Geçmiş ve Deneme Testleri | QuizSolver', metaDescription: 'Kayıtlı sorularınızı, notlarınızı, favorilerinizi inceleyin ve geçmişinizden deneme testleri oluşturun.', title: 'Geçmiş ve Quiz' },
+    demoPage: { metaTitle: 'İnteraktif Demo | QuizSolver', metaDescription: 'QuizSolver uzantısını kredi harcamadan güvenli bir simülasyon ortamında test edin.', title: 'İnteraktif Demo' },
+    successPage: { metaTitle: 'Ödeme Başarılı | QuizSolver', metaDescription: 'Teşekkürler! Kredileriniz hesabınıza başarıyla tanımlandı.', badge: 'Başarılı', title: 'Ödeme Tamamlandı', subtitle: 'Kredileriniz kullanıma hazır.', dashboardCta: 'Panele Git', storeCta: 'Uzantıyı Yükle' },
+    notFoundPage: { metaTitle: '404 Sayfa Bulunamadı | QuizSolver', metaDescription: 'Aradığınız sayfa QuizSolver\'da bulunamadı.', badge: '404', title: 'Sayfa Bulunamadı', subtitle: 'Bu sayfa mevcut değil veya bağlantının süresi dolmuş.', homeCta: 'Ana Sayfaya Dön', storeCta: 'Uzantıyı Yükle' },
+    platform: { badge: 'Akış', title: (name) => `${name} Quiz Çözücü — Anında Yapay Zeka Yanıtları`, subtitle: (name) => `${name} üzerindeki her soru için anında yapay zeka önerileri ve ayrıntılı açıklamalar alın.`, metaTitle: (name) => `${name} Quiz Çözücü — Yapay Zeka Yanıtları | QuizSolver`, metaDescription: (name) => `${name} için Chrome uzantısı. ${name} testleri için anında yapay zeka yanıtları ve açıklamalar. Ücretsiz yükleyin — saniyeler içinde çözün.`, stepsTitle: 'Adım Adım Kurulum', steps: (name) => [`${name} üzerindeki quizi açın ve soru ile seçeneklerin tam olarak yüklenmesini bekleyin.`, 'QuizSolver simgesine tıklayın ve Mevcut sayfayı çöz seçeneğini seçin. Özel tasarımlar için FocusScan kullanın.', 'Göndermeden önce öneriyi ve açıklamayı inceleyin. Belirgin tıklama olmadan ipucu almak için İpucu Modu\'nu açın.'], features: () => ['Yapay zeka ile anında yanıt önerileri', 'Kavramların adım adım açıklamaları', 'Çalışma geçmişine otomatik kaydetme', 'Geçmişten özel deneme testleri oluşturma'], keywordTitle: (name) => `${name} ile Daha İyi Çalışın`, keywordText: (name) => `QuizSolver, ${name} sorularını anlamanıza, notlar almanıza ve sınavlardan önce verimli bir şekilde tekrar yapmanıza yardımcı olur.`, faqQuestion: (name) => `QuizSolver ${name} üzerinde çalışır mı?`, faqAnswer: (name) => `Evet. QuizSolver ${name} üzerindeki görünür soruları otomatik olarak tanır ve görsel veya kilitli tasarımlar için FocusScan sunar.` }
+  },
+  ja: {
+    homeTitle: 'AI クイズ解答 Chrome 拡張機能',
+    homeSubtitle: 'Testportal、Moodle、Canvas、Kahoot などのクイズ問題を AI で解答・復習',
+    homeMetaTitle: 'QuizSolver — AI クイズ解答 Chrome 拡張機能',
+    homeMetaDescription: 'オンラインクイズを AI の解答提案、ステップ解説、FocusScan、学習ノート、Kahoot Quiz ID モードでスムーズに攻略。',
+    common: { credits: 'クレジット', dashboard: 'ダッシュボード', buyCredits: 'クレジット購入', logout: 'ログアウト', createAccount: 'アカウント作成', email: 'メールアドレス', password: 'パスワード', confirmPassword: 'パスワード確認', rememberMe: 'ログイン状態を保持', signIn: 'ログイン', displayName: '表示名（任意）', referralCode: '紹介コード（任意）', loading: '読み込み中...', close: '閉じる', demo: 'デモ体験', historyQuiz: '履歴とクイズ' },
+    nav: { how: '使い方', features: '機能', pricing: '料金', login: 'ログイン', signup: '新規登録', toggle: 'メニュー' },
+    footer: { product: 'プロダクト', seoPages: '対応プラットフォーム', legal: '法的情報', privacy: 'プライバシーポリシー', terms: '利用規約', contact: 'お問い合わせ', complaints: '異議申し立て', rights: '© 2026 QuizSolver. All rights reserved.', description: 'オンラインテストやクイズに対応した AI クイズ解答 Chrome 拡張機能。' },
+    auth: { loginTitle: 'アカウントにログイン', loginSubtitle: 'クレジットや学習履歴を管理するためにログインしてください。', showRegister: 'アカウントをお持ちでないですか？', showRegisterLink: '新規登録', registerTitle: 'QuizSolver アカウントを作成', showLogin: 'すでにアカウントをお持ちですか？', showLoginLink: 'ログイン' },
+    shell: {
+      readyEyebrow: '今すぐ始める', readyTitle: 'QuizSolver を Chrome に追加', readyDesc: '無料の10クレジットからスタート。インストールは数秒で完了します。', openStore: 'Chrome ウェブストアから追加', footerDesc: 'AI クイズ解答 Chrome 拡張機能。', continueGoogle: 'Google でログイン', signupGoogle: 'Google で登録', or: 'または', forgotPassword: 'パスワードをお忘れですか？', referralInfo: '友達を招待して、友達の購入クレジットの10%をボーナスとして獲得。', verifyEmail: 'メールアドレスの確認', verifyEmailText: 'ご登録のメールアドレスに確認コードを送信しました。', verifyAndLogin: '確認してログイン', noCode: 'コードが届きませんか？', resendCode: 'コードを再送信', resetPassword: 'パスワードのリセット', resetPasswordText: 'メールアドレスを入力すると再設定コードを送信します。', sendCode: 'コードを送信', backToLogin: 'ログインに戻る', setNewPassword: '新しいパスワードを設定', setNewPasswordText: 'メールのコードを入力し、新しいパスワードを設定してください。', changePassword: 'パスワードを変更', mailDisabled: '現在メール配信は無効化されています。', testCode: 'テストコード: {code}', verificationSent: '確認コードを送信しました。', loginFailed: 'ログインに失敗しました。', passwordsMismatch: 'パスワードが一致しません。', registerFailed: '登録に失敗しました。', invalidCode: '無効なコードです。', alreadyVerified: '既に確認済みです。', newCodeSent: '新しいコードを送信しました。', codeSendFailed: 'コードの送信に失敗しました。', resetSent: 'リセットコードを送信しました。', resetStartFailed: 'リセットの開始に失敗しました。', passwordChanged: 'パスワードが変更されました。', passwordChangeFailed: 'パスワードの変更に失敗しました。'
+    },
+    privacyPage: { metaTitle: 'プライバシーポリシー | QuizSolver', metaDescription: 'QuizSolver がアカウント、保存された問題、クレジット、FocusScan データをどのように保護するかをご確認ください。', title: 'プライバシーポリシー', badge: 'プライバシーとセキュリティ', subtitle: 'お客様のデータを安全に保護し、プライバシーを尊重します。', effective: '発効日: 2026年5月21日', contactLabel: 'サポート', contactValue: 'support@getquizsolver.com', sections: [{ title: '1. データの収集', text: 'アカウントとクレジットの提供に必要な最小限のデータのみを収集します。', items: ['アカウント: メールアドレス、表示名、暗号化パスワード (bcrypt)。', '利用状況: 解答済み問題、クレジット、購入履歴。', '紹介: あなたのコードに紐づく登録と購入。'] }, { title: '2. Chrome 拡張機能と FocusScan', text: '拡張機能は、ユーザーが明示的に操作した時のみページ内容をスキャンします。', items: ['アクティブスキャン: 表示されている問題文と選択肢を読み取ります。', 'FocusScan: 画面上で選択した領域のみをキャプチャします。', 'FocusScan の画像は外部 AI プロバイダーによって一時的に処理されます。機密情報は選択しないでください。', '他のタブや閲覧履歴は一切トラッキングしません。'] }, { title: '3. 決済', text: '決済は認定プロバイダー (Lemon Squeezy および DPay) を通じて安全に処理されます。' }, { title: '4. データ共有', text: '個人データを第三者に販売または貸与することは一切ありません。' }, { title: '5. お客様の権利', text: 'いつでもデータへのアクセス、エクスポート、削除リクエストが可能です。', items: ['保存された問題とノートのエクスポート。', '設定またはサポート経由でのアカウント削除。'] }] },
+    dashboardPage: { metaTitle: 'ユーザーダッシュボード | QuizSolver', metaDescription: 'クレジット残高、購入履歴、紹介リンク、アカウント統計を一元管理。', title: 'ユーザーダッシュボード', loginTitle: 'ダッシュボードにアクセス', loginText: 'クレジットや学習履歴を管理するにはログインまたはアカウント登録してください。', loginButton: 'ログイン / アカウント作成' },
+    creditsPage: { metaTitle: 'AI クレジットの購入 | QuizSolver', metaDescription: 'QuizSolver クレジットを買い切りパックでチャージ。1クレジット＝1回のAI解答。定期購入なし。', title: 'クレジット購入' },
+    quizPage: { metaTitle: '履歴と復習テスト | QuizSolver', metaDescription: '保存した問題、ノート、お気に入りを振り返り、オリジナルの復習テストを作成。', title: '履歴とクイズ' },
+    demoPage: { metaTitle: 'インタラクティブデモ | QuizSolver', metaDescription: 'クレジットを消費せずに、安全な模擬テスト環境で QuizSolver の機能を体験。', title: 'インタラクティブデモ' },
+    successPage: { metaTitle: '決済完了 | QuizSolver', metaDescription: 'ありがとうございます！クレジットがアカウントに正常に追加されました。', badge: '完了', title: '決済が完了しました', subtitle: 'クレジットはすぐにご利用いただけます。', dashboardCta: 'ダッシュボードを開く', storeCta: '拡張機能をインストール' },
+    notFoundPage: { metaTitle: '404 ページが見つかりません | QuizSolver', metaDescription: 'お探しのページは QuizSolver に存在しません。', badge: '404', title: 'ページが見つかりません', subtitle: 'このページは存在しないか、移動した可能性があります。', homeCta: 'ホームへ戻る', storeCta: '拡張機能をインストール' },
+    platform: { badge: 'フロー', title: (name) => `${name} クイズ解答ツール — AI による即時解答`, subtitle: (name) => `${name} のあらゆる問題に対して、AI の解答提案と詳しい解説を即座に取得できます。`, metaTitle: (name) => `${name} クイズ解答ツール — AI 解答 | QuizSolver`, metaDescription: (name) => `${name} 用 Chrome 拡張機能。${name} テストの即時 AI 解答とステップ解説。無料インストール — 数秒で解答。`, stepsTitle: '利用の流れ', steps: (name) => [`${name} でクイズを開き、問題と選択肢が完全に表示されるのを待ちます。`, 'QuizSolver アイコンをクリックし、「現在のページを解答」を選択します。画像や特殊レイアウトには FocusScan を使用します。', '送信前に AI の提案と解説を確認します。自動クリックを避けたい場合はヒントモードを有効にします。'], features: () => ['AI による瞬時の正解提案', '理解を深めるステップ解説', '学習履歴への自動保存機能', '履歴から作るオリジナル復習テスト'], keywordTitle: (name) => `${name} で効率的に学習`, keywordText: (name) => `QuizSolver は ${name} の問題を深く理解し、ノートを保存して試験前に効率よく復習するのに役立ちます。`, faqQuestion: (name) => `QuizSolver は ${name} で使えますか？`, faqAnswer: (name) => `はい。QuizSolver は ${name} の表示問題を自動認識し、画像や非テキスト問題にも FocusScan で柔軟に対応します。` }
+  },
+  ko: {
+    homeTitle: 'AI 퀴즈 풀이 Chrome 확장 프로그램',
+    homeSubtitle: 'Testportal, Moodle, Canvas, Kahoot 등 다양한 플랫폼의 퀴즈 문제를 AI로 풀고 복습하세요',
+    homeMetaTitle: 'QuizSolver — AI 퀴즈 풀이 Chrome 확장 프로그램',
+    homeMetaDescription: '온라인 퀴즈를 AI 정답 추천, 단계별 해설, FocusScan, 학습 노트, Kahoot Quiz ID 모드로 완벽하게 해결하세요.',
+    common: { credits: '크레딧', dashboard: '대시보드', buyCredits: '크레딧 충전', logout: '로그아웃', createAccount: '회원가입', email: '이메일', password: '비밀번호', confirmPassword: '비밀번호 확인', rememberMe: '로그인 유지', signIn: '로그인', displayName: '표시 이름 (선택)', referralCode: '추천 코드 (선택)', loading: '로딩 중...', close: '닫기', demo: '체험하기', historyQuiz: '히스토리 & 퀴즈' },
+    nav: { how: '사용 방법', features: '기능', pricing: '요금 안내', login: '로그인', signup: '회원가입', toggle: '메뉴' },
+    footer: { product: '제품', seoPages: '지원 플랫폼', legal: '법적 고지', privacy: '개인정보 처리방침', terms: '이용약관', contact: '문의하기', complaints: '불만 접수', rights: '© 2026 QuizSolver. All rights reserved.', description: '온라인 시험 및 퀴즈를 위한 AI 퀴즈 풀이 Chrome 확장 프로그램.' },
+    auth: { loginTitle: '계정 로그인', loginSubtitle: '크레딧과 학습 기록을 관리하려면 로그인하세요.', showRegister: '아직 계정이 없으신가요?', showRegisterLink: '회원가입', registerTitle: 'QuizSolver 계정 생성', showLogin: '이미 계정이 있으신가요?', showLoginLink: '로그인' },
+    shell: {
+      readyEyebrow: '지금 시작하기', readyTitle: 'QuizSolver를 Chrome에 추가하세요', readyDesc: '무료 10 크레딧으로 시작하세요. 설치는 몇 초 만에 완료됩니다.', openStore: 'Chrome 웹 스토어에서 설치', footerDesc: 'AI 퀴즈 풀이 Chrome 확장 프로그램.', continueGoogle: 'Google로 로그인', signupGoogle: 'Google로 시작하기', or: '또는', forgotPassword: '비밀번호를 잊으셨나요?', referralInfo: '친구를 초대하고 친구가 크레딧을 충전할 때마다 10% 보너스 크레딧을 받으세요.', verifyEmail: '이메일 인증', verifyEmailText: '입력하신 이메일로 인증 코드를 전송했습니다.', verifyAndLogin: '인증하고 로그인', noCode: '코드를 받지 못하셨나요?', resendCode: '코드 재전송', resetPassword: '비밀번호 재설정', resetPasswordText: '이메일 주소를 입력하시면 재설정 코드를 보내드립니다.', sendCode: '코드 전송', backToLogin: '로그인으로 돌아가기', setNewPassword: '새 비밀번호 설정', setNewPasswordText: '이메일의 코드를 입력하고 새 비밀번호를 설정하세요.', changePassword: '비밀번호 변경', mailDisabled: '현재 이메일 전송이 비활성화되어 있습니다.', testCode: '테스트 코드: {code}', verificationSent: '인증 코드가 전송되었습니다.', loginFailed: '로그인에 실패했습니다.', passwordsMismatch: '비밀번호가 일치하지 않습니다.', registerFailed: '회원가입에 실패했습니다.', invalidCode: '유효하지 않은 코드입니다.', alreadyVerified: '이미 인증된 이메일입니다.', newCodeSent: '새 코드가 전송되었습니다.', codeSendFailed: '코드 전송에 실패했습니다.', resetSent: '재설정 코드가 전송되었습니다.', resetStartFailed: '재설정을 시작하지 못했습니다.', passwordChanged: '비밀번호가 성공적으로 변경되었습니다.', passwordChangeFailed: '비밀번호 변경에 실패했습니다.'
+    },
+    privacyPage: { metaTitle: '개인정보 처리방침 | QuizSolver', metaDescription: 'QuizSolver가 귀하의 계정, 저장된 문제, 크레딧 및 FocusScan 데이터를 안전하게 보호하는 방법을 확인하세요.', title: '개인정보 처리방침', badge: '개인정보 보호 및 보안', subtitle: '귀하의 데이터를 안전하게 보호하고 프라이버시를 존중합니다.', effective: '시행일: 2026년 5월 21일', contactLabel: '고객 지원', contactValue: 'support@getquizsolver.com', sections: [{ title: '1. 데이터 수집', text: '계정 운영 및 크레딧 제공에 반드시 필요한 정보만 수집합니다.', items: ['계정: 이메일, 표시 이름 및 암호화된 비밀번호 (bcrypt).', '이용 내역: 해결한 문제, 크레딧 및 결제 내역.', '추천인: 추천 코드를 통한 가입 및 결제 정보.'] }, { title: '2. Chrome 확장 프로그램 및 FocusScan', text: '확장 프로그램은 사용자가 직접 실행했을 때만 페이지 콘텐츠를 스캔합니다.', items: ['활성 스캔: 화면에 표시된 문제 텍스트 및 선택지를 읽습니다.', 'FocusScan: 화면에서 사용자가 직접 드래그한 영역만 캡처합니다.', 'FocusScan 이미지는 외부 AI 제공업체에서 임시로 처리됩니다. 민감한 개인정보는 캡처하지 마세요.', '다른 탭이나 브라우징 기록은 절대 추적하지 않습니다.'] }, { title: '3. 결제', text: '결제는 인증된 결제 대행사(Lemon Squeezy 및 DPay)를 통해 안전하게 처리됩니다.' }, { title: '4. 공유 금지', text: '귀하의 개인정보를 제3자에게 판매하거나 대여하지 않습니다.' }, { title: '5. 귀하의 권리', text: '언제든지 데이터 조회, 내보내기 또는 삭제를 요청할 수 있습니다.', items: ['저장된 문제 및 메모 내보내기.', '설정 메뉴 또는 고객지원을 통한 계정 삭제.'] }] },
+    dashboardPage: { metaTitle: '사용자 대시보드 | QuizSolver', metaDescription: '크레딧 잔액, 충전 내역, 추천 링크 및 계정 통계를 관리하세요.', title: '사용자 대시보드', loginTitle: '대시보드 로그인', loginText: '크레딧과 학습 히스토리를 관리하려면 로그인하거나 회원가입하세요.', loginButton: '로그인 / 회원가입' },
+    creditsPage: { metaTitle: 'AI 크레딧 충전 | QuizSolver', metaDescription: 'QuizSolver 크레딧을 단건 패키지로 충전하세요. 1 크레딧 = AI 정답 1회. 정기 구독 없음.', title: '크레딧 충전' },
+    quizPage: { metaTitle: '히스토리 & 복습 퀴즈 | QuizSolver', metaDescription: '저장된 문제, 메모, 즐겨찾기를 검토하고 나만의 복습 퀴즈를 풀어보세요.', title: '히스토리 & 퀴즈' },
+    demoPage: { metaTitle: '인터랙티브 체험 | QuizSolver', metaDescription: '크레딧 소모 없이 안전한 모의 테스트 환경에서 QuizSolver 기능을 직접 경험해보세요.', title: '인터랙티브 체험' },
+    successPage: { metaTitle: '결제 완료 | QuizSolver', metaDescription: '감사합니다! 크레딧이 계정에 정상적으로 추가되었습니다.', badge: '성공', title: '결제가 완료되었습니다', subtitle: '지금 바로 크레딧을 사용할 수 있습니다.', dashboardCta: '대시보드 열기', storeCta: '확장 프로그램 설치' },
+    notFoundPage: { metaTitle: '404 페이지를 찾을 수 없음 | QuizSolver', metaDescription: '요청하신 페이지가 QuizSolver에 존재하지 않습니다.', badge: '404', title: '페이지를 찾을 수 없습니다', subtitle: '존재하지 않는 페이지이거나 링크가 만료되었습니다.', homeCta: '홈으로 이동', storeCta: '확장 프로그램 설치' },
+    platform: { badge: '워크플로우', title: (name) => `${name} 퀴즈 풀이 — 실시간 AI 정답 제시`, subtitle: (name) => `${name}의 모든 문제에 대해 실시간 AI 정답 제안과 상세한 해설을 확인하세요.`, metaTitle: (name) => `${name} 퀴즈 풀이 — AI 정답 도우미 | QuizSolver`, metaDescription: (name) => `${name} 전용 Chrome 확장 프로그램. ${name} 시험을 위한 실시간 AI 정답 및 해설. 무료 설치 — 몇 초 만에 풀기.`, stepsTitle: '이용 방법', steps: (name) => [`${name}에서 퀴즈를 열고 문제와 선택지가 완전히 표시될 때까지 기다립니다.`, 'QuizSolver 아이콘을 클릭하고 \'현재 페이지 풀기\'를 선택합니다. 이미지나 특수 레이아웃은 FocusScan을 사용하세요.', '답안 제출 전 AI의 제안과 해설을 확인합니다. 자동 클릭을 원치 않으시면 힌트 모드를 켜세요.'], features: () => ['AI 기반 실시간 정답 추천', '개념 이해를 돕는 단계별 해설', '학습 히스토리에 자동 저장', '오답 노트를 바탕으로 한 복습 퀴즈'], keywordTitle: (name) => `${name} 완벽 대비 학습`, keywordText: (name) => `QuizSolver는 ${name} 문제를 완벽히 이해하고 오답 노트를 작성하여 시험 전 효과적으로 복습하도록 돕습니다.`, faqQuestion: (name) => `QuizSolver가 ${name}에서도 작동하나요?`, faqAnswer: (name) => `네. QuizSolver는 ${name}의 표시된 문제를 자동으로 인식하며, 이미지나 복잡한 레이아웃도 FocusScan으로 완벽히 지원합니다.` }
   }
 };
 
@@ -1948,6 +2014,118 @@ function enhancePlatformTutorials(copy: SiteCopy, locale: Locale): SiteCopy {
         { question: 'هل يستهلك وضع Quiz ID رصيداً؟', answer: 'لا، يعرض بنك إجابات الاختبار بدون إرسال طلب جديد للذكاء الاصطناعي.' }
       ]
     }
+,
+tr: {
+      stepsTitle: 'Adım adım kurulum',
+      genericSteps: (name) => [
+        `${name} test sayfasını açın ve soru ile seçeneklerin tam olarak yüklenmesini bekleyin.`,
+        'QuizSolver uzantı simgesine tıklayın ve Mevcut sayfayı çöz seçeneğini seçin. Özel tasarımlar için FocusScan kullanın.',
+        'Önerilen yanıtı ve açıklamayı inceleyin. Otomatik tıklama olmadan ipucu görmek için İpucu Modu\'nu kullanın.'
+      ],
+      genericFeatures: [
+        'Çözmeden önce soru metninin ve seçeneklerin tam yüklendiğinden emin olun.',
+        'İçerik resim, canvas, PDF veya özel bir formatta ise FocusScan kullanın.',
+        'Otomatik tıklama yerine hafif bir vurgu için İpucu Modu\'nu açın.',
+        'Zor soruları notlarla kaydederek sınav öncesi tekrar materyaline dönüştürün.'
+      ],
+      genericFaq: (name) => [
+        { question: `QuizSolver ${name} üzerinde nasıl çalışır?`, answer: `QuizSolver, ${name} üzerindeki soru ve seçenekleri okuyarak yapay zeka ile anında doğru yanıtı ve açıklamasını sunar.` },
+        { question: 'Soru otomatik olarak algılanmazsa ne yapmalıyım?', answer: 'FocusScan özelliğini kullanın ve sorunun bulunduğu alanı fareyle seçerek yapay zekaya gönderin.' },
+        { question: 'Soruları daha sonra tekrar edebilir miyim?', answer: 'Evet, çözülen tüm soruları geçmişe kaydedebilir, notlar ekleyebilir ve deneme testleri çözebilirsiniz.' }
+      ],
+      kahootSteps: [
+        'kahoot.it/instructions bağlantısını veya oyun ekranını açıp QS simgesine tıklayın.',
+        'Sorular ve yanıt kareleri ekranınızda görünüyorsa Tüm quizi çöz seçeneğini seçin.',
+        'Sunucu soruları gizliyorsa, Kahoot URL\'sindeki quizId= değerini kopyalayıp panele yapıştırın.',
+        'Arama yapılabilir yanıt bankasını kullanarak doğru cevabı bulun. Quiz ID modu kredi tüketmez.',
+        'Kayan paneli açık tutun ve manuel çözmek istediğinizde otomatik modu durdurun.'
+      ],
+      kahootFeatures: [
+        'İki mod: Görünür soruları otomatik çözme veya Quiz ID ile yanıt bankası.',
+        'Quiz ID modu tamamen ücretsizdir ve yapay zeka kredisi harcamaz.',
+        'Masaüstü ve mobil ekranlarda çalışan hızlı kayan kontrol paneli.',
+        'Bekleme, çözme ve durdurulma durumlarını gösteren canlı durum göstergesi.'
+      ],
+      kahootFaq: [
+        { question: 'Quiz ID ile Kahoot oyun PIN\'i aynı şey midir?', answer: 'Hayır. PIN canlı oyuna katılmak içindir. Quiz ID ise quizin bağlantısında quizId= sonrasında yer alan benzersiz kimliktir.' },
+        { question: 'Kahoot\'ta otomatik çözme neden bazen başlamaz?', answer: 'Eğer sunucu soruları oyuncuların ekranından gizlediyse, Quiz ID modunu kullanarak yanıt bankasına erişebilirsiniz.' },
+        { question: 'Quiz ID modu kredi kullanır mı?', answer: 'Hayır. Yeni bir yapay zeka isteği göndermeden quizin bilinen yanıt bankasını gösterir.' }
+      ]
+    },
+    ja: {
+      stepsTitle: '利用の流れ',
+      genericSteps: (name) => [
+        `${name} のクイズページを開き、問題文と選択肢が完全に表示されるのを待ちます。`,
+        'QuizSolver アイコンをクリックし、「現在のページを解答」を選択します。特殊レイアウトには FocusScan を使用します。',
+        '提案された解答と解説を確認します。自動クリックを避けたい場合はヒントモードを利用してください。'
+      ],
+      genericFeatures: [
+        '解答する前に、問題と選択肢が完全に読み込まれていることを確認してください。',
+        '問題が画像、キャンバス、PDF などの特殊な形式の場合は FocusScan を使用してください。',
+        '自動クリックを行わずに目立たないヒントを得たい場合はヒントモードを有効にしてください。',
+        '難しい問題をノート付きで保存し、テスト直前の復習教材として活用しましょう。'
+      ],
+      genericFaq: (name) => [
+        { question: `QuizSolver は ${name} でどのように機能しますか？`, answer: `QuizSolver は ${name} の問題と選択肢を読み取り、AI を通じて瞬時に正解の提案と解説を表示します。` },
+        { question: '問題が自動的に検出されない場合はどうすればよいですか？', answer: 'FocusScan を使用し、問題エリアをマウスでドラッグして選択すればすぐに AI に送信できます。' },
+        { question: '後から問題を復習できますか？', answer: 'はい、解いた問題を履歴に保存し、ノートの追加や復習テストの作成が可能です。' }
+      ],
+      kahootSteps: [
+        'kahoot.it/instructions やゲーム画面を開き、QS アイコンをクリックします。',
+        '問題文と回答タイルが自分の画面に表示されている場合は「クイズ全体を解答」を選択します。',
+        'ホストが問題を非表示にしている場合は、Kahoot の URL から quizId= の値をコピーしてパネルに入力します。',
+        '検索可能な解答バンクで正解を確認します。Quiz ID モードはクレジットを消費しません。',
+        'フローティングパネルを開いたままにし、手動で解答したい場合は自動モードをいつでも停止できます。'
+      ],
+      kahootFeatures: [
+        '2つの機能: 表示問題の自動解答モード、または Quiz ID 解答バンク。',
+        'Quiz ID モードは完全無料で、AI クレジットを消費しません。',
+        'デスクトップやモバイル画面で快適に操作できるフローティングパネル。',
+        '待機中、解答中、停止中がひと目でわかるステータス表示。'
+      ],
+      kahootFaq: [
+        { question: 'Quiz ID は Kahoot のゲーム PIN と同じですか？', answer: 'いいえ。PIN はゲームに参加するための番号です。Quiz ID はクイズ自体の固有IDで、URLの quizId= の後に記載されています。' },
+        { question: 'Kahoot で自動解答が始まらないことがあるのはなぜですか？', answer: 'ホストがプレイヤー画面で問題を非表示に設定している場合、Quiz ID モードを使用して解答バンクを開いてください。' },
+        { question: 'Quiz ID モードはクレジットを消費しますか？', answer: 'いいえ。AI に新規リクエストを送らずに解答バンクを表示するため、クレジットは消費されません。' }
+      ]
+    },
+    ko: {
+      stepsTitle: '단계별 설정 가이드',
+      genericSteps: (name) => [
+        `${name} 퀴즈 페이지를 열고 문제와 선택지가 완전히 로드될 때까지 기다립니다.`,
+        'QuizSolver 아이콘을 클릭하고 \'현재 페이지 풀기\'를 선택하세요. 특수 레이아웃은 FocusScan을 사용합니다.',
+        '추천 정답과 해설을 확인하세요. 자동 클릭 없이 힌트만 보려면 힌트 모드를 켜세요.'
+      ],
+      genericFeatures: [
+        '풀이를 시작하기 전에 문제와 선택지가 완전히 표시되었는지 확인하세요.',
+        '내용이 이미지, 캔버스, PDF 또는 맞춤형 뷰어인 경우 FocusScan을 사용하세요.',
+        '자동 클릭 대신 은은한 강조 표시만 원하시면 힌트 모드를 활성화하세요.',
+        '어려운 문제를 메모와 함께 저장하여 시험 전 복습 자료로 활용하세요.'
+      ],
+      genericFaq: (name) => [
+        { question: `QuizSolver가 ${name}에서 어떻게 작동하나요?`, answer: `QuizSolver는 ${name}의 문제와 선택지를 읽고 AI를 통해 실시간으로 정답과 해설을 제공합니다.` },
+        { question: '문제가 자동으로 감지되지 않으면 어떻게 하나요?', answer: 'FocusScan 기능을 사용하여 문제 영역을 마우스로 드래그하면 즉시 AI로 전송할 수 있습니다.' },
+        { question: '나중에 문제를 다시 복습할 수 있나요?', answer: '네, 해결한 문제를 히스토리에 저장하고 메모를 추가하며 복습 모의고사를 풀 수 있습니다.' }
+      ],
+      kahootSteps: [
+        'kahoot.it/instructions 링크나 게임 화면을 열고 QS 아이콘을 클릭합니다.',
+        '문제와 정답 타일이 화면에 보이면 \'전체 퀴즈 풀기\'를 선택하세요.',
+        '호스트가 문제를 숨긴 경우 Kahoot URL의 quizId= 뒤의 값을 복사하여 패널에 붙여넣으세요.',
+        '검색 가능한 정답 모음에서 정답을 확인하세요. Quiz ID 모드는 크레딧을 소모하지 않습니다.',
+        '플로팅 패널을 열어두고 직접 풀고 싶을 때는 언제든 자동 모드를 중지할 수 있습니다.'
+      ],
+      kahootFeatures: [
+        '두 가지 모드: 화면 문제 자동 풀기 또는 Quiz ID 정답 모음 검색.',
+        'Quiz ID 모드는 완전 무료이며 AI 크레딧을 전혀 소모하지 않습니다.',
+        '데스크톱과 모바일 화면 모두에서 편리한 반응형 플로팅 컨트롤 패널.',
+        '대기, 풀이 중, 중지 상태를 실시간으로 보여주는 명확한 상태 표시기.'
+      ],
+      kahootFaq: [
+        { question: 'Quiz ID는 Kahoot 게임 PIN과 같은 것인가요?', answer: '아닙니다. PIN은 실시간 게임 참여용 번호이며, Quiz ID는 퀴즈 URL의 quizId= 뒤에 있는 퀴즈 고유 식별자입니다.' },
+        { question: 'Kahoot에서 자동 풀기가 시작되지 않을 때는 왜 그런가요?', answer: '호스트가 플레이어 화면에서 문제를 숨긴 경우, Quiz ID 모드를 사용하여 정답 모음에 직접 접근하세요.' },
+        { question: 'Quiz ID 모드는 크레딧을 소모하나요?', answer: '아닙니다. AI에 새 요청을 보내지 않고 알려진 정답 모음을 표시하므로 크레딧이 소모되지 않습니다.' }
+      ]
+    },
   };
 
   const template = templates[locale] || templates.en;
@@ -2151,6 +2329,49 @@ function ensurePlatformSeoDepth(copy: SiteCopy, locale: Locale): SiteCopy {
       historyTitle: (name) => `سجل أسئلة ${name}`,
       historyText: 'بعد الحل، يمكنك حفظ السؤال والإجابة والشرح والملاحظات الشخصية، مما يحول كل اختبار إلى مادة مراجعة دائمة للاستعداد للامتحانات.'
     }
+,
+tr: {
+      questionTypes: (name) => `QuizSolver ${name} üzerinde hangi soru tiplerini destekler?`,
+      questionTypesAnswer: 'QuizSolver çoktan seçmeli, tek cevaplı, metin kutuları, açılır menüler, eşleştirme ve FocusScan ile görsel soruları tanır.',
+      submitQuestion: (name) => `QuizSolver ${name} üzerinde cevaplarımı otomatik olarak gönderir mi?`,
+      submitAnswer: 'Hayır. Uzantı önerilen yanıtı ve açıklamayı gösterir, ancak seçim ve gönderme kararı daima size aittir.',
+      imageQuestion: (name) => `QuizSolver ${name} üzerindeki görselli soruları çözebilir mi?`,
+      imageAnswer: 'Evet. FocusScan ekranın herhangi bir bölgesini seçerek resimleri, grafikleri ve formülleri OCR ile okumanıza olanak tanır.',
+      kahootQuestion: 'Quiz ID modu sorular gizliyken çalışır mı?',
+      kahootAnswer: 'Evet. Sunucu soruları gizlediğinde Quiz ID modu yanıt bankasını kredi harcamadan görüntülemenizi sağlar.',
+      readTitle: (name) => `QuizSolver ${name} sorularını nasıl okur`,
+      readText: (name) => `${name} soruları metin, form kontrolleri veya görseller olarak sunabilir. QuizSolver, jenerik etiketlere bağlı kalmadan tüm görünür bağlamı analiz eder.`,
+      historyTitle: (name) => `${name} Soru Geçmişi`,
+      historyText: 'Çözdükten sonra soruyu, cevabı, açıklamayı ve kişisel notlarınızı kaydederek sınavlar öncesinde kalıcı bir çalışma materyaline dönüştürebilirsiniz.'
+    },
+    ja: {
+      questionTypes: (name) => `QuizSolver は ${name} でどのような問題形式に対応していますか？`,
+      questionTypesAnswer: 'QuizSolver は選択式、単一選択、自由記述、ドロップダウン、組み合わせ、および FocusScan による画像問題を認識します。',
+      submitQuestion: (name) => `QuizSolver は ${name} で自動的に回答を送信しますか？`,
+      submitAnswer: 'いいえ。拡張機能は正解の提案と解説を表示しますが、最終的な選択と送信の判断は常にユーザーに委ねられます。',
+      imageQuestion: (name) => `QuizSolver は ${name} の画像付き問題を解答できますか？`,
+      imageAnswer: 'はい。FocusScan により画面上の任意のエリアを選択して、画像、図表、数式を正確に読み取ることができます。',
+      kahootQuestion: '問題が非表示の場合でも Quiz ID モードは機能しますか？',
+      kahootAnswer: 'はい。ホストが問題を非表示にしている場合でも、Quiz ID モードならクレジットを消費せずに解答バンクを検索できます。',
+      readTitle: (name) => `QuizSolver が ${name} の問題を読み取る仕組み`,
+      readText: (name) => `${name} は問題をテキストや画像など多様な形式で表示します。QuizSolver は表面的なラベルに頼らず、AI に照会する前に表示されているコンテキスト全体を分析します。`,
+      historyTitle: (name) => `${name} の問題履歴`,
+      historyText: '解答後、問題、正解、解説、個人ノートを保存して、試験前の継続的な復習用教材として活用できます。'
+    },
+    ko: {
+      questionTypes: (name) => `QuizSolver는 ${name}에서 어떤 문제 유형을 지원하나요?`,
+      questionTypesAnswer: 'QuizSolver는 객관식, 단일 선택, 주관식 입력, 드롭다운, 연결형 및 FocusScan을 통한 이미지 문제를 지원합니다.',
+      submitQuestion: (name) => `QuizSolver가 ${name}에서 답안을 자동으로 제출하나요?`,
+      submitAnswer: '아닙니다. 확장 프로그램은 추천 정답과 해설을 표시하지만, 최종 선택 및 제출 결정은 항상 사용자 본인이 직접 합니다.',
+      imageQuestion: (name) => `QuizSolver가 ${name}의 이미지 문제도 풀 수 있나요?`,
+      imageAnswer: '네. FocusScan을 통해 화면의 원하는 영역을 지정하여 이미지, 도표, 수식을 정확하게 OCR로 판독할 수 있습니다.',
+      kahootQuestion: '문제가 숨겨져 있어도 Quiz ID 모드가 작동하나요?',
+      kahootAnswer: '네. 호스트가 문제를 숨긴 경우에도 Quiz ID 모드를 통해 크레딧 소모 없이 정답 모음을 검색할 수 있습니다.',
+      readTitle: (name) => `QuizSolver가 ${name} 문제를 인식하는 원리`,
+      readText: (name) => `${name}은 문제를 텍스트, 입력창, 이미지 등으로 표시할 수 있습니다. QuizSolver는 AI에 요청하기 전 화면의 전체 맥락을 면밀히 분석합니다.`,
+      historyTitle: (name) => `${name} 문제 히스토리`,
+      historyText: '문제를 푼 후 정답, 해설, 개인 메모를 저장하여 시험 직전 완벽한 오답 노트로 활용할 수 있습니다.'
+    },
   };
   const template = templates[locale] || templates.en;
   (Object.entries(copy.platformPages) as Array<[keyof SiteCopy['platformPages'], PlatformCopy]>).forEach(([pageKey, page]) => {
@@ -2298,6 +2519,9 @@ const it = buildLocalizedSiteCopy('it');
 const uk = buildLocalizedSiteCopy('uk');
 const pt = buildLocalizedSiteCopy('pt');
 const ar = buildLocalizedSiteCopy('ar');
+const tr = buildLocalizedSiteCopy('tr');
+const ja = buildLocalizedSiteCopy('ja');
+const ko = buildLocalizedSiteCopy('ko');
 
 applySharedCopy(en, 'en');
 applySharedCopy(pl, 'pl');
@@ -2310,6 +2534,9 @@ enhancePlatformTutorials(it, 'it');
 enhancePlatformTutorials(uk, 'uk');
 enhancePlatformTutorials(pt, 'pt');
 enhancePlatformTutorials(ar, 'ar');
+enhancePlatformTutorials(tr, 'tr');
+enhancePlatformTutorials(ja, 'ja');
+enhancePlatformTutorials(ko, 'ko');
 ensurePlatformSeoDepth(en, 'en');
 ensurePlatformSeoDepth(pl, 'pl');
 ensurePlatformSeoDepth(de, 'de');
@@ -2319,6 +2546,9 @@ ensurePlatformSeoDepth(it, 'it');
 ensurePlatformSeoDepth(uk, 'uk');
 ensurePlatformSeoDepth(pt, 'pt');
 ensurePlatformSeoDepth(ar, 'ar');
+ensurePlatformSeoDepth(tr, 'tr');
+ensurePlatformSeoDepth(ja, 'ja');
+ensurePlatformSeoDepth(ko, 'ko');
 enhancePriorityPlatformSeo(en, 'en');
 enhancePriorityPlatformSeo(pl, 'pl');
 
@@ -2373,6 +2603,22 @@ function applyCompactSeo(copy: SiteCopy, locale: Locale): void {
       quiz: 'راجع الأسئلة المحفوظة والملاحظات والمفضلة والتدريبات عبر حسابك في QuizSolver.',
       privacy: 'تعرف على كيفية إدارة QuizSolver للحسابات والأسئلة المحفوظة وصور FocusScan والمدفوعات والدعم والخصوصية.'
     }
+,
+tr: {
+      platform: (name) => `QuizSolver ile ${name} quizlerini yapay zeka yanıtları, FocusScan OCR, notlar ve çalışma geçmişiyle çözün.`,
+      quiz: 'Kayıtlı sorularınızı, notlarınızı, favorilerinizi ve deneme testlerinizi QuizSolver hesabınızda inceleyin.',
+      privacy: 'QuizSolver\'ın hesapları, kayıtlı soruları, FocusScan görsellerini, ödemeleri ve gizliliği nasıl yönettiğini öğrenin.'
+    },
+    ja: {
+      platform: (name) => `QuizSolver の AI 解答、FocusScan OCR、ノート、学習履歴で ${name} のクイズをスムーズに攻略。`,
+      quiz: '保存した問題、ノート、お気に入り、復習テストを QuizSolver アカウントで管理。',
+      privacy: 'QuizSolver がアカウント、保存された問題、FocusScan 画像、決済、プライバシーをどのように管理しているかを確認。'
+    },
+    ko: {
+      platform: (name) => `QuizSolver의 AI 정답, FocusScan OCR, 오답 노트 및 학습 히스토리로 ${name} 퀴즈를 완벽하게 해결하세요.`,
+      quiz: '저장된 문제, 메모, 즐겨찾기, 복습 모의고사를 QuizSolver 계정에서 확인하세요.',
+      privacy: 'QuizSolver가 계정, 저장된 문제, FocusScan 이미지, 결제 및 개인정보를 관리하는 방법을 알아보세요.'
+    }
   };
   const seo = templates[locale] || templates.en;
   copy.quizPage.metaDescription = seo.quiz;
@@ -2399,6 +2645,9 @@ applyCompactSeo(it, 'it');
 applyCompactSeo(uk, 'uk');
 applyCompactSeo(pt, 'pt');
 applyCompactSeo(ar, 'ar');
+applyCompactSeo(tr, 'tr');
+applyCompactSeo(ja, 'ja');
+applyCompactSeo(ko, 'ko');
 
 export const CONTENT: Record<Locale, SiteCopy> = {
   en: en as SiteCopy,
@@ -2409,7 +2658,10 @@ export const CONTENT: Record<Locale, SiteCopy> = {
   it,
   uk,
   pt,
-  ar
+  ar,
+  tr,
+  ja,
+  ko
 };
 
 export const PLATFORM_PAGE_KEYS: PageKey[] = [

@@ -410,7 +410,10 @@ export class BlogListComponent implements OnInit {
       it: { readArticle: 'Leggi articolo', noPosts: 'Non ci sono ancora articoli in questa categoria.', all: 'Tutte le guide', category: 'Categoria' },
       uk: { readArticle: 'Читати статтю', noPosts: 'У цій категорії ще немає статей.', all: 'Усі гайди', category: 'Категорія' },
       pt: { readArticle: 'Ler artigo', noPosts: 'Ainda não há artigos disponíveis nesta categoria.', all: 'Todos os guias', category: 'Central da categoria' },
-      ar: { readArticle: 'قراءة المقال', noPosts: 'لا توجد مقالات متاحة في هذا القسم حتى الآن.', all: 'كافة الأدلة', category: 'مركز القسم' }
+      ar: { readArticle: 'قراءة المقال', noPosts: 'لا توجد مقالات متاحة في هذا القسم حتى الآن.', all: 'كافة الأدلة', category: 'مركز القسم' },
+      tr: { readArticle: 'Makaleyi oku', noPosts: 'Bu kategoride henüz makale bulunmuyor.', all: 'Tüm rehberler', category: 'Kategori merkezi' },
+      ja: { readArticle: '記事を読む', noPosts: 'このカテゴリーの記事はまだありません。', all: 'すべてのガイド', category: 'カテゴリー' },
+      ko: { readArticle: '글 읽기', noPosts: '이 카테고리에는 아직 작성된 글이 없습니다.', all: '전체 가이드', category: '카테고리' }
     };
     return labels[locale] || labels.en;
   }

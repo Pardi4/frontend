@@ -622,6 +622,45 @@ export class BlogPostComponent implements OnInit {
         notFoundTitle: 'المقال غير موجود',
         notFoundText: 'عذراً، هذا المقال غير موجود أو تم نقله.',
         goBlog: 'الانتقال إلى المدونة'
+      },
+      tr: {
+        back: 'Bloga dön',
+        guide: 'Rehber',
+        readSuffix: 'okuma süresi',
+        authorRole: 'QuizSolver Yazı Ekibi',
+        ctaTitle: 'Sıradaki sınavınıza daha kolay hazırlanmaya hazır mısınız?',
+        ctaText: 'Ücretsiz QuizSolver Chrome uzantısını ekleyin ve yapay zeka açıklamaları, notlar ve deneme testlerini doğrudan tarayıcınızda kullanın.',
+        install: 'Chrome\'a Ekle (Ücretsiz)',
+        demo: 'İnteraktif demoyu dene',
+        notFoundTitle: 'Makale bulunamadı',
+        notFoundText: 'Üzgünüz, bu makale mevcut değil veya taşınmış olabilir.',
+        goBlog: 'Bloga git'
+      },
+      ja: {
+        back: 'ブログに戻る',
+        guide: 'ガイド',
+        readSuffix: '分で読了',
+        authorRole: 'QuizSolver 編集部',
+        ctaTitle: '次のテスト対策をもっと効率的にしませんか？',
+        ctaText: '無料の QuizSolver Chrome 拡張機能を追加して、AI 解説、ノート、復習テストをブラウザ上で直接活用しましょう。',
+        install: 'Chrome に追加（無料）',
+        demo: 'インタラクティブデモを試す',
+        notFoundTitle: '記事が見つかりません',
+        notFoundText: '申し訳ありません。この記事は存在しないか、移動した可能性があります。',
+        goBlog: 'ブログへ移動'
+      },
+      ko: {
+        back: '블로그로 돌아가기',
+        guide: '가이드',
+        readSuffix: '읽기',
+        authorRole: 'QuizSolver 작성팀',
+        ctaTitle: '다음 시험 준비를 더 스마트하게 시작할 준비가 되셨나요?',
+        ctaText: '무료 QuizSolver Chrome 확장 프로그램을 추가하고 AI 개념 해설, 오답 노트, 모의고사를 브라우저에서 바로 경험해보세요.',
+        install: 'Chrome에 추가 (무료)',
+        demo: '인터랙티브 체험하기',
+        notFoundTitle: '글을 찾을 수 없습니다',
+        notFoundText: '죄송합니다. 요청하신 글이 존재하지 않거나 이동되었습니다.',
+        goBlog: '블로그 홈으로'
       }
     };
     labels.en.relatedEyebrow = 'Related';

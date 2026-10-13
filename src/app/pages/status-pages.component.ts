@@ -14,7 +14,10 @@ const STATUS_UI: Record<Locale, { home: string; install: string; successBadge: s
   it: { home: 'Torna alla home', install: 'Installa estensione', successBadge: 'Successo', successSubtitle: 'Il tuo account è pronto.', notFoundBadge: '404', notFoundSubtitle: 'Questa pagina non esiste o è stata spostata.' },
   uk: { home: 'На головну', install: 'Встановити розширення', successBadge: 'Готово', successSubtitle: 'Твій акаунт готовий.', notFoundBadge: '404', notFoundSubtitle: 'Цієї сторінки не існує або її перемістили.' },
   pt: { home: 'Voltar ao início', install: 'Instalar extensão', successBadge: 'Sucesso', successSubtitle: 'Sua conta está pronta.', notFoundBadge: '404', notFoundSubtitle: 'Esta página não existe ou foi movida.' },
-  ar: { home: 'العودة للرئيسية', install: 'تثبيت الإضافة', successBadge: 'نجاح', successSubtitle: 'حسابك جاهز الآن.', notFoundBadge: '404', notFoundSubtitle: 'هذه الصفحة غير موجودة أو تم نقلها.' }
+  ar: { home: 'العودة للرئيسية', install: 'تثبيت الإضافة', successBadge: 'نجاح', successSubtitle: 'حسابك جاهز الآن.', notFoundBadge: '404', notFoundSubtitle: 'هذه الصفحة غير موجودة أو تم نقلها.' },
+  tr: { home: 'Ana Sayfaya Dön', install: 'Uzantıyı Yükle', successBadge: 'Başarılı', successSubtitle: 'Hesabınız hazır.', notFoundBadge: '404', notFoundSubtitle: 'Bu sayfa mevcut değil veya taşınmış olabilir.' },
+  ja: { home: 'ホームへ戻る', install: '拡張機能をインストール', successBadge: '完了', successSubtitle: 'アカウントの準備が整いました。', notFoundBadge: '404', notFoundSubtitle: 'このページは存在しないか、移動した可能性があります。' },
+  ko: { home: '홈으로 이동', install: '확장 프로그램 설치', successBadge: '성공', successSubtitle: '계정 준비가 완료되었습니다.', notFoundBadge: '404', notFoundSubtitle: '존재하지 않는 페이지이거나 이동되었습니다.' }
 };
 
 @Component({

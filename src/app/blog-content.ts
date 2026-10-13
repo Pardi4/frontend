@@ -62,6 +62,33 @@ const ctaFor = (locale: Locale): string => {
     </div>
   `;
   }
+  if (locale === 'tr') {
+    return `
+    <div class="blog-native-ad">
+      <h4 class="blog-native-ad-title">QuizSolver'ı pratikte deneyin</h4>
+      <p class="blog-native-ad-text">Güvenli canlı demoyu açın, uzantı panelini başlatın ve kredi harcamadan örnek soruları çözün.</p>
+      <a href="${routeFor(locale, 'demo')}" class="blog-native-ad-btn">Canlı demoyu aç</a>
+    </div>
+  `;
+  }
+  if (locale === 'ja') {
+    return `
+    <div class="blog-native-ad">
+      <h4 class="blog-native-ad-title">QuizSolver を実際に体験</h4>
+      <p class="blog-native-ad-text">安全な模擬デモを開き、拡張機能パネルを起動して、クレジット消費なしでサンプル問題を体験できます。</p>
+      <a href="${routeFor(locale, 'demo')}" class="blog-native-ad-btn">デモを開く</a>
+    </div>
+  `;
+  }
+  if (locale === 'ko') {
+    return `
+    <div class="blog-native-ad">
+      <h4 class="blog-native-ad-title">QuizSolver를 직접 체험해보세요</h4>
+      <p class="blog-native-ad-text">안전한 모의 체험을 열고 확장 프로그램 패널을 실행하여 크레딧 소모 없이 예시 문제를 풀어보세요.</p>
+      <a href="${routeFor(locale, 'demo')}" class="blog-native-ad-btn">체험 환경 열기</a>
+    </div>
+  `;
+  }
   return `
     <div class="blog-native-ad">
       <h4 class="blog-native-ad-title">Try QuizSolver in practice</h4>
@@ -216,6 +243,57 @@ const genericLocalizedDraft = (locale: Locale): ArticleDraft => {
         {
           heading: 'لماذا تعد الشروحات بالغة الأهمية',
           paragraphs: ['معرفة الإجابة الصحيحة توفر الوقت، لكن فهم الشرح هو ما يرسخ المفهوم في ذهنك. يشكل سجلك المحفوظ مكتبة مراجعة شخصية يمكنك الرجوع إليها قبل الامتحانات النهائية.']
+        }
+      ]
+    },
+    tr: {
+      intro: [
+        'QuizSolver, online sınav ve test çözerken anında ve ayrıntılı açıklamalara ihtiyaç duyan öğrenciler için tasarlanmış bir Chrome uzantısıdır.',
+        'En iyi kullanım şekli oldukça basittir: Sınav sayfasını açın, QuizSolver\'ı başlatın, önerilen yanıt ve açıklamayı inceleyin ve önemli soruları daha sonra deneme testi olarak çözmek üzere kaydedin.'
+      ],
+      sections: [
+        {
+          heading: 'QuizSolver sınav sayfasında ne yapar?',
+          paragraphs: ['Uzantı; soru metinlerini, seçenekleri, onay kutularını, açılır menüleri ve giriş alanlarını tarar. Sayfa özel veya kilitli bir tasarıma sahipse FocusScan ile soru alanını fareyle seçebilirsiniz.'],
+          bullets: ['Adım adım açıklamalarla yapay zeka yanıt önerileri.', 'Resimli ve kilitli sorular için FocusScan OCR.', 'Sınav öncesi tekrar için çalışma geçmişi, notlar ve deneme testleri.']
+        },
+        {
+          heading: 'Açıklamalar neden bu kadar önemlidir?',
+          paragraphs: ['Yalnızca doğru cevabı bilmek zaman kazandırır, ancak açıklamayı anlamak kalıcı öğrenmeyi sağlar. Kayıtlı açıklamalarınız sınav öncesi eksiksiz bir çalışma kütüphanesi oluşturur.']
+        }
+      ]
+    },
+    ja: {
+      intro: [
+        'QuizSolver は、オンラインクイズやテストを解きながら、瞬時の正解提案と詳しい解説を求める学習者のための Chrome 拡張機能です。',
+        '最も効果的な使い方はシンプルです: クイズページを開き、QuizSolver を起動して提案と解説を確認し、重要な問題を保存して後から模擬テストとして復習します。'
+      ],
+      sections: [
+        {
+          heading: 'QuizSolver がクイズページで行うこと',
+          paragraphs: ['拡張機能は問題文、選択肢、チェックボックス、ドロップダウン、テキスト入力を自動検出します。特殊なレイアウトの場合は、FocusScan でマウスを使って問題エリアを選択できます。'],
+          bullets: ['詳細なステップ解説付きの AI 解答提案。', '画像やドキュメントに対応する FocusScan OCR。', 'テスト前の復習に役立つ学習履歴、ノート、復習テスト機能。']
+        },
+        {
+          heading: 'なぜ詳しい解説が不可欠なのか',
+          paragraphs: ['正解を知るだけでも時間短縮になりますが、解説を理解することこそが確実な学習成果につながります。保存した解説は、本番の試験前に見直せるあなた専用の学習ライブラリになります。']
+        }
+      ]
+    },
+    ko: {
+      intro: [
+        'QuizSolver는 온라인 시험과 퀴즈를 풀면서 실시간 정답 추천과 자세한 개념 해설이 필요한 학생들을 위해 개발된 Chrome 확장 프로그램입니다.',
+        '가장 효과적인 활용법은 간단합니다: 시험 페이지를 열고 QuizSolver를 실행하여 추천 정답과 해설을 확인한 뒤, 중요한 문제는 히스토리에 저장하여 나만의 복습 퀴즈로 활용하세요.'
+      ],
+      sections: [
+        {
+          heading: 'QuizSolver가 시험 페이지에서 수행하는 작업',
+          paragraphs: ['확장 프로그램은 화면의 문제 텍스트, 객관식 선택지, 체크박스, 드롭다운 및 입력 필드를 자동으로 감지합니다. 특수한 레이아웃인 경우 FocusScan으로 문제 영역을 직접 지정할 수 있습니다.'],
+          bullets: ['단계별 해설을 포함한 AI 실시간 정답 추천.', '이미지 및 복사 방지 문제를 위한 FocusScan OCR.', '시험 직전 완벽한 복습을 위한 학습 히스토리, 메모 및 모의고사.']
+        },
+        {
+          heading: '상세한 해설이 왜 중요한가요?',
+          paragraphs: ['정답만 아는 것은 시간을 아껴주지만, 해설을 통해 개념을 이해해야 진짜 내 실력이 됩니다. 저장된 해설 모음은 시험 직전 가장 든든한 나만의 오답 노트가 됩니다.']
         }
       ]
     }
