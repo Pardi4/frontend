@@ -15,10 +15,11 @@ import { AdminSystemComponent }     from './admin-system.component';
 import { AdminMarketingComponent }  from './admin-marketing.component';
 import { AdminPromosComponent }     from './admin-promos.component';
 import { AdminDatasetComponent }    from './admin-dataset.component';
+import { AdminUninstallsComponent } from './admin-uninstalls.component';
 
 import { ADMIN_PANEL_ROUTE_PATH } from '../admin-path';
 
-export type AdminTab = 'dashboard' | 'errors' | 'users' | 'support' | 'parser' | 'cache' | 'purchases' | 'system' | 'marketing' | 'promos' | 'dataset';
+export type AdminTab = 'dashboard' | 'errors' | 'users' | 'support' | 'purchases' | 'uninstalls' | 'parser' | 'cache' | 'system' | 'marketing' | 'promos' | 'dataset';
 
 export interface AdminToast {
   id: number;
@@ -40,9 +41,10 @@ const NAV_GROUPS: NavGroup[] = [
   {
     label: 'Użytkownicy',
     items: [
-      { id: 'users',     label: 'Użytkownicy', icon: '👤' },
-      { id: 'support',   label: 'Support',     icon: '📬' },
-      { id: 'purchases', label: 'Zakupy',       icon: '💳' },
+      { id: 'users',      label: 'Użytkownicy',    icon: '👤' },
+      { id: 'support',    label: 'Support',        icon: '📬' },
+      { id: 'purchases',  label: 'Zakupy',          icon: '💳' },
+      { id: 'uninstalls', label: 'Odinstalowania', icon: '📉' },
     ]
   },
   {
@@ -64,31 +66,33 @@ const NAV_GROUPS: NavGroup[] = [
 ];
 
 const TAB_TITLES: Record<AdminTab, string> = {
-  dashboard:  'Dashboard',
-  errors:     'Centrum Błędów',
-  users:      'Użytkownicy',
-  support:    'Support',
-  purchases:  'Zakupy',
-  parser:     'Parser',
-  cache:      'Cache',
-  system:     'System',
-  promos:     'Kody Rabatowe',
-  marketing:  'Marketing',
-  dataset:    'Dataset',
+  dashboard:   'Dashboard',
+  errors:      'Centrum Błędów',
+  users:       'Użytkownicy',
+  support:     'Support',
+  purchases:   'Zakupy',
+  uninstalls:  'Odinstalowania',
+  parser:      'Parser',
+  cache:       'Cache',
+  system:      'System',
+  promos:      'Kody Rabatowe',
+  marketing:   'Marketing',
+  dataset:     'Dataset',
 };
 
 const TAB_DESCRIPTIONS: Record<AdminTab, string> = {
-  dashboard:  'Statystyki platformy, priorytety i wykres przychodów.',
-  errors:     'Błędy klienta, zgłoszenia użytkowników i błędy parsera w jednym miejscu.',
-  users:      'Zarządzaj kontami, kredytami, banami i historią pytań.',
-  support:    'Skrzynka supportu — czytaj, odpowiadaj i przydzielaj kredyty.',
-  purchases:  'Przeglądaj płatności i zastosuj oczekujące kredyty.',
-  parser:     'Zdrowie parsera, analityka platform i dziennik eventów.',
-  cache:      'Przeglądaj i zarządzaj cache odpowiedzi AI.',
-  system:     'Stan serwera, bezpieczeństwo billingowe i log kredytów.',
-  promos:     'Kody promocyjne dla BLIK (dPay) i Lemon Squeezy ze wspólnym limitem użyć.',
-  marketing:  'Kampanie email i kody rabatowe LemonSqueezy.',
-  dataset:    'Przeglądarka datasetu parsera (JSONL).',
+  dashboard:   'Statystyki platformy, priorytety i wykres przychodów.',
+  errors:      'Błędy klienta, zgłoszenia użytkowników i błędy parsera w jednym miejscu.',
+  users:       'Zarządzaj kontami, kredytami, banami i historią pytań.',
+  support:     'Skrzynka supportu — czytaj, odpowiadaj i przydzielaj kredyty.',
+  purchases:   'Przeglądaj płatności i zastosuj oczekujące kredyty.',
+  uninstalls:  'Analiza ankiet deinstalacyjnych, powody odejścia i feedback użytkowników.',
+  parser:      'Zdrowie parsera, analityka platform i dziennik eventów.',
+  cache:       'Przeglądaj i zarządzaj cache odpowiedzi AI.',
+  system:      'Stan serwera, bezpieczeństwo billingowe i log kredytów.',
+  promos:      'Kody promocyjne dla BLIK (dPay) i Lemon Squeezy ze wspólnym limitem użyć.',
+  marketing:   'Kampanie email i kody rabatowe LemonSqueezy.',
+  dataset:     'Przeglądarka datasetu parsera (JSONL).',
 };
 
 @Component({
@@ -109,6 +113,7 @@ const TAB_DESCRIPTIONS: Record<AdminTab, string> = {
     AdminPromosComponent,
     AdminMarketingComponent,
     AdminDatasetComponent,
+    AdminUninstallsComponent,
   ],
   styleUrls: ['./admin-new.css'],
   template: `
@@ -257,8 +262,9 @@ const TAB_DESCRIPTIONS: Record<AdminTab, string> = {
           <app-admin-support    *ngIf="activeTab() === 'support'"    [p]="this"></app-admin-support>
           <app-admin-parser     *ngIf="activeTab() === 'parser'"     [p]="this"></app-admin-parser>
           <app-admin-cache      *ngIf="activeTab() === 'cache'"      [p]="this"></app-admin-cache>
-          <app-admin-purchases  *ngIf="activeTab() === 'purchases'"  [p]="this"></app-admin-purchases>
-          <app-admin-system     *ngIf="activeTab() === 'system'"     [p]="this"></app-admin-system>
+          <app-admin-purchases   *ngIf="activeTab() === 'purchases'"   [p]="this"></app-admin-purchases>
+          <app-admin-uninstalls  *ngIf="activeTab() === 'uninstalls'"  [p]="this"></app-admin-uninstalls>
+          <app-admin-system      *ngIf="activeTab() === 'system'"      [p]="this"></app-admin-system>
           <app-admin-promos     *ngIf="activeTab() === 'promos'"     [p]="this"></app-admin-promos>
           <app-admin-marketing  *ngIf="activeTab() === 'marketing'"  [p]="this"></app-admin-marketing>
           <app-admin-dataset    *ngIf="activeTab() === 'dataset'"    [p]="this"></app-admin-dataset>

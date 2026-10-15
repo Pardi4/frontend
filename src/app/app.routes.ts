@@ -27,10 +27,20 @@ const pricingRedirectRoutes = (): Routes =>
     pathMatch: 'full' as const
   }));
 
+const uninstallRoutes = (): Routes =>
+  SUPPORTED_LOCALES.map(({ code, prefix }) => ({
+    path: `${prefix ? prefix.replace(/^\//, '') + '/' : ''}uninstall`,
+    loadComponent: () => import('./pages/uninstall.component').then(m => m.UninstallComponent),
+    data: { locale: code }
+  }));
+
 export const routes: Routes = [
   ...pricingRedirectRoutes(),
   { path: 'qr-login/:sessionId', loadComponent: () => import('./pages/qr-login.component').then(m => m.QrLoginComponent), data: { locale: 'en' } },
   { path: 'pl/qr-login/:sessionId', loadComponent: () => import('./pages/qr-login.component').then(m => m.QrLoginComponent), data: { locale: 'pl' } },
+  ...uninstallRoutes(),
+  { path: 'odinstalowano', redirectTo: 'uninstall', pathMatch: 'full' },
+  { path: 'pl/odinstalowano', redirectTo: 'pl/uninstall', pathMatch: 'full' },
   ...localizedRoutes('home', () => import('./pages/home.component').then(m => m.HomeComponent)),
   ...localizedRoutes('dashboard', () => import('./pages/dashboard.component').then(m => m.DashboardComponent)),
   { path: ADMIN_PANEL_ROUTE_PATH, loadComponent: () => import('./pages/admin.component').then(m => m.AdminComponent), data: { locale: 'en' } },
