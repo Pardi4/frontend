@@ -538,8 +538,14 @@ export class AdminComponent implements OnInit, OnDestroy {
     return date.toLocaleDateString('pl-PL');
   }
 
-  formatMoney(n: number): string {
-    if (!n) return '$0';
+  formatPln(n: number): string {
+    if (!n && n !== 0) return '0,00 zł';
+    return new Intl.NumberFormat('pl-PL', { style: 'currency', currency: 'PLN' }).format(n);
+  }
+
+  formatMoney(n: number, currency = 'USD'): string {
+    if (currency === 'PLN') return this.formatPln(n);
+    if (!n && n !== 0) return '$0.00';
     return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(n);
   }
 

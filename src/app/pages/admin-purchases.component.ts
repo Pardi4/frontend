@@ -21,9 +21,10 @@ import { AdminComponent } from './admin.component';
     </div>
 
     <!-- Stats strip -->
-    <div style="padding:10px 20px;border-bottom:1px solid var(--border);display:flex;gap:24px;font-size:12px;color:var(--text-3)">
-      <span>Łącznie: <strong>{{ purchases().length }}</strong></span>
-      <span>Przychód łączny: <strong class="tc">{{ totalRevenue() }}</strong></span>
+    <div style="padding:10px 20px;border-bottom:1px solid var(--border);display:flex;gap:20px;font-size:12px;color:var(--text-3);flex-wrap:wrap;align-items:center">
+      <span>Łącznie: <strong>{{ purchases().length }}</strong> transakcji</span>
+      <span>🍋 Lemon Squeezy: <strong class="tc">{{ lemonRevenue() }}</strong> ({{ lemonCount() }})</span>
+      <span>⚡ BLIK: <strong class="ts" style="color:var(--success)">{{ blikRevenue() }}</strong> ({{ blikCount() }})</span>
       <span>Granty manualne: <strong class="ta">{{ manualCount() }}</strong></span>
     </div>
 
@@ -51,11 +52,14 @@ import { AdminComponent } from './admin.component';
             <td class="xs t2">{{ pur.pack }}</td>
             <td class="bold tc">{{ pur.credits }}</td>
             <td>
-              <span class="bold ts" *ngIf="pur.priceUsd">{{ p.formatMoney(pur.priceUsd) }}</span>
-              <span class="xs t3" *ngIf="!pur.priceUsd">—</span>
+              <span class="bold ts" style="color:var(--success)" *ngIf="pur.provider === 'dpay'">{{ p.formatPln(pur.pricePln || (pur.priceUsd ? pur.priceUsd * 4 : 0)) }}</span>
+              <span class="bold tc" *ngIf="pur.provider !== 'dpay' && pur.priceUsd">{{ p.formatMoney(pur.priceUsd) }}</span>
+              <span class="xs t3" *ngIf="!pur.priceUsd && !pur.pricePln">—</span>
             </td>
             <td>
-              <span class="a-badge" [class]="providerClass(pur.provider)" style="text-transform:uppercase;font-size:10px">{{ pur.provider }}</span>
+              <span class="a-badge" [class]="providerClass(pur.provider)" style="text-transform:uppercase;font-size:10px">
+                {{ providerLabel(pur.provider) }}
+              </span>
             </td>
             <td>
               <span class="a-badge" [class]="pur.creditsApplied ? 'a-badge-success' : 'a-badge-warning'">
@@ -100,6 +104,23 @@ export class AdminPurchasesComponent implements OnInit {
 
   pendingCount() { return this.purchases().filter(x => !x.creditsApplied).length; }
   manualCount()  { return this.purchases().filter(x => x.provider === 'manual').length; }
+  lemonCount()   { return this.purchases().filter(x => ['lemonsqueezy', 'lemon', 'whop'].includes(x.provider)).length; }
+  blikCount()    { return this.purchases().filter(x => x.provider === 'dpay').length; }
+
+  lemonRevenue() {
+    const total = this.purchases()
+      .filter(x => ['lemonsqueezy', 'lemon', 'whop'].includes(x.provider) && x.priceUsd)
+      .reduce((s, x) => s + x.priceUsd, 0);
+    return this.p.formatMoney(total);
+  }
+
+  blikRevenue() {
+    const total = this.purchases()
+      .filter(x => x.provider === 'dpay')
+      .reduce((s, x) => s + (x.pricePln || (x.priceUsd ? x.priceUsd * 4 : 0)), 0);
+    return this.p.formatPln(total);
+  }
+
   totalRevenue() {
     const total = this.purchases().filter(x => x.priceUsd).reduce((s, x) => s + x.priceUsd, 0);
     return this.p.formatMoney(total);
@@ -118,8 +139,18 @@ export class AdminPurchasesComponent implements OnInit {
     this.loading.set(false);
   }
 
+  providerLabel(p: string) {
+    if (p === 'dpay') return '⚡ BLIK';
+    if (['lemonsqueezy', 'lemon'].includes(p)) return '🍋 LEMON';
+    if (p === 'whop') return 'WHOP';
+    if (p === 'manual') return 'MANUAL';
+    if (p === 'promo_free') return 'PROMO';
+    return p || '—';
+  }
+
   providerClass(p: string) {
-    if (['lemonsqueezy', 'lemon'].includes(p)) return 'a-badge-success';
+    if (['lemonsqueezy', 'lemon'].includes(p)) return 'a-badge-cyan';
+    if (p === 'dpay') return 'a-badge-success';
     if (p === 'manual') return 'a-badge-accent';
     if (p === 'whop') return 'a-badge-cyan';
     return 'a-badge-muted';

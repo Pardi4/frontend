@@ -63,7 +63,7 @@ import { AdminComponent } from './admin.component';
       <div>
         <div class="a-card-title">📈 Analityka przychodów i rejestracji</div>
         <div class="a-card-subtitle" *ngIf="!chartLoading()">
-          {{ periodLabel() }} · Łącznie: <strong class="tc">{{ periodRevenue() }}</strong> przychodu · <strong class="ta">{{ periodSignups() }}</strong> nowych kont
+          {{ periodLabel() }} · Lemon: <strong class="tc">{{ periodLemonRevenue() }}</strong> · BLIK: <strong class="ts" style="color:var(--success)">{{ periodBlikRevenue() }}</strong> · <strong class="ta">{{ periodSignups() }}</strong> nowych kont
         </div>
       </div>
       <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
@@ -91,8 +91,11 @@ import { AdminComponent } from './admin.component';
 
     <!-- Dataset toggles -->
     <div *ngIf="!chartLoading() && chartData()" style="padding:0 20px 10px;display:flex;gap:8px;align-items:center;flex-wrap:wrap">
-      <button class="a-ds-toggle" [class.on-rev]="showRevenue" (click)="toggleDataset('revenue')">
-        <span class="a-ds-dot" style="background:#22d3ee"></span> Przychód (USD)
+      <button class="a-ds-toggle" [class.on-rev]="showLemon" (click)="toggleDataset('lemon')">
+        <span class="a-ds-dot" style="background:#22d3ee"></span> 🍋 Lemon ($)
+      </button>
+      <button class="a-ds-toggle" [class.on-rev]="showBlik" (click)="toggleDataset('blik')">
+        <span class="a-ds-dot" style="background:#10b981"></span> ⚡ BLIK (zł)
       </button>
       <button class="a-ds-toggle" [class.on-sig]="showSignups" (click)="toggleDataset('signups')">
         <span class="a-ds-dot" style="background:#6366f1"></span> Rejestracje
@@ -124,7 +127,8 @@ import { AdminComponent } from './admin.component';
     <!-- Hover tooltip (custom day detail) -->
     <div *ngIf="hoveredDay()" style="padding:10px 20px;border-top:1px solid var(--border);display:flex;gap:24px;font-size:12px;flex-wrap:wrap">
       <span class="bold t2">{{ hoveredDay()?.label }}</span>
-      <span class="tc" *ngIf="showRevenue">💰 {{ hoveredDay()?.revenue }}</span>
+      <span class="tc" *ngIf="showLemon">🍋 Lemon: {{ hoveredDay()?.lemonRevenue }}</span>
+      <span class="ts" style="color:var(--success)" *ngIf="showBlik">⚡ BLIK: {{ hoveredDay()?.blikRevenue }}</span>
       <span class="ta" *ngIf="showSignups">👥 {{ hoveredDay()?.signups }} rejestracji</span>
       <span class="tw" *ngIf="showCredits">🎟 {{ hoveredDay()?.credits }} kredytów</span>
       <span class="te" *ngIf="showSpent">🔥 {{ hoveredDay()?.spent }} wydanych</span>
@@ -253,6 +257,8 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit, OnDestroy
 
   chartType: 'line' | 'bar' = 'line';
   chartRange = 30;
+  showLemon = true;
+  showBlik = true;
   showRevenue = true;
   showSignups = true;
   showCredits = false;
@@ -266,11 +272,13 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit, OnDestroy
 
   private chartInstance: any;
   private chartLib:      any;
-  private rawLabels:     string[]  = [];
-  private rawRevenue:    number[]  = [];
-  private rawSignups:    number[]  = [];
-  private rawCredits:    number[]  = [];
-  private rawSpent:      number[]  = [];
+  private rawLabels:       string[]  = [];
+  private rawRevenue:      number[]  = [];
+  private rawRevenueLemon: number[]  = [];
+  private rawRevenueBlik:  number[]  = [];
+  private rawSignups:      number[]  = [];
+  private rawCredits:      number[]  = [];
+  private rawSpent:        number[]  = [];
 
   ngOnInit()       { this.load(); this.loadFunnel(); }
   ngAfterViewInit(){ this.loadChart(); }
@@ -337,7 +345,9 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit, OnDestroy
   setRange(n: number)        { this.chartRange = n; this.renderChart(); }
   setType(t: 'line' | 'bar') { this.chartType  = t; this.renderChart(); }
 
-  toggleDataset(ds: 'revenue' | 'signups' | 'credits' | 'spent') {
+  toggleDataset(ds: 'lemon' | 'blik' | 'revenue' | 'signups' | 'credits' | 'spent') {
+    if (ds === 'lemon') this.showLemon = !this.showLemon;
+    if (ds === 'blik') this.showBlik = !this.showBlik;
     if (ds === 'revenue') this.showRevenue = !this.showRevenue;
     if (ds === 'signups') this.showSignups = !this.showSignups;
     if (ds === 'credits') this.showCredits = !this.showCredits;
@@ -353,12 +363,24 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit, OnDestroy
   private sliced() {
     const n = this.chartRange;
     return {
-      labels:  this.rawLabels.slice(-n),
-      revenue: this.rawRevenue.slice(-n),
-      signups: this.rawSignups.slice(-n),
-      credits: this.rawCredits.slice(-n),
-      spent: this.rawSpent.slice(-n),
+      labels:       this.rawLabels.slice(-n),
+      revenue:      this.rawRevenue.slice(-n),
+      revenueLemon: this.rawRevenueLemon.slice(-n),
+      revenueBlik:  this.rawRevenueBlik.slice(-n),
+      signups:      this.rawSignups.slice(-n),
+      credits:      this.rawCredits.slice(-n),
+      spent:        this.rawSpent.slice(-n),
     };
+  }
+
+  periodLemonRevenue() {
+    const total = this.sliced().revenueLemon.reduce((a, b) => a + b, 0);
+    return this.p.formatMoney(total);
+  }
+
+  periodBlikRevenue() {
+    const total = this.sliced().revenueBlik.reduce((a, b) => a + b, 0);
+    return this.p.formatPln(total);
   }
 
   periodRevenue() {
@@ -373,25 +395,25 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit, OnDestroy
   periodSummary() {
     const s = this.sliced();
     const n = this.chartRange;
-    const totalRev = s.revenue.reduce((a, b) => a + b, 0);
+    const totalLemon = s.revenueLemon.reduce((a, b) => a + b, 0);
+    const totalBlik = s.revenueBlik.reduce((a, b) => a + b, 0);
     const totalSig = s.signups.reduce((a, b) => a + b, 0);
     const totalCrd = s.credits.reduce((a, b) => a + b, 0);
-    const maxRevIdx = s.revenue.indexOf(Math.max(...s.revenue));
-    const maxSigIdx = s.signups.indexOf(Math.max(...s.signups));
-    const avgRev = totalRev / n;
+    const avgLemon = totalLemon / n;
+    const avgBlik = totalBlik / n;
     const avgSig = totalSig / n;
 
     return [
       {
-        label: 'Przychód łączny',
-        value: this.p.formatMoney(totalRev),
-        sub: `śr. ${this.p.formatMoney(avgRev)}/dzień`,
+        label: 'Lemon Squeezy ($)',
+        value: this.p.formatMoney(totalLemon),
+        sub: `śr. ${this.p.formatMoney(avgLemon)}/dzień`,
         cls: 'cyan',
       },
       {
-        label: 'Najlepszy dzień ($)',
-        value: s.labels[maxRevIdx] ? `${this.p.formatMoney(s.revenue[maxRevIdx])}` : '—',
-        sub: s.labels[maxRevIdx] ? this.shortDate(s.labels[maxRevIdx]) : '',
+        label: 'BLIK (zł)',
+        value: this.p.formatPln(totalBlik),
+        sub: `śr. ${this.p.formatPln(avgBlik)}/dzień`,
         cls: 'success',
       },
       {
@@ -399,12 +421,6 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit, OnDestroy
         value: totalSig.toString(),
         sub: `śr. ${avgSig.toFixed(1)}/dzień`,
         cls: 'accent',
-      },
-      {
-        label: 'Szczytowy dzień (reg.)',
-        value: s.labels[maxSigIdx] ? `${s.signups[maxSigIdx]} os.` : '—',
-        sub: s.labels[maxSigIdx] ? this.shortDate(s.labels[maxSigIdx]) : '',
-        cls: '',
       },
       {
         label: 'Kredyty sprzedane',
@@ -419,11 +435,13 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit, OnDestroy
   private buildRaw(data: any) {
     // Always build full 30-day spine
     const today = new Date();
-    this.rawLabels  = [];
-    this.rawRevenue = [];
-    this.rawSignups = [];
-    this.rawCredits = [];
-    this.rawSpent   = [];
+    this.rawLabels       = [];
+    this.rawRevenue      = [];
+    this.rawRevenueLemon = [];
+    this.rawRevenueBlik  = [];
+    this.rawSignups      = [];
+    this.rawCredits      = [];
+    this.rawSpent        = [];
 
     for (let i = 29; i >= 0; i--) {
       const d = new Date(today);
@@ -433,6 +451,8 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit, OnDestroy
 
       const pur = (data.purchases || []).find((p: any) => p._id === key);
       this.rawRevenue.push(pur ? Number((pur.revenue || 0).toFixed(2)) : 0);
+      this.rawRevenueLemon.push(pur ? Number((pur.revenueLemon !== undefined ? pur.revenueLemon : (pur.revenue || 0)).toFixed(2)) : 0);
+      this.rawRevenueBlik.push(pur ? Number((pur.revenueBlik || 0).toFixed(2)) : 0);
       this.rawCredits.push(pur ? (pur.credits || 0) : 0);
 
       const usr = (data.users || []).find((u: any) => u._id === key);
@@ -456,10 +476,10 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit, OnDestroy
 
     const datasets: any[] = [];
 
-    if (this.showRevenue) {
+    if (this.showLemon) {
       datasets.push({
-        label: 'Przychód (USD)',
-        data: s.revenue,
+        label: 'Lemon Squeezy ($)',
+        data: s.revenueLemon,
         yAxisID: 'yRev',
         borderColor: '#22d3ee',
         backgroundColor: isBar ? 'rgba(34,211,238,0.45)' : 'rgba(34,211,238,0.08)',
@@ -470,6 +490,23 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit, OnDestroy
         pointHoverRadius: 5,
         pointBackgroundColor: '#22d3ee',
         order: 1,
+      });
+    }
+
+    if (this.showBlik) {
+      datasets.push({
+        label: 'BLIK (zł)',
+        data: s.revenueBlik,
+        yAxisID: 'yRev',
+        borderColor: '#10b981',
+        backgroundColor: isBar ? 'rgba(16,185,129,0.45)' : 'rgba(16,185,129,0.08)',
+        fill: !isBar,
+        tension: 0.4,
+        borderWidth: 2,
+        pointRadius: isBar ? 0 : 3,
+        pointHoverRadius: 5,
+        pointBackgroundColor: '#10b981',
+        order: 2,
       });
     }
 
@@ -486,7 +523,7 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit, OnDestroy
         pointRadius: isBar ? 0 : 3,
         pointHoverRadius: 5,
         pointBackgroundColor: '#6366f1',
-        order: 2,
+        order: 3,
       });
     }
 
@@ -504,7 +541,7 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit, OnDestroy
         pointHoverRadius: 5,
         pointBackgroundColor: '#f59e0b',
         borderDash: [5, 3],
-        order: 3,
+        order: 4,
       });
     }
 
@@ -522,7 +559,7 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit, OnDestroy
         pointHoverRadius: 5,
         pointBackgroundColor: '#ef4444',
         borderDash: [5, 5],
-        order: 4,
+        order: 5,
       });
     }
 
@@ -553,7 +590,8 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit, OnDestroy
                   // Update hovered day signal
                   setTimeout(() => this.hoveredDay.set({
                     label,
-                    revenue: this.p.formatMoney(s.revenue[idx] || 0),
+                    lemonRevenue: this.p.formatMoney(s.revenueLemon[idx] || 0),
+                    blikRevenue: this.p.formatPln(s.revenueBlik[idx] || 0),
                     signups: s.signups[idx] || 0,
                     credits: s.credits[idx] || 0,
                     spent: s.spent[idx] || 0,
@@ -563,7 +601,8 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit, OnDestroy
               },
               label: (ctx: any) => {
                 const v = ctx.parsed.y;
-                if (ctx.dataset.label?.includes('USD')) return ` Przychód: $${v.toFixed(2)}`;
+                if (ctx.dataset.label?.includes('Lemon')) return ` Lemon: $${v.toFixed(2)}`;
+                if (ctx.dataset.label?.includes('BLIK')) return ` BLIK: ${v.toFixed(2)} zł`;
                 if (ctx.dataset.label?.includes('Rejestr')) return ` Rejestracje: ${v}`;
                 if (ctx.dataset.label?.includes('sprzedane')) return ` Sprzedane kredyty: ${v}`;
                 if (ctx.dataset.label?.includes('wydane')) return ` Wydane kredyty: ${v}`;
@@ -584,11 +623,11 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit, OnDestroy
           yRev: {
             type: 'linear' as const,
             position: 'left' as const,
-            display: this.showRevenue || this.showCredits || this.showSpent,
+            display: this.showLemon || this.showBlik || this.showCredits || this.showSpent,
             grid: { color: 'rgba(255,255,255,0.04)' },
             ticks: {
               color: '#22d3ee', font: { size: 10 },
-              callback: (v: any) => `$${v}`,
+              callback: (v: any) => `${v}`,
             },
             beginAtZero: true,
           },
@@ -642,12 +681,13 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit, OnDestroy
     const s = this.p.stats();
     if (!s || !Object.keys(s).length) return [];
     return [
-      { label: 'Użytkownicy',      value: (s.totalUsers    || 0).toLocaleString('pl-PL'), cls: '' },
-      { label: 'Przychód łączny',  value: this.p.formatMoney(s.totalRevenue || 0),        cls: 'cyan',    note: `${this.p.formatMoney(s.monthRevenue || 0)} w tym miesiącu` },
-      { label: 'Zakupy dziś',      value: (s.todayPurchases|| 0).toString(),              cls: s.todayPurchases ? 'success' : '' },
-      { label: 'Cache AI',         value: (s.cachedAnswers || 0).toLocaleString('pl-PL'), cls: '' },
-      { label: 'Bug-raporty nowe', value: (s.unreadBugReports || 0).toString(),           cls: s.unreadBugReports > 0 ? 'danger' : 'success' },
-      { label: 'Zbanowane konta',  value: (s.bannedUsers   || 0).toString(),              cls: s.bannedUsers > 0 ? 'warning' : '' },
+      { label: 'Użytkownicy',          value: (s.totalUsers    || 0).toLocaleString('pl-PL'), cls: '' },
+      { label: '🍋 Lemon Squeezy ($)', value: this.p.formatMoney(s.lemonRevenue || 0),        cls: 'cyan',    note: `${this.p.formatMoney(s.lemonMonthRevenue || 0)} w tym msc` },
+      { label: '⚡ BLIK (zł)',          value: this.p.formatPln(s.blikRevenue || 0),            cls: 'success', note: `${this.p.formatPln(s.blikMonthRevenue || 0)} w tym msc` },
+      { label: 'Zakupy dziś',          value: (s.todayPurchases|| 0).toString(),              cls: s.todayPurchases ? 'success' : '' },
+      { label: 'Cache AI',             value: (s.cachedAnswers || 0).toLocaleString('pl-PL'), cls: '' },
+      { label: 'Bug-raporty nowe',     value: (s.unreadBugReports || 0).toString(),           cls: s.unreadBugReports > 0 ? 'danger' : 'success' },
+      { label: 'Zbanowane konta',      value: (s.bannedUsers   || 0).toString(),              cls: s.bannedUsers > 0 ? 'warning' : '' },
     ];
   }
 

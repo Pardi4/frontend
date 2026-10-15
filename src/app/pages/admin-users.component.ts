@@ -496,12 +496,13 @@ id: {{ q.id }}</div>
                     <td class="bold">{{ pur.pack }}</td>
                     <td class="bold tc">{{ pur.credits }}</td>
                     <td>
-                      <span class="bold ts" *ngIf="pur.priceUsd">{{ pur.priceUsd }} {{ pur.currency }}</span>
-                      <span class="xs t3" *ngIf="!pur.priceUsd">—</span>
+                      <span class="bold ts" style="color:var(--success)" *ngIf="pur.provider === 'dpay'">{{ p.formatPln(pur.pricePln || (pur.priceUsd ? pur.priceUsd * 4 : 0)) }}</span>
+                      <span class="bold tc" *ngIf="pur.provider !== 'dpay' && pur.priceUsd">{{ p.formatMoney(pur.priceUsd) }}</span>
+                      <span class="xs t3" *ngIf="!pur.priceUsd && !pur.pricePln">—</span>
                     </td>
                     <td>
-                      <span class="a-badge" [class.a-badge-accent]="pur.provider === 'dpay'" [class.a-badge-muted]="pur.provider !== 'dpay'" style="text-transform:uppercase;font-size:10px">
-                        {{ pur.provider }}
+                      <span class="a-badge" [class.a-badge-success]="pur.provider === 'dpay'" [class.a-badge-cyan]="['lemonsqueezy', 'lemon'].includes(pur.provider)" [class.a-badge-muted]="pur.provider !== 'dpay' && !['lemonsqueezy', 'lemon'].includes(pur.provider)" style="text-transform:uppercase;font-size:10px">
+                        {{ pur.provider === 'dpay' ? '⚡ BLIK' : (['lemonsqueezy', 'lemon'].includes(pur.provider) ? '🍋 Lemon' : pur.provider) }}
                       </span>
                     </td>
                     <td>

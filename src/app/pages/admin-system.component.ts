@@ -26,6 +26,55 @@ import { AdminComponent } from './admin.component';
     </div>
   </div>
 
+  <!-- Telegram Bot Daily Reports -->
+  <div class="a-card">
+    <div class="a-card-header" style="flex-wrap:wrap;gap:10px">
+      <div>
+        <div class="a-card-title">🤖 Bot Telegram (@getQuizSolverbot)</div>
+        <div class="a-card-subtitle">Automatyczny raport dzienny o 08:00 rano + auto-odpowiedź dla użytkowników z linkiem do strony</div>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+        <button class="a-btn a-btn-primary a-btn-sm" (click)="sendTestReport(false)" [disabled]="telegramLoading()">
+          {{ telegramLoading() ? 'Wysyłanie...' : '📨 Wyślij raport (Wczoraj)' }}
+        </button>
+        <button class="a-btn a-btn-secondary a-btn-sm" (click)="sendTestReport(true)" [disabled]="telegramLoading()">
+          🔴 Stan z dziś
+        </button>
+        <button class="a-btn a-btn-ghost a-btn-sm" (click)="loadTelegram()" [disabled]="telegramLoading()" title="Odśwież">🔄</button>
+      </div>
+    </div>
+    <div class="a-card-body">
+      <div style="display:flex;gap:16px;align-items:center;flex-wrap:wrap;padding:12px 16px;background:var(--surface-2);border-radius:var(--radius-sm);border:1px solid var(--border)">
+        <div>
+          <span class="xs t3">Nazwa bota:</span>
+          <div class="bold"><a href="https://t.me/getQuizSolverbot" target="_blank" rel="noopener" style="color:var(--cyan)">@getQuizSolverbot ↗</a></div>
+        </div>
+        <div style="width:1px;height:30px;background:var(--border)"></div>
+        <div>
+          <span class="xs t3">Status powiązania Admina:</span>
+          <div>
+            <span class="a-badge" [class.a-badge-success]="telegram().isBound" [class.a-badge-warning]="!telegram().isBound">
+              {{ telegram().isBound ? '✓ Powiązany (Chat ID: ' + telegram().adminChatId + ')' : 'Oczekuje na kontakt z Adminem' }}
+            </span>
+          </div>
+        </div>
+        <div style="width:1px;height:30px;background:var(--border)"></div>
+        <div>
+          <span class="xs t3">Harmonogram:</span>
+          <div class="bold" style="color:var(--warning)">Codziennie o 08:00 (Europe/Warsaw)</div>
+        </div>
+      </div>
+
+      <div *ngIf="!telegram().isBound" style="margin-top:14px;padding:12px 16px;background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.25);border-radius:var(--radius-sm);font-size:13px;line-height:1.5">
+        💡 <strong>Jak aktywować raporty na swoim telefonie:</strong><br>
+        1. Otwórz aplikację Telegram i wyszukaj <a href="https://t.me/getQuizSolverbot" target="_blank" rel="noopener" class="bold tc">@getQuizSolverbot</a>.<br>
+        2. Kliknij <b>Rozpocznij (Start)</b> lub wyślij hasło administratora <code>Admin123!</code>.<br>
+        3. Bot natychmiast przypisze Twój prywatny czat jako odbiorcę codziennych raportów o 8:00.<br>
+        <i>Gdy ktokolwiek inny napisze do bota, bot automatycznie odeśle mu zaproszenie z linkiem do https://getquizsolver.com.</i>
+      </div>
+    </div>
+  </div>
+
   <!-- Billing safety -->
   <div class="a-card">
     <div class="a-card-header">
@@ -186,12 +235,42 @@ export class AdminSystemComponent implements OnInit {
   usageStatus = '';
   usageAction = '';
 
+  telegram = signal<any>({ hasToken: true, botUsername: 'getQuizSolverbot', adminChatId: null, isBound: false });
+  telegramLoading = signal(false);
+
   readonly Math = Math;
 
   ngOnInit() {
     this.loadHealth();
+    this.loadTelegram();
     this.loadBilling();
     this.loadUsage();
+  }
+
+  async loadTelegram() {
+    try {
+      const res = await this.p.api('/api/admin/telegram/status');
+      if (res.success) this.telegram.set(res);
+    } catch { /* silent */ }
+  }
+
+  async sendTestReport(isToday = false) {
+    this.telegramLoading.set(true);
+    try {
+      const res = await this.p.api('/api/admin/telegram/test-report', {
+        method: 'POST',
+        body: JSON.stringify({ isToday })
+      });
+      if (res.success) {
+        this.p.toast(res.message || 'Raport wysłany na Telegram!', 'success');
+        await this.loadTelegram();
+      } else {
+        this.p.toast(res.error || 'Błąd wysyłania', 'error');
+      }
+    } catch {
+      this.p.toast('Błąd połączenia z serwerem', 'error');
+    }
+    this.telegramLoading.set(false);
   }
 
   async loadHealth() {
