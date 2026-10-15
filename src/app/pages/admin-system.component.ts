@@ -68,8 +68,8 @@ import { AdminComponent } from './admin.component';
       <div *ngIf="!telegram().isBound" style="margin-top:14px;padding:12px 16px;background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.25);border-radius:var(--radius-sm);font-size:13px;line-height:1.5">
         💡 <strong>Jak aktywować raporty na swoim telefonie:</strong><br>
         1. Otwórz aplikację Telegram i wyszukaj <a href="https://t.me/getQuizSolverbot" target="_blank" rel="noopener" class="bold tc">@getQuizSolverbot</a>.<br>
-        2. Kliknij <b>Rozpocznij (Start)</b> lub wyślij hasło administratora <code>Admin123!</code>.<br>
-        3. Bot natychmiast przypisze Twój prywatny czat jako odbiorcę codziennych raportów o 8:00.<br>
+        2. Napisz cokolwiek ze swojego konta <b>@kam567122</b> (np. kliknij <b>Rozpocznij (Start)</b> lub wyślij <code>/raport</code>).<br>
+        3. Bot natychmiast zweryfikuje Twój profil i powiąże Twój prywatny czat jako odbiorcę codziennych raportów o 8:00.<br>
         <i>Gdy ktokolwiek inny napisze do bota, bot automatycznie odeśle mu zaproszenie z linkiem do https://getquizsolver.com.</i>
       </div>
     </div>
