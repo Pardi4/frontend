@@ -17,7 +17,7 @@ const app = express();
 const angularApp = new AngularNodeAppEngine();
 app.set('trust proxy', 1);
 
-const privateNoindexPaths = ['/dashboard', '/success', '/404', '/admin', ADMIN_PANEL_URL];
+const privateNoindexPaths = ['/dashboard', '/success', '/404', '/uninstall', '/admin', ADMIN_PANEL_URL];
 const publicQueryParamsToDrop = [
   'auth',
   'error',

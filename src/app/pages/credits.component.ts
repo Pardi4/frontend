@@ -2321,11 +2321,12 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
     this.locale = (this.route.snapshot.data['locale'] || 'en') as Locale;
 
     // Auto-redirect Polish users if they land on default English /credits
-    if (this.locale === 'en' && this.isPolishBrowser) {
+    if (this.locale === 'en' && !this.route.snapshot.data['explicitLocale'] && this.isPolishBrowser) {
       const manual = (typeof localStorage !== 'undefined') ? localStorage.getItem('qs_user_selected_locale') : null;
       if (manual !== 'en') {
         const query = (typeof window !== 'undefined') ? window.location.search : '';
-        void this.router.navigateByUrl(`/pl/credits${query}`);
+        const hash = (typeof window !== 'undefined') ? window.location.hash : '';
+        void this.router.navigateByUrl(`/pl/credits${query}${hash}`);
         return;
       }
     }
@@ -2347,8 +2348,20 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
 
     // Deep link package auto-selection
     const packParam = this.route.snapshot.queryParamMap.get('pack');
-    if (packParam && this.api.token() && this.packs.some(p => p.id === packParam)) {
-      setTimeout(() => this.confirmPack(packParam), 100);
+    if (packParam && this.packs.some(p => p.id === packParam)) {
+      if (this.api.token()) {
+        setTimeout(() => this.confirmPack(packParam), 100);
+      } else if (typeof window !== 'undefined') {
+        try { sessionStorage.setItem('qs_pending_pack', packParam); } catch {}
+        window.addEventListener('qs-session-synced', () => {
+          setTimeout(() => {
+            if (this.api.token() && !this.pendingPack()) {
+              try { sessionStorage.removeItem('qs_pending_pack'); } catch {}
+              this.confirmPack(packParam);
+            }
+          }, 250);
+        }, { once: true });
+      }
     }
     this.initPromoCountdown();
     trackGa4Event('credits_page_view', { locale: this.locale, from: this.route.snapshot.queryParamMap.get('from') || '' });

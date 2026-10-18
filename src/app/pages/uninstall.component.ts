@@ -923,7 +923,7 @@ export class UninstallComponent implements OnInit {
       if (params['v']) {
         this.extensionVersion = params['v'];
       }
-      if (params['lang']) {
+      if (params['lang'] && !this.route.snapshot.data?.['explicitLocale']) {
         this.locale.set(normalizeLangCode(params['lang']));
         this.updateMeta();
       }

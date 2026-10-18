@@ -27,6 +27,23 @@ export class ApiService {
       if (!stored) {
         try { localStorage.removeItem('qs_has_account'); } catch {}
       }
+      window.addEventListener('qs-session-synced', () => {
+        const synced = this.getStoredToken();
+        if (synced && synced !== this.token()) {
+          this.token.set(synced);
+          void this.restoreSession();
+        }
+      });
+      window.addEventListener('storage', (event: StorageEvent) => {
+        if (event.key !== 'qs_token') return;
+        const next = this.getStoredToken();
+        if (next && next !== this.token()) {
+          this.token.set(next);
+          void this.restoreSession();
+        } else if (!next && this.token()) {
+          this.clearSession();
+        }
+      });
     } else {
       this.sessionReady.set(true);
     }
@@ -55,6 +72,12 @@ export class ApiService {
   }
 
   async restoreSession(): Promise<void> {
+    if (!this.token() && this.isBrowser) {
+      const stored = this.getStoredToken();
+      if (stored) {
+        this.token.set(stored);
+      }
+    }
     if (!this.token()) {
       this.sessionReady.set(true);
       return;

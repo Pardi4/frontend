@@ -27,12 +27,18 @@ const pricingRedirectRoutes = (): Routes =>
     pathMatch: 'full' as const
   }));
 
-const uninstallRoutes = (): Routes =>
-  SUPPORTED_LOCALES.map(({ code, prefix }) => ({
-    path: `${prefix ? prefix.replace(/^\//, '') + '/' : ''}uninstall`,
+const uninstallRoutes = (): Routes => [
+  {
+    path: 'uninstall',
     loadComponent: () => import('./pages/uninstall.component').then(m => m.UninstallComponent),
-    data: { locale: code }
-  }));
+    data: { locale: 'en' }
+  },
+  ...SUPPORTED_LOCALES.map(({ code }) => ({
+    path: `${code}/uninstall`,
+    loadComponent: () => import('./pages/uninstall.component').then(m => m.UninstallComponent),
+    data: { locale: code, explicitLocale: true }
+  }))
+];
 
 export const routes: Routes = [
   ...pricingRedirectRoutes(),
@@ -45,6 +51,7 @@ export const routes: Routes = [
   ...localizedRoutes('dashboard', () => import('./pages/dashboard.component').then(m => m.DashboardComponent)),
   { path: ADMIN_PANEL_ROUTE_PATH, loadComponent: () => import('./pages/admin.component').then(m => m.AdminComponent), data: { locale: 'en' } },
   { path: `pl/${ADMIN_PANEL_ROUTE_PATH}`, loadComponent: () => import('./pages/admin.component').then(m => m.AdminComponent), data: { locale: 'pl' } },
+  { path: 'en/credits', loadComponent: () => import('./pages/credits.component').then(m => m.CreditsComponent), data: { locale: 'en', explicitLocale: true } },
   ...localizedRoutes('credits', () => import('./pages/credits.component').then(m => m.CreditsComponent)),
   ...localizedRoutes('quiz', () => import('./pages/quiz.component').then(m => m.QuizComponent)),
   ...localizedRoutes('demo', () => import('./pages/demo.component').then(m => m.DemoComponent)),
