@@ -398,7 +398,12 @@ textarea { resize: vertical; min-height: 80px; }
   font-weight: 600;
   margin-left: 0.25rem;
 }
-.form-switch button:hover { text-decoration: underline; }
+.form-switch button:hover:not(:disabled) { text-decoration: underline; }
+.form-switch button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  text-decoration: none;
+}
 
 /* ---------- Animations ---------- */
 @keyframes float {

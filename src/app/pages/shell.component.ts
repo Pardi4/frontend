@@ -377,7 +377,9 @@ export function trackGa4Event(eventName: string, params?: Record<string, string 
               </button>
               <div class="form-switch">
                 {{ copy.shell.noCode }}
-                <button type="button" (click)="resendVerification()">{{ copy.shell.resendCode }}</button>
+                <button type="button" [disabled]="authLoading() || resendCooldown() > 0" (click)="resendVerification()">
+                  {{ copy.shell.resendCode }}<ng-container *ngIf="resendCooldown() > 0"> ({{ resendCooldown() }}s)</ng-container>
+                </button>
               </div>
             </form>
           </ng-container>
@@ -1204,6 +1206,8 @@ export class ShellComponent implements OnInit, AfterViewInit, OnDestroy {
   protected authLoading = signal(false);
   protected authError = signal('');
   protected authInfo = signal('');
+  protected resendCooldown = signal(0);
+  private resendTimer: ReturnType<typeof setInterval> | null = null;
 
   protected loginEmail = '';
   protected loginPassword = '';
@@ -1280,6 +1284,10 @@ export class ShellComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    if (this.resendTimer) {
+      clearInterval(this.resendTimer);
+      this.resendTimer = null;
+    }
     this.revealObserver?.disconnect();
     this.routerEventsSub?.unsubscribe();
     if (isPlatformBrowser(this.platformId)) {
@@ -1591,6 +1599,8 @@ export class ShellComponent implements OnInit, AfterViewInit, OnDestroy {
       result,
       this.copy.shell.verificationSent
     ));
+    const cooldown = typeof result.retryAfterSeconds === 'number' ? result.retryAfterSeconds : 30;
+    this.startResendCooldown(cooldown);
   }
 
   private async finishAuth(result: any): Promise<void> {
@@ -1705,8 +1715,31 @@ export class ShellComponent implements OnInit, AfterViewInit, OnDestroy {
     this.authError.set(result.error || this.copy.shell.invalidCode);
   }
 
+  private startResendCooldown(seconds: number = 30): void {
+    if (this.resendTimer) {
+      clearInterval(this.resendTimer);
+      this.resendTimer = null;
+    }
+    const remaining = Math.max(0, Math.ceil(seconds));
+    this.resendCooldown.set(remaining);
+    if (remaining <= 0) return;
+
+    this.resendTimer = setInterval(() => {
+      const current = this.resendCooldown();
+      if (current <= 1) {
+        if (this.resendTimer) {
+          clearInterval(this.resendTimer);
+          this.resendTimer = null;
+        }
+        this.resendCooldown.set(0);
+      } else {
+        this.resendCooldown.set(current - 1);
+      }
+    }, 1000);
+  }
+
   protected async resendVerification(): Promise<void> {
-    if (!this.verificationEmail) return;
+    if (!this.verificationEmail || this.resendCooldown() > 0) return;
     this.authError.set('');
     this.authInfo.set('');
     this.authLoading.set(true);
@@ -1718,6 +1751,8 @@ export class ShellComponent implements OnInit, AfterViewInit, OnDestroy {
 
     if (result.success) {
       this.verificationCode = result.devCode || '';
+      const cooldown = typeof result.retryAfterSeconds === 'number' ? result.retryAfterSeconds : 30;
+      this.startResendCooldown(cooldown);
       this.authInfo.set(this.deliveryMessage(
         result,
         result.alreadyVerified
@@ -1727,6 +1762,9 @@ export class ShellComponent implements OnInit, AfterViewInit, OnDestroy {
       return;
     }
 
+    if (result.retryAfterSeconds) {
+      this.startResendCooldown(result.retryAfterSeconds);
+    }
     this.authError.set(result.error || this.copy.shell.codeSendFailed);
   }
 
