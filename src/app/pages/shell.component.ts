@@ -1553,10 +1553,10 @@ export class ShellComponent implements OnInit, AfterViewInit, OnDestroy {
     await this.router.navigateByUrl(pathFor('credits', this.locale));
   }
 
-  protected logout(): void {
-    this.api.clearSession();
+  protected async logout(): Promise<void> {
     this.dropdownOpen.set(false);
     this.mobileMenuOpen.set(false);
+    await this.api.logout();
     this.router.navigateByUrl(pathFor('home', this.locale));
   }
 

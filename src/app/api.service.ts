@@ -22,12 +22,22 @@ export class ApiService {
   constructor(@Inject(PLATFORM_ID) platformId: object) {
     this.isBrowser = isPlatformBrowser(platformId);
     if (this.isBrowser) {
-      const stored = this.getStoredToken();
-      this.token.set(stored);
-      if (!stored) {
+      if (this.isExplicitlyLoggedOut()) {
+        this.removeStoredToken();
+        this.token.set(null);
         try { localStorage.removeItem('qs_has_account'); } catch {}
+      } else {
+        const stored = this.getStoredToken();
+        this.token.set(stored);
+        if (!stored) {
+          try { localStorage.removeItem('qs_has_account'); } catch {}
+        }
       }
       window.addEventListener('qs-session-synced', () => {
+        if (this.isExplicitlyLoggedOut()) {
+          this.removeStoredToken();
+          return;
+        }
         const synced = this.getStoredToken();
         if (synced && synced !== this.token()) {
           this.token.set(synced);
@@ -36,6 +46,10 @@ export class ApiService {
       });
       window.addEventListener('storage', (event: StorageEvent) => {
         if (event.key !== 'qs_token') return;
+        if (this.isExplicitlyLoggedOut()) {
+          this.removeStoredToken();
+          return;
+        }
         const next = this.getStoredToken();
         if (next && next !== this.token()) {
           this.token.set(next);
@@ -71,7 +85,23 @@ export class ApiService {
     }
   }
 
+  private isExplicitlyLoggedOut(): boolean {
+    if (!this.isBrowser) return false;
+    try {
+      return localStorage.getItem('qs_logged_out') === '1';
+    } catch {
+      return false;
+    }
+  }
+
   async restoreSession(): Promise<void> {
+    if (this.isExplicitlyLoggedOut()) {
+      this.removeStoredToken();
+      this.token.set(null);
+      this.currentUser.set(null);
+      this.sessionReady.set(true);
+      return;
+    }
     if (!this.token() && this.isBrowser) {
       const stored = this.getStoredToken();
       if (stored) {
@@ -96,6 +126,9 @@ export class ApiService {
   }
 
   setSession(token: string, user: any): void {
+    if (this.isBrowser) {
+      try { localStorage.removeItem('qs_logged_out'); } catch {}
+    }
     this.token.set(token);
     this.currentUser.set(user);
     this.sessionReady.set(true);
@@ -106,6 +139,26 @@ export class ApiService {
 
   hasAccount(): boolean {
     return !!(this.currentUser() || this.token());
+  }
+
+  async logout(): Promise<void> {
+    const currentToken = this.token();
+    if (this.isBrowser) {
+      try { localStorage.setItem('qs_logged_out', '1'); } catch {}
+      try { window.dispatchEvent(new CustomEvent('qs-web-logout')); } catch {}
+    }
+    this.clearSession();
+    if (currentToken) {
+      try {
+        await fetch('/api/auth/logout', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${currentToken}`
+          }
+        });
+      } catch {}
+    }
   }
 
   clearSession(): void {
