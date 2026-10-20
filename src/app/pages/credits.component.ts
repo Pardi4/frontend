@@ -14,12 +14,10 @@ import { ShellComponent, trackGa4Event } from './shell.component';
     <qs-shell #shell [locale]="locale" pageKey="credits">
       <div class="container credits-main">
         
-        <!-- Hero Header: Compact & above-the-fold -->
         <header class="credits-hero">
           <div class="hero-top-row">
             <p class="eyebrow">{{ copy.badge }}</p>
 
-            <!-- Compact Balance Badge for logged in users -->
             <div *ngIf="api.currentUser()" class="balance-pill glass">
               <span class="balance-dot"></span>
               <span class="balance-pill-label">{{ copy.balanceLabel }}:</span>
@@ -35,14 +33,12 @@ import { ShellComponent, trackGa4Event } from './shell.component';
           <h1>{{ copy.pageHeading || data.title }}</h1>
           <p class="desc text-secondary">{{ copy.subtitle }}</p>
 
-          <!-- Inline Low Credit Alert -->
           <div class="low-credit-chip glass" *ngIf="lowCredits()">
             <span class="warning-icon">⚠️</span>
             <span><strong>{{ copy.lowTitle }}:</strong> {{ copy.lowText }}</span>
           </div>
         </header>
 
-        <!-- Trust Ribbon: 3 core guarantees right below header -->
         <section class="trust-ribbon glass">
           <div class="trust-item" *ngFor="let badge of trustBadges">
             <span class="trust-icon" [innerHTML]="badge.icon"></span>
@@ -50,7 +46,6 @@ import { ShellComponent, trackGa4Event } from './shell.component';
           </div>
         </section>
 
-        <!-- FIRST TOP-UP PROMO BANNER with Countdown Timer (Only for users who never topped up) -->
         <section class="first-topup-banner glass" *ngIf="isFirstPurchasePromoEligible">
           <div class="promo-glow"></div>
           <div class="promo-content">
@@ -66,7 +61,6 @@ import { ShellComponent, trackGa4Event } from './shell.component';
             </div>
 
             <div class="promo-right">
-              <!-- Interactive Click-to-copy code button -->
               <button type="button" class="promo-code-btn" (click)="copyPromoCode()" [title]="promoCopy.clickToCopy">
                 <span class="code-label">{{ promoCopy.codeLabel }}</span>
                 <span class="code-val">WELCOME10</span>
@@ -75,7 +69,6 @@ import { ShellComponent, trackGa4Event } from './shell.component';
                 </span>
               </button>
 
-              <!-- Real-time FOMO Countdown Timer -->
               <div class="promo-timer-box">
                 <span class="timer-label">{{ promoCopy.timerLabel }}</span>
                 <div class="timer-digits">
@@ -88,27 +81,22 @@ import { ShellComponent, trackGa4Event } from './shell.component';
           </div>
         </section>
 
-        <!-- Payment Error Alert (if any) -->
         <section class="payment-error glass" *ngIf="buyError()">
           {{ buyError() }}
         </section>
 
-        <!-- MAIN PRICING DECK: Front & center, immediately visible without scrolling! -->
         <section id="pricing" class="packages-section">
           <div class="packages-deck">
             <article class="package-card glass glass-hover" *ngFor="let pack of packs" [class.featured]="pack.id === 'popular'">
               <span *ngIf="pack.badge" class="featured-badge">{{ pack.badge[locale] || pack.badge['en'] }}</span>
 
-              <!-- Package Role Title -->
               <h3 class="pack-role-title">{{ pack.name[locale] }}</h3>
 
-              <!-- Clear Credit Count as Hero of Card -->
               <div class="pack-credits-header">
                 <div class="pack-credits-number text-gradient-strong">{{ pack.credits }}</div>
                 <div class="pack-credits-label">{{ copy.creditsUnitLabel }}</div>
               </div>
 
-              <!-- Price & Unit Rate Calculation -->
               <div class="pack-pricing-block">
                 <div class="pack-price-row">
                   <ng-container *ngIf="locale === 'pl' || isPolishBrowser">
@@ -125,12 +113,10 @@ import { ShellComponent, trackGa4Event } from './shell.component';
                 </div>
               </div>
 
-              <!-- Tangible Academic Outcome: Passed Exams & Peace of Mind -->
               <p class="pack-outcome">
                 {{ pack.outcome[locale] }}
               </p>
 
-              <!-- Relatable Global Cost Comparison Chip -->
               <div class="pack-comparison-chip">
                 {{ pack.comparison[locale] }}
               </div>
@@ -150,12 +136,10 @@ import { ShellComponent, trackGa4Event } from './shell.component';
             </article>
           </div>
 
-          <!-- Live Currency Conversion Footnote -->
           <p class="currency-note text-secondary" *ngIf="currencyNote">
             {{ currencyNote }}
           </p>
 
-          <!-- Guest reassurance if not logged in -->
           <div class="guest-reassurance-bar glass" *ngIf="!api.currentUser()">
             <span>{{ copy.guestReassurance }}</span>
             <button class="btn btn-primary btn-sm" type="button" (click)="shell.openModal('register')">
@@ -164,7 +148,6 @@ import { ShellComponent, trackGa4Event } from './shell.component';
           </div>
         </section>
 
-        <!-- Value Comparison: Persuasive framing vs expensive tutoring -->
         <section class="value-comparison glass">
           <p class="eyebrow">{{ valueComp.badge }}</p>
           <h2>{{ valueComp.title }}</h2>
@@ -190,7 +173,6 @@ import { ShellComponent, trackGa4Event } from './shell.component';
           <p class="value-note text-secondary">{{ valueComp.note }}</p>
         </section>
 
-        <!-- Credit Unit Card: Transparent consumption rules -->
         <section class="credit-unit-card glass">
           <div>
             <p class="eyebrow">{{ copy.unitBadge }}</p>
@@ -202,7 +184,6 @@ import { ShellComponent, trackGa4Event } from './shell.component';
           </ul>
         </section>
 
-        <!-- Referral Banner -->
         <section class="referral-banner glass" *ngIf="api.currentUser()">
           <div class="referral-banner-content">
             <div class="referral-banner-icon">
@@ -216,7 +197,6 @@ import { ShellComponent, trackGa4Event } from './shell.component';
           </div>
         </section>
 
-        <!-- FAQ Section -->
         <section class="credits-faq" *ngIf="faqItems().length">
           <div class="section-header compact">
             <p class="eyebrow">FAQ</p>
@@ -230,14 +210,12 @@ import { ShellComponent, trackGa4Event } from './shell.component';
           </div>
         </section>
 
-        <!-- Checkout Confirmation Modal with Payment Provider & Mandatory Digital Consent -->
         <div class="checkout-confirm-backdrop" *ngIf="pendingPack()" (click)="cancelCheckout()">
           <section class="checkout-confirm glass" (click)="$event.stopPropagation()">
             <p class="eyebrow">{{ label('confirmBadge') }}</p>
             <h2>{{ label('confirmTitle') }}</h2>
             <p class="text-secondary">{{ label('confirmText') }}</p>
 
-            <!-- Selected Pack Header Summary -->
             <div class="confirm-pack-summary glass" *ngIf="selectedPackDetails as pack">
               <div class="summary-pack-title">
                 <strong>{{ pack.name[locale] || pack.name.en }}</strong>
@@ -267,11 +245,9 @@ import { ShellComponent, trackGa4Event } from './shell.component';
               <code>{{ api.currentUser()?.email }}</code>
             </div>
 
-            <!-- Payment Provider Selector (DPay vs Lemon Squeezy) - Only shown if DPay/BLIK is available -->
             <div class="provider-selector-wrap" *ngIf="isDpayAvailable">
               <span class="selector-title">{{ checkoutProviderCopy.title }}</span>
               <div class="provider-cards-grid">
-                <!-- DPay Option -->
                 <button
                   type="button"
                   class="provider-card glass"
@@ -290,7 +266,6 @@ import { ShellComponent, trackGa4Event } from './shell.component';
                   </div>
                 </button>
 
-                <!-- Lemon Squeezy Option -->
                 <button
                   type="button"
                   class="provider-card glass"
@@ -310,9 +285,7 @@ import { ShellComponent, trackGa4Event } from './shell.component';
               </div>
             </div>
 
-            <!-- Interactive Promo Code Section in Modal - SHOWN ONLY FOR BLIK (dpay) -->
             <div class="modal-promo-section" *ngIf="selectedProvider() === 'dpay'">
-              <!-- When promo is applied -->
               <div class="modal-promo-active glass" *ngIf="appliedPromoCode()">
                 <div class="promo-active-left">
                   <span class="promo-active-icon">🏷️</span>
@@ -329,7 +302,6 @@ import { ShellComponent, trackGa4Event } from './shell.component';
                 </button>
               </div>
 
-              <!-- When no promo is applied -->
               <div class="modal-promo-entry" *ngIf="!appliedPromoCode()">
                 <div class="promo-entry-row">
                   <input
@@ -357,7 +329,6 @@ import { ShellComponent, trackGa4Event } from './shell.component';
               </div>
             </div>
 
-            <!-- Mandatory Legal Digital Waiver Checkbox -->
             <div class="legal-consent-card glass" [class.checked]="digitalConsent()">
               <label class="consent-checkbox-row">
                 <input
@@ -374,7 +345,6 @@ import { ShellComponent, trackGa4Event } from './shell.component';
               </label>
             </div>
 
-            <!-- Lemon Squeezy Email Warning (shown on the last stretch before completing payment) -->
             <div class="lemon-email-warning-box" *ngIf="selectedProvider() === 'lemonsqueezy'">
               <span class="lemon-warning-icon">⚠️</span>
               <div class="lemon-warning-content">
@@ -1573,7 +1543,6 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
   protected readonly pendingPack = signal('');
   protected readonly selectedProvider = signal<'dpay' | 'lemonsqueezy'>('lemonsqueezy');
 
-  // Promo code state
   protected readonly appliedPromoCode = signal<string>('');
   protected readonly appliedDiscountPercent = signal<number>(0);
   protected readonly promoInputText = signal<string>('');
@@ -1581,8 +1550,6 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
   protected readonly promoError = signal<string>('');
   protected readonly promoSuccess = signal<string>('');
 
-  // Feature flag for DPay (BLIK / szybki przelew).
-  // Active for Polish locale users (PLN payments).
   readonly enableDpayBlik = true;
 
   get isPolishBrowser(): boolean {
@@ -1672,9 +1639,7 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
 
   protected get isFirstPurchasePromoEligible(): boolean {
     const user = this.api.currentUser();
-    // Guests who haven't logged in are always eligible for the first-purchase promo
     if (!user) return true;
-    // If user has ever purchased credits, they are NOT eligible
     if (user.hasPurchasedCredits) return false;
     if (user.stats?.totalCreditsPurchased && user.stats.totalCreditsPurchased > 0) return false;
     if (user.appliedCreditPurchases && user.appliedCreditPurchases.length > 0) return false;
@@ -2320,7 +2285,6 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
   async ngOnInit(): Promise<void> {
     this.locale = (this.route.snapshot.data['locale'] || 'en') as Locale;
 
-    // Auto-redirect Polish users if they land on default English /credits
     if (this.locale === 'en' && !this.route.snapshot.data['explicitLocale'] && this.isPolishBrowser) {
       const manual = (typeof localStorage !== 'undefined') ? localStorage.getItem('qs_user_selected_locale') : null;
       if (manual !== 'en') {
@@ -2337,7 +2301,6 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
     this.currency.init(this.locale);
     await this.api.restoreSession();
 
-    // Check for pending pack from before login
     if (typeof window !== 'undefined') {
       const pending = sessionStorage.getItem('qs_pending_pack');
       if (pending && this.api.token() && this.packs.some(p => p.id === pending)) {
@@ -2346,7 +2309,6 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     }
 
-    // Deep link package auto-selection
     const packParam = this.route.snapshot.queryParamMap.get('pack');
     if (packParam && this.packs.some(p => p.id === packParam)) {
       if (this.api.token()) {
@@ -2642,7 +2604,6 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
     this.promoError.set('');
     this.promoInputText.set('');
 
-    // Pre-apply WELCOME10 if user is eligible for first-purchase promo
     if (this.isFirstPurchasePromoEligible) {
       this.appliedPromoCode.set('WELCOME10');
       this.appliedDiscountPercent.set(10);

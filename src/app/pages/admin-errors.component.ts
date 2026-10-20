@@ -12,7 +12,6 @@ type ErrorTab = 'client' | 'bugs' | 'parser';
   template: `
 <div class="a-card anim-in">
 
-  <!-- Tab bar -->
   <div class="a-tabs">
     <button class="a-tab" [class.active]="tab() === 'bugs'" (click)="tab.set('bugs')">
       🐛 Zgłoszenia użytkowników
@@ -28,26 +27,22 @@ type ErrorTab = 'client' | 'bugs' | 'parser';
     </button>
   </div>
 
-  <!-- Filters / actions bar -->
   <div class="a-filters">
     <div class="a-search-wrap">
       <span class="a-search-ico">🔍</span>
       <input class="a-input" [(ngModel)]="search" (ngModelChange)="onSearch()" placeholder="Szukaj..." style="padding-left:34px">
     </div>
 
-    <!-- Bug filters -->
     <ng-container *ngIf="tab() === 'bugs'">
       <button class="a-btn a-btn-secondary a-btn-sm" (click)="markAllBugsRead()" *ngIf="unreadBugCount() > 0" [disabled]="loading()">
         ✓ Oznacz wszystkie ({{ unreadBugCount() }})
       </button>
     </ng-container>
 
-    <!-- Client error filters -->
     <ng-container *ngIf="tab() === 'client'">
       <span class="t3 sm">łącznie: {{ clientTotal() }}</span>
     </ng-container>
 
-    <!-- Parser filters -->
     <ng-container *ngIf="tab() === 'parser'">
       <select class="a-select" style="max-width:140px" [(ngModel)]="parserOutcomeFilter" (ngModelChange)="loadParser()">
         <option value="">Wszystkie</option>
@@ -64,7 +59,6 @@ type ErrorTab = 'client' | 'bugs' | 'parser';
     <button class="a-btn a-btn-ghost a-btn-sm" (click)="loadAll()" [disabled]="loading()">🔄</button>
   </div>
 
-  <!-- ── BUG REPORTS ── -->
   <div *ngIf="tab() === 'bugs'">
     <div *ngIf="loading() && !bugList().length" style="padding:40px;text-align:center;color:var(--text-3)">Ładowanie...</div>
 
@@ -104,7 +98,6 @@ type ErrorTab = 'client' | 'bugs' | 'parser';
     </ng-template>
   </div>
 
-  <!-- ── CLIENT ERRORS ── -->
   <div *ngIf="tab() === 'client'">
     <div *ngIf="loading() && !clientList().length" style="padding:40px;text-align:center;color:var(--text-3)">Ładowanie...</div>
 
@@ -135,7 +128,6 @@ type ErrorTab = 'client' | 'bugs' | 'parser';
       <div class="a-table-empty">{{ search ? 'Brak wyników.' : 'Brak błędów klienta. 🎉' }}</div>
     </ng-template>
 
-    <!-- Pagination -->
     <div class="a-pager" *ngIf="clientTotal() > clientPageSize">
       <span class="t3 sm">{{ clientPage() * clientPageSize - clientPageSize + 1 }}–{{ Math.min(clientPage() * clientPageSize, clientTotal()) }} z {{ clientTotal() }}</span>
       <div class="a-pager-btns">
@@ -145,7 +137,6 @@ type ErrorTab = 'client' | 'bugs' | 'parser';
     </div>
   </div>
 
-  <!-- ── PARSER ERRORS ── -->
   <div *ngIf="tab() === 'parser'">
     <div *ngIf="loading() && !parserList().length" style="padding:40px;text-align:center;color:var(--text-3)">Ładowanie...</div>
 
@@ -175,7 +166,6 @@ type ErrorTab = 'client' | 'bugs' | 'parser';
       <div class="a-table-empty">{{ search ? 'Brak wyników.' : 'Brak błędów parsera dla tych filtrów.' }}</div>
     </ng-template>
 
-    <!-- Parser pagination -->
     <div class="a-pager" *ngIf="parserTotal() > parserPageSize">
       <span class="t3 sm">Strona {{ parserPage() }} z {{ Math.ceil(parserTotal() / parserPageSize) }}</span>
       <div class="a-pager-btns">
@@ -195,17 +185,14 @@ export class AdminErrorsComponent implements OnInit {
   loading  = signal(false);
   search   = '';
 
-  // Bug reports
   bugList  = signal<any[]>([]);
   unreadBugCount = signal(0);
 
-  // Client errors
   clientList  = signal<any[]>([]);
   clientTotal = signal(0);
   clientPage  = signal(1);
   clientPageSize = 50;
 
-  // Parser errors
   parserList  = signal<any[]>([]);
   parserTotal = signal(0);
   parserPage  = signal(1);

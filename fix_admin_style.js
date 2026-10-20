@@ -362,7 +362,6 @@ button {
 const file = 'src/app/pages/admin.component.ts';
 let code = fs.readFileSync(file, 'utf8');
 
-// Replace CSS
 const cssStart = '/* CSS */';
 const cssEnd = '</style>';
 const startIdx = code.indexOf(cssStart);
@@ -372,8 +371,6 @@ if (startIdx !== -1 && endIdx !== -1) {
   code = code.substring(0, startIdx) + css + "\n  " + code.substring(endIdx);
 }
 
-// Add user email chip to Parser Events
-// Search for <span class="chip">{{ formatDate(event.createdAt) }}</span> in parser tab
 code = code.replace(
   /<span class="chip">{{ formatDate\(event\.createdAt\) }}<\/span>/g,
   '<span class="chip clickable" *ngIf="event.userEmail || event.email" (click)="openUserHistory({id: event.userId, email: event.userEmail || event.email})">👤 {{ event.userEmail || event.email }}</span>\n                      <span class="chip">{{ formatDate(event.createdAt) }}</span>'

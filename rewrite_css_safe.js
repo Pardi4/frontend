@@ -88,14 +88,11 @@ const modernVars = `:host {
     }
 `;
 
-// replace existing :host { ... }
 styles = styles.replace(/:host\s*{[\s\S]*?(?=\.admin-page)/, modernVars);
 
-// Replace button colors to match light theme
 styles = styles.replace(/background:\s*rgba\(0,\s*229,\s*255,\s*0\.1\)/g, 'background: #eff6ff');
 styles = styles.replace(/color:\s*#00e5ff/g, 'color: #2563eb');
 styles = styles.replace(/border:\s*1px\s*solid\s*rgba\(0,\s*229,\s*255,\s*0\.2\)/g, 'border: 1px solid #bfdbfe');
-// Hover
 styles = styles.replace(/background:\s*rgba\(0,\s*229,\s*255,\s*0\.2\)/g, 'background: #dbeafe');
 
 let code = fs.readFileSync('src/app/pages/admin.component.ts', 'utf8');

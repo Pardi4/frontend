@@ -4,7 +4,6 @@ file_path = 'h:/Quizonator/Rozszerzenie 2.0/frontend/src/app/pages/mobile-instal
 with open(file_path, 'r', encoding='utf-8') as f:
     content = f.read()
 
-# Replace the mockMenuCopy with get t() 
 t_getter = r'''  get t() {
     const texts: Record<string, any> = {
       en: {
@@ -399,7 +398,6 @@ t_getter = r'''  get t() {
 
 content = re.sub(r'  get mockMenuCopy\(\) \{[\s\S]*?\}\n', t_getter, content)
 
-# Now substitute all template usage with t.propertyName
 replacements = {
     r"\{\{\s*isPl\s*\?\s*'Aplikacja Mobilna'\s*:\s*'Mobile Extension'\s*\}\}": "{{ t.eyebrow }}",
     r"\{\{\s*isPl\s*\?\s*'QuizSolver na Twoim Telefonie'\s*:\s*'QuizSolver on Your Phone'\s*\}\}": "{{ t.title }}",

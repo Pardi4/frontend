@@ -477,7 +477,6 @@ function normalizeLangCode(val: string | null | undefined): string {
 <div class="u-page" [attr.dir]="isRtl() ? 'rtl' : 'ltr'">
   <div class="u-container">
 
-    <!-- Brand Header -->
     <header class="u-header">
       <a [routerLink]="homeLink()" class="u-logo">
         <span class="u-logo-mark">QS</span>
@@ -485,10 +484,8 @@ function normalizeLangCode(val: string | null | undefined): string {
       </a>
     </header>
 
-    <!-- Main Card -->
     <div class="u-card">
 
-      <!-- Form View -->
       <div *ngIf="!submitted()">
         <div class="u-head">
           <div class="u-head-icon">😢</div>
@@ -502,7 +499,6 @@ function normalizeLangCode(val: string | null | undefined): string {
 
         <form (ngSubmit)="submit()" class="u-form">
 
-          <!-- Reason checkboxes -->
           <div class="u-field">
             <label class="u-label">
               {{ t().reasonsLabel }}
@@ -518,7 +514,6 @@ function normalizeLangCode(val: string | null | undefined): string {
                   </span>
                 </label>
 
-                <!-- Dedicated URL / Platform input appearing directly under the 'not_working' option -->
                 <div class="u-platform-box anim-slide" *ngIf="r.key === 'not_working' && selectedReasons['not_working']">
                   <label class="u-platform-label">
                     <span class="u-platform-icon">🌐</span>
@@ -536,7 +531,6 @@ function normalizeLangCode(val: string | null | undefined): string {
             </div>
           </div>
 
-          <!-- Feedback textarea -->
           <div class="u-field">
             <label class="u-label">
               {{ t().feedbackLabel }}
@@ -549,7 +543,6 @@ function normalizeLangCode(val: string | null | undefined): string {
               [placeholder]="t().feedbackPlaceholder"></textarea>
           </div>
 
-          <!-- Optional Email -->
           <div class="u-field">
             <label class="u-label">
               {{ t().emailLabel }}
@@ -565,12 +558,10 @@ function normalizeLangCode(val: string | null | undefined): string {
               [placeholder]="t().emailPlaceholder">
           </div>
 
-          <!-- Error Alert -->
           <div *ngIf="errorMessage()" class="u-alert-err">
             {{ errorMessage() }}
           </div>
 
-          <!-- Action Buttons -->
           <div class="u-actions">
             <button
               type="submit"
@@ -586,7 +577,6 @@ function normalizeLangCode(val: string | null | undefined): string {
         </form>
       </div>
 
-      <!-- Success Thank You View -->
       <div *ngIf="submitted()" class="u-success anim-in">
         <div class="u-success-icon">💚</div>
         <h2 class="u-title">
@@ -608,7 +598,6 @@ function normalizeLangCode(val: string | null | undefined): string {
 
     </div>
 
-    <!-- Minimal footer -->
     <footer class="u-footer">
       <span class="xs t3">&copy; {{ year }} QuizSolver. {{ t().rights }}</span>
     </footer>

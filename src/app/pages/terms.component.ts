@@ -12,7 +12,6 @@ import { ShellComponent } from './shell.component';
     <qs-shell [locale]="locale" pageKey="terms">
       <div class="container terms-page">
 
-        <!-- ================= HERO SECTION ================= -->
         <header class="terms-hero">
           <div class="terms-hero-badge">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -29,7 +28,6 @@ import { ShellComponent } from './shell.component';
             {{ data.subtitle }}
           </p>
 
-          <!-- Action bar & Metadata -->
           <div class="hero-meta-bar">
             <div class="meta-pill">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -73,7 +71,6 @@ import { ShellComponent } from './shell.component';
           </div>
         </header>
 
-        <!-- ================= EXECUTIVE HIGHLIGHTS ================= -->
         <section class="highlights-section">
           <div class="highlights-header">
             <span class="eyebrow">{{ locale === 'pl' ? 'W skrócie' : 'At a glance' }}</span>
@@ -111,7 +108,6 @@ import { ShellComponent } from './shell.component';
           </div>
         </section>
 
-        <!-- ================= SEARCH BAR ================= -->
         <div class="terms-search-wrapper">
           <div class="search-input-box glass">
             <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -134,7 +130,6 @@ import { ShellComponent } from './shell.component';
           </div>
         </div>
 
-        <!-- ================= MOBILE STICKY NAV ================= -->
         <nav class="mobile-section-nav" aria-label="Nawigacja po sekcjach">
           <div class="mobile-nav-scroller">
             <button
@@ -149,10 +144,8 @@ import { ShellComponent } from './shell.component';
           </div>
         </nav>
 
-        <!-- ================= MAIN TWO-COLUMN CONTENT ================= -->
         <div class="terms-main-grid">
 
-          <!-- STICKY TABLE OF CONTENTS -->
           <aside class="terms-sidebar">
             <div class="sidebar-sticky-wrapper">
               <div class="toc-card glass">
@@ -183,7 +176,6 @@ import { ShellComponent } from './shell.component';
                 </nav>
               </div>
 
-              <!-- Sidebar Support Callout -->
               <div class="support-card glass">
                 <div class="sc-badge">
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -216,7 +208,6 @@ import { ShellComponent } from './shell.component';
             </div>
           </aside>
 
-          <!-- SECTIONS LIST -->
           <main class="terms-sections-list">
             <article
               *ngFor="let section of data.sections; let i = index"
@@ -225,7 +216,6 @@ import { ShellComponent } from './shell.component';
               [class.highlight-search]="searchQuery && isSectionMatching(section)"
               [class.dimmed-search]="searchQuery && !isSectionMatching(section)"
             >
-              <!-- Card Header -->
               <header class="section-card-header">
                 <div class="section-pill-tag">
                   <span>§ {{ i + 1 }}</span>
@@ -247,7 +237,6 @@ import { ShellComponent } from './shell.component';
                 </button>
               </header>
 
-              <!-- Unified Numbered Clauses List: 1., 2., 3., 4. -->
               <div *ngIf="section.items && section.items.length > 0" class="clauses-container">
                 <div
                   *ngFor="let item of section.items"
@@ -257,12 +246,10 @@ import { ShellComponent } from './shell.component';
                     'clause-sub': parseClause(item).type === 'subclause'
                   }"
                 >
-                  <!-- Number column: 1., 2., 3. or a), b) -->
                   <div class="clause-num-col">
                     <span class="clause-num">{{ parseClause(item).num }}</span>
                   </div>
 
-                  <!-- Text content column -->
                   <div class="clause-content-col">
                     <strong *ngIf="parseClause(item).prefix" class="clause-prefix">{{ parseClause(item).prefix }}</strong>
                     <span *ngIf="parseClause(item).text" class="clause-text">{{ parseClause(item).prefix ? ' ' + parseClause(item).text : parseClause(item).text }}</span>
@@ -270,7 +257,6 @@ import { ShellComponent } from './shell.component';
                 </div>
               </div>
 
-              <!-- Card Bottom Utility -->
               <footer class="section-card-footer">
                 <button type="button" class="back-to-top-btn" (click)="scrollToTop()">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -285,7 +271,6 @@ import { ShellComponent } from './shell.component';
 
         </div>
 
-        <!-- ================= BOTTOM CONTACT CALLOUT ================= -->
         <section class="terms-bottom-banner glass">
           <div class="tbb-content">
             <span class="eyebrow">{{ locale === 'pl' ? 'Wsparcie prawne i techniczne' : 'Legal & Technical Support' }}</span>
@@ -1064,7 +1049,6 @@ export class TermsComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     if (typeof window === 'undefined' || typeof IntersectionObserver === 'undefined') return;
 
-    // Observe active section when scrolling
     const observer = new IntersectionObserver((entries) => {
       for (const entry of entries) {
         if (entry.isIntersecting) {
@@ -1156,7 +1140,6 @@ export class TermsComponent implements OnInit, AfterViewInit {
   } {
     const trimmed = item.trim();
 
-    // 1) Match numbered clause: e.g. "1. ", "2. ", "10. "
     const numMatch = trimmed.match(/^(\d+\.)\s*(.*)$/);
     if (numMatch) {
       const num = numMatch[1];
@@ -1172,7 +1155,6 @@ export class TermsComponent implements OnInit, AfterViewInit {
       return { type: 'numbered', num, text: rest };
     }
 
-    // 2) Match subclause: e.g. "a) ", "b) "
     const subMatch = trimmed.match(/^([a-z]\))\s*(.*)$/i);
     if (subMatch) {
       const num = subMatch[1];

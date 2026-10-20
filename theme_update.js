@@ -31,7 +31,6 @@ const darkTheme = `:host {
 
 code = code.replace(lightTheme, darkTheme);
 
-// Also need to fix background overrides from my previous script
 const oldStyles1 = 'background: #ffffff !important;';
 const newStyles1 = 'background: #18181b !important;';
 code = code.replace(oldStyles1, newStyles1);

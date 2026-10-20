@@ -2,19 +2,16 @@ const fs = require('fs');
 
 let code = fs.readFileSync('src/app/pages/admin.component.ts', 'utf8');
 
-// 1. Fix Users table
 code = code.replace(
   '<button type="button" class="link-button primary-link" (click)="openUserHistory(user)">{{ user.email }}</button>\n                        <span>{{ user.displayName || tr(\'noDisplayName\') }}</span>',
   '<div style="display: flex; flex-direction: column; gap: 4px; align-items: flex-start;">\n                          <button type="button" class="link-button primary-link" (click)="openUserHistory(user)" style="font-weight: 600; font-size: 14px; padding: 0;">{{ user.email }}</button>\n                          <span style="font-size: 13px; color: var(--text-muted);">{{ user.displayName || tr(\'noDisplayName\') }}</span>\n                        </div>'
 );
 
-// 2. Fix Parser Clickable Email
 code = code.replace(
   '<div class="parser-event-meta">\n                        <span>{{ formatPercent(event.confidence || 0) }}</span>',
   '<div class="parser-event-meta">\n                        <button type="button" class="link-button primary-link" *ngIf="event.userId || event.email" (click)="openUserHistory({id: event.userId, email: event.email || event.userId})" style="font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 4px; padding: 0;">\n                          👤 {{ event.email || event.userId }}\n                        </button>\n                        <span>{{ formatPercent(event.confidence || 0) }}</span>'
 );
 
-// 3. Extract Styles Block properly
 const stylesStartTag = '  styles: [`';
 const stylesEndTag = '  `]';
 const startIdx = code.indexOf(stylesStartTag);
@@ -27,7 +24,6 @@ if (startIdx === -1 || endIdx === -1) {
 
 let styles = code.substring(startIdx + stylesStartTag.length, endIdx);
 
-// Apply Professional Theme overwrites
 const modernVars = `
     :host {
       --bg-primary: #f8fafc;
@@ -116,14 +112,12 @@ const modernVars = `
     }
 `;
 
-// replace existing :host { ... }
 styles = styles.replace(/:host\s*{[\s\S]*?(?=\.admin-page)/, modernVars);
 
-// Replace button colors to match light theme
 styles = styles.replace(/background:\s*rgba\(0,\s*229,\s*255,\s*0\.1\)/g, 'background: #eff6ff');
 styles = styles.replace(/color:\s*#00e5ff/g, 'color: #2563eb');
 styles = styles.replace(/border:\s*1px\s*solid\s*rgba\(0,\s*229,\s*255,\s*0\.2\)/g, 'border: 1px solid #bfdbfe');
-styles = styles.replace(/background:\s*rgba\(0,\s*229,\s*255,\s*0\.2\)/g, 'background: #dbeafe'); // Hover
+styles = styles.replace(/background:\s*rgba\(0,\s*229,\s*255,\s*0\.2\)/g, 'background: #dbeafe');
 
 const finalCode = code.substring(0, startIdx + stylesStartTag.length) + "\n" + styles + "\n" + code.substring(endIdx);
 fs.writeFileSync('src/app/pages/admin.component.ts', finalCode);

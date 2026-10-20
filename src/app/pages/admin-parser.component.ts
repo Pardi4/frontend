@@ -10,7 +10,6 @@ import { AdminComponent } from './admin.component';
   template: `
 <div class="a-section anim-in">
 
-  <!-- ── Summary cards ── -->
   <div class="a-card" *ngIf="health()">
     <div class="a-card-header">
       <div>
@@ -63,7 +62,6 @@ import { AdminComponent } from './admin.component';
     </div>
   </div>
 
-  <!-- ── Platforms table (click to expand) ── -->
   <div class="a-card" *ngIf="health().platforms?.length">
     <div class="a-card-header">
       <div class="a-card-title">📊 Analityka platform</div>
@@ -85,7 +83,6 @@ import { AdminComponent } from './admin.component';
         </thead>
         <tbody>
           <ng-container *ngFor="let pl of health().platforms">
-            <!-- Row -->
             <tr style="cursor:pointer" (click)="togglePlatform(pl.platform)"
               [style.background]="selectedPlatform() === pl.platform ? 'var(--accent-bg)' : ''">
               <td>
@@ -108,7 +105,6 @@ import { AdminComponent } from './admin.component';
               <td class="xs t3">{{ p.formatDate(pl.lastSeenAt) }}</td>
             </tr>
 
-            <!-- Expanded platform detail -->
             <tr *ngIf="selectedPlatform() === pl.platform">
               <td colspan="8" style="padding:0;background:var(--surface-2)">
                 <div style="padding:16px 20px;animation:aSlideUp 180ms ease">
@@ -139,7 +135,6 @@ import { AdminComponent } from './admin.component';
                     </div>
                   </div>
 
-                  <!-- Problem groups for this platform -->
                   <ng-container *ngIf="platformProblems(pl.platform) as problems">
                     <div *ngIf="problems.length" style="margin-top:4px">
                       <div class="xs t3 bold" style="text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">
@@ -158,7 +153,6 @@ import { AdminComponent } from './admin.component';
                     </div>
                   </ng-container>
 
-                  <!-- Quick filter button -->
                   <div style="margin-top:12px">
                     <button class="a-btn a-btn-secondary a-btn-sm" (click)="filterByPlatform(pl.platform)">
                       📋 Pokaż eventy tej platformy →
@@ -173,7 +167,6 @@ import { AdminComponent } from './admin.component';
     </div>
   </div>
 
-  <!-- ── Problem groups ── -->
   <div class="a-card" *ngIf="health().problemGroups?.length">
     <div class="a-card-header">
       <div class="a-card-title">⚠️ Grupy problemów</div>
@@ -199,7 +192,6 @@ import { AdminComponent } from './admin.component';
     </div>
   </div>
 
-  <!-- ── Events log ── -->
   <div class="a-card">
     <div class="a-card-header">
       <div>
@@ -208,7 +200,6 @@ import { AdminComponent } from './admin.component';
       </div>
     </div>
 
-    <!-- Filters -->
     <div class="a-filters">
       <div class="a-search-wrap" style="flex:1;min-width:180px">
         <span class="a-search-ico">🔍</span>
@@ -232,7 +223,6 @@ import { AdminComponent } from './admin.component';
       <button class="a-btn a-btn-danger a-btn-sm" (click)="clearFilteredEvents()" *ngIf="evSearch || evOutcome || evPlatform" [disabled]="evLoading()">🗑 Usuń filtr</button>
     </div>
 
-    <!-- Events -->
     <div *ngIf="evLoading()" style="padding:32px;text-align:center;color:var(--text-3)">Ładowanie...</div>
 
     <div *ngIf="!evLoading() && !events().length" class="a-table-empty">Brak eventów dla tych filtrów.</div>
@@ -245,7 +235,6 @@ import { AdminComponent } from './admin.component';
         [style.background]="selectedEvent()?.id === ev.id ? 'rgba(99,102,241,.06)' : ''"
         (click)="toggleEvent(ev)">
 
-        <!-- Summary row -->
         <div class="a-err-meta">
           <div style="flex:1;min-width:0">
             <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:4px">
@@ -266,7 +255,6 @@ import { AdminComponent } from './admin.component';
           </div>
         </div>
 
-        <!-- Expanded detail -->
         <div *ngIf="selectedEvent()?.id === ev.id" class="a-q-expand" (click)="$event.stopPropagation()">
           <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-bottom:14px">
             <div class="a-hcard">
@@ -297,13 +285,11 @@ import { AdminComponent } from './admin.component';
             </div>
           </div>
 
-          <!-- URL -->
           <div *ngIf="ev.url" style="margin-bottom:12px">
             <div class="a-label" style="margin-bottom:5px">URL strony</div>
             <a [href]="ev.url" target="_blank" rel="noopener" class="a-source-link">🔗 {{ ev.url }}</a>
           </div>
 
-          <!-- Hostname + reason -->
           <div *ngIf="ev.hostname || ev.reason" style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:12px">
             <div *ngIf="ev.hostname" style="flex:1;min-width:140px">
               <div class="a-label" style="margin-bottom:4px">Hostname</div>
@@ -315,7 +301,6 @@ import { AdminComponent } from './admin.component';
             </div>
           </div>
 
-          <!-- User info -->
           <div *ngIf="ev.email || ev.userId" style="margin-bottom:12px;padding:10px 14px;background:var(--surface-3);border-radius:var(--radius-sm)">
             <div class="xs t3 bold" style="text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px">Użytkownik</div>
             <div style="display:flex;gap:12px;flex-wrap:wrap;font-size:12px">
@@ -324,25 +309,21 @@ import { AdminComponent } from './admin.component';
             </div>
           </div>
 
-          <!-- HTML snippet -->
           <div *ngIf="ev.htmlSnippet" style="margin-bottom:10px">
             <div class="a-label" style="margin-bottom:5px">HTML Snippet</div>
             <div class="a-stack" style="max-height:180px">{{ ev.htmlSnippet }}</div>
           </div>
 
-          <!-- Raw body text -->
           <details class="a-det" *ngIf="ev.bodyText" style="margin-bottom:10px">
             <summary>Body text ({{ ev.bodyText.length }} znaków)</summary>
             <div class="a-stack" style="margin-top:8px;max-height:200px">{{ ev.bodyText | slice:0:3000 }}</div>
           </details>
 
-          <!-- Timestamps -->
           <div style="display:flex;gap:16px;font-size:11px;color:var(--text-3);flex-wrap:wrap;margin-top:4px">
             <div>Kiedy: <strong>{{ p.formatDate(ev.createdAt, true) }}</strong></div>
             <div *ngIf="ev.processingTimeMs">Czas parsowania: <strong>{{ ev.processingTimeMs }}ms</strong></div>
           </div>
 
-          <!-- Actions -->
           <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">
             <button class="a-btn a-btn-secondary a-btn-sm" (click)="copyUrl(ev)" *ngIf="ev.url">
               📋 Kopiuj URL
@@ -404,7 +385,7 @@ export class AdminParserComponent implements OnInit {
       if (!res.ok) return;
       const data = await res.json();
       this.versions.set(Array.isArray(data.versions) ? data.versions : []);
-    } catch { /* silent */ }
+    } catch {  }
   }
 
   async downloadZip() {
@@ -462,7 +443,6 @@ export class AdminParserComponent implements OnInit {
     this.evLoading.set(false);
   }
 
-  // ── Interact ──────────────────────────────────────
   togglePlatform(name: string) {
     this.selectedPlatform.set(this.selectedPlatform() === name ? null : name);
   }
@@ -476,7 +456,6 @@ export class AdminParserComponent implements OnInit {
     this.selectedPlatform.set(null);
     this.evPage.set(1);
     this.loadEvents();
-    // Scroll to events log
     setTimeout(() => document.querySelector('.a-filters')?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
   }
 
@@ -509,7 +488,6 @@ export class AdminParserComponent implements OnInit {
     navigator.clipboard.writeText(ev.url).then(() => this.p.toast('Skopiowano URL', 'success'));
   }
 
-  // ── Helpers ───────────────────────────────────────
   platformProblems(platform: string) {
     return (this.health().problemGroups || []).filter((pg: any) => pg.platform === platform);
   }

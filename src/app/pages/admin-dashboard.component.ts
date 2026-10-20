@@ -10,7 +10,6 @@ import { AdminComponent } from './admin.component';
   template: `
 <div class="a-section anim-in">
 
-  <!-- ── Priority Queue + Stats ── -->
   <div class="a-grid-2">
     <div class="a-card">
       <div class="a-card-header">
@@ -54,11 +53,7 @@ import { AdminComponent } from './admin.component';
     </div>
   </div>
 
-  <!-- ══════════════════════════════════════════
-       CHART CARD
-       ══════════════════════════════════════════ -->
   <div class="a-card">
-    <!-- Chart header -->
     <div class="a-card-header" style="flex-wrap:wrap;gap:10px">
       <div>
         <div class="a-card-title">📈 Analityka przychodów i rejestracji</div>
@@ -67,11 +62,9 @@ import { AdminComponent } from './admin.component';
         </div>
       </div>
       <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
-        <!-- Range selector -->
         <div class="a-chart-toggle">
           <button *ngFor="let r of ranges" [class.on]="chartRange === r.value" (click)="setRange(r.value)">{{ r.label }}</button>
         </div>
-        <!-- Type toggle -->
         <div class="a-chart-toggle">
           <button [class.on]="chartType === 'line'" (click)="setType('line')">〰 Linia</button>
           <button [class.on]="chartType === 'bar'"  (click)="setType('bar')">▊ Słupki</button>
@@ -80,7 +73,6 @@ import { AdminComponent } from './admin.component';
       </div>
     </div>
 
-    <!-- Period summary mini-cards -->
     <div *ngIf="!chartLoading() && chartData()" style="padding:0 20px 12px;display:flex;gap:10px;flex-wrap:wrap">
       <div *ngFor="let s of periodSummary()" style="flex:1;min-width:120px;padding:10px 14px;background:var(--surface-2);border-radius:var(--radius-sm);border:1px solid var(--border)">
         <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text-3);margin-bottom:4px">{{ s.label }}</div>
@@ -89,7 +81,6 @@ import { AdminComponent } from './admin.component';
       </div>
     </div>
 
-    <!-- Dataset toggles -->
     <div *ngIf="!chartLoading() && chartData()" style="padding:0 20px 10px;display:flex;gap:8px;align-items:center;flex-wrap:wrap">
       <button class="a-ds-toggle" [class.on-rev]="showLemon" (click)="toggleDataset('lemon')">
         <span class="a-ds-dot" style="background:#22d3ee"></span> 🍋 Lemon ($)
@@ -108,7 +99,6 @@ import { AdminComponent } from './admin.component';
       </button>
     </div>
 
-    <!-- Canvas -->
     <div class="a-card-body" style="padding:0 16px 16px">
       <div *ngIf="chartLoading()" style="height:280px;display:flex;align-items:center;justify-content:center;color:var(--text-3)">
         <div style="text-align:center">
@@ -124,7 +114,6 @@ import { AdminComponent } from './admin.component';
       </div>
     </div>
 
-    <!-- Hover tooltip (custom day detail) -->
     <div *ngIf="hoveredDay()" style="padding:10px 20px;border-top:1px solid var(--border);display:flex;gap:24px;font-size:12px;flex-wrap:wrap">
       <span class="bold t2">{{ hoveredDay()?.label }}</span>
       <span class="tc" *ngIf="showLemon">🍋 Lemon: {{ hoveredDay()?.lemonRevenue }}</span>
@@ -135,7 +124,6 @@ import { AdminComponent } from './admin.component';
     </div>
   </div>
 
-  <!-- Conversion funnel -->
   <div class="a-card">
     <div class="a-card-header" style="flex-wrap:wrap;gap:10px">
       <div>
@@ -180,7 +168,6 @@ import { AdminComponent } from './admin.component';
       </ng-container>
     </div>
   </div>
-  <!-- ── System health ── -->
   <div class="a-card">
     <div class="a-card-header">
       <div class="a-card-title">🖥️ Stan systemu</div>
@@ -196,7 +183,6 @@ import { AdminComponent } from './admin.component';
     </div>
   </div>
 
-  <!-- ── Recent users ── -->
   <div class="a-card" *ngIf="recentUsers().length">
     <div class="a-card-header">
       <div class="a-card-title">🆕 Ostatnio zarejestrowane konta</div>
@@ -284,7 +270,6 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit, OnDestroy
   ngAfterViewInit(){ this.loadChart(); }
   ngOnDestroy()    { this.destroyChart(); }
 
-  // ── Data loaders ──────────────────────────────────
   async load() {
     this.loading.set(true);
     const [statsRes, healthRes] = await Promise.all([
@@ -297,7 +282,6 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit, OnDestroy
     this.loading.set(false);
   }
 
-  // ── Conversion funnel ─────────────────────────────
   funnel        = signal<any>(null);
   funnelLoading = signal(false);
   funnelDays    = 30;
@@ -307,7 +291,7 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit, OnDestroy
     try {
       const res = await this.p.api('/api/admin/funnel?days=' + this.funnelDays);
       if (res?.steps) this.funnel.set(res);
-    } catch { /* silent */ }
+    } catch {  }
     this.funnelLoading.set(false);
   }
 
@@ -315,7 +299,6 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit, OnDestroy
     return total ? Math.round((count / total) * 1000) / 10 : 0;
   }
 
-  /** % of users lost vs previous step; null when data is not monotonic (e.g. purchases before checkout tracking) */
   funnelDrop(steps: any[], i: number): number | null {
     const prev = steps[i - 1]?.count || 0;
     const cur = steps[i]?.count || 0;
@@ -337,11 +320,10 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit, OnDestroy
         this.buildRaw(res);
         setTimeout(() => this.renderChart(), 50);
       }
-    } catch { /* silent */ }
+    } catch {  }
     this.chartLoading.set(false);
   }
 
-  // ── Controls ──────────────────────────────────────
   setRange(n: number)        { this.chartRange = n; this.renderChart(); }
   setType(t: 'line' | 'bar') { this.chartType  = t; this.renderChart(); }
 
@@ -355,7 +337,6 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit, OnDestroy
     this.updateDatasets();
   }
 
-  // ── Period stats ──────────────────────────────────
   periodLabel() {
     return `Ostatnie ${this.chartRange} dni`;
   }
@@ -431,9 +412,7 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit, OnDestroy
     ];
   }
 
-  // ── Build raw data ─────────────────────────────────
   private buildRaw(data: any) {
-    // Always build full 30-day spine
     const today = new Date();
     this.rawLabels       = [];
     this.rawRevenue      = [];
@@ -463,7 +442,6 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit, OnDestroy
     }
   }
 
-  // ── Render ─────────────────────────────────────────
   renderChart() {
     if (!this.chartData()) return;
     const canvas = this.chartCanvas?.nativeElement;
@@ -587,7 +565,6 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit, OnDestroy
                   const day = s.labels[idx];
                   const d = new Date(day);
                   const label = d.toLocaleDateString('pl-PL', { weekday: 'long', day: 'numeric', month: 'long' });
-                  // Update hovered day signal
                   setTimeout(() => this.hoveredDay.set({
                     label,
                     lemonRevenue: this.p.formatMoney(s.revenueLemon[idx] || 0),
@@ -660,7 +637,6 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit, OnDestroy
   }
 
   private updateDatasets() {
-    // Faster than full re-render — just toggle visibility
     if (!this.chartInstance) { this.renderChart(); return; }
     const meta0 = this.chartInstance.getDatasetMeta(0);
     this.destroyChart();
@@ -671,7 +647,6 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit, OnDestroy
     if (this.chartInstance) { this.chartInstance.destroy(); this.chartInstance = null; }
   }
 
-  // ── Helpers ───────────────────────────────────────
   shortDate(iso: string): string {
     const d = new Date(iso);
     return d.toLocaleDateString('pl-PL', { day: 'numeric', month: 'short' });

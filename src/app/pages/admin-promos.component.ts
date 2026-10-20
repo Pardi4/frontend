@@ -26,7 +26,6 @@ export interface PromoItem {
   template: `
 <div class="a-section anim-in">
 
-  <!-- Header Card -->
   <div class="a-card">
     <div class="a-card-header">
       <div>
@@ -36,7 +35,6 @@ export interface PromoItem {
       <button class="a-btn a-btn-ghost a-btn-sm" (click)="load()" [disabled]="loading()">🔄 Odśwież</button>
     </div>
 
-    <!-- Stats strip -->
     <div style="padding:10px 20px;border-bottom:1px solid var(--border);display:flex;gap:24px;font-size:12px;color:var(--text-3);flex-wrap:wrap">
       <span>Łącznie kodów: <strong>{{ promos().length }}</strong></span>
       <span>Aktywne: <strong class="tc">{{ activeCount() }}</strong></span>
@@ -44,7 +42,6 @@ export interface PromoItem {
     </div>
   </div>
 
-  <!-- Create Promo Form Card -->
   <div class="a-card">
     <div class="a-card-header">
       <div class="a-card-title">➕ Nowy kod rabatowy</div>
@@ -82,7 +79,6 @@ export interface PromoItem {
           <input class="a-input" [(ngModel)]="newDescription" placeholder="np. Promocja jesienna dla studentów">
         </div>
 
-        <!-- Platform checkboxes (WYBÓR PLATFORM) -->
         <div style="padding:12px;background:var(--surface-2);border:1px solid var(--border);border-radius:var(--radius-sm)">
           <div class="a-label" style="margin-bottom:8px">Platformy płatności (wybierz gdzie kod ma obowiązywać):</div>
           <div style="display:flex;gap:20px;flex-wrap:wrap">
@@ -100,7 +96,6 @@ export interface PromoItem {
           </div>
         </div>
 
-        <!-- Additional options -->
         <div style="display:flex;gap:16px;align-items:center">
           <label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer">
             <input type="checkbox" [(ngModel)]="newFirstPurchaseOnly">
@@ -108,7 +103,6 @@ export interface PromoItem {
           </label>
         </div>
 
-        <!-- Action button -->
         <div style="display:flex;justify-content:flex-end">
           <button
             class="a-btn a-btn-primary"
@@ -122,7 +116,6 @@ export interface PromoItem {
     </div>
   </div>
 
-  <!-- Promos Table Card -->
   <div class="a-card">
     <div class="a-card-header">
       <div class="a-card-title">📋 Lista kodów rabatowych</div>
@@ -225,7 +218,6 @@ export class AdminPromosComponent implements OnInit {
   creating  = signal(false);
   promos    = signal<PromoItem[]>([]);
 
-  // Form fields
   newCode              = '';
   newPercent           = 10;
   newMaxUses           = 0;

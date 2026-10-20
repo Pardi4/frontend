@@ -20,7 +20,6 @@ import { AdminComponent } from './admin.component';
       </div>
     </div>
 
-    <!-- Stats strip -->
     <div style="padding:10px 20px;border-bottom:1px solid var(--border);display:flex;gap:20px;font-size:12px;color:var(--text-3);flex-wrap:wrap;align-items:center">
       <span>Łącznie: <strong>{{ purchases().length }}</strong> transakcji</span>
       <span>🍋 Lemon Squeezy: <strong class="tc">{{ lemonRevenue() }}</strong> ({{ lemonCount() }})</span>

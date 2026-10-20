@@ -269,13 +269,10 @@ app.use((req, res, next) => {
     return res.redirect(301, cleanUrl);
   }
 
-  // Automatic locale detection for real users (bots are never redirected to preserve SEO)
   if (!isSearchBot(req.headers['user-agent'])) {
     const cookieHeader = String(req.headers['cookie'] || '');
-    // Respect explicit user selection if already stored in cookie
     if (!cookieHeader.includes('qs_user_selected_locale=')) {
       const path = req.path.replace(/\/+$/, '') || '/';
-      // Only auto-redirect on default entry pages without prefix (e.g. / or /credits or /pricing)
       if (path === '/' || path === '/credits' || path === '/pricing') {
         const preferredLocale = parsePreferredLocale(req.headers['accept-language']);
         if (preferredLocale && preferredLocale !== 'en') {
@@ -298,21 +295,7 @@ app.use((req, res, next) => {
   next();
 });
 
-/**
- * Example Express Rest API endpoints can be defined here.
- * Uncomment and define endpoints as necessary.
- *
- * Example:
- * ```ts
- * app.get('/api/{*splat}', (req, res) => {
- *   // Handle API request
- * });
- * ```
- */
 
-/**
- * Serve static files from /browser
- */
 app.use(
   express.static(browserDistFolder, {
     maxAge: '1y',
@@ -321,9 +304,6 @@ app.use(
   }),
 );
 
-/**
- * Handle all other requests by rendering the Angular application.
- */
 app.use((req, res, next) => {
   angularApp
     .handle(req)
@@ -333,10 +313,6 @@ app.use((req, res, next) => {
     .catch(next);
 });
 
-/**
- * Start the server only when this module is the main entry point.
- * The server listens on the port defined by the `PORT` environment variable, or defaults to 4000.
- */
 if (isMainModule(import.meta.url)) {
   const port = process.env['PORT'] || 4000;
   app.listen(port, (error) => {
@@ -348,7 +324,4 @@ if (isMainModule(import.meta.url)) {
   });
 }
 
-/**
- * Request handler used by the Angular CLI (for dev-server and during build) or Firebase Cloud Functions.
- */
 export const reqHandler = createNodeRequestHandler(app);

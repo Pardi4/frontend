@@ -13,12 +13,8 @@ if (tStart === -1 || sStart === -1 || sEnd === -1) {
   
 }
 
-// --------------------------------------------------------
-// NEW HTML TEMPLATE
-// --------------------------------------------------------
 const newTemplate = `  template: \`
     <main class="admin-page-container" [class.is-auth]="isAuthed()">
-      <!-- LOGIN VIEW -->
       <section class="admin-login-wrapper" *ngIf="!isAuthed(); else adminApp">
         <div class="login-card glass-morphism anim-fade-in-up">
           <a class="brand-logo" href="/" aria-label="QuizSolver home">
@@ -52,11 +48,9 @@ const newTemplate = `  template: \`
         </div>
       </section>
 
-      <!-- ADMIN APP VIEW -->
       <ng-template #adminApp>
         <div class="admin-shell">
           
-          <!-- SIDEBAR -->
           <aside class="sidebar glass-panel">
             <div class="sidebar-top">
               <a class="brand-logo compact" href="/">
@@ -115,10 +109,8 @@ const newTemplate = `  template: \`
             </div>
           </aside>
 
-          <!-- MAIN CONTENT -->
           <main class="content-area">
             
-            <!-- HEADER -->
             <header class="top-header glass-panel">
               <div class="header-titles">
                 <span class="eyebrow">{{ tr('liveOperations') }}</span>
@@ -132,16 +124,13 @@ const newTemplate = `  template: \`
               </div>
             </header>
 
-            <!-- ALERTS -->
             <div class="global-alerts">
               <div class="alert-box error anim-fade-in-up" *ngIf="error()">{{ error() }}</div>
               <div class="alert-box success anim-fade-in-up" *ngIf="notice()">{{ notice() }}</div>
             </div>
 
-            <!-- DASHBOARD WIDGETS -->
             <div class="dashboard-widgets">
               
-              <!-- Priority Notices -->
               <section class="widget-card glass-panel priority-widget">
                 <header class="widget-header">
                   <div>
@@ -167,7 +156,6 @@ const newTemplate = `  template: \`
                 </div>
               </section>
 
-              <!-- Stats Grid -->
               <section class="widget-card glass-panel stats-widget">
                 <header class="widget-header">
                   <div>
@@ -186,7 +174,6 @@ const newTemplate = `  template: \`
               </section>
             </div>
 
-            <!-- TAB CONTENT: USERS -->
             <section class="tab-content anim-fade-in" *ngIf="activeTab() === 'users'">
               <div class="section-card glass-panel">
                 <div class="section-header">
@@ -275,7 +262,6 @@ const newTemplate = `  template: \`
               </div>
             </section>
 
-            <!-- TAB CONTENT: PURCHASES -->
             <section class="tab-content anim-fade-in" *ngIf="activeTab() === 'purchases'">
               <div class="section-card glass-panel">
                 <div class="section-header">
@@ -320,7 +306,6 @@ const newTemplate = `  template: \`
               </div>
             </section>
 
-            <!-- TAB CONTENT: BUGS -->
             <section class="tab-content anim-fade-in" *ngIf="activeTab() === 'bugs'">
               <div class="section-card glass-panel">
                 <div class="section-header">
@@ -371,7 +356,6 @@ const newTemplate = `  template: \`
               </div>
             </section>
 
-            <!-- TAB CONTENT: SUPPORT -->
             <section class="tab-content anim-fade-in support-tab" *ngIf="activeTab() === 'support'">
               
               <div class="support-stats-row">
@@ -382,7 +366,6 @@ const newTemplate = `  template: \`
               </div>
 
               <div class="support-layout">
-                <!-- Inbox List -->
                 <div class="inbox-list glass-panel">
                   <form class="inbox-search" (ngSubmit)="loadSupportMessages()">
                     <input type="search" name="supportSearch" [(ngModel)]="supportSearch" [placeholder]="tr('searchSupport')" class="glass-input">
@@ -414,7 +397,6 @@ const newTemplate = `  template: \`
                   </div>
                 </div>
 
-                <!-- Inbox Detail -->
                 <div class="inbox-detail glass-panel" *ngIf="selectedSupportMessage(); else emptyInboxDetail">
                   <header class="detail-header">
                     <div class="header-main">
@@ -499,7 +481,6 @@ const newTemplate = `  template: \`
               </div>
             </section>
 
-            <!-- TAB CONTENT: CACHE -->
             <section class="tab-content anim-fade-in cache-tab" *ngIf="activeTab() === 'cache'">
               <div class="section-card glass-panel">
                 <div class="section-header">
@@ -567,7 +548,6 @@ const newTemplate = `  template: \`
               </div>
             </section>
 
-            <!-- TAB CONTENT: PARSER -->
             <section class="tab-content anim-fade-in parser-tab" *ngIf="activeTab() === 'parser'">
               
               <div class="section-card glass-panel">
@@ -643,7 +623,6 @@ const newTemplate = `  template: \`
                 </div>
               </div>
 
-              <!-- Parser Reports (Bugs) -->
               <div class="section-card glass-panel" *ngIf="(parserHealth().recentBugReports || []).length">
                 <div class="section-header">
                   <h3>{{ tr('parserRecentReports') }}</h3>
@@ -664,7 +643,6 @@ const newTemplate = `  template: \`
               </div>
             </section>
 
-            <!-- TAB CONTENT: SYSTEM -->
             <section class="tab-content anim-fade-in system-tab" *ngIf="activeTab() === 'system'">
               
               <div class="section-card glass-panel">
@@ -741,7 +719,6 @@ const newTemplate = `  template: \`
                 </div>
               </div>
 
-              <!-- Credit Usage Log -->
               <div class="section-card glass-panel mt-4">
                 <div class="section-header">
                   <div>
@@ -835,8 +812,6 @@ const newTemplate = `  template: \`
         </div>
       </ng-template>
 
-      <!-- OVERLAYS & MODALS -->
-      <!-- Question Detail Modal -->
       <div class="modal-backdrop" *ngIf="selectedQuestion()" (click)="selectedQuestion.set(null)">
         <div class="modal-card glass-panel anim-zoom-in" (click)="$event.stopPropagation()">
           <header class="modal-header">
@@ -873,7 +848,6 @@ const newTemplate = `  template: \`
         </div>
       </div>
 
-      <!-- User History Modal -->
       <div class="modal-backdrop" *ngIf="selectedHistoryUser()" (click)="selectedHistoryUser.set(null)">
         <div class="modal-card large glass-panel anim-zoom-in" (click)="$event.stopPropagation()">
           <header class="modal-header">
@@ -934,7 +908,6 @@ const newTemplate = `  template: \`
         </div>
       </div>
 
-      <!-- Grant Credits Modal -->
       <div class="modal-backdrop" *ngIf="selectedGrantUser()" (click)="closeGrantModal()">
         <div class="modal-card small glass-panel anim-zoom-in" (click)="$event.stopPropagation()">
           <header class="modal-header">
@@ -960,7 +933,6 @@ const newTemplate = `  template: \`
         </div>
       </div>
 
-      <!-- Admin Notice Modal -->
       <div class="modal-backdrop" *ngIf="selectedNotice()" (click)="selectedNotice.set(null)">
         <div class="modal-card small glass-panel anim-zoom-in" (click)="$event.stopPropagation()">
           <header class="modal-header">
@@ -980,9 +952,6 @@ const newTemplate = `  template: \`
     </main>
   \`,`;
 
-// --------------------------------------------------------
-// NEW CSS STYLES
-// --------------------------------------------------------
 const newStyles = `  styles: [\`
     /* 
       QuizSolver Admin Redesign
@@ -1374,7 +1343,6 @@ const newStyles = `  styles: [\`
   \`]
 })`;
 
-// REPLACE LOGIC
 const updatedCode = adminCode.substring(0, tStart) + 
                     newTemplate + 
                     newStyles +

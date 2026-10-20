@@ -118,7 +118,6 @@ const TAB_DESCRIPTIONS: Record<AdminTab, string> = {
   styleUrls: ['./admin-new.css'],
   template: `
 <div class="admin-root">
-  <!-- ══════════ LOGIN ══════════ -->
   <ng-container *ngIf="!isAuthed(); else shell">
     <div class="a-login-wrap">
       <div class="a-login-card anim-in">
@@ -159,16 +158,12 @@ const TAB_DESCRIPTIONS: Record<AdminTab, string> = {
     </div>
   </ng-container>
 
-  <!-- ══════════ SHELL ══════════ -->
   <ng-template #shell>
-    <!-- Sidebar overlay (mobile) -->
     <div class="a-overlay" [class.on]="mobileSidebarOpen()" (click)="mobileSidebarOpen.set(false)"></div>
 
     <div class="a-shell">
-      <!-- ── Sidebar ── -->
       <aside class="a-sidebar" [class.mob-open]="mobileSidebarOpen()">
 
-        <!-- Brand -->
         <a class="a-sidebar-brand" href="/">
           <div class="a-brand-icon">QS</div>
           <div class="a-brand-text">
@@ -177,7 +172,6 @@ const TAB_DESCRIPTIONS: Record<AdminTab, string> = {
           </div>
         </a>
 
-        <!-- Quick alert badges -->
         <div class="a-sidebar-badges">
           <button class="a-qbadge" [class.hot]="bugCount() > 0 || clientErrorCount() > 0" (click)="navTo('errors')">
             <span class="a-qbadge-icon">⚠️</span>
@@ -196,7 +190,6 @@ const TAB_DESCRIPTIONS: Record<AdminTab, string> = {
           </button>
         </div>
 
-        <!-- Nav groups -->
         <nav class="a-nav" aria-label="Admin navigation">
           <ng-container *ngFor="let group of navGroups">
             <div class="a-nav-group-lbl">{{ group.label }}</div>
@@ -217,7 +210,6 @@ const TAB_DESCRIPTIONS: Record<AdminTab, string> = {
           </ng-container>
         </nav>
 
-        <!-- Footer -->
         <div class="a-sidebar-foot">
           <div class="a-sidebar-foot-row">
             <button class="a-locale-btn" [class.active]="locale() === 'pl'" (click)="setLocale('pl')">PL</button>
@@ -232,9 +224,7 @@ const TAB_DESCRIPTIONS: Record<AdminTab, string> = {
         </div>
       </aside>
 
-      <!-- ── Main ── -->
       <main class="a-main">
-        <!-- Header -->
         <header class="a-header">
           <div class="a-header-left">
             <button class="a-hamburger" type="button" (click)="mobileSidebarOpen.set(!mobileSidebarOpen())" aria-label="Menu">
@@ -254,7 +244,6 @@ const TAB_DESCRIPTIONS: Record<AdminTab, string> = {
           </div>
         </header>
 
-        <!-- Content -->
         <div class="a-content">
           <app-admin-dashboard  *ngIf="activeTab() === 'dashboard'"  [p]="this"></app-admin-dashboard>
           <app-admin-errors     *ngIf="activeTab() === 'errors'"     [p]="this"></app-admin-errors>
@@ -272,7 +261,6 @@ const TAB_DESCRIPTIONS: Record<AdminTab, string> = {
       </main>
     </div>
 
-    <!-- ── Mobile Bottom Nav ── -->
     <nav class="a-bnav" aria-label="Mobile navigation">
       <div class="a-bnav-inner">
         <button class="a-bnav-btn" [class.active]="activeTab() === 'dashboard'" (click)="navTo('dashboard')">
@@ -302,7 +290,6 @@ const TAB_DESCRIPTIONS: Record<AdminTab, string> = {
     </nav>
   </ng-template>
 
-  <!-- ── Toast notifications ── -->
   <div class="a-toasts" aria-live="polite">
     <div *ngFor="let t of toasts()" class="a-toast" [class]="t.type">
       <span class="a-toast-ico">
@@ -321,7 +308,6 @@ const TAB_DESCRIPTIONS: Record<AdminTab, string> = {
 })
 export class AdminComponent implements OnInit, OnDestroy {
 
-  // ── State ──────────────────────────────────────────
   isAuthed      = signal(false);
   loading       = signal(false);
   loginError    = signal('');
@@ -330,22 +316,18 @@ export class AdminComponent implements OnInit, OnDestroy {
   toasts        = signal<AdminToast[]>([]);
   locale        = signal<'pl'|'en'>('pl');
 
-  // Global badge counts
   bugCount         = signal(0);
   supportCount     = signal(0);
   clientErrorCount = signal(0);
   parserFailCount  = signal(0);
 
-  // Global stats (shared with dashboard)
   stats    = signal<any>({});
   health   = signal<any>({});
   billing  = signal<any>({});
 
-  // Login form fields
   email    = '';
   password = '';
 
-  // Nav definition
   readonly navGroups = NAV_GROUPS;
 
   private toastCounter = 0;
@@ -361,7 +343,6 @@ export class AdminComponent implements OnInit, OnDestroy {
     this.isBrowser = isPlatformBrowser(platformId);
   }
 
-  // ── Lifecycle ─────────────────────────────────────
   ngOnInit() {
     this.title.setTitle('Admin — QuizSolver');
     if (!this.isBrowser) return;
@@ -369,11 +350,9 @@ export class AdminComponent implements OnInit, OnDestroy {
     const token = localStorage.getItem('qs_admin_token') || localStorage.getItem('qs_token');
     if (token) this.checkAuth(token);
 
-    // Restore last tab
     const savedTab = localStorage.getItem('qs_admin_tab') as AdminTab;
     if (savedTab && TAB_TITLES[savedTab]) this.activeTab.set(savedTab);
 
-    // Auto-refresh badge counts every 2 min
     this.refreshInterval = setInterval(() => this.loadBadges(), 120_000);
   }
 
@@ -381,7 +360,6 @@ export class AdminComponent implements OnInit, OnDestroy {
     if (this.refreshInterval) clearInterval(this.refreshInterval);
   }
 
-  // ── Auth ──────────────────────────────────────────
   async checkAuth(token: string) {
     try {
       const res = await this.rawApi('/api/auth/me', { token });
@@ -393,7 +371,7 @@ export class AdminComponent implements OnInit, OnDestroy {
         localStorage.removeItem('qs_admin_token');
         localStorage.removeItem('qs_token');
       }
-    } catch { /* not authed */ }
+    } catch {  }
   }
 
   async login() {
@@ -445,7 +423,6 @@ export class AdminComponent implements OnInit, OnDestroy {
     this.health.set({});
   }
 
-  // ── API helper ────────────────────────────────────
   async api(endpoint: string, options: RequestInit = {}): Promise<any> {
     const token = localStorage.getItem('qs_admin_token') || localStorage.getItem('qs_token') || '';
     const headers: Record<string, string> = {
@@ -469,7 +446,6 @@ export class AdminComponent implements OnInit, OnDestroy {
     return res.json();
   }
 
-  // ── Data loading ──────────────────────────────────
   async loadBadges() {
     try {
       const [statsRes, errorsRes] = await Promise.all([
@@ -486,7 +462,7 @@ export class AdminComponent implements OnInit, OnDestroy {
       if (errorsRes.pagination) {
         this.clientErrorCount.set(errorsRes.pagination.total || 0);
       }
-    } catch { /* silent */ }
+    } catch {  }
   }
 
   async loadStats() {
@@ -497,7 +473,7 @@ export class AdminComponent implements OnInit, OnDestroy {
       ]);
       if (statsRes.stats) this.stats.set(statsRes.stats);
       if (healthRes.health) this.health.set(healthRes.health);
-    } catch { /* silent */ }
+    } catch {  }
   }
 
   async refresh() {
@@ -507,7 +483,6 @@ export class AdminComponent implements OnInit, OnDestroy {
     this.loading.set(false);
   }
 
-  // ── Navigation ────────────────────────────────────
   navTo(tab: AdminTab) {
     this.activeTab.set(tab);
     this.mobileSidebarOpen.set(false);
@@ -522,14 +497,12 @@ export class AdminComponent implements OnInit, OnDestroy {
     if (this.isBrowser) localStorage.setItem('qs_admin_locale', l);
   }
 
-  // ── Toasts ────────────────────────────────────────
   toast(msg: string, type: AdminToast['type'] = 'info') {
     const id = ++this.toastCounter;
     this.toasts.update(t => [...t.slice(-2), { id, msg, type }]);
     setTimeout(() => this.toasts.update(t => t.filter(x => x.id !== id)), 4000);
   }
 
-  // ── Formatting helpers (shared with sub-components) ──
   formatDate(d: string | Date | undefined, full = false): string {
     if (!d) return '—';
     const date = new Date(d);

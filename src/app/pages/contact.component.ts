@@ -13,7 +13,6 @@ import { ShellComponent } from './shell.component';
   template: `
     <qs-shell [locale]="locale" pageKey="contact">
       <div class="container contact-page">
-        <!-- Hero Section -->
         <section class="utility-hero">
           <div class="utility-hero-grid">
             <div>
@@ -49,7 +48,6 @@ import { ShellComponent } from './shell.component';
           </div>
         </section>
 
-        <!-- Department Contact Cards -->
         <section class="departments-section">
           <div class="cards-grid">
             <article class="dept-card glass glass-hover" *ngFor="let card of data.cards">
@@ -71,17 +69,14 @@ import { ShellComponent } from './shell.component';
           </div>
         </section>
 
-        <!-- Direct Contact Form & Company Details -->
         <section class="form-section">
           <div class="form-layout">
-            <!-- Left: Interactive Form -->
             <div class="form-card glass">
               <div class="form-card-header">
                 <h2>{{ data.form.title }}</h2>
                 <p class="text-secondary">{{ data.form.subtitle }}</p>
               </div>
 
-              <!-- Success Notification -->
               <div class="alert-success glass" *ngIf="sentSuccess()">
                 <div class="alert-icon">
                   <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
@@ -95,7 +90,6 @@ import { ShellComponent } from './shell.component';
                 </button>
               </div>
 
-              <!-- Form Element -->
               <form (ngSubmit)="sendMessage()" *ngIf="!sentSuccess()" class="contact-form">
                 <div class="form-row">
                   <div class="form-group">
@@ -158,7 +152,6 @@ import { ShellComponent } from './shell.component';
               </form>
             </div>
 
-            <!-- Right: Service & Legal Summary (Crucial for DPay Verification) -->
             <aside class="legal-summary-card glass">
               <h3>{{ data.companyInfo.title }}</h3>
               <p class="summary-desc text-secondary">{{ data.companyInfo.desc }}</p>
@@ -576,7 +569,6 @@ export class ContactComponent implements OnInit {
     this.data = pageData('contact', this.locale);
     this.seo.applyPage('contact', this.locale);
 
-    // Pre-fill email if user is logged in
     const user = this.api.currentUser();
     if (user?.email) {
       this.email = user.email;

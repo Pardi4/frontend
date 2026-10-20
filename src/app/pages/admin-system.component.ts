@@ -10,7 +10,6 @@ import { AdminComponent } from './admin.component';
   template: `
 <div class="a-section anim-in">
 
-  <!-- Health -->
   <div class="a-card">
     <div class="a-card-header">
       <div class="a-card-title">🖥️ Stan systemu</div>
@@ -26,7 +25,6 @@ import { AdminComponent } from './admin.component';
     </div>
   </div>
 
-  <!-- Telegram Bot Daily Reports -->
   <div class="a-card">
     <div class="a-card-header" style="flex-wrap:wrap;gap:10px">
       <div>
@@ -75,7 +73,6 @@ import { AdminComponent } from './admin.component';
     </div>
   </div>
 
-  <!-- Billing safety -->
   <div class="a-card">
     <div class="a-card-header">
       <div>
@@ -113,7 +110,6 @@ import { AdminComponent } from './admin.component';
       </div>
     </div>
 
-    <!-- Duplicate groups -->
     <div *ngIf="billing().duplicateGroups?.length" style="border-top:1px solid var(--border)">
       <div style="padding:12px 20px;background:var(--danger-bg);display:flex;align-items:center;gap:10px">
         <span style="font-size:20px">⚠️</span>
@@ -147,7 +143,6 @@ import { AdminComponent } from './admin.component';
     </div>
   </div>
 
-  <!-- Credit usage log -->
   <div class="a-card">
     <div class="a-card-header">
       <div>
@@ -251,7 +246,7 @@ export class AdminSystemComponent implements OnInit {
     try {
       const res = await this.p.api('/api/admin/telegram/status');
       if (res.success) this.telegram.set(res);
-    } catch { /* silent */ }
+    } catch {  }
   }
 
   async sendTestReport(isToday = false) {

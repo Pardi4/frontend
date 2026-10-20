@@ -149,7 +149,6 @@ export class ApiService {
     try {
       localStorage.setItem('qs_token', token);
     } catch {
-      // Storage can be unavailable in hardened or file-based browser contexts.
     }
   }
 
@@ -157,7 +156,6 @@ export class ApiService {
     try {
       localStorage.removeItem('qs_token');
     } catch {
-      // Ignore storage cleanup failures; in-memory state was already cleared.
     }
   }
 }

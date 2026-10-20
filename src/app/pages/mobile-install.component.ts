@@ -11,7 +11,6 @@ import { ShellComponent } from './shell.component';
   template: `
     <qs-shell [locale]="locale" pageKey="mobileInstall">
       <div class="container mobile-install-page">
-        <!-- HERO -->
         <section class="utility-hero text-center">
           <span class="eyebrow">{{ t.eyebrow }}</span>
           <h1 class="hero-title">{{ t.title }}</h1>
@@ -38,10 +37,8 @@ import { ShellComponent } from './shell.component';
           </div>
         </section>
 
-        <!-- ANDROID FLOW -->
         <section class="install-flow" *ngIf="os === 'android'">
 
-          <!-- Trust bar -->
           <div class="trust-bar">
             <div class="trust-pill">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
@@ -57,7 +54,6 @@ import { ShellComponent } from './shell.component';
             </div>
           </div>
 
-          <!-- Quick summary banner -->
           <div class="summary-card glass">
             <div class="summary-top">
               <img src="/logo.svg" alt="QS Logo" class="summary-icon">
@@ -84,7 +80,6 @@ import { ShellComponent } from './shell.component';
             </div>
           </div>
 
-          <!-- Why Kiwi Browser compare strip -->
           <div class="compare-strip glass">
             <div class="compare-col compare-bad">
               <div class="compare-head">
@@ -105,9 +100,7 @@ import { ShellComponent } from './shell.component';
             </div>
           </div>
 
-          <!-- Chronological Step Cards -->
           <div class="flow-steps">
-            <!-- STEP 1 -->
             <div class="flow-card glass">
               <div class="flow-side">
                 <span class="flow-num">1</span>
@@ -138,7 +131,6 @@ import { ShellComponent } from './shell.component';
               </div>
             </div>
 
-            <!-- STEP 2 -->
             <div class="flow-card glass">
               <div class="flow-side">
                 <span class="flow-num">2</span>
@@ -181,7 +173,6 @@ import { ShellComponent } from './shell.component';
               </div>
             </div>
 
-            <!-- STEP 3 -->
             <div class="flow-card glass">
               <div class="flow-side">
                 <span class="flow-num">3</span>
@@ -221,7 +212,6 @@ import { ShellComponent } from './shell.component';
               </div>
             </div>
 
-            <!-- STEP 4 -->
             <div class="flow-card glass">
               <div class="flow-side">
                 <span class="flow-num flow-num-final">4</span>
@@ -260,7 +250,6 @@ import { ShellComponent } from './shell.component';
             </div>
           </div>
 
-          <!-- Feature grid -->
           <div class="feature-grid">
             <div class="feature-item">
               <div class="feature-icon">
@@ -293,7 +282,6 @@ import { ShellComponent } from './shell.component';
           </div>
         </section>
 
-        <!-- IOS FLOW -->
         <section class="install-flow" *ngIf="os === 'ios'">
           <div class="ios-wrapper">
             <div class="ios-header text-center">
@@ -303,7 +291,6 @@ import { ShellComponent } from './shell.component';
               </p>
             </div>
 
-            <!-- Phone Frame -->
             <div class="phone-mockup">
               <div class="phone-bezel">
                 <div class="phone-notch"></div>

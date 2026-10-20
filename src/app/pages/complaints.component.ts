@@ -12,7 +12,6 @@ import { ShellComponent } from './shell.component';
     <qs-shell [locale]="locale" pageKey="complaints">
       <div class="container complaints-page">
 
-        <!-- ================= HERO SECTION ================= -->
         <header class="complaints-hero">
           <div class="hero-badge">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -62,7 +61,6 @@ import { ShellComponent } from './shell.component';
           </div>
         </header>
 
-        <!-- ================= MERCHANT & SELLER DETAILS BOX ================= -->
         <section class="seller-card glass">
           <div class="seller-card-header">
             <div class="seller-badge-icon">
@@ -109,10 +107,8 @@ import { ShellComponent } from './shell.component';
           </div>
         </section>
 
-        <!-- ================= PROCEDURA KROK PO KROKU ================= -->
         <main class="procedure-content">
 
-          <!-- Section 1 -->
           <article class="proc-section glass">
             <div class="proc-num">1</div>
             <div class="proc-body">
@@ -130,7 +126,6 @@ import { ShellComponent } from './shell.component';
             </div>
           </article>
 
-          <!-- Section 2 -->
           <article class="proc-section glass">
             <div class="proc-num">2</div>
             <div class="proc-body">
@@ -165,7 +160,6 @@ import { ShellComponent } from './shell.component';
             </div>
           </article>
 
-          <!-- Section 3 -->
           <article class="proc-section glass highlight-section">
             <div class="proc-num">3</div>
             <div class="proc-body">
@@ -196,7 +190,6 @@ import { ShellComponent } from './shell.component';
             </div>
           </article>
 
-          <!-- Section 4 -->
           <article class="proc-section glass">
             <div class="proc-num">4</div>
             <div class="proc-body">
@@ -226,7 +219,6 @@ import { ShellComponent } from './shell.component';
             </div>
           </article>
 
-          <!-- Section 5 -->
           <article class="proc-section glass">
             <div class="proc-num">5</div>
             <div class="proc-body">
@@ -260,7 +252,6 @@ import { ShellComponent } from './shell.component';
             </div>
           </article>
 
-          <!-- Section 6 -->
           <article class="proc-section glass">
             <div class="proc-num">6</div>
             <div class="proc-body">

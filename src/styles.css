@@ -1,50 +1,38 @@
-/* ============================================================
-   QuizSolver — Design System (Pure CSS)
-   ============================================================ */
 
 
-/* ---------- Tokens ---------- */
 :root {
-  /* Backgrounds */
   --bg-deep:       #101318;
   --bg-surface:    rgba(23, 28, 36, 0.86);
   --bg-surface-solid: #171c24;
   --bg-elevated:   rgba(29, 36, 48, 0.72);
 
-  /* Accents */
   --accent-cyan:   #0ea5e9;
   --accent-violet: #7c5cfc;
   --accent-rose:   #f43f5e;
   --accent-emerald:#16a36f;
   --accent-amber:  #f59e0b;
 
-  /* Text */
   --text-primary:  #f1f5f9;
   --text-secondary:#94a3b8;
   --text-tertiary: #64748b;
 
-  /* Borders */
   --border:        #2b3545;
   --border-hover:  rgba(14,165,233,0.42);
   --border-strong: #3b4658;
 
-  /* Glows */
   --glow-cyan:     rgba(14,165,233,0.14);
   --glow-violet:   rgba(124,92,252,0.18);
   --glow-cyan-strong: rgba(14,165,233,0.32);
 
-  /* Gradients */
   --grad-primary:  linear-gradient(135deg, #7c5cfc, #0ea5e9);
   --grad-primary-hover: linear-gradient(135deg, #8c72ff, #38bdf8);
   --grad-mesh:     linear-gradient(140deg, rgba(124, 92, 252, 0.14), transparent 34%),
                    linear-gradient(210deg, rgba(14, 165, 233, 0.10), transparent 38%),
                    var(--bg-deep);
 
-  /* Typography */
   --font-heading:  ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --font-body:     ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 
-  /* Radii */
   --radius-sm:     0.5rem;
   --radius-md:     0.75rem;
   --radius-lg:     0.75rem;
@@ -52,22 +40,18 @@
   --radius-2xl:    1rem;
   --radius-full:   9999px;
 
-  /* Shadows */
   --shadow-sm:     0 2px 8px rgba(0,0,0,0.25);
   --shadow-md:     0 8px 32px rgba(0,0,0,0.35);
   --shadow-lg:     0 16px 48px rgba(0,0,0,0.45);
   --shadow-glow:   0 0 30px var(--glow-cyan), 0 0 60px var(--glow-violet);
 
-  /* Spacing */
   --container-max: 1200px;
   --section-py:    7rem;
 
-  /* Transitions */
   --ease-out:      cubic-bezier(0.16, 1, 0.3, 1);
   --ease-spring:   cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-/* ---------- Reset ---------- */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 html {
@@ -95,7 +79,6 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 input, select, textarea { font-family: inherit; }
 ul, ol { list-style: none; }
 
-/* ---------- Typography ---------- */
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading);
   color: var(--text-primary);
@@ -138,7 +121,6 @@ p { color: var(--text-secondary); margin: 0; }
   color: transparent;
 }
 
-/* ---------- Layout ---------- */
 .container {
   width: 100%;
   max-width: var(--container-max);
@@ -159,7 +141,6 @@ p { color: var(--text-secondary); margin: 0; }
 .section-header h2 { margin-bottom: 1.25rem; }
 .section-header p { font-size: 1.125rem; }
 
-/* ---------- Glass Panel ---------- */
 .glass {
   background: var(--bg-surface);
   backdrop-filter: blur(24px);
@@ -187,7 +168,6 @@ p { color: var(--text-secondary); margin: 0; }
   box-shadow: var(--shadow-md);
 }
 
-/* ---------- Buttons ---------- */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -254,7 +234,6 @@ p { color: var(--text-secondary); margin: 0; }
   pointer-events: none;
 }
 
-/* ---------- Forms ---------- */
 .form-group { margin-bottom: 1.25rem; }
 
 .form-input,
@@ -405,7 +384,6 @@ textarea { resize: vertical; min-height: 80px; }
   text-decoration: none;
 }
 
-/* ---------- Animations ---------- */
 @keyframes float {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-12px); }
@@ -458,7 +436,6 @@ textarea { resize: vertical; min-height: 80px; }
 .anim-fade-in  { animation: fade-in 0.5s var(--ease-out) forwards; }
 .anim-marquee  { animation: marquee 30s linear infinite; }
 
-/* Stagger delays */
 .delay-1 { animation-delay: 0.1s; }
 .delay-2 { animation-delay: 0.2s; }
 .delay-3 { animation-delay: 0.3s; }
@@ -466,7 +443,6 @@ textarea { resize: vertical; min-height: 80px; }
 .delay-5 { animation-delay: 0.5s; }
 .delay-6 { animation-delay: 0.6s; }
 
-/* ---------- Modal ---------- */
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -515,7 +491,6 @@ textarea { resize: vertical; min-height: 80px; }
 .modal-header h2 { font-size: 1.5rem; margin-bottom: 0.5rem; }
 .modal-header p { font-size: 0.9rem; }
 
-/* ---------- Navbar (component styles in shell, base here) ---------- */
 .nav-link {
   color: var(--text-secondary);
   font-size: 0.9rem;
@@ -539,7 +514,6 @@ textarea { resize: vertical; min-height: 80px; }
 .nav-link:hover::after,
 .nav-link.active::after { width: 100%; }
 
-/* ---------- Pill / Badge ---------- */
 .pill {
   display: inline-flex;
   align-items: center;
@@ -581,7 +555,6 @@ textarea { resize: vertical; min-height: 80px; }
   background: rgba(6,182,212,0.08);
 }
 
-/* ---------- Status ---------- */
 .status-pill {
   display: inline-flex;
   padding: 0.25rem 0.625rem;
@@ -601,7 +574,6 @@ textarea { resize: vertical; min-height: 80px; }
   background: rgba(245,158,11,0.08);
 }
 
-/* ---------- Admin support inbox ---------- */
 .support-summary {
   display: grid;
   grid-template-columns: repeat(4,minmax(0,1fr));
@@ -849,16 +821,13 @@ textarea { resize: vertical; min-height: 80px; }
   .support-summary { grid-template-columns: 1fr; }
 }
 
-/* ---------- Scrollbar ---------- */
 ::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--text-tertiary); }
 
-/* ---------- Selection ---------- */
 ::selection { background: rgba(6,182,212,0.3); color: #fff; }
 
-/* ---------- Responsive ---------- */
 @media (max-width: 768px) {
   :root {
     --section-py: 4rem;
@@ -877,7 +846,6 @@ textarea { resize: vertical; min-height: 80px; }
   }
 }
 
-/* ---------- Scroll Reveal Animations ---------- */
 .reveal {
   opacity: 0;
   transform: translateY(30px);

@@ -14,18 +14,14 @@ js = js.replace(/tr\('noTransactionsHistory'\)/g, "'No Transactions'");
 js = js.replace(/tr\('grantCreditsTo'\)/g, "tr('grantCredits')");
 js = js.replace(/tr\('amount'\)/g, "'Amount'");
 js = js.replace(/tr\('viewDetails'\)/g, "tr('details')");
-js = js.replace(/tr\('details'\)/g, "''"); // just empty string for now, or change to showQuestionDetails
+js = js.replace(/tr\('details'\)/g, "''");
 
-// Remove the selectedNotice modal HTML
-js = js.replace(/<div class="modal-overlay" \*ngIf="selectedNotice\(\)"[\s\S]*?<!-- CSS -->/, '<!-- CSS -->');
+js = js.replace(/<div class="modal-overlay" \*ngIf="selectedNotice\(\)"[\s\S]*?/, '');
 
-// Fix openAdminNotice
 js = js.replace(/selectedNotice\.set\(notice\)/g, 'openAdminNotice(notice)');
 
-// Also fix transaction history HTML to just remove it
 js = js.replace(/<h4 class="mt-4">.*?<\/h4>\s*<div class="table-container">[\s\S]*?<\/div>/, '');
 
-// Make sure closeUserHistory works instead of selectedUserHistory.set(null)
 js = js.replace(/selectedUserHistory.set\(null\)/g, 'closeUserHistory()');
 js = js.replace(/selectedGrantUser.set\(null\)/g, 'closeGrantModal()');
 

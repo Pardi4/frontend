@@ -12,18 +12,15 @@ code = code.replace(/tr\('parserOutcomeEmpty'\)/g, "'Empty'");
 code = code.replace(/tr\('parserOutcomeError'\)/g, "'Error'");
 code = code.replace(/tr\('answerText'\)/g, "'Answer'");
 
-// Remove Notice Modal properly
-// Find the exact string in admin.component.ts
-const noticeModalStart = '      <!-- Notice Modal -->';
-const noticeModalEnd = '      <!-- CSS -->';
+const noticeModalStart = '      ';
+const noticeModalEnd = '      ';
 const startIndex = code.indexOf(noticeModalStart);
 const endIndex = code.indexOf(noticeModalEnd);
 
 if (startIndex !== -1 && endIndex !== -1) {
     code = code.substring(0, startIndex) + code.substring(endIndex);
 } else {
-    // If exact comments don't match, try regex
-    code = code.replace(/<div class="modal-overlay" \*ngIf="selectedNotice\(\)"[\s\S]*?<!-- CSS -->/, '<!-- CSS -->');
+    code = code.replace(/<div class="modal-overlay" \*ngIf="selectedNotice\(\)"[\s\S]*?/, '');
 }
 
 fs.writeFileSync('src/app/pages/admin.component.ts', code);

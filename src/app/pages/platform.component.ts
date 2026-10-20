@@ -1416,10 +1416,8 @@ export class PlatformComponent implements OnInit {
       return false;
     };
 
-    // 1. Prioritize posts in current locale that specifically match this platform
     const platformLocal = BLOG_POSTS.filter(post => post.locale === this.locale && platformMatch(post));
     
-    // 2. Fallback to platform-matched English posts if not enough in current locale
     const localKeys = new Set(platformLocal.map(post => post.translationKey));
     const platformFallback = this.locale === 'en'
       ? []
@@ -1429,7 +1427,6 @@ export class PlatformComponent implements OnInit {
           !localKeys.has(post.translationKey)
         );
 
-    // 3. Fallback to category posts if more articles are needed
     const category = this.articleCategory();
     const generalLocal = BLOG_POSTS.filter(post => post.locale === this.locale && post.category === category);
     const generalKeys = new Set([...localKeys, ...generalLocal.map(p => p.translationKey)]);

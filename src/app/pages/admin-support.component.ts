@@ -10,7 +10,6 @@ import { AdminComponent } from './admin.component';
   template: `
 <div class="a-card anim-in" style="overflow:hidden">
 
-  <!-- Filters -->
   <div class="a-filters">
     <div class="a-search-wrap" style="flex:1;min-width:180px">
       <span class="a-search-ico">🔍</span>
@@ -25,10 +24,8 @@ import { AdminComponent } from './admin.component';
     <span class="t3 sm">Łącznie: {{ filtered().length }}</span>
   </div>
 
-  <!-- Inbox split layout -->
   <div class="a-inbox">
 
-    <!-- Message list -->
     <div class="a-inbox-list">
       <div *ngIf="loading() && !filtered().length" style="padding:24px;text-align:center;color:var(--text-3)">Ładowanie...</div>
       <div *ngIf="!loading() && !filtered().length" style="padding:24px;text-align:center;color:var(--text-3)">Brak wiadomości.</div>
@@ -51,7 +48,6 @@ import { AdminComponent } from './admin.component';
       </div>
     </div>
 
-    <!-- Detail view -->
     <div class="a-inbox-detail">
       <div class="a-inbox-none" *ngIf="!selected()">
         <div>
@@ -61,7 +57,6 @@ import { AdminComponent } from './admin.component';
       </div>
 
       <ng-container *ngIf="selected() as msg">
-        <!-- Message header -->
         <div style="padding:16px 20px;border-bottom:1px solid var(--border)">
           <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px">
             <div>
@@ -80,7 +75,6 @@ import { AdminComponent } from './admin.component';
           </div>
         </div>
 
-        <!-- Linked account -->
         <div style="padding:12px 20px;border-bottom:1px solid var(--border);background:var(--surface-2)" *ngIf="msg.linkedUser">
           <div class="xs t3 mb-3">Powiązane konto</div>
           <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
@@ -101,12 +95,10 @@ import { AdminComponent } from './admin.component';
           </div>
         </div>
 
-        <!-- Message body -->
         <div style="padding:16px 20px;flex:1;overflow-y:auto;max-height:260px">
           <div class="sm" style="white-space:pre-wrap;line-height:1.7;color:var(--text-2)">{{ msg.text || '(Brak treści)' }}</div>
         </div>
 
-        <!-- Replies -->
         <div *ngIf="msg.replies?.length" style="border-top:1px solid var(--border)">
           <div style="padding:10px 20px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text-3)">
             Odpowiedzi ({{ msg.replies.length }})
@@ -120,7 +112,6 @@ import { AdminComponent } from './admin.component';
           </div>
         </div>
 
-        <!-- Reply form -->
         <div style="padding:14px 20px;border-top:1px solid var(--border)">
           <div class="a-label mb-3">Odpowiedz</div>
           <textarea class="a-input" [(ngModel)]="replyText" rows="3" placeholder="Napisz odpowiedź..." style="resize:vertical;margin-bottom:10px"></textarea>
@@ -141,7 +132,6 @@ import { AdminComponent } from './admin.component';
   </div>
 </div>
 
-<!-- Grant credits from support modal -->
 <div class="a-backdrop" *ngIf="grantTarget()" (click)="grantTarget.set(null)">
   <div class="a-modal" (click)="$event.stopPropagation()">
     <div class="a-modal-header">
@@ -197,7 +187,7 @@ export class AdminSupportComponent implements OnInit {
     this.loading.set(false);
   }
 
-  applyFilter() { /* reactive via filtered() */ }
+  applyFilter() {  }
 
   filtered() {
     const s = this.search.toLowerCase();

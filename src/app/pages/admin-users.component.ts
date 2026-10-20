@@ -13,7 +13,6 @@ type ProfileTab = 'overview' | 'security' | 'questions' | 'credits';
 <div class="a-section anim-in">
   <div class="a-card">
 
-    <!-- Filters -->
     <div class="a-filters">
       <div class="a-search-wrap" style="flex:1;min-width:200px">
         <span class="a-search-ico">🔍</span>
@@ -34,14 +33,12 @@ type ProfileTab = 'overview' | 'security' | 'questions' | 'credits';
       <button class="a-btn a-btn-ghost a-btn-sm" (click)="exportCsv()" title="Eksport CSV">⬇ CSV</button>
     </div>
 
-    <!-- Stats strip -->
     <div style="padding:10px 20px;border-bottom:1px solid var(--border);display:flex;gap:20px;font-size:12px;color:var(--text-3)">
       <span>Łącznie: <strong class="ta">{{ pagination().total }}</strong></span>
       <span>Strona: <strong>{{ pagination().page }}/{{ pagination().pages }}</strong></span>
       <span>Aktywnych: <strong class="ts">{{ activeCount() }}</strong></span>
     </div>
 
-    <!-- Table -->
     <div class="a-table-wrap" *ngIf="!loading() || users().length">
       <table class="a-table">
         <thead>
@@ -104,7 +101,6 @@ type ProfileTab = 'overview' | 'security' | 'questions' | 'credits';
       </table>
     </div>
 
-    <!-- Pagination -->
     <div class="a-pager">
       <span class="t3 sm">Strona {{ pagination().page }} z {{ pagination().pages }} · łącznie {{ pagination().total }}</span>
       <div class="a-pager-btns">
@@ -115,14 +111,10 @@ type ProfileTab = 'overview' | 'security' | 'questions' | 'credits';
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════
-     USER PROFILE PANEL (full-screen modal)
-     ══════════════════════════════════════════ -->
 <div class="a-backdrop" *ngIf="profileUser()" (click)="closeProfile()" style="align-items:stretch;padding:0">
   <div class="a-modal a-modal-xl" (click)="$event.stopPropagation()"
     style="max-width:900px;width:100%;border-radius:var(--radius-lg);margin:auto;max-height:96vh;display:flex;flex-direction:column">
 
-    <!-- Profile header -->
     <div class="a-modal-header" style="flex-shrink:0">
       <div style="display:flex;align-items:center;gap:14px">
         <div [style]="avatarStyle(profileUser())" style="width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:18px;flex-shrink:0">
@@ -148,7 +140,6 @@ type ProfileTab = 'overview' | 'security' | 'questions' | 'credits';
       </div>
     </div>
 
-    <!-- Profile tabs -->
     <div class="a-tabs" style="flex-shrink:0">
       <button class="a-tab" [class.active]="profileTab() === 'overview'"  (click)="profileTab.set('overview')">📋 Profil</button>
       <button class="a-tab" [class.active]="profileTab() === 'security'"  (click)="profileTab.set('security')">🔐 Bezpieczeństwo</button>
@@ -162,13 +153,10 @@ type ProfileTab = 'overview' | 'security' | 'questions' | 'credits';
       </button>
     </div>
 
-    <!-- Tab content -->
     <div style="flex:1;overflow-y:auto;min-height:0">
 
-      <!-- ── OVERVIEW TAB ── -->
       <div *ngIf="profileTab() === 'overview'" style="padding:20px;display:flex;flex-direction:column;gap:16px">
 
-        <!-- Stats row -->
         <div class="a-stats-grid">
           <div class="a-stat">
             <div class="a-stat-label">Kredyty</div>
@@ -188,10 +176,8 @@ type ProfileTab = 'overview' | 'security' | 'questions' | 'credits';
           </div>
         </div>
 
-        <!-- Two-column details -->
         <div class="a-grid-2" style="gap:12px">
 
-          <!-- Account info -->
           <div class="a-card">
             <div class="a-card-header" style="padding:12px 16px">
               <div class="a-card-title" style="font-size:13px">Informacje o koncie</div>
@@ -208,7 +194,6 @@ type ProfileTab = 'overview' | 'security' | 'questions' | 'credits';
             </div>
           </div>
 
-          <!-- Extension info -->
           <div class="a-card">
             <div class="a-card-header" style="padding:12px 16px">
               <div class="a-card-title" style="font-size:13px">Aktywność rozszerzenia</div>
@@ -227,7 +212,6 @@ type ProfileTab = 'overview' | 'security' | 'questions' | 'credits';
           </div>
         </div>
 
-        <!-- Pending changes warning -->
         <div *ngIf="profileUser()?.pendingNewEmail" style="padding:12px 16px;background:var(--warning-bg);border:1px solid rgba(245,158,11,.3);border-radius:var(--radius);display:flex;gap:10px;align-items:flex-start">
           <span style="font-size:18px;flex-shrink:0">⏳</span>
           <div>
@@ -236,7 +220,6 @@ type ProfileTab = 'overview' | 'security' | 'questions' | 'credits';
           </div>
         </div>
 
-        <!-- Deletion scheduled warning -->
         <div *ngIf="profileUser()?.accountDeletionScheduledAt" style="padding:12px 16px;background:var(--danger-bg);border:1px solid rgba(239,68,68,.3);border-radius:var(--radius);display:flex;gap:10px;align-items:flex-start">
           <span style="font-size:18px;flex-shrink:0">🗑️</span>
           <div>
@@ -247,10 +230,8 @@ type ProfileTab = 'overview' | 'security' | 'questions' | 'credits';
 
       </div>
 
-      <!-- ── SECURITY TAB ── -->
       <div *ngIf="profileTab() === 'security'" style="padding:20px">
 
-        <!-- Auth providers -->
         <div class="a-card" style="margin-bottom:16px">
           <div class="a-card-header" style="padding:12px 16px">
             <div class="a-card-title" style="font-size:13px">Metody logowania</div>
@@ -269,7 +250,6 @@ type ProfileTab = 'overview' | 'security' | 'questions' | 'credits';
           </div>
         </div>
 
-        <!-- Security logs -->
         <div class="a-card">
           <div class="a-card-header" style="padding:12px 16px">
             <div class="a-card-title" style="font-size:13px">Historia zmian bezpieczeństwa</div>
@@ -297,10 +277,8 @@ type ProfileTab = 'overview' | 'security' | 'questions' | 'credits';
         </div>
       </div>
 
-      <!-- ── QUESTIONS TAB ── -->
       <div *ngIf="profileTab() === 'questions'">
 
-        <!-- Search questions -->
         <div class="a-filters" style="border-top:none">
           <div class="a-search-wrap" style="flex:1;min-width:180px">
             <span class="a-search-ico">🔍</span>
@@ -312,7 +290,6 @@ type ProfileTab = 'overview' | 'security' | 'questions' | 'credits';
 
         <div *ngIf="historyLoading()" style="padding:40px;text-align:center;color:var(--text-3)">Ładowanie...</div>
 
-        <!-- Questions list -->
         <div *ngIf="!historyLoading() && historyQuestions().length === 0" style="padding:40px;text-align:center;color:var(--text-3)">
           Brak historii pytań.
         </div>
@@ -339,24 +316,20 @@ type ProfileTab = 'overview' | 'security' | 'questions' | 'credits';
               </div>
             </div>
 
-            <!-- Expanded question detail -->
             <div *ngIf="selectedQuestion()?.id === q.id" style="margin-top:12px;padding:14px;background:var(--surface-2);border-radius:var(--radius);border:1px solid var(--border)"
               (click)="$event.stopPropagation()">
 
-              <!-- Full question text -->
               <div class="a-label" style="margin-bottom:6px">Treść pytania</div>
               <img *ngIf="q.questionImageBase64 || q.questionImageUrl" 
                    [src]="q.questionImageBase64 || q.questionImageUrl" 
                    style="max-width:100%;border-radius:4px;margin-bottom:12px;border:1px solid var(--border)" alt="">
               <div class="sm" style="line-height:1.7;color:var(--text-2);white-space:pre-wrap;margin-bottom:12px">{{ q.questionText }}</div>
 
-              <!-- Answer -->
               <div *ngIf="q.answerText" style="padding:10px 14px;background:var(--success-bg);border:1px solid rgba(34,197,94,.2);border-radius:var(--radius-sm);margin-bottom:12px">
                 <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--success);margin-bottom:4px">Odpowiedź</div>
                 <div class="sm bold">{{ q.answerText }}</div>
               </div>
 
-              <!-- Options -->
               <div *ngIf="q.options?.length" style="margin-bottom:12px">
                 <div class="a-label" style="margin-bottom:6px">Opcje ({{ q.options.length }})</div>
                 <div style="display:flex;flex-direction:column;gap:3px">
@@ -370,13 +343,11 @@ type ProfileTab = 'overview' | 'security' | 'questions' | 'credits';
                 </div>
               </div>
 
-              <!-- Explanation -->
               <details class="a-det" *ngIf="q.explanation" style="margin-bottom:12px">
                 <summary>Wyjaśnienie</summary>
                 <div class="sm t2" style="margin-top:8px;line-height:1.6;padding-left:14px">{{ q.explanation }}</div>
               </details>
 
-              <!-- Metadata row -->
               <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">
                 <span class="a-badge a-badge-muted">Typ: {{ q.questionType }}</span>
                 <span class="a-badge a-badge-muted" *ngIf="q.platform">Platforma: {{ q.platform }}</span>
@@ -386,7 +357,6 @@ type ProfileTab = 'overview' | 'security' | 'questions' | 'credits';
                 <span class="a-badge a-badge-accent" *ngIf="q.cachedAnswerId">Zakeszowane</span>
               </div>
 
-              <!-- Source URL -->
               <div *ngIf="q.sourceUrl" style="margin-bottom:10px">
                 <div class="a-label" style="margin-bottom:4px">Źródło (URL pytania)</div>
                 <a [href]="q.sourceUrl" target="_blank" rel="noopener"
@@ -395,20 +365,17 @@ type ProfileTab = 'overview' | 'security' | 'questions' | 'credits';
                 </a>
               </div>
 
-              <!-- Timestamps -->
               <div style="display:flex;gap:20px;font-size:11px;color:var(--text-3);margin-bottom:10px;flex-wrap:wrap">
                 <div>Pierwsza sesja: <strong>{{ p.formatDate(q.createdAt, true) }}</strong></div>
                 <div>Ostatnia sesja: <strong>{{ p.formatDate(q.lastSeenAt, true) }}</strong></div>
                 <div *ngIf="q.lastExplainedAt">Ostatnie wyjaśnienie: <strong>{{ p.formatDate(q.lastExplainedAt, true) }}</strong></div>
               </div>
 
-              <!-- Snapshot / code section -->
               <div *ngIf="q.htmlSnippet || q.parserSnapshot" style="margin-top:4px">
                 <div class="a-label" style="margin-bottom:6px">Kod strony (snapshot)</div>
                 <div class="a-stack" style="max-height:200px">{{ q.htmlSnippet || q.parserSnapshot?.htmlSnippet || '(brak)' }}</div>
               </div>
 
-              <!-- Hash (diagnostic) -->
               <details class="a-det" style="margin-top:8px">
                 <summary>Dane techniczne</summary>
                 <div class="a-stack" style="margin-top:8px;max-height:100px">questionHash: {{ q.questionHash }}
@@ -419,7 +386,6 @@ id: {{ q.id }}</div>
           </div>
         </div>
 
-        <!-- Questions pagination -->
         <div class="a-pager" *ngIf="historyPag().pages > 1">
           <span class="t3 sm">Strona {{ historyPag().page }}/{{ historyPag().pages }} · łącznie {{ historyPag().total }}</span>
           <div class="a-pager-btns">
@@ -429,10 +395,8 @@ id: {{ q.id }}</div>
         </div>
       </div>
 
-      <!-- ── CREDITS TAB ── -->
       <div *ngIf="profileTab() === 'credits'" style="padding:20px;display:flex;flex-direction:column;gap:16px">
 
-        <!-- Legal & Audit banner -->
         <div style="padding:14px 16px;background:rgba(99,102,241,.08);border:1px solid rgba(99,102,241,.25);border-radius:var(--radius);display:flex;gap:12px;align-items:flex-start">
           <span style="font-size:20px;line-height:1">⚖️</span>
           <div style="font-size:12px;line-height:1.6;color:var(--text-2)">
@@ -442,7 +406,6 @@ id: {{ q.id }}</div>
           </div>
         </div>
 
-        <!-- Balance breakdown cards -->
         <div class="a-stats-grid">
           <div class="a-stat">
             <div class="a-stat-label">Saldo łączne</div>
@@ -468,7 +431,6 @@ id: {{ q.id }}</div>
 
         <div *ngIf="!creditsLoading()">
 
-          <!-- 1. Purchases table -->
           <div class="a-card" style="margin-bottom:16px">
             <div class="a-card-header" style="padding:12px 16px">
               <div class="a-card-title" style="font-size:13px">💳 Zakupy i doładowania konta</div>
@@ -517,7 +479,6 @@ id: {{ q.id }}</div>
             </div>
           </div>
 
-          <!-- 2. Usages table -->
           <div class="a-card">
             <div class="a-card-header" style="padding:12px 16px">
               <div class="a-card-title" style="font-size:13px">📊 Rejestr operacji i zużycia kredytów (Audit Trail)</div>
@@ -568,11 +529,10 @@ id: {{ q.id }}</div>
         </div>
       </div>
 
-    </div><!-- end tab content -->
+    </div>
   </div>
 </div>
 
-<!-- ── GRANT MODAL ── -->
 <div class="a-backdrop" *ngIf="grantUser()" (click)="grantUser.set(null)">
   <div class="a-modal" (click)="$event.stopPropagation()">
     <div class="a-modal-header">
@@ -618,29 +578,24 @@ export class AdminUsersComponent implements OnInit {
   sort   = 'createdAt_desc';
   page   = 1;
 
-  // User profile panel
   profileUser     = signal<any>(null);
   profileTab      = signal<ProfileTab>('overview');
   selectedQuestion = signal<any>(null);
 
-  // Questions history
   historyQuestions = signal<any[]>([]);
   historyPag       = signal({ page: 1, pages: 1, total: 0 });
   qSearch          = '';
 
-  // Credits & purchases history
   creditUsages    = signal<any[]>([]);
   creditPurchases = signal<any[]>([]);
   creditsLoading  = signal(false);
 
-  // Grant modal
   grantUser   = signal<any>(null);
   grantAmount = 0;
   grantReason = '';
 
   ngOnInit() { this.load(); }
 
-  // ── List ──────────────────────────────────────────
   async load() {
     this.loading.set(true);
     const q = this.search ? `&search=${encodeURIComponent(this.search)}` : '';
@@ -659,9 +614,7 @@ export class AdminUsersComponent implements OnInit {
   prevPage() { if (this.page > 1) { this.page--; this.load(); } }
   nextPage() { this.page++; this.load(); }
 
-  // ── Profile panel ─────────────────────────────────
   async openProfile(u: any) {
-    // fetch full user details
     const res = await this.p.api(`/api/admin/users/${u.id}`);
     this.profileUser.set(res.user || u);
     this.profileTab.set('overview');
@@ -722,7 +675,6 @@ export class AdminUsersComponent implements OnInit {
     this.selectedQuestion.set(this.selectedQuestion()?.id === q.id ? null : q);
   }
 
-  // ── Computed info rows ────────────────────────────
   accountRows() {
     const u = this.profileUser();
     if (!u) return [];
@@ -752,7 +704,6 @@ export class AdminUsersComponent implements OnInit {
     ];
   }
 
-  // ── Security helpers ──────────────────────────────
   securityLogIcon(event: string): string {
     const map: Record<string, string> = {
       'email-changed': '✉️', 'password-changed': '🔑', 'password-reset': '🔓',
@@ -785,7 +736,6 @@ export class AdminUsersComponent implements OnInit {
     return map[event] || event || 'Zdarzenie';
   }
 
-  // ── Provider helpers ──────────────────────────────
   providerIcon(pr: string): string {
     return { google: '🔵', email: '✉️', facebook: '🔷', github: '⬛', apple: '🍎' }[pr] || '🔑';
   }
@@ -794,7 +744,6 @@ export class AdminUsersComponent implements OnInit {
     return { google: 'Google', email: 'Email + hasło', facebook: 'Facebook', github: 'GitHub', apple: 'Apple' }[pr] || pr;
   }
 
-  // ── User helpers ──────────────────────────────────
   initials(u: any): string {
     if (!u) return '?';
     if (u.displayName) return u.displayName.charAt(0).toUpperCase();
@@ -831,7 +780,6 @@ export class AdminUsersComponent implements OnInit {
     return 'a-badge-muted';
   }
 
-  // ── Grant ─────────────────────────────────────────
   openGrant(u: any) {
     this.grantUser.set(u);
     this.grantAmount = 0;
@@ -848,7 +796,6 @@ export class AdminUsersComponent implements OnInit {
       this.p.toast(`+${amount} kredytów → ${u.email}`, 'success');
       this.grantUser.set(null);
       this.load();
-      // Update profile if open
       if (this.profileUser()?.id === u.id) {
         this.profileUser.update(pu => pu ? { ...pu, credits: (pu.credits || 0) + amount } : pu);
       }
@@ -878,7 +825,6 @@ export class AdminUsersComponent implements OnInit {
     this.modalLoading.set(false);
   }
 
-  // ── Ban / Delete ──────────────────────────────────
   async banUser(u: any) {
     if (!confirm(`Zbanować użytkownika ${u.email}?`)) return;
     const res = await this.p.api(`/api/admin/users/${u.id}/ban`, { method: 'POST' });
@@ -910,7 +856,6 @@ export class AdminUsersComponent implements OnInit {
 
   closeModals() { this.grantUser.set(null); }
 
-  // ── CSV ───────────────────────────────────────────
   exportCsv() {
     const rows = this.users();
     if (!rows.length) return;

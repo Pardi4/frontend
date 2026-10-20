@@ -1203,7 +1203,6 @@ export class QuizComponent implements OnInit {
       this.metaService.updateTag({ property: 'og:description', content: desc });
       this.metaService.updateTag({ property: 'og:type', content: 'website' });
       
-      // Use full URL if in browser, otherwise rely on server request URL (handled by SSR typically but we'll try to provide a fallback or use empty)
       const currentUrl = typeof window !== 'undefined' ? window.location.href : `https://getquizsolver.com/quiz/shared/${this.sharedToken}`;
       this.metaService.updateTag({ property: 'og:url', content: currentUrl });
       

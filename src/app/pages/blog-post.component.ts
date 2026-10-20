@@ -31,7 +31,7 @@ const BLOG_PLATFORM_KEYWORDS: Array<{ key: string; pageKey: PageKey }> = [
   standalone: true,
   imports: [CommonModule, ShellComponent],
   template: `
-    <qs-shell [locale]="locale" pageKey="blogPost">
+    <qs-shell [locale]="locale" pageKey="blogPost" [alternatePaths]="alternatePaths">
       <div class="container blog-post-page" id="main-content" *ngIf="post">
         <div class="back-navigation">
           <a [href]="getBlogListUrl()" class="back-link">
@@ -443,6 +443,7 @@ export class BlogPostComponent implements OnInit {
   protected post?: BlogPost;
   protected readonly storeUrl = CHROME_WEB_STORE_URL;
   protected labels = this.labelsFor('en');
+  protected alternatePaths: Partial<Record<Locale, string>> = {};
 
   ngOnInit(): void {
     this.locale = (this.route.snapshot.data['locale'] || 'en') as Locale;
@@ -455,6 +456,13 @@ export class BlogPostComponent implements OnInit {
         
         if (this.post) {
           this.seo.applyBlogPost(this.post, this.locale);
+          const alternates: Partial<Record<Locale, string>> = {};
+          for (const p of BLOG_POSTS) {
+            if (p.translationKey === this.post.translationKey) {
+              alternates[p.locale] = pathFor('blogPost', p.locale).replace(':slug', p.slug);
+            }
+          }
+          this.alternatePaths = alternates;
         } else {
           const otherLangPost = BLOG_POSTS.find(p => p.slug === slug);
           if (otherLangPost) {

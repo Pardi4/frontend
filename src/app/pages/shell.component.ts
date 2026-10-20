@@ -4,9 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Router, NavigationEnd } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ApiService } from '../api.service';
-import { BLOG_POSTS } from '../blog-content';
 import { CHROME_WEB_STORE_URL, Locale, PageKey, SUPPORTED_LOCALES, contentFor, isLocale, localeFromBrowser, localeOption, pathFor } from '../site-content';
-import jsQR from 'jsqr';
 
 type AuthModal = 'login' | 'register' | 'verify' | 'forgot' | 'reset';
 
@@ -198,7 +196,7 @@ export function trackGa4Event(eventName: string, params?: Record<string, string 
               </p>
               <p class="footer-seller-line">
                 <span class="footer-seller-lbl">{{ locale === 'pl' ? 'Adres e-mail do kontaktu i reklamacji:' : 'Contact & complaints email:' }}</span>
-                <a href="mailto:support@getquizsolver.com">support&#64;getquizsolver.com</a>
+                <!--email_off--><a href="mailto:support@getquizsolver.com">support&#64;getquizsolver.com</a><!--/email_off-->
               </p>
             </div>
           </div>
@@ -236,17 +234,17 @@ export function trackGa4Event(eventName: string, params?: Record<string, string 
               <a class="nav-link" [href]="pathFor('complaints')">{{ copy.footer.complaints || (locale === 'pl' ? 'Procedura reklamacyjna' : 'Complaints Procedure') }}</a>
               <a class="nav-link" [href]="pathFor('privacy')">{{ copy.footer.privacy }}</a>
               <a class="nav-link" [href]="pathFor('cookies')">Cookie Policy</a>
-              <a class="nav-link footer-mail-link" href="mailto:support@getquizsolver.com">support&#64;getquizsolver.com</a>
+              <!--email_off--><a class="nav-link footer-mail-link" href="mailto:support@getquizsolver.com">support&#64;getquizsolver.com</a><!--/email_off-->
             </div>
           </div>
         </div>
         <div class="container footer-bottom">
           <div class="footer-bottom-grid">
             <div class="footer-bottom-rights">{{ copy.footer.rights }}</div>
-            <div class="footer-bottom-seller">
+            <div class="footer-bottom-seller"><!--email_off-->
               {{ locale === 'pl'
                 ? 'Nazwa sprzedawcy: Kamil Pardała (działalność nierejestrowana) | Adres siedziby: ul. Drukarska 7, 30-348 Kraków | Adres e-mail do kontaktu: support@getquizsolver.com'
-                : 'Seller name: Kamil Pardała | Registered address: ul. Drukarska 7, 30-348 Kraków, Poland | Contact email: support@getquizsolver.com' }}
+                : 'Seller name: Kamil Pardała | Registered address: ul. Drukarska 7, 30-348 Kraków, Poland | Contact email: support@getquizsolver.com' }}<!--/email_off-->
             </div>
           </div>
         </div>
@@ -429,7 +427,6 @@ export function trackGa4Event(eventName: string, params?: Record<string, string 
         </section>
       </div>
 
-      <!-- QR Scanner Modal -->
       <div *ngIf="qrScannerOpen" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:99999; display:flex; justify-content:center; align-items:center; padding:1rem;">
         <div style="max-width:400px; padding:2rem; border-radius:16px; text-align:center; background:#0f172a; width:100%; position:relative; border:1px solid rgba(255,255,255,0.1);">
           <button style="position:absolute; top:1rem; right:1rem; background:transparent; border:none; color:white; cursor:pointer; font-size:1.5rem;" (click)="stopQrScanner()">&times;</button>
@@ -446,7 +443,6 @@ export function trackGa4Event(eventName: string, params?: Record<string, string 
         </div>
       </div>
 
-      <!-- Scroll CTA Bar -->
       <div class="scroll-cta-bar" *ngIf="showScrollCta() && !scrollCtaDismissed() && !hasAccount()" role="complementary" aria-label="Install prompt">
         <div class="scroll-cta-inner">
           <span class="scroll-cta-text">{{ copy.scrollCta?.text || 'Install QuizSolver — 10 free AI credits included' }}</span>
@@ -455,7 +451,6 @@ export function trackGa4Event(eventName: string, params?: Record<string, string 
         </div>
       </div>
 
-      <!-- Exit Intent Popup -->
       <div class="exit-popup-backdrop" *ngIf="showExitPopup() && !hasAccount()" (click)="closeExitPopup()">
         <div class="exit-popup glass" (click)="$event.stopPropagation()">
           <button class="exit-popup-close" type="button" (click)="closeExitPopup()" aria-label="Close">✕</button>
@@ -1178,7 +1173,6 @@ export class ShellComponent implements OnInit, AfterViewInit, OnDestroy {
     if (typeof localStorage !== 'undefined') {
       localStorage.setItem('quizsolver_cookie_consent', accepted ? 'true' : 'false');
     }
-    // Google Consent Mode v2 — update consent based on user choice
     if (typeof window !== 'undefined' && typeof (window as any).gtag === 'function') {
       const state = accepted ? 'granted' : 'denied';
       (window as any).gtag('consent', 'update', {
@@ -1193,6 +1187,7 @@ export class ShellComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @Input() locale: Locale = 'en';
   @Input() pageKey: PageKey = 'home';
+  @Input() alternatePaths?: Partial<Record<Locale, string>>;
 
   protected readonly storeUrl = CHROME_WEB_STORE_URL;
   protected readonly api = inject(ApiService);
@@ -1374,16 +1369,8 @@ export class ShellComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   protected alternatePath(targetLocale: Locale): string {
-    if (this.pageKey === 'blogPost' && isPlatformBrowser(this.platformId)) {
-      const slug = window.location.pathname.split('/').filter(Boolean).at(-1);
-      const currentPost = BLOG_POSTS.find(post => post.slug === slug);
-      const translatedPost = currentPost
-        ? BLOG_POSTS.find(post => post.translationKey === currentPost.translationKey && post.locale === targetLocale)
-        : undefined;
-      if (translatedPost) {
-        return pathFor('blogPost', targetLocale).replace(':slug', translatedPost.slug);
-      }
-      return pathFor('blog', targetLocale);
+    if (this.alternatePaths && this.alternatePaths[targetLocale]) {
+      return this.alternatePaths[targetLocale]!;
     }
     return pathFor(this.pageKey, targetLocale);
   }
@@ -1392,7 +1379,6 @@ export class ShellComponent implements OnInit, AfterViewInit, OnDestroy {
     if (!isPlatformBrowser(this.platformId)) return;
     if (typeof window === 'undefined' || typeof localStorage === 'undefined') return;
 
-    // 1. If user already explicitly picked a language, respect their choice
     const manualLocale = localStorage.getItem('qs_user_selected_locale');
     if (manualLocale) {
       if (isLocale(manualLocale) && manualLocale !== this.locale && this.locale === 'en') {
@@ -1404,7 +1390,6 @@ export class ShellComponent implements OnInit, AfterViewInit, OnDestroy {
       return;
     }
 
-    // 2. No manual choice: check browser languages
     const navLangs = (typeof navigator !== 'undefined' && navigator.languages && navigator.languages.length)
       ? navigator.languages
       : [(typeof navigator !== 'undefined' ? navigator.language : '')];
@@ -1418,7 +1403,6 @@ export class ShellComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     }
 
-    // 3. If Polish (or other non-English language) detected and user is on default English page:
     if (detectedLocale !== 'en' && this.locale === 'en') {
       const target = this.alternatePath(detectedLocale);
       if (target && target !== window.location.pathname) {
@@ -1820,6 +1804,7 @@ export class ShellComponent implements OnInit, AfterViewInit, OnDestroy {
   async startQrScanner() {
     this.qrScannerOpen = true;
     this.qrVideoSupported = true;
+    const { default: jsQR } = await import('jsqr');
     setTimeout(async () => {
       try {
         const video = document.getElementById('qrVideo') as HTMLVideoElement;

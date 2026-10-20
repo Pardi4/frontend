@@ -615,7 +615,6 @@ const DEMO_QUESTIONS: Record<Exclude<Locale, 'en' | 'pl'>, DemoQuestion[]> = {
       <div class="demo-page" data-qs-demo-root="onboarding">
         <div class="demo-container">
 
-          <!-- CLEAN HEADER -->
           <header class="demo-hero">
             <div class="demo-eyebrow-pill">
               <span class="pill-dot"></span>
@@ -624,7 +623,6 @@ const DEMO_QUESTIONS: Record<Exclude<Locale, 'en' | 'pl'>, DemoQuestion[]> = {
             <h1>{{ copy.title }}</h1>
             <p class="demo-lead">{{ copy.lead }}</p>
 
-            <!-- HELPER BANNER (CLEAN & FRIENDLY, NO ALARMS) -->
             <div class="demo-mode-card glass">
               <div class="mode-left">
                 <span class="mode-badge">💡 {{ copy.localBadge }}</span>
@@ -641,7 +639,6 @@ const DEMO_QUESTIONS: Record<Exclude<Locale, 'en' | 'pl'>, DemoQuestion[]> = {
             </div>
           </header>
 
-          <!-- 5-STEP STEPPER TABS -->
           <nav class="demo-stepper" aria-label="Demo steps">
             <button
               *ngFor="let q of copy.questions; let i = index"
@@ -658,28 +655,23 @@ const DEMO_QUESTIONS: Record<Exclude<Locale, 'en' | 'pl'>, DemoQuestion[]> = {
             </button>
           </nav>
 
-          <!-- ACTIVE QUESTION CARD (FOCUSED & SPACIOUS) -->
           <section class="demo-workspace" *ngIf="currentQuestion() as question">
             <article class="demo-card glass" [attr.data-qs-demo-question]="question.id" data-qs-tour="question-card">
 
-              <!-- TOP CARD BAR -->
               <div class="card-meta-bar">
                 <span class="step-tag">{{ question.kicker }}</span>
                 <span class="step-counter">{{ current() + 1 }} / {{ copy.questions.length }}</span>
               </div>
 
-              <!-- QUESTION TEXT -->
               <h2 class="question-text" data-qs-demo-question-text [attr.data-qs-demo-selectable]="question.type === 'selected' ? 'true' : null">
                 {{ question.question }}
               </h2>
 
-              <!-- FEATURE TIP (SINGLE CLEAN HINT INSTEAD OF 3 PARAGRAPHS) -->
               <div class="feature-tip">
                 <span class="feature-icon">✨</span>
                 <p>{{ question.instruction }}</p>
               </div>
 
-              <!-- INPUTS: 1. RADIO / HIDDEN / SELECTED -->
               <fieldset class="demo-options" *ngIf="question.type === 'radio' || question.type === 'hidden' || question.type === 'selected'">
                 <legend class="sr-only">{{ question.question }}</legend>
                 <label
@@ -703,7 +695,6 @@ const DEMO_QUESTIONS: Record<Exclude<Locale, 'en' | 'pl'>, DemoQuestion[]> = {
                 </label>
               </fieldset>
 
-              <!-- INPUTS: 2. TEXT ANSWER -->
               <div class="text-answer-box" *ngIf="question.type === 'text'">
                 <label class="text-label" [for]="question.id + '-input'">{{ copy.yourAnswer }}:</label>
                 <input
@@ -715,7 +706,6 @@ const DEMO_QUESTIONS: Record<Exclude<Locale, 'en' | 'pl'>, DemoQuestion[]> = {
                   (input)="setAnswer(question, $any($event.target).value)">
               </div>
 
-              <!-- INPUTS: 3. MATCHING DROPDOWNS -->
               <div class="matching-grid" *ngIf="question.type === 'matching'">
                 <div class="match-item match-row" *ngFor="let prompt of question.prompts; let i = index">
                   <span class="match-prompt">{{ prompt }}</span>
@@ -731,7 +721,6 @@ const DEMO_QUESTIONS: Record<Exclude<Locale, 'en' | 'pl'>, DemoQuestion[]> = {
                 </div>
               </div>
 
-              <!-- INPUTS: 4. SELECTED TEXT HELPER -->
               <div class="selected-helper-bar" *ngIf="question.type === 'selected'">
                 <button class="btn btn-outline btn-sm" type="button" data-qs-tour="select-text" (click)="selectQuestionText()">
                   {{ copy.selectText }}
@@ -739,7 +728,6 @@ const DEMO_QUESTIONS: Record<Exclude<Locale, 'en' | 'pl'>, DemoQuestion[]> = {
                 <p class="selected-note">{{ copy.selectedTip }}</p>
               </div>
 
-              <!-- FEEDBACK & EXPLANATION -->
               <div
                 class="demo-feedback-card"
                 *ngIf="feedbackVisible(question)"
@@ -757,9 +745,7 @@ const DEMO_QUESTIONS: Record<Exclude<Locale, 'en' | 'pl'>, DemoQuestion[]> = {
                 </div>
               </div>
 
-              <!-- CLEAR ACTION BUTTONS -->
               <div class="card-actions">
-                <!-- Hint mode button on step 2 -->
                 <button
                   class="btn btn-hint"
                   type="button"
@@ -769,7 +755,6 @@ const DEMO_QUESTIONS: Record<Exclude<Locale, 'en' | 'pl'>, DemoQuestion[]> = {
                   {{ label('showHint') }}
                 </button>
 
-                <!-- Primary AI Solve button -->
                 <button
                   class="btn btn-primary btn-solve"
                   type="button"
@@ -778,7 +763,6 @@ const DEMO_QUESTIONS: Record<Exclude<Locale, 'en' | 'pl'>, DemoQuestion[]> = {
                   {{ label('simulateSolver') }}
                 </button>
 
-                <!-- Secondary Manual check -->
                 <button
                   class="btn btn-outline"
                   type="button"
@@ -787,7 +771,6 @@ const DEMO_QUESTIONS: Record<Exclude<Locale, 'en' | 'pl'>, DemoQuestion[]> = {
                 </button>
               </div>
 
-              <!-- BOTTOM NAVIGATION -->
               <div class="card-footer-nav">
                 <button
                   class="btn btn-ghost btn-sm"
@@ -809,7 +792,6 @@ const DEMO_QUESTIONS: Record<Exclude<Locale, 'en' | 'pl'>, DemoQuestion[]> = {
             </article>
           </section>
 
-          <!-- COMPLETION SCREEN -->
           <section class="demo-finish glass" *ngIf="isDemoComplete()">
             <div class="finish-icon">🎉</div>
             <h2>{{ label('resultTitle') }}</h2>

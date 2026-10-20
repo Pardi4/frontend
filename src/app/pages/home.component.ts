@@ -43,7 +43,6 @@ export class AnimatedNumberComponent implements OnInit, OnChanges, OnDestroy {
       this.renderStatic();
       return;
     }
-    // Target can arrive after init (e.g. loaded from API) - (re)start animation then
     if (this.visible) this.animate();
   }
 
@@ -94,7 +93,6 @@ export class AnimatedNumberComponent implements OnInit, OnChanges, OnDestroy {
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <qs-shell [locale]="locale" pageKey="home">
-        <!-- Hero Section -->
         <section class="hero-section">
           <div class="hero-bg-glow"></div>
           <div class="hero-bg-orb orb-cyan"></div>
@@ -119,7 +117,6 @@ export class AnimatedNumberComponent implements OnInit, OnChanges, OnDestroy {
               </a>
             </div>
             
-            <!-- Social Proof Statistics -->
             <div class="hero-proof-stats delay-3">
               <div class="cws-rating-badge">
                 <span class="cws-stars" aria-hidden="true">★★★★★</span>
@@ -128,7 +125,6 @@ export class AnimatedNumberComponent implements OnInit, OnChanges, OnDestroy {
               <span class="rating-text">{{ text.hero.socialProof }}</span>
             </div>
 
-            <!-- Interactive Hero Mini Solver Demo -->
             <div class="hero-mini-demo glass delay-4" *ngIf="miniDemoData as demo" aria-label="Interactive AI Quiz Solver Demo">
               <div class="mini-demo-header">
                 <div class="mini-demo-badge">
@@ -149,7 +145,7 @@ export class AnimatedNumberComponent implements OnInit, OnChanges, OnDestroy {
                   <span class="subject-tag">{{ demo.kicker }}</span>
                   <span class="timer-simulation">{{ demo.timer }}</span>
                 </div>
-                <h3 class="quiz-question-title">{{ demo.question }}</h3>
+                <p class="quiz-question-title" role="heading" aria-level="2">{{ demo.question }}</p>
                 
                 <div class="quiz-options-list">
                   <button 
@@ -169,7 +165,6 @@ export class AnimatedNumberComponent implements OnInit, OnChanges, OnDestroy {
                   </button>
                 </div>
 
-                <!-- AI Explanation Box when solved -->
                 <div class="mini-demo-explanation glass" *ngIf="miniDemoSolved()">
                   <div class="exp-header">
                     <span class="exp-icon">💡</span>
@@ -178,7 +173,6 @@ export class AnimatedNumberComponent implements OnInit, OnChanges, OnDestroy {
                   <p class="exp-body">{{ demo.explanation }}</p>
                 </div>
 
-                <!-- Action Bar -->
                 <div class="mini-demo-footer">
                   <div class="footer-left">
                     <button 
@@ -229,14 +223,12 @@ export class AnimatedNumberComponent implements OnInit, OnChanges, OnDestroy {
               </div>
             </div>
 
-            <!-- Platform Trust Bar -->
             <div class="trust-bar delay-5">
               <div class="trust-marquee-wrapper">
                 <div class="trust-marquee">
                   <span class="trust-item" *ngFor="let platform of ['Testportal', 'Moodle', 'Google Forms', 'Canvas', 'MS Forms', 'Blackboard', 'Quizlet', 'Kahoot', 'Quizizz', 'Socrative', 'Blooket', 'Gimkit', 'Edpuzzle', 'Mentimeter']">
                     <span class="bullet">✦</span> {{ platform }}
                   </span>
-                  <!-- Duplicate for infinite loop -->
                   <span class="trust-item" *ngFor="let platform of ['Testportal', 'Moodle', 'Google Forms', 'Canvas', 'MS Forms', 'Blackboard', 'Quizlet', 'Kahoot', 'Quizizz', 'Socrative']">
                     <span class="bullet">✦</span> {{ platform }}
                   </span>
@@ -250,7 +242,6 @@ export class AnimatedNumberComponent implements OnInit, OnChanges, OnDestroy {
           </div>
         </section>
 
-        <!-- How It Works Section -->
         <section class="section" id="how-it-works">
           <div class="container">
             <div class="section-header">
@@ -269,7 +260,6 @@ export class AnimatedNumberComponent implements OnInit, OnChanges, OnDestroy {
           </div>
         </section>
 
-        <!-- Features Bento Grid Section -->
         <section class="section" id="features">
           <div class="container">
             <div class="section-header">
@@ -279,7 +269,6 @@ export class AnimatedNumberComponent implements OnInit, OnChanges, OnDestroy {
             </div>
 
             <div class="bento-grid">
-              <!-- Bento Card 1 (Large Hero Feature) -->
               <article class="bento-card card-lg glass glass-hover reveal">
                 <div class="bento-card-bg-gradient"></div>
                 <div class="bento-content">
@@ -308,7 +297,6 @@ export class AnimatedNumberComponent implements OnInit, OnChanges, OnDestroy {
                 </div>
               </article>
 
-              <!-- Bento Card 2 (Standard Feature) -->
               <article class="bento-card glass glass-hover reveal delay-100">
                 <div class="bento-content">
                   
@@ -322,7 +310,6 @@ export class AnimatedNumberComponent implements OnInit, OnChanges, OnDestroy {
                 </div>
               </article>
 
-              <!-- Bento Card 3 (Standard Feature) -->
               <article class="bento-card glass glass-hover reveal delay-200">
                 <div class="bento-content">
                   
@@ -336,7 +323,6 @@ export class AnimatedNumberComponent implements OnInit, OnChanges, OnDestroy {
                 </div>
               </article>
 
-              <!-- Bento Card 4 (Standard Feature) -->
               <article class="bento-card glass glass-hover reveal">
                 <div class="bento-content">
                   
@@ -350,7 +336,6 @@ export class AnimatedNumberComponent implements OnInit, OnChanges, OnDestroy {
                 </div>
               </article>
 
-              <!-- Bento Card 5 (Large Feature) -->
               <article class="bento-card card-md glass glass-hover reveal delay-100">
                 <div class="bento-content">
                   
@@ -364,7 +349,6 @@ export class AnimatedNumberComponent implements OnInit, OnChanges, OnDestroy {
                 </div>
               </article>
 
-              <!-- Bento Card 6 (Standard Feature) -->
               <article class="bento-card glass glass-hover reveal delay-200">
                 <div class="bento-content">
                   
@@ -378,7 +362,6 @@ export class AnimatedNumberComponent implements OnInit, OnChanges, OnDestroy {
                 </div>
               </article>
 
-              <!-- Bento Card 7 (Standard Feature) -->
               <article class="bento-card glass glass-hover reveal">
                 <div class="bento-content">
                   
@@ -392,7 +375,6 @@ export class AnimatedNumberComponent implements OnInit, OnChanges, OnDestroy {
                 </div>
               </article>
 
-              <!-- Bento Card 8 (Standard Feature) -->
               <article class="bento-card glass glass-hover reveal delay-100">
                 <div class="bento-content">
                   
@@ -409,7 +391,6 @@ export class AnimatedNumberComponent implements OnInit, OnChanges, OnDestroy {
           </div>
         </section>
 
-        <!-- Supported Platforms Section -->
         <section class="section platforms-section">
           <div class="container">
             <div class="section-header">
@@ -427,7 +408,6 @@ export class AnimatedNumberComponent implements OnInit, OnChanges, OnDestroy {
           </div>
         </section>
 
-        <!-- Social Proof / Testimonials Section -->
         <section class="section testimonials-section">
           <div class="container">
             <div class="section-header">
@@ -469,7 +449,6 @@ export class AnimatedNumberComponent implements OnInit, OnChanges, OnDestroy {
           </div>
         </section>
 
-        <!-- Pricing Section -->
         <section class="section" id="credits">
           <div class="container">
             <div class="section-header" style="position: relative;">
@@ -508,14 +487,12 @@ export class AnimatedNumberComponent implements OnInit, OnChanges, OnDestroy {
               </div>
             </div>
 
-            <!-- Currency note for non-USD locales -->
             <p class="pricing-deck-note text-secondary" *ngIf="currencyNote">
               {{ currencyNote }}
             </p>
           </div>
         </section>
 
-        <!-- FAQ Section -->
         <section class="section faq-section">
           <div class="container">
             <div class="section-header">
@@ -643,12 +620,20 @@ export class AnimatedNumberComponent implements OnInit, OnChanges, OnDestroy {
       text-transform: uppercase;
     }
     .pulse-dot {
+      position: relative;
       width: 8px;
       height: 8px;
       border-radius: 50%;
       background: #38bdf8;
-      box-shadow: 0 0 8px #38bdf8;
-      animation: pulse 1.8s infinite;
+    }
+    .pulse-dot::before {
+      content: '';
+      position: absolute;
+      inset: -3px;
+      border-radius: 50%;
+      background: #38bdf8;
+      animation: pulse-ring 2s ease-out infinite;
+      will-change: transform, opacity;
     }
     .hint-toggle-label {
       display: inline-flex;
@@ -935,6 +920,11 @@ export class AnimatedNumberComponent implements OnInit, OnChanges, OnDestroy {
       z-index: 2;
       pointer-events: none;
       animation: float 12s ease-in-out infinite alternate;
+    }
+    @media (max-width: 768px) {
+      .hero-bg-orb {
+        display: none;
+      }
     }
     .orb-cyan {
       top: 20%;
@@ -1327,16 +1317,24 @@ export class AnimatedNumberComponent implements OnInit, OnChanges, OnDestroy {
       font-weight: 500;
     }
     .pulse-dot {
+      position: relative;
       width: 8px;
       height: 8px;
       background-color: var(--accent-cyan);
       border-radius: 50%;
-      animation: pulse 2s infinite;
     }
-    @keyframes pulse {
-      0% { box-shadow: 0 0 0 0 rgba(6, 182, 212, 0.4); }
-      70% { box-shadow: 0 0 0 6px rgba(6, 182, 212, 0); }
-      100% { box-shadow: 0 0 0 0 rgba(6, 182, 212, 0); }
+    .pulse-dot::before {
+      content: '';
+      position: absolute;
+      inset: -3px;
+      border-radius: 50%;
+      background: var(--accent-cyan);
+      animation: pulse-ring 2s ease-out infinite;
+      will-change: transform, opacity;
+    }
+    @keyframes pulse-ring {
+      0% { transform: scale(0.6); opacity: 0.8; }
+      100% { transform: scale(2.2); opacity: 0; }
     }
     .tier-features {
       list-style: none;
@@ -1731,22 +1729,28 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     this.startPromoTimer();
 
-    // Fetch live stats for social proof
     if (typeof window !== 'undefined') {
-      this.http.get<any>('/api/stats/public').subscribe({
-        next: (res) => {
-          if (res?.success) {
-            const rawUsers = res.totalUsers || 0;
-            const rawQuestions = res.totalQuestionsSolved || 0;
-            this.liveStats = {
-              users: Math.ceil(rawUsers / 100) * 100, // round up to nearest 100
-              questions: Math.ceil(rawQuestions / 1000) * 1000 // round up to nearest 1000
-            };
-            this.homeCdr.markForCheck(); // component is OnPush - re-render with loaded stats
-          }
-        },
-        error: () => {}
-      });
+      const loadStats = () => {
+        this.http.get<any>('/api/stats/public').subscribe({
+          next: (res) => {
+            if (res?.success) {
+              const rawUsers = res.totalUsers || 0;
+              const rawQuestions = res.totalQuestionsSolved || 0;
+              this.liveStats = {
+                users: Math.ceil(rawUsers / 100) * 100,
+                questions: Math.ceil(rawQuestions / 1000) * 1000
+              };
+              this.homeCdr.markForCheck();
+            }
+          },
+          error: () => {}
+        });
+      };
+      if ('requestIdleCallback' in window) {
+        (window as any).requestIdleCallback(loadStats, { timeout: 3000 });
+      } else {
+        setTimeout(loadStats, 1500);
+      }
     }
   }
 
@@ -1764,7 +1768,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   private startPromoTimer(): void {
     if (typeof window === 'undefined') return;
     
-    // Set promo end to October 1st, 2026, 00:00:00 UTC
     const promoEnd = new Date('2026-10-01T00:00:00Z').getTime();
 
     this.timerInterval = setInterval(() => {

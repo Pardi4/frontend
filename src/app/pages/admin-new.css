@@ -1,6 +1,3 @@
-/* ============================================================
-   QuizSolver Admin — Design System (v2, built from scratch)
-   ============================================================ */
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -44,7 +41,6 @@
   --font-mono: 'SF Mono','Cascadia Code','Fira Code',monospace;
 }
 
-/* ── Base ────────────────────────────────────────────── */
 .admin-root {
   min-height: 100vh;
   background: var(--bg);
@@ -55,7 +51,6 @@
   -webkit-font-smoothing: antialiased;
 }
 
-/* ── Shell Layout ────────────────────────────────────── */
 .a-shell { display: flex; min-height: 100vh; }
 
 .a-sidebar {
@@ -94,7 +89,6 @@
 .a-brand-text strong { font-size: 13px; font-weight: 700; display: block; line-height: 1.2; }
 .a-brand-text small  { font-size: 11px; color: var(--text-3); line-height: 1.2; }
 
-/* Quick badges at top of sidebar */
 .a-sidebar-badges {
   padding: 10px 12px 6px;
   display: flex; flex-direction: column; gap: 3px;
@@ -124,7 +118,6 @@
 .a-qbadge.hot .a-qbadge-count { background: var(--danger); }
 .a-qbadge:not(.hot) .a-qbadge-count { background: var(--surface-3); color: var(--text-2); }
 
-/* Nav */
 .a-nav { flex: 1; padding: 6px 10px; display: flex; flex-direction: column; gap: 1px; }
 .a-nav-group-lbl {
   font-size: 10px; font-weight: 700; text-transform: uppercase;
@@ -151,7 +144,6 @@
   padding: 1px 5px; border-radius: 8px; min-width: 18px; text-align: center;
 }
 
-/* Sidebar footer */
 .a-sidebar-foot {
   padding: 10px 12px;
   border-top: 1px solid var(--border);
@@ -170,7 +162,6 @@
 }
 .a-locale-btn.active { background: var(--accent-bg); color: var(--accent-h); border-color: rgba(99,102,241,.3); }
 
-/* Main */
 .a-main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
 
 .a-header {
@@ -193,7 +184,6 @@
 
 .a-content { flex: 1; padding: 24px; }
 
-/* ── Buttons ─────────────────────────────────────────── */
 .a-btn {
   display: inline-flex; align-items: center; justify-content: center; gap: 6px;
   padding: 7px 14px; border-radius: var(--radius-sm);
@@ -219,7 +209,6 @@
 .a-btn-block{ width: 100%; }
 .a-btn-icon { padding: 7px; }
 
-/* ── Cards ───────────────────────────────────────────── */
 .a-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
 .a-card-header {
   display: flex; align-items: flex-start; justify-content: space-between;
@@ -231,7 +220,6 @@
 .a-card-body     { padding: 20px; }
 .a-card-footer   { padding: 12px 20px; border-top: 1px solid var(--border); display: flex; align-items: center; gap: 8px; }
 
-/* Stat cards */
 .a-stats-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
 .a-stat {
   background: var(--surface); border: 1px solid var(--border);
@@ -253,7 +241,6 @@
 .a-stat-value.accent  { color: var(--accent-h); }
 .a-stat-note { font-size: 11px; color: var(--text-3); }
 
-/* ── Tables ──────────────────────────────────────────── */
 .a-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
 .a-table { width: 100%; border-collapse: collapse; font-size: 13px; }
 .a-table th {
@@ -273,7 +260,6 @@
 .a-table tbody tr:hover td { background: rgba(255,255,255,.025); }
 .a-table-empty { text-align: center; padding: 48px 20px; color: var(--text-3); }
 
-/* ── Badges ──────────────────────────────────────────── */
 .a-badge {
   display: inline-flex; align-items: center; gap: 4px;
   font-size: 11px; font-weight: 600;
@@ -287,7 +273,6 @@
 .a-badge-cyan    { background: var(--cyan-bg);    color: var(--cyan); }
 .a-badge-muted   { background: var(--surface-2);  color: var(--text-2); }
 
-/* ── Inputs ──────────────────────────────────────────── */
 .a-input {
   background: var(--surface-2); border: 1px solid var(--border);
   border-radius: var(--radius-sm); color: var(--text);
@@ -311,12 +296,10 @@
 .a-input-group { display: flex; flex-direction: column; }
 .a-input-row   { display: flex; gap: 8px; align-items: center; }
 
-/* Search wrapper */
 .a-search-wrap { position: relative; flex: 1; min-width: 180px; }
 .a-search-ico  { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--text-3); font-size: 14px; pointer-events: none; }
 .a-search-wrap .a-input { padding-left: 34px; }
 
-/* ── Modal ───────────────────────────────────────────── */
 .a-backdrop {
   position: fixed; inset: 0;
   background: rgba(0,0,0,.75);
@@ -355,7 +338,6 @@
   display: flex; justify-content: flex-end; gap: 8px;
 }
 
-/* ── Toasts ──────────────────────────────────────────── */
 .a-toasts {
   position: fixed; top: 16px; right: 16px; z-index: 9999;
   display: flex; flex-direction: column; gap: 8px;
@@ -384,7 +366,6 @@
 .a-toast.info    .a-toast-ico { color: var(--accent-h); }
 .a-toast-msg { flex: 1; line-height: 1.4; }
 
-/* ── Tabs ────────────────────────────────────────────── */
 .a-tabs {
   display: flex; gap: 2px;
   border-bottom: 1px solid var(--border);
@@ -409,7 +390,6 @@
   padding: 1px 5px; border-radius: 10px; min-width: 18px; text-align: center;
 }
 
-/* ── Filters bar ─────────────────────────────────────── */
 .a-filters {
   display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
   padding: 10px 20px;
@@ -417,7 +397,6 @@
   background: rgba(255,255,255,.015);
 }
 
-/* ── Priority Queue ──────────────────────────────────── */
 .a-pq { display: flex; flex-direction: column; gap: 6px; }
 .a-pq-item {
   display: flex; align-items: center; gap: 12px;
@@ -446,7 +425,6 @@
 .a-pq-empty { text-align: center; padding: 28px; color: var(--text-3); font-size: 13px; }
 .a-pq-empty strong { display: block; font-size: 15px; color: var(--success); margin-bottom: 4px; }
 
-/* ── Error list items ────────────────────────────────── */
 .a-err-item {
   padding: 14px 20px; border-bottom: 1px solid var(--border);
   transition: background var(--transition);
@@ -465,7 +443,6 @@
   margin-top: 8px; white-space: pre-wrap; word-break: break-all;
 }
 
-/* ── Support Inbox ───────────────────────────────────── */
 .a-inbox { display: grid; grid-template-columns: 300px 1fr; min-height: 400px; }
 .a-inbox-list { border-right: 1px solid var(--border); overflow-y: auto; max-height: calc(100vh - 180px); }
 .a-inbox-msg {
@@ -481,7 +458,6 @@
 .a-inbox-detail  { display: flex; flex-direction: column; overflow-y: auto; max-height: calc(100vh - 180px); }
 .a-inbox-none    { flex: 1; display: flex; align-items: center; justify-content: center; color: var(--text-3); font-size: 13px; padding: 48px; }
 
-/* ── Health / System ─────────────────────────────────── */
 .a-health-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 12px; }
 .a-hcard {
   background: var(--surface-2); border: 1px solid var(--border);
@@ -493,7 +469,6 @@
 .a-hcard-value.warn { color: var(--warning); }
 .a-hcard-value.err  { color: var(--danger);  }
 
-/* ── Pagination ──────────────────────────────────────── */
 .a-pager {
   display: flex; align-items: center; justify-content: space-between;
   padding: 12px 20px; border-top: 1px solid var(--border);
@@ -501,7 +476,6 @@
 }
 .a-pager-btns { display: flex; gap: 4px; }
 
-/* ── Divider ─────────────────────────────────────────── */
 .a-divider {
   display: flex; align-items: center; gap: 12px;
   margin: 18px 0; color: var(--text-3); font-size: 12px;
@@ -510,7 +484,6 @@
   content: ''; flex: 1; height: 1px; background: var(--border);
 }
 
-/* ── Login ───────────────────────────────────────────── */
 .a-login-wrap {
   min-height: 100vh; display: flex; align-items: center;
   justify-content: center; background: var(--bg); padding: 24px;
@@ -523,7 +496,6 @@
 }
 .a-login-brand { display: flex; align-items: center; gap: 10px; margin-bottom: 28px; text-decoration: none; color: var(--text); }
 
-/* ── Details / expandable ────────────────────────────── */
 details.a-det summary {
   cursor: pointer; list-style: none;
   display: flex; align-items: center; gap: 6px;
@@ -534,12 +506,10 @@ details.a-det summary::-webkit-details-marker { display: none; }
 details.a-det summary::before { content: '▶'; font-size: 9px; transition: transform var(--transition); }
 details.a-det[open] summary::before { transform: rotate(90deg); }
 
-/* ── Grids ───────────────────────────────────────────── */
 .a-section { display: flex; flex-direction: column; gap: 20px; }
 .a-grid-2  { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 .a-grid-3  { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
 
-/* ── Mobile bottom nav ───────────────────────────────── */
 .a-bnav {
   display: none;
   position: fixed; bottom: 0; left: 0; right: 0;
@@ -565,21 +535,18 @@ details.a-det[open] summary::before { transform: rotate(90deg); }
   border: 2px solid var(--surface);
 }
 
-/* Mobile sidebar overlay */
 .a-overlay {
   display: none; position: fixed; inset: 0;
   background: rgba(0,0,0,.55); z-index: 19;
 }
 .a-overlay.on { display: block; }
 
-/* ── Animations ──────────────────────────────────────── */
 @keyframes aFadeIn  { from { opacity: 0; } to { opacity: 1; } }
 @keyframes aModalIn { from { opacity: 0; transform: scale(.96) translateY(8px); } to { opacity: 1; transform: scale(1) translateY(0); } }
 @keyframes aToastIn { from { opacity: 0; transform: translateX(14px); } to { opacity: 1; transform: translateX(0); } }
 @keyframes aSlideUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
 .anim-in { animation: aSlideUp 200ms ease; }
 
-/* ── Responsive ──────────────────────────────────────── */
 @media (max-width: 1100px) { .a-grid-3 { grid-template-columns: 1fr 1fr; } }
 
 @media (max-width: 768px) {
@@ -610,7 +577,6 @@ details.a-det[open] summary::before { transform: rotate(90deg); }
   .a-login-card { padding: 28px 20px; }
 }
 
-/* ── Utils ───────────────────────────────────────────── */
 .t2  { color: var(--text-2); }
 .t3  { color: var(--text-3); }
 .tc  { color: var(--cyan); }
@@ -636,9 +602,7 @@ details.a-det[open] summary::before { transform: rotate(90deg); }
 .justify-between { justify-content: space-between; }
 .w-full { width: 100%; }
 
-/* ── User Profile Panel extras ───────────────────────────────── */
 
-/* Info table inside profile modal */
 .a-info-table { width: 100%; font-size: 13px; border-collapse: collapse; }
 .a-info-table td { padding: 8px 16px; border-bottom: 1px solid var(--border); vertical-align: middle; }
 .a-info-table td:first-child {
@@ -649,7 +613,6 @@ details.a-det[open] summary::before { transform: rotate(90deg); }
 }
 .a-info-table tr:last-child td { border-bottom: none; }
 
-/* Question item in history */
 .a-q-item {
   padding: 12px 20px;
   border-bottom: 1px solid var(--border);
@@ -669,7 +632,6 @@ details.a-det[open] summary::before { transform: rotate(90deg); }
   animation: aSlideUp 180ms ease;
 }
 
-/* Security log timeline */
 .a-sec-log {
   display: flex; align-items: flex-start; gap: 14px;
   padding: 12px 16px;
@@ -686,7 +648,6 @@ details.a-det[open] summary::before { transform: rotate(90deg); }
 .a-sec-log-label { font-size: 13px; font-weight: 600; }
 .a-sec-log-meta  { font-size: 11px; color: var(--text-3); margin-top: 2px; }
 
-/* Auth provider pill */
 .a-provider-pill {
   display: flex; align-items: center; gap: 12px;
   padding: 10px 14px;
@@ -698,7 +659,6 @@ details.a-det[open] summary::before { transform: rotate(90deg); }
 .a-provider-pill-name { font-size: 13px; font-weight: 600; }
 .a-provider-pill-sub  { font-size: 11px; color: var(--text-3); }
 
-/* Answer highlight box */
 .a-answer-box {
   padding: 10px 14px;
   background: var(--success-bg);
@@ -712,7 +672,6 @@ details.a-det[open] summary::before { transform: rotate(90deg); }
   color: var(--success); margin-bottom: 4px;
 }
 
-/* Source URL box */
 .a-source-link {
   display: block;
   font-size: 12px; color: var(--cyan);
@@ -724,7 +683,6 @@ details.a-det[open] summary::before { transform: rotate(90deg); }
 }
 .a-source-link:hover { background: var(--surface-2); }
 
-/* Warning/danger banner in profile */
 .a-profile-banner {
   padding: 12px 16px;
   border-radius: var(--radius);
@@ -737,7 +695,6 @@ details.a-det[open] summary::before { transform: rotate(90deg); }
 .a-profile-banner-title { font-weight: 700; font-size: 13px; }
 .a-profile-banner-sub   { font-size: 12px; color: var(--text-2); margin-top: 2px; }
 
-/* Option list in question detail */
 .a-opt-list { display: flex; flex-direction: column; gap: 3px; margin-bottom: 12px; }
 .a-opt {
   padding: 5px 10px;
@@ -752,7 +709,6 @@ details.a-det[open] summary::before { transform: rotate(90deg); }
   font-weight: 600;
 }
 
-/* Chart toggle active state */
 .a-chart-toggle {
   display: flex; gap: 4px;
   background: var(--surface-2);
@@ -769,15 +725,12 @@ details.a-det[open] summary::before { transform: rotate(90deg); }
   color: white;
 }
 
-/* Responsive: full-width modal on mobile */
 @media (max-width: 768px) {
   .a-info-table td:first-child { width: 38%; }
   .a-q-expand { padding: 12px; }
 }
 
-/* ── Dashboard Chart extras ──────────────────────────────────── */
 
-/* Dataset toggle buttons */
 .a-ds-toggle {
   display: inline-flex; align-items: center; gap: 6px;
   padding: 5px 12px; font-size: 12px;
@@ -799,7 +752,6 @@ details.a-det[open] summary::before { transform: rotate(90deg); }
   border-radius: 50%; flex-shrink: 0;
 }
 
-/* Period summary cards */
 .a-period-grid {
   display: flex; gap: 10px; flex-wrap: wrap;
   padding: 0 20px 12px;
@@ -822,7 +774,6 @@ details.a-det[open] summary::before { transform: rotate(90deg); }
   font-size: 11px; color: var(--text-3); margin-top: 2px;
 }
 
-/* Chart range toggle active on */
 .a-chart-toggle button.on {
   background: var(--surface-3); color: var(--text); font-weight: 600;
 }

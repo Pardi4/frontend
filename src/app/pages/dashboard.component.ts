@@ -1,5 +1,4 @@
 import { CommonModule } from '@angular/common';
-import jsQR from 'jsqr';
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -357,7 +356,6 @@ const DASHBOARD_UI: Record<Locale, DashboardUi> = {
     <qs-shell #shell [locale]="locale" pageKey="dashboard">
       <div class="container dashboard-main">
         <section *ngIf="!api.currentUser(); else dashboardContent" class="section unauthorized-section-wrapper">
-          <!-- Inactive dashboard mockup (blurred) -->
           <div class="unauthorized-blur-bg" aria-hidden="true">
             <header class="dashboard-header" style="padding-top: 1rem;">
               <p class="eyebrow">DASHBOARD</p>
@@ -397,7 +395,6 @@ const DASHBOARD_UI: Record<Locale, DashboardUi> = {
             </div>
           </div>
 
-          <!-- Floating Glass Card Login Panel -->
           <div class="login-panel glass floating-panel">
             <div class="padlock-wrapper">
               <svg class="padlock-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -427,14 +424,12 @@ const DASHBOARD_UI: Record<Locale, DashboardUi> = {
             </div>
           </header>
 
-          <!-- Pending Deletion Banner -->
           <div *ngIf="api.currentUser()?.accountDeletionScheduledAt" style="background:rgba(239,68,68,0.1); border:1px solid rgba(239,68,68,0.3); border-radius:12px; padding:1.5rem; margin-bottom:2rem; text-align:center;">
             <h3 style="color:#f87171; margin-bottom:0.5rem;">Account Scheduled for Deletion</h3>
             <p style="color:#e2e8f0; font-size:0.95rem; margin-bottom:1rem;">Your account will be permanently deleted on {{ api.currentUser()?.accountDeletionScheduledAt | date }}.</p>
             <button class="btn btn-primary" (click)="cancelDeletion()">Cancel Deletion</button>
           </div>
 
-          <!-- Stats Grid -->
           <section class="stats-grid">
             <article class="stat-card glass glass-hover">
               <div class="stat-num text-gradient-strong">
@@ -470,7 +465,6 @@ const DASHBOARD_UI: Record<Locale, DashboardUi> = {
             </a>
           </section>
 
-          <!-- Referral Widget -->
           <section class="referral-section">
             <div class="referral-card glass">
               <div class="referral-grid">
@@ -523,7 +517,6 @@ const DASHBOARD_UI: Record<Locale, DashboardUi> = {
             </div>
           </section>
 
-          <!-- Account History (Purchases & Top-ups) -->
           <section class="history-section">
             <div class="history-header">
               <div class="history-title-group">
@@ -553,14 +546,12 @@ const DASHBOARD_UI: Record<Locale, DashboardUi> = {
             </ng-template>
           </section>
 
-<!-- Settings Modal -->
 <div *ngIf="settingsOpen" class="scanner-overlay" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:9999; display:flex; justify-content:center; align-items:center; padding:1rem;">
   <div class="scanner-modal glass" style="max-width:460px; padding:2rem; border-radius:16px; background:#0f172a; width:100%; position:relative; max-height:90vh; overflow-y:auto;">
     <button style="position:absolute; top:1rem; right:1rem; background:transparent; border:none; color:white; cursor:pointer; font-size:1.5rem;" (click)="settingsOpen = false">&times;</button>
     <h2 style="margin-bottom:1.5rem;">Account Settings</h2>
 
     <div style="display:flex; flex-direction:column; gap:1.25rem; text-align:left;">
-      <!-- Email -->
       <div>
         <label style="display:block; margin-bottom:0.25rem; font-size:0.85rem; color:#94a3b8;">Email Address</label>
         <div style="display:flex; gap:0.5rem; flex-direction:column;">
@@ -579,7 +570,6 @@ const DASHBOARD_UI: Record<Locale, DashboardUi> = {
 
       <hr style="border:none; border-top:1px solid rgba(255,255,255,0.08); margin:0.25rem 0;" />
 
-      <!-- Password -->
       <div *ngIf="hasPassword">
         <label style="display:block; margin-bottom:0.25rem; font-size:0.85rem; color:#94a3b8;">Change Password</label>
         <div style="display:flex; gap:0.5rem; flex-direction:column;">
@@ -596,7 +586,6 @@ const DASHBOARD_UI: Record<Locale, DashboardUi> = {
 
       <hr style="border:none; border-top:1px solid rgba(255,255,255,0.08); margin:0.25rem 0;" />
 
-      <!-- Marketing -->
       <label style="display:flex; align-items:flex-start; gap:0.5rem; cursor:pointer;">
         <input type="checkbox" [(ngModel)]="marketingEnabled" (change)="saveSettings()" style="margin-top:0.25rem;" />
         <span style="font-size:0.9rem;">Receive marketing emails, tips and special offers</span>
@@ -604,7 +593,6 @@ const DASHBOARD_UI: Record<Locale, DashboardUi> = {
 
       <hr style="border:none; border-top:1px solid rgba(255,255,255,0.08); margin:0.25rem 0;" />
 
-      <!-- Delete Account -->
       <div style="padding:1rem; background:rgba(239,68,68,0.08); border:1px solid rgba(239,68,68,0.2); border-radius:8px;">
         <p style="font-size:0.85rem; color:#f87171; margin-bottom:0.5rem; font-weight:600;">Delete Account</p>
         <p style="font-size:0.8rem; color:#94a3b8; margin-bottom:1rem;">To permanently delete your account, you need a verification code. Deletion happens after 14 days.</p>
@@ -1151,6 +1139,7 @@ export class DashboardComponent implements OnInit {
   async startQrScanner() {
     this.scannerOpen = true;
     this.videoSupported = true;
+    const { default: jsQR } = await import('jsqr');
     setTimeout(async () => {
       try {
         const video = document.getElementById('qrVideo') as HTMLVideoElement;

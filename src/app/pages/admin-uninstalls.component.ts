@@ -30,7 +30,6 @@ export interface UninstallStats {
   template: `
 <div class="a-section anim-in">
 
-  <!-- Header Card with Stats -->
   <div class="a-card">
     <div class="a-card-header">
       <div>
@@ -40,7 +39,6 @@ export interface UninstallStats {
       <button class="a-btn a-btn-ghost a-btn-sm" (click)="load(1)" [disabled]="loading()">🔄 Odśwież</button>
     </div>
 
-    <!-- Health / KPI Strip -->
     <div class="a-health-grid">
       <div class="a-hcard">
         <div class="a-hcard-label">Wszystkie ankiety</div>
@@ -61,7 +59,6 @@ export interface UninstallStats {
     </div>
   </div>
 
-  <!-- Reasons Breakdown Card -->
   <div class="a-card" *ngIf="topReasons().length > 0">
     <div class="a-card-header">
       <div class="a-card-title">📊 Rozkład powodów odinstalowania</div>
@@ -81,7 +78,6 @@ export interface UninstallStats {
     </div>
   </div>
 
-  <!-- Filters & List Card -->
   <div class="a-card">
     <div class="a-filters">
       <div class="a-search-wrap" style="flex:1;min-width:200px">
@@ -109,19 +105,16 @@ export interface UninstallStats {
       <button class="a-btn a-btn-ghost a-btn-sm" *ngIf="searchQuery || selectedReasonFilter" (click)="clearFilters()">Wyczyść</button>
     </div>
 
-    <!-- Loading State -->
     <div *ngIf="loading()" style="padding:40px;text-align:center;color:var(--text-3)">
       Ładowanie ankiet...
     </div>
 
-    <!-- Empty State -->
     <div *ngIf="!loading() && items().length === 0" style="padding:48px;text-align:center">
       <div style="font-size:36px;margin-bottom:8px">🎉</div>
       <div class="bold sm">Brak zgłoszeń odinstalowań</div>
       <div class="xs t3" style="margin-top:4px">Nikt jeszcze nie przesłał feedbacku z takimi kryteriami.</div>
     </div>
 
-    <!-- Table -->
     <div class="a-table-wrap" *ngIf="!loading() && items().length > 0">
       <table class="a-table">
         <thead>
@@ -137,12 +130,10 @@ export interface UninstallStats {
         </thead>
         <tbody>
           <tr *ngFor="let item of items()">
-            <!-- Date -->
             <td class="xs t3">
               {{ p.formatDate(item.createdAt) }}
             </td>
 
-            <!-- Reasons Badges -->
             <td>
               <div style="display:flex;gap:4px;flex-wrap:wrap">
                 <span
@@ -155,7 +146,6 @@ export interface UninstallStats {
               </div>
             </td>
 
-            <!-- Comments / Feedback -->
             <td>
               <div *ngIf="item.feedback" style="max-width:380px;white-space:pre-wrap;line-height:1.4" class="sm">
                 {{ item.feedback }}
@@ -166,24 +156,20 @@ export interface UninstallStats {
               <span *ngIf="!item.feedback && !item.customReason" class="xs t3 italic">Brak komentarza</span>
             </td>
 
-            <!-- Platform -->
             <td>
               <span *ngIf="item.platformUsed" class="bold xs tc">{{ item.platformUsed }}</span>
               <span *ngIf="!item.platformUsed" class="xs t3">—</span>
             </td>
 
-            <!-- Extension Version -->
             <td class="xs mono t3">
               {{ item.extensionVersion || '—' }}
             </td>
 
-            <!-- Email -->
             <td>
               <span *ngIf="item.email" class="xs mono td bold" style="color:var(--cyan)">{{ item.email }}</span>
               <span *ngIf="!item.email" class="xs t3">Anonim</span>
             </td>
 
-            <!-- Actions -->
             <td>
               <button
                 class="a-btn a-btn-danger a-btn-xs"
@@ -198,7 +184,6 @@ export interface UninstallStats {
       </table>
     </div>
 
-    <!-- Pagination -->
     <div class="a-card-foot" *ngIf="pages() > 1">
       <span class="xs t3">Strona {{ page() }} z {{ pages() }} (łącznie {{ total() }})</span>
       <div style="display:flex;gap:8px">

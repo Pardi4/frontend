@@ -3,12 +3,10 @@ import re
 with open('src/app/pages/admin.component.ts', 'r', encoding='utf-8') as f:
     content = f.read()
 
-# Add AdminStatsComponent import
 if 'AdminStatsComponent' not in content:
     content = content.replace("import { AdminUsersComponent } from './admin-users.component';", "import { AdminUsersComponent } from './admin-users.component';\nimport { AdminStatsComponent } from './admin-stats.component';")
     content = content.replace("imports: [CommonModule, FormsModule, AdminErrorsComponent, AdminUsersComponent],", "imports: [CommonModule, FormsModule, AdminErrorsComponent, AdminUsersComponent, AdminStatsComponent],")
 
-# Replace system tab
 system_start = content.find("<section class=\"admin-panel glass\" *ngIf=\"activeTab() === 'system'\">")
 if system_start != -1:
     depth = 0

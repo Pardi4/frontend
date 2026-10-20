@@ -10,7 +10,6 @@ import { AdminComponent } from './admin.component';
   template: `
 <div class="a-section anim-in">
 
-  <!-- Stats + opt-in list -->
   <div class="a-grid-2">
     <div class="a-card">
       <div class="a-card-header">
@@ -62,7 +61,6 @@ import { AdminComponent } from './admin.component';
     </div>
   </div>
 
-  <!-- Discount codes -->
   <div class="a-card">
     <div class="a-card-header">
       <div class="a-card-title">🎟️ Kody rabatowe (LemonSqueezy)</div>
@@ -117,7 +115,6 @@ import { AdminComponent } from './admin.component';
     </div>
   </div>
 
-  <!-- HTML editor -->
   <div class="a-card">
     <div class="a-card-header">
       <div class="a-card-title">✏️ Treść maila (HTML)</div>
