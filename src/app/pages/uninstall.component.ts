@@ -58,7 +58,7 @@ const TRANSLATIONS: Record<string, SurveyTranslations> = {
       other: 'Inny powód'
     },
     platformLabel: 'Wklej link (URL) lub podaj nazwę strony / platformy:',
-    platformPlaceholder: 'np. https://testportal.pl/..., Canvas, Moodle, link lub nazwa testu...',
+    platformPlaceholder: 'np. https://strona-z-testem.pl, Canvas, Moodle, Google Forms, link lub nazwa...',
     feedbackLabel: 'Co możemy poprawić? Masz dodatkowe uwagi? (opcjonalnie)',
     feedbackPlaceholder: 'Napisz śmiało, co sprawiło problem lub jakiej funkcji Ci zabrakło...',
     emailLabel: 'Twój e-mail (opcjonalnie)',
@@ -92,7 +92,7 @@ const TRANSLATIONS: Record<string, SurveyTranslations> = {
       other: 'Other reason'
     },
     platformLabel: 'Which website or testing platform did not work?',
-    platformPlaceholder: 'e.g. Canvas, Moodle, Testportal, Google Forms, URL...',
+    platformPlaceholder: 'e.g. https://your-quiz-site.com, Canvas, Moodle, Google Forms, URL or platform name...',
     feedbackLabel: 'What could we improve? Any additional details? (optional)',
     feedbackPlaceholder: 'Tell us what was missing or what caused an issue...',
     emailLabel: 'Your email (optional)',
@@ -262,7 +262,7 @@ const TRANSLATIONS: Record<string, SurveyTranslations> = {
       other: 'Інша причина'
     },
     platformLabel: 'На якому сайті чи платформі виникла проблема?',
-    platformPlaceholder: 'напр. Moodle, Canvas, Testportal, посилання на сайт...',
+    platformPlaceholder: 'напр. Canvas, Moodle, Google Forms, посилання на тест або сайт...',
     feedbackLabel: 'Що ми можемо покращити? Додаткові зауваження? (необов’язково)',
     feedbackPlaceholder: 'Напишіть, що саме пішло не так або якої функції не вистачило...',
     emailLabel: 'Ваш e-mail (необов’язково)',
