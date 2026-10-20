@@ -57,8 +57,8 @@ const TRANSLATIONS: Record<string, SurveyTranslations> = {
       privacy_concern: 'Obawy o prywatność lub uprawnienia',
       other: 'Inny powód'
     },
-    platformLabel: 'Na jakiej stronie / platformie pojawił się problem?',
-    platformPlaceholder: 'np. Testportal, Microsoft Forms, Moodle, Canvas, link do strony...',
+    platformLabel: 'Wklej link (URL) lub podaj nazwę strony / platformy:',
+    platformPlaceholder: 'np. https://testportal.pl/..., Canvas, Moodle, link lub nazwa testu...',
     feedbackLabel: 'Co możemy poprawić? Masz dodatkowe uwagi? (opcjonalnie)',
     feedbackPlaceholder: 'Napisz śmiało, co sprawiło problem lub jakiej funkcji Ci zabrakło...',
     emailLabel: 'Twój e-mail (opcjonalnie)',
@@ -508,28 +508,32 @@ function normalizeLangCode(val: string | null | undefined): string {
               {{ t().reasonsLabel }}
             </label>
             <div class="u-reasons-grid">
-              <label *ngFor="let r of reasonKeys" class="u-reason-card" [class.selected]="selectedReasons[r.key]">
-                <input type="checkbox" [(ngModel)]="selectedReasons[r.key]" [name]="r.key" class="u-hidden-check">
-                <span class="u-reason-icon">{{ r.icon }}</span>
-                <span class="u-reason-label">{{ t().reasons[r.key] || r.key }}</span>
-                <span class="u-check-box" [class.checked]="selectedReasons[r.key]">
-                  {{ selectedReasons[r.key] ? '✓' : '' }}
-                </span>
-              </label>
-            </div>
-          </div>
+              <ng-container *ngFor="let r of reasonKeys">
+                <label class="u-reason-card" [class.selected]="selectedReasons[r.key]">
+                  <input type="checkbox" [(ngModel)]="selectedReasons[r.key]" [name]="r.key" class="u-hidden-check">
+                  <span class="u-reason-icon">{{ r.icon }}</span>
+                  <span class="u-reason-label">{{ t().reasons[r.key] || r.key }}</span>
+                  <span class="u-check-box" [class.checked]="selectedReasons[r.key]">
+                    {{ selectedReasons[r.key] ? '✓' : '' }}
+                  </span>
+                </label>
 
-          <!-- Platform input if not_working selected -->
-          <div class="u-field anim-slide" *ngIf="selectedReasons['not_working']">
-            <label class="u-label">
-              {{ t().platformLabel }}
-            </label>
-            <input
-              type="text"
-              class="u-input"
-              [(ngModel)]="platformUsed"
-              name="platformUsed"
-              [placeholder]="t().platformPlaceholder">
+                <!-- Dedicated URL / Platform input appearing directly under the 'not_working' option -->
+                <div class="u-platform-box anim-slide" *ngIf="r.key === 'not_working' && selectedReasons['not_working']">
+                  <label class="u-platform-label">
+                    <span class="u-platform-icon">🌐</span>
+                    <span>{{ t().platformLabel }}</span>
+                  </label>
+                  <input
+                    type="text"
+                    class="u-input u-platform-input"
+                    [(ngModel)]="platformUsed"
+                    name="platformUsed"
+                    [placeholder]="t().platformPlaceholder"
+                    autofocus>
+                </div>
+              </ng-container>
+            </div>
           </div>
 
           <!-- Feedback textarea -->
@@ -764,6 +768,40 @@ function normalizeLangCode(val: string | null | undefined): string {
     .u-check-box.checked {
       background: #06b6d4;
       border-color: #06b6d4;
+    }
+    .u-platform-box {
+      margin: 4px 0 10px 0;
+      padding: 14px 16px;
+      background: rgba(6, 182, 212, 0.08);
+      border: 1.5px solid rgba(6, 182, 212, 0.4);
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      box-shadow: 0 4px 14px rgba(6, 182, 212, 0.12);
+    }
+    .u-platform-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: #38bdf8;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .u-platform-icon {
+      font-size: 16px;
+    }
+    .u-platform-input {
+      background: rgba(15, 23, 42, 0.95);
+      border-color: rgba(6, 182, 212, 0.45);
+      color: #f8fafc;
+    }
+    .u-platform-input:focus {
+      border-color: #06b6d4;
+      box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.28);
+    }
+    .u-platform-input::placeholder {
+      color: #94a3b8;
     }
     .u-input, .u-textarea {
       width: 100%;
