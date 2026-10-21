@@ -2234,7 +2234,7 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
       },
       comparison: {
         en: '💎 Lowest price per answer (<$0.008)',
-        pl: '💎 Najniższy koszt za odpowiedź (<$0.008)',
+        pl: '💎 Najniższy koszt za odpowiedź (<0,03 zł)',
         de: '💎 Tiefster Preis pro Antwort (<$0.008)',
         es: '💎 Precio más bajo por respuesta (<$0.008)',
         fr: '💎 Prix le plus bas par réponse (<$0.008)',
@@ -2264,14 +2264,15 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
   ];
 
   protected get valueComp() {
+    const approx500 = this.getApproxCurrencyPrice('$4.99');
     const data: Record<Locale, { badge: string; title: string; tutor: string; tutorPrice: string; qs: string; qsPrice: string; note: string }> = {
       en: { badge: 'Smart investment', title: 'How QuizSolver compares', tutor: 'Private tutoring', tutorPrice: '$30–50 / hour', qs: 'QuizSolver 500 credits', qsPrice: '$4.99 for ~500 answers', note: 'Credits never expire. No subscription. Pay once, use whenever you need.' },
-      pl: { badge: 'Mądra inwestycja', title: 'Jak QuizSolver wypada na tle alternatyw', tutor: 'Korepetycje', tutorPrice: '80–150 zł / godzina', qs: 'QuizSolver 500 kredytów', qsPrice: '$4.99 za ~500 odpowiedzi', note: 'Kredyty nigdy nie wygasają. Bez abonamentu. Płacisz raz, używasz kiedy potrzebujesz.' },
-      de: { badge: 'Kluge Investition', title: 'QuizSolver im Vergleich', tutor: 'Nachhilfe', tutorPrice: '25–40 € / Stunde', qs: 'QuizSolver 500 Credits', qsPrice: '$4.99 für ~500 Antworten', note: 'Credits verfallen nie. Kein Abo. Einmal bezahlen, jederzeit nutzen.' },
-      es: { badge: 'Inversión inteligente', title: 'Cómo se compara QuizSolver', tutor: 'Tutorías privadas', tutorPrice: '20–35 € / hora', qs: 'QuizSolver 500 créditos', qsPrice: '$4.99 por ~500 respuestas', note: 'Los créditos nunca caducan. Sin suscripción. Paga una vez, usa cuando quieras.' },
-      fr: { badge: 'Investissement malin', title: 'QuizSolver en comparaison', tutor: 'Cours particuliers', tutorPrice: '25–45 € / heure', qs: 'QuizSolver 500 crédits', qsPrice: '$4.99 pour ~500 réponses', note: 'Les crédits n\'expirent jamais. Sans abonnement. Payez une fois, utilisez quand vous voulez.' },
-      it: { badge: 'Investimento intelligente', title: 'Come si confronta QuizSolver', tutor: 'Ripetizioni private', tutorPrice: '20–35 € / ora', qs: 'QuizSolver 500 crediti', qsPrice: '$4.99 per ~500 risposte', note: 'I crediti non scadono mai. Nessun abbonamento. Paga una volta, usa quando vuoi.' },
-      uk: { badge: 'Розумна інвестиція', title: 'Як QuizSolver порівняно з альтернативами', tutor: 'Репетитор', tutorPrice: '300–600 грн / година', qs: 'QuizSolver 500 кредитів', qsPrice: '$4.99 за ~500 відповідей', note: 'Кредити ніколи не закінчуються. Без підписки. Плати раз, використовуй коли потрібно.' },
+      pl: { badge: 'Mądra inwestycja', title: 'Jak QuizSolver wypada na tle alternatyw', tutor: 'Korepetycje', tutorPrice: '80–150 zł / godzina', qs: 'QuizSolver 500 kredytów', qsPrice: `${approx500 || 'ok. 20 zł'} za ~500 odpowiedzi`, note: 'Kredyty nigdy nie wygasają. Bez abonamentu. Płacisz raz, używasz kiedy potrzebujesz.' },
+      de: { badge: 'Kluge Investition', title: 'QuizSolver im Vergleich', tutor: 'Nachhilfe', tutorPrice: '25–40 € / Stunde', qs: 'QuizSolver 500 Credits', qsPrice: `${approx500 || 'ca. 4,50 €'} für ~500 Antworten`, note: 'Credits verfallen nie. Kein Abo. Einmal bezahlen, jederzeit nutzen.' },
+      es: { badge: 'Inversión inteligente', title: 'Cómo se compara QuizSolver', tutor: 'Tutorías privadas', tutorPrice: '20–35 € / hora', qs: 'QuizSolver 500 créditos', qsPrice: `${approx500 || 'aprox. 4,50 €'} por ~500 respuestas`, note: 'Los créditos nunca caducan. Sin suscripción. Paga una vez, usa cuando quieras.' },
+      fr: { badge: 'Investissement malin', title: 'QuizSolver en comparaison', tutor: 'Cours particuliers', tutorPrice: '25–45 € / heure', qs: 'QuizSolver 500 crédits', qsPrice: `${approx500 || 'env. 4,50 €'} pour ~500 réponses`, note: 'Les crédits n\'expirent jamais. Sans abonnement. Payez une fois, utilisez quand vous voulez.' },
+      it: { badge: 'Investimento intelligente', title: 'Come si confronta QuizSolver', tutor: 'Ripetizioni private', tutorPrice: '20–35 € / ora', qs: 'QuizSolver 500 crediti', qsPrice: `${approx500 || 'ca. 4,50 €'} per ~500 risposte`, note: 'I crediti non scadono mai. Nessun abbonamento. Paga una volta, usa quando vuoi.' },
+      uk: { badge: 'Розумна інвестиція', title: 'Як QuizSolver порівняно з альтернативами', tutor: 'Репетитор', tutorPrice: '300–600 грн / година', qs: 'QuizSolver 500 кредитів', qsPrice: `${approx500 || '~220 грн'} за ~500 відповідей`, note: 'Кредити ніколи не закінчуються. Без підписки. Плати раз, використовуй коли потрібно.' },
       pt: { badge: 'Investimento inteligente', title: 'Como o QuizSolver se compara', tutor: 'Aulas particulares', tutorPrice: 'R$ 50–120 / hora', qs: 'QuizSolver 500 créditos', qsPrice: '$4.99 por ~500 respostas', note: 'Créditos nunca expiram. Sem mensalidade. Pague uma vez e use quando precisar.' },
       ar: { badge: 'استثمار ذكي', title: 'مقارنة القيمة في QuizSolver', tutor: 'الدروس الخصوصية', tutorPrice: '$30–50 / ساعة', qs: 'QuizSolver 500 رصيد', qsPrice: '$4.99 لنحو 500 إجابة', note: 'الرصيد لا تنتهي صلاحيته أبداً. لا توجد اشتراكات دورية. ادفع مرة واحدة واستخدمه متى شئت.' }
     ,

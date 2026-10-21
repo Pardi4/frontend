@@ -465,8 +465,14 @@ export class AnimatedNumberComponent implements OnInit, OnChanges, OnDestroy {
                 <p class="tier-caption text-secondary">{{ pack.caption }}</p>
                 <div class="tier-price-container">
                   <div class="tier-price-row">
-                    <span class="tier-price">{{ pack.price }}</span>
-                    <span *ngIf="getApproxCurrencyPrice(pack.price)" class="tier-price-approx">{{ getApproxCurrencyPrice(pack.price) }}</span>
+                    <ng-container *ngIf="locale === 'pl' || isPolishBrowser">
+                      <span class="tier-price">{{ getPlnPrice(pack.id) }}</span>
+                      <span class="tier-price-approx">BLIK</span>
+                    </ng-container>
+                    <ng-container *ngIf="locale !== 'pl' && !isPolishBrowser">
+                      <span class="tier-price">{{ pack.price }}</span>
+                      <span *ngIf="getApproxCurrencyPrice(pack.price)" class="tier-price-approx">{{ getApproxCurrencyPrice(pack.price) }}</span>
+                    </ng-container>
                   </div>
                 </div>
                 
@@ -1656,6 +1662,21 @@ export class HomeComponent implements OnInit, OnDestroy {
     return this.text.pricing.packs;
   }
 
+  get isPolishBrowser(): boolean {
+    if (typeof navigator === 'undefined') return false;
+    const langs = navigator.languages || [navigator.language];
+    return langs.some(l => l && l.toLowerCase().startsWith('pl'));
+  }
+
+  protected getPlnPrice(packId: string): string {
+    const prices: Record<string, string> = {
+      starter: '4,99 zł',
+      popular: '14,99 zł',
+      pro: '39,00 zł'
+    };
+    return prices[packId] || '14,99 zł';
+  }
+
   protected get currencyNote(): string {
     return this.currency.getCurrencyNote(this.locale);
   }
@@ -2003,9 +2024,9 @@ const HOME_COPY: Partial<Record<Locale, any>> & { en: any; pl: any } = {
       subtitle: 'Bez cyklicznych subskrypcji. Jednorazowe pakiety kredytów: odpowiedzi i wyjaśnienia zużywają kredyty, historia nauki pozostaje darmowa na zawsze.',
       badge: 'Najchętniej Wybierany',
       packs: [
-        { id: 'starter', name: 'Pakiet Ratunkowy (100 pytań)', price: '$1.99', originalPrice: '', caption: 'Spokój na 3–5 kolokwiów • Mniej niż energy drink', button: 'Wybierz Pakiet Ratunkowy', features: ['100 odpowiedzi AI ze szczegółowym wyjaśnieniem', 'Spokój na 3–5 pełnych kolokwiów lub testów', 'Działa na Testportal, Moodle, Canvas, Forms i innych', 'Kredyty nigdy nie wygasają — brak abonamentu'] },
-        { id: 'popular', name: 'Pakiet Semestralny (500 pytań)', price: '$4.99', originalPrice: '', caption: 'Bezstresowa nauka i sesja • Mniej niż pizza', socialText: 'Wybierane przez 84% studentów', button: 'Wybierz Pakiet Semestralny', features: ['500 odpowiedzi AI ze szczegółowym wyjaśnieniem', '50% taniej w porównaniu do Starter (~$0.01 / odp.)', 'Wysoki priorytet odpowiedzi na testach z czasem', 'Bezterminowy dostęp do historii i powtórek'] },
-        { id: 'pro', name: 'Pakiet Roczny / Na spółkę (2000 pytań)', price: '$14.99', originalPrice: '', caption: 'Zapas na cały rok lub dla paczki znajomych • Tylko <$0.008 / odp.', button: 'Wybierz Pakiet Roczny', features: ['2000 odpowiedzi AI ze szczegółowym wyjaśnieniem', 'Najniższy koszt za pojedynczą odpowiedź (<$0.008)', 'Idealne na spółkę ze znajomymi lub na cały rok', 'Maksymalny priorytet i natychmiastowe odpowiedzi'] }
+        { id: 'starter', name: 'Pakiet Ratunkowy (100 pytań)', price: '4,99 zł', originalPrice: '', caption: 'Spokój na 3–5 kolokwiów • Mniej niż energy drink', button: 'Wybierz Pakiet Ratunkowy', features: ['100 odpowiedzi AI ze szczegółowym wyjaśnieniem', 'Spokój na 3–5 pełnych kolokwiów lub testów', 'Działa na Testportal, Moodle, Canvas, Forms i innych', 'Kredyty nigdy nie wygasają — brak abonamentu'] },
+        { id: 'popular', name: 'Pakiet Semestralny (500 pytań)', price: '14,99 zł', originalPrice: '', caption: 'Bezstresowa nauka i sesja • Mniej niż pizza', socialText: 'Wybierane przez 84% studentów', button: 'Wybierz Pakiet Semestralny', features: ['500 odpowiedzi AI ze szczegółowym wyjaśnieniem', '50% taniej w porównaniu do Starter (~0,03 zł / odp.)', 'Wysoki priorytet odpowiedzi na testach z czasem', 'Bezterminowy dostęp do historii i powtórek'] },
+        { id: 'pro', name: 'Pakiet Roczny / Na spółkę (2000 pytań)', price: '39,00 zł', originalPrice: '', caption: 'Zapas na cały rok lub dla paczki znajomych • Tylko <0,02 zł / odp.', button: 'Wybierz Pakiet Roczny', features: ['2000 odpowiedzi AI ze szczegółowym wyjaśnieniem', 'Najniższy koszt za pojedynczą odpowiedź (<0,02 zł)', 'Idealne na spółkę ze znajomymi lub na cały rok', 'Maksymalny priorytet i natychmiastowe odpowiedzi'] }
       ]
     },
     faqTitle: 'Najczęściej zadawane pytania',
@@ -2015,7 +2036,7 @@ const HOME_COPY: Partial<Record<Locale, any>> & { en: any; pl: any } = {
       { question: 'Co jeśli moja strona z quizem nie jest jeszcze obsługiwana?', answer: 'Najpierw próbuje działać Universal Parser. Jeśli nie odczyta strony poprawnie, użytkownik może zgłosić problem z rozszerzenia. Sprawdzamy takie układy ręcznie, dostrajamy profile parsera i dodajemy lepsze wsparcie w kolejnych aktualizacjach.' },
       { question: 'Czy QuizSolver działa na Testportalu?', answer: 'Tak. QuizSolver wykrywa pytania na Testportalu, również w widoku z timerem. Otwierasz quiz, klikasz Rozwiąż obecną stronę i po chwili dostajesz sugestię odpowiedzi AI.' },
       { question: 'Co to jest FocusScan i kiedy go używać?', answer: 'FocusScan to narzędzie do zaznaczania fragmentu ekranu. Obrysowujesz pytanie w PDF-ie, obrazku, canvasie albo nietypowym embedzie, a QuizSolver odczytuje tylko ten obszar zamiast całej strony.' },
-      { question: 'Ile darmowych kredytów dostaje nowe konto?', answer: 'Każde nowe konto dostaje darmowe kredyty startowe, żeby sprawdzić sugestie odpowiedzi i wyjaśnienia. Dodatkowe pakiety zaczynają się od $1.99 za 100 kredytów. Tryb Kahoot Quiz ID nie zużywa kredytów.' },
+      { question: 'Ile darmowych kredytów dostaje nowe konto?', answer: 'Każde nowe konto dostaje darmowe kredyty startowe, żeby sprawdzić sugestie odpowiedzi i wyjaśnienia. Dodatkowe pakiety zaczynają się od 4,99 zł za 100 kredytów. Tryb Kahoot Quiz ID nie zużywa kredytów.' },
       { question: 'Do czego służy tryb podpowiedzi?', answer: 'Tryb podpowiedzi jest dla sytuacji, w których nie chcesz automatycznego klikania. Rozszerzenie tylko zaznacza prawdopodobną odpowiedź, a decyzja zostaje po Twojej stronie.' },
       { question: 'Czy demo albo tutorial zużywa kredyty?', answer: 'Nie. Strona demo korzysta z gotowych lokalnych pytań i odpowiedzi. Możesz spokojnie sprawdzić cały workflow bez wysyłania zapytań do AI i bez zużywania kredytów.' },
       { question: 'Gdzie wrócić do rozwiązanych pytań?', answer: 'W zakładce Historia i quiz możesz przeglądać zapisane pytania, dodawać notatki, oznaczać ulubione, uruchamiać quiz powtórkowy i udostępniać wybrane pytania linkiem.' },

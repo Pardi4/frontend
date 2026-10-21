@@ -100,7 +100,7 @@ export class CurrencyService {
     const rate = this.exchangeRate();
     switch (locale) {
       case 'pl':
-        return `* Płatność rozliczana w USD ($). Orientacyjna kwota w PLN według aktualnego średniego kursu NBP (1 USD ≈ ${rate.toFixed(2)} zł).`;
+        return `* Płatności BLIK i szybkim przelewem online realizowane są bezpośrednio w PLN.`;
       case 'it':
         return `* Pagamento in USD ($). Importo in EUR indicativo in base al tasso di cambio ufficiale BCE (1 USD ≈ ${rate.toFixed(2).replace('.', ',')} €).`;
       case 'de':
