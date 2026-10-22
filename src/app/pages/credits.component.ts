@@ -69,14 +69,7 @@ import { ShellComponent, trackGa4Event } from './shell.component';
                 </span>
               </button>
 
-              <div class="promo-timer-box">
-                <span class="timer-label">{{ promoCopy.timerLabel }}</span>
-                <div class="timer-digits">
-                  <span class="digit-chunk">{{ timerMinutes }}</span>
-                  <span class="digit-sep">:</span>
-                  <span class="digit-chunk">{{ timerSeconds }}</span>
-                </div>
-              </div>
+
             </div>
           </div>
         </section>
@@ -1906,19 +1899,18 @@ export class CreditsComponent implements OnInit, OnDestroy, AfterViewInit {
 
   protected get referralCopy() {
     const data: Record<Locale, { title: string; text: string; button: string }> = {
-      en: { title: 'Share & earn 10%', text: 'Invite friends with your referral link. When they buy credits, you get 10% bonus credits.', button: 'Get your link' },
-      pl: { title: 'Poleć i zyskaj 10%', text: 'Zaproś znajomych swoim linkiem polecającym. Gdy kupią kredyty, dostajesz 10% bonusu.', button: 'Pobierz swój link' },
-      de: { title: 'Teilen & 10% verdienen', text: 'Lade Freunde mit deinem Empfehlungslink ein. Bei ihrem Kauf erhältst du 10% Bonuscredits.', button: 'Link holen' },
-      es: { title: 'Comparte y gana 10%', text: 'Invita amigos con tu enlace de referido. Cuando compren créditos, recibes un 10% de bonificación.', button: 'Obtener enlace' },
-      fr: { title: 'Partagez et gagnez 10%', text: 'Invitez vos amis avec votre lien de parrainage. Quand ils achètent, vous recevez 10% de bonus.', button: 'Obtenir le lien' },
-      it: { title: 'Condividi e guadagna 10%', text: 'Invita amici con il tuo link referral. Quando acquistano crediti, ricevi il 10% di bonus.', button: 'Ottieni il link' },
-      uk: { title: 'Поділись і отримай 10%', text: 'Запроси друзів через реферальне посилання. Коли вони куплять кредити, ти отримаєш 10% бонусу.', button: 'Отримати посилання' },
-      pt: { title: 'Compartilhe e ganhe 10%', text: 'Convide amigos com seu link de indicação. Quando eles comprarem créditos, você ganha 10% de créditos bônus.', button: 'Obter link' },
-      ar: { title: 'شارك واربح 10%', text: 'ادعُ أصدقاءك برابط الإحالة الخاص بك. عندما يشترون رصيداً، تحصل على 10% رصيد إضافي كهدية.', button: 'الحصول على الرابط' }
-    ,
-      tr: { title: 'Paylaş ve %10 Kazan', text: 'Arkadaşlarınızı davet edin ve satın aldıkları kredilerin %10\'u kadar bonus kredi kazanın.', button: 'Bağlantıyı kopyala' },
-      ja: { title: 'シェアして 10% 獲得', text: '友達を招待すると、購入されたクレジットの 10% 相当のボーナスクレジットを獲得できます。', button: 'リンクを取得' },
-      ko: { title: '공유하고 10% 받기', text: '친구를 초대하면 친구가 구매한 크레딧의 10%를 보너스 크레딧으로 받으실 수 있습니다.', button: '링크 받기' }
+      en: { title: 'Share & earn: +5 credits & 10%', text: 'Invite friends with your link. You both get +5 credits upon email verification, plus 10% bonus credits from their purchases.', button: 'Get your link' },
+      pl: { title: 'Poleć i zyskaj: +5 kredytów i 10%', text: 'Zaproś znajomych swoim linkiem. Obaj dostajecie +5 kredytów po potwierdzeniu maila, plus 10% od każdego ich zakupu.', button: 'Pobierz swój link' },
+      de: { title: 'Teilen & verdienen: +5 Credits & 10%', text: 'Lade Freunde mit deinem Empfehlungslink ein. Beide erhalten +5 Credits nach E-Mail-Bestätigung, plus 10% Bonuscredits bei jedem Kauf.', button: 'Link holen' },
+      es: { title: 'Comparte y gana: +5 créditos y 10%', text: 'Invita amigos con tu enlace. Ambos reciben +5 créditos tras confirmar el correo, más un 10% de bonificación en compras.', button: 'Obtener enlace' },
+      fr: { title: 'Partagez et gagnez : +5 crédits et 10%', text: 'Invitez vos amis avec votre lien. Vous recevez tous les deux +5 crédits après validation de l’e-mail, plus 10% de bonus sur les achats.', button: 'Obtenir le lien' },
+      it: { title: 'Condividi e guadagna: +5 crediti e 10%', text: 'Invita amici con il tuo link referral. Entrambi ricevete +5 crediti dopo la conferma email, più il 10% di bonus sugli acquisti.', button: 'Ottieni il link' },
+      uk: { title: 'Поділись і отримай: +5 кредитів і 10%', text: 'Запроси друзів за посиланням. Ви обоє отримаєте по +5 кредитів після підтвердження пошти, плюс 10% бонусу з покупок.', button: 'Отримати посилання' },
+      pt: { title: 'Compartilhe e ganhe: +5 créditos e 10%', text: 'Convide amigos com seu link. Ambos ganham +5 créditos após confirmar o e-mail, mais 10% de bônus nas compras.', button: 'Obter link' },
+      ar: { title: 'شارك واربح: +5 رصيد و10%', text: 'ادعُ أصدقاءك برابط الإحالة. يحصل كليكما على +5 رصيد بعد تأكيد البريد الإلكتروني، بالإضافة إلى 10% رصيد إضافي عند الشراء.', button: 'الحصول على الرابط' },
+      tr: { title: 'Paylaş ve Kazan: +5 kredi ve %10', text: 'Arkadaşlarınızı davet edin. E-posta onayından sonra ikiniz de +5 kredi kazanın, ayrıca satın alımlardan %10 bonus kazanın.', button: 'Bağlantıyı kopyala' },
+      ja: { title: 'シェアして獲得：+5クレジット＆10%', text: '友達を招待してメール確認が完了するとお互いに+5クレジット、さらに購入ごとに10%のボーナスを獲得できます。', button: 'リンクを取得' },
+      ko: { title: '공유하고 받기: +5 크레딧 & 10%', text: '친구를 초대하고 이메일 인증을 완료하면 두 분 모두 +5 크레딧을 받고, 구매 시 10% 보너스 크레딧도 지급됩니다.', button: '링크 받기' }
     };
     return data[this.locale] || data.en;
   }
