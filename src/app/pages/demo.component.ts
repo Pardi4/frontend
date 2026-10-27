@@ -272,7 +272,7 @@ const COPY: Partial<Record<Locale, DemoCopy>> & { en: DemoCopy; pl: DemoCopy } =
         type: 'radio',
         kicker: 'Step 1 of 5 · Multiple Choice',
         title: 'Biology multiple choice',
-        instruction: 'QuizSolver scans the question and automatically selects the correct answer in one click.',
+        instruction: 'Click the "✨ Solve" button in the top-right corner of this card (or inside the extension popup / Alt+Q) to select the correct answer automatically.',
         question: 'Which organelle is mainly responsible for producing ATP in eukaryotic cells?',
         options: ['Nucleus', 'Mitochondrion', 'Ribosome', 'Cell membrane'],
         correctText: 'Mitochondrion',
@@ -284,7 +284,7 @@ const COPY: Partial<Record<Locale, DemoCopy>> & { en: DemoCopy; pl: DemoCopy } =
         type: 'hidden',
         kicker: 'Step 2 of 5 · Hint Mode',
         title: 'History: Hint mode',
-        instruction: 'Don’t want the tool to click for you? Hint mode discreetly highlights the clue, keeping you in full control.',
+        instruction: 'Turn on "Hidden mode (Hint)" inside the extension popup (or Alt+Q panel) and click "✨ Solve" — the extension will discreetly highlight the clue instead of clicking.',
         question: 'Which source is the strongest example of primary historical evidence?',
         options: ['A textbook chapter', 'A diary written during the event', 'A modern documentary', 'An encyclopedia summary'],
         correctText: 'A diary written during the event',
@@ -296,9 +296,9 @@ const COPY: Partial<Record<Locale, DemoCopy>> & { en: DemoCopy; pl: DemoCopy } =
         type: 'text',
         kicker: 'Step 3 of 5 · Text Input',
         title: 'Math: Typed answer',
-        instruction: 'QuizSolver accurately fills numbers and short text into quiz form inputs.',
+        instruction: 'Click "✨ Solve" in the top-right corner of the card — QuizSolver will type the result directly into the input field.',
         question: 'What is the value of 12 x 8?',
-        placeholder: 'Type your answer (or click ✨ Solve)',
+        placeholder: 'Click ✨ Solve in the corner (or type your answer)',
         correctText: '96',
         hint: 'Break it into 10 x 8 plus 2 x 8.',
         explanation: '12 x 8 equals 96 because 10 x 8 is 80 and 2 x 8 is 16, giving 96 together.'
@@ -308,7 +308,7 @@ const COPY: Partial<Record<Locale, DemoCopy>> & { en: DemoCopy; pl: DemoCopy } =
         type: 'matching',
         kicker: 'Step 4 of 5 · Dropdowns',
         title: 'Science matching dropdowns',
-        instruction: 'Matches multiple definitions to terms simultaneously, just like in LMS exams.',
+        instruction: 'Click "✨ Solve" in the top-right corner of the card — the extension will match all 3 dropdown definitions at once.',
         question: 'Match each science term with the correct definition.',
         prompts: ['Photosynthesis', 'Evaporation', 'Gravity'],
         options: ['Plants make glucose using light', 'Liquid changes into gas', 'Force attracting objects with mass'],
@@ -321,7 +321,7 @@ const COPY: Partial<Record<Locale, DemoCopy>> & { en: DemoCopy; pl: DemoCopy } =
         type: 'selected',
         kicker: 'Step 5 of 5 · Selected Text & FocusScan',
         title: 'Selected text & FocusScan (Alt+S)',
-        instruction: 'When a page has a complex layout or image question, highlight the text and use Alt+Q, or press Alt+S (FocusScan) to capture the screen area.',
+        instruction: 'Highlight the question text and click "Solve selected text" in the Alt+Q panel, or press Alt+S (FocusScan) and drag a box around the question.',
         question: 'Which QuizSolver action is best when a messy page contains extra text around the actual question?',
         options: ['Solve selected text', 'Credit checkout', 'Admin panel', 'Browser history'],
         correctText: 'Solve selected text',
@@ -331,21 +331,21 @@ const COPY: Partial<Record<Locale, DemoCopy>> & { en: DemoCopy; pl: DemoCopy } =
     ]
   },
   pl: {
-    eyebrow: 'Praktyczny trening wtyczki · 0 zużytych kredytów',
-    title: 'Naucz się używać QuizSolver w 60 sekund',
-    lead: 'Przetestuj prawdziwe rozszerzenie Chrome na 5 typach zadań: od pytań ABCD, przez dyskretny Tryb ukryty (Hint mode), po wpisywanie tekstu, listy rozwijane oraz FocusScan (Alt+S).',
+    eyebrow: 'Interaktywne Demo · 0 zużytych kredytów',
+    title: 'Przetestuj QuizSolver w 60 sekund',
+    lead: 'Przeklikaj 5 realnych przykładów: od pytań ABCD, przez dyskretny Hint mode, po wpisywanie tekstu, listy rozwijane oraz FocusScan (Alt+S).',
     install: 'Zainstaluj rozszerzenie',
     openStore: 'Otwórz Chrome Web Store',
     demoBadge: '0 kredytów',
-    localBadge: 'Trening prawdziwej wtyczki',
-    mapTitle: 'Jak korzystać z tego treningu?',
-    mapText: 'Używaj prawdziwego przycisku „✨ Rozwiąż” w prawym górnym rogu pytania, pływającego okienka Quick Overlay (Alt+Q) w prawym dolnym rogu ekranu lub wycinka ekranu FocusScan (Alt+S).',
+    localBadge: 'Trening wtyczki',
+    mapTitle: 'Jak korzystać z tego demo?',
+    mapText: 'Kliknij przycisk „✨ Rozwiąż” w prawym górnym rogu pytania, użyj ikony wtyczki w przeglądarce lub skrótów Alt+Q / Alt+S.',
     prev: 'Poprzednie',
     next: 'Następne pytanie',
     restart: 'Zacznij od nowa',
-    startTour: 'Pokaż krok po kroku',
+    startTour: 'Uruchom przewodnik',
     selectText: '✂️ Zaznacz tekst pytania',
-    selectedTip: 'Po zaznaczeniu tekstu kliknij „Rozwiąż zaznaczony tekst” w pływającym okienku Alt+Q (lub pod prawym przyciskiem myszy).',
+    selectedTip: 'Po zaznaczeniu tekstu kliknij „Rozwiąż zaznaczony tekst” w oknie wtyczki lub panelu Alt+Q.',
     yourAnswer: 'Twoja odpowiedź',
     chooseOption: 'Wybierz opcję',
     popupTitle: 'QuizSolver w akcji',
@@ -361,19 +361,19 @@ const COPY: Partial<Record<Locale, DemoCopy>> & { en: DemoCopy; pl: DemoCopy } =
       scoreLabel: 'Wynik',
       answeredLabel: 'Ukończone',
       accuracyLabel: 'Skuteczność',
-      checkAnswer: 'Sprawdź odpowiedź ręcznie',
+      checkAnswer: 'Sprawdź moją odpowiedź',
       showHint: '💡 Tryb podpowiedzi (Hint mode)',
       simulateSolver: '✨ Rozwiązane wtyczką QuizSolver',
       resetAnswers: 'Zacznij od nowa',
       correctTitle: 'Świetnie! Poprawna odpowiedź',
       wrongTitle: 'Nie do końca poprawnie',
-      emptyTitle: 'Użyj wtyczki (✨ Rozwiąż / Alt+Q) lub zaznacz odpowiedź',
+      emptyTitle: 'Użyj wtyczki (✨ Rozwiąż) lub zaznacz odpowiedź',
       hintTitle: 'Tryb podpowiedzi (Hint mode) aktywny',
       explanationLabel: 'Dlaczego to działa',
-      resultTitle: 'Gratulacje! Umiesz już korzystać z wtyczki QuizSolver',
-      resultText: 'Przetestowałeś przycisk ✨ Rozwiąż, dyskretny Hint mode, wpisywanie tekstu, dopasowania oraz zaznaczanie tekstu / FocusScan (Alt+S). Pamiętaj, aby przed prawdziwym testem zalogować się w ikonie wtyczki (🧩 → 📌 QuizSolver)!',
+      resultTitle: 'Gratulacje! Umiesz już korzystać z QuizSolver',
+      resultText: 'Przetestowałeś wszystkie 5 trybów działania rozszerzenia bez zużywania kredytów.',
       finalPrimary: 'Dodaj QuizSolver do Chrome',
-      finalSecondary: 'Uruchom trening ponownie',
+      finalSecondary: 'Uruchom demo ponownie',
       sideTitle: 'Co robi QuizSolver',
       sideText: 'QuizSolver błyskawicznie analizuje stronę i wskazuje właściwą odpowiedź.'
     },
@@ -384,7 +384,7 @@ const COPY: Partial<Record<Locale, DemoCopy>> & { en: DemoCopy; pl: DemoCopy } =
         type: 'radio',
         kicker: 'Krok 1 z 5 · Jednokrotny wybór',
         title: 'Biologia: jednokrotny wybór',
-        instruction: 'QuizSolver błyskawicznie analizuje treść pytania i automatycznie zaznacza właściwą opcję.',
+        instruction: 'Kliknij przycisk „✨ Rozwiąż” w prawym górnym rogu tej karty (lub w ikonie wtyczki / panelu Alt+Q), aby automatycznie zaznaczyć poprawną odpowiedź.',
         question: 'Które organellum odpowiada głównie za produkcję ATP w komórkach eukariotycznych?',
         options: ['Jądro komórkowe', 'Mitochondrium', 'Rybosom', 'Błona komórkowa'],
         correctText: 'Mitochondrium',
@@ -396,7 +396,7 @@ const COPY: Partial<Record<Locale, DemoCopy>> & { en: DemoCopy; pl: DemoCopy } =
         type: 'hidden',
         kicker: 'Krok 2 z 5 · Tryb podpowiedzi (Hint mode)',
         title: 'Historia: tryb podpowiedzi (Hint mode)',
-        instruction: 'Nie chcesz automatycznego klikania? Włącz Tryb ukryty w panelu Alt+Q – rozszerzenie dyskretnie podświetli wskazówkę, a ostateczny wybór klikasz Ty.',
+        instruction: 'Włącz „Tryb ukryty (Hint mode)” w oknie wtyczki (lub panelu Alt+Q) i kliknij „✨ Rozwiąż” – rozszerzenie dyskretnie podświetli wskazówkę zamiast klikać za Ciebie.',
         question: 'Które źródło jest najlepszym przykładem pierwotnego źródła historycznego?',
         options: ['Rozdział w podręczniku', 'Dziennik napisany podczas wydarzenia', 'Współczesny film dokumentalny', 'Hasło w encyklopedii'],
         correctText: 'Dziennik napisany podczas wydarzenia',
@@ -408,7 +408,7 @@ const COPY: Partial<Record<Locale, DemoCopy>> & { en: DemoCopy; pl: DemoCopy } =
         type: 'text',
         kicker: 'Krok 3 z 5 · Odpowiedź wpisywana',
         title: 'Matematyka: wpisywanie tekstu',
-        instruction: 'QuizSolver potrafi wpisywać liczby i krótkie odpowiedzi bezpośrednio do pól formularzy quizowych.',
+        instruction: 'Kliknij „✨ Rozwiąż” w prawym górnym rogu karty – QuizSolver automatycznie wpisze wynik bezpośrednio do pola tekstowego.',
         question: 'Ile wynosi 12 x 8?',
         placeholder: 'Kliknij „✨ Rozwiąż” w rogu karty (lub wpisz liczbę)',
         correctText: '96',
@@ -420,7 +420,7 @@ const COPY: Partial<Record<Locale, DemoCopy>> & { en: DemoCopy; pl: DemoCopy } =
         type: 'matching',
         kicker: 'Krok 4 z 5 · Dopasowanie w selectach',
         title: 'Nauka: listy wyboru i dopasowanie',
-        instruction: 'Rozszerzenie radzi sobie z wieloma listami wyboru naraz i precyzyjnie przypisuje pary.',
+        instruction: 'Kliknij „✨ Rozwiąż” w prawym górnym rogu karty – rozszerzenie dopasuje wszystkie odpowiedzi w listach rozwijanych naraz.',
         question: 'Dopasuj pojęcie naukowe do właściwej definicji.',
         prompts: ['Fotosynteza', 'Parowanie', 'Grawitacja'],
         options: ['Rośliny tworzą glukozę ze światła', 'Ciecz zmienia się w gaz', 'Siła przyciągająca obiekty z masą'],
@@ -433,12 +433,12 @@ const COPY: Partial<Record<Locale, DemoCopy>> & { en: DemoCopy; pl: DemoCopy } =
         type: 'selected',
         kicker: 'Krok 5 z 5 · Zaznaczony tekst i FocusScan (Alt+S)',
         title: 'Zaznaczony tekst (Alt+Q) i FocusScan (Alt+S)',
-        instruction: 'Gdy strona ma nietypowy układ lub pytanie jest na obrazku, zaznacz fragment tekstu i użyj panelu Alt+Q albo naciśnij Alt+S (FocusScan) i obrysuj pytanie myszką.',
+        instruction: 'Zaznacz fragment tekstu poniżej i kliknij „Rozwiąż zaznaczony tekst” w panelu Alt+Q albo naciśnij Alt+S (FocusScan) i obrysuj pytanie myszką.',
         question: 'Która akcja QuizSolver najlepiej sprawdza się, gdy strona ma dużo dodatkowego tekstu wokół właściwego pytania?',
         options: ['Rozwiąż zaznaczony tekst', 'Płatność za kredyty', 'Panel admina', 'Historia przeglądarki'],
         correctText: 'Rozwiąż zaznaczony tekst',
         hint: 'Wybierz akcję, która pracuje tylko na zaznaczonym fragmencie tekstu.',
-        explanation: 'Rozwiąż zaznaczony tekst (Alt+Q) oraz FocusScan (Alt+S) pozwalają wskazać wtyczce dokładne pytanie na każdej, nawet najbardziej skomplikowanej stronie.'
+        explanation: 'Rozwiąż zaznaczony tekst (Alt+Q) oraz FocusScan (Alt+S) pozwalają wskazać wtyczce dokładne pytanie na każdej stronie.'
       }
     ]
   }
@@ -753,57 +753,21 @@ const DEMO_QUESTIONS: Record<Exclude<Locale, 'en' | 'pl'>, DemoQuestion[]> = {
             <h1>{{ copy.title }}</h1>
             <p class="demo-lead">{{ copy.lead }}</p>
 
-            <!-- Live Extension Status & Pin/Account Reminder -->
-            <div class="demo-setup-banner glass" [class.ext-ready]="extensionInstalled()">
-              <div class="setup-status-row">
-                <div class="setup-status-pill" [class.active]="extensionInstalled()">
-                  <span class="status-dot"></span>
-                  <span>{{ extensionInstalled() ? ui().extDetected : ui().extMissing }}</span>
-                </div>
-                <div class="mode-actions">
-                  <button class="btn btn-primary btn-sm" type="button" data-qs-tour-start (click)="startGuidedTour()">
-                    🎯 {{ copy.startTour }}
-                  </button>
-                  <button class="btn btn-outline btn-sm" type="button" (click)="openQuickOverlay()">
-                    {{ ui().openOverlayBtn }}
-                  </button>
-                  <a *ngIf="!extensionInstalled()" [href]="storeUrl" target="_blank" rel="noopener" class="btn btn-subtle btn-sm cta-store-btn">
-                    📥 {{ copy.install }}
-                  </a>
+            <div class="demo-mode-card glass">
+              <div class="mode-info">
+                <span class="mode-icon">🧩</span>
+                <div>
+                  <strong>{{ copy.mapTitle }}</strong>
+                  <p>{{ copy.mapText }}</p>
                 </div>
               </div>
-
-              <div class="pin-account-reminder">
-                <span class="pin-icon">📌</span>
-                <div class="pin-copy">
-                  <strong>{{ ui().pinReminderTitle }}</strong>
-                  <p>{{ ui().pinReminderText }}</p>
-                </div>
-              </div>
-            </div>
-
-            <!-- 3 Real Ways to Trigger the Extension -->
-            <div class="demo-methods-section">
-              <div class="methods-header">
-                <h2>{{ ui().methodsHeading }}</h2>
-                <p>{{ ui().methodsSub }}</p>
-              </div>
-              <div class="demo-methods-grid">
-                <div
-                  class="method-card"
-                  *ngFor="let m of ui().methods"
-                  [attr.data-qs-tour]="m.tourAttr">
-                  <span class="method-badge">{{ m.badge }}</span>
-                  <h3>{{ m.title }}</h3>
-                  <p>{{ m.desc }}</p>
-                  <button
-                    *ngIf="m.actionLabel"
-                    type="button"
-                    class="method-action-btn"
-                    (click)="triggerMethodAction(m.actionType)">
-                    {{ m.actionLabel }}
-                  </button>
-                </div>
+              <div class="mode-actions">
+                <button class="btn btn-outline btn-sm" type="button" data-qs-tour-start (click)="startGuidedTour()">
+                  🎯 {{ copy.startTour }}
+                </button>
+                <a [href]="storeUrl" target="_blank" rel="noopener" class="btn btn-primary btn-sm cta-store-btn">
+                  📥 {{ copy.install }}
+                </a>
               </div>
             </div>
           </header>
@@ -828,26 +792,18 @@ const DEMO_QUESTIONS: Record<Exclude<Locale, 'en' | 'pl'>, DemoQuestion[]> = {
             <article class="demo-card glass" [attr.data-qs-demo-question]="question.id" data-qs-tour="question-card">
 
               <div class="card-meta-bar" [class.has-ext-slot]="extensionInstalled()">
-                <div class="card-meta-left">
-                  <span class="step-tag">{{ question.kicker }}</span>
-                  <span class="step-counter">{{ current() + 1 }} / {{ copy.questions.length }}</span>
-                </div>
-                <span class="corner-pointer-hint" *ngIf="extensionInstalled() && !isQuestionCompleted(question.id)">
-                  {{ ui().cornerPointer }}
-                </span>
-              </div>
-
-              <!-- Step-specific Extension Mission Box -->
-              <div class="extension-mission-box">
-                <div class="mission-head">
-                  <span class="mission-badge">{{ ui().missionBadge }}</span>
-                </div>
-                <p class="mission-text">{{ getStepActionGuide(question) }}</p>
+                <span class="step-tag">{{ question.kicker }}</span>
+                <span class="step-counter">{{ current() + 1 }} / {{ copy.questions.length }}</span>
               </div>
 
               <h2 class="question-text" data-qs-demo-question-text [attr.data-qs-demo-selectable]="question.type === 'selected' ? 'true' : null">
                 {{ question.question }}
               </h2>
+
+              <div class="feature-tip">
+                <span class="tip-icon">💡</span>
+                <p>{{ question.instruction }}</p>
+              </div>
 
               <fieldset class="demo-options" *ngIf="question.type === 'radio' || question.type === 'hidden' || question.type === 'selected'">
                 <legend class="sr-only">{{ question.question }}</legend>
@@ -899,14 +855,9 @@ const DEMO_QUESTIONS: Record<Exclude<Locale, 'en' | 'pl'>, DemoQuestion[]> = {
               </div>
 
               <div class="selected-helper-bar" *ngIf="question.type === 'selected'">
-                <div class="selected-helper-actions">
-                  <button class="btn btn-outline btn-sm" type="button" data-qs-tour="select-text" (click)="selectQuestionText()">
-                    {{ copy.selectText }}
-                  </button>
-                  <button class="btn btn-subtle btn-sm" type="button" (click)="startFocusScan()">
-                    {{ ui().focusScanBtn }}
-                  </button>
-                </div>
+                <button class="btn btn-outline btn-sm" type="button" data-qs-tour="select-text" (click)="selectQuestionText()">
+                  {{ copy.selectText }}
+                </button>
                 <p class="selected-note">{{ copy.selectedTip }}</p>
               </div>
 
@@ -933,21 +884,6 @@ const DEMO_QUESTIONS: Record<Exclude<Locale, 'en' | 'pl'>, DemoQuestion[]> = {
                   type="button"
                   (click)="checkAnswer(question)">
                   ✓ {{ label('checkAnswer') }}
-                </button>
-
-                <button
-                  class="btn btn-subtle"
-                  type="button"
-                  (click)="openQuickOverlay()">
-                  {{ ui().openOverlayBtn }}
-                </button>
-
-                <button
-                  class="btn btn-subtle"
-                  type="button"
-                  *ngIf="question.type === 'selected'"
-                  (click)="startFocusScan()">
-                  {{ ui().focusScanBtn }}
                 </button>
               </div>
 
@@ -1056,202 +992,49 @@ const DEMO_QUESTIONS: Record<Exclude<Locale, 'en' | 'pl'>, DemoQuestion[]> = {
       line-height: 1.55;
     }
 
-    /* Setup & Pin/Account Banner */
-    .demo-setup-banner {
-      display: grid;
-      gap: 0.9rem;
-      padding: 1.15rem 1.35rem;
-      border-radius: 14px;
-      background: rgba(23, 28, 36, 0.82);
-      border: 1px solid rgba(14, 165, 233, 0.26);
-      text-align: left;
-      margin-bottom: 1.35rem;
-    }
-
-    .demo-setup-banner.ext-ready {
-      border-color: rgba(34, 197, 94, 0.35);
-    }
-
-    .setup-status-row {
+    /* Mode Card */
+    .demo-mode-card {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 0.85rem;
+      gap: 1.25rem;
+      padding: 1.15rem 1.4rem;
+      border-radius: 14px;
+      background: rgba(23, 28, 36, 0.75);
+      border: 1px solid rgba(14, 165, 233, 0.25);
+      text-align: left;
     }
 
-    .setup-status-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.55rem;
-      padding: 0.38rem 0.85rem;
-      border-radius: 999px;
-      background: rgba(245, 158, 11, 0.12);
-      border: 1px solid rgba(245, 158, 11, 0.35);
-      color: #fde68a;
-      font-size: 0.84rem;
-      font-weight: 700;
-    }
-
-    .setup-status-pill.active {
-      background: rgba(34, 197, 94, 0.12);
-      border-color: rgba(34, 197, 94, 0.38);
-      color: #bbf7d0;
-    }
-
-    .status-dot {
-      width: 0.52rem;
-      height: 0.52rem;
-      border-radius: 50%;
-      background: #f59e0b;
-      box-shadow: 0 0 8px #f59e0b;
-      flex-shrink: 0;
-    }
-
-    .setup-status-pill.active .status-dot {
-      background: #22c55e;
-      box-shadow: 0 0 8px #22c55e;
-    }
-
-    .pin-account-reminder {
+    .mode-info {
       display: flex;
       align-items: flex-start;
-      gap: 0.75rem;
-      padding: 0.8rem 1rem;
-      border-radius: 10px;
-      background: rgba(15, 23, 42, 0.65);
-      border: 1px solid rgba(56, 189, 248, 0.22);
+      gap: 0.9rem;
     }
 
-    .pin-icon {
-      font-size: 1.2rem;
-      line-height: 1.3;
-      flex-shrink: 0;
+    .mode-icon {
+      font-size: 1.4rem;
+      line-height: 1.2;
     }
 
-    .pin-copy strong {
+    .mode-info strong {
       display: block;
-      font-size: 0.86rem;
-      color: #e0f2fe;
+      font-size: 0.98rem;
+      color: var(--text-primary);
       margin-bottom: 0.2rem;
     }
 
-    .pin-copy p {
-      font-size: 0.83rem;
-      color: #94a3b8;
-      line-height: 1.48;
+    .mode-info p {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      line-height: 1.45;
       margin: 0;
     }
 
     .mode-actions {
       display: flex;
       align-items: center;
-      flex-wrap: wrap;
-      gap: 0.55rem;
-    }
-
-    .btn-subtle {
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid var(--border);
-      color: var(--text-primary);
-      font-weight: 600;
-    }
-    .btn-subtle:hover {
-      background: rgba(255, 255, 255, 0.12);
-    }
-
-    /* 3 Methods Section */
-    .demo-methods-section {
-      text-align: left;
-      margin-bottom: 0.5rem;
-    }
-
-    .methods-header {
-      margin-bottom: 0.85rem;
-    }
-
-    .methods-header h2 {
-      font-size: 1.15rem;
-      font-weight: 800;
-      margin: 0 0 0.25rem;
-      color: #f8fafc;
-    }
-
-    .methods-header p {
-      font-size: 0.88rem;
-      color: var(--text-secondary);
-      margin: 0;
-    }
-
-    .demo-methods-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 0.85rem;
-    }
-
-    .method-card {
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      padding: 1rem 1.1rem;
-      border-radius: 12px;
-      background: rgba(23, 28, 36, 0.85);
-      border: 1px solid #2b3545;
-      transition: border-color 0.2s ease, transform 0.2s ease;
-    }
-
-    .method-card:hover {
-      border-color: rgba(56, 189, 248, 0.45);
-      transform: translateY(-1px);
-    }
-
-    .method-badge {
-      display: inline-block;
-      width: fit-content;
-      font-size: 0.72rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      padding: 0.2rem 0.55rem;
-      border-radius: 6px;
-      background: rgba(124, 92, 252, 0.16);
-      color: #c4b5fd;
-      margin-bottom: 0.5rem;
-    }
-
-    .method-card h3 {
-      font-size: 0.96rem;
-      font-weight: 800;
-      color: #f8fafc;
-      margin: 0 0 0.45rem;
-      line-height: 1.35;
-    }
-
-    .method-card p {
-      font-size: 0.83rem;
-      color: #94a3b8;
-      line-height: 1.48;
-      margin: 0 0 0.85rem;
-      flex: 1;
-    }
-
-    .method-action-btn {
-      width: 100%;
-      padding: 0.5rem 0.75rem;
-      border-radius: 8px;
-      border: 1px solid rgba(56, 189, 248, 0.35);
-      background: rgba(14, 165, 233, 0.1);
-      color: #bae6fd;
-      font-size: 0.8rem;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all 0.18s ease;
-    }
-
-    .method-action-btn:hover {
-      background: rgba(14, 165, 233, 0.2);
-      border-color: rgba(56, 189, 248, 0.65);
-      color: #fff;
+      flex-shrink: 0;
+      gap: 0.65rem;
     }
 
     /* Stepper Tabs */
@@ -1340,12 +1123,6 @@ const DEMO_QUESTIONS: Record<Exclude<Locale, 'en' | 'pl'>, DemoQuestion[]> = {
       padding-right: 7.5rem;
     }
 
-    .card-meta-left {
-      display: flex;
-      align-items: center;
-      gap: 0.65rem;
-    }
-
     .step-tag {
       font-size: 0.82rem;
       font-weight: 800;
@@ -1364,51 +1141,35 @@ const DEMO_QUESTIONS: Record<Exclude<Locale, 'en' | 'pl'>, DemoQuestion[]> = {
       color: #bae6fd;
     }
 
-    .corner-pointer-hint {
-      font-size: 0.8rem;
-      font-weight: 700;
-      color: #38bdf8;
-      background: rgba(14, 165, 233, 0.1);
-      border: 1px dashed rgba(56, 189, 248, 0.45);
-      padding: 0.25rem 0.65rem;
-      border-radius: 8px;
-    }
-
-    /* Mission Box */
-    .extension-mission-box {
-      padding: 0.85rem 1.05rem;
-      border-radius: 11px;
-      background: linear-gradient(135deg, rgba(124, 92, 252, 0.13), rgba(14, 165, 233, 0.1));
-      border: 1px solid rgba(56, 189, 248, 0.32);
-      margin-bottom: 1.25rem;
-    }
-
-    .mission-head {
-      margin-bottom: 0.3rem;
-    }
-
-    .mission-badge {
-      font-size: 0.76rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: #7dd3fc;
-    }
-
-    .mission-text {
-      font-size: 0.92rem;
-      color: #f1f5f9;
-      line-height: 1.48;
-      margin: 0;
-      font-weight: 500;
-    }
-
     .question-text {
       font-size: clamp(1.3rem, 2.4vw, 1.65rem);
       font-weight: 700;
       color: var(--text-primary);
-      margin: 0 0 1.25rem;
+      margin: 0 0 1rem;
       line-height: 1.35;
+    }
+
+    .feature-tip {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.65rem;
+      padding: 0.75rem 1rem;
+      border-radius: 10px;
+      background: rgba(124, 92, 252, 0.08);
+      border: 1px solid rgba(124, 92, 252, 0.2);
+      margin-bottom: 1.35rem;
+    }
+
+    .tip-icon {
+      font-size: 1.05rem;
+      line-height: 1.3;
+    }
+
+    .feature-tip p {
+      font-size: 0.9rem;
+      color: #cbd5e1;
+      line-height: 1.45;
+      margin: 0;
     }
 
     /* Radio Options */
