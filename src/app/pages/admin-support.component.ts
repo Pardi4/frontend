@@ -13,7 +13,7 @@ import { AdminComponent } from './admin.component';
   <div class="a-filters">
     <div class="a-search-wrap" style="flex:1;min-width:180px">
       <span class="a-search-ico">🔍</span>
-      <input class="a-input" [(ngModel)]="search" (ngModelChange)="applyFilter()" placeholder="Szukaj nadawcy, tematu...">
+      <input class="a-input" [(ngModel)]="search" (ngModelChange)="applyFilter()" placeholder="Szukaj nadawcy, tematu, kodu OTP...">
     </div>
     <select class="a-select" [(ngModel)]="statusFilter" (ngModelChange)="load()" style="max-width:130px">
       <option value="">Wszystkie</option>
@@ -41,9 +41,12 @@ import { AdminComponent } from './admin.component';
         </div>
         <div class="a-inbox-subject">{{ msg.subject || '(Brak tematu)' }}</div>
         <div class="a-inbox-prev">{{ msg.text | slice:0:80 }}</div>
-        <div style="margin-top:5px;display:flex;gap:5px">
+        <div style="margin-top:6px;display:flex;gap:5px;flex-wrap:wrap;align-items:center">
           <span class="a-badge a-badge-warning" *ngIf="!msg.isRead" style="font-size:10px">Nowe</span>
           <span class="a-badge" [class]="statusClass(msg.status)" style="font-size:10px">{{ msg.status }}</span>
+          <span class="a-badge a-badge-cyan" *ngIf="getCode(msg)" style="font-size:10px;font-weight:700">
+            🔑 {{ getCode(msg) }}
+          </span>
         </div>
       </div>
     </div>
@@ -75,6 +78,20 @@ import { AdminComponent } from './admin.component';
           </div>
         </div>
 
+        <!-- HIGHLIGHTED VERIFICATION CODE BANNER -->
+        <div *ngIf="getCode(msg) as code" style="margin:12px 20px 4px;padding:12px 16px;background:rgba(6,182,212,0.12);border:1px solid rgba(6,182,212,0.35);border-radius:10px;display:flex;align-items:center;justify-content:space-between;gap:12px">
+          <div style="display:flex;align-items:center;gap:12px">
+            <span style="font-size:24px">🔑</span>
+            <div>
+              <div style="font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--text-3);font-weight:700">Wykryty kod weryfikacyjny</div>
+              <div style="font-size:22px;font-weight:800;letter-spacing:2px;color:#06b6d4;font-family:monospace">{{ code }}</div>
+            </div>
+          </div>
+          <button class="a-btn a-btn-primary a-btn-sm" type="button" (click)="copyCode(code)">
+            📋 Kopiuj kod
+          </button>
+        </div>
+
         <div style="padding:12px 20px;border-bottom:1px solid var(--border);background:var(--surface-2)" *ngIf="msg.linkedUser">
           <div class="xs t3 mb-3">Powiązane konto</div>
           <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
@@ -95,8 +112,26 @@ import { AdminComponent } from './admin.component';
           </div>
         </div>
 
-        <div style="padding:16px 20px;flex:1;overflow-y:auto;max-height:260px">
-          <div class="sm" style="white-space:pre-wrap;line-height:1.7;color:var(--text-2)">{{ msg.text || '(Brak treści)' }}</div>
+        <!-- VIEW MODE SWITCHER (TEXT vs HTML) -->
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 20px;border-bottom:1px solid var(--border);background:var(--surface-1)" *ngIf="msg.html">
+          <div style="display:flex;gap:6px">
+            <button class="a-btn a-btn-sm" [class.a-btn-secondary]="viewMode === 'text'" [class.a-btn-ghost]="viewMode !== 'text'" type="button" (click)="viewMode = 'text'">
+              📝 Tekst
+            </button>
+            <button class="a-btn a-btn-sm" [class.a-btn-secondary]="viewMode === 'html'" [class.a-btn-ghost]="viewMode !== 'html'" type="button" (click)="viewMode = 'html'">
+              🌐 Podgląd HTML
+            </button>
+          </div>
+          <span class="xs t3" *ngIf="viewMode === 'html'">Oryginalny wygląd wiadomości</span>
+        </div>
+
+        <div style="padding:16px 20px;flex:1;overflow-y:auto;max-height:480px">
+          <div *ngIf="viewMode === 'text' || !msg.html" class="sm" style="white-space:pre-wrap;line-height:1.7;color:var(--text-2);word-break:break-word">
+            {{ msg.text || '(Brak treści tekstowej)' }}
+          </div>
+          <div *ngIf="viewMode === 'html' && msg.html" style="background:#ffffff;border-radius:8px;padding:8px;overflow:hidden">
+            <iframe [srcdoc]="getSafeHtml(msg)" style="width:100%;min-height:360px;border:none;background:#ffffff;display:block;" sandbox="allow-same-origin"></iframe>
+          </div>
         </div>
 
         <div *ngIf="msg.replies?.length" style="border-top:1px solid var(--border)">
@@ -171,6 +206,7 @@ export class AdminSupportComponent implements OnInit {
   generateDiscount = false;
   grantAmount   = 0;
   grantReason   = 'Korekta supportu';
+  viewMode: 'text' | 'html' = 'text';
 
   ngOnInit() { this.load(); }
 
@@ -192,18 +228,67 @@ export class AdminSupportComponent implements OnInit {
   filtered() {
     const s = this.search.toLowerCase();
     if (!s) return this.messages();
-    return this.messages().filter(m =>
-      (m.fromEmail || '').toLowerCase().includes(s) ||
-      (m.fromName || '').toLowerCase().includes(s) ||
-      (m.subject || '').toLowerCase().includes(s) ||
-      (m.text || '').toLowerCase().includes(s)
-    );
+    return this.messages().filter(m => {
+      const code = (m.detectedCode || this.getCode(m) || '').toLowerCase();
+      return (
+        (m.fromEmail || '').toLowerCase().includes(s) ||
+        (m.fromName || '').toLowerCase().includes(s) ||
+        (m.subject || '').toLowerCase().includes(s) ||
+        (m.text || '').toLowerCase().includes(s) ||
+        code.includes(s)
+      );
+    });
+  }
+
+  getCode(msg: any): string {
+    if (msg?.detectedCode) return msg.detectedCode;
+    const combined = `${msg?.subject || ''}\n${msg?.text || ''}\n${String(msg?.html || '').replace(/<[^>]+>/g, ' ')}`;
+    const explicitPatterns = [
+      /(?:two(?:j|j)\s+)?(?:tymczasowy\s+)?kod(?:\s+weryfikacyjny)?(?:\s+to)?(?:\s*[:=-]|\s+jest|\s+to)\s*[:\s]*([0-9]{4,8})\b/i,
+      /(?:verification|security|confirmation|temporary|login|access)\s+code(?:\s+is)?(?:\s*[:=-])\s*[:\s]*([0-9]{4,8})\b/i,
+      /(?:two(?:j|j)\s+)?kod(?:\s+zabezpieczaj(?:a|ą)cy)?(?:\s*[:=-])\s*[:\s]*([0-9]{4,8})\b/i,
+      /\b(?:kod|code|otp)\s*[:#]\s*([0-9]{4,8})\b/i,
+      /\b(G-[0-9]{6})\b/i
+    ];
+    for (const p of explicitPatterns) {
+      const match = combined.match(p);
+      if (match && match[1]) return match[1].trim();
+    }
+    const htmlMatch = String(msg?.html || '').match(/<[^>]*style="[^"]*(?:font-size:\s*(?:2[0-9]|3[0-9]|4[0-9])px|letter-spacing)[^"]*"[^>]*>\s*([0-9]{4,8})\s*<\//i);
+    if (htmlMatch && htmlMatch[1]) return htmlMatch[1].trim();
+
+    if (/(?:kod|code|weryfikac|verif|hasło|jednorazow|otp|pin|chatgpt|openai|google|discord)/i.test(combined)) {
+      const lines = String(msg?.text || '').split(/\r?\n/).map(l => l.trim()).filter(Boolean);
+      for (const line of lines) {
+        if (/^[0-9]{4,8}$/.test(line)) return line;
+      }
+      const numMatch = combined.match(/\b([0-9]{6})\b/);
+      if (numMatch && numMatch[1]) return numMatch[1];
+    }
+    return '';
+  }
+
+  getSafeHtml(msg: any): string {
+    return msg?.html || '';
+  }
+
+  copyCode(code: string) {
+    if (!code) return;
+    navigator.clipboard.writeText(code).then(() => {
+      this.p.toast(`Skopiowano kod: ${code}`, 'success');
+    });
   }
 
   selectMsg(msg: any) {
     this.selected.set(msg);
     this.replyText = '';
     this.generateDiscount = false;
+    const cleanText = (msg?.text || '').trim();
+    if ((!cleanText || cleanText.length < 20 || cleanText.startsWith('--')) && msg?.html) {
+      this.viewMode = 'html';
+    } else {
+      this.viewMode = 'text';
+    }
     if (!msg.isRead) this.markRead(msg);
   }
 
