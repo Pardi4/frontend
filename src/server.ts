@@ -233,6 +233,15 @@ app.get(legacyAdminPaths, (_req, res) => {
     .send('<!doctype html><html><head><meta charset="utf-8"><meta name="robots" content="noindex,nofollow"><title>Not found</title></head><body>Not found</body></html>');
 });
 
+app.get('/extension-auth/callback', (_req, res) => {
+  res
+    .status(200)
+    .type('html')
+    .setHeader('Cache-Control', 'no-store')
+    .setHeader('X-Robots-Tag', 'noindex, nofollow')
+    .send('<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>QuizSolver Extension Auth</title><style>body{margin:0;min-height:100vh;display:grid;place-items:center;background:#030712;color:#f8fafc;font-family:Inter,system-ui,-apple-system,sans-serif}.card{width:min(420px,calc(100% - 40px));padding:30px;border:1px solid rgba(255,255,255,.12);border-radius:18px;background:rgba(15,23,42,.94);box-shadow:0 24px 70px rgba(0,0,0,.34);text-align:center}.mark{width:48px;height:48px;margin:0 auto 18px;border-radius:14px;background:linear-gradient(135deg,#06b6d4,#8b5cf6);display:grid;place-items:center;font-weight:900}h1{margin:0 0 10px;font-size:22px;line-height:1.2}p{margin:0;color:#cbd5e1;line-height:1.6}</style></head><body><div class="card"><div class="mark">QS</div><h1>Signing in...</h1><p>Connecting your QuizSolver account to the extension.</p></div></body></html>');
+});
+
 app.use('/api', (_req, res) => {
   res.status(404).json({ error: 'Endpoint not found.' });
 });
